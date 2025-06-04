@@ -21,12 +21,13 @@ export interface TreeItemWithChildrenProps {
   depth: number;
   expanded: string[];
   maxDepth: number;
-  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds: string[];
-  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
-  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
   selectedTreeItemIds: string[];
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
+  onDragStart: React.DragEventHandler<HTMLDivElement>;
 }
