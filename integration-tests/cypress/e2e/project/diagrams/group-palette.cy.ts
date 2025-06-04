@@ -36,13 +36,12 @@ describe('Diagram - group palette', () => {
       const explorer = new Explorer();
 
       diagram.getDiagram('diagram').should('exist');
-      diagram.fitToScreen();
 
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
+      diagram.fitToScreen();
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
-
       diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
