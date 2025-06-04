@@ -64,24 +64,26 @@ export const TreeItemWithChildren = ({
                 onDragStart={onDragStart}
                 treeItemActionRender={treeItemActionRender}
               />
-              <TreeItemWithChildren
-                editingContextId={editingContextId}
-                treeId={treeId}
-                item={childItem}
-                itemIndex={index}
-                depth={depth + 1}
-                expanded={expanded}
-                maxDepth={maxDepth}
-                readOnly={readOnly}
-                textToHighlight={textToHighlight}
-                textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                selectedTreeItemIds={selectedTreeItemIds}
-                onExpandedElementChange={onExpandedElementChange}
-                onTreeItemClick={onTreeItemClick}
-                onDragStart={onDragStart}
-                treeItemActionRender={treeItemActionRender}
-              />
+              {childItem.hasChildren ? (
+                <TreeItemWithChildren
+                  editingContextId={editingContextId}
+                  treeId={treeId}
+                  item={childItem}
+                  itemIndex={index}
+                  depth={depth + 1}
+                  expanded={expanded}
+                  maxDepth={maxDepth}
+                  readOnly={readOnly}
+                  textToHighlight={textToHighlight}
+                  textToFilter={textToFilter}
+                  markedItemIds={markedItemIds}
+                  selectedTreeItemIds={selectedTreeItemIds}
+                  onExpandedElementChange={onExpandedElementChange}
+                  onTreeItemClick={onTreeItemClick}
+                  onDragStart={onDragStart}
+                  treeItemActionRender={treeItemActionRender}
+                />
+              ) : null}
             </li>
           );
         })}
