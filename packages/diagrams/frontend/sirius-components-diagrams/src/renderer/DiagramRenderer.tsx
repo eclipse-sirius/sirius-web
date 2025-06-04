@@ -260,8 +260,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
 
   useEffect(() => {
-    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected })));
-  }, [edges.map((edge) => edge.id + edge.selected).join()]);
+    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected && !readOnly })));
+  }, [edges.map((edge) => edge.id + edge.selected).join(), readOnly]);
 
   const { onShiftSelection, setShiftSelection } = useShiftSelection();
   useDiagramSelection(onShiftSelection);
