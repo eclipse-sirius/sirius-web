@@ -22,12 +22,12 @@ export interface TreeViewProps {
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
-  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
-  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+  selectedTreeItemIds: string[];
   expanded: string[];
   maxDepth: number;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
-  selectedTreeItemIds: string[];
+  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
 }
 
 export interface TreeConverter {
