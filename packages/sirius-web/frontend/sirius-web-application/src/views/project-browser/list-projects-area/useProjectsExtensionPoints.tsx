@@ -10,11 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { IElementSVGExportHandler } from './SVGExportEngine.types';
+import { ProjectFilterCustomizer } from './useProjectsExtensionPoints.types';
 
-export const svgExportIElementSVGExportHandlerExtensionPoint: DataExtensionPoint<Array<IElementSVGExportHandler>> = {
-  identifier: 'svgExport#IElementSVGExportHandler',
+/**
+ * Extension point for customizing the project filter.
+ *
+ * This extension point allows the contribution of custom filter when the list of projects will
+ * be requested to the backend.
+ * A contribution can thus define how the projects should be filtered based on custom criteria.
+ *
+ * @since v2025.4.0
+ */
+export const projectFilterCustomizersExtensionPoint: DataExtensionPoint<Array<ProjectFilterCustomizer>> = {
+  identifier: 'useProjects#projectFilterCustomizers',
   fallback: [],
 };

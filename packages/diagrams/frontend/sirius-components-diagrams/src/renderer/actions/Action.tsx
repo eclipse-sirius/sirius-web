@@ -14,8 +14,8 @@ import { IconOverlay, useData } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from 'tss-react/mui';
 import { ActionProps } from './Action.types';
-import { diagramNodeActionOverrideContributionExtensionPoint } from './DiagramNodeActionExtensionPoint';
-import { DiagramNodeActionOverrideContribution } from './DiagramNodeActionExtensionPoint.types';
+import { diagramNodeActionOverrideContributionExtensionPoint } from './DiagramNodeActionExtensionPoints';
+import { DiagramNodeActionOverrideContribution } from './DiagramNodeActionExtensionPoints.types';
 import { useInvokeAction } from './useInvokeAction';
 
 const useStyles = makeStyles()((theme) => ({
