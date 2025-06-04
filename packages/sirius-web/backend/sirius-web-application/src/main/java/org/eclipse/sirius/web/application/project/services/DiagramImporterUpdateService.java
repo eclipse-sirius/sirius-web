@@ -13,10 +13,10 @@
 package org.eclipse.sirius.web.application.project.services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationServi
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -90,85 +91,23 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                     .map(DiagramDescription.class::cast);
 
             if (diagramDescription.isPresent() && newRepresentation.isPresent()) {
-                var oldLayoutData = oldRepresentation.getLayoutData();
                 var diagramContext = new DiagramContext(newRepresentation.get());
                 Map<String, String> nodeElementOldNewIds = new HashMap<>();
                 Map<String, String> edgeElementOldNewIds = new HashMap<>();
-                oldRepresentation.getNodes().forEach(oldNode -> {
-                    var nodeDescription = diagramDescription.get().getNodeDescriptions().stream().filter(nodeDesc -> nodeDesc.getId().equals(oldNode.getDescriptionId())).findFirst();
-                    if (nodeDescription.isPresent() && nodeDescription.get().getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
-                        var viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-                                .parentElementId(newRepresentation.get().getId())
-                                .targetObjectId(semanticElementsIdMappings.get(oldNode.getTargetObjectId()))
-                                .descriptionId(oldNode.getDescriptionId())
-                                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                                .build();
-                        diagramContext.getViewCreationRequests().add(viewCreationRequest);
-                    }
 
-                    var oldNodeId = oldNode.getId();
-                    var newNodeId = this.computeNodeId(newRepresentation.get().getId(), oldNode.getDescriptionId(), NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings.get(oldNode.getTargetObjectId()));
-                    nodeElementOldNewIds.put(oldNodeId, newNodeId);
+                this.handleNodes(oldRepresentation.getNodes(), nodeElementOldNewIds, diagramDescription.get(), newRepresentationId, diagramContext, semanticElementsIdMappings);
+                this.handleEdges(oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, semanticElementsIdMappings);
 
-                    oldNode.getChildNodes().forEach(childNode ->
-                        handleChildren(diagramDescription.get(), childNode, newNodeId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
-                    oldNode.getBorderNodes().forEach(childNode ->
-                        handleChildren(diagramDescription.get(), childNode, newNodeId, NodeContainmentKind.BORDER_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
-                });
+                Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
+                Map<String, EdgeLayoutData> edgeLayoutData = new HashMap<>();
+                Map<String, LabelLayoutData> labelLayoutData = new HashMap<>();
+                var newLayoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
+                this.handleLayout(newLayoutData, oldRepresentation.getLayoutData(), nodeElementOldNewIds, edgeElementOldNewIds);
 
-                AtomicInteger count = new AtomicInteger();
-                oldRepresentation.getEdges().stream()
-                        .filter(oldEdge-> semanticElementsIdMappings.get(oldEdge.getSourceId()) != null  && semanticElementsIdMappings.get(oldEdge.getTargetId()) != null)
-                        .forEach(oldEdge -> {
-                            var oldNodeId = oldEdge.getId();
-                            var newNodeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count.get());
-                            edgeElementOldNewIds.put(oldNodeId, newNodeId);
-                            count.getAndIncrement();
-                        });
-
-                oldRepresentation.getEdges().stream()
-                        .filter(oldEdge-> semanticElementsIdMappings.get(oldEdge.getSourceId()) == null  || semanticElementsIdMappings.get(oldEdge.getTargetId()) == null)
-                        .forEach(oldEdge -> {
-                            var oldNodeId = oldEdge.getId();
-                            var newSourceId = nodeElementOldNewIds.get(oldEdge.getSourceId());
-                            if (newSourceId == null) {
-                                newSourceId = edgeElementOldNewIds.get(oldEdge.getSourceId());
-                            }
-
-                            var newTargetId = nodeElementOldNewIds.get(oldEdge.getTargetId());
-                            if (newTargetId == null) {
-                                newTargetId = edgeElementOldNewIds.get(oldEdge.getTargetId());
-                            }
-                            var newNodeId = this.computeEdgeId(oldEdge.getDescriptionId(), newSourceId, newTargetId, count.get());
-                            edgeElementOldNewIds.put(oldNodeId, newNodeId);
-                            count.getAndIncrement();
-                        });
-
-                Map<String, NodeLayoutData> newNodeLayoutDatas = new HashMap<>();
-                var oldNodeLayoutData = oldLayoutData.nodeLayoutData();
-                oldNodeLayoutData.keySet().forEach(key -> {
-                    if (nodeElementOldNewIds.get(key) != null) {
-                        var oldLayoutNodeData = oldNodeLayoutData.get(key);
-                        var newNodeLayoutData = new NodeLayoutData(nodeElementOldNewIds.get(key), oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(), oldLayoutNodeData.handleLayoutData());
-                        newNodeLayoutDatas.put(nodeElementOldNewIds.get(key), newNodeLayoutData);
-                    }
-                });
-
-                Map<String, EdgeLayoutData> newEdgeLayoutDatas = new HashMap<>();
-                var oldEdgeLayoutData = oldLayoutData.edgeLayoutData();
-                oldEdgeLayoutData.keySet().forEach(key -> {
-                    if (edgeElementOldNewIds.get(key) != null) {
-                        var oldLayoutEdgeData = oldEdgeLayoutData.get(key);
-                        var newEdgeLayoutData = new EdgeLayoutData(edgeElementOldNewIds.get(key), oldLayoutEdgeData.bendingPoints(), oldLayoutEdgeData.edgeAnchorLayoutData());
-                        newEdgeLayoutDatas.put(edgeElementOldNewIds.get(key), newEdgeLayoutData);
-                    }
-                });
-
-                Map<String, LabelLayoutData> newLabelLayoutDatas = new HashMap<>();
                 var updatedDiagram = this.diagramCreationService.refresh(editingContext.get(), diagramContext);
                 if (updatedDiagram.isPresent()) {
                     var laidOutDiagram = Diagram.newDiagram(updatedDiagram.get())
-                            .layoutData(new DiagramLayoutData(newNodeLayoutDatas, newEdgeLayoutDatas, newLabelLayoutDatas))
+                            .layoutData(newLayoutData)
                             .build();
                     try {
                         String json = objectMapper.writeValueAsString(laidOutDiagram);
@@ -181,16 +120,33 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         }
     }
 
-    private String computeNodeId(String parentElementId, String nodeDescription,  NodeContainmentKind containmentKind, String targetObjectId) {
-        return new NodeIdProvider().getNodeId(parentElementId, nodeDescription, containmentKind, targetObjectId);
+    private void handleLayout(DiagramLayoutData newLayoutData, DiagramLayoutData oldLayoutData, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds) {
+        var oldNodeLayoutData = oldLayoutData.nodeLayoutData();
+
+        oldNodeLayoutData.keySet().forEach(key -> {
+            if (nodeElementOldNewIds.get(key) != null) {
+                var oldLayoutNodeData = oldNodeLayoutData.get(key);
+                var newNodeLayoutData = new NodeLayoutData(nodeElementOldNewIds.get(key), oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(), oldLayoutNodeData.handleLayoutData());
+                newLayoutData.nodeLayoutData().put(nodeElementOldNewIds.get(key), newNodeLayoutData);
+            }
+        });
+
+        var oldEdgeLayoutData = oldLayoutData.edgeLayoutData();
+        oldEdgeLayoutData.keySet().forEach(key -> {
+            if (edgeElementOldNewIds.get(key) != null) {
+                var oldLayoutEdgeData = oldEdgeLayoutData.get(key);
+                var newEdgeLayoutData = new EdgeLayoutData(edgeElementOldNewIds.get(key), oldLayoutEdgeData.bendingPoints(), oldLayoutEdgeData.edgeAnchorLayoutData());
+                newLayoutData.edgeLayoutData().put(edgeElementOldNewIds.get(key), newEdgeLayoutData);
+            }
+        });
     }
 
-    private String computeEdgeId(String edgeDescriptionId, String sourceId, String targetId, int count) {
-        String rawIdentifier = edgeDescriptionId + ": " + sourceId + " --> " + targetId + " - " + count;
-        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
+    private void handleNodes(List<Node> oldNodes, Map<String, String> nodeElementOldNewIds, DiagramDescription diagramDescription, String parentId, DiagramContext  diagramContext, Map<String, String> semanticElementsIdMappings) {
+        oldNodes.forEach(oldNode ->
+                handleNode(diagramDescription, oldNode, parentId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
     }
 
-    private void handleChildren(DiagramDescription diagramDescription, Node oldNode, String parentId, NodeContainmentKind containmentKind, Map<String, String> semanticElementsIdMappings, Map<String, String> diagramElementOldNewIds, DiagramContext diagramContext) {
+    private void handleNode(DiagramDescription diagramDescription, Node oldNode, String parentId, NodeContainmentKind containmentKind, Map<String, String> semanticElementsIdMappings, Map<String, String> nodeElementOldNewIds, DiagramContext diagramContext) {
         var nodeDescription = diagramDescription.getNodeDescriptions().stream().filter(nodeDesc -> nodeDesc.getId().equals(oldNode.getDescriptionId())).findFirst();
         if (nodeDescription.isPresent() && nodeDescription.get().getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
             var viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
@@ -204,11 +160,51 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
         var oldNodeId = oldNode.getId();
         var newNodeId = this.computeNodeId(parentId, oldNode.getDescriptionId(), containmentKind, semanticElementsIdMappings.get(oldNode.getTargetObjectId()));
-        diagramElementOldNewIds.put(oldNodeId, newNodeId);
+        nodeElementOldNewIds.put(oldNodeId, newNodeId);
 
         oldNode.getChildNodes().forEach(childNode ->
-            handleChildren(diagramDescription, childNode, newNodeId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, diagramElementOldNewIds, diagramContext));
+                handleNode(diagramDescription, childNode, newNodeId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
         oldNode.getBorderNodes().forEach(childNode ->
-            handleChildren(diagramDescription, childNode, newNodeId, NodeContainmentKind.BORDER_NODE, semanticElementsIdMappings, diagramElementOldNewIds, diagramContext));
+                handleNode(diagramDescription, childNode, newNodeId, NodeContainmentKind.BORDER_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
+    }
+
+    private String computeNodeId(String parentElementId, String nodeDescription, NodeContainmentKind containmentKind, String targetObjectId) {
+        return new NodeIdProvider().getNodeId(parentElementId, nodeDescription, containmentKind, targetObjectId);
+    }
+
+    private void handleEdges(List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, String> semanticElementsIdMappings) {
+        int count = 0;
+        // Create edges on edges last
+        for (Edge oldEdge : oldEdges) {
+            if (semanticElementsIdMappings.get(oldEdge.getSourceId()) != null  && semanticElementsIdMappings.get(oldEdge.getTargetId()) != null) {
+                var oldEdgeId = oldEdge.getId();
+                var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count);
+                edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
+                count++;
+            }
+        }
+
+        for (Edge oldEdge : oldEdges) {
+            if (semanticElementsIdMappings.get(oldEdge.getSourceId()) == null  || semanticElementsIdMappings.get(oldEdge.getTargetId()) == null) {
+                var oldEdgeId = oldEdge.getId();
+                var newSourceId = nodeElementOldNewIds.get(oldEdge.getSourceId());
+                if (newSourceId == null) {
+                    newSourceId = edgeElementOldNewIds.get(oldEdge.getSourceId());
+                }
+
+                var newTargetId = nodeElementOldNewIds.get(oldEdge.getTargetId());
+                if (newTargetId == null) {
+                    newTargetId = edgeElementOldNewIds.get(oldEdge.getTargetId());
+                }
+                var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), newSourceId, newTargetId, count);
+                edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
+                count++;
+            }
+        }
+    }
+
+    private String computeEdgeId(String edgeDescriptionId, String sourceId, String targetId, int count) {
+        String rawIdentifier = edgeDescriptionId + ": " + sourceId + " --> " + targetId + " - " + count;
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 }
