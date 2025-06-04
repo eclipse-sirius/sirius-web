@@ -12,11 +12,17 @@
  *******************************************************************************/
 
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { DiagramNodeActionOverrideContribution } from './DiagramNodeActionExtensionPoint.types';
+import { TableCellContribution } from './TableCellExtensionPoints.types';
 
-export const diagramNodeActionOverrideContributionExtensionPoint: DataExtensionPoint<
-  DiagramNodeActionOverrideContribution[]
-> = {
-  identifier: 'diagramNodeAction#overrideContribution',
+/**
+ * Extension point for table cell contributions.
+ *
+ * This extension point allows the addition of custom cell widget to tables.
+ * Each contribution can define how a cell should be rendered or behave.
+ *
+ * @since v2025.4.0
+ */
+export const tableCellExtensionPoint: DataExtensionPoint<Array<TableCellContribution>> = {
+  identifier: 'table#cell',
   fallback: [],
 };

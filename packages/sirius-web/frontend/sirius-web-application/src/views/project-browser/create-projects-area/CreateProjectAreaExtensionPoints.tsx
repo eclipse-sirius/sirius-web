@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { SettingsButtonMenuEntryProps } from './SettingsButtonExtensionPoints.types';
+import { CreateProjectAreaCardProps } from './CreateProjectArea.types';
 
-export const settingButtonMenuEntryExtensionPoint: ComponentExtensionPoint<SettingsButtonMenuEntryProps> = {
-  identifier: 'settingsButton#menuEntry',
+/**
+ * Extension point for the Create Project Area Card.
+ *
+ * This extension point allows contributions to define a custom card for creating a project.
+ * A contribution can thus define how the card should be rendered and behave.
+ *
+ * @since v2024.7.0
+ */
+export const createProjectAreaCardExtensionPoint: ComponentExtensionPoint<CreateProjectAreaCardProps> = {
+  identifier: 'createProjectArea#card',
   FallbackComponent: () => null,
 };

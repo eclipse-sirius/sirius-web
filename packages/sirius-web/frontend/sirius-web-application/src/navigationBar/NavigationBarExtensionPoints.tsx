@@ -20,23 +20,55 @@ import {
 } from './NavigationBar.types';
 import { NavigationBarIcon } from './NavigationBarIcon';
 
+/**
+ * Extension point for the navigation bar icon.
+ *
+ * This extension point allows the contribution of a custom icon for the navigation bar.
+ * A contribution can thus define how the icon should be rendered and behave.
+ *
+ * @since v2024.3.0
+ */
 export const navigationBarIconExtensionPoint: ComponentExtensionPoint<NavigationBarIconProps> = {
   identifier: 'navigationBar#icon',
   FallbackComponent: NavigationBarIcon,
 };
 
+/**
+ * Extension point for the left contribution in the navigation bar.
+ *
+ * This extension point allows the contribution of a custom component to be displayed on the left side of the navigation bar.
+ * A contribution can thus define how the left side of the navigation bar should be structured and rendered.
+ *
+ * @since v2024.7.0
+ */
 export const navigationBarLeftContributionExtensionPoint: ComponentExtensionPoint<NavigationBarLeftContributionProps> =
   {
     identifier: 'navigationBar#leftContribution',
     FallbackComponent: () => null,
   };
 
+/**
+ * Extension point for the right contribution in the navigation bar.
+ *
+ * This extension point allows the contribution of a custom component to be displayed on the right side of the navigation bar.
+ * A contribution can thus define how the right side of the navigation bar should be structured and rendered.
+ *
+ * @since v2024.7.0
+ */
 export const navigationBarRightContributionExtensionPoint: ComponentExtensionPoint<NavigationBarRightContributionProps> =
   {
     identifier: 'navigationBar#rightContribution',
     FallbackComponent: () => null,
   };
 
+/**
+ * Extension point for the center contribution in the navigation bar.
+ *
+ * This extension point allows the contribution of a custom component to be displayed in the center of the navigation bar.
+ * A contribution can thus define how the center of the navigation bar should be structured and rendered.
+ *
+ * @since v2025.2.0
+ */
 export const navigationBarCenterContributionExtensionPoint: ComponentExtensionPoint<NavigationBarProps> = {
   identifier: 'navigationBar#centerContribution',
   FallbackComponent: ({ children }: NavigationBarProps) => {
