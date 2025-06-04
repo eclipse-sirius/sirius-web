@@ -12,8 +12,6 @@
  *******************************************************************************/
 import {
   RepresentationLoadingIndicator,
-  Selection,
-  SelectionEntry,
   useSelection,
   WorkbenchViewComponentProps,
 } from '@eclipse-sirius/sirius-components-core';
@@ -30,7 +28,7 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
@@ -38,6 +36,8 @@ import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
+
+const NO_MARKED_ITEMS: string[] = [];
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -80,7 +80,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   );
   const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
-  const { selection, setSelection } = useSelection();
+  const { selection, setSelection, toggleSelected } = useSelection();
 
   const { payload } = useExplorerSubscription(
     editingContextId,
@@ -198,7 +198,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     }
   }, [treePathData]);
 
-  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+  const onExpandedElementChange = useCallback((newExpandedIds: string[], newMaxDepth: number) => {
     setState((prevState) => ({
       ...prevState,
       expanded: {
@@ -213,7 +213,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         ),
       },
     }));
-  };
+  }, []);
 
   let filterBar: JSX.Element = <div />;
   if (state.filterBar) {
@@ -244,36 +244,29 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     );
   }
 
-  const onTreeItemClick = (event, item: GQLTreeItem) => {
-    if (event.ctrlKey || event.metaKey) {
-      event.stopPropagation();
-      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-      if (isItemInSelection) {
-        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-        setSelection(newSelection);
+  const selectedTreeItemIds = useMemo(() => selection.entries.map((entry) => entry.id), [selection]);
+
+  const onTreeItemClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>, item: GQLTreeItem) => {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        toggleSelected({ id: item.id });
       } else {
-        const { id } = item;
-        const newEntry: SelectionEntry = { id };
-        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-        setSelection(newSelection);
+        const target = event.target as HTMLDivElement;
+        const itemId = target.getAttribute('data-treeitemid') || '';
+        const isItemSelected = selectedTreeItemIds.some((selectedItemId) => selectedItemId === itemId);
+        if (!isItemSelected) {
+          setSelection({ entries: [{ id: item.id }] });
+          setState((prevState) => ({
+            ...prevState,
+            singleTreeItemSelectedId: item.id,
+            singleTreeItemSelectedKind: item.kind,
+          }));
+        }
       }
-      setState((prevState) => ({ ...prevState, singleTreeItemSelectedId: null, singleTreeItemSelectedKind: null }));
-    } else {
-      const sameSelection =
-        state.singleTreeItemSelectedId === item.id &&
-        state.singleTreeItemSelectedKind === item.kind &&
-        selection.entries.length === 1 &&
-        selection.entries[0].id === item.id;
-      if (!sameSelection) {
-        setSelection({ entries: [{ id: item.id }] });
-        setState((prevState) => ({
-          ...prevState,
-          singleTreeItemSelectedId: item.id,
-          singleTreeItemSelectedKind: item.kind,
-        }));
-      }
-    }
-  };
+    },
+    [selectedTreeItemIds]
+  );
 
   const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
     <TreeDescriptionsMenu
@@ -288,8 +281,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       }
     />
   );
-
-  const selectedTreeItemIds = useMemo(() => selection.entries.map((entry) => entry.id), [selection]);
 
   if (!state.tree || loading) {
     return (
@@ -334,11 +325,12 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
               tree={state.tree}
               textToHighlight={state.filterBarText}
               textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpandedElementChange={onExpandedElementChange}
+              selectedTreeItemIds={selectedTreeItemIds}
+              markedItemIds={NO_MARKED_ITEMS}
               expanded={state.expanded[state.activeTreeDescriptionId]}
               maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
+              onExpandedElementChange={onExpandedElementChange}
               onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selectedTreeItemIds}
             />
           ) : null}
         </div>
