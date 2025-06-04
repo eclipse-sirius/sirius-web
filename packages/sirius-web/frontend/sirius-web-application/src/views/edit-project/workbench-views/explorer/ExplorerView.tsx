@@ -30,7 +30,7 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
@@ -289,6 +289,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     />
   );
 
+  const selectedTreeItemIds = useMemo(() => selection.entries.map((entry) => entry.id), [selection]);
+
   if (!state.tree || loading) {
     return (
       <div className={styles.treeView} ref={treeElement}>
@@ -336,7 +338,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
               expanded={state.expanded[state.activeTreeDescriptionId]}
               maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
               onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+              selectedTreeItemIds={selectedTreeItemIds}
             />
           ) : null}
         </div>
