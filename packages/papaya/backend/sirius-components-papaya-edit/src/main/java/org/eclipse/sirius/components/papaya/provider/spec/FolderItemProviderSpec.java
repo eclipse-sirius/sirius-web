@@ -12,9 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.provider.spec;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Folder;
+import org.eclipse.sirius.components.papaya.ModelElement;
+import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.provider.FolderItemProvider;
 
 /**
@@ -29,7 +39,30 @@ public class FolderItemProviderSpec extends FolderItemProvider {
 
     @Override
     public Object getImage(Object object) {
+        if (object instanceof ModelElement modelElement) {
+            var optionalColor = this.getColor(modelElement);
+            if (optionalColor.isPresent()) {
+                var color = optionalColor.get();
+                try {
+                    URL url = new URI(this.getBaseURL() + "icons/papaya/full/obj16/FolderSolid%2B" + URLEncoder.encode(color, StandardCharsets.UTF_8) + ".svg").toURL();
+                    return this.overlayImage(object, url);
+                } catch (URISyntaxException | MalformedURLException exception) {
+                    // Ignore on purpose
+                }
+            }
+        }
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Folder.svg"));
+    }
+
+    private Optional<String> getColor(ModelElement modelElement) {
+        return modelElement.getTags().stream()
+                .filter(tag -> tag.getKey() != null && tag.getValue() != null)
+                .filter(tag -> tag.getKey().equals("color"))
+                .filter(tag -> tag.getValue().startsWith("#"))
+                .filter(tag -> tag.getValue().length() == 7)
+                .filter(tag -> tag.getValue().substring(1).toLowerCase().chars().allMatch(c -> "01234567890abcdef".indexOf(c) >= 0))
+                .findFirst()
+                .map(Tag::getValue);
     }
 
     @Override

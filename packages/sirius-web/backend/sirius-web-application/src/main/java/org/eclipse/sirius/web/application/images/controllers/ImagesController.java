@@ -19,10 +19,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.images.services.api.IImageApplicationService;
+import org.eclipse.sirius.web.application.images.services.api.IImageResourceProvider;
 import org.eclipse.sirius.web.application.images.services.api.IProjectImageApplicationService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -36,8 +38,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the HTTP API to get images.
@@ -89,10 +89,13 @@ public class ImagesController {
 
     private final IImageApplicationService imageApplicationService;
 
-    public ImagesController(List<IImagePathService> pathResourcesServices, IProjectImageApplicationService projectImageApplicationService, IImageApplicationService imageApplicationService) {
+    private final List<IImageResourceProvider> imageResourceProviders;
+
+    public ImagesController(List<IImagePathService> pathResourcesServices, IProjectImageApplicationService projectImageApplicationService, IImageApplicationService imageApplicationService, List<IImageResourceProvider> imageResourceProviders) {
         this.pathResourcesServices = pathResourcesServices;
         this.projectImageApplicationService = Objects.requireNonNull(projectImageApplicationService);
         this.imageApplicationService = Objects.requireNonNull(imageApplicationService);
+        this.imageResourceProviders = Objects.requireNonNull(imageResourceProviders);
     }
 
     @GetMapping
@@ -109,7 +112,8 @@ public class ImagesController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(mediatype);
                 headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic());
-                Resource resource = new ClassPathResource(imagePath);
+
+                Resource resource = this.getImageResource(imagePath);
                 if (resource.exists()) {
                     response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
                 }
@@ -120,6 +124,14 @@ public class ImagesController {
         }
 
         return response;
+    }
+
+    private Resource getImageResource(String imagePath) {
+        return this.imageResourceProviders.stream()
+                .filter(imageResourceProvider -> imageResourceProvider.canHandle(imagePath))
+                .findFirst()
+                .map(imageResourceProvider -> imageResourceProvider.getResource(imagePath))
+                .orElse(new ClassPathResource(imagePath));
     }
 
     private ResponseEntity<Resource> getImage(String imagePath) {
