@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DRAG_SOURCES_TYPE } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from 'tss-react/mui';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeItemWithChildrenProps } from './TreeItemWithChildren.types';
@@ -41,6 +42,18 @@ export const TreeItemWithChildren = ({
     return (
       <ul className={classes.ul}>
         {item.children.map((childItem, index) => {
+          const itemSelected = selectedTreeItemIds.some((id) => id === childItem.id);
+          const itemMarked = markedItemIds.some((id) => id === childItem.id);
+          const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
+            const isDraggedItemSelected = selectedTreeItemIds.map((id) => id).includes(childItem.id);
+            if (!isDraggedItemSelected) {
+              // If we're dragging a non-selected item, drag it alone
+              event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([childItem.id]));
+            } else if (selectedTreeItemIds.length > 0) {
+              // Otherwise drag the whole selection
+              event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
+            }
+          };
           return (
             <li key={childItem.id}>
               <TreeItem
@@ -51,14 +64,15 @@ export const TreeItemWithChildren = ({
                 depth={depth}
                 expanded={expanded}
                 maxDepth={maxDepth}
-                onExpandedElementChange={onExpandedElementChange}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
+                marked={itemMarked}
+                selected={itemSelected}
+                onExpandedElementChange={onExpandedElementChange}
+                onDragStart={dragStart}
                 onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
+                treeItemActionRender={treeItemActionRender}
               />
               <TreeItemWithChildren
                 editingContextId={editingContextId}
