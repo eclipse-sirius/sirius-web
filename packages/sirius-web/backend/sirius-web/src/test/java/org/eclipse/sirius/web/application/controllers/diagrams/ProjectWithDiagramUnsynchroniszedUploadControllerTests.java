@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -180,6 +181,8 @@ public class ProjectWithDiagramUnsynchroniszedUploadControllerTests extends Abst
         assertThat(representation.get().getNodes().size()).isEqualTo(2);
         assertThat(representation.get().getNodes().get(1).getChildNodes().size()).isEqualTo(1);
         assertThat(representation.get().getLayoutData().nodeLayoutData().size()).isEqualTo(3);
+
+        assertThat(representation.get().getNodes().stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(1);
         assertThat(representation.get().getLayoutData().nodeLayoutData().get(representation.get().getNodes().get(0).getId())).isNotNull();
         assertThat(representation.get().getLayoutData().nodeLayoutData().get(representation.get().getNodes().get(1).getId())).isNotNull();
         assertThat(representation.get().getLayoutData().nodeLayoutData().get(representation.get().getNodes().get(1).getChildNodes().get(0).getId())).isNotNull();
@@ -280,8 +283,8 @@ public class ProjectWithDiagramUnsynchroniszedUploadControllerTests extends Abst
                 "targetObjectLabel": "CompositeProcessor1",
                 "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=1207e7e1-4194-3cbb-a036-4748c52f629f",
                 "borderNode": false,
-                "modifiers": [],
-                "state": "Normal",
+                "modifiers": ["Faded"],
+                "state": "Faded",
                 "collapsingState": "EXPANDED",
                 "insideLabel": {
                   "id": "670c4a91-ea89-353f-8c54-913b6420dc49",
