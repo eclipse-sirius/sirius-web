@@ -15,16 +15,16 @@ import { FilterBar } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLGetExpandAllTreePathVariables,
   GQLGetTreePathVariables,
-  useTreePath,
   GQLTreeItem,
   TreeItemActionProps,
   TreeView,
   useExpandAllTreePath,
+  useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 import { useModelBrowserSubscription } from './useModelBrowserSubscription';
@@ -104,13 +104,13 @@ export const ModelBrowserTreeView = ({
     }
   }, [treePathData]);
 
-  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+  const onExpandedElementChange = useCallback((newExpandedIds: string[], newMaxDepth: number) => {
     setState((prevState) => ({
       ...prevState,
       expanded: newExpandedIds,
       maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
     }));
-  };
+  }, []);
 
   return (
     <div className={classes.modelBrowserTreeView}>
@@ -147,54 +147,52 @@ export const ModelBrowserTreeView = ({
   );
 };
 
-const ExpandAllTreeItemAction = ({
-  editingContextId,
-  treeId,
-  item,
-  expanded,
-  isHovered,
-  onExpandedElementChange,
-}: TreeItemActionProps) => {
-  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+const ExpandAllTreeItemAction = memo(
+  ({ editingContextId, treeId, item, expanded, isHovered, onExpandedElementChange }: TreeItemActionProps) => {
+    const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
 
-  useEffect(() => {
-    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+    useEffect(() => {
+      if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
 
-      const newExpanded: string[] = [...expanded];
+        const newExpanded: string[] = [...expanded];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded.includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
-      });
-      onExpandedElementChange(newExpanded, expandedMaxDepth);
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded.includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        onExpandedElementChange(newExpanded, expandedMaxDepth);
+      }
+    }, [expandAllTreePathData]);
+
+    const onExpandAll = useCallback(
+      (treeItem: GQLTreeItem) => {
+        const variables: GQLGetExpandAllTreePathVariables = {
+          editingContextId,
+          treeId,
+          treeItemId: treeItem.id,
+        };
+        getExpandAllTreePath({ variables });
+      },
+      [getExpandAllTreePath]
+    );
+
+    if (!onExpandedElementChange || !item || !item.hasChildren || !isHovered) {
+      return null;
     }
-  }, [expandAllTreePathData]);
 
-  const onExpandAll = (treeItem: GQLTreeItem) => {
-    const variables: GQLGetExpandAllTreePathVariables = {
-      editingContextId,
-      treeId,
-      treeItemId: treeItem.id,
-    };
-    getExpandAllTreePath({ variables });
-  };
-
-  if (!onExpandedElementChange || !item || !item.hasChildren || !isHovered) {
-    return null;
+    return (
+      <IconButton
+        size="small"
+        data-testid="expand-all"
+        title="expand all"
+        onClick={() => {
+          onExpandAll(item);
+        }}>
+        <UnfoldMoreIcon style={{ fontSize: 12 }} />
+      </IconButton>
+    );
   }
-
-  return (
-    <IconButton
-      size="small"
-      data-testid="expand-all"
-      title="expand all"
-      onClick={() => {
-        onExpandAll(item);
-      }}>
-      <UnfoldMoreIcon style={{ fontSize: 12 }} />
-    </IconButton>
-  );
-};
+);
