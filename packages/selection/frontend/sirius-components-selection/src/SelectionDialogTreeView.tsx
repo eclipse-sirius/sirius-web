@@ -20,7 +20,7 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
@@ -54,13 +54,13 @@ export const SelectionDialogTreeView = ({
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+  const onExpandedElementChange = useCallback((newExpandedIds: string[], newMaxDepth: number) => {
     setState((prevState) => ({
       ...prevState,
       expanded: newExpandedIds,
       maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
     }));
-  };
+  }, []);
 
   return (
     <div className={classes.borderStyle}>
@@ -84,55 +84,53 @@ export const SelectionDialogTreeView = ({
   );
 };
 
-const SelectionDialogTreeItemAction = ({
-  editingContextId,
-  treeId,
-  item,
-  isHovered,
-  expanded,
-  onExpandedElementChange,
-}: TreeItemActionProps) => {
-  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+const SelectionDialogTreeItemAction = memo(
+  ({ editingContextId, treeId, item, isHovered, expanded, onExpandedElementChange }: TreeItemActionProps) => {
+    const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
 
-  useEffect(() => {
-    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-      const newExpanded: string[] = [...expanded];
+    useEffect(() => {
+      if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+        const newExpanded: string[] = [...expanded];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded.includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
-      });
-      onExpandedElementChange(newExpanded, expandedMaxDepth);
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded.includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        onExpandedElementChange(newExpanded, expandedMaxDepth);
+      }
+    }, [expandAllTreePathData]);
+
+    const onExpandAll = useCallback(
+      (treeItem: GQLTreeItem) => {
+        const variables: GQLGetExpandAllTreePathVariables = {
+          editingContextId,
+          treeId,
+          treeItemId: treeItem.id,
+        };
+        getExpandAllTreePath({ variables });
+      },
+      [getExpandAllTreePath]
+    );
+
+    if (!onExpandedElementChange || !item || !item.hasChildren || !isHovered) {
+      return null;
     }
-  }, [expandAllTreePathData]);
-
-  const onExpandAll = (treeItem: GQLTreeItem) => {
-    const variables: GQLGetExpandAllTreePathVariables = {
-      editingContextId,
-      treeId,
-      treeItemId: treeItem.id,
-    };
-    getExpandAllTreePath({ variables });
-  };
-
-  if (!onExpandedElementChange || !item || !item.hasChildren || !isHovered) {
-    return null;
+    return (
+      <IconButton
+        size="small"
+        data-testid="expand-all"
+        title="expand all"
+        onClick={() => {
+          onExpandAll(item);
+        }}>
+        <UnfoldMoreIcon style={{ fontSize: 12 }} />
+      </IconButton>
+    );
   }
-  return (
-    <IconButton
-      size="small"
-      data-testid="expand-all"
-      title="expand all"
-      onClick={() => {
-        onExpandAll(item);
-      }}>
-      <UnfoldMoreIcon style={{ fontSize: 12 }} />
-    </IconButton>
-  );
-};
+);
 
 const encodeVariables = (variables: DiagramDialogVariable[]): string => {
   let encodedVariables = '';
