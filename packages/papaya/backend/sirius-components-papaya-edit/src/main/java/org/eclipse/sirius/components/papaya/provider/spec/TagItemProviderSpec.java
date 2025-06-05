@@ -36,15 +36,11 @@ public class TagItemProviderSpec extends TagItemProvider {
     public Object getStyledText(Object object) {
         if (object instanceof Tag tag) {
             StyledString styledLabel = new StyledString();
-            if (tag.getKey().isEmpty() && tag.getValue().isEmpty()) {
-                styledLabel.append(this.getString("_UI_RequiredService_type"));
-            } else {
-                styledLabel.append("[");
-                styledLabel.append(tag.getKey());
-                styledLabel.append("=");
-                styledLabel.append(tag.getValue());
-                styledLabel.append("]");
-            }
+            styledLabel.append("[");
+            styledLabel.append(String.valueOf(tag.getKey()));
+            styledLabel.append("=");
+            styledLabel.append(String.valueOf(tag.getValue()));
+            styledLabel.append("]");
             return styledLabel;
         }
         return super.getStyledText(object);

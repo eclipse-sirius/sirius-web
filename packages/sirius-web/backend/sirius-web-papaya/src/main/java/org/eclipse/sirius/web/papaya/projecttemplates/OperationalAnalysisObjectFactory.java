@@ -14,6 +14,7 @@
 package org.eclipse.sirius.web.papaya.projecttemplates;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.papaya.ContainingLink;
@@ -31,12 +32,13 @@ import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
  *
  * @author sbegaudeau
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class OperationalAnalysisObjectFactory implements IObjectFactory {
 
     private final Project project;
 
     public OperationalAnalysisObjectFactory(Project project) {
-        this.project = project;
+        this.project = Objects.requireNonNull(project);
     }
 
     @Override
@@ -48,7 +50,6 @@ public class OperationalAnalysisObjectFactory implements IObjectFactory {
         this.createOperationalCapabilities(operationalAnalysisFolder);
 
         project.getFolders().add(operationalAnalysisFolder);
-
     }
 
     private void createOperationalEntities(Folder operationalAnalysisFolder) {

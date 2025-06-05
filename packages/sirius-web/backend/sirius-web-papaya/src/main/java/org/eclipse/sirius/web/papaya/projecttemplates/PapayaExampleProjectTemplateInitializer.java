@@ -54,13 +54,16 @@ public class PapayaExampleProjectTemplateInitializer implements IProjectTemplate
             project.setName("Sirius Web");
             resource.getContents().add(project);
 
-            OperationalAnalysisObjectFactory operationalAnalysisObjectFactory = new OperationalAnalysisObjectFactory(project);
+            PlanningObjectFactory planningObjectFactory = new PlanningObjectFactory(project);
+            planningObjectFactory.create(emfEditingContext);
 
+            OperationalAnalysisObjectFactory operationalAnalysisObjectFactory = new OperationalAnalysisObjectFactory(project);
             operationalAnalysisObjectFactory.create(emfEditingContext);
 
             var eObjectIndexer = new EObjectIndexer();
             eObjectIndexer.index(emfEditingContext.getDomain().getResourceSet());
 
+            planningObjectFactory.link(eObjectIndexer);
             operationalAnalysisObjectFactory.link(eObjectIndexer);
 
         }
