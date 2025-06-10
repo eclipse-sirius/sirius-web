@@ -10,12 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useContext } from 'react';
 import { makeStyles } from 'tss-react/mui';
-
 import { Action } from './Action';
 import { ActionsContainerProps } from './ActionsContainer.types';
 import { useActions } from './useActions';
 import { GQLAction } from './useActions.types';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
 
 const useStyles = makeStyles()((theme) => ({
   actionsContainer: {
@@ -34,6 +36,11 @@ export const ActionsContainer = ({ diagramElementId }: ActionsContainerProps) =>
   const { classes } = useStyles();
 
   const { actions } = useActions(diagramElementId);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+
+  if (readOnly) {
+    return null;
+  }
 
   return (
     <div className={classes.actionsContainer}>
