@@ -65,7 +65,8 @@ Additional concerns will be removed in the future from `IObjectService` until we
 
 === Dependency update
 
-
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0].
+- [releng] Switch to Sirius EMF Json 2.5.2
 
 
 === Bug fixes
