@@ -88,6 +88,21 @@ public class DiagramNodeDescriptionLayoutStrategyMigrationParticipantTests exten
                     });
                 }
             });
+
+            var optionalDiagramDescriptionAlreadyMigrate = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
+                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_ALREADY_MIGRATE_STUDIO_DIAGRAM))
+                    .findFirst();
+            assertThat(optionalDiagramDescriptionAlreadyMigrate).isPresent();
+            assertThat(optionalDiagramDescriptionAlreadyMigrate.get()).isInstanceOf(DiagramDescription.class);
+            optionalDiagramDescriptionAlreadyMigrate.ifPresent(representationDescription -> {
+                if (representationDescription instanceof DiagramDescription diagramDescription) {
+                    assertThat(diagramDescription.getNodeDescriptions()).hasSize(1);
+                    assertThat(diagramDescription.getNodeDescriptions()).anySatisfy(nodeDescription -> {
+                        assertThat(nodeDescription.getStyle().getChildrenLayoutStrategy()).isNotNull();
+                        assertThat(nodeDescription.getStyle().getChildrenLayoutStrategy()).isInstanceOf(ListLayoutStrategyDescriptionImpl.class);
+                    });
+                }
+            });
         }
     }
 
