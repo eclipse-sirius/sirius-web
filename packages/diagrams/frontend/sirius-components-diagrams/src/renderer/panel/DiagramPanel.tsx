@@ -162,7 +162,8 @@ export const DiagramPanel = memo(
                   size="small"
                   aria-label="hide helper lines"
                   onClick={() => onHelperLines(false)}
-                  data-testid="hide-helper-lines">
+                  data-testid="hide-helper-lines"
+                  disabled={readOnly}>
                   <HelperLinesIconOff />
                 </IconButton>
               </Tooltip>
