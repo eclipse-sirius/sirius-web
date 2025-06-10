@@ -245,11 +245,7 @@ export const DiagramPanel = memo(
           </Paper>
         </Panel>
         {state.dialogOpen === 'Share' ? (
-          <ShareRepresentationModal
-            editingContextId={editingContextId}
-            representationId={diagramId}
-            onClose={handleCloseDialog}
-          />
+          <ShareRepresentationModal representationId={diagramId} onClose={handleCloseDialog} />
         ) : null}
       </>
     );

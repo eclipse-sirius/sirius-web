@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,7 @@ import { RepresentationPathContext } from '../../contexts/RepresentationPathCont
 import { RepresentationPathContextValue } from '../../contexts/RepresentationPathContext.types';
 import { ShareRepresentationModalProps } from './ShareRepresentationModal.types';
 
-export const ShareRepresentationModal = ({
-  editingContextId,
-  representationId,
-  onClose,
-}: ShareRepresentationModalProps) => {
+export const ShareRepresentationModal = ({ representationId, onClose }: ShareRepresentationModalProps) => {
   const refCallback = (node: HTMLElement) => {
     if (node !== null) {
       var range = document.createRange();
@@ -38,7 +34,7 @@ export const ShareRepresentationModal = ({
   };
 
   const { getRepresentationPath } = useContext<RepresentationPathContextValue>(RepresentationPathContext);
-  const path: string = window.location.origin + getRepresentationPath(editingContextId, representationId);
+  const path: string = window.location.origin + getRepresentationPath(representationId);
 
   let title = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import { TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 
 export interface ToolbarProps {
-  editingContextId: string;
   representationId: string;
   zoomLevel: ViewMode;
   columns: TaskListColumnEnum[];

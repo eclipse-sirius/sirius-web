@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { useFullscreen } from '../hooks/useFullScreen';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 
@@ -39,7 +39,6 @@ const useToolbarStyles = makeStyles()((theme) => ({
 }));
 
 export const DeckToolbar = ({
-  editingContextId,
   representationId,
   onZoomIn,
   onZoomOut,
@@ -56,13 +55,7 @@ export const DeckToolbar = ({
 
   let modalElement: React.ReactElement | null = null;
   if (state.modal === 'share') {
-    modalElement = (
-      <ShareRepresentationModal
-        editingContextId={editingContextId}
-        representationId={representationId}
-        onClose={closeModal}
-      />
-    );
+    modalElement = <ShareRepresentationModal representationId={representationId} onClose={closeModal} />;
   }
 
   return (
