@@ -59,7 +59,6 @@ const useGanttStyle = makeStyles()((theme) => ({
 }));
 
 export const Gantt = ({
-  editingContextId,
   representationId,
   tasks,
   gqlColumns,
@@ -254,7 +253,6 @@ export const Gantt = ({
   return (
     <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
       <Toolbar
-        editingContextId={editingContextId}
         representationId={representationId}
         zoomLevel={zoomLevel}
         columns={selectedColumns}

@@ -193,7 +193,6 @@ export const PortalRepresentation = ({
   return (
     <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
       <PortalToolbar
-        editingContextId={editingContextId}
         representationId={representationId}
         fullscreenNode={domNode}
         portalMode={mode}

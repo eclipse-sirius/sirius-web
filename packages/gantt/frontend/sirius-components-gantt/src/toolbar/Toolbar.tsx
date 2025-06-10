@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,6 @@ const useToolbarStyles = makeStyles()((theme) => ({
 }));
 
 export const Toolbar = ({
-  editingContextId,
   representationId,
   zoomLevel,
   columns,
@@ -132,13 +131,7 @@ export const Toolbar = ({
 
   let modalElement: React.ReactElement | null = null;
   if (state.modal === 'share') {
-    modalElement = (
-      <ShareRepresentationModal
-        editingContextId={editingContextId}
-        representationId={representationId}
-        onClose={closeModal}
-      />
-    );
+    modalElement = <ShareRepresentationModal representationId={representationId} onClose={closeModal} />;
   }
 
   const onZoomIn = () => {

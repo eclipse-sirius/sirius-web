@@ -13,6 +13,7 @@
 
 import {
   RepresentationMetadata,
+  RepresentationPathContext,
   Selection,
   SelectionContextProvider,
   SelectionEntry,
@@ -101,6 +102,11 @@ export const EditProjectView = () => {
     value !== 'loaded'
   );
 
+  const getRepresentationPath = (representationId: string) => {
+    // Note that this should match the corresponding route configuration
+    return `/projects/${projectId}/edit/${representationId}`;
+  };
+
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
 
   const [urlSearchParams] = useSearchParams();
@@ -125,19 +131,21 @@ export const EditProjectView = () => {
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
           <SelectionSynchronizer>
-            <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
-              <UndoRedo>
-                <EditProjectNavbar readOnly={readOnly} />
-                <TreeToolBarProvider>
-                  <Workbench
-                    editingContextId={context.project.currentEditingContext.id}
-                    initialRepresentationSelected={context.representation}
-                    onRepresentationSelected={onRepresentationSelected}
-                    readOnly={readOnly}
-                  />
-                </TreeToolBarProvider>
-              </UndoRedo>
-            </OmniboxProvider>
+            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+              <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
+                <UndoRedo>
+                  <EditProjectNavbar readOnly={readOnly} />
+                  <TreeToolBarProvider>
+                    <Workbench
+                      editingContextId={context.project.currentEditingContext.id}
+                      initialRepresentationSelected={context.representation}
+                      onRepresentationSelected={onRepresentationSelected}
+                      readOnly={readOnly}
+                    />
+                  </TreeToolBarProvider>
+                </UndoRedo>
+              </OmniboxProvider>
+            </RepresentationPathContext.Provider>
           </SelectionSynchronizer>
         </SelectionContextProvider>
       </ProjectContext.Provider>
