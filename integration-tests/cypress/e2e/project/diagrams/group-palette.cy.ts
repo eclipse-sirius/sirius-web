@@ -43,6 +43,11 @@ describe('Diagram - group palette', () => {
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
 
+      // Added because selecting in the explorer adjusts the viewport to the selection,
+      // thus, it seems it needs the animation to finish before clicking on the node in the diagram
+      /* eslint-disable-next-line cypress/no-unnecessary-waiting */
+      cy.wait(4000);
+
       diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
