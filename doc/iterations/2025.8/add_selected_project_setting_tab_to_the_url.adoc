@@ -1,0 +1,44 @@
+= (S) Add selected project setting tab to the URL
+
+== Problem
+
+When opening a project, its settings can be reached from the contextual menu of the project (in the center of the top navigation bar).
+
+In the Sirius Web default application, the settings have 1 tab "Images" for the project-scoped custom images.
+The URL looks like: `/projects/:projectId/settings`.
+
+Downstream applications (or future versions of Sirius Web) might include additional project setting tabs through the frontend data extension point defined in `packages\sirius-web\frontend\sirius-web-application\src\views\project-settings\ProjectSettingsViewExtensionPoints.tsx`.
+For an application with additional project setting tabs, it would make sense to be able to share a URL that points to a specific tab.
+
+== Key Result
+
+Users shall be able to share a URL that reflects the currently-selected project setting tab.
+
+=== Acceptance Criteria
+
+* When navigating among the project setting tabs, the URL updates to reflect the currently-selected tab.
+* Reversely, when resolving such a URL, the application opens the tab specified in the URL.
+
+== Solution
+
+The tabs contributed can all be identified thanks to a unique identifier.
+We can use this identifier as the last segment of the URL `/projects/:projectId/settings/:tabId`.
+When opening the project settings page, if the URL includes a tab identifier, then the corresponding tab is selected and opened.
+Otherwise, the first tab is opened and its identifier added to the URL.
+
+=== Breadboarding
+
+N/A
+
+=== Cutting backs
+
+* It would be nice for downstream applications to be able to specify the default project setting tab, but this is out of the scope of this shape.
+* It would be nice for downstream applications to be able to tweak other project setting tab contributions (e.g. change the order or titles), but this is out of the scope of this shape.
+
+== Rabbit holes
+
+N/A
+
+== No-gos
+
+N/A
