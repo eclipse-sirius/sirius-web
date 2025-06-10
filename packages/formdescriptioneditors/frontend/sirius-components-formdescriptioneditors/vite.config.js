@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => {
       coverage: {
         reporter: ['text', 'html'],
       },
-      setupFiles: ['vitestSetup.js'],
     },
   };
   return configuration;
