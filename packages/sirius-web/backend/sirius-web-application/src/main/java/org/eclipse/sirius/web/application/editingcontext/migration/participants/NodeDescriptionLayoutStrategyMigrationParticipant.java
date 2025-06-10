@@ -66,21 +66,24 @@ public class NodeDescriptionLayoutStrategyMigrationParticipant implements IMigra
     }
 
     private void handleChildrenLayoutStrategy(JsonObject jsonObject, JsonElement value) {
-        jsonObject.remove(CHILDREN_LAYOUT_STRATEGY);
-
-        this.addLayoutStrategyToStyle(jsonObject, value);
+        if (this.addLayoutStrategyToStyle(jsonObject, value)) {
+            jsonObject.remove(CHILDREN_LAYOUT_STRATEGY);
+        }
         this.addLayoutStrategyToConditionalStyles(jsonObject, value);
         this.addLayoutStrategyToChildrenDescriptions(jsonObject);
+
     }
 
-    private void addLayoutStrategyToStyle(JsonObject jsonObject, JsonElement value) {
+    private boolean addLayoutStrategyToStyle(JsonObject jsonObject, JsonElement value) {
         JsonObject style = jsonObject.getAsJsonObject(STYLE);
         if (style != null) {
             JsonObject styleData = style.getAsJsonObject(DATA);
             if (styleData != null) {
                 styleData.add(CHILDREN_LAYOUT_STRATEGY, value);
+                return true;
             }
         }
+        return false;
     }
 
     private void addLayoutStrategyToConditionalStyles(JsonObject jsonObject, JsonElement value) {

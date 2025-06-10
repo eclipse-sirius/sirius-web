@@ -2206,3 +2206,71 @@ INSERT INTO document (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '2de9aba3-31e3-4334-8c9c-e6d73af7efc4',
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  'NodeDescription#layoutStrategy already migrate',
+  '{
+      "json": {
+        "version": "1.0",
+        "encoding": "utf-8"
+      },
+      "ns": {
+        "diagram": "http://www.eclipse.org/sirius-web/diagram",
+        "view": "http://www.eclipse.org/sirius-web/view"
+      },
+      "content": [
+        {
+          "id": "2e1c0752-06b4-4b30-a739-0ec2ebf0bacb",
+          "eClass": "view:View",
+          "data": {
+            "descriptions": [
+              {
+                "id": "6d5de90a-a35b-40ce-afe5-154eed6a9fe0",
+                "eClass": "diagram:DiagramDescription",
+                "data": {
+                  "name": "NodeDescription#layoutStrategy already migrate",
+                  "domainType": "chaplygin::Root",
+                  "nodeDescriptions": [
+                    {
+                      "id": "021022da-66ac-47bf-a718-a3d2423838d7",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "Node",
+                        "style": {
+                          "id": "be60a21a-7573-4a84-ae05-feadd351104e",
+                          "eClass": "diagram:RectangularNodeStyleDescription",
+                          "data": {
+                            "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                            "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#0afc1183-89e0-4854-8578-884dccce74b7",
+                            "childrenLayoutStrategy": {
+                              "id": "a38d5fa1-d309-4921-b47a-ba23a19a53c3",
+                              "eClass": "diagram:ListLayoutStrategyDescription",
+                              "data": {
+                                "areChildNodesDraggableExpression": "aql:false",
+                                "topGapExpression": "10",
+                                "bottomGapExpression": "20"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }',
+  '2025-05-14 12:00:0.000',
+  '2025-05-14 12:00:0.000'
+);

@@ -98,6 +98,8 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/3917[#3917] [diagram] Disable node actions when diagram is in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/3917[#3917] [diagram] Disable edge reconnections when diagram is in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/4723[#4723] [core] Restore the proper behavior of the share representation dialog
+- https://github.com/eclipse-sirius/sirius-web/issues/5018[#5018] [sirius-web] Fix a bug that remove node layout strategy after fork a representation
+
 
 === New Features
 

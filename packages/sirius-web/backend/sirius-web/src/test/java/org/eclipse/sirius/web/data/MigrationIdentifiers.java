@@ -74,6 +74,7 @@ public final class MigrationIdentifiers {
     public static final UUID MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO = UUID.fromString("402f51c9-96df-46f2-b39b-35ebd506ff31");
 
     public static final String MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO_DIAGRAM = "NodeDescription#layoutStrategy migration";
+    public static final String MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_ALREADY_MIGRATE_STUDIO_DIAGRAM = "NodeDescription#layoutStrategy already migrate";
 
     private MigrationIdentifiers() {
         // Prevent instantiation
