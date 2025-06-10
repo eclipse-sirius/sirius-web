@@ -6,6 +6,7 @@
 
 - Add support for diagram customization
 - Add the ability to share the workbench state
+- Add selected project setting tab to the URL
 
 
 === Architectural decision records
@@ -117,6 +118,7 @@ In this package, you can now find the following default implementations:
 
 === Shapes
 
+- Control the views available in a workbench
 
 
 === Architectural decision records
