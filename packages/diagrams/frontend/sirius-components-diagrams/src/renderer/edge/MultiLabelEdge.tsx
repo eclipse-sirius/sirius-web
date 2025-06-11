@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,8 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { BaseEdge, Edge, EdgeLabelRenderer, Position } from '@xyflow/react';
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
+import { useStore } from '../../representation/useStore';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
@@ -80,10 +81,27 @@ export const MultiLabelEdge = memo(
   }: MultiLabelEdgeProps<Edge<MultiLabelEdgeData>>) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const theme = useTheme();
-
+    const { setEdges } = useStore();
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
+
+    useEffect(() => {
+      setEdges((prevEdges) =>
+        prevEdges.map((prevEdge) => {
+          if (prevEdge.id === id && prevEdge.data) {
+            return {
+              ...prevEdge,
+              data: {
+                ...prevEdge.data,
+                edgePath: svgPathString,
+              },
+            };
+          }
+          return prevEdge;
+        })
+      );
+    }, [svgPathString]);
 
     return (
       <>
