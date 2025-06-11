@@ -103,7 +103,6 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronised diagram if the targetObject of a node was from a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronised diagram.
 
-
 === New Features
 
 - [releng] The integration tests from the main `sirius-web` module are now exported in a https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html[test JAR].
@@ -205,7 +204,7 @@ Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, 
 Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
 The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
 - https://github.com/eclipse-sirius/sirius-web/issues/5017[#5017] [sirius-web] Improve the consistency and documentation of the extension points of the frontend
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5011[#5011] [diagram] Improve feedback for nodes with list layout strategy when resizing and moving in the same action
 
 
 == v2025.4.0
