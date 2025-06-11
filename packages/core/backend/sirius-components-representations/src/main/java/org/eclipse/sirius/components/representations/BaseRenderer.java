@@ -67,7 +67,7 @@ public class BaseRenderer {
      * </p>
      * <p>
      * The components are a way to dynamically render part of the representation to create. They can be used to render
-     * final objects or new components alike. Components should implements the {@link IComponent} interface.
+     * final objects or new components alike. Components should implement the {@link IComponent} interface.
      * </p>
      * <p>
      * The elements are the building blocks of the rendering strategy. They are used to declaratively indicate what
