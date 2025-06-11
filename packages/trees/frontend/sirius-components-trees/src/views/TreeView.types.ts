@@ -26,7 +26,7 @@ export interface TreeViewProps {
   expanded: string[];
   maxDepth: number;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
-  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem, selected: boolean) => void;
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
 }
 
