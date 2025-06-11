@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-e2e-tests</artifactId>
-	<version>2025.4.8</version>
+	<version>2025.4.9</version>
 	<name>sirius-web-e2e-tests</name>
 	<description>Sirius Web End-to-end Tests</description>
 
@@ -43,12 +43,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-papaya</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 	</dependencies>
 
