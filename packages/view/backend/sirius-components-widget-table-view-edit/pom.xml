@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-table-view-edit</artifactId>
-	<version>2025.4.8</version>
+	<version>2025.4.9</version>
 	<name>sirius-components-widget-table-view-edit</name>
 	<description>View support for the table custom widget :: edit support</description>
 
@@ -69,22 +69,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-edit</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view</artifactId>
-			<version>2025.4.8</version>
+			<version>2025.4.9</version>
 		</dependency>
 	</dependencies>
 
