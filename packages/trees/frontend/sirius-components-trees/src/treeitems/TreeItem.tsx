@@ -213,7 +213,7 @@ export const TreeItem = memo(
           return;
         }
 
-        onTreeItemClick(event, item);
+        onTreeItemClick(event, item, selected);
       }
     };
 
