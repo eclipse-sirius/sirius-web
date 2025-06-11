@@ -27,7 +27,7 @@ export interface TreeItemWithChildrenProps {
   markedItemIds: string[];
   selectedTreeItemIds: string[];
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
-  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem, selected: boolean) => void;
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onDragStart: React.DragEventHandler<HTMLDivElement>;
 }

@@ -147,7 +147,7 @@ export const TreeItem = memo(
       partHovered: null,
     });
 
-    const refDom = useRef() as any;
+    const refDom = useRef<HTMLDivElement>(null);
 
     const { classes } = useTreeItemStyle({ depth });
     const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
@@ -184,8 +184,12 @@ export const TreeItem = memo(
     }
     useEffect(() => {
       if (selected) {
-        if (refDom.current?.scrollIntoViewIfNeeded) {
-          refDom.current.scrollIntoViewIfNeeded(true);
+        if (
+          refDom.current &&
+          'scrollIntoViewIfNeeded' in refDom.current &&
+          typeof refDom.current['scrollIntoViewIfNeeded'] === 'function'
+        ) {
+          refDom.current['scrollIntoViewIfNeeded']();
         } else {
           // Fallback for browsers not supporting the non-standard `scrollIntoViewIfNeeded`
           refDom.current?.scrollIntoView({ behavior: 'smooth' });
@@ -197,12 +201,12 @@ export const TreeItem = memo(
       setState((prevState) => {
         return { ...prevState, editingMode: false };
       });
-      refDom.current.focus();
+      refDom.current?.focus();
     };
 
     const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
-        refDom.current.focus();
+        refDom.current?.focus();
         if (!item.selectable) {
           return;
         }
@@ -213,7 +217,7 @@ export const TreeItem = memo(
           return;
         }
 
-        onTreeItemClick(event, item);
+        onTreeItemClick(event, item, selected);
       }
     };
 

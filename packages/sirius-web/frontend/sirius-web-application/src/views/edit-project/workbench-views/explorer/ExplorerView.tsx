@@ -251,15 +251,12 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   const selectedTreeItemIds = useMemo(() => selection.entries.map((entry) => entry.id), [selection]);
 
   const onTreeItemClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>, item: GQLTreeItem) => {
+    (event: React.MouseEvent<HTMLDivElement>, item: GQLTreeItem, selected: boolean) => {
       if (event.ctrlKey || event.metaKey) {
         event.stopPropagation();
         toggleSelected({ id: item.id });
       } else {
-        const target = event.target as HTMLDivElement;
-        const itemId = target.getAttribute('data-treeitemid') || '';
-        const isItemSelected = selectedTreeItemIds.some((selectedItemId) => selectedItemId === itemId);
-        if (!isItemSelected) {
+        if (!selected) {
           setSelection({ entries: [{ id: item.id }] });
           setState((prevState) => ({
             ...prevState,
@@ -269,7 +266,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         }
       }
     },
-    [selectedTreeItemIds]
+    []
   );
 
   const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
