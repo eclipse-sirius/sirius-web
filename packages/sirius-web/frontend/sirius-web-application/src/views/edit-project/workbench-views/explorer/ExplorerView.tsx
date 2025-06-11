@@ -174,17 +174,21 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         const { expanded, maxDepth } = prevState;
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
         const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
+        let expandedChanged: boolean = false;
 
         treeItemIdsToExpand?.forEach((itemToExpand) => {
           if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
             newExpanded.push(itemToExpand);
+            expandedChanged = true;
           }
         });
         return {
           ...prevState,
           expanded: {
             ...prevState.expanded,
-            [prevState.activeTreeDescriptionId]: newExpanded,
+            [prevState.activeTreeDescriptionId]: expandedChanged
+              ? newExpanded
+              : expanded[prevState.activeTreeDescriptionId],
           },
           maxDepth: {
             ...prevState.maxDepth,
