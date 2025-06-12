@@ -22,10 +22,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramImpactAnalysisReport;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.dto.ImpactAnalysisReport;
+import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
@@ -39,7 +39,7 @@ import reactor.core.publisher.Mono;
  * @author frouene
  */
 @QueryDataFetcher(type = "DiagramDescription", field = "diagramImpactAnalysisReport")
-public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<DiagramImpactAnalysisReport>> {
+public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ImpactAnalysisReport>> {
 
     private static final String TOOL_ID = "toolId";
     private static final String DIAGRAM_ELEMENT_ID = "diagramElementId";
@@ -56,8 +56,8 @@ public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithF
     }
 
     @Override
-    public CompletableFuture<DiagramImpactAnalysisReport> get(DataFetchingEnvironment environment) throws Exception {
-        CompletableFuture<DiagramImpactAnalysisReport> result = Mono.<DiagramImpactAnalysisReport>empty().toFuture();
+    public CompletableFuture<ImpactAnalysisReport> get(DataFetchingEnvironment environment) throws Exception {
+        CompletableFuture<ImpactAnalysisReport> result = Mono.<ImpactAnalysisReport>empty().toFuture();
         Map<String, Object> localContext = environment.getLocalContext();
 
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
@@ -72,9 +72,9 @@ public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithF
         if (editingContextId != null && representationId != null) {
             InvokeDiagramImpactAnalysisToolInput input = new InvokeDiagramImpactAnalysisToolInput(UUID.randomUUID(), editingContextId, representationId, toolId, diagramElementId, variables);
             result = this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
-                    .filter(InvokeDiagramImpactAnalysisToolSuccessPayload.class::isInstance)
-                    .map(InvokeDiagramImpactAnalysisToolSuccessPayload.class::cast)
-                    .map(InvokeDiagramImpactAnalysisToolSuccessPayload::impactAnalysisReport)
+                    .filter(InvokeImpactAnalysisSuccessPayload.class::isInstance)
+                    .map(InvokeImpactAnalysisSuccessPayload.class::cast)
+                    .map(InvokeImpactAnalysisSuccessPayload::impactAnalysisReport)
                     .toFuture();
         }
         return result;

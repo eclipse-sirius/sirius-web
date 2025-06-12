@@ -101,6 +101,8 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 * Add new `IEditingContext` parameter in the method `IRepresentationMigrationParticipant#replaceJsonNode`
 * Add new `IEditingContext` parameter in the method `IRepresentationContentMigrationService#getMigratedContent`
 * Add new `IEditingContext` parameter in the constructor `RepresentationMigrationService`
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
+^
 
 === Dependency update
 
@@ -157,6 +159,8 @@ The page will now redirect to a 404 if the `tabId` in the URL is not a known tab
 - https://github.com/eclipse-sirius/sirius-web/issues/5060[#5060] [diagram] Decouple diagram tool invocation from the palette.
 Tools are now invoked in the `DiagramToolExecutor` context, which ensures that tools aren't invoked on an unmounted component.
 - https://github.com/eclipse-sirius/sirius-web/issues/5046[#5046] [diagram] Add missing properties for inside labels custom appearance
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] Decouple the impact analysis dialog from diagrams.
+The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
 
 
 

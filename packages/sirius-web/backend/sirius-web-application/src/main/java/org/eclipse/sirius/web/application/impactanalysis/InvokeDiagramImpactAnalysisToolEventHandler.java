@@ -27,10 +27,10 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramImpactAnalysisReport;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.services.IToolDiagramExecutor;
+import org.eclipse.sirius.components.collaborative.dto.ImpactAnalysisReport;
+import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -134,8 +134,8 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
                         .get("viewDeletionRequests") instanceof List<?> viewDeletionRequestsList && !viewDeletionRequestsList.isEmpty()) {
                     additionalReports.add("Views deleted: " + viewDeletionRequestsList.size());
                 }
-                payload = new InvokeDiagramImpactAnalysisToolSuccessPayload(invokeImpactAnalysisToolInput.id(),
-                        new DiagramImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), additionalReports),
+                payload = new InvokeImpactAnalysisSuccessPayload(invokeImpactAnalysisToolInput.id(),
+                        new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), additionalReports),
                         success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
             } else if (toolExecutionResult instanceof Failure failure) {

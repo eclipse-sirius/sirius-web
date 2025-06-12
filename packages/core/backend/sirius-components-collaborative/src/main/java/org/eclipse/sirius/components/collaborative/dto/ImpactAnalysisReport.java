@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.collaborative.dto;
 
 import java.util.List;
 
@@ -19,6 +19,6 @@ import java.util.List;
  *
  * @author frouene
  */
-public record DiagramImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports) {
+public record ImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports) {
 
 }
