@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,18 +17,16 @@ import Link from '@mui/material/Link';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
-import { Navigate, Link as RouterLink, useParams } from 'react-router-dom';
+import { SyntheticEvent, useEffect } from 'react';
+import { generatePath, Navigate, Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
-
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   GQLGetProjectData,
   GQLGetProjectVariables,
   GQLProject,
   ProjectSettingsParams,
-  ProjectSettingsViewState,
   ProjectSettingTabContribution,
   ProjectSettingTabProps,
 } from './ProjectSettingsView.types';
@@ -101,20 +99,14 @@ const useProjectSettingsViewStyles = makeStyles()((theme) => ({
 
 export const ProjectSettingsView = () => {
   const { classes } = useProjectSettingsViewStyles();
-  const { projectId } = useParams<ProjectSettingsParams>();
-
+  const { projectId, tabId } = useParams<ProjectSettingsParams>();
   const { data: projectSettingsTabContributions } = useData(projectSettingsTabExtensionPoint);
-  const initialSelectTabId: string | null = projectSettingsTabContributions[0]?.id ?? null;
-
-  const [state, setState] = useState<ProjectSettingsViewState>({
-    selectedTabId: initialSelectTabId,
-  });
-
   const { loading, data, error } = useQuery<GQLGetProjectData, GQLGetProjectVariables>(getProjectQuery, {
     variables: {
       projectId,
     },
   });
+
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (error) {
@@ -123,12 +115,23 @@ export const ProjectSettingsView = () => {
   }, [error]);
   const project: GQLProject | null = data?.viewer.project;
 
-  const handleTabChange = (_event, newValue: string) =>
-    setState((prevState) => ({ ...prevState, selectedTabId: newValue }));
+  const selectedTabId: string | null =
+    tabId && projectSettingsTabContributions.find((tab) => tab.id == tabId)
+      ? tabId
+      : projectSettingsTabContributions[0]?.id ?? null;
+  const settingContentContribution: ProjectSettingTabContribution | null = selectedTabId
+    ? projectSettingsTabContributions.filter((contribution) => contribution.id === selectedTabId)[0]
+    : null;
 
-  const settingContentContribution: ProjectSettingTabContribution | null = projectSettingsTabContributions.filter(
-    (contribution) => contribution.id === state.selectedTabId
-  )[0];
+  const navigate = useNavigate();
+  const handleTabChange = (_event: SyntheticEvent, tabId: string) => {
+    const pathname = generatePath('/projects/:projectId/settings/:tabId', {
+      projectId,
+      tabId,
+    });
+    navigate(pathname);
+  };
+
   const SettingContent: () => JSX.Element = () => {
     if (settingContentContribution) {
       const { component: Component } = settingContentContribution;
@@ -145,6 +148,9 @@ export const ProjectSettingsView = () => {
     return null;
   }
   if (!project) {
+    return <Navigate to="/errors/404" replace />;
+  }
+  if (tabId && !projectSettingsTabContributions.find((tab) => tab.id == tabId)) {
     return <Navigate to="/errors/404" replace />;
   }
 
@@ -174,7 +180,7 @@ export const ProjectSettingsView = () => {
           </div>
           {projectSettingsTabContributions.length > 0 && settingContentContribution != null ? (
             <div className={classes.tabs}>
-              <Tabs value={state.selectedTabId} onChange={handleTabChange} orientation="vertical">
+              <Tabs value={selectedTabId} onChange={handleTabChange} orientation="vertical">
                 {projectSettingsTabContributions.map(({ id, title, icon }) => (
                   <Tab className={classes.tab} label={title} icon={icon} iconPosition="start" key={id} value={id} />
                 ))}

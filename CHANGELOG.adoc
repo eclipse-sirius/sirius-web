@@ -141,6 +141,10 @@ While very small, this change is being made in a very important part of the code
 In case of issue with this change, it may have a performance impact and also be the cause of some regressions.
 - https://github.com/eclipse-sirius/sirius-web/issues/4513[#4513] [core] Add `descriptionId` in frontend `RepresentationMetadata`
 - https://github.com/eclipse-sirius/sirius-web/issues/5064[#5064] [diagram] Increase the interaction radius of bendpoints, they are now easier to move
+- https://github.com/eclipse-sirius/sirius-web/issues/4899[#4899] [sirius-web] Synchronize the active project setting tab with the URL.
+The route entry of the setting page has been updated to "/projects/:projectId/settings/:tabId?".
+In `ProjectSettingsView`, we will now rely on the `tabId` from the URL to identify the setting tab that should be opened, and update the URL whenever the selected tab changes.
+The page will now redirect to a 404 if the `tabId` in the URL is not a known tab.
 
 
 
