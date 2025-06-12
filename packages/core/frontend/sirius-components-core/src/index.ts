@@ -43,6 +43,8 @@ export * from './modals/confirmation/useConfirmationDialog';
 export type * from './modals/confirmation/useConfirmationDialog.types';
 export * from './modals/impact-analysis/ImpactAnalysisDialog';
 export type * from './modals/impact-analysis/ImpactAnalysisDialog.types';
+export * from './modals/impact-analysis/useImpactAnalysisDialog';
+export type * from './modals/impact-analysis/useImpactAnalysisDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
 export * from './progress/RepresentationLoadingIndicator';
