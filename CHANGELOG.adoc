@@ -85,6 +85,7 @@ In this package, you can now find the following default implementations:
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0].
 - [releng] Switch to Sirius EMF Json 2.5.2
 - [releng] Update to https://github.com/nodejs/node/releases/tag/v22.16.0[node.js 22.16.0] and https://docs.npmjs.com/cli/v10/using-npm/changelog#1092-2024-12-04[npm 10.9.2]
+- [releng] Update to https://github.com/KevinVandy/material-react-table/releases/tag/v3.2.1[Material React Table 3.2.1]
 
 
 === Bug fixes
