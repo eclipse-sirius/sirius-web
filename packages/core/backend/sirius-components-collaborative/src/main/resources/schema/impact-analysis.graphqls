@@ -1,0 +1,6 @@
+type ImpactAnalysisReport {
+  nbElementDeleted: Int!
+  nbElementModified: Int!
+  nbElementCreated: Int!
+  additionalReports: [String!]!
+}
