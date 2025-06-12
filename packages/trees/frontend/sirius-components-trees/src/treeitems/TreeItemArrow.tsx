@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TreeItemArrowProps } from './TreeItemArrow.types';
 
@@ -25,7 +26,7 @@ const useTreeItemArrowStyle = makeStyles()(() => ({
   },
 }));
 
-export const TreeItemArrow = ({ item, depth, onExpand, 'data-testid': dataTestid }: TreeItemArrowProps) => {
+export const TreeItemArrow = memo(({ item, depth, onExpand, 'data-testid': dataTestid }: TreeItemArrowProps) => {
   const { classes } = useTreeItemArrowStyle();
   if (item.hasChildren) {
     const onClick = () => onExpand(item.id, depth);
@@ -45,4 +46,4 @@ export const TreeItemArrow = ({ item, depth, onExpand, 'data-testid': dataTestid
     }
   }
   return <div className={classes.noChildren} />;
-};
+});
