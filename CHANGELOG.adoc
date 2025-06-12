@@ -78,6 +78,7 @@ In this package, you can now find the following default implementations:
 * `DefaultObjectSearchService`
 * `DefaultReadOnlyObjectPredicate`
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
 
 
 === Dependency update
@@ -105,6 +106,8 @@ In this package, you can now find the following default implementations:
 - https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [view] Ensure that forms based on the view DSL do not allow the edition of read only objects
 - https://github.com/eclipse-sirius/sirius-web/issues/5060[#5060] [diagram] Decouple diagram tool invocation from the palette.
 Tools are now invoked in the `DiagramToolExecutor` context, which ensures that tools aren't invoked on an unmounted component.
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] Decouple the impact analysis dialog from diagrams.
+The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
 
 
 == v2025.6.0 (work in progress)

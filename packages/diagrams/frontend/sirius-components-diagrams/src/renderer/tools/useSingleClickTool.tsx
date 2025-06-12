@@ -13,7 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useDialog } from '../../dialog/useDialog';
-import { useImpactAnalysisDialog } from '../palette/impact-analysis/useImpactAnalysisDialog';
+import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
@@ -22,9 +22,12 @@ import {
   GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
   GQLToolVariable,
+  UseSingleClickToolState,
   UseSingleClickToolValue,
 } from './useSingleClickTool.types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
+import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 
 const invokeSingleClickOnDiagramElementToolMutation = gql`
   mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
@@ -120,6 +123,41 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
     });
   };
 
+  const { getImpactAnalysisReport, loading: impactAnalysisLoading, impactAnalysisReport } = useInvokeImpactAnalysis();
+
+  const [state, setState] = useState<UseSingleClickToolState>({
+    currentTool: null,
+    onToolExecution: () => {},
+  });
+
+  useEffect(() => {
+    if (state.currentTool && (impactAnalysisLoading || impactAnalysisReport)) {
+      showImpactAnalysisDialog(
+        impactAnalysisReport,
+        impactAnalysisLoading,
+        state.currentTool.label,
+        state.onToolExecution
+      );
+    }
+  }, [impactAnalysisLoading, impactAnalysisReport, state.currentTool]);
+
+  const invokeGetDiagramAnalysisReport = (
+    editingContextId: string,
+    representationId: string,
+    toolId: string,
+    diagramElementId: string,
+    variables: GQLToolVariable[]
+  ) => {
+    const getImpactAnalysisVariables: GQLInvokeImpactAnalysisToolVariables = {
+      editingContextId,
+      representationId,
+      toolId,
+      diagramElementId,
+      variables,
+    };
+    getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+  };
+
   const invokeSingleClickTool = (
     editingContextId: string,
     diagramId: string,
@@ -135,10 +173,10 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
 
       let executeProcess: (variables: GQLToolVariable[]) => void = executeTool;
       if (tool.withImpactAnalysis) {
-        const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) =>
-          showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, variables, () =>
-            executeTool(variables)
-          );
+        const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) => {
+          setState((prevState) => ({ ...prevState, currentTool: tool, onToolExecution: () => executeTool(variables) }));
+          invokeGetDiagramAnalysisReport(editingContextId, diagramId, tool.id, diagramElementId, variables);
+        };
         executeProcess = executeToolWithImpactAnalysis;
 
         if (tool.dialogDescriptionId) {

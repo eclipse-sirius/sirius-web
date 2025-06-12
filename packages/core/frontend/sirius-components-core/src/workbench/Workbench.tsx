@@ -48,6 +48,7 @@ import {
   workbenchMachine,
   WorkbenchStateSchema,
 } from './WorkbenchMachine';
+import { ImpactAnalysisDialogContextProvider } from '../modals/impact-analysis/ImpactAnalysisDialogContext';
 
 const editingContextEventSubscription = gql`
   subscription editingContextEvent($input: EditingContextEventInput!) {
@@ -196,7 +197,7 @@ export const Workbench = ({
   }
 
   return (
-    <>
+    <ImpactAnalysisDialogContextProvider>
       <Panels
         editingContextId={editingContextId}
         readOnly={readOnly}
@@ -211,6 +212,6 @@ export const Workbench = ({
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
-    </>
+    </ImpactAnalysisDialogContextProvider>
   );
 };
