@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
+import { ImpactAnalysisDialogContextProvider } from '../modals/impact-analysis/ImpactAnalysisDialogContext';
 import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
 import {
   GQLRepresentationMetadata,
@@ -226,7 +227,7 @@ export const Workbench = ({
   }
 
   return (
-    <>
+    <ImpactAnalysisDialogContextProvider>
       <Panels
         editingContextId={editingContextId}
         readOnly={readOnly}
@@ -236,6 +237,6 @@ export const Workbench = ({
         rightPanelInitialSize={25}
         mainArea={main}
       />
-    </>
+    </ImpactAnalysisDialogContextProvider>
   );
 };
