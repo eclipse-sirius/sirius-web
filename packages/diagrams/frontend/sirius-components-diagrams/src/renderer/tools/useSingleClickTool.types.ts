@@ -27,6 +27,11 @@ export interface UseSingleClickToolValue {
   data: GQLInvokeSingleClickOnDiagramElementToolData | null;
 }
 
+export interface UseSingleClickToolState {
+  currentTool: GQLTool | null;
+  onToolExecution: () => void;
+}
+
 export interface GQLInvokeSingleClickOnDiagramElementToolData {
   invokeSingleClickOnDiagramElementTool: GQLInvokeSingleClickOnDiagramElementToolPayload;
 }
