@@ -74,7 +74,8 @@ export const PaletteQuickAccessToolBar = ({
         <PinUnPinTool
           diagramElementId={diagramElementId}
           isPined={diagramElement.data.pinned}
-          key={'tool_pinUnPinTool'}></PinUnPinTool>
+          key="tool_pinUnPinTool"
+        />
       );
     }
     if (isFadable(diagramElement)) {
@@ -82,7 +83,8 @@ export const PaletteQuickAccessToolBar = ({
         <FadeElementTool
           diagramElementId={diagramElementId}
           isFaded={diagramElement.data.faded}
-          key={'tool_fadeElementTool'}></FadeElementTool>
+          key="tool_fadeElementTool"
+        />
       );
     }
     if (
@@ -91,21 +93,15 @@ export const PaletteQuickAccessToolBar = ({
       diagramElement.data.bendingPoints.length > 0
     ) {
       quickAccessToolComponents.push(
-        <ResetEditedEdgePathTool
-          diagramElementId={diagramElementId}
-          key={'tool_resetEditedEdgePathTool'}></ResetEditedEdgePathTool>
+        <ResetEditedEdgePathTool diagramElementId={diagramElementId} key="tool_resetEditedEdgePathTool" />
       );
     }
 
     quickAccessToolComponents.push(
-      <ResetManuallyLaidOutHandlesTool
-        diagramElementId={diagramElementId}
-        key={'tool_resetManuallyLaidOutHandlesTool'}></ResetManuallyLaidOutHandlesTool>
+      <ResetManuallyLaidOutHandlesTool diagramElementId={diagramElementId} key="tool_resetManuallyLaidOutHandlesTool" />
     );
 
-    quickAccessToolComponents.push(
-      <AdjustSizeTool diagramElementId={diagramElementId} key={'tool_adjustSizeTool'}></AdjustSizeTool>
-    );
+    quickAccessToolComponents.push(<AdjustSizeTool diagramElementId={diagramElementId} key="tool_adjustSizeTool" />);
   }
 
   const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
