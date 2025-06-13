@@ -13,8 +13,7 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseUpdateRectangularNodeAppearanceValue {
-  updateInsideLabelBold: (labelId: string, isBold: boolean) => void;
-  updateBackground: (background: string) => void;
+  updateBackground: (editingContextId: string, representationId: string, nodeId: string, background: string) => void;
 }
 
 export interface GQLEditRectangularNodeApparenceData {
@@ -37,9 +36,4 @@ export interface GQLEditRectangularNodeApparenceInput {
 
 export interface GQLRectangularNodeAppearanceInput {
   background: string;
-  insideLabel: Partial<GQLLabelAppearanceInput> & Required<{ labelId: string }>;
-}
-
-export interface GQLLabelAppearanceInput {
-  bold: boolean;
 }
