@@ -10,16 +10,28 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLToolVariable } from '../Palette.types';
+import { GQLTool } from '../palette/Palette.types';
 
-export interface UseImpactAnalysisDialogValue {
-  showImpactAnalysisDialog: (
-    editingContextId: string,
-    representationId: string,
-    toolId: string,
-    toolLabel: string,
+export interface DiagramToolExecutorContextValue {
+  executeTool: (
+    x: number,
+    y: number,
     diagramElementId: string,
-    variables: GQLToolVariable[],
-    onConfirm: () => void
+    targetObjectId: string,
+    onDirectEditClick: () => void,
+    tool: GQLTool
   ) => void;
+}
+
+export interface DiagramToolExecutorContextProviderProps {
+  children?: React.ReactNode;
+}
+
+export interface DiagramToolExecutorContextProviderState {
+  x: number;
+  y: number;
+  diagramElementId: string | null;
+  targetObjectId: string | null;
+  onDirectEditClick: () => void;
+  tool: GQLTool | null;
 }

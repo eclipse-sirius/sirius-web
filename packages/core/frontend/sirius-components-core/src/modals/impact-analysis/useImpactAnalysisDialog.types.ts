@@ -10,27 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLToolVariable } from '../Palette.types';
+import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
 
-export interface ImpactAnalysisDialogContextValue {
+export interface UseImpactAnalysisDialogValue {
   showImpactAnalysisDialog: (
-    editingContextId: string,
-    representationId: string,
-    toolId: string,
+    impactAnalysisReport: GQLImpactAnalysisReport | null,
+    loading: boolean,
     toolLabel: string,
-    diagramElementId: string,
-    variables: GQLToolVariable[],
     onConfirm: () => void
   ) => void;
-}
-
-export interface ImpactAnalysisDialogContextProviderState {
-  open: boolean;
-  onConfirm: () => void;
-  editingContextId: string | null;
-  representationId: string | null;
-  toolId: string | null;
-  toolLabel: string | null;
-  diagramElementId: string | null;
-  variables: GQLToolVariable[];
 }
