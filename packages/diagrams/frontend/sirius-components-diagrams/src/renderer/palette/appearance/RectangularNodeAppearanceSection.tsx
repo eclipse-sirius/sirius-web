@@ -27,6 +27,7 @@ export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: Rectangul
         <LabelAppearancePart
           diagramElementId={nodeId}
           labelId={nodeData.insideLabel.id}
+          position="Inside Label"
           style={nodeData.insideLabel.appearanceData.gqlStyle}
           customizedStyleProperties={nodeData.insideLabel.appearanceData.customizedStyleProperties}
         />
