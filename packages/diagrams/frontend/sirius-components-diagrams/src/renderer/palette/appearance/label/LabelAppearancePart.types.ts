@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-/**
- * Input for the edition of a rectangular node's appearance.
- *
- * @author nvannier
- */
-public record RectangularNodeAppearanceInput(String background) {
+import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
 
+export interface LabelAppearancePartProps {
+  diagramElementId: string;
+  labelId: string;
+  style: GQLLabelStyle;
+  customizedStyleProperties: string[];
 }

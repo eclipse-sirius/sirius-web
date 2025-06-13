@@ -14,7 +14,12 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseResetNodeAppearanceValue {
-  resetBackground: () => void;
+  resetNodeStyleProperties: (
+    editingContextId: string,
+    representationId: string,
+    nodeId: string,
+    propertiesToReset: string[]
+  ) => void;
 }
 
 export interface GQLResetNodeApparenceData {
