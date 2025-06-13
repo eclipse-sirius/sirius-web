@@ -82,7 +82,8 @@ Additional concerns will be removed in the future from `IObjectService` until we
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5060[#5060] [diagram] Decouple diagram tool invocation from the palette.
+Tools are now invoked in the `DiagramToolExecutor` context, which ensures that tools aren't invoked on an unmounted component.
 
 
 == v2025.6.0 (work in progress)

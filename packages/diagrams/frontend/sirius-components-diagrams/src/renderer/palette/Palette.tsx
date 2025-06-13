@@ -19,11 +19,10 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useInvokePaletteTool } from '../tools/useInvokePaletteTool';
 import {
   GQLPalette,
   GQLPaletteDivider,
@@ -42,6 +41,8 @@ import { PaletteToolList } from './tool-list/PaletteToolList';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
+import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 
 const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
   palette: {
@@ -136,12 +137,12 @@ export const Palette = ({
 
   const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
   const { setLastToolInvoked } = useDiagramPalette();
-  const { invokeTool } = useInvokePaletteTool({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
+  const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
 
   const handleToolClick = (tool: GQLTool) => {
     onClose();
     domNode?.focus();
-    invokeTool(tool);
+    executeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
     if (palette) {
       setLastToolInvoked(palette.id, tool);
     }
