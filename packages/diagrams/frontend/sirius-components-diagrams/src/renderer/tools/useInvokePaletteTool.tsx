@@ -21,16 +21,10 @@ import { GQLTool } from '../palette/Palette.types';
 import { useCollapseExpand } from './useCollapseExpand';
 import { GQLCollapsingState } from './useCollapseExpand.types';
 import { useDelete } from './useDelete';
-import { UseInvokePaletteToolProps, UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
+import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
 
-export const useInvokePaletteTool = ({
-  x,
-  y,
-  diagramElementId,
-  targetObjectId,
-  onDirectEditClick,
-}: UseInvokePaletteToolProps): UseInvokePaletteToolValue => {
+export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { invokeSingleClickTool } = useSingleClickTool();
@@ -46,7 +40,14 @@ export const useInvokePaletteTool = ({
     }
   };
 
-  const invokeTool = (tool: GQLTool) => {
+  const invokeTool = (
+    x: number,
+    y: number,
+    diagramElementId: string,
+    targetObjectId: string,
+    onDirectEditClick: () => void,
+    tool: GQLTool
+  ) => {
     switch (tool.id) {
       case 'edit':
         onDirectEditClick();
