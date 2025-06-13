@@ -83,6 +83,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
 - https://github.com/eclipse-sirius/sirius-web/issues/5067[#5067] [diagram] Improve the organization of the code of the appearance support
+- https://github.com/eclipse-sirius/sirius-web/issues/5069[#5069] [diagram] Improve the appearance section of the palette
 
 
 

@@ -11,12 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import Box from '@mui/material/Box';
+import { ColorProps } from './Color.types';
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
+export const Color = ({ value }: ColorProps) => {
+  return (
+    <Box
+      sx={{
+        border: '1px solid black',
+        backgroundColor: value,
+        minWidth: '24px',
+        minHeight: '24px',
+        maxWidth: '24px',
+        maxHeight: '24px',
+        borderRadius: '4px',
+      }}
+    />
+  );
+};
