@@ -18,7 +18,7 @@ import {
   UseUpdateRectangularNodeAppearanceValue,
 } from './useUpdateRectangularNodeAppearance.types';
 
-export const GQLEditRectangularNodeAppearanceMutation = gql`
+export const editRectangularNodeAppearanceMutation = gql`
   mutation editRectangularNodeAppearance($input: EditRectangularNodeAppearanceInput!) {
     editRectangularNodeAppearance(input: $input) {
       __typename
@@ -38,40 +38,18 @@ export const GQLEditRectangularNodeAppearanceMutation = gql`
   }
 `;
 
-export const useUpdateRectangularNodeAppearance = (
-  editingContextId: string,
-  representationId: string,
-  nodeId: string
-): UseUpdateRectangularNodeAppearanceValue => {
+export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAppearanceValue => {
   const [editRectangularNodeApparence, editRectangularNodeApparenceResult] = useMutation<
     GQLEditRectangularNodeApparenceData,
     GQLEditRectangularNodeApparenceVariables
-  >(GQLEditRectangularNodeAppearanceMutation);
+  >(editRectangularNodeAppearanceMutation);
 
   useReporting(
     editRectangularNodeApparenceResult,
     (data: GQLEditRectangularNodeApparenceData) => data.editRectangularNodeAppearance
   );
 
-  const updateInsideLabelBold = (labelId: string, isBold: boolean) =>
-    editRectangularNodeApparence({
-      variables: {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId,
-          nodeId,
-          appearance: {
-            insideLabel: {
-              labelId,
-              bold: isBold,
-            },
-          },
-        },
-      },
-    });
-
-  const updateBackground = (background: string) =>
+  const updateBackground = (editingContextId: string, representationId: string, nodeId: string, background: string) =>
     editRectangularNodeApparence({
       variables: {
         input: {
@@ -87,7 +65,6 @@ export const useUpdateRectangularNodeAppearance = (
     });
 
   return {
-    updateInsideLabelBold,
     updateBackground,
   };
 };

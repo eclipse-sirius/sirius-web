@@ -17,6 +17,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
  *
  * @author nvannier
  */
-public record LabelAppearanceInput(String labelId, Boolean bold) {
+public record LabelAppearanceInput(Boolean bold) {
 
 }

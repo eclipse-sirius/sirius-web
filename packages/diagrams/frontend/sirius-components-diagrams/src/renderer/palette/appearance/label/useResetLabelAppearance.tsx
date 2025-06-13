@@ -14,14 +14,14 @@
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLResetNodeApparenceData,
-  GQLResetNodeApparenceVariables,
-  UseResetNodeAppearanceValue,
-} from './useResetNodeAppearance.types';
+  GQLResetLabelApparenceData,
+  GQLResetLabelApparenceVariables,
+  UseResetLabelAppearanceValue,
+} from './useResetLabelStyleProperties.types';
 
-export const GQLResetNodeAppearanceMutation = gql`
-  mutation resetNodeAppearance($input: ResetNodeAppearanceInput!) {
-    resetNodeAppearance(input: $input) {
+export const GQLResetLabelAppearanceMutation = gql`
+  mutation resetLabelAppearance($input: ResetLabelAppearanceInput!) {
+    resetLabelAppearance(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -39,34 +39,35 @@ export const GQLResetNodeAppearanceMutation = gql`
   }
 `;
 
-export const useResetNodeAppearance = (
-  editingContextId: string,
-  representationId: string,
-  nodeId: string
-): UseResetNodeAppearanceValue => {
-  const [resetNodeApparence, resetNodeApparenceResult] = useMutation<
-    GQLResetNodeApparenceData,
-    GQLResetNodeApparenceVariables
-  >(GQLResetNodeAppearanceMutation);
+export const useResetLabelAppearance = (): UseResetLabelAppearanceValue => {
+  const [resetLabelApparence, resetLabelApparenceResult] = useMutation<
+    GQLResetLabelApparenceData,
+    GQLResetLabelApparenceVariables
+  >(GQLResetLabelAppearanceMutation);
 
-  useReporting(resetNodeApparenceResult, (data: GQLResetNodeApparenceData) => data.resetNodeAppearance);
+  useReporting(resetLabelApparenceResult, (data: GQLResetLabelApparenceData) => data.resetLabelAppearance);
 
-  const resetNodeStyleProperties = (propertiesToReset: string[]) =>
-    resetNodeApparence({
+  const resetLabelStyleProperties = (
+    editingContextId: string,
+    representationId: string,
+    diagramElementId: string,
+    labelId: string,
+    propertiesToReset: string[]
+  ) =>
+    resetLabelApparence({
       variables: {
         input: {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          diagramElementId,
+          labelId,
           propertiesToReset,
         },
       },
     });
 
-  const resetBackground = () => resetNodeStyleProperties(['BACKGROUND']);
-
   return {
-    resetBackground,
+    resetLabelStyleProperties,
   };
 };
