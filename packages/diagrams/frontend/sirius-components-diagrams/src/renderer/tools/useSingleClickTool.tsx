@@ -24,6 +24,7 @@ import {
   GQLToolVariable,
   UseSingleClickToolValue,
 } from './useSingleClickTool.types';
+import { useEffect } from 'react';
 
 const invokeSingleClickOnDiagramElementToolMutation = gql`
   mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
@@ -67,25 +68,31 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
   const { showDialog } = useDialog();
   const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
 
-  const [invokeSingleClickOnDiagramElementTool, { loading, data }] = useMutation<
+  const [invokeSingleClickOnDiagramElementTool, { loading, data, error }] = useMutation<
     GQLInvokeSingleClickOnDiagramElementToolData,
     GQLInvokeSingleClickOnDiagramElementToolVariables
-  >(invokeSingleClickOnDiagramElementToolMutation, {
-    onCompleted(data) {
-      const { invokeSingleClickOnDiagramElementTool } = data;
-      if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-        const { newSelection } = invokeSingleClickOnDiagramElementTool;
-        if (newSelection?.entries.length ?? 0 > 0) {
-          setSelection(newSelection);
+  >(invokeSingleClickOnDiagramElementToolMutation);
+
+  useEffect(() => {
+    if (!loading) {
+      if (data) {
+        const { invokeSingleClickOnDiagramElementTool } = data;
+        if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+          const { newSelection } = invokeSingleClickOnDiagramElementTool;
+          if (newSelection?.entries.length ?? 0 > 0) {
+            setSelection(newSelection);
+          }
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
         }
-        addMessages(invokeSingleClickOnDiagramElementTool.messages);
+        if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
+        }
       }
-      if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
-        addMessages(invokeSingleClickOnDiagramElementTool.messages);
+      if (error) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
-    },
-    onError: () => addErrorMessage('An unexpected error has occurred, please refresh the page'),
-  });
+    }
+  }, [loading, data, error]);
 
   const invokeTool = (
     editingContextId: string,
