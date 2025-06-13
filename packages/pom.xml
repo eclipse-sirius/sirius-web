@@ -61,7 +61,6 @@
 		<module>emf/backend</module>
 		<module>web/backend</module>
 		<module>task/backend</module>
-		<module>tools/backend</module>
 		<module>starters/backend</module>
 		<module>papaya/backend</module>
 		<module>sirius-web/backend</module>
