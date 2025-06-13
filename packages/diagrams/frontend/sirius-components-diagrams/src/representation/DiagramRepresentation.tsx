@@ -26,6 +26,8 @@ import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenCont
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
+import { ImpactAnalysisDialogContextProvider } from '../renderer/palette/impact-analysis/ImpactAnalysisDialogContext';
+import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,
@@ -126,10 +128,15 @@ export const DiagramRepresentation = memo(
                             readOnly,
                           }}>
                           <ManageVisibilityContextProvider>
-                            <DiagramSubscriptionProvider
-                              diagramId={representationId}
-                              editingContextId={editingContextId}
-                              readOnly={readOnly}></DiagramSubscriptionProvider>
+                            <ImpactAnalysisDialogContextProvider>
+                              <DiagramToolExecutorContextProvider>
+                                <DiagramSubscriptionProvider
+                                  diagramId={representationId}
+                                  editingContextId={editingContextId}
+                                  readOnly={readOnly}
+                                />
+                              </DiagramToolExecutorContextProvider>
+                            </ImpactAnalysisDialogContextProvider>
                           </ManageVisibilityContextProvider>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
