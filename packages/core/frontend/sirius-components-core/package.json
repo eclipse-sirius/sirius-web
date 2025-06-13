@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-core",
-  "version": "2025.4.8",
+  "version": "2025.4.9",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -35,12 +35,10 @@
     "@apollo/client": "3.10.4",
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
-    "@xstate/react": "3.0.0",
     "graphql": "16.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
@@ -50,7 +48,6 @@
     "@mui/material": "7.0.2",
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "4.3.0",
-    "@xstate/react": "3.0.0",
     "@vitest/coverage-v8": "1.6.0",
     "jsdom": "16.7.0",
     "graphql": "16.8.1",
@@ -59,7 +56,6 @@
     "react-dom": "18.3.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2",
     "typescript": "5.4.5",
     "vite": "5.2.11",
