@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLResetLabelApparenceData,
-  GQLResetLabelApparenceVariables,
-  UseResetLabelAppearanceValue,
-} from './useResetLabelStyleProperties.types';
+  GQLEditLabelAppearanceData,
+  GQLEditLabelAppearanceVariables,
+  UseEditLabelAppearanceValue,
+} from './useEditLabelAppearance.types';
 
-export const GQLResetLabelAppearanceMutation = gql`
-  mutation resetLabelAppearance($input: ResetLabelAppearanceInput!) {
-    resetLabelAppearance(input: $input) {
+export const editLabelAppearanceMutation = gql`
+  mutation editLabelAppearance($input: EditLabelAppearanceInput!) {
+    editLabelAppearance(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -39,35 +38,37 @@ export const GQLResetLabelAppearanceMutation = gql`
   }
 `;
 
-export const useResetLabelAppearance = (
-  editingContextId: string,
-  representationId: string,
-  nodeId: string
-): UseResetLabelAppearanceValue => {
-  const [resetLabelApparence, resetLabelApparenceResult] = useMutation<
-    GQLResetLabelApparenceData,
-    GQLResetLabelApparenceVariables
-  >(GQLResetLabelAppearanceMutation);
+export const useEditLabelAppearance = (): UseEditLabelAppearanceValue => {
+  const [editLabelAppearance, editLabelAppearanceResult] = useMutation<
+    GQLEditLabelAppearanceData,
+    GQLEditLabelAppearanceVariables
+  >(editLabelAppearanceMutation);
 
-  useReporting(resetLabelApparenceResult, (data: GQLResetLabelApparenceData) => data.resetLabelAppearance);
+  useReporting(editLabelAppearanceResult, (data: GQLEditLabelAppearanceData) => data.editLabelAppearance);
 
-  const resetLabelStyleProperties = (labelId: string, propertiesToReset: string[]) =>
-    resetLabelApparence({
+  const updateBold = (
+    editingContextId: string,
+    representationId: string,
+    diagramElementId: string,
+    labelId: string,
+    isBold: boolean
+  ) =>
+    editLabelAppearance({
       variables: {
         input: {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          diagramElementId: nodeId,
+          diagramElementId,
           labelId,
-          propertiesToReset,
+          appearance: {
+            bold: isBold,
+          },
         },
       },
     });
 
-  const resetInsideLabelBold = (labelId: string) => resetLabelStyleProperties(labelId, ['BOLD']);
-
   return {
-    resetInsideLabelBold,
+    updateBold,
   };
 };

@@ -10,28 +10,37 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseResetLabelAppearanceValue {
-  resetInsideLabelBold: (labelId: string) => void;
+export interface UseEditLabelAppearanceValue {
+  updateBold: (
+    editingContextId: string,
+    representationId: string,
+    diagramElementId: string,
+    labelId: string,
+    isBold: boolean
+  ) => void;
 }
 
-export interface GQLResetLabelApparenceData {
-  resetLabelAppearance: GQLResetLabelApparencePayload;
+export interface GQLEditLabelAppearanceData {
+  editLabelAppearance: GQLEditLabelAppearancePayload;
 }
 
-export type GQLResetLabelApparencePayload = GQLErrorPayload | GQLSuccessPayload;
+export type GQLEditLabelAppearancePayload = GQLErrorPayload | GQLSuccessPayload;
 
-export interface GQLResetLabelAppearanceInput {
+export interface GQLEditLabelAppearanceVariables {
+  input: GQLEditLabelAppearanceInput;
+}
+
+export interface GQLEditLabelAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
   diagramElementId: string;
   labelId: string;
-  propertiesToReset: string[];
+  appearance: Partial<GQLLabelAppearanceInput>;
 }
 
-export interface GQLResetLabelApparenceVariables {
-  input: GQLResetLabelAppearanceInput;
+export interface GQLLabelAppearanceInput {
+  bold: boolean;
 }

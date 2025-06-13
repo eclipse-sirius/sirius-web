@@ -10,26 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.EditRectangularNodeAppearanceInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelAppearanceInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to edit a rectangular node's appearance.
+ * Used to edit the label's appearance.
  *
- * @author nvannier
+ * @author sbegaudeau
  */
 @Service
-public class EditRectangularNodeAppearanceMutationRunner implements IMutationRunner<EditRectangularNodeAppearanceInput> {
+public class EditLabelAppearanceMutationRunner implements IMutationRunner<EditLabelAppearanceInput> {
 
-    private static final String EDIT_RECTANGULAR_NODE_APPEARANCE_MUTATION = """
-            mutation editRectangularNodeAppearance($input: EditRectangularNodeAppearanceInput!) {
-                editRectangularNodeAppearance(input: $input) {
+    private static final String EDIT_LABEL_APPEARANCE_MUTATION = """
+            mutation editLabelAppearance($input: EditLabelAppearanceInput!) {
+                editLabelAppearance(input: $input) {
                   __typename
                   ... on ErrorPayload {
                     messages {
@@ -49,12 +50,12 @@ public class EditRectangularNodeAppearanceMutationRunner implements IMutationRun
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public EditRectangularNodeAppearanceMutationRunner(IGraphQLRequestor graphQLRequestor) {
+    public EditLabelAppearanceMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public String run(EditRectangularNodeAppearanceInput input) {
-        return this.graphQLRequestor.execute(EDIT_RECTANGULAR_NODE_APPEARANCE_MUTATION, input);
+    public String run(EditLabelAppearanceInput input) {
+        return this.graphQLRequestor.execute(EDIT_LABEL_APPEARANCE_MUTATION, input);
     }
 }

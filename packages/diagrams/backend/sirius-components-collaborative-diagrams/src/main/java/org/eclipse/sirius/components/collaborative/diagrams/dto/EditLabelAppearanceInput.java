@@ -10,13 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-/**
- * Input for the edition of a rectangular node's appearance.
- *
- * @author nvannier
- */
-public record RectangularNodeAppearanceInput(String background) {
+import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+/**
+ * Input for the editing of a label appearance.
+ *
+ * @author sbegaudeau
+ */
+public record EditLabelAppearanceInput(UUID id, String editingContextId, String representationId, String diagramElementId, String labelId, LabelAppearanceInput appearance) implements IDiagramInput {
 }

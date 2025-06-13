@@ -10,13 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-/**
- * Input for the edition of a rectangular node's appearance.
- *
- * @author nvannier
- */
-public record RectangularNodeAppearanceInput(String background) {
+import Box from '@mui/material/Box';
+import { ColorProps } from './Color.types';
 
-}
+export const Color = ({ value }: ColorProps) => {
+  return (
+    <Box
+      sx={{
+        border: '1px solid black',
+        backgroundColor: value,
+        minWidth: '24px',
+        minHeight: '24px',
+        maxWidth: '24px',
+        maxHeight: '24px',
+        borderRadius: '4px',
+      }}
+    />
+  );
+};

@@ -10,13 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-/**
- * Input for the edition of a rectangular node's appearance.
- *
- * @author nvannier
- */
-public record RectangularNodeAppearanceInput(String background) {
-
+export interface ColorProps {
+  value: string;
 }
