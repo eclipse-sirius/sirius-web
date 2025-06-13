@@ -10,21 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
-import { flushSync } from 'react-dom';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
 import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
+import {
+  GQLRepresentationMetadata,
+  GQLRepresentationMetadataQueryData,
+} from '../representationmetadata/useRepresentationMetadata.types';
 import { useSelection } from '../selection/useSelection';
-import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
 import { RepresentationNavigation } from './RepresentationNavigation';
+import { useEditingContextEventSubscription } from './useEditingContextEventSubscription';
 import {
-  GQLEditingContextEventSubscription,
+  GQLEditingContextEventPayload,
+  GQLRepresentationRenamedEventPayload,
+} from './useEditingContextEventSubscription.types';
+import {
   RepresentationComponentProps,
   RepresentationMetadata,
   WorkbenchProps,
@@ -35,31 +38,6 @@ import {
   workbenchMainAreaExtensionPoint,
   workbenchViewContributionExtensionPoint,
 } from './WorkbenchExtensionPoints';
-import {
-  HandleCompleteEvent,
-  HandleSubscriptionResultEvent,
-  HideRepresentationEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-  UpdateSelectedRepresentationEvent,
-  WorkbenchContext,
-  WorkbenchEvent,
-  workbenchMachine,
-  WorkbenchStateSchema,
-} from './WorkbenchMachine';
-
-const editingContextEventSubscription = gql`
-  subscription editingContextEvent($input: EditingContextEventInput!) {
-    editingContextEvent(input: $input) {
-      __typename
-      ... on RepresentationRenamedEventPayload {
-        representationId
-        newLabel
-      }
-    }
-  }
-`;
 
 const useWorkbenchStyles = makeStyles()(() => ({
   main: {
@@ -75,6 +53,20 @@ const useWorkbenchStyles = makeStyles()(() => ({
   },
 }));
 
+type WorkbenchState = {
+  id: string;
+  displayedRepresentation: RepresentationMetadata | null;
+  representations: RepresentationMetadata[];
+};
+
+const isRepresentationRenamedEventPayload = (
+  payload: GQLEditingContextEventPayload | null
+): payload is GQLRepresentationRenamedEventPayload =>
+  !!payload && payload.__typename === 'RepresentationRenamedEventPayload';
+
+const getRepresentationsMetaData = (data: GQLRepresentationMetadataQueryData | null): GQLRepresentationMetadata[] =>
+  data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [];
+
 export const Workbench = ({
   editingContextId,
   initialRepresentationSelected,
@@ -82,79 +74,113 @@ export const Workbench = ({
   readOnly,
 }: WorkbenchProps) => {
   const { classes } = useWorkbenchStyles();
-
-  const [{ value, context }, dispatch] = useMachine<
-    StateMachine<WorkbenchContext, WorkbenchStateSchema, WorkbenchEvent>
-  >(workbenchMachine, {
-    context: {
-      displayedRepresentation: initialRepresentationSelected,
-      representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
-    },
+  const [state, setState] = useState<WorkbenchState>({
+    id: crypto.randomUUID(),
+    displayedRepresentation: initialRepresentationSelected,
+    representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
   });
-  const { toast } = value as SchemaValue;
-  const { id, representations, displayedRepresentation, message } = context;
+
   const { selection, setSelection } = useSelection();
-  const { data } = useRepresentationMetadata(editingContextId, selection);
+  const { data: representationMetadataQueryData } = useRepresentationMetadata(editingContextId, selection);
+  const { payload: editingContextEventPayload } = useEditingContextEventSubscription(editingContextId);
 
   const { data: representationFactories } = useData(representationFactoryExtensionPoint);
+  useEffect(() => {
+    if (isRepresentationRenamedEventPayload(editingContextEventPayload)) {
+      const { representationId, newLabel } = editingContextEventPayload;
+      const representations = [...state.representations];
 
-  const onData = ({ data }: OnDataOptions<GQLEditingContextEventSubscription>) => {
-    flushSync(() => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    });
+      for (var i = 0; i < representations.length; i++) {
+        const representation = representations[i];
+        if (!!representation && representation.id === representationId) {
+          representation.label = newLabel;
+        }
+      }
+
+      setState((prevState) => ({
+        ...prevState,
+        representations: representations,
+      }));
+    }
+  }, [editingContextEventPayload]);
+
+  // When opening a representation
+  useEffect(() => {
+    const selectedElementRepresentationMetaData = getRepresentationsMetaData(representationMetadataQueryData);
+    if (
+      selectedElementRepresentationMetaData.length > 0 &&
+      selectedElementRepresentationMetaData[0]?.id !== state.displayedRepresentation?.id
+    ) {
+      const displayedRepresentation = selectedElementRepresentationMetaData[0];
+
+      const representations = [...state.representations];
+      const newRepresentations = selectedElementRepresentationMetaData.filter(
+        (selectedRepresentation) =>
+          !representations.find((representation) => selectedRepresentation.id === representation.id)
+      );
+
+      const newSelectedRepresentations = [...representations, ...newRepresentations];
+
+      setState((prevState) => ({
+        ...prevState,
+        displayedRepresentation: displayedRepresentation ? displayedRepresentation : null,
+        representations: newSelectedRepresentations,
+      }));
+    }
+  }, [representationMetadataQueryData, selection]);
+
+  const onClose = (representationToHide: RepresentationMetadata) => {
+    const previousIndex = state.representations.findIndex(
+      (representation) => state.displayedRepresentation && representation.id === state.displayedRepresentation.id
+    );
+    const newRepresentations = state.representations.filter(
+      (representation) => representation.id !== representationToHide.id
+    );
+
+    if (newRepresentations.length === 0) {
+      // There are no representations anymore
+      setState((prevState) => ({
+        ...prevState,
+        displayedRepresentation: null,
+        representations: [],
+      }));
+    } else {
+      const newIndex = newRepresentations.findIndex(
+        (representation) => state.displayedRepresentation && representation.id === state.displayedRepresentation.id
+      );
+
+      if (newIndex !== -1) {
+        // The previously displayed representation has not been closed
+        setState((prevState) => ({
+          ...prevState,
+          representations: newRepresentations,
+        }));
+      } else if (newRepresentations.length === previousIndex) {
+        // The previous representation has been closed and it was the last one
+        const displayedRepresentation = newRepresentations[previousIndex - 1];
+        setState((prevState) => ({
+          ...prevState,
+          displayedRepresentation: displayedRepresentation ? displayedRepresentation : null,
+          representations: newRepresentations,
+        }));
+      } else {
+        const displayedRepresentation = newRepresentations[previousIndex];
+        setState((prevState) => ({
+          ...prevState,
+          displayedRepresentation: displayedRepresentation ? displayedRepresentation : null,
+          representations: newRepresentations,
+        }));
+      }
+    }
   };
-
-  const onError = ({ message }: ApolloError) => {
-    const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-    dispatch(showToastEvent);
-  };
-
-  const onComplete = () => {
-    const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-    dispatch(completeEvent);
-  };
-
-  useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    onData,
-    onComplete,
-    onError,
-  });
 
   useEffect(() => {
-    const updateSelectedRepresentation: UpdateSelectedRepresentationEvent = {
-      type: 'UPDATE_SELECTED_REPRESENTATION',
-      representations: data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [],
-    };
-    dispatch(updateSelectedRepresentation);
-  }, [data, selection, dispatch]);
-
-  const onRepresentationClick = (representation: RepresentationMetadata) => {
-    setSelection({ entries: [{ id: representation.id }] });
-  };
-
-  const onClose = (representation: RepresentationMetadata) => {
-    const hideRepresentationEvent: HideRepresentationEvent = { type: 'HIDE_REPRESENTATION', representation };
-    dispatch(hideRepresentationEvent);
-  };
-
-  useEffect(() => {
-    if (displayedRepresentation && displayedRepresentation.id !== initialRepresentationSelected?.id) {
-      onRepresentationSelected(displayedRepresentation);
-    } else if (displayedRepresentation === null && initialRepresentationSelected) {
+    if (state.displayedRepresentation && state.displayedRepresentation.id !== initialRepresentationSelected?.id) {
+      onRepresentationSelected(state.displayedRepresentation);
+    } else if (state.displayedRepresentation === null && initialRepresentationSelected) {
       onRepresentationSelected(null);
     }
-  }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
+  }, [onRepresentationSelected, initialRepresentationSelected, state.displayedRepresentation]);
 
   const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
   const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
@@ -171,25 +197,30 @@ export const Workbench = ({
   const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
   let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
 
-  if (displayedRepresentation) {
+  const onRepresentationClick = (representation: RepresentationMetadata) => {
+    setSelection({ entries: [{ id: representation.id }] });
+  };
+
+  if (state.displayedRepresentation) {
+    const metaData = state.displayedRepresentation;
     const RepresentationComponent = representationFactories
-      .map((representationFactory) => representationFactory(displayedRepresentation))
+      .map((representationFactory) => representationFactory(metaData))
       .find((component) => component != null);
     const props: RepresentationComponentProps = {
       editingContextId,
       readOnly,
-      representationId: displayedRepresentation.id,
+      representationId: state.displayedRepresentation.id,
     };
     if (RepresentationComponent) {
       main = (
         <div className={classes.representationArea} data-testid="representation-area">
           <RepresentationNavigation
-            representations={representations}
-            displayedRepresentation={displayedRepresentation}
+            representations={state.representations}
+            displayedRepresentation={metaData}
             onRepresentationClick={onRepresentationClick}
             onClose={onClose}
           />
-          <RepresentationComponent key={`${editingContextId}#${displayedRepresentation.id}`} {...props} />
+          <RepresentationComponent key={`${editingContextId}#${metaData.id}`} {...props} />
         </div>
       );
     }
@@ -205,11 +236,6 @@ export const Workbench = ({
         rightContributions={workbenchViewRightSideContributions}
         rightPanelInitialSize={25}
         mainArea={main}
-      />
-      <Toast
-        message={message ?? ''}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>
   );

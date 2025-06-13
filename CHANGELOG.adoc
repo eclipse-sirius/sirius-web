@@ -82,6 +82,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
+- https://github.com/eclipse-sirius/sirius-web/issues/5051[#5001] [sirius-web] Remove state machine from Workbench and EditProjectView
 
 
 

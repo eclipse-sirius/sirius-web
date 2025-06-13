@@ -25,29 +25,19 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
-import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
 import { editProjectViewReadOnlyPredicateExtensionPoint } from './EditProjectViewExtensionPoints';
-import {
-  EditProjectViewContext,
-  EditProjectViewEvent,
-  editProjectViewMachine,
-  EditProjectViewStateSchema,
-  HandleFetchedProjectEvent,
-  SelectRepresentationEvent,
-} from './EditProjectViewMachine';
 import { ProjectContext } from './ProjectContext';
 import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
+import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
 
 const PROJECT_ID_SEPARATOR = '@';
@@ -62,76 +52,91 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
   },
 }));
 
+type EditProjectViewState = {
+  project: GQLProject | null;
+  representation: RepresentationMetadata | null;
+};
+
 export const EditProjectView = () => {
   const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
 
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<EditProjectViewContext, EditProjectViewStateSchema, EditProjectViewEvent>>(
-      editProjectViewMachine
-    );
+  const [state, setState] = useState<EditProjectViewState>({
+    project: null,
+    representation: null,
+  });
 
   const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
   const name: string | null =
     separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
 
-  const { data } = useProjectAndRepresentationMetadata(projectId, name, representationId);
+  const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
   useEffect(() => {
     if (data) {
-      const fetchProjectEvent: HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT', data };
-      dispatch(fetchProjectEvent);
+      const { project } = data.viewer;
+
+      let representation: RepresentationMetadata | null = null;
+      if (project.currentEditingContext.representation) {
+        representation = {
+          id: project.currentEditingContext.representation.id,
+          label: project.currentEditingContext.representation.label,
+          kind: project.currentEditingContext.representation.kind,
+          iconURLs: project.currentEditingContext.representation.iconURLs,
+        };
+      }
+      setState((prevState) => ({
+        ...prevState,
+        project: project,
+        representation: representation,
+      }));
     }
   }, [data]);
 
   const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
-    const selectRepresentationEvent: SelectRepresentationEvent = {
-      type: 'SELECT_REPRESENTATION',
+    setState((prevState) => ({
+      ...prevState,
       representation: representationMetadata,
-    };
-    dispatch(selectRepresentationEvent);
+    }));
   };
 
   useSynchronizeSelectionAndURL(
     projectId,
     name,
     representationId,
-    context.project?.id ?? null,
-    context.representation?.id ?? null,
-    value !== 'loaded'
+    state.project ? state.project.id : null,
+    state.representation ? state.representation.id : null,
+    !state.project
   );
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
 
   const [urlSearchParams] = useSearchParams();
 
-  let content: React.ReactNode = null;
-  if (value === 'loading') {
-    content = <NavigationBar />;
-  }
-
-  if (value === 'missing') {
+  const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
+  if (isMissing) {
     return <Navigate to="/errors/404" replace />;
   }
 
-  if (value === 'loaded' && context.project && context.project.currentEditingContext) {
+  let content: React.ReactNode = null;
+  if (state.project && state.project.currentEditingContext) {
     const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
     const entries: SelectionEntry[] =
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
     const initialSelection: Selection = { entries };
 
-    const readOnly = readOnlyPredicate(context.project);
+    const readOnly = readOnlyPredicate(state.project);
     content = (
-      <ProjectContext.Provider value={{ project: context.project }}>
+      <ProjectContext.Provider value={{ project: state.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
           <SelectionSynchronizer>
-            <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
+            <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
               <UndoRedo>
                 <EditProjectNavbar readOnly={readOnly} />
                 <TreeToolBarProvider>
                   <Workbench
-                    editingContextId={context.project.currentEditingContext.id}
-                    initialRepresentationSelected={context.representation}
+                    editingContextId={state.project.currentEditingContext.id}
+                    initialRepresentationSelected={state.representation}
                     onRepresentationSelected={onRepresentationSelected}
                     readOnly={readOnly}
                   />

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
-
-export interface GQLEditingContextEventPayload {
-  __typename: string;
-}
-
-export interface GQLRepresentationRenamedEventPayload extends GQLEditingContextEventPayload {
-  id: string;
-  representationId: string;
-  newLabel: string;
-}
-
-export type GQLEditingContextEventSubscription = {
-  editingContextEvent: GQLEditingContextEventPayload;
-};
 
 export type RepresentationMetadata = {
   id: string;
