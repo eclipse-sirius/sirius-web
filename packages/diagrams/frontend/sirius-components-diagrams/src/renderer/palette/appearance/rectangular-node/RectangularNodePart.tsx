@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import FormatColorResetIcon from '@mui/icons-material/FormatColorReset';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
@@ -18,10 +19,10 @@ import Typography from '@mui/material/Typography';
 import { useContext, useState } from 'react';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
+import { Color } from '../Color';
+import { RectangularNodePartProps, RectangularNodePartState } from './RectangularNodePart.types';
 import { useResetNodeAppearance } from './useResetNodeAppearance';
 import { useUpdateRectangularNodeAppearance } from './useUpdateRectangularNodeAppearance';
-
-import { RectangularNodePartProps, RectangularNodePartState } from './RectangularNodePart.types';
 
 export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }: RectangularNodePartProps) => {
   const [state, setState] = useState<RectangularNodePartState>({
@@ -39,26 +40,42 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
   };
 
   return (
-    <ListItem>
-      <Typography variant="subtitle2">Background</Typography>
-      <TextField
-        variant="standard"
-        value={state.background}
-        onChange={onBackgroundChange}
-        onKeyDown={(event) => {
-          if (event.code === 'Enter') {
-            updateBackground(editingContextId, diagramId, nodeId, state.background);
-          }
-        }}
-        onBlur={() => updateBackground(editingContextId, diagramId, nodeId, state.background)}
-      />
-      {customizedStyleProperties.some((property) => property === 'BACKGROUND') ? (
-        <IconButton
-          aria-label="reset"
-          onClick={() => resetNodeStyleProperties(editingContextId, diagramId, nodeId, ['BACKGROUND'])}>
-          <FormatColorResetIcon />
-        </IconButton>
-      ) : null}
+    <ListItem disablePadding sx={(theme) => ({ paddingX: theme.spacing(1), paddingBottom: theme.spacing(1) })}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="subtitle2">Style</Typography>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="caption">Background</Typography>
+
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr min-content' }}>
+            <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'end', gap: theme.spacing(1) })}>
+              <Color value={state.background} />
+              <TextField
+                variant="standard"
+                value={state.background}
+                onChange={onBackgroundChange}
+                onKeyDown={(event) => {
+                  if (event.code === 'Enter') {
+                    updateBackground(editingContextId, diagramId, nodeId, state.background);
+                  }
+                }}
+                onBlur={() => updateBackground(editingContextId, diagramId, nodeId, state.background)}
+              />
+            </Box>
+            <IconButton
+              aria-label="reset"
+              size="small"
+              onClick={() => resetNodeStyleProperties(editingContextId, diagramId, nodeId, ['BACKGROUND'])}
+              disabled={!customizedStyleProperties.includes('BACKGROUND')}
+              sx={{
+                alignSelf: 'center',
+                justifySelf: 'center',
+              }}>
+              <FormatColorResetIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        </Box>
+      </Box>
     </ListItem>
   );
 };
