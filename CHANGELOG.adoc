@@ -5,7 +5,7 @@
 === Shapes
 
 - Control the views available in a workbench
-
+- Add selected project setting tab to the URL
 
 === Architectural decision records
 
