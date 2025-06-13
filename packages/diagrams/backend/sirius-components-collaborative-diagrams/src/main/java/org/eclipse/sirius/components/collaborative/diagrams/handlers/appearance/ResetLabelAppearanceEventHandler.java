@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.handlers;
+package org.eclipse.sirius.components.collaborative.diagrams.handlers.appearance;
 
 import java.util.ArrayList;
 import java.util.List;

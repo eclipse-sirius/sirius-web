@@ -10,13 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-/**
- * Input for the edition of a rectangular node's appearance.
- *
- * @author nvannier
- */
-public record RectangularNodeAppearanceInput(String background) {
+import { GQLRectangularNodeStyle } from '../../../../graphql/subscription/nodeFragment.types';
 
+export interface RectangularNodePartProps {
+  nodeId: string;
+  style: GQLRectangularNodeStyle;
+  customizedStyleProperties: string[];
+}
+
+export interface RectangularNodePartState {
+  background: string;
 }
