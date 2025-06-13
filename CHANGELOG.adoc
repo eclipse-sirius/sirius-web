@@ -60,7 +60,8 @@ The name of the EClass being a bit redundant it was decided a long time ago in S
 If your EMF based objects do not have a feature that can be used as a label, consider providing an `IEMFLabelServiceDelegate` to compute a proper label.
 This type of customization was not possible previously.
 Additional concerns will be removed in the future from `IObjectService` until we can remove this class entirely.
-
+- The backend modules `sirius-components-graphiql` and `sirius-components-graphql-voyager` and the frontend module `sirius-components-specification-layout` have been removed.
+They were unused and out of date.
 
 
 === Dependency update
