@@ -12,18 +12,10 @@
  *******************************************************************************/
 import React from 'react';
 
-export interface GQLEditingContextEventPayload {
-  __typename: string;
-}
-
-export interface GQLRepresentationRenamedEventPayload extends GQLEditingContextEventPayload {
+export type WorkbenchState = {
   id: string;
-  representationId: string;
-  newLabel: string;
-}
-
-export type GQLEditingContextEventSubscription = {
-  editingContextEvent: GQLEditingContextEventPayload;
+  displayedRepresentationMetadata: RepresentationMetadata | null;
+  representationsMetadata: RepresentationMetadata[];
 };
 
 export type RepresentationMetadata = {
