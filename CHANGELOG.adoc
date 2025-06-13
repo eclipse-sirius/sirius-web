@@ -152,6 +152,7 @@ The page will now redirect to a 404 if the `tabId` in the URL is not a known tab
 - https://github.com/eclipse-sirius/sirius-web/issues/5161[#5161] [core] Keep the same order for the payloads of the subscriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/5141[#5141] [core] Lower coupling in the EditingContextEventProcessor thanks to a dedicated service to manage representations
 - https://github.com/eclipse-sirius/sirius-web/issues/5095[#5095] [sirius-web] Remove state machine from modals used by the explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/5101[#5101] [core] Remove state machine from Workbench and EditProjectView
 
 
 
