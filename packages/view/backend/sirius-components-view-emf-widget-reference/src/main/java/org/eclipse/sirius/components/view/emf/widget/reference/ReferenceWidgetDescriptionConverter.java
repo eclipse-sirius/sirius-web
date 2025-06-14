@@ -33,8 +33,8 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -72,7 +72,7 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final Logger logger = LoggerFactory.getLogger(ReferenceWidgetDescriptionConverter.class);
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -88,14 +88,14 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverter(IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ReferenceWidgetDescriptionConverter(IIdentityService identityService, ILabelService labelService, IOperationExecutor operationExecutor, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.adapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(identityService::getId).orElse(null);
         this.emfKindService = Objects.requireNonNull(emfKindService);
     }
 
@@ -178,7 +178,7 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private String getOwnerId(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
         EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
-        return this.objectService.getId(owner);
+        return this.identityService.getId(owner);
     }
 
     private Setting resolveSetting(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
@@ -267,11 +267,11 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
     }
 
     private String getItemKind(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getKind).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getKind).orElse("");
     }
 
     private String getItemId(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getId).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getId).orElse("");
     }
 
     private String getDescriptionId(FormElementDescription description) {

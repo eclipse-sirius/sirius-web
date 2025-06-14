@@ -27,8 +27,8 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
@@ -55,7 +55,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
 
     private static final String DEFAULT_GANTT_DESCRIPTION_LABEL = "Gantt Description";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -69,13 +69,13 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
 
     private final GanttIdProvider ganttIdProvider;
 
-    public ViewGanttDescriptionConverter(IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, GanttIdProvider ganttIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewGanttDescriptionConverter(IIdentityService identityService, ILabelService labelService, IOperationExecutor operationExecutor, GanttIdProvider ganttIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.ganttIdProvider = Objects.requireNonNull(ganttIdProvider);
-        this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
-        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
+        this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.identityService::getId).orElse(null);
+        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.identityService::getKind).orElse(null);
         this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(null);
     }
 

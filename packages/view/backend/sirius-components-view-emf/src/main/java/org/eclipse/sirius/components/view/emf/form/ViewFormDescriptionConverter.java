@@ -20,7 +20,7 @@ import java.util.function.UnaryOperator;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -51,14 +51,14 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
     private static final String DEFAULT_FORM_LABEL = "Form";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IFormIdProvider formIdProvider;
 
     private final IPageDescriptionConverter pageDescriptionConverter;
 
-    public ViewFormDescriptionConverter(IObjectService objectService, IFormIdProvider formIdProvider, IPageDescriptionConverter pageDescriptionConverter) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewFormDescriptionConverter(IIdentityService identityService, IFormIdProvider formIdProvider, IPageDescriptionConverter pageDescriptionConverter) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.pageDescriptionConverter = Objects.requireNonNull(pageDescriptionConverter);
     }
@@ -78,7 +78,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .toList();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         UnaryOperator<VariableManager> variableManagerInitializer = variableManager -> {

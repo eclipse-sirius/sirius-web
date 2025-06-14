@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -50,7 +50,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -58,8 +58,8 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
-    public EMFFormDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
@@ -79,7 +79,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return FormDescription.newFormDescription(IEMFFormDescriptionProvider.DESCRIPTION_ID)
@@ -96,7 +96,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
     private String getFormId(VariableManager variableManager) {
         List<?> selectedObjects = variableManager.get("selection", List.class).orElse(List.of());
         List<String> selectedObjectIds = selectedObjects.stream()
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .toList();
         var encodedIds = selectedObjectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
         return "details://?objectIds=[" + String.join(",", encodedIds) + "]";
@@ -107,7 +107,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
-                return this.objectService.getId(self);
+                return this.identityService.getId(self);
             }
             return UUID.randomUUID().toString();
         };
@@ -155,7 +155,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         };
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(objectService::getId)
+                .map(identityService::getId)
                 .orElse(null);
 
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();

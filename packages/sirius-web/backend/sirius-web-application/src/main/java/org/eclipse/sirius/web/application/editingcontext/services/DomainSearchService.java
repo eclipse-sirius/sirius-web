@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ public class DomainSearchService implements IDomainSearchService {
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
                 .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
-                .sorted()
+                .sorted(this.domainComparator())
                 .toList();
     }
 
@@ -63,7 +64,19 @@ public class DomainSearchService implements IDomainSearchService {
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
                 .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
-                .sorted()
+                .sorted(this.domainComparator())
                 .toList();
+    }
+
+    private Comparator<Domain> domainComparator() {
+        return (firstDomain, secondDomain) -> {
+            String customDomainPrefix = "domain://";
+            // Make sure custom-defined domains are before non-custom ones
+            if (firstDomain.id().startsWith(customDomainPrefix) && !secondDomain.id().startsWith(customDomainPrefix)) {
+                return -1;
+            } else {
+                return firstDomain.id().compareTo(secondDomain.id());
+            }
+        };
     }
 }
