@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.services;
+package org.eclipse.sirius.web.application.object.services;
 
 import java.util.Objects;
 
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class DefaultIdentityService implements IDefaultIdentityService {
     public DefaultIdentityService(IEMFKindService emfKindService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
     }
+
     @Override
     public String getId(Object object) {
         String id = null;

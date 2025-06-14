@@ -17,7 +17,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.sirius.web.application.object.services.api.IDefaultReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.IDefaultReadOnlyObjectPredicate;
 import org.springframework.stereotype.Service;
 
 /**
