@@ -63,6 +63,19 @@ Additional concerns will be removed in the future from `IObjectService` until we
 - The backend modules `sirius-components-graphiql` and `sirius-components-graphql-voyager` and the frontend module `sirius-components-specification-layout` have been removed.
 They were unused and out of date.
 - [table] Remove the useless parameters `ITableIdProvider` and `IObjectService` in `ICustomCellConverter#convert` since both can be retrieved by the Spring dependency injection for implementations of this interface which need them
+- [core] Move read only related services located in `sirius-web-application` to `sirius-components-core`.
+As a result, `org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate` can now be used by Sirius Components modules and `org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate` can be implemented by downstream consumers of Sirius Components.
+- [core] Move default implementation of core services in `sirius-web-application`.
+Previously those implementation were located in various modules such as `sirius-components-emf`.
+Now all the default assumptions on the way Sirius Web works are consolidated in `org.eclipse.sirius.web.application.object.services`.
+In this package, you can now find the following default implementations:
+* `DefaultContentService`
+* `DefaultEditService`
+* `DefaultIdentityService`
+* `DefaultLabelService`
+* `DefaultObjectSearchService`
+* `DefaultReadOnlyObjectPredicate`
+
 
 
 === Dependency update

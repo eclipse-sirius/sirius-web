@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.services.api.IDefaultLabelFeatureProvider;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDefaultExplorerLabelService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
