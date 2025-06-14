@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.form.converters;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -25,16 +25,16 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TargetObjectIdProvider implements Function<VariableManager, String> {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public TargetObjectIdProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public TargetObjectIdProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String apply(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
     }
 }

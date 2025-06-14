@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
@@ -59,7 +59,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private final IPropertiesConfigurerService propertiesConfigurerService;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -69,9 +69,9 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
-    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, ILabelService labelService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -191,8 +191,8 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .optionsProvider(optionsProvider)
                 .iconURLProvider(variableManager -> List.of())
                 .itemsProvider(variableManager -> this.getReferenceValue(variableManager, feature))
-                .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
-                .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
+                .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.identityService::getId).orElse(""))
+                .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.identityService::getKind).orElse(""))
                 .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(""))
                 .itemIconURLProvider(variableManager -> this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of()))
                 .ownerKindProvider(variableManager -> this.getTypeName(variableManager, feature))
@@ -200,7 +200,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, feature))
                 .isManyProvider(variableManager -> this.isMany(variableManager, feature))
                 .styleProvider(variableManager -> null)
-                .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(""))
+                .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.identityService::getId).orElse(""))
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(feature))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())

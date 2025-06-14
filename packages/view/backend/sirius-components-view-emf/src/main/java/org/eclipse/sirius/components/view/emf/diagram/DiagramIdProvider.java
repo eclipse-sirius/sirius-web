@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
@@ -32,23 +32,23 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramIdProvider implements IDiagramIdProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public DiagramIdProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DiagramIdProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String getId(DiagramDescription diagramDescription) {
         String sourceId = this.getSourceIdFromElementDescription(diagramDescription);
-        String sourceElementId = this.objectService.getId(diagramDescription);
+        String sourceElementId = this.identityService.getId(diagramDescription);
         return DIAGRAM_DESCRIPTION_KIND + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 
     @Override
     public String getId(DiagramElementDescription diagramElementDescription) {
         String sourceId = this.getSourceIdFromElementDescription(diagramElementDescription);
-        String sourceElementId = this.objectService.getId(diagramElementDescription);
+        String sourceElementId = this.identityService.getId(diagramElementDescription);
         if (diagramElementDescription instanceof NodeDescription) {
             return NODE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
         } else {
@@ -60,7 +60,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
     public String getId(DialogDescription dialogDescription) {
         if (dialogDescription != null) {
             String sourceId = this.getSourceIdFromElementDescription(dialogDescription);
-            String sourceElementId = this.objectService.getId(dialogDescription);
+            String sourceElementId = this.identityService.getId(dialogDescription);
             return this.getDialogDescriptionTypeName(dialogDescription) + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }
@@ -71,7 +71,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
     public String getId(SelectionDialogTreeDescription treeDescription) {
         if (treeDescription != null) {
             String sourceId = this.getSourceIdFromElementDescription(treeDescription);
-            String sourceElementId = this.objectService.getId(treeDescription);
+            String sourceElementId = this.identityService.getId(treeDescription);
             return SELECTION_DIALOG_TREE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }

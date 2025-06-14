@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
@@ -39,15 +39,15 @@ import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
  */
 public class CellDescriptionConverter {
 
-    private final ITableIdProvider tableIdProvider;
+    private final IIdentityService identityService;
 
-    private final IObjectService objectService;
+    private final ITableIdProvider tableIdProvider;
 
     private final List<ICustomCellConverter> customCellConverters;
 
-    public CellDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService, List<ICustomCellConverter> customCellConverters) {
+    public CellDescriptionConverter(IIdentityService identityService, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
-        this.objectService = Objects.requireNonNull(objectService);
         this.customCellConverters = Objects.requireNonNull(customCellConverters);
     }
 
@@ -69,8 +69,7 @@ public class CellDescriptionConverter {
             if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
                 optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
             }
-            return optionalSelf
-                    .map(this.objectService::getId)
+            return optionalSelf.map(this.identityService::getId)
                     .orElse("");
         };
 
@@ -79,8 +78,7 @@ public class CellDescriptionConverter {
             if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
                 optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
             }
-            return optionalSelf
-                    .map(this.objectService::getKind)
+            return optionalSelf.map(this.identityService::getKind)
                     .orElse("");
         };
 
@@ -130,7 +128,7 @@ public class CellDescriptionConverter {
                     .build());
         } else {
             optionalICellDescription = this.customCellConverters.stream()
-                    .map(converter -> converter.convert(viewCellDescription, interpreter, this.tableIdProvider, this.objectService))
+                    .map(converter -> converter.convert(viewCellDescription, interpreter))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .findFirst();

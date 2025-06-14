@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -42,9 +42,9 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
 
     private static final String DEFAULT_TABLE_LABEL = "Table";
 
-    private final ITableIdProvider tableIdProvider;
+    private final IIdentityService identityService;
 
-    private final IObjectService objectService;
+    private final ITableIdProvider tableIdProvider;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
@@ -52,18 +52,17 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
 
     private final List<ICustomCellConverter> customCellConverters;
 
-    public ViewTableRepresentationDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService, List<ICustomCellConverter> customCellConverters) {
+    public ViewTableRepresentationDescriptionConverter(IIdentityService identityService, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.customCellConverters = Objects.requireNonNull(customCellConverters);
 
         this.semanticTargetIdProvider = variableManager -> {
             Optional<Object> optionalSelf = this.self(variableManager);
-            return optionalSelf
-                    .map(this.objectService::getId)
+            return optionalSelf.map(this.identityService::getId)
                     .orElseGet(() -> optionalSelf.map(Object::toString).orElse(""));
         };
-        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse("");
+        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.identityService::getKind).orElse("");
     }
 
     @Override
@@ -113,7 +112,7 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
                                 interpreter))
                 .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, this.semanticTargetKindProvider).convert(viewTableDescription.getRowDescription(),
                         interpreter))
-                .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService, this.customCellConverters).convert(viewTableDescription.getCellDescriptions(), interpreter))
+                .cellDescriptions(new CellDescriptionConverter(this.identityService, this.tableIdProvider, this.customCellConverters).convert(viewTableDescription.getCellDescriptions(), interpreter))
                 .isStripeRowPredicate(isStripeRowPredicate)
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewTableDescription.getIconExpression()))
                 .enableSubRows(viewTableDescription.isEnableSubRows())

@@ -8,9 +8,9 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *      Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.object.services.api;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.function.Predicate;
 
@@ -19,6 +19,8 @@ import java.util.function.Predicate;
  *
  * @author gdaniel
  */
-public interface IReadOnlyObjectPredicate extends Predicate<Object> {
+public interface IReadOnlyObjectPredicateDelegate extends Predicate<Object> {
+
+    boolean canHandle(Object object);
 
 }

@@ -22,7 +22,7 @@ import java.util.function.BiFunction;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -44,7 +44,7 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
 
     private final AQLInterpreter interpreter;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IOperationExecutor operationExecutor;
 
@@ -52,9 +52,9 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
 
     private final List<Operation> operations;
 
-    public MultiSelectNewValueHandler(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
+    public MultiSelectNewValueHandler(AQLInterpreter interpreter, IObjectSearchService objectSearchService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.operations = Objects.requireNonNull(operations);
@@ -68,7 +68,7 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
             IEditingContext editingContext = optionalEditingDomain.get();
 
             List<Object> newValuesObjects = newValue.stream()
-                    .map(currentValue -> this.objectService.getObject(editingContext, currentValue))
+                    .map(currentValue -> this.objectSearchService.getObject(editingContext, currentValue))
                     .flatMap(Optional::stream)
                     .toList();
 
