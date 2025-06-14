@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -27,15 +27,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class OptionIdProvider implements Function<VariableManager, String> {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public OptionIdProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public OptionIdProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String apply(VariableManager variableManager) {
         Object candidate = variableManager.getVariables().get(SelectComponent.CANDIDATE_VARIABLE);
-        return Optional.ofNullable(this.objectService.getId(candidate)).orElseGet(() -> Optional.ofNullable(candidate).map(Objects::toString).orElse(""));
+        return Optional.ofNullable(this.identityService.getId(candidate)).orElseGet(() -> Optional.ofNullable(candidate).map(Objects::toString).orElse(""));
     }
 }

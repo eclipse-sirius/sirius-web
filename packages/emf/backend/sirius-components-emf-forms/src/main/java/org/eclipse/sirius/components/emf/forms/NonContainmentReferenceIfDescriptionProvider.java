@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -58,7 +58,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
@@ -68,10 +68,10 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, ILabelService labelService, IEMFKindService emfKindService,
+    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
                                                         IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
@@ -81,7 +81,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     @Override
     public List<IfDescription> getIfDescriptions() {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return List.of(IfDescription.newIfDescription(IF_DESCRIPTION_ID)
@@ -100,7 +100,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private ReferenceWidgetDescription getReferenceWidgetDescription() {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
@@ -182,15 +182,15 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private String getItemKind(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getKind).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getKind).orElse("");
     }
 
     private String getItemId(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getId).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getId).orElse("");
     }
 
     private String getOwnerId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse("");
+        return variableManager.get(VariableManager.SELF, EObject.class).map(this.identityService::getId).orElse("");
     }
 
     private Function<VariableManager, String> getLabelProvider() {

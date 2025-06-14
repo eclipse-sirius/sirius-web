@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -35,10 +35,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FormDescriptionEditorDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public FormDescriptionEditorDescriptionProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public FormDescriptionEditorDescriptionProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class FormDescriptionEditorDescriptionProvider implements IEditingContext
                 .filter(FormPackage.eINSTANCE.getFormDescription()::equals)
                 .isPresent();
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         FormDescriptionEditorDescription formDescriptionEditorDescription = FormDescriptionEditorDescription.newFormDescriptionEditorDescription(id.toString())
