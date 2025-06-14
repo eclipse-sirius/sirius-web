@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.object.services;
+package org.eclipse.sirius.components.core.services;
 
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.web.application.object.services.api.IDefaultReadOnlyObjectPredicate;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicateDelegate;
+import org.eclipse.sirius.components.core.api.IDefaultReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate;
 import org.springframework.stereotype.Service;
 
 /**

@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.object.services.api;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.function.Predicate;
 
 /**
- * The default service used to test if an object is read-only.
+ * Used to test if an object is read-only.
  *
  * @author gdaniel
  */
-public interface IDefaultReadOnlyObjectPredicate extends Predicate<Object> {
+public interface IReadOnlyObjectPredicateDelegate extends Predicate<Object> {
+
+    boolean canHandle(Object object);
 
 }
