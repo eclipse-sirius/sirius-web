@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,35 +20,11 @@ import java.util.Objects;
  *
  * @author sbegaudeau
  */
-public class ChildCreationDescription {
+public record ChildCreationDescription(String id, String label, List<String> iconURL) {
 
-    private final String id;
-
-    private final String label;
-
-    private final List<String> iconURL;
-
-    public ChildCreationDescription(String id, String label, List<String> iconURL) {
-        this.id = Objects.requireNonNull(id);
-        this.label = Objects.requireNonNull(label);
-        this.iconURL = Objects.requireNonNull(iconURL);
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public String getLabel() {
-        return this.label;
-    }
-
-    public List<String> getIconURL() {
-        return this.iconURL;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
+    public ChildCreationDescription {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(iconURL);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
@@ -43,7 +43,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 public class ForkedStudioSemanticDataCreationService {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
@@ -55,8 +55,8 @@ public class ForkedStudioSemanticDataCreationService {
 
     private final IForkedViewSemanticDataInitializer forkedViewSemanticDataInitializer;
 
-    public ForkedStudioSemanticDataCreationService(IObjectService objectService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, IEditingContextSearchService editingContextSearchService, IForkedViewSemanticDataInitializer forkedViewSemanticDataInitializer) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ForkedStudioSemanticDataCreationService(IIdentityService identityService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, IEditingContextSearchService editingContextSearchService, IForkedViewSemanticDataInitializer forkedViewSemanticDataInitializer) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
@@ -96,7 +96,7 @@ public class ForkedStudioSemanticDataCreationService {
 
                 var optionalRepresentationDescription = this.viewRepresentationDescriptionSearchService.findViewsBySourceId(editingContext, sourceId).stream()
                         .flatMap(view -> view.getDescriptions().stream())
-                        .filter(description -> objectService.getId(description).equals(sourceElementId))
+                        .filter(description -> identityService.getId(description).equals(sourceElementId))
                         .findFirst();
 
                 if (optionalRepresentationDescription.isPresent()) {

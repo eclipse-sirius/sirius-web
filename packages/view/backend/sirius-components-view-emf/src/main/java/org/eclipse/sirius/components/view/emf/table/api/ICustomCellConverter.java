@@ -15,10 +15,8 @@ package org.eclipse.sirius.components.view.emf.table.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
-import org.eclipse.sirius.components.view.emf.table.ITableIdProvider;
 import org.eclipse.sirius.components.view.table.CellDescription;
 
 /**
@@ -28,5 +26,5 @@ import org.eclipse.sirius.components.view.table.CellDescription;
  */
 public interface ICustomCellConverter {
 
-    Optional<ICellDescription> convert(CellDescription cellDescription, AQLInterpreter interpreter, ITableIdProvider tableIdProvider, IObjectService objectService);
+    Optional<ICellDescription> convert(CellDescription cellDescription, AQLInterpreter interpreter);
 }

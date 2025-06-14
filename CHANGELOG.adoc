@@ -62,6 +62,7 @@ This type of customization was not possible previously.
 Additional concerns will be removed in the future from `IObjectService` until we can remove this class entirely.
 - The backend modules `sirius-components-graphiql` and `sirius-components-graphql-voyager` and the frontend module `sirius-components-specification-layout` have been removed.
 They were unused and out of date.
+- [table] Remove the useless parameters `ITableIdProvider` and `IObjectService` in `ICustomCellConverter#convert` since both can be retrieved by the Spring dependency injection for implementations of this interface which need them
 
 
 === Dependency update

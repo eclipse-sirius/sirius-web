@@ -25,7 +25,8 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
@@ -45,17 +46,22 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.emf.diagram.api.IToolConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.ToolExecutor;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
+import org.springframework.stereotype.Service;
 
 /**
  * Convert View-based tool definitions into ITools.
  *
  * @author pcdavid
  */
-public class ToolConverter {
+@Service
+public class ToolConverter implements IToolConverter {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
 
     private final IToolExecutor toolExecutor;
 
@@ -66,8 +72,9 @@ public class ToolConverter {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    public ToolConverter(IObjectService objectService, IToolExecutor toolExecutor, IDiagramIdProvider diagramIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ToolConverter(IIdentityService identityService, IObjectSearchService objectSearchService, IToolExecutor toolExecutor, IDiagramIdProvider diagramIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.toolExecutor = Objects.requireNonNull(toolExecutor);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
@@ -80,13 +87,14 @@ public class ToolConverter {
      * {@link ViewPaletteProvider} can then find all the applicable tools, and is free to reorganize them in proper
      * user-facing sections and add the appropriate "extra tools".
      */
+    @Override
     public List<Palette> createPaletteBasedToolSections(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
         var allPalettes = new ArrayList<Palette>();
         var toolFinder = new ToolFinder();
 
         // Palette for the diagram itself
-        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + this.objectService.getId(viewDiagramDescription);
+        String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + this.identityService.getId(viewDiagramDescription);
         var diagramNodeTools = new ArrayList<ITool>();
         toolFinder.findNodeTools(viewDiagramDescription).stream()
                 .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true))
@@ -106,7 +114,7 @@ public class ToolConverter {
 
         // One palette for each NodeDescription
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
-            String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + this.objectService.getId(nodeDescription);
+            String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + this.identityService.getId(nodeDescription);
             var tools = new ArrayList<ITool>();
             var nodeTools = new ArrayList<ITool>();
             toolFinder.findNodeTools(nodeDescription).stream()
@@ -133,7 +141,7 @@ public class ToolConverter {
 
         // One palette for each EdgeDescription
         for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
-            String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + this.objectService.getId(edgeDescription);
+            String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + this.identityService.getId(edgeDescription);
             var edgeNodeTools = new ArrayList<ITool>();
             toolFinder.findNodeTools(edgeDescription).stream()
                     .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
@@ -245,7 +253,7 @@ public class ToolConverter {
                 if (optionalEditingContext.isPresent()) {
                     newSelection = workbenchSelection.getEntries().stream()
                             .filter(entry -> entry.getKind().startsWith(SemanticKindConstants.PREFIX + "?"))
-                            .map(entry -> this.objectService.getObject(optionalEditingContext.get(), entry.getId()))
+                            .map(entry -> this.objectSearchService.getObject(optionalEditingContext.get(), entry.getId()))
                             .flatMap(Optional::stream)
                             .toList();
                 }
@@ -265,7 +273,7 @@ public class ToolConverter {
             if (optionalComputedNewSelection.isPresent()) {
                 // Convert back the result into a WorkbenchSelection
                 var entries = optionalComputedNewSelection.get().stream()
-                        .map(element -> new WorkbenchSelectionEntry(this.objectService.getId(element), this.objectService.getKind(element)))
+                        .map(element -> new WorkbenchSelectionEntry(this.identityService.getId(element), this.identityService.getKind(element)))
                         .toList();
                 success.getParameters().put(Success.NEW_SELECTION, new WorkbenchSelection(entries));
             }
