@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TableWidgetDescriptionConverter implements IWidgetDescriptionConverter {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IFormIdProvider widgetIdProvider;
 
@@ -56,8 +56,8 @@ public class TableWidgetDescriptionConverter implements IWidgetDescriptionConver
 
     private final List<ICustomCellConverter> customCellConverters;
 
-    public TableWidgetDescriptionConverter(IObjectService objectService, IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public TableWidgetDescriptionConverter(IIdentityService identityService, IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.customCellConverters = Objects.requireNonNull(customCellConverters);
@@ -74,7 +74,7 @@ public class TableWidgetDescriptionConverter implements IWidgetDescriptionConver
             String descriptionId = this.widgetIdProvider.getFormElementDescriptionId(viewTableWidgetDescription);
 
             Function<VariableManager, String> targetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getId)
+                    .map(this.identityService::getId)
                     .orElse("");
             WidgetIdProvider idProvider = new WidgetIdProvider();
             StringValueProvider labelProvider = new StringValueProvider(interpreter, Optional.ofNullable(viewTableWidgetDescription.getLabelExpression()).orElse(""));
@@ -94,7 +94,7 @@ public class TableWidgetDescriptionConverter implements IWidgetDescriptionConver
                     .isStripeRowPredicate(isStripeRowPredicate)
                     .iconURLsProvider(variableManager -> List.of())
                     .columnDescriptions(new ColumnDescriptionConverter(this.tableIdProvider, targetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getColumnDescriptions(), interpreter))
-                    .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService, this.customCellConverters).convert(viewTableWidgetDescription.getCellDescriptions(), interpreter))
+                    .cellDescriptions(new CellDescriptionConverter(this.identityService, this.tableIdProvider, this.customCellConverters).convert(viewTableWidgetDescription.getCellDescriptions(), interpreter))
                     .lineDescription(new RowDescriptionConverter(this.tableIdProvider, targetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getRowDescription(), interpreter))
                     .enableSubRows(false)
                     .pageSizeOptionsProvider(variableManager -> List.of(5, 10, 20, 50))

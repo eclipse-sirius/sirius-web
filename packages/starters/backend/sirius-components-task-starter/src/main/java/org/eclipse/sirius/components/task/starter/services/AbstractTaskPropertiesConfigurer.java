@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
@@ -47,7 +47,6 @@ import org.eclipse.sirius.components.task.Person;
 import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
 import org.eclipse.sirius.components.task.TaskPackage;
-import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.components.task.Team;
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
 import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
@@ -61,16 +60,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
+    private final IIdentityService identityService;
+
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
 
-    private final IObjectService objectService;
     private final PropertiesConfigurerService propertiesConfigurerService;
 
-    public AbstractTaskPropertiesConfigurer(PropertiesConfigurerService propertiesConfigurerService,
-            IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+    public AbstractTaskPropertiesConfigurer(IIdentityService identityService, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
-        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
@@ -239,17 +238,13 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
     }
 
     private Function<VariableManager, List<?>> getDependenciesProvider() {
-        return variableManager -> {
-            List<Task> dependencies =  variableManager.get(VariableManager.SELF, AbstractTask.class)
-                .map(this::getProject)
-                .stream()
-                .flatMap(this::getAllContentStream)
-                .filter(Task.class::isInstance)
-                .map(Task.class::cast)
-                .toList();
-
-            return dependencies;
-        };
+        return variableManager -> variableManager.get(VariableManager.SELF, AbstractTask.class)
+            .map(this::getProject)
+            .stream()
+            .flatMap(this::getAllContentStream)
+            .filter(Task.class::isInstance)
+            .map(Task.class::cast)
+            .toList();
     }
 
     private Project getProject(EObject eObject) {
@@ -270,42 +265,31 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                 TaskPackage.Literals.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY,
                 Optional.empty());
 
-        IfDescription ifComputeDynamically = IfDescription.newIfDescription("if.abstractTask.computeDynamically")
-            .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-            .predicate(variableManager-> {
-                return variableManager.get(VariableManager.SELF, AbstractTask.class)
-                    .filter(task -> !task.getSubTasks().isEmpty())
-                    .isPresent();
-            })
+        return IfDescription.newIfDescription("if.abstractTask.computeDynamically")
+            .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
+            .predicate(variableManager-> variableManager.get(VariableManager.SELF, AbstractTask.class)
+                .filter(task -> !task.getSubTasks().isEmpty())
+                .isPresent())
             .controlDescriptions(List.of(computeDynamically))
             .build();
-        return ifComputeDynamically;
     }
 
     private Function<VariableManager, List<?>> getTagsProvider() {
-        return variableManager -> {
-            List<TaskTag> tags = variableManager.get(VariableManager.SELF, EObject.class)
-                .map(this::getProject)
-                .stream()
-                .flatMap(project -> project.getOwnedTags().stream())
-                .toList();
-
-            return tags;
-        };
+        return variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
+            .map(this::getProject)
+            .stream()
+            .flatMap(project -> project.getOwnedTags().stream())
+            .toList();
     }
 
     private Function<VariableManager, List<?>> getPersonsProvider() {
-        return variableManager -> {
-            List<Person> persons = variableManager.get(VariableManager.SELF, EObject.class)
-                .map(EObject::eResource)
-                .stream()
-                .flatMap(this::getAllResourceContentStream)
-                .filter(Person.class::isInstance)
-                .map(Person.class::cast)
-                .toList();
-
-            return persons;
-        };
+        return variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
+            .map(EObject::eResource)
+            .stream()
+            .flatMap(this::getAllResourceContentStream)
+            .filter(Person.class::isInstance)
+            .map(Person.class::cast)
+            .toList();
     }
 
     private Stream<EObject> getAllResourceContentStream(Resource resource) {
@@ -319,16 +303,12 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
     }
 
     private Function<VariableManager, List<?>> getTeamsProvider() {
-        return variableManager -> {
-            List<Team> teams = variableManager.get(VariableManager.SELF, EObject.class)
-                .map(EObject::eResource)
-                .stream()
-                .flatMap(this::getAllResourceContentStream)
-                .filter(Team.class::isInstance)
-                .map(Team.class::cast)
-                .toList();
-
-            return teams;
-        };
+        return variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
+            .map(EObject::eResource)
+            .stream()
+            .flatMap(this::getAllResourceContentStream)
+            .filter(Team.class::isInstance)
+            .map(Team.class::cast)
+            .toList();
     }
 }
