@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.gantt;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
 import org.springframework.stereotype.Service;
@@ -29,23 +29,23 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class GanttIdProvider implements IGanttIdProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public GanttIdProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public GanttIdProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String getId(GanttDescription ganttDescription) {
         String sourceId = this.getSourceIdFromElementDescription(ganttDescription);
-        String sourceElementId = this.objectService.getId(ganttDescription);
+        String sourceElementId = this.identityService.getId(ganttDescription);
         return GANTT_DESCRIPTION_KIND + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 
     @Override
     public String getId(TaskDescription taskDescription) {
         String sourceId = this.getSourceIdFromElementDescription(taskDescription);
-        String sourceElementId = this.objectService.getId(taskDescription);
+        String sourceElementId = this.identityService.getId(taskDescription);
         return TASK_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 

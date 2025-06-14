@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -33,12 +33,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesConfigurerService implements IPropertiesConfigurerService {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final List<IValidationService> validationServices;
 
-    public PropertiesConfigurerService(IObjectService objectService, List<IValidationService> validationServices) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public PropertiesConfigurerService(IIdentityService identityService, List<IValidationService> validationServices) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.validationServices = Objects.requireNonNull(validationServices);
     }
 
@@ -49,7 +49,7 @@ public class PropertiesConfigurerService implements IPropertiesConfigurerService
 
     @Override
     public Function<VariableManager, String> getSemanticTargetIdProvider() {
-        return variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+        return variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(identityService::getId).orElse(null);
     }
     @Override
     public Function<VariableManager, List<?>> getDiagnosticsProvider(Object feature) {

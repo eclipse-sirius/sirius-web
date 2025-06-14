@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.charts.hierarchy.descriptions.HierarchyDescription;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -41,10 +41,10 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
 
     public static final String HIERARCHY_DESCRIPTION_ID = UUID.nameUUIDFromBytes("sample-hierarchy-description".getBytes()).toString();
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public HierarchyDescriptionProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public HierarchyDescriptionProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
         Predicate<VariableManager> canCreatePredicate = variableManager -> true;
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(HierarchyDescription.LABEL, String.class)

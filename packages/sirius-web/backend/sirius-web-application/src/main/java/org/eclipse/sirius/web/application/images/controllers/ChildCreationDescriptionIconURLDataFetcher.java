@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@ public class ChildCreationDescriptionIconURLDataFetcher implements IDataFetcherW
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         ChildCreationDescription childCreationDescription = environment.getSource();
-        return childCreationDescription.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
+        return childCreationDescription.iconURL().stream()
+                .map(url -> URLConstants.IMAGE_BASE_PATH + url)
+                .toList();
     }
 }

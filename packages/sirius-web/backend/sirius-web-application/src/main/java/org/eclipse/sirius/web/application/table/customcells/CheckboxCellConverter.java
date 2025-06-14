@@ -13,12 +13,13 @@
 
 package org.eclipse.sirius.web.application.table.customcells;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
@@ -36,15 +37,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckboxCellConverter implements ICustomCellConverter {
 
+    private final IIdentityService identityService;
+
+    private final ITableIdProvider tableIdProvider;
+
+    public CheckboxCellConverter(IIdentityService identityService, ITableIdProvider tableIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
+    }
+
     @Override
-    public Optional<ICellDescription> convert(CellDescription viewCellDescription, AQLInterpreter interpreter, ITableIdProvider tableIdProvider, IObjectService objectService) {
+    public Optional<ICellDescription> convert(CellDescription viewCellDescription, AQLInterpreter interpreter) {
         if (viewCellDescription.getCellWidgetDescription() instanceof CellCheckboxWidgetDescription) {
             Function<VariableManager, String> targetObjectIdProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
-                    .map(objectService::getId)
+                    .map(this.identityService::getId)
                     .orElse("");
 
             Function<VariableManager, String> targetObjectKindProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
-                    .map(objectService::getKind)
+                    .map(this.identityService::getKind)
                     .orElse("");
 
             Predicate<VariableManager> canCreatePredicate =

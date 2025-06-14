@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -55,14 +55,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ComposedFormElementDescriptionConverter implements IComposedFormElementDescriptionConverter {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IFormIdProvider widgetIdProvider;
 
     private final List<IWidgetDescriptionConverter> widgetDescriptionConverters;
 
-    public ComposedFormElementDescriptionConverter(IObjectService objectService, IFormIdProvider widgetIdProvider, List<IWidgetDescriptionConverter> widgetDescriptionConverters) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ComposedFormElementDescriptionConverter(IIdentityService identityService, IFormIdProvider widgetIdProvider, List<IWidgetDescriptionConverter> widgetDescriptionConverters) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.widgetDescriptionConverters = Objects.requireNonNull(widgetDescriptionConverters);
     }
@@ -111,7 +111,7 @@ public class ComposedFormElementDescriptionConverter implements IComposedFormEle
                 .toList();
 
         var forDescription = ForDescription.newForDescription(descriptionId)
-                .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
+                .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                 .iterator(formElementFor.getIterator())
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(controlDescriptions)
@@ -129,7 +129,7 @@ public class ComposedFormElementDescriptionConverter implements IComposedFormEle
                 .toList();
 
         var ifDescription = IfDescription.newIfDescription(descriptionId)
-                .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
+                .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                 .predicate(new BooleanValueProvider(interpreter, formElementIf.getPredicateExpression()))
                 .controlDescriptions(controlDescriptions)
                 .build();
@@ -165,7 +165,7 @@ public class ComposedFormElementDescriptionConverter implements IComposedFormEle
 
         var flexboxContainerDescription = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
+                .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                 .labelProvider(new StringValueProvider(interpreter, viewFlexboxContainerDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewFlexboxContainerDescription.getIsEnabledExpression()))
                 .flexDirection(flexDirection)
