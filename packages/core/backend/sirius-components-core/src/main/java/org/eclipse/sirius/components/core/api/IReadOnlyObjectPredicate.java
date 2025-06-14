@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.object.services.api;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.function.Predicate;
 
