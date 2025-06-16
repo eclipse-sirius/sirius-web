@@ -71,8 +71,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 
 === Bug fixes
 
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4924[#4924] [tree] Fix graphical glitch in Chrome with tree items background not being properly reset during drag'n'drop.
 
 === New Features
 

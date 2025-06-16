@@ -304,6 +304,7 @@ export const TreeItem = ({
           onDrop={onDropBefore}
           onDragEnter={() => handleMouseEnter('before')}
           onDragExit={handleMouseLeave}
+          onDragLeave={handleMouseLeave}
           onDragOver={dragOver}
           data-testid={`${dataTestid}-drop-before`}
         />
@@ -311,6 +312,7 @@ export const TreeItem = ({
           className={className}
           onClick={onClick}
           onDragEnter={() => handleMouseEnter('item')}
+          onDragLeave={handleMouseLeave}
           onDragExit={handleMouseLeave}
           onDrop={onDropItem}
           onMouseEnter={() => handleMouseEnter('item')}
