@@ -22,10 +22,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -34,18 +32,8 @@ import {
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetChildCreationDescriptionsQueryVariables,
   NewObjectModalProps,
+  NewObjectModalStates,
 } from './NewObjectModal.types';
-import {
-  ChangeChildCreationDescriptionEvent,
-  CreateChildEvent,
-  FetchedChildCreationDescriptionsEvent,
-  HandleResponseEvent,
-  NewObjectModalContext,
-  NewObjectModalEvent,
-  NewObjectModalStateSchema,
-  SchemaValue,
-  newObjectModalMachine,
-} from './NewObjectModalMachine';
 
 const createChildMutation = gql`
   mutation createChild($input: CreateChildInput!) {
@@ -105,18 +93,18 @@ const useNewObjectModalStyles = makeStyles()((theme) => ({
 
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateChildSuccessPayload =>
-  payload.__typename === 'CreateChildSuccessPayload';
+
+const isCreateChildSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateChildSuccessPayload => {
+  return payload.__typename === 'CreateChildSuccessPayload';
+};
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const { classes } = useNewObjectModalStyles();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<NewObjectModalContext, NewObjectModalStateSchema, NewObjectModalEvent>>(
-      newObjectModalMachine
-    );
-  const { newObjectModal } = value as SchemaValue;
-  const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect } = context;
+  const [state, setState] = useState<NewObjectModalStates>({
+    childCreationDescriptions: [],
+    selectedChildCreationDescriptionId: '',
+  });
 
   const {
     loading: childCreationDescriptionsLoading,
@@ -126,66 +114,60 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
     getChildCreationDescriptionsQuery,
     { variables: { editingContextId, kind: item.kind } }
   );
+
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
         addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (childCreationDescriptionsData) {
-        const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_CHILD_CREATION_DESCRIPTIONS',
-          data: childCreationDescriptionsData,
-        };
-        dispatch(fetchChildCreationDescriptionsEvent);
+        const childCreationDescriptions = childCreationDescriptionsData.viewer.editingContext.childCreationDescriptions;
+        setState((prevState) => ({
+          ...prevState,
+          childCreationDescriptions: childCreationDescriptions,
+          selectedChildCreationDescriptionId: childCreationDescriptions[0] ? childCreationDescriptions[0].id : '',
+        }));
       }
     }
   }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
 
-  const onChildCreationDescriptionChange = (event) => {
-    const value = event.target.value;
-    const changeChildCreationDescriptionEvent: ChangeChildCreationDescriptionEvent = {
-      type: 'CHANGE_CHILD_CREATION_DESCRIPTION',
-      childCreationDescriptionId: value,
-    };
-    dispatch(changeChildCreationDescriptionEvent);
-  };
-
   const [createChild, { loading: createChildLoading, data: createChildData, error: createChildError }] =
     useMutation<GQLCreateChildMutationData>(createChildMutation);
+
+  const onCreateObject = () => {
+    const input = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      objectId: item.id,
+      childCreationDescriptionId: state.selectedChildCreationDescriptionId,
+    };
+    createChild({ variables: { input } });
+  };
+
+  const onChildCreationDescriptionChange = (event) =>
+    setState((prevState) => ({
+      ...prevState,
+      selectedChildCreationDescriptionId: event.target.value,
+    }));
+
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
         addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (createChildData) {
-        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
-        dispatch(handleResponseEvent);
-
         const { createChild } = createChildData;
-        if (isErrorPayload(createChild) || isSuccessPayload(createChild)) {
+        if (isErrorPayload(createChild)) {
           const { messages } = createChild;
           addMessages(messages);
+        } else if (isCreateChildSuccessPayload(createChild)) {
+          const { object } = createChild;
+          onObjectCreated({ entries: [object] });
         }
       }
     }
   }, [createChildLoading, createChildData, createChildError]);
 
-  const onCreateObject = () => {
-    dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
-    const input = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      objectId: item.id,
-      childCreationDescriptionId: selectedChildCreationDescriptionId,
-    };
-    createChild({ variables: { input } });
-  };
-
-  useEffect(() => {
-    if (newObjectModal === 'success') {
-      onObjectCreated({ entries: [objectToSelect] });
-    }
-  }, [newObjectModal, objectToSelect]);
   return (
     <>
       <Dialog
@@ -202,13 +184,13 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             <Select
               variant="standard"
               classes={{ select: classes.select }}
-              value={selectedChildCreationDescriptionId}
+              value={state.selectedChildCreationDescriptionId}
               onChange={onChildCreationDescriptionChange}
-              disabled={newObjectModal === 'loading' || newObjectModal === 'creatingChild'}
+              disabled={childCreationDescriptionsLoading || createChildLoading}
               labelId="newObjectModalChildCreationDescriptionLabel"
               fullWidth
               data-testid="childCreationDescription">
-              {childCreationDescriptions.map((childCreationDescription) => (
+              {state.childCreationDescriptions.map((childCreationDescription) => (
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
                   {childCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
@@ -224,10 +206,10 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         <DialogActions>
           <Button
             variant="contained"
-            disabled={newObjectModal !== 'valid'}
             data-testid="create-object"
             color="primary"
-            onClick={onCreateObject}>
+            onClick={onCreateObject}
+            disabled={!state.selectedChildCreationDescriptionId}>
             Create
           </Button>
         </DialogActions>
