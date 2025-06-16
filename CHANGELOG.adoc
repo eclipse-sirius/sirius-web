@@ -96,6 +96,8 @@ In this package, you can now find the following default implementations:
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5107[#5107] [explorer] Provide the new `existingRepresentations` variable to the _Domain explorer by DSL_ explorer description.
+- https://github.com/eclipse-sirius/sirius-web/issues/5080[#5080] [diagram] Prevent border nodes from being resized during their parent resizing
+
 
 === New Features
 
