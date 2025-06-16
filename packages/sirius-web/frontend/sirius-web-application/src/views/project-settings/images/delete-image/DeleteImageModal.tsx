@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
-import { StateMachine } from 'xstate';
 import {
   DeleteImageModalProps,
   GQLDeleteImageMutationData,
@@ -28,17 +26,6 @@ import {
   GQLDeleteImagePayload,
   GQLErrorPayload,
 } from './DeleteImageModal.types';
-import {
-  DeleteImageModalContext,
-  DeleteImageModalEvent,
-  DeleteImageModalStateSchema,
-  HandleResponseEvent,
-  HideToastEvent,
-  RequestImageDeletionEvent,
-  SchemaValue,
-  ShowToastEvent,
-  deleteImageModalMachine,
-} from './DeleteImageModalMachine';
 
 const deleteImageMutation = gql`
   mutation deleteImage($input: DeleteImageInput!) {
@@ -55,41 +42,26 @@ const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<DeleteImageModalContext, DeleteImageModalStateSchema, DeleteImageModalEvent>>(
-      deleteImageModalMachine
-    );
-  const { toast, deleteImageModal } = value as SchemaValue;
-  const { message } = context;
+  const { addErrorMessage } = useMultiToast();
 
   const [deleteImage, { loading, data, error }] = useMutation<GQLDeleteImageMutationData>(deleteImageMutation);
   useEffect(() => {
     if (!loading) {
       if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: error.message,
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(error.message);
       }
       if (data) {
-        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(event);
-
         const { deleteImage } = data;
         if (isErrorPayload(deleteImage)) {
           const { message } = deleteImage;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addErrorMessage(message);
         }
+        onImageDeleted();
       }
     }
   }, [loading, data, error]);
 
   const onDeleteImage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const requestImageDeletionEvent: RequestImageDeletionEvent = { type: 'REQUEST_IMAGE_DELETION' };
-    dispatch(requestImageDeletionEvent);
-
     event.preventDefault();
     const variables: GQLDeleteImageMutationVariables = {
       input: {
@@ -99,12 +71,6 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
     };
     deleteImage({ variables });
   };
-
-  useEffect(() => {
-    if (deleteImageModal === 'success') {
-      onImageDeleted();
-    }
-  }, [deleteImageModal, onImageDeleted]);
 
   return (
     <>
@@ -116,21 +82,11 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="contained"
-            disabled={deleteImageModal !== 'idle'}
-            onClick={onDeleteImage}
-            color="primary"
-            data-testid="delete-image">
+          <Button variant="contained" onClick={onDeleteImage} color="primary" data-testid="delete-image">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };
