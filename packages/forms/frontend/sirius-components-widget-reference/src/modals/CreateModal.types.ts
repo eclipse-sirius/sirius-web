@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+
+export interface CreateModalState {
+  domains: Domain[];
+  selectedDomainId: string;
+  selectedChildCreationDescriptionId: string;
+  creationDescriptions: ChildCreationDescription[];
+  newObjectId: string | null;
+  containerSelected: GQLTreeItem | null;
+  containerId: string | null;
+  containerKind: string | null;
+}
 
 export interface CreateModalProps {
   editingContextId: string;
