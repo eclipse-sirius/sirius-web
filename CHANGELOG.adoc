@@ -33,7 +33,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5335[#5335] [sirius-web] Fix the missing libraries menu in the navigation bar menu
 - https://github.com/eclipse-sirius/sirius-web/issues/5312[#5312] [diagram] Fix an issue where a relation-based edge could be displayed twice in the diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/4921[#4921] [releng] Fix the license and URL of our maven modules in the SBOM
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4924[#4924] [tree] Fix graphical glitch in Chrome with tree items background not being properly reset during drag'n'drop.
 
 === New Features
 
@@ -237,7 +237,6 @@ Fix how error messages are handled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5248[#5248] [diagram] Fix an issue where the diagram was in an incorrect state after moving a node that was inside a list node
 - https://github.com/eclipse-sirius/sirius-web/issues/5267[#5267] [diagram] Fix an issue where the handle style is not updated correctly during reconnect
 - https://github.com/eclipse-sirius/sirius-web/issues/5275[#5275] [portal] Fix an issue where the portal representation was not working if a representation was removed from the editing context while present in the portal representation.
-
 
 === New Features
 
