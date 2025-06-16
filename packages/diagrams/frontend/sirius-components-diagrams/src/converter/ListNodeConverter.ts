@@ -106,6 +106,7 @@ const toListNode = (
       : [],
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
+    isDraggedNode: false,
     isHovered: false,
     nodeAppearanceData: {
       gqlStyle: style,
