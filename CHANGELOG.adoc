@@ -134,6 +134,7 @@ Downstream projects are now able to disable the project download frontend suppor
 - https://github.com/eclipse-sirius/sirius-web/issues/2024[#2024] [explorer] Ensure the _Explorer_'s toolbar is always visible even when scrolling
 - https://github.com/eclipse-sirius/sirius-web/issues/5084[#5084] [diagram] Prevent growable nodes from being ignored on node creation
 - https://github.com/eclipse-sirius/sirius-web/issues/5165[#5165] [sirius-web] Fix an issue that prevent import of projects exported before version 2025.6.0
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent nodes from dropping onto the diagram background instead of its target node
 
 
 === New Features
