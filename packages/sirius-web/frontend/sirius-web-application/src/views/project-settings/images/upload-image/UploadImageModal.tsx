@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,10 +19,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
-import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { FileUpload } from '../../../..//core/file-upload/FileUpload';
 import { sendFile } from '../../../../core/sendFile';
 import {
@@ -30,19 +28,8 @@ import {
   GQLUploadImageMutationVariables,
   GQLUploadImagePayload,
   UploadImageModalProps,
+  UploadImageModalState,
 } from './UploadImageModal.types';
-import {
-  HandleResponseEvent,
-  HideToastEvent,
-  RequestImageUploadingEvent,
-  SchemaValue,
-  SelectImageEvent,
-  ShowToastEvent,
-  UploadImageModalContext,
-  UploadImageModalEvent,
-  uploadImageModalMachine,
-  UploadImageModalStateSchema,
-} from './UploadImageModalMachine';
 
 const uploadImageMutationFile = gql`
   mutation uploadImage($input: UploadImageInput!) {
@@ -74,74 +61,65 @@ const useUploadImageModalStyle = makeStyles()((theme) => ({
 const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
+const isNameInvalid = (name: string) => name.trim().length < 3;
+
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
   const { classes } = useUploadImageModalStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<UploadImageModalContext, UploadImageModalStateSchema, UploadImageModalEvent>>(
-      uploadImageModalMachine
-    );
+  const { addErrorMessage } = useMultiToast();
 
-  const { toast, uploadImageModal } = value as SchemaValue;
-  const { file, message } = context;
+  const [state, setState] = useState<UploadImageModalState>({
+    label: '',
+    file: null,
+  });
 
-  const [label, setLabel] = useState<string>('');
+  const onNewName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.value;
+    setState((prevState) => ({
+      ...prevState,
+      label: name,
+    }));
+  };
 
   // Execute the upload of a image and redirect to the newly created image
   const uploadImage = async (event: React.FormEvent<HTMLFormElement>) => {
-    const requestImageUploadingEvent: RequestImageUploadingEvent = { type: 'REQUEST_IMAGE_UPLOADING' };
-    dispatch(requestImageUploadingEvent);
-
     event.preventDefault();
     const variables: GQLUploadImageMutationVariables = {
       input: {
         id: crypto.randomUUID(),
         projectId,
-        label,
+        label: state.label,
         file: null, // the file will be send as a part of the multipart POST query.
       },
     };
+
     try {
-      const { data, error } = await sendFile(httpOrigin, uploadImageMutationFile, variables, file);
+      const { data, error } = await sendFile(httpOrigin, uploadImageMutationFile, variables, state.file);
       if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, the file uploaded may be too large',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(error.message);
       }
       if (data) {
-        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(event);
-
         const { uploadImage } = data;
         if (isErrorPayload(uploadImage)) {
           const { message } = uploadImage;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addErrorMessage(message);
         }
+        onImageUploaded();
       }
     } catch (exception) {
-      const showToastEvent: ShowToastEvent = {
-        type: 'SHOW_TOAST',
-        message: 'An unexpected error has occurred, the file uploaded may be too large',
-      };
-      dispatch(showToastEvent);
+      addErrorMessage('An unexpected error has occurred, the file uploaded may be too large');
     }
   };
 
-  const onFileSelected = (file) => {
-    const selectImageEvent: SelectImageEvent = { type: 'SELECT_IMAGE', file };
-    dispatch(selectImageEvent);
+  const onFileSelected = (file: File) => {
+    setState((prevState) => ({
+      ...prevState,
+      file: file,
+    }));
   };
 
-  useEffect(() => {
-    if (uploadImageModal === 'success') {
-      onImageUploaded();
-    }
-  }, [uploadImageModal, onImageUploaded]);
-
-  const canSubmit = uploadImageModal === 'imageSelected';
+  const isError = isNameInvalid(state.label);
+  const canSubmit = !isError && state.file;
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
@@ -152,13 +130,14 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
               variant="standard"
               label="Label"
               name="label"
-              value={label}
+              value={state.label}
+              error={isError}
+              helperText="The name must contain at least 3 characters"
               placeholder="Label for the image"
               data-testid="label"
               inputProps={{ 'data-testid': 'label-input' }}
               autoFocus={true}
-              onChange={(event) => setLabel(event.target.value)}
-              disabled={uploadImageModal === 'uploadingImage'}
+              onChange={onNewName}
             />
             <FormGroup>
               <FileUpload onFileSelected={onFileSelected} data-testid="file" />
@@ -177,11 +156,6 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };
