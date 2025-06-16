@@ -12,6 +12,14 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 
+export interface NewRootObjectModalState {
+  rootObjectCreationDescriptions: GQLChildCreationDescription[];
+  selectedRootObjectCreationDescriptionId: string;
+  selectedDomainId: string;
+  domains: GQLDomain[];
+  isSuggestedRootObjectChecked: boolean;
+}
+
 export interface NewRootObjectModalProps {
   editingContextId: string;
   item: any;

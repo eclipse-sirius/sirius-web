@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -22,32 +22,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import {
+  GQLCreateRepesentationSuccessPayload,
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
   GQLErrorPayload,
   GQLGetRepresentationDescriptionsQueryData,
   GQLGetRepresentationDescriptionsQueryVariables,
   NewRepresentationModalProps,
+  NewRepresentationState,
 } from './NewRepresentationModal.types';
-import {
-  ChangeNameEvent,
-  ChangeRepresentationDescriptionEvent,
-  CreateRepresentationEvent,
-  FetchedRepresentationDescriptionsEvent,
-  HandleResponseEvent,
-  HideToastEvent,
-  NewRepresentationModalContext,
-  NewRepresentationModalEvent,
-  NewRepresentationModalStateSchema,
-  SchemaValue,
-  ShowToastEvent,
-  newRepresentationModalMachine,
-} from './NewRepresentationModalMachine';
 
 const createRepresentationMutation = gql`
   mutation createRepresentation($input: CreateRepresentationInput!) {
@@ -103,6 +89,14 @@ const useNewRepresentationModalStyles = makeStyles()((theme) => ({
 const isErrorPayload = (payload: GQLCreateRepresentationPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
+const isNameInvalid = (name: string) => name.trim().length === 0;
+
+const isCreateRepresentationSuccessPayload = (
+  payload: GQLCreateRepresentationPayload | null
+): payload is GQLCreateRepesentationSuccessPayload => {
+  return payload && payload.__typename === 'CreateRepresentationSuccessPayload';
+};
+
 export const NewRepresentationModal = ({
   editingContextId,
   item,
@@ -110,20 +104,13 @@ export const NewRepresentationModal = ({
   onClose,
 }: NewRepresentationModalProps) => {
   const { classes } = useNewRepresentationModalStyles();
-  const [{ value, context }, dispatch] =
-    useMachine<
-      StateMachine<NewRepresentationModalContext, NewRepresentationModalStateSchema, NewRepresentationModalEvent>
-    >(newRepresentationModalMachine);
-  const { newRepresentationModal, toast } = value as SchemaValue;
-  const {
-    name,
-    nameMessage,
-    nameIsInvalid,
-    selectedRepresentationDescriptionId,
-    representationDescriptions,
-    createdRepresentationId,
-    message,
-  } = context;
+  const { addErrorMessage } = useMultiToast();
+  const [state, setState] = useState<NewRepresentationState>({
+    representationDescriptions: [],
+    selectedRepresentationDescriptionId: '',
+    name: '',
+    nameHasBeenModified: false,
+  });
 
   const {
     loading: representationDescriptionsLoading,
@@ -137,35 +124,50 @@ export const NewRepresentationModal = ({
   useEffect(() => {
     if (!representationDescriptionsLoading) {
       if (representationDescriptionsError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(representationDescriptionsError.message);
       }
       if (representationDescriptionsData) {
-        const fetchRepresentationDescriptionsEvent: FetchedRepresentationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_REPRESENTATION_CREATION_DESCRIPTIONS',
-          data: representationDescriptionsData,
-        };
-        dispatch(fetchRepresentationDescriptionsEvent);
+        const representationDescriptions =
+          representationDescriptionsData.viewer.editingContext.representationDescriptions.edges.map(
+            (edge) => edge.node
+          );
+
+        const selectedRepresentationDescriptionId =
+          representationDescriptions.length > 0 ? representationDescriptions[0].id : '';
+
+        const name = representationDescriptions.length > 0 ? representationDescriptions[0].defaultName : '';
+
+        setState((prevState) => ({
+          ...prevState,
+          representationDescriptions: representationDescriptions,
+          selectedRepresentationDescriptionId: selectedRepresentationDescriptionId,
+          name: name,
+        }));
       }
     }
   }, [representationDescriptionsLoading, representationDescriptionsData, representationDescriptionsError]);
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNamedEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
-    dispatch(changeNamedEvent);
+    setState((prevState) => ({
+      ...prevState,
+      name: value,
+      nameHasBeenModified: true,
+    }));
   };
 
   const onRepresentationDescriptionChange = (event) => {
     const value = event.target.value;
-    const changeRepresentationDescriptionEvent: ChangeRepresentationDescriptionEvent = {
-      type: 'CHANGE_REPRESENTATION_CREATION_DESCRIPTION',
-      representationDescriptionId: value,
-    };
-    dispatch(changeRepresentationDescriptionEvent);
+
+    setState((prevState) => ({
+      ...prevState,
+      selectedRepresentationDescriptionId: value,
+      name: state.nameHasBeenModified
+        ? prevState.name
+        : state.representationDescriptions.filter(
+            (representationDescription) => representationDescription.id === value
+          )[0].defaultName,
+    }));
   };
 
   const [
@@ -175,51 +177,42 @@ export const NewRepresentationModal = ({
   useEffect(() => {
     if (!createRepresentationLoading) {
       if (createRepresentationError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(createRepresentationError.message);
       }
       if (createRepresentationData) {
-        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createRepresentationData };
-        dispatch(handleResponseEvent);
-
         const { createRepresentation } = createRepresentationData;
         if (isErrorPayload(createRepresentation)) {
           const { message } = createRepresentation;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addErrorMessage(message);
+        }
+
+        if (isCreateRepresentationSuccessPayload(createRepresentation)) {
+          const { representation } = createRepresentation;
+          onRepresentationCreated({
+            entries: [
+              {
+                id: representation.id,
+              },
+            ],
+          });
         }
       }
     }
   }, [createRepresentationLoading, createRepresentationData, createRepresentationError]);
 
   const onCreateRepresentation = () => {
-    dispatch({ type: 'CREATE_REPRESENTATION' } as CreateRepresentationEvent);
     const input = {
       id: crypto.randomUUID(),
       editingContextId,
       objectId: item.id,
-      representationDescriptionId: selectedRepresentationDescriptionId,
-      representationName: name,
+      representationDescriptionId: state.selectedRepresentationDescriptionId,
+      representationName: state.name,
     };
 
     createRepresentation({ variables: { input } });
   };
 
-  useEffect(() => {
-    if (newRepresentationModal === 'success') {
-      onRepresentationCreated({
-        entries: [
-          {
-            id: createdRepresentationId,
-          },
-        ],
-      });
-    }
-  }, [createdRepresentationId, newRepresentationModal]);
-
+  const nameIsInvalid = isNameInvalid(state.name);
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
@@ -229,27 +222,26 @@ export const NewRepresentationModal = ({
             <TextField
               variant="standard"
               error={nameIsInvalid}
-              helperText={nameMessage}
+              helperText="The name cannot be empty"
               label="Name"
               name="name"
-              value={name}
+              value={state.name}
               placeholder="Enter the name of the representation"
               inputProps={{ 'data-testid': 'name' }}
               autoFocus={true}
               onChange={onNameChange}
-              disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
+              disabled={!state.selectedRepresentationDescriptionId}
             />
             <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">Representation type</InputLabel>
             <Select
               variant="standard"
-              value={selectedRepresentationDescriptionId}
+              value={state.selectedRepresentationDescriptionId}
               onChange={onRepresentationDescriptionChange}
-              disabled={newRepresentationModal === 'loading' || newRepresentationModal === 'creatingRepresentation'}
               labelId="newRepresentationModalRepresentationDescriptionLabel"
               inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
               data-testid="representationDescription">
-              {representationDescriptions.map((representationDescription) => (
+              {state.representationDescriptions.map((representationDescription) => (
                 <MenuItem
                   value={representationDescription.id}
                   key={representationDescription.id}
@@ -263,7 +255,7 @@ export const NewRepresentationModal = ({
         <DialogActions>
           <Button
             variant="contained"
-            disabled={newRepresentationModal !== 'valid'}
+            disabled={nameIsInvalid || !state.selectedRepresentationDescriptionId}
             data-testid="create-representation"
             color="primary"
             onClick={onCreateRepresentation}>
@@ -271,11 +263,6 @@ export const NewRepresentationModal = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };
