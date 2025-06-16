@@ -85,6 +85,7 @@ const toIconLabelNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
+    isDraggedNode: false,
     isHovered: false,
     nodeAppearanceData: {
       gqlStyle: style,
