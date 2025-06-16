@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
-import { ComponentExtension, Toast, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtension, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -23,12 +22,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
-import { useMachine } from '@xstate/react';
-import React from 'react';
-import { flushSync } from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
@@ -36,40 +32,15 @@ import { useCurrentProject } from '../useCurrentProject';
 import {
   EditProjectNavbarMenuEntryProps,
   EditProjectNavbarProps,
-  GQLProjectEventSubscription,
+  EditProjectNavbarState,
+  ModalName,
 } from './EditProjectNavbar.types';
-import {
-  EditProjectNavbarContext,
-  EditProjectNavbarEvent,
-  editProjectNavbarMachine,
-  EditProjectNavbarStateSchema,
-  HandleCloseContextMenuEvent,
-  HandleCloseModalEvent,
-  HandleCompleteEvent,
-  HandleRedirectingEvent,
-  HandleShowContextMenuEvent,
-  HandleShowModalEvent,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  SchemaValue,
-  ShowToastEvent,
-} from './EditProjectNavbarMachine';
 import {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,
 } from './EditProjectNavbarMenuExtensionPoints';
-
-const projectEventSubscription = gql`
-  subscription projectEvent($input: ProjectEventInput!) {
-    projectEvent(input: $input) {
-      __typename
-      ... on ProjectRenamedEventPayload {
-        projectId
-        newName
-      }
-    }
-  }
-`;
+import { useProjectEventSubscription } from './useProjectEventSubscription';
+import { GQLProjectEventPayload, GQLProjectRenamedEventPayload } from './useProjectEventSubscription.types';
 
 const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   center: {
@@ -96,87 +67,70 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isProjectRenamedEventPayload = (
+  payload: GQLProjectEventPayload | null
+): payload is GQLProjectRenamedEventPayload => payload && payload.__typename === 'ProjectRenamedEventPayload';
+
 export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
 
-  const [{ value, context }, dispatch] = useMachine<
-    StateMachine<EditProjectNavbarContext, EditProjectNavbarStateSchema, EditProjectNavbarEvent>
-  >(editProjectNavbarMachine, {
-    context: {
-      projectName: project.name,
-    },
+  const [state, setState] = useState<EditProjectNavbarState>({
+    modalDisplayed: null,
+    projectName: project.name,
+    projectMenuAnchor: null,
   });
-  const { toast, navbar } = value as SchemaValue;
-  const { id, to, modalDisplayed, projectMenuAnchor, projectName, message } = context;
 
-  const onError = ({ message }: ApolloError) => {
-    const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-    dispatch(showToastEvent);
-  };
+  const onCloseModal = () => onSwitchModal(null);
 
-  const onData = ({ data }: OnDataOptions<GQLProjectEventSubscription>) => {
-    flushSync(() => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    });
-  };
+  const onSwitchModal = (modalName: ModalName) =>
+    setState((prevState) => ({
+      ...prevState,
+      modalDisplayed: modalName,
+    }));
 
-  useSubscription<GQLProjectEventSubscription>(projectEventSubscription, {
-    variables: {
-      input: {
-        id,
-        projectId: project.id,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    skip: navbar === 'complete',
-    onData,
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
-    onError,
-  });
+  const { payload: projectEventPayload } = useProjectEventSubscription(project.id);
+  useEffect(() => {
+    if (isProjectRenamedEventPayload(projectEventPayload)) {
+      const { newName } = projectEventPayload;
+
+      setState((prevState) => ({
+        ...prevState,
+        projectName: newName,
+      }));
+    }
+  }, [projectEventPayload]);
 
   const onMoreClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (navbar === 'empty') {
-      const showContextMenu: HandleShowContextMenuEvent = {
-        type: 'HANDLE_SHOW_CONTEXT_MENU_EVENT',
-        projectMenuAnchor: event.currentTarget,
-      };
-      dispatch(showContextMenu);
-    }
-  };
-
-  const onCloseModal = () => {
-    dispatch({ type: 'HANDLE_CLOSE_MODAL_EVENT' } as HandleCloseModalEvent);
+    setState((prevState) => ({
+      ...prevState,
+      projectMenuAnchor: event.currentTarget,
+    }));
   };
 
   const onCloseContextMenu = () => {
-    dispatch({ type: 'HANDLE_CLOSE_CONTEXT_MENU_EVENT' } as HandleCloseContextMenuEvent);
+    setState((prevState) => ({
+      ...prevState,
+      projectMenuAnchor: null,
+    }));
   };
 
   const onProjectDeleted = () => {
-    const redirectingEvent: HandleRedirectingEvent = {
-      type: 'HANDLE_REDIRECTING_EVENT',
-      to: '/projects',
-    };
-    dispatch(redirectingEvent);
+    setState((prevState) => ({
+      ...prevState,
+      projectName: '',
+    }));
   };
 
-  if (navbar === 'redirectState') {
-    return <Navigate to={to} />;
+  if (!state.projectName) {
+    return <Navigate to={'/projects'} />;
   }
 
   let modal = null;
-  if (project && navbar === 'modalDisplayedState') {
-    if (modalDisplayed === 'RenameProject') {
+  if (project && state.projectMenuAnchor) {
+    if (state.modalDisplayed === 'RenameProject') {
       modal = <RenameProjectModal project={project} onSuccess={onCloseModal} onCancel={onCloseModal} />;
-    } else if (modalDisplayed === 'DeleteProject') {
+    } else if (state.modalDisplayed === 'DeleteProject') {
       modal = <DeleteProjectModal project={project} onSuccess={onProjectDeleted} onCancel={onCloseModal} />;
     }
   }
@@ -191,8 +145,8 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
       <NavigationBar>
         <div className={classes.center}>
           <div className={classes.title}>
-            <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-${projectName}`}>
-              {projectName}
+            <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-${state.projectName}`}>
+              {state.projectName}
             </Typography>
             <IconButton
               className={classes.onDarkBackground}
@@ -209,19 +163,10 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           </div>
         </div>
       </NavigationBar>
-      {navbar === 'contextualMenuDisplayedState' ? (
+      {state.projectMenuAnchor ? (
         <ContextMenuContainer>
-          <Menu open anchorEl={projectMenuAnchor} data-testid="navbar-contextmenu" onClose={onCloseContextMenu}>
-            <MenuItem
-              onClick={() => {
-                const showModal: HandleShowModalEvent = {
-                  type: 'HANDLE_SHOW_MODAL_EVENT',
-                  modalName: 'RenameProject',
-                };
-                dispatch(showModal);
-              }}
-              disabled={readOnly}
-              data-testid="rename">
+          <Menu open anchorEl={state.projectMenuAnchor} data-testid="navbar-contextmenu" onClose={onCloseContextMenu}>
+            <MenuItem onClick={() => onSwitchModal('RenameProject')} disabled={readOnly} data-testid="rename">
               <ListItemIcon>
                 <EditIcon />
               </ListItemIcon>
@@ -245,16 +190,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const showModal: HandleShowModalEvent = {
-                  type: 'HANDLE_SHOW_MODAL_EVENT',
-                  modalName: 'DeleteProject',
-                };
-                dispatch(showModal);
-              }}
-              disabled={readOnly}
-              data-testid="delete">
+            <MenuItem onClick={() => onSwitchModal('DeleteProject')} disabled={readOnly} data-testid="delete">
               <ListItemIcon>
                 <DeleteIcon />
               </ListItemIcon>
@@ -263,11 +199,6 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           </Menu>
         </ContextMenuContainer>
       ) : null}
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
       {modal}
     </>
   );
