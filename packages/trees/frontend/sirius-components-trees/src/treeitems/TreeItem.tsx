@@ -154,8 +154,13 @@ export const TreeItem = ({
     setState((prevState) => ({ ...prevState, partHovered }));
   };
 
-  const handleMouseLeave = () => {
-    setState((prevState) => ({ ...prevState, partHovered: null }));
+  const handleMouseLeave = (partLeft: PartHovered) => {
+    setState((prevState) => {
+      if (prevState.partHovered !== partLeft) {
+        return prevState;
+      }
+      return { ...prevState, partHovered: null };
+    });
   };
 
   const onTreeItemAction = () => {
@@ -170,17 +175,11 @@ export const TreeItem = ({
     }));
   };
 
-  let className = classes.treeItem;
-  let dataTestid: string | undefined = undefined;
-
   const selected = selectedTreeItemIds.find((id) => id === item.id);
-  if (selected) {
-    className = `${className} ${classes.selected}`;
-    dataTestid = 'selected';
-  }
-  if (state.partHovered === 'item' && item.selectable) {
-    className = `${className} ${classes.treeItemHover}`;
-  }
+
+  const className = selected ? `${classes.treeItem} ${classes.selected}` : classes.treeItem;
+  const dataTestid: string | undefined = selected ? 'selected' : undefined;
+
   useEffect(() => {
     if (selected) {
       if (refDom.current?.scrollIntoViewIfNeeded) {
@@ -239,9 +238,17 @@ export const TreeItem = ({
     if (!isDraggedItemSelected) {
       // If we're dragging a non-selected item, drag it alone
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([item.id]));
+      const iconAndTextElement = (refDom.current as HTMLElement).getElementsByClassName(`iconAndText`).item(0);
+      if (iconAndTextElement) {
+        event.dataTransfer.setDragImage(iconAndTextElement, 0, 0);
+      }
     } else if (selectedTreeItemIds.length > 0) {
       // Otherwise drag the whole selection
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
+      const iconAndTextElement = (refDom.current as HTMLElement).getElementsByClassName(`iconAndText`).item(0);
+      if (iconAndTextElement) {
+        event.dataTransfer.setDragImage(iconAndTextElement, 0, 0);
+      }
     }
   };
 
@@ -303,37 +310,52 @@ export const TreeItem = ({
           className={`${state.partHovered === 'before' ? classes.treeItemHover : ''} ${classes.treeItemBefore}`}
           onDrop={onDropBefore}
           onDragEnter={() => handleMouseEnter('before')}
-          onDragExit={handleMouseLeave}
+          onDragLeave={() => handleMouseLeave('before')}
           onDragOver={dragOver}
           data-testid={`${dataTestid}-drop-before`}
         />
         <div
-          className={className}
+          className={`${state.partHovered === 'item' && item.selectable ? classes.treeItemHover : ''} ${className}`}
           onClick={onClick}
+          draggable
+          onDragStart={dragStart}
+          onDragOver={(e) => {
+            handleMouseEnter('item');
+            dragOver(e);
+          }}
           onDragEnter={() => handleMouseEnter('item')}
-          onDragExit={handleMouseLeave}
+          onDragLeave={(e) => {
+            const targetNode = e.target as Node;
+            const relatedNode = e.relatedTarget as Node;
+            if (targetNode.contains(relatedNode) || relatedNode.contains(targetNode)) {
+              return;
+            }
+            handleMouseLeave('item');
+          }}
           onDrop={onDropItem}
           onMouseEnter={() => handleMouseEnter('item')}
-          onMouseLeave={handleMouseLeave}
+          onMouseLeave={() => handleMouseLeave('item')}
           data-testid={`${label}-fullrow`}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
-            draggable
-            onDragStart={dragStart}
-            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
             data-treeitemkind={item.kind}
             data-haschildren={item.hasChildren.toString()}
             data-depth={depth}
             data-expanded={item.expanded.toString()}
+            onDragEnter={(e) => {
+              e.stopPropagation();
+            }}
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
               <div
-                className={`${classes.imageAndLabel} ${item.selectable ? classes.imageAndLabelSelectable : ''}`}
+                className={`${classes.imageAndLabel} ${
+                  item.selectable ? classes.imageAndLabelSelectable : ''
+                } iconAndText`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
                 data-testid={label}>
