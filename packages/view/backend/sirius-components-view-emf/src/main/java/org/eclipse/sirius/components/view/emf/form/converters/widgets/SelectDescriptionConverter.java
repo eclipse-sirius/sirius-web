@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -57,6 +58,8 @@ public class SelectDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IObjectSearchService objectSearchService;
 
     private final ILabelService labelService;
@@ -67,8 +70,9 @@ public class SelectDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IFormIdProvider widgetIdProvider;
 
-    public SelectDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public SelectDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IObjectSearchService objectSearchService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
@@ -106,7 +110,7 @@ public class SelectDescriptionConverter implements IWidgetDescriptionConverter {
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewSelectDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewSelectDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewSelectDescription.getIsEnabledExpression()))
                     .valueProvider(new SelectValueProvider(interpreter, this.identityService, viewSelectDescription.getValueExpression()))
                     .optionsProvider(new MultiValueProvider(interpreter, viewSelectDescription.getCandidatesExpression(), Object.class))
                     .optionIdProvider(new OptionIdProvider(this.identityService))

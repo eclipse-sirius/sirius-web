@@ -21,6 +21,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -55,6 +56,8 @@ public class RadioDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IObjectSearchService objectSearchService;
 
     private final IOperationExecutor operationExecutor;
@@ -63,8 +66,9 @@ public class RadioDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IFormIdProvider widgetIdProvider;
 
-    public RadioDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public RadioDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IObjectSearchService objectSearchService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -101,7 +105,7 @@ public class RadioDescriptionConverter implements IWidgetDescriptionConverter {
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewRadioDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewRadioDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewRadioDescription.getIsEnabledExpression()))
                     .optionsProvider(new MultiValueProvider(interpreter, viewRadioDescription.getCandidatesExpression(), Object.class))
                     .optionIdProvider(new OptionIdProvider(this.identityService))
                     .optionLabelProvider(new StringValueProvider(interpreter, viewRadioDescription.getCandidateLabelExpression()))

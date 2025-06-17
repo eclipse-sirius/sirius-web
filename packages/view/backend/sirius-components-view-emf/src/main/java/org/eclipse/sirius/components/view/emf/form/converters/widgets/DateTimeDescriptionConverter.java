@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.DateTimeStyle;
 import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -61,14 +62,17 @@ public class DateTimeDescriptionConverter implements IWidgetDescriptionConverter
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public DateTimeDescriptionConverter(IIdentityService identityService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public DateTimeDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
@@ -119,7 +123,7 @@ public class DateTimeDescriptionConverter implements IWidgetDescriptionConverter
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewDateTimeDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewDateTimeDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewDateTimeDescription.getIsEnabledExpression()))
                     .type(DateTimeType.valueOf(viewDateTimeDescription.getType().getLiteral()))
                     .stringValueProvider(new StringValueProvider(interpreter, viewDateTimeDescription.getStringValueExpression()))
                     .newValueHandler(newValueHandler)

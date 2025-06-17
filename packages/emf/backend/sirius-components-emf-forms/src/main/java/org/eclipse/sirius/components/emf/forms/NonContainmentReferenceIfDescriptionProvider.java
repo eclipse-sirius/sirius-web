@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -68,14 +69,17 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
+
     public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
-                                                        IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider) {
+                                                        IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     @Override
@@ -128,14 +132,8 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .setHandlerProvider(this::handleSetReference)
                 .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class)
-                .map(eStructuralFeature -> !eStructuralFeature.isChangeable())
-                .orElse(false);
     }
 
     private List<?> getReferenceValue(VariableManager variableManager) {

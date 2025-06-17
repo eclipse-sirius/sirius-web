@@ -19,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -50,14 +51,17 @@ public class TableWidgetDescriptionConverter implements IWidgetDescriptionConver
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IFormIdProvider widgetIdProvider;
 
     private final ITableIdProvider tableIdProvider;
 
     private final List<ICustomCellConverter> customCellConverters;
 
-    public TableWidgetDescriptionConverter(IIdentityService identityService, IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
+    public TableWidgetDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.customCellConverters = Objects.requireNonNull(customCellConverters);
@@ -110,7 +114,7 @@ public class TableWidgetDescriptionConverter implements IWidgetDescriptionConver
                     .kindProvider(new DiagnosticKindProvider())
                     .messageProvider(new DiagnosticMessageProvider())
                     .helpTextProvider(new StringValueProvider(interpreter, viewTableWidgetDescription.getHelpExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewTableWidgetDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewTableWidgetDescription.getIsEnabledExpression()))
                     .build();
             return Optional.of(tableWidgetDescription);
         }
