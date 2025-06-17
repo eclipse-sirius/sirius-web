@@ -5,7 +5,7 @@
 === Shapes
 
 - Control the views available in a workbench
-
+- Add diagram node duplicate tool
 
 === Architectural decision records
 
