@@ -309,9 +309,21 @@ describe('Diagram - edges', () => {
       explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
-      cy.getByTestId('bend-point-0');
-      cy.getByTestId('bend-point-1');
-      cy.getByTestId('temporary-moving-line-1');
+      cy.getByTestId('bend-point-0').should('exist');
+      cy.getByTestId('bend-point-1').should('exist');
+      cy.getByTestId('temporary-moving-line-1').should('exist');
+    });
+
+    it('Check no new bend point is created when simply clicking on a bendpoint', () => {
+      const diagram = new Diagram();
+      const explorer = new Explorer();
+      diagram.fitToScreen();
+      explorer.expandWithDoubleClick('DataSource1');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      explorer.select('standard');
+      cy.getByTestId('bend-point-2').should('exist');
+      cy.getByTestId('bend-point-2').click();
+      cy.getByTestId('bend-point-4').should('not.exist');
     });
   });
 });
