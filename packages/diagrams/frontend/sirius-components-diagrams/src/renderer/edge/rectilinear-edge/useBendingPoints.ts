@@ -71,12 +71,14 @@ export const useBendingPoints = (
         prevMiddle,
         nextMiddle
       );
+      const cleanedBendPoint = cleanBendPoint(newPoints.sort((a, b) => a.pathOrder - b.pathOrder));
       if (edge?.data) {
-        edge.data.bendingPoints = cleanBendPoint(newPoints.sort((a, b) => a.pathOrder - b.pathOrder));
+        edge.data.bendingPoints = cleanedBendPoint;
       }
-      setLocalBendingPoints(newPoints);
       setEdges(edges);
-      synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+      if (cleanedBendPoint.length > originalBendingPoints.length) {
+        synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+      }
     }
   };
 
