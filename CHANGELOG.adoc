@@ -71,7 +71,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5084[#5084] [diagram] Prevent growable nodes from being ignored on node creation
 
 
 === New Features
