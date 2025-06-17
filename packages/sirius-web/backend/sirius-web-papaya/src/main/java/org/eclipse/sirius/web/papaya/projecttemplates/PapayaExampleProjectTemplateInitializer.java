@@ -13,6 +13,9 @@
 
 package org.eclipse.sirius.web.papaya.projecttemplates;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +38,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PapayaExampleProjectTemplateInitializer implements IProjectTemplateInitializer {
+
+    private final ObjectMapper objectMapper;
+
+    public PapayaExampleProjectTemplateInitializer(ObjectMapper objectMapper) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
+    }
+
     @Override
     public boolean canHandle(String projectTemplateId) {
         return PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID.equals(projectTemplateId);
@@ -53,6 +63,9 @@ public class PapayaExampleProjectTemplateInitializer implements IProjectTemplate
             Project project = PapayaFactory.eINSTANCE.createProject();
             project.setName("Sirius Web");
             resource.getContents().add(project);
+
+            PlanningObjectFactory planningObjectFactory = new PlanningObjectFactory(this.objectMapper, project);
+            planningObjectFactory.create(emfEditingContext);
 
             OperationalAnalysisObjectFactory operationalAnalysisObjectFactory = new OperationalAnalysisObjectFactory(project);
             operationalAnalysisObjectFactory.create(emfEditingContext);
