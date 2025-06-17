@@ -20,6 +20,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -51,14 +52,17 @@ public class TextfieldDescriptionConverter implements IWidgetDescriptionConverte
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public TextfieldDescriptionConverter(IIdentityService identityService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public TextfieldDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
@@ -94,7 +98,7 @@ public class TextfieldDescriptionConverter implements IWidgetDescriptionConverte
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewTextfieldDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewTextfieldDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewTextfieldDescription.getIsEnabledExpression()))
                     .valueProvider(new StringValueProvider(interpreter, viewTextfieldDescription.getValueExpression()))
                     .newValueHandler(new NewValueHandler<>(interpreter, this.operationExecutor, this.feedbackMessageService, viewTextfieldDescription.getBody()))
                     .styleProvider(styleProvider)

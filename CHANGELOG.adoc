@@ -99,6 +99,8 @@ In this package, you can now find the following default implementations:
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
 - https://github.com/eclipse-sirius/sirius-web/issues/5067[#5067] [diagram] Improve the organization of the code of the appearance support
 - https://github.com/eclipse-sirius/sirius-web/issues/5069[#5069] [diagram] Improve the appearance section of the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [sirius-web] Ensure that read only objects cannot be edited in the details view
+- https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [view] Ensure that forms based on the view DSL do not allow the edition of read only objects
 
 
 

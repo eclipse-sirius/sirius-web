@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
@@ -43,12 +44,15 @@ public class SplitButtonDescriptionConverter implements IWidgetDescriptionConver
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IFormIdProvider widgetIdProvider;
 
     private final List<IWidgetDescriptionConverter> widgetDescriptionConverters;
 
-    public SplitButtonDescriptionConverter(IIdentityService identityService, IFormIdProvider widgetIdProvider, List<IWidgetDescriptionConverter> widgetDescriptionConverters) {
+    public SplitButtonDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IFormIdProvider widgetIdProvider, List<IWidgetDescriptionConverter> widgetDescriptionConverters) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.widgetDescriptionConverters = Objects.requireNonNull(widgetDescriptionConverters);
     }
@@ -78,7 +82,7 @@ public class SplitButtonDescriptionConverter implements IWidgetDescriptionConver
                     .idProvider(idProvider)
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewSplitButtonDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewSplitButtonDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewSplitButtonDescription.getIsEnabledExpression()))
                     .actions(actions)
                     .diagnosticsProvider(new DiagnosticProvider(interpreter, viewSplitButtonDescription.getDiagnosticsExpression()))
                     .kindProvider(new DiagnosticKindProvider())

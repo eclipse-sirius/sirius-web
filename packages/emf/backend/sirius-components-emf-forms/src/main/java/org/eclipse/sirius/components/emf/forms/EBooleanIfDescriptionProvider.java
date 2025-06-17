@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -51,10 +52,13 @@ public class EBooleanIfDescriptionProvider implements IEMFFormIfDescriptionProvi
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public EBooleanIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
+
+    public EBooleanIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     @Override
@@ -93,7 +97,7 @@ public class EBooleanIfDescriptionProvider implements IEMFFormIfDescriptionProvi
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
     }
 
@@ -136,11 +140,5 @@ public class EBooleanIfDescriptionProvider implements IEMFFormIfDescriptionProvi
             }
             return result;
         };
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
-                .map(eAttribute -> !eAttribute.isChangeable())
-                .orElse(false);
     }
 }

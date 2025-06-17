@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
@@ -65,6 +66,8 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final ILabelService labelService;
 
     private final IEditService editService;
@@ -75,8 +78,9 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ListDescriptionConverter(IIdentityService identityService, ILabelService labelService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public ListDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
@@ -146,7 +150,7 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewListDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewListDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewListDescription.getIsEnabledExpression()))
                     .itemsProvider(new MultiValueProvider(interpreter, viewListDescription.getValueExpression(), Object.class))
                     .itemKindProvider(itemKindProvider)
                     .itemDeleteHandlerProvider(itemDeleteHandlerProvider)
