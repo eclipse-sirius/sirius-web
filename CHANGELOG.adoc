@@ -86,7 +86,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 - https://github.com/eclipse-sirius/sirius-web/issues/5051[#5001] [formdescriptioneditor] Remove state machine from formdescriptioneditor
 - https://github.com/eclipse-sirius/sirius-web/issues/5051[#5001] [sirius-web] Remove state machine from widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/5051[#5001] [sirius-web] Remove state machine from modals used by the explorer
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5051[#5001] [sirius-web] Remove state machine from TextfieldPropertySection
 
 
 == v2025.6.0 (work in progress)
