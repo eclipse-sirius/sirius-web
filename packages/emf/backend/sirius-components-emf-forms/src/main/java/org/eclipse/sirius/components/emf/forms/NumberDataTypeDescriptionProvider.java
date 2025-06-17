@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -42,11 +43,14 @@ public class NumberDataTypeDescriptionProvider implements IEMFFormIfDescriptionP
 
     private final IEMFMessageService emfMessageService;
 
-    public NumberDataTypeDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService) {
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
+
+    public NumberDataTypeDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     @Override
@@ -70,7 +74,7 @@ public class NumberDataTypeDescriptionProvider implements IEMFFormIfDescriptionP
                 EcorePackage.Literals.EBIG_DECIMAL
         );
         return dataTypes.stream()
-                .map(dataType -> new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, semanticTargetIdProvider).getIfDescription())
+                .map(dataType -> new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription())
                 .toList();
     }
 }

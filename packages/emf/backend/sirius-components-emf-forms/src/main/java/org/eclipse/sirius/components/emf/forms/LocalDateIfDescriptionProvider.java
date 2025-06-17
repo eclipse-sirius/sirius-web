@@ -26,6 +26,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.DateTimeDescription;
@@ -54,10 +55,13 @@ public class LocalDateIfDescriptionProvider implements IEMFFormIfDescriptionProv
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public LocalDateIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
+
+    public LocalDateIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     public List<IfDescription> getIfDescriptions() {
@@ -97,14 +101,8 @@ public class LocalDateIfDescriptionProvider implements IEMFFormIfDescriptionProv
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .type(DateTimeType.DATE)
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
-                .map(eAttribute -> !eAttribute.isChangeable())
-                .orElse(false);
     }
 
     private Function<VariableManager, String> getLabelProvider() {

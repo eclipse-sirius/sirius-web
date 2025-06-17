@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -57,6 +58,8 @@ public class MultiSelectDescriptionConverter implements IWidgetDescriptionConver
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final IObjectSearchService objectSearchService;
 
     private final ILabelService labelService;
@@ -67,9 +70,10 @@ public class MultiSelectDescriptionConverter implements IWidgetDescriptionConver
 
     private final IFormIdProvider widgetIdProvider;
 
-    public MultiSelectDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+    public MultiSelectDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IObjectSearchService objectSearchService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -106,7 +110,7 @@ public class MultiSelectDescriptionConverter implements IWidgetDescriptionConver
                     .idProvider(new WidgetIdProvider())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewMultiSelectDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewMultiSelectDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewMultiSelectDescription.getIsEnabledExpression()))
                     .valuesProvider(new MultiSelectValuesProvider(interpreter, this.identityService, viewMultiSelectDescription.getValueExpression()))
                     .optionsProvider(new MultiValueProvider(interpreter, viewMultiSelectDescription.getCandidatesExpression(), Object.class))
                     .optionIdProvider(new OptionIdProvider(this.identityService))
