@@ -1,6 +1,6 @@
 = Changelog
 
-== v2025.6.0 (work in progress)
+== v2025.6.0
 
 === Shapes
 
