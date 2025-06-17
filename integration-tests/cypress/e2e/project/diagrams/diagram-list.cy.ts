@@ -94,6 +94,82 @@ describe('Diagram - list', () => {
             expect(rect?.height).to.equal(initialHeight);
           });
       });
+
+      it('Then child node are correctly initialized to respect growable nodes', () => {
+        const diagram = new Diagram();
+        diagram.fitToScreen();
+        // Compartment list without label
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .should('exist')
+          .invoke('css', 'height')
+          .then((nodeHeight) => {
+            expect(parseFloat(nodeHeight.toString())).to.approximately(265, 5);
+          });
+        // Compartment freeform
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('FreeForm - list')
+          .should('exist')
+          .invoke('css', 'height')
+          .then((nodeHeight) => {
+            expect(parseFloat(nodeHeight.toString())).to.approximately(486, 5);
+          });
+      });
+
+      it('Then after height resizing, growable node should grow', () => {
+        const diagram = new Diagram();
+        diagram.getNodes(diagramTitle, 'list').should('exist');
+        diagram.fitToScreen();
+        diagram.zoomOut();
+        diagram.zoomOut();
+
+        diagram.selectNode(diagramTitle, 'list');
+        let initialWidthList: number,
+          initialHeightList: number,
+          initialWidthFreeForm: number,
+          initialHeightFreeForm: number;
+
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            initialWidthList = rect?.width ?? 0;
+            initialHeightList = rect?.height ?? 0;
+          });
+
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('FreeForm - list')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            initialWidthFreeForm = rect?.width ?? 0;
+            initialHeightFreeForm = rect?.height ?? 0;
+          });
+
+        diagram.resizeNode('bottom.right', { x: 0, y: 50 });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000); //Wait for animation
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            expect(rect?.width).to.equal(initialWidthList);
+            expect(rect?.height).to.equal(initialHeightList);
+          });
+
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('FreeForm - list')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            expect(rect?.width).to.equal(initialWidthFreeForm);
+            expect(rect?.height).to.approximately(initialHeightFreeForm + 50, 5);
+          });
+      });
     });
   });
 });

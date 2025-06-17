@@ -142,7 +142,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     if (!forceDimensions) {
       let previousChildrenContentBoxWidthToConsider: number = getDefaultOrMinWidth(0, node) - borderWidth * 2;
-      let previousChildrenContentBoxHeightToConsider: number = 0;
+      let previousChildrenContentBoxHeightToConsider: number = getDefaultOrMinHeight(0, node) - borderWidth * 2;
       if (node.data.resizedByUser) {
         previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? node.width ?? 0) - borderWidth * 2;
         previousChildrenContentBoxHeightToConsider =

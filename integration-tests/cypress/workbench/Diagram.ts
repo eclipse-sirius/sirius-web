@@ -236,11 +236,11 @@ export class Diagram {
 
           return nodeToResize
             .trigger('mousedown', { view: window, force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mousemove', { clientY: nextY, force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mousemove', { clientX: nextX, force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mouseup', { view: window, force: true });
         } else {
           return null;
