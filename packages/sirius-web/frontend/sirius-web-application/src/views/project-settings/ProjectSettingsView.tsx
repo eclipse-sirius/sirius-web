@@ -40,6 +40,9 @@ const getProjectQuery = gql`
       project(projectId: $projectId) {
         id
         name
+        projectSettings {
+          featureFlags
+        }
       }
     }
   }
@@ -104,17 +107,13 @@ export const ProjectSettingsView = () => {
   const { projectId } = useParams<ProjectSettingsParams>();
 
   const { data: projectSettingsTabContributions } = useData(projectSettingsTabExtensionPoint);
-  const initialSelectTabId: string | null = projectSettingsTabContributions[0]?.id ?? null;
-
-  const [state, setState] = useState<ProjectSettingsViewState>({
-    selectedTabId: initialSelectTabId,
-  });
 
   const { loading, data, error } = useQuery<GQLGetProjectData, GQLGetProjectVariables>(getProjectQuery, {
     variables: {
       projectId,
     },
   });
+
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (error) {
@@ -123,10 +122,24 @@ export const ProjectSettingsView = () => {
   }, [error]);
   const project: GQLProject | null = data?.viewer.project;
 
+  const effectiveTabContributions: ProjectSettingTabContribution[] = projectSettingsTabContributions.filter(
+    (contribution) => (project?.projectSettings.featureFlags ?? []).includes(contribution.feature)
+  );
+
+  const initialSelectTabId: string | null = effectiveTabContributions[0]?.id ?? null;
+
+  const [state, setState] = useState<ProjectSettingsViewState>({
+    selectedTabId: initialSelectTabId,
+  });
+
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, selectedTabId: initialSelectTabId }));
+  }, [initialSelectTabId]);
+
   const handleTabChange = (_event, newValue: string) =>
     setState((prevState) => ({ ...prevState, selectedTabId: newValue }));
 
-  const settingContentContribution: ProjectSettingTabContribution | null = projectSettingsTabContributions.filter(
+  const settingContentContribution: ProjectSettingTabContribution | null = effectiveTabContributions.filter(
     (contribution) => contribution.id === state.selectedTabId
   )[0];
   const SettingContent: () => JSX.Element = () => {
@@ -172,10 +185,10 @@ export const ProjectSettingsView = () => {
           <div className={classes.header}>
             <Typography variant="h4">Settings</Typography>
           </div>
-          {projectSettingsTabContributions.length > 0 && settingContentContribution != null ? (
+          {effectiveTabContributions.length > 0 && settingContentContribution != null ? (
             <div className={classes.tabs}>
               <Tabs value={state.selectedTabId} onChange={handleTabChange} orientation="vertical">
-                {projectSettingsTabContributions.map(({ id, title, icon }) => (
+                {effectiveTabContributions.map(({ id, title, icon }) => (
                   <Tab className={classes.tab} label={title} icon={icon} iconPosition="start" key={id} value={id} />
                 ))}
               </Tabs>
