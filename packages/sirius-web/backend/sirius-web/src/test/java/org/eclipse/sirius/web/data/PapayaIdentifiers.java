@@ -53,6 +53,8 @@ public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_SIRIUS_WEB_LIFECYCLE_ROOT_OBJECT = UUID.fromString("df75f516-eb20-4844-b94d-cdff0ad0b2ac");
 
+    public static final UUID PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA = UUID.fromString("429fb025-f429-4f78-a314-a8502024997a");
+
     private PapayaIdentifiers() {
         // Prevent instantiation
     }
