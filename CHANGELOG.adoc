@@ -71,7 +71,7 @@ Additional concerns will be removed in the future from `IObjectService` until we
 
 === Bug fixes
 
-
+-https://github.com/eclipse-sirius/sirius-web/issues/5065[#5065] [diagram] Prevent adding bendpoints on a simple click
 
 
 === New Features
