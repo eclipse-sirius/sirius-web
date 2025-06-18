@@ -111,6 +111,7 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  elementDescriptionId,
   targetObjectId,
   onDirectEditClick,
   onClose,
@@ -136,14 +137,14 @@ export const Palette = ({
 
   const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
   const { setLastToolInvoked } = useDiagramPalette();
-  const { invokeTool } = useInvokePaletteTool({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
+  const { invokeTool } = useInvokePaletteTool();
 
   const handleToolClick = (tool: GQLTool) => {
     onClose();
     domNode?.focus();
-    invokeTool(tool);
+    invokeTool(tool, diagramElementId, targetObjectId, x, y, onDirectEditClick);
     if (palette) {
-      setLastToolInvoked(palette.id, tool);
+      setLastToolInvoked(elementDescriptionId, tool);
     }
   };
 
