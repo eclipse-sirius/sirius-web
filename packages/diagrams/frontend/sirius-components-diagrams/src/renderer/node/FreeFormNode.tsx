@@ -176,6 +176,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           {selected ? (
             <DiagramElementPalette
               diagramElementId={id}
+              elementDescriptionId={data.descriptionId}
               targetObjectId={data.targetObjectId}
               labelId={getLabelId(data)}
             />

@@ -111,6 +111,7 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  elementDescriptionId,
   targetObjectId,
   onDirectEditClick,
   onClose,
@@ -143,7 +144,7 @@ export const Palette = ({
     domNode?.focus();
     invokeTool(tool, diagramElementId, targetObjectId, x, y, onDirectEditClick);
     if (palette) {
-      setLastToolInvoked(palette.id, tool);
+      setLastToolInvoked(elementDescriptionId, tool);
     }
   };
 
