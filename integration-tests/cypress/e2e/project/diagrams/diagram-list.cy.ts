@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,20 +25,21 @@ describe('Diagram - list', () => {
 
       beforeEach(() => {
         const studio = new Studio();
+        const explorer = new Explorer();
+        const details = new Details();
         studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
           instanceProjectId = res.projectId;
         });
+
+        explorer.createObject('Root', 'entity1s-Entity1');
+        details.getTextField('Name').type('list{enter}');
+        new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
       });
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
       it('Then the node is correctly displayed with the proper separator', () => {
-        const explorer = new Explorer();
         const diagram = new Diagram();
-        const details = new Details();
-        explorer.createObject('Root', 'entity1s-Entity1');
-        details.getTextField('Name').type('list{enter}');
-        new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
         diagram.fitToScreen();
         // Compartment list without label
         diagram
@@ -57,6 +58,40 @@ describe('Diagram - list', () => {
           .invoke('css', 'border-width')
           .then((borderWidth) => {
             expect(borderWidth).to.eq('0px');
+          });
+      });
+
+      it('Then after width resizing, child nodes conserve their width', () => {
+        const diagram = new Diagram();
+        diagram.getNodes(diagramTitle, 'list').should('exist');
+        diagram.fitToScreen();
+        diagram.zoomOut();
+
+        diagram.selectNode(diagramTitle, 'list');
+        let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
+
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            initialLeft = rect?.left ?? 0;
+            initialTop = rect?.top ?? 0;
+            initialWidth = rect?.width ?? 0;
+            initialHeight = rect?.height ?? 0;
+          });
+
+        diagram.resizeNode('bottom.right', { x: 50, y: 0 });
+
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .then(($el) => {
+            const rect = $el[0]?.getBoundingClientRect();
+            expect(rect?.left).to.equal(initialLeft);
+            expect(rect?.top).to.equal(initialTop);
+            expect(rect?.width).to.approximately(initialWidth + 50, 5);
+            expect(rect?.height).to.equal(initialHeight);
           });
       });
     });
