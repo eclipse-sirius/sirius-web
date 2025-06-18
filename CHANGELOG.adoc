@@ -34,6 +34,7 @@
 Improve how the palette is closed and how it is placed on the viewport after resizing the window.
 - https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [core] Improve the initial fix.
 Stop the propagation on the dialog instead of the input.
+- https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection
 
 
 == v2025.8.0
