@@ -35,6 +35,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class NodeDescription implements IDiagramElementDescription {
 
+    /**
+     * The name of the variable used to store the ancestors (all previous self) of the current context.
+     */
+    public static final String ANCESTORS = "ancestors";
+
     private String id;
 
     private SynchronizationPolicy synchronizationPolicy;
