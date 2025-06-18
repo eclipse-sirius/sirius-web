@@ -20,6 +20,10 @@ export class Explorer {
     return this.getExplorerView().get(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
+  public getTreeItemContainingLabel(treeItemLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getExplorerView().get(`[data-treeitemlabel~="${treeItemLabel}"]`);
+  }
+
   public getTreeItems(): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getExplorerView().find('[data-treeitemid]');
   }
