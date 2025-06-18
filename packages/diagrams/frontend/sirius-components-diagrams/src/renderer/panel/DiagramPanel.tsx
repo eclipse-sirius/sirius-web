@@ -133,7 +133,7 @@ export const DiagramPanel = memo(
               </IconButton>
             </Tooltip>
             <Tooltip title="Zoom out">
-              <IconButton size="small" aria-label="zoom out" onClick={handleZoomOut}>
+              <IconButton size="small" aria-label="zoom out" onClick={handleZoomOut} data-testid="zoom-out">
                 <ZoomOutIcon />
               </IconButton>
             </Tooltip>
