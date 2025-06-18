@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,34 @@ describe('Diagram - list', () => {
           .invoke('css', 'border-width')
           .then((borderWidth) => {
             expect(borderWidth).to.eq('0px');
+          });
+      });
+
+      it('Then child node are correctly resize to respect growable nodes', () => {
+        const explorer = new Explorer();
+        const diagram = new Diagram();
+        const details = new Details();
+        explorer.createObject('Root', 'entity1s-Entity1');
+        details.getTextField('Name').type('list{enter}');
+        new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
+        diagram.fitToScreen();
+        // Compartment list without label
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('List - undefined')
+          .should('exist')
+          .invoke('css', 'height')
+          .then((nodeHeight) => {
+            expect(parseFloat(nodeHeight.toString())).to.approximately(265, 2);
+          });
+        // Compartment freeform
+        diagram
+          .getDiagram(diagramTitle)
+          .findByTestId('FreeForm - list')
+          .should('exist')
+          .invoke('css', 'height')
+          .then((nodeHeight) => {
+            expect(parseFloat(nodeHeight.toString())).to.approximately(486, 2);
           });
       });
     });
