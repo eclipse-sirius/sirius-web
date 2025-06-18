@@ -106,6 +106,7 @@ In this package, you can now find the following default implementations:
 - https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [view] Ensure that forms based on the view DSL do not allow the edition of read only objects
 - https://github.com/eclipse-sirius/sirius-web/issues/5099[#5099] [formdescriptioneditor] Remove state machine from formdescriptioneditor
 - https://github.com/eclipse-sirius/sirius-web/issues/5103[#5103] [sirius-web] Make `ExpandAllTreeItemContextMenuContribution` reusable by downstream applications
+- https://github.com/eclipse-sirius/sirius-web/issues/5089[#5089] [diagram] Add new `ancestors` variable to Nodes
 
 
 
