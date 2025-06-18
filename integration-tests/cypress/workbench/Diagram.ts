@@ -20,13 +20,13 @@ export class Diagram {
     cy.getByTestId('fit-to-screen').click();
 
     /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-    cy.wait(4000);
+    cy.wait(1000);
   }
 
   public arrangeAll() {
     cy.getByTestId('arrange-all').click();
     /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-    cy.wait(4000);
+    cy.wait(2000);
   }
 
   public getLabel(diagramLabel: string, label: string): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -35,6 +35,11 @@ export class Diagram {
 
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
+  }
+
+  public selectNode(diagramLabel: string, nodeLabel: string): void {
+    this.getNodes(diagramLabel, nodeLabel).click('topLeft');
+    this.getSelectedNodes(diagramLabel, nodeLabel).should('exist');
   }
 
   public getEdgePaths(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -184,7 +189,25 @@ export class Diagram {
     return roundedPathData;
   }
 
-  // public getLabel(labelId: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  //   return cy.getByTestId(`Label - ${labelId}`);
-  // }
+  public moveNode(selector, { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const elementToDrag = cy.get(selector as string);
+      return elementToDrag.then(($el) => {
+        const { left, top, width, height } = $el[0]!.getBoundingClientRect();
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
+        const nextX: number = centerX + x;
+        const nextY: number = centerY + y;
+
+        return elementToDrag
+          .trigger('mousedown', { view: window, force: true })
+          .trigger('mousemove', centerX + 1, centerY + 1, { force: true })
+          .wait(200)
+          .trigger('mousemove', nextX, nextY, { force: true })
+          .wait(200)
+          .trigger('mouseup', { view: window, force: true });
+      });
+    });
+  }
 }
