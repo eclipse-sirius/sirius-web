@@ -47,7 +47,6 @@ import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
-import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
@@ -125,21 +124,6 @@ const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement |
   }, [refDomNode]);
 
   return isKeyPressed;
-};
-
-// FIXME: These two function only work for View-based diagrams and depends on details of the backend
-// See org.eclipse.sirius.components.view.emf.diagram.ViewPaletteProvider
-
-const getDiagramPaletteId = (diagramDescription: GQLDiagramDescription) => {
-  const fullId = diagramDescription.id;
-  const diagramDescriptionUUID = fullId.substring(fullId.lastIndexOf('=') + 1);
-  return `siriusComponents://diagramPalette?diagramId=${diagramDescriptionUUID}`;
-};
-
-const getNodePaletteId = (node: Node<NodeData>) => {
-  const fullId = node.data.descriptionId;
-  const nodeDescriptionUUID = fullId.substring(fullId.lastIndexOf('=') + 1);
-  return `siriusComponents://nodePalette?nodeId=${nodeDescriptionUUID}`;
 };
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
@@ -499,8 +483,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     (event: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData> | null) => {
       hideAllPalettes();
       if (isAltKeyDown) {
-        const paletteContextId = node ? getNodePaletteId(node) : getDiagramPaletteId(diagramDescription);
-        const lastToolInvoked: GQLTool | null = getLastToolInvoked(paletteContextId);
+        const elementDescriptionId = node ? node.data.descriptionId : diagramDescription.id;
+        const lastToolInvoked: GQLTool | null = getLastToolInvoked(elementDescriptionId);
         if (lastToolInvoked) {
           const { x, y } = screenToFlowPosition({ x: event.clientX, y: event.clientY });
           const diagramElementId = node ? node.id : diagramRefreshedEventPayload.diagram.id;
@@ -612,6 +596,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         />
         <DiagramPalette
           diagramElementId={diagramRefreshedEventPayload.diagram.id}
+          elementDescriptionId={diagramDescription.id}
           targetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
         />
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
