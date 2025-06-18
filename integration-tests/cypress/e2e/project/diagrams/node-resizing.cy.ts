@@ -15,7 +15,7 @@ import { Flow } from '../../../usecases/Flow';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
-describe('Diagram - node moving', () => {
+describe('Diagram - node resizing', () => {
   context('Given a flow project', () => {
     let projectId: string = '';
     beforeEach(() => {
@@ -27,17 +27,21 @@ describe('Diagram - node moving', () => {
         const explorer = new Explorer();
         explorer.expandWithDoubleClick('Flow');
         explorer.expandWithDoubleClick('NewSystem');
-        explorer.delete('CompositeProcessor1');
+        explorer.delete('DataSource1');
+        explorer.expandWithDoubleClick('CompositeProcessor1');
+        explorer.delete('Processor1');
         explorer.selectRepresentation('Topography');
       });
     });
 
     afterEach(() => cy.deleteProject(projectId));
 
-    it('Then it is possible to move a node', () => {
+    it('Then is possible to resize a node', () => {
       const diagram = new Diagram();
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'CompositeProcessor1').should('exist');
       diagram.fitToScreen();
+      diagram.selectNode('Topography', 'CompositeProcessor1');
+
       let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
 
       cy.get('.react-flow__node:first').then(($el) => {
@@ -48,15 +52,14 @@ describe('Diagram - node moving', () => {
         initialHeight = rect?.height ?? 0;
       });
 
-      diagram.moveNode('.react-flow__node:first', { x: 50, y: 0 });
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(400);
+      diagram.resizeNode('bottom.right', { x: 25, y: 25 });
+
       cy.get('.react-flow__node:first').then(($el) => {
         const rect = $el[0]?.getBoundingClientRect();
-        expect(rect?.left).to.approximately(initialLeft + 50, 2);
-        expect(rect?.top).to.approximately(initialTop, 2);
-        expect(rect?.width).to.equal(initialWidth);
-        expect(rect?.height).to.equal(initialHeight);
+        expect(rect?.left).to.equal(initialLeft);
+        expect(rect?.top).to.equal(initialTop);
+        expect(rect?.width).to.approximately(initialWidth + 25, 5);
+        expect(rect?.height).to.approximately(initialHeight + 25, 5);
       });
     });
   });
