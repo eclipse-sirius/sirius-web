@@ -19,38 +19,41 @@ import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
 
-export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
+export const DiagramPalette = memo(
+  ({ diagramElementId, elementDescriptionId, targetObjectId }: DiagramPaletteProps) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
 
-  const onKeyDown = useCallback(
-    (event: React.KeyboardEvent<Element>) => {
-      const { key } = event;
-      if (isOpened && key === 'Escape') {
-        event.stopPropagation();
-        hideDiagramPalette();
-      }
-    },
-    [hideDiagramPalette, isOpened]
-  );
+    const onKeyDown = useCallback(
+      (event: React.KeyboardEvent<Element>) => {
+        const { key } = event;
+        if (isOpened && key === 'Escape') {
+          event.stopPropagation();
+          hideDiagramPalette();
+        }
+      },
+      [hideDiagramPalette, isOpened]
+    );
 
-  if (readOnly) {
-    return null;
+    if (readOnly) {
+      return null;
+    }
+
+    return isOpened && x && y ? (
+      <PalettePortal>
+        <div onKeyDown={onKeyDown}>
+          <Palette
+            x={x}
+            y={y}
+            diagramElementId={diagramElementId}
+            elementDescriptionId={elementDescriptionId}
+            targetObjectId={targetObjectId}
+            onDirectEditClick={() => {}}
+            onClose={hideDiagramPalette}
+            children={[]}
+          />
+        </div>
+      </PalettePortal>
+    ) : null;
   }
-
-  return isOpened && x && y ? (
-    <PalettePortal>
-      <div onKeyDown={onKeyDown}>
-        <Palette
-          x={x}
-          y={y}
-          diagramElementId={diagramElementId}
-          targetObjectId={targetObjectId}
-          onDirectEditClick={() => {}}
-          onClose={hideDiagramPalette}
-          children={[]}
-        />
-      </div>
-    </PalettePortal>
-  ) : null;
-});
+);
