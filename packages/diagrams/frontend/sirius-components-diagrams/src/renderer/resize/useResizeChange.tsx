@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,18 +47,20 @@ const applyResizeToListContain = (
   const newChanges: NodeChange<Node<NodeData>>[] = [];
   if (isListData(resizedNode)) {
     const borderWidth: number = getLeftRightBorderWidth(resizedNode);
-    nodes.forEach((node) => {
-      if (node.parentId === resizedNode.id && change.dimensions?.width) {
-        newChanges.push({
-          id: node.id,
-          type: 'dimensions',
-          resizing: true,
-          setAttributes: true,
-          dimensions: { width: change.dimensions?.width - borderWidth, height: node.height ?? 0 },
-        });
-        newChanges.push(...applyResizeToListContain(node, nodes, change));
-      }
-    });
+    nodes
+      .filter((node) => !node.data.isBorderNode)
+      .forEach((node) => {
+        if (node.parentId === resizedNode.id && change.dimensions?.width) {
+          newChanges.push({
+            id: node.id,
+            type: 'dimensions',
+            resizing: true,
+            setAttributes: true,
+            dimensions: { width: change.dimensions?.width - borderWidth, height: node.height ?? 0 },
+          });
+          newChanges.push(...applyResizeToListContain(node, nodes, change));
+        }
+      });
   }
   return newChanges;
 };

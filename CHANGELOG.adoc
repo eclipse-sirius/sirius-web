@@ -88,7 +88,7 @@ In this package, you can now find the following default implementations:
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5080[#5080] [diagram] Prevent border node to be resize during parent resizing
 
 
 === New Features
