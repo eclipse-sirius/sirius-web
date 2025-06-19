@@ -20,13 +20,19 @@ export class Diagram {
     cy.getByTestId('fit-to-screen').click();
 
     /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-    cy.wait(4000);
+    cy.wait(1000);
+  }
+
+  public zoomOut() {
+    cy.getByTestId('zoom-out').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(300); // wait for animation
   }
 
   public arrangeAll() {
     cy.getByTestId('arrange-all').click();
     /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-    cy.wait(4000);
+    cy.wait(2000);
   }
 
   public getLabel(diagramLabel: string, label: string): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -35,6 +41,11 @@ export class Diagram {
 
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
+  }
+
+  public selectNode(diagramLabel: string, nodeLabel: string): void {
+    this.getNodes(diagramLabel, nodeLabel).click('topLeft');
+    this.getSelectedNodes(diagramLabel, nodeLabel).should('exist');
   }
 
   public getEdgePaths(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -170,7 +181,7 @@ export class Diagram {
       const pathValue = pathValues[i];
       if (pathValue) {
         if (pathValue.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g)) {
-          roundedPathValues.push(parseFloat(pathValue).toFixed(2));
+          roundedPathValues.push(parseFloat(pathValue).toFixed(0));
         } else {
           roundedPathValues.push(pathValue);
         }
@@ -184,7 +195,99 @@ export class Diagram {
     return roundedPathData;
   }
 
-  // public getLabel(labelId: string): Cypress.Chainable<JQuery<HTMLElement>> {
-  //   return cy.getByTestId(`Label - ${labelId}`);
-  // }
+  public moveNode(diagramLabel: string, nodeLabel: string, { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const elementToDrag = this.getNodes(diagramLabel, nodeLabel);
+      return elementToDrag.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return elementToDrag
+            .trigger('mousedown', { view: window, force: true })
+            .wait(50)
+            .trigger('mousemove', centerX + 1, centerY + 1, { force: true })
+            .wait(50)
+            .trigger('mousemove', nextX, nextY, { force: true })
+            .wait(50)
+            .trigger('mouseup', { view: window, force: true });
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
+  public resizeNode(direction: 'top.left' | 'top.right' | 'bottom.left' | 'bottom.right', { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const nodeToResize = cy.get(`.react-flow__resize-control.nodrag.${direction}.handle`);
+      return nodeToResize.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return nodeToResize
+            .trigger('mousedown', { view: window, force: true })
+            .wait(50)
+            .trigger('mousemove', { clientY: nextY, force: true })
+            .wait(50)
+            .trigger('mousemove', { clientX: nextX, force: true })
+            .wait(50)
+            .trigger('mouseup', { view: window, force: true });
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
+  public moveBendPoint(bendPointIndex: number, { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const bendPointToDrag = cy.getByTestId(`bend-point-${bendPointIndex}`);
+      return bendPointToDrag.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return bendPointToDrag
+            .trigger('mousedown', { view: window, force: true })
+            .wait(50)
+            .trigger('mousemove', { clientX: nextX, clientY: nextY, force: true })
+            .wait(50)
+            .trigger('mouseup', { view: window, force: true });
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
+  public isPathWithinTolerance(actualPath, expectedPath, tolerance): boolean {
+    const actualNumbers = actualPath.match(/\d+/g).map(Number);
+    const expectedNumbers = expectedPath.match(/\d+/g).map(Number);
+
+    if (actualNumbers.length !== expectedNumbers.length) {
+      return false;
+    }
+
+    for (let i = 0; i < actualNumbers.length; i++) {
+      if (Math.abs(actualNumbers[i] - expectedNumbers[i]) > tolerance) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
