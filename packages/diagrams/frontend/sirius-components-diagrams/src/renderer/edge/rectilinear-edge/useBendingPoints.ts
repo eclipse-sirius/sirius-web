@@ -74,7 +74,6 @@ export const useBendingPoints = (
       if (edge?.data) {
         edge.data.bendingPoints = cleanBendPoint(newPoints.sort((a, b) => a.pathOrder - b.pathOrder));
       }
-      setLocalBendingPoints(newPoints);
       setEdges(edges);
       synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
     }
