@@ -14,16 +14,15 @@
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { GQLTool } from '../palette/Palette.types';
 
-export interface UseInvokePaletteToolProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
-}
-
 export interface UseInvokePaletteToolValue {
-  invokeTool: (tool: GQLTool) => void;
+  invokeTool: (
+    x: number,
+    y: number,
+    diagramElementId: string,
+    targetObjectId: string,
+    onDirectEditClick: () => void,
+    tool: GQLTool
+  ) => void;
 }
 
 export interface GQLGetToolSectionsVariables {
