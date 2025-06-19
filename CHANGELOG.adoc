@@ -6,7 +6,7 @@
 
 - Add support for diagram customization
 - Add the ability to share the workbench state
-
+- Provide a backend-only API to retrieve a diagram as PNG or SVG file
 
 === Architectural decision records
 
