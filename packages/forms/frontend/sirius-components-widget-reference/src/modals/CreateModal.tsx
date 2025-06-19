@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
@@ -25,12 +25,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import {
   CreateModalProps,
+  CreateModalState,
   GQLCreateElementInReferenceInput,
   GQLCreateElementInReferenceMutationData,
   GQLCreateElementInReferenceMutationVariables,
@@ -44,23 +43,6 @@ import {
   GQLGetRootObjectCreationDescriptionsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryVariables,
 } from './CreateModal.types';
-import {
-  ChangeChildCreationDescriptionEvent,
-  ChangeContainerSelectionEvent,
-  ChangeContainmentModeEvent,
-  ChangeDomainEvent,
-  CreateChildEvent,
-  CreateModalContext,
-  CreateModalEvent,
-  CreateModalStateSchema,
-  CreateRootEvent,
-  FetchedChildCreationDescriptionsEvent,
-  FetchedDomainsEvent,
-  FetchedRootObjectCreationDescriptionsEvent,
-  HandleCreateElementResponseEvent,
-  SchemaValue,
-  createModalMachine,
-} from './CreateModalMachine';
 
 const useStyle = makeStyles()((theme) => ({
   select: {
@@ -160,7 +142,8 @@ const getDomainsQuery = gql`
 
 const isErrorPayload = (payload: GQLCreateElementInReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
+
+const isCreateElementSuccessPayload = (
   payload: GQLCreateElementInReferencePayload
 ): payload is GQLCreateElementInReferenceSuccessPayload =>
   payload.__typename === 'CreateElementInReferenceSuccessPayload';
@@ -168,49 +151,40 @@ const isSuccessPayload = (
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const { classes } = useStyle();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<CreateModalContext, CreateModalStateSchema, CreateModalEvent>>(createModalMachine);
-  const { createModal } = value as SchemaValue;
+
+  const [state, setState] = useState<CreateModalState>({
+    domains: [],
+    selectedDomainId: '',
+    creationDescriptions: [],
+    selectedChildCreationDescriptionId: '',
+    newObjectId: null,
+    containerSelected: null,
+    containerId: widget.reference.containment ? widget.ownerId : null,
+    containerKind: widget.reference.containment ? widget.reference.ownerKind : null,
+  });
 
   const {
-    domains,
-    selectedChildCreationDescriptionId,
-    creationDescriptions,
-    newObjectId,
-    containerSelected,
-    containerId,
-    containerKind,
-    selectedDomainId,
-  } = context;
-
-  useEffect(() => {
-    const changeContainmentModeEvent: ChangeContainmentModeEvent = {
-      containment: widget.reference.containment,
-      containerKind: widget.reference.containment ? widget.reference.ownerKind : null,
-      containerId: widget.reference.containment ? widget.ownerId : null,
-      type: 'CHANGE_CONTAINMENT_MODE',
-    };
-    dispatch(changeContainmentModeEvent);
-  }, []);
-
-  const [getDomains, { loading: domainsLoading, data: domainsData, error: domainsError }] = useLazyQuery<
-    GQLGetDomainsQueryData,
-    GQLGetDomainsQueryVariables
-  >(getDomainsQuery, {
+    loading: domainsLoading,
+    data: domainsData,
+    error: domainsError,
+  } = useQuery<GQLGetDomainsQueryData, GQLGetDomainsQueryVariables>(getDomainsQuery, {
     variables: { editingContextId },
+    skip: widget.reference.containment,
   });
 
   useEffect(() => {
     if (!domainsLoading) {
       if (domainsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(domainsError.message);
       }
       if (domainsData) {
-        const fetchDomainsEvent: FetchedDomainsEvent = {
-          type: 'HANDLE_FETCHED_DOMAINS',
-          data: domainsData,
-        };
-        dispatch(fetchDomainsEvent);
+        const { domains } = domainsData.viewer.editingContext;
+        const selectedDomainId = domains[0]?.id || '';
+        setState((prevState) => ({
+          ...prevState,
+          selectedDomainId: selectedDomainId,
+          domains: domains,
+        }));
       }
     }
   }, [domainsLoading, domainsData, domainsError]);
@@ -225,14 +199,17 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!descriptionsLoading) {
       if (descriptionError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(descriptionError.message);
       }
       if (descriptionsData) {
-        const fetchDescriptionsEvent: FetchedRootObjectCreationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_ROOT_OBJECT_CREATION_DESCRIPTIONS',
-          data: descriptionsData,
-        };
-        dispatch(fetchDescriptionsEvent);
+        const referenceWidgetRootCreationDescriptions =
+          descriptionsData.viewer.editingContext.referenceWidgetRootCreationDescriptions;
+        const selectedChildCreationDescriptionId = referenceWidgetRootCreationDescriptions[0]?.id || '';
+        setState((prevState) => ({
+          ...prevState,
+          creationDescriptions: referenceWidgetRootCreationDescriptions,
+          selectedChildCreationDescriptionId: selectedChildCreationDescriptionId,
+        }));
       }
     }
   }, [descriptionsLoading, descriptionsData, descriptionError]);
@@ -251,14 +228,16 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(childCreationDescriptionsError.message);
       }
       if (childCreationDescriptionsData) {
-        const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_CHILD_CREATION_DESCRIPTIONS',
-          data: childCreationDescriptionsData,
-        };
-        dispatch(fetchChildCreationDescriptionsEvent);
+        const { referenceWidgetChildCreationDescriptions } = childCreationDescriptionsData.viewer.editingContext;
+        const selectedChildCreationDescriptionId = referenceWidgetChildCreationDescriptions[0]?.id || '';
+        setState((prevState) => ({
+          ...prevState,
+          creationDescriptions: referenceWidgetChildCreationDescriptions,
+          selectedChildCreationDescriptionId: selectedChildCreationDescriptionId,
+        }));
       }
     }
   }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
@@ -273,19 +252,17 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   useEffect(() => {
     if (!createElementLoading) {
       if (createElementError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(createElementError.message);
       }
       if (createElementData) {
-        const handleResponseEvent: HandleCreateElementResponseEvent = {
-          type: 'HANDLE_CREATE_ELEMENT_RESPONSE',
-          data: createElementData,
-        };
-        dispatch(handleResponseEvent);
-
         const { createElementInReference } = createElementData;
-        if (isErrorPayload(createElementInReference) || isSuccessPayload(createElementInReference)) {
+        if (isErrorPayload(createElementInReference)) {
           const { messages } = createElementInReference;
           addMessages(messages);
+        }
+        if (isCreateElementSuccessPayload(createElementInReference)) {
+          const { object } = createElementInReference;
+          onClose(object.id);
         }
       }
     }
@@ -293,29 +270,27 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
 
   const onCreateObject = () => {
     let input: GQLCreateElementInReferenceInput | null = null;
-    if (containerId) {
-      if (createModal === 'validForChild') {
-        dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
+    if (state.containerId) {
+      if (state.containerKind !== 'siriusWeb://document') {
         input = {
           id: crypto.randomUUID(),
           editingContextId,
           representationId: formId,
           referenceWidgetId: widget.id,
-          containerId,
+          containerId: state.containerId,
           domainId: null,
-          creationDescriptionId: selectedChildCreationDescriptionId,
+          creationDescriptionId: state.selectedChildCreationDescriptionId,
           descriptionId: widget.descriptionId,
         };
-      } else if (createModal === 'validForRoot') {
-        dispatch({ type: 'CREATE_ROOT' } as CreateRootEvent);
+      } else {
         input = {
           id: crypto.randomUUID(),
           editingContextId,
           representationId: formId,
           referenceWidgetId: widget.id,
-          containerId,
-          domainId: selectedDomainId,
-          creationDescriptionId: selectedChildCreationDescriptionId,
+          containerId: state.containerId,
+          domainId: state.selectedDomainId,
+          creationDescriptionId: state.selectedChildCreationDescriptionId,
           descriptionId: widget.descriptionId,
         };
       }
@@ -327,54 +302,49 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
 
   const onDomainChange = (event) => {
     const { value } = event.target;
-    const changeDomainEvent: ChangeDomainEvent = { type: 'CHANGE_DOMAIN', domainId: value };
-    dispatch(changeDomainEvent);
+    setState((prevState) => ({
+      ...prevState,
+      selectedDomainId: value,
+    }));
   };
 
   const onChildCreationDescriptionChange = (event) => {
     const value = event.target.value;
-    const changeChildCreationDescriptionEvent: ChangeChildCreationDescriptionEvent = {
-      type: 'CHANGE_CHILD_CREATION_DESCRIPTION',
-      childCreationDescriptionId: value,
-    };
-    dispatch(changeChildCreationDescriptionEvent);
+    setState((prevState) => ({
+      ...prevState,
+      selectedChildCreationDescriptionId: value,
+    }));
   };
 
   useEffect(() => {
-    if (createModal === 'loadingChildCreationDescription' && containerKind) {
-      getChildCreationDescription({
-        variables: {
-          editingContextId,
-          kind: containerKind,
-          referenceKind: widget.reference.referenceKind,
-          descriptionId: widget.descriptionId,
-        },
-      });
-    }
-    if (createModal === 'loadingDomains') {
-      getDomains({ variables: { editingContextId } });
-    }
-    if (createModal === 'loadingRootObjectCreationDescriptions' && selectedDomainId) {
+    if (state.containerKind === 'siriusWeb://document' && state.selectedDomainId) {
       getRootObjectCreationDescriptions({
         variables: {
           editingContextId,
-          domainId: selectedDomainId,
+          domainId: state.selectedDomainId,
+          referenceKind: widget.reference.referenceKind,
+          descriptionId: widget.descriptionId,
+        },
+      });
+    } else if (state.containerKind !== 'siriusWeb://document' && state.containerKind) {
+      getChildCreationDescription({
+        variables: {
+          editingContextId,
+          kind: state.containerKind,
           referenceKind: widget.reference.referenceKind,
           descriptionId: widget.descriptionId,
         },
       });
     }
-    if (createModal === 'success') {
-      onClose(newObjectId);
-    }
-  }, [createModal]);
+  }, [state.selectedDomainId, state.containerKind]);
 
   const onTreeItemClick = (_event, item: GQLTreeItem) => {
-    const changeContainerSelectionEvent: ChangeContainerSelectionEvent = {
-      type: 'CHANGE_CONTAINER',
-      container: item,
-    };
-    dispatch(changeContainerSelectionEvent);
+    setState((prevState) => ({
+      ...prevState,
+      containerSelected: item,
+      containerId: item.id,
+      containerKind: item.kind,
+    }));
   };
 
   return (
@@ -399,23 +369,23 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               leafType={'container'}
               ownerKind={widget.reference.referenceKind}
               onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={containerSelected ? [containerSelected.id] : []}
+              selectedTreeItemIds={state.containerSelected ? [state.containerSelected.id] : []}
             />
           )}
-          {containerKind === 'siriusWeb://document' && (
+          {state.containerKind === 'siriusWeb://document' && (
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography gutterBottom variant="subtitle1">
                 Select the domain
               </Typography>
               <Select
                 variant="standard"
-                value={selectedDomainId}
+                value={state.selectedDomainId}
                 onChange={onDomainChange}
-                disabled={createModal === 'loadingDomains' || createModal === 'creatingChild'}
+                disabled={!state.selectedDomainId}
                 labelId="createModalChildCreationDescriptionLabel"
                 fullWidth
                 data-testid="domain">
-                {domains.map((domain) => (
+                {state.domains.map((domain) => (
                   <MenuItem value={domain.id} key={domain.id}>
                     {domain.label}
                   </MenuItem>
@@ -430,13 +400,13 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             <Select
               variant="standard"
               classes={{ select: classes.select }}
-              value={selectedChildCreationDescriptionId}
+              value={state.selectedChildCreationDescriptionId}
               onChange={onChildCreationDescriptionChange}
-              disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}
+              disabled={!state.creationDescriptions}
               labelId="createModalChildCreationDescriptionLabel"
               fullWidth
               data-testid="childCreationDescription">
-              {creationDescriptions.map((creationDescription) => (
+              {state.creationDescriptions.map((creationDescription) => (
                 <MenuItem value={creationDescription.id} key={creationDescription.id}>
                   {creationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
@@ -457,7 +427,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           type="button"
           data-testid="create-object"
           onClick={onCreateObject}
-          disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}>
+          disabled={!state.selectedChildCreationDescriptionId}>
           Create
         </Button>
       </DialogActions>
