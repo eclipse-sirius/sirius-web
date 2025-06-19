@@ -13,7 +13,8 @@
 import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
-import { NodeData } from '../DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
+import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseResizeChangeValue } from './useResizeChange.types';
 
@@ -76,6 +77,48 @@ const applyMoveToListContain = (
   return change;
 };
 
+const applyMoveToBorderNodes = (resizedNode: Node<NodeData>, nodes: Node<NodeData>[], change: NodeDimensionChange) => {
+  const newChanges: NodeChange<Node<NodeData>>[] = [];
+  if (resizedNode.width && resizedNode.height && change.dimensions) {
+    const offsetX: number = resizedNode.width - change.dimensions.width;
+    const offsetY: number = resizedNode.height - change.dimensions?.height;
+    nodes
+      .filter((node) => node.data.isBorderNode)
+      .forEach((node) => {
+        if (node.parentId === resizedNode.id) {
+          node.extent = getBorderNodeExtent(
+            {
+              ...resizedNode,
+              width: change.dimensions?.width ?? 0,
+              height: change.dimensions?.height ?? 0,
+            },
+            node
+          );
+          if (node.data.borderNodePosition === BorderNodePosition.EAST) {
+            newChanges.push({
+              id: node.id,
+              type: 'position',
+              position: { x: node.position.x - offsetX, y: node.position.y },
+            });
+          } else if (node.data.borderNodePosition === BorderNodePosition.SOUTH) {
+            newChanges.push({
+              id: node.id,
+              type: 'position',
+              position: { x: node.position.x, y: node.position.y - offsetY },
+            });
+          } else {
+            newChanges.push({
+              id: node.id,
+              type: 'position',
+              position: { x: node.position.x, y: node.position.y },
+            });
+          }
+        }
+      });
+  }
+  return newChanges;
+};
+
 const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
 const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
@@ -92,6 +135,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
           const resizedNode = getNodes().find((node) => change.id === node.id);
           if (resizedNode) {
             newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
+            newChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
           }
         }
         if (isMove(change)) {

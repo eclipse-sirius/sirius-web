@@ -414,6 +414,7 @@ Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, 
 Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
 The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.
 - https://github.com/eclipse-sirius/sirius-web/issues/5017[#5017] [sirius-web] Improve the consistency and documentation of the extension points of the frontend
+- https://github.com/eclipse-sirius/sirius-web/issues/3180[#3180] [diagram] Preserve the position of border nodes when resizing the parent
 
 
 

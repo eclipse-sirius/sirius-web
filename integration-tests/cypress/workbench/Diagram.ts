@@ -227,6 +227,32 @@ export class Diagram {
     });
   }
 
+  public resizeNodeFeedback(direction: 'top.left' | 'top.right' | 'bottom.left' | 'bottom.right', { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const nodeToResize = cy.get(`.react-flow__resize-control.nodrag.${direction}.handle`);
+      return nodeToResize.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return nodeToResize
+            .trigger('mousedown', { view: window, force: true })
+            .wait(150)
+            .trigger('mousemove', { clientY: nextY, force: true })
+            .wait(150)
+            .trigger('mousemove', { clientX: nextX, force: true })
+            .wait(150);
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
   public moveBendPoint(bendPointIndex: number, { x, y }): void {
     cy.window().then((window) => {
       // eslint-disable-next-line cypress/no-assigning-return-values
