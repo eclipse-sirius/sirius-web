@@ -181,7 +181,7 @@ export class Diagram {
       const pathValue = pathValues[i];
       if (pathValue) {
         if (pathValue.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g)) {
-          roundedPathValues.push(parseFloat(pathValue).toFixed(2));
+          roundedPathValues.push(parseFloat(pathValue).toFixed(0));
         } else {
           roundedPathValues.push(pathValue);
         }
@@ -195,10 +195,10 @@ export class Diagram {
     return roundedPathData;
   }
 
-  public moveNode(selector, { x, y }): void {
+  public moveNode(diagramLabel: string, nodeLabel: string, { x, y }): void {
     cy.window().then((window) => {
       // eslint-disable-next-line cypress/no-assigning-return-values
-      const elementToDrag = cy.get(selector as string);
+      const elementToDrag = this.getNodes(diagramLabel, nodeLabel);
       return elementToDrag.then(($el) => {
         if ($el[0]) {
           const { left, top, width, height } = $el[0].getBoundingClientRect();
@@ -247,5 +247,51 @@ export class Diagram {
         }
       });
     });
+  }
+
+  public moveBendPoint(bendPointIndex: number, { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const bendPointToDrag = cy.getByTestId(`bend-point-${bendPointIndex}`);
+      return bendPointToDrag.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return bendPointToDrag
+            .trigger('mousedown', { view: window, force: true })
+            .wait(50)
+            .trigger('mousemove', { clientX: nextX, clientY: nextY, force: true })
+            .wait(50)
+            .trigger('mouseup', { view: window, force: true });
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
+  /**
+   * This method compares two path svgs, comparing each point one by one.
+   * A tolerance can be applied to the position of the points.
+   */
+  public isPathWithinTolerance(actualPath, expectedPath, tolerance = 0): boolean {
+    const actualNumbers = actualPath.match(/\d+/g).map(Number);
+    const expectedNumbers = expectedPath.match(/\d+/g).map(Number);
+
+    if (actualNumbers.length !== expectedNumbers.length) {
+      return false;
+    }
+
+    for (let i = 0; i < actualNumbers.length; i++) {
+      if (Math.abs(actualNumbers[i] - expectedNumbers[i]) > tolerance) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
