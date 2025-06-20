@@ -90,8 +90,7 @@ In this package, you can now find the following default implementations:
 
 === Bug fixes
 
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5107[#5107] [explorer] Provide the new `existingRepresentations` variable to the _Domain explorer by DSL_ explorer description.
 
 === New Features
 
