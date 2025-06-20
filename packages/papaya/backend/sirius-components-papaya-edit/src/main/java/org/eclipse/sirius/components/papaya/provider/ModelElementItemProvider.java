@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,7 @@ public class ModelElementItemProvider extends ItemProviderAdapter
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(PapayaPackage.Literals.MODEL_ELEMENT__TAGS);
+            this.childrenFeatures.add(PapayaPackage.Literals.MODEL_ELEMENT__LINKS);
         }
         return this.childrenFeatures;
     }
@@ -138,6 +139,7 @@ public class ModelElementItemProvider extends ItemProviderAdapter
 
         switch (notification.getFeatureID(ModelElement.class)) {
             case PapayaPackage.MODEL_ELEMENT__TAGS:
+            case PapayaPackage.MODEL_ELEMENT__LINKS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -155,6 +157,10 @@ public class ModelElementItemProvider extends ItemProviderAdapter
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MODEL_ELEMENT__TAGS, PapayaFactory.eINSTANCE.createTag()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MODEL_ELEMENT__LINKS, PapayaFactory.eINSTANCE.createReferencingLink()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MODEL_ELEMENT__LINKS, PapayaFactory.eINSTANCE.createContainingLink()));
     }
 
     /**

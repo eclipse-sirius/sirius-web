@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.core.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
@@ -40,16 +39,6 @@ public class ComposedLabelService implements ILabelService {
         this.labelServiceDelegate = Objects.requireNonNull(labelServiceDelegate);
         this.defaultLabelService = Objects.requireNonNull(defaultLabelService);
     }
-    @Override
-    public String getLabel(Object object) {
-        var optionalDelegate = this.labelServiceDelegate.stream()
-                .filter(delegate -> delegate.canHandle(object))
-                .findFirst();
-        if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getLabel(object);
-        }
-        return this.defaultLabelService.getLabel(object);
-    }
 
     @Override
     public StyledString getStyledLabel(Object object) {
@@ -63,44 +52,13 @@ public class ComposedLabelService implements ILabelService {
     }
 
     @Override
-    public String getFullLabel(Object object) {
+    public List<String> getImagePaths(Object object) {
         var optionalDelegate = this.labelServiceDelegate.stream()
                 .filter(delegate -> delegate.canHandle(object))
                 .findFirst();
         if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getFullLabel(object);
+            return optionalDelegate.get().getImagePaths(object);
         }
-        return this.defaultLabelService.getFullLabel(object);
-    }
-
-    @Override
-    public Optional<String> getLabelField(Object object) {
-        var optionalDelegate = this.labelServiceDelegate.stream()
-                .filter(delegate -> delegate.canHandle(object))
-                .findFirst();
-        if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getLabelField(object);
-        }
-        return this.defaultLabelService.getLabelField(object);
-    }
-
-    @Override
-    public boolean isLabelEditable(Object object) {
-        var optionalDelegate = this.labelServiceDelegate.stream()
-                .filter(delegate -> delegate.canHandle(object))
-                .findFirst();
-        return optionalDelegate.map(iLabelServiceDelegate -> iLabelServiceDelegate.isLabelEditable(object))
-                .orElseGet(() -> this.defaultLabelService.isLabelEditable(object));
-    }
-
-    @Override
-    public List<String> getImagePath(Object object) {
-        var optionalDelegate = this.labelServiceDelegate.stream()
-                .filter(delegate -> delegate.canHandle(object))
-                .findFirst();
-        if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getImagePath(object);
-        }
-        return this.defaultLabelService.getImagePath(object);
+        return this.defaultLabelService.getImagePaths(object);
     }
 }

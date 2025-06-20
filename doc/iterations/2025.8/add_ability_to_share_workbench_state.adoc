@@ -1,0 +1,75 @@
+= (M) Add the ability to share the workbench state
+
+Issue: https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886]
+
+
+== Problem
+
+When opening a project, the URL always starts with: `/projects/:projectId/edit/`.
+
+If at least 1 representation editor is opened, then the URL starts with: `/projects/:projectId/edit/:representationId` where `representationId` is the ID of the representation opened in the active editor.
+
+And since https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376], the URL also contains the current selection of the workbench, meaning the URL can be of the form `/projects/:projectId/edit/?selection=id1%2Cid2` or `/projects/:projectId/edit/:representationId?selection=id1%2Cid2` (where `%2C` encodes `,`).
+
+Reversely, when resolving one of the above-mentioned URLs, the corresponding project, representation and selections are set.
+
+This means that currently, the workbench state that is shareable through a URL is limited to: at most 1 representation, and the selection.
+
+It would be interesting to be able to share other parts of the workbench, such as:
+* The left panel (in the Sirius Web application, both `Explorer` and `Validation` are available, the former being the default one).
+* The right panel (in the Sirius Web application, `Details`, `Query`, `Representations` and `Related Elements` are available, with the first being the default one).
+* The center area (in the Sirius Web application, only the active open representation may is encoded in the URL, otherwise the absence means the project page is displayed).
+
+The different workbench parts available in left, right and center areas may vary depending on the application.
+In fact even the notions of left, right and center areas may not be relevant to the actual application.
+
+Moreover, many of these parts have a configurable state (e.g. in view `Explorer`, filters may be applied, in a Diagram the position or zoom level may be changed, etc.), which may have a very impactful semantic meaning (e.g. in SysON the tree explorer representations rely heavily on filters to make the SysML model manageable).
+
+Being able to share the complete workbench state through the application URL would facilitate collaboration between users.
+
+
+== Key Result
+
+The URL should be synchronized with the full state of the workbench parts.
+
+This means that:
+* Our frontend components must make explicit their state/configuration that may be exposed, the associated default values, and offer APIs to conform to a configuration provided by the user through the URL.
+* The Sirius Web application must be able to retrieve the workbench state from its components, encode it into the URL, and reversely, be able to decode such a state from the URL in order to apply it to its constituting components.
+
+
+=== Acceptance Criteria
+
+* We should be able to share a URL to open the workbench with a specific state which includes:
+** All parts of the application willing to expose their state
+** In the Sirius Web application this would be:
+*** the left and right panels, and their constituting components like the `Explorer`, `Validation`, `Details`, `Query`, `Representations`, `Related Elements` views
+*** the center area (representation editors for diagrams, forms, etc.)
+** The selection (as already implemented)
+* When resolving a URL that specifies a workbench state, the corresponding workbench state is set up.
+
+
+=== Breadboarding
+
+The workbench state may be shared at all time in the URL but we may encounter very quickly performance issues.
+Another approach could be a simple share menu entry in the contextual menu of the project.
+This menu could open a dialog to share a project similar to the one used to share representations.
+
+If we encounter the limit of characters in the URL, we could use this action to create a shortened link which would be resolved using the backend when we would try to open it.
+This should only be considered if we encounter this issue.
+
+
+=== Cutting backs
+
+N/A
+
+
+== Rabbit holes
+
+The maximum size for a URL is usually around 2000 characters.
+Considering the size of UUIDs, the possibility through some representations to select many elements, and the possibility for workbench parts and their configurations to be arbitrarily deep and complex, we may need to consider having a mechanism to make sure we do not go overboard.
+
+
+== No-gos
+
+N/A
+

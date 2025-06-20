@@ -59,22 +59,22 @@ public class CursorBasedNavigationServicesTests {
                 "EString",
                 "NamedElement",
                 "Container",
-                "Iteration -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.Iteration]",
-                "startDate : Instant",
-                "Instant",
-                "endDate : Instant",
-                "Instant",
-                "tasks : Task",
-                "Task",
-                "contributions : Contribution",
-                "Contribution",
+                "OperationalCapability -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.OperationalCapability]",
+                "constraints : EString",
+                "EString",
                 "NamedElement",
                 "FolderElement",
-                "Task -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.Task]",
-                "priority : Priority",
-                "Priority",
-                "cost : EInt",
-                "EInt"
+                "OperationalEntity -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.OperationalEntity]",
+                "NamedElement",
+                "FolderElement",
+                "OperationalActor -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.OperationalActor]",
+                "type : EString",
+                "EString",
+                "NamedElement",
+                "FolderElement",
+                "OperationalProcess -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.OperationalProcess]",
+                "NamedElement",
+                "FolderElement"
         );
 
         assertThat(names)
@@ -159,11 +159,11 @@ public class CursorBasedNavigationServicesTests {
                 .toList();
 
         var expectedNames = List.of(
-                "Tag [org.eclipse.sirius.components.papaya.Tag]",
-                "key : EString",
-                "EString",
-                "value : EString",
-                "EString",
+                "Link",
+                "ContainingLink -> Link [org.eclipse.sirius.components.papaya.ContainingLink]",
+                "target : ModelElement",
+                "ModelElement",
+                "Link",
                 "NamedElement -> ModelElement [org.eclipse.sirius.components.papaya.NamedElement]",
                 "name : EString",
                 "EString",

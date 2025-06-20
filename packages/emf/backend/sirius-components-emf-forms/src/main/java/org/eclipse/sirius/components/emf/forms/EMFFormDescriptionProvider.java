@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.emf.forms;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -24,16 +25,13 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
-import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
-import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -52,33 +50,19 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    private final IEMFKindService emfKindService;
-
-    private final IFeedbackMessageService feedbackMessageService;
+    private final ILabelService labelService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final IPropertiesValidationProvider propertiesValidationProvider;
+    private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
-    private final IEMFMessageService emfMessageService;
-
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-    public EMFFormDescriptionProvider(IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService,
-                                      ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-                                      IEMFMessageService emfMessageService) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.emfKindService = Objects.requireNonNull(emfKindService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.emfMessageService = Objects.requireNonNull(emfMessageService);
-
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(objectService::getId)
-                .orElse(null);
+        this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
     }
 
     @Override
@@ -95,7 +79,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         return FormDescription.newFormDescription(IEMFFormDescriptionProvider.DESCRIPTION_ID)
@@ -112,7 +96,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
     private String getFormId(VariableManager variableManager) {
         List<?> selectedObjects = variableManager.get("selection", List.class).orElse(List.of());
         List<String> selectedObjectIds = selectedObjects.stream()
-                .map(this.objectService::getId)
+                .map(this.identityService::getId)
                 .toList();
         var encodedIds = selectedObjectIds.stream().map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8)).toList();
         return "details://?objectIds=[" + String.join(",", encodedIds) + "]";
@@ -123,7 +107,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
-                return this.objectService.getId(self);
+                return this.identityService.getId(self);
             }
             return UUID.randomUUID().toString();
         };
@@ -132,7 +116,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
-                return this.objectService.getLabel(self);
+                return this.labelService.getStyledLabel(self).toString();
             }
             return UUID.randomUUID().toString();
         };
@@ -170,36 +154,18 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
             return objects;
         };
 
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(identityService::getId)
+                .orElse(null);
+
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
-        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new InstantIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new LocalDateIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-
-        var numericDataTypes = List.of(
-                EcorePackage.Literals.EINT,
-                EcorePackage.Literals.EINTEGER_OBJECT,
-                EcorePackage.Literals.EDOUBLE,
-                EcorePackage.Literals.EDOUBLE_OBJECT,
-                EcorePackage.Literals.EFLOAT,
-                EcorePackage.Literals.EFLOAT_OBJECT,
-                EcorePackage.Literals.ELONG,
-                EcorePackage.Literals.ELONG_OBJECT,
-                EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT,
-                EcorePackage.Literals.EBIG_INTEGER,
-                EcorePackage.Literals.EBIG_DECIMAL
-        );
-
-        for (var dataType : numericDataTypes) {
-            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
-        }
+        this.emfFormIfDescriptionProviders.stream()
+                .map(IEMFFormIfDescriptionProvider::getIfDescriptions)
+                .flatMap(Collection::stream)
+                .forEach(ifDescriptions::add);
 
         ForDescription forDescription = ForDescription.newForDescription("forId")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(ifDescriptions)

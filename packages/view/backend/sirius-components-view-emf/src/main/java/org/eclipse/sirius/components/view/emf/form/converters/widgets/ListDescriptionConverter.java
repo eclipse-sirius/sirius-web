@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,9 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
@@ -39,15 +41,15 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ListStyleProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.ReadOnlyValueProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.TargetObjectIdProvider;
-import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
@@ -62,7 +64,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    private final ILabelService labelService;
 
     private final IEditService editService;
 
@@ -72,8 +78,10 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ListDescriptionConverter(IObjectService objectService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ListDescriptionConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -92,11 +100,11 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
             Function<VariableManager, String> itemIdProvider = variableManager -> {
                 Object candidate = variableManager.getVariables().get(ListComponent.CANDIDATE_VARIABLE);
-                return this.objectService.getId(candidate);
+                return this.identityService.getId(candidate);
             };
             Function<VariableManager, String> itemKindProvider = variableManager -> {
                 Object candidate = variableManager.getVariables().get(ListComponent.CANDIDATE_VARIABLE);
-                return this.objectService.getKind(candidate);
+                return this.identityService.getKind(candidate);
             };
 
             Function<VariableManager, IStatus> itemDeleteHandlerProvider = variableManager -> {
@@ -119,7 +127,7 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
             };
 
             Function<VariableManager, List<String>> itemIconURLProvider = variableManager -> variableManager.get(ListComponent.CANDIDATE_VARIABLE, Object.class)
-                    .map(this.objectService::getImagePath)
+                    .map(this.labelService::getImagePaths)
                     .orElse(List.of());
 
             Function<VariableManager, ListStyle> styleProvider = variableManager -> {
@@ -140,9 +148,9 @@ public class ListDescriptionConverter implements IWidgetDescriptionConverter {
 
             var listDescription = ListDescription.newListDescription(descriptionId)
                     .idProvider(new WidgetIdProvider())
-                    .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
+                    .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewListDescription.getLabelExpression()))
-                    .isReadOnlyProvider(new ReadOnlyValueProvider(interpreter, viewListDescription.getIsEnabledExpression()))
+                    .isReadOnlyProvider(new ReadOnlyValueProvider(this.readOnlyObjectPredicate, interpreter, viewListDescription.getIsEnabledExpression()))
                     .itemsProvider(new MultiValueProvider(interpreter, viewListDescription.getValueExpression(), Object.class))
                     .itemKindProvider(itemKindProvider)
                     .itemDeleteHandlerProvider(itemDeleteHandlerProvider)

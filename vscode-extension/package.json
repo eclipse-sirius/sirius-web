@@ -4,7 +4,7 @@
   "description": "Sirius Web extension for VSCode",
   "publisher": "eclipse-sirius",
   "license": "EPL-2.0",
-  "version": "2025.6.0",
+  "version": "2025.6.1",
   "homepage": "https://www.eclipse.dev/sirius/sirius-web.html",
   "repository": {
     "type": "git",
@@ -154,7 +154,7 @@
     "graphql": "16.8.1",
     "html-to-image": "1.11.11",
     "lexical": "0.8.1",
-    "material-react-table": "2.13.3",
+    "material-react-table": "3.2.1",
     "notistack": "3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",

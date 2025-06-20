@@ -38,6 +38,22 @@ public interface PapayaFactory extends EFactory {
     Tag createTag();
 
     /**
+     * Returns a new object of class '<em>Referencing Link</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Referencing Link</em>'.
+     * @generated
+     */
+    ReferencingLink createReferencingLink();
+
+    /**
+     * Returns a new object of class '<em>Containing Link</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Containing Link</em>'.
+     * @generated
+     */
+    ContainingLink createContainingLink();
+
+    /**
      * Returns a new object of class '<em>Folder</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Folder</em>'.
@@ -52,6 +68,54 @@ public interface PapayaFactory extends EFactory {
      * @generated
      */
     Project createProject();
+
+    /**
+     * Returns a new object of class '<em>Operational Capability</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Capability</em>'.
+     * @generated
+     */
+    OperationalCapability createOperationalCapability();
+
+    /**
+     * Returns a new object of class '<em>Operational Entity</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Entity</em>'.
+     * @generated
+     */
+    OperationalEntity createOperationalEntity();
+
+    /**
+     * Returns a new object of class '<em>Operational Actor</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Actor</em>'.
+     * @generated
+     */
+    OperationalActor createOperationalActor();
+
+    /**
+     * Returns a new object of class '<em>Operational Process</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Process</em>'.
+     * @generated
+     */
+    OperationalProcess createOperationalProcess();
+
+    /**
+     * Returns a new object of class '<em>Operational Activity</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Activity</em>'.
+     * @generated
+     */
+    OperationalActivity createOperationalActivity();
+
+    /**
+     * Returns a new object of class '<em>Operational Interaction</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Operational Interaction</em>'.
+     * @generated
+     */
+    OperationalInteraction createOperationalInteraction();
 
     /**
      * Returns a new object of class '<em>Iteration</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

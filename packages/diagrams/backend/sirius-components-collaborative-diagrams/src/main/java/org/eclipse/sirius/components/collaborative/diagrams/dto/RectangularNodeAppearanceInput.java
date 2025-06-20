@@ -17,6 +17,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
  *
  * @author nvannier
  */
-public record RectangularNodeAppearanceInput(String background, LabelAppearanceInput insideLabel) {
+public record RectangularNodeAppearanceInput(String background) {
 
 }

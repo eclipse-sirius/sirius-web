@@ -1,0 +1,164 @@
+= ADR-197 - Add support for backend-driven diagram customization
+
+== Context
+
+The current Sirius Web architecture handles diagram updates via a mix of frontend and backend logic tightly coupled to layout and rendering concerns.
+No APIs are available to programmatically influence diagram content or behavior.
+
+This architectural rigidity prevents advanced use cases such as automated transformations, semantic-aware or rule-based diagram evolution.
+
+== Needs
+
+We need to:
+
+- Support structural changes like adding, removing, or modifying diagram elements.
+- Allow injection of domain-specific logic while preserving compatibility with existing mechanisms (e.g., rendering, persistence, sync).
+- Support composability and fallback to default behavior when not overridden.
+
+Such extensibility is currently impossible due to tight coupling between the backend/frontend pipeline and layout-specific logic.
+
+== Alternatives
+
+=== [Frontend] Frontend-side customization
+- Would require loading full diagram and semantic context client-side.
+- Increased complexity and negative performance impact.
+- Limited control over backend-managed logic.
+
+=== [Backend] Backend-side customization
+- Direct access to diagram and semantic data.
+- Easier integration with rendering and persistence layers.
+- Better performance and extensibility.
+
+== Decision
+
+We introduce an API mechanism in `DiagramCreationService` to allow post-processing of diagrams after they are created or updated.
+This is done through a new interface, `IDiagramPostProcessor`, that lets us plug in custom logic easily.
+
+The goal is to make it possible to adjust a diagram (layout and/or semantic changes, etc.) without modifying the core computation.
+
+This approach is inspired by a similar mechanism already used for forms (`IFormPostProcessor`), and helps keep things simple and consistent.
+
+
+
+=== API for custom diagram logic Providers
+
+A new backend API is introduced to support domain-specific or diagram-type-specific strategies.
+Furthermore, the specifier can define which diagram events should trigger these custom logics.
+
+==== IDiagramPostProcessor interface
+
+[source,java]
+----
+public interface IDiagramPostProcessor {
+
+    /**
+     * Applies custom logic to a diagram after creation or update.
+     *
+     * @param diagram The diagram to process
+     * @param editingContext Project-specific context for downstream consumers
+     * @param diagramDescription Optional diagram description (if already available)
+     * @param diagramContext Optional context containing triggering information
+     * @return The modified diagram
+     */
+    Diagram postProcess(Diagram diagram, IEditingContext editingContext, Optional<DiagramDescription> diagramDescription, Optional<IDiagramContext> diagramContext);
+}
+----
+
+==== Integration into DiagramCreationService
+
+[source,java]
+----
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
+        /*...*/
+        for (var diagramPostProcessor: this.diagramPostProcessors) {
+            diagram = diagramPostProcessor.postProcess(.....);
+        }
+        /*...*/
+        return diagram;
+    }
+----
+
+=== No Frontend Modifications:
+
+==== Overview
+
+- The frontend `useLayout` already listens to `DiagramRefreshedEventPayload` from `DiagramEventFlux`, applying `NodeLayoutData` and `EdgeLayoutData` as computed server-side.
+
+- In refresh scenarios, `useLayout` continues to resolve node/edge positions and overlaps based on the layout data provided by the backend.
+
+- For layout scenarios like "Arrange All", `useArrangeAll` still triggers ELK layout locally, but the backend may override it using post-processing logic.
+The final layout applied is always the backend's version, and `useLayout` renders it without interference.
+
+- Font-based sizing remains handled on the frontend via existing layout handlers (e.g., `FreeFormNodeLayoutHandler`), which ensures compatibility with backend-computed positions.
+
+
+==== Application scenarios
+
+*Diagram creation*:
+- The backend handles diagram construction and persistence.
+- If defined, backend post-processors apply custom layout logic.
+- The frontend renders the diagram using provided layout data.
+- A layout mutation is triggered to confirm and persist the layout.
+
+*Semantic changes*:
+- Semantic operations (e.g., label edits, creation tools) trigger backend diagram refresh.
+- A new diagram is created, updated, and persisted.
+- Post-processors apply custom logic server-side.
+- The frontend re-applies layout logic, but preserves any layout data already set.
+- The layout mutation confirms and synchronizes positions.
+
+*"Arrange All"*:
+- The frontend computes a layout using ELK JS and sends it to the backend.
+- The backend may override it through a post-processor.
+- The frontend then applies layout as usual.
+- A layout mutation is sent to persist the result.
+
+*Move/Resize*:
+- User interactions trigger a layout change sent to the backend.
+- Post-processors may apply additional logic (optional).
+- Final layout is persisted and applied by the frontend.
+
+
+
+=== Handling "Arrange All" Blinking:
+
+- When "Arrange All" is clicked, useArrangeAll applies ELK’s layout client-side, followed by the backend’s custom layout (if present), causing a brief blink as nodes reposition.
+
+- This is deemed acceptable, as the blinking is transient and non-disruptive, avoiding the need for frontend changes to suppress ELK’s initial layout.
+
+=== Limitations
+
+*Frontend-Driven Sizing*:
+- Font metrics and text-based layout are handled only in the frontend.
+- Computing sizes backend-side would be complex and inconsistent; this remains unchanged.
+
+=== Warning Points for API Implementors
+
+*Coherence with Frontend*:
+- Any backend customization must be compatible with frontend rendering behaviors (e.g., container resizing, label positioning).
+- Layout logic should avoid breaking assumptions of the frontend layout engine to prevent visual artifacts or sync issues.
+
+== Status
+
+Draft.
+
+== Consequences
+
+=== Positive
+
+- Allows injecting domain-specific or diagram-type-specific logic server-side.
+- Uses existing frontend infrastructure without requiring modifications.
+- Enables flexible chaining of multiple diagram custom logics.
+- Maintains compatibility with frontend layout, rendering, and persistence.
+
+=== Negative
+
+- Adds complexity in backend diagram lifecycle, requiring careful alignment with frontend expectations.
+- Some visual effects (like blinking on "Arrange All") may occur but are considered non-blocking.
+
+
+
+
+

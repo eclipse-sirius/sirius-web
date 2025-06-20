@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
@@ -51,13 +52,16 @@ public class NumberIfDescriptionProvider {
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
+
     public NumberIfDescriptionProvider(EDataType eDataType, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-            IEMFMessageService emfMessageService, Function<VariableManager, String> semanticTargetIdProvider) {
+                                       IEMFMessageService emfMessageService, Function<VariableManager, String> semanticTargetIdProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.eDataType = Objects.requireNonNull(eDataType);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     public IfDescription getIfDescription() {
@@ -85,14 +89,8 @@ public class NumberIfDescriptionProvider {
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
-                .map(eAttribute -> !eAttribute.isChangeable())
-                .orElse(false);
     }
 
     private Function<VariableManager, String> getIdProvider() {

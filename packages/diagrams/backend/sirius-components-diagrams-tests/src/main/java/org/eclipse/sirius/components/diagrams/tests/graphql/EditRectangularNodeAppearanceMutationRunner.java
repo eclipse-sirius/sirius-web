@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Simulator for the mutation editing a rectangular node's appearance.
+ * Used to edit a rectangular node's appearance.
  *
  * @author nvannier
  */

@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -29,8 +31,9 @@ import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborative
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.Form;
@@ -38,9 +41,6 @@ import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -52,24 +52,28 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class CreateFormEventHandler implements IEditingContextEventHandler {
 
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    private final IObjectService objectService;
-
     private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
-    public CreateFormEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+    public CreateFormEventHandler(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+                                  IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
+                                  ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -98,12 +102,12 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         if (input instanceof CreateRepresentationInput createRepresentationInput) {
             Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(editingContext,
                     createRepresentationInput.representationDescriptionId());
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalRepresentationDescription.isPresent() && optionalObject.isPresent()) {
                 var object = optionalObject.get();
                 IRepresentationDescription representationDescription = optionalRepresentationDescription.get();
-                String targetObjectId = this.objectService.getId(object);
+                String targetObjectId = this.identityService.getId(object);
                 if (representationDescription instanceof FormDescription formDescription) {
 
                     var variableManager = new VariableManager();

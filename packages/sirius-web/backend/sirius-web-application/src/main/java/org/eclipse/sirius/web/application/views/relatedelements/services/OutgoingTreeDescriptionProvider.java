@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -64,10 +65,13 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final ComposedAdapterFactory adapterFactory;
 
-    public OutgoingTreeDescriptionProvider(IObjectService objectService, ComposedAdapterFactory adapterFactory) {
+    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
@@ -110,13 +114,13 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof EReference eReference) {
-            result = this.objectService.getLabel(eReference);
+            result = this.labelService.getStyledLabel(eReference).toString();
             var optionalRootEObject = variableManager.get(VariableManager.SELF, EObject.class);
             if (optionalRootEObject.isPresent()) {
                 result = this.getDisplayName(eReference, optionalRootEObject.get());
             }
         } else if (self != null) {
-            result = this.objectService.getLabel(self);
+            result = this.labelService.getStyledLabel(self).toString();
         }
         return result;
     }
@@ -141,7 +145,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         if (self instanceof EReference) {
             result = List.of(OUTGOING_REFERENCE_ICON_URL);
         } else if (self != null) {
-            result = this.objectService.getImagePath(self);
+            result = this.labelService.getImagePaths(self);
         }
         return result;
     }

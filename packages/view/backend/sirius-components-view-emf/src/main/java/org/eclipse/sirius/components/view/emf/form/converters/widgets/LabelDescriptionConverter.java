@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -26,13 +26,13 @@ import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.LabelStyleProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.TargetObjectIdProvider;
-import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.springframework.stereotype.Service;
@@ -45,12 +45,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class LabelDescriptionConverter implements IWidgetDescriptionConverter {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public LabelDescriptionConverter(IObjectService objectService, IFormIdProvider widgetIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public LabelDescriptionConverter(IIdentityService identityService, IFormIdProvider widgetIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
     }
 
@@ -82,7 +82,7 @@ public class LabelDescriptionConverter implements IWidgetDescriptionConverter {
 
             var labelDescription = LabelDescription.newLabelDescription(descriptionId)
                     .idProvider(new WidgetIdProvider())
-                    .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
+                    .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
                     .labelProvider(new StringValueProvider(interpreter, viewLabelDescription.getLabelExpression()))
                     .valueProvider(new StringValueProvider(interpreter, viewLabelDescription.getValueExpression()))
                     .styleProvider(styleProvider)

@@ -81,6 +81,7 @@ INSERT INTO document (
          "id":"aa0b7b22-ade2-4148-9ee2-c5972bd72ab7",
          "eClass":"papaya:Project",
          "data":{
+           "name":"Sirius Web",
            "elements":[
              {
                "id":"fad0f4c9-e668-44f3-8deb-aef0edb6ddff",

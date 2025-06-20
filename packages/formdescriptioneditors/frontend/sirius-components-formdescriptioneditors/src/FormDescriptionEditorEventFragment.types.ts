@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,24 +12,7 @@
  *******************************************************************************/
 
 import { GQLPage } from '@eclipse-sirius/sirius-components-forms';
-
-export interface GQLFormDescriptionEditorEventSubscription {
-  formDescriptionEditorEvent: GQLFormDescriptionEditorEventPayload;
-}
-
-export interface GQLFormDescriptionEditorEventVariables {
-  input: GQLFormDescriptionEditorEventInput;
-}
-
-export interface GQLFormDescriptionEditorEventInput {
-  id: string;
-  editingContextId: string;
-  formDescriptionEditorId: string;
-}
-
-export interface GQLFormDescriptionEditorEventPayload {
-  __typename: string;
-}
+import { GQLFormDescriptionEditorEventPayload } from './useFormDescriptionEditorEventSubscription.types';
 
 export interface GQLFormDescriptionEditorRefreshedEventPayload extends GQLFormDescriptionEditorEventPayload {
   id: string;

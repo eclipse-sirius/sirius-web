@@ -29,15 +29,9 @@ public interface IExplorerServices {
 
     String getKind(Object self);
 
-    String getLabel(Object self);
-
-    boolean isEditable(Object self);
-
     boolean isDeletable(Object self);
 
     boolean isSelectable(Object self);
-
-    List<String> getImageURL(Object self);
 
     Object getTreeItemObject(String treeItemId, IEditingContext editingContext);
 

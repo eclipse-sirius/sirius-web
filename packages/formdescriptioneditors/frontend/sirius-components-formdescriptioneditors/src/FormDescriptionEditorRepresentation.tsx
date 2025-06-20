@@ -10,45 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
-  Toast,
   useData,
 } from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
-import { flushSync } from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
-import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
+import { GQLFormDescriptionEditorRefreshedEventPayload } from './FormDescriptionEditorEventFragment.types';
 import {
-  GQLFormDescriptionEditorEventInput,
-  GQLFormDescriptionEditorEventSubscription,
-  GQLFormDescriptionEditorEventVariables,
-} from './FormDescriptionEditorEventFragment.types';
-import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
-import {
-  FormDescriptionEditorRepresentationContext,
-  FormDescriptionEditorRepresentationEvent,
-  formDescriptionEditorRepresentationMachine,
-  FormDescriptionEditorRepresentationStateSchema,
-  HandleSubscriptionResultEvent,
-  HideToastEvent,
-  InitializeRepresentationEvent,
-  SchemaValue,
-  ShowToastEvent,
-} from './FormDescriptionEditorRepresentationMachine';
+  FormDescriptionEditorRepresentationState,
+  WidgetDescriptor,
+} from './FormDescriptionEditorRepresentation.types';
 import { PageList } from './PageList';
 import { coreWidgets } from './coreWidgets';
 import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEditorContext';
 import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
+import { useFormDescriptionEditorEventSubscription } from './useFormDescriptionEditorEventSubscription';
+import { GQLFormDescriptionEditorEventPayload } from './useFormDescriptionEditorEventSubscription.types';
 
 const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
   formDescriptionEditor: {
@@ -139,6 +124,11 @@ const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isFormDescriptionEditorRefreshedEventPayload = (
+  payload: GQLFormDescriptionEditorEventPayload | null
+): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
+  payload && payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
+
 export const FormDescriptionEditorRepresentation = ({
   editingContextId,
   representationId,
@@ -147,15 +137,24 @@ export const FormDescriptionEditorRepresentation = ({
   const { classes } = useFormDescriptionEditorStyles();
   const noop = () => {};
 
-  const [{ value, context }, dispatch] = useMachine<
-    StateMachine<
-      FormDescriptionEditorRepresentationContext,
-      FormDescriptionEditorRepresentationStateSchema,
-      FormDescriptionEditorRepresentationEvent
-    >
-  >(formDescriptionEditorRepresentationMachine);
-  const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
-  const { id, formDescriptionEditor, message } = context;
+  const [state, setState] = useState<FormDescriptionEditorRepresentationState>({
+    formDescriptionEditor: null,
+  });
+
+  const {
+    loading,
+    payload: formDescriptionEditorEventPayload,
+    complete,
+  } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
+
+  useEffect(() => {
+    if (isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)) {
+      setState((prevState) => ({
+        ...prevState,
+        formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
+      }));
+    }
+  }, [formDescriptionEditorEventPayload]);
 
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
   const allWidgets: WidgetDescriptor[] = [...coreWidgets];
@@ -167,56 +166,6 @@ export const FormDescriptionEditorRepresentation = ({
     });
   });
   allWidgets.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
-
-  const input: GQLFormDescriptionEditorEventInput = {
-    id,
-    editingContextId,
-    formDescriptionEditorId: representationId,
-  };
-  const variables: GQLFormDescriptionEditorEventVariables = { input };
-
-  const onData = ({ data }: OnDataOptions<GQLFormDescriptionEditorEventSubscription>) => {
-    flushSync(() => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    });
-  };
-
-  const onComplete = () => {
-    dispatch({ type: 'HANDLE_COMPLETE' });
-  };
-
-  const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
-    gql(formDescriptionEditorEventSubscription),
-    {
-      variables,
-      fetchPolicy: 'no-cache',
-      skip: formDescriptionEditorRepresentation !== 'ready',
-      onData,
-      onComplete,
-    }
-  );
-
-  useEffect(() => {
-    if (error) {
-      const message: string = 'An error has occurred while trying to retrieve the form description editor';
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-      dispatch({ type: 'HANDLE_COMPLETE' });
-    }
-  }, [error, dispatch]);
-
-  useEffect(() => {
-    if (formDescriptionEditorRepresentation === 'loading') {
-      const initializeRepresentationEvent: InitializeRepresentationEvent = {
-        type: 'INITIALIZE',
-      };
-      dispatch(initializeRepresentationEvent);
-    }
-  }, [formDescriptionEditorRepresentation, dispatch]);
 
   const handleDragStartPage: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
@@ -234,8 +183,7 @@ export const FormDescriptionEditorRepresentation = ({
   };
 
   let content: JSX.Element | null = null;
-
-  if (formDescriptionEditorRepresentation === 'ready' && formDescriptionEditor) {
+  if (state.formDescriptionEditor) {
     content = (
       <div className={classes.main}>
         <div className={classes.widgets}>
@@ -314,7 +262,7 @@ export const FormDescriptionEditorRepresentation = ({
     );
   }
 
-  if (formDescriptionEditorRepresentation === 'complete') {
+  if (complete) {
     content = (
       <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
         <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
@@ -322,31 +270,28 @@ export const FormDescriptionEditorRepresentation = ({
         </Typography>
       </div>
     );
-  } else if (formDescriptionEditorRepresentation !== 'ready') {
-    return (
-      <div className={classes.formDescriptionEditor}>
-        <RepresentationLoadingIndicator />
-      </div>
-    );
   }
 
   return (
-    <FormDescriptionEditorContextProvider
-      editingContextId={editingContextId}
-      representationId={representationId}
-      readOnly={readOnly}
-      formDescriptionEditor={formDescriptionEditor}>
-      <div className={classes.formDescriptionEditor}>
-        <div className={classes.header}>
-          <Typography>Form</Typography>
+    <Box>
+      {!state.formDescriptionEditor || loading ? (
+        <div className={classes.formDescriptionEditor}>
+          <RepresentationLoadingIndicator />
         </div>
-        {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
-        <Toast
-          message={message}
-          open={toast === 'visible'}
-          onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-        />
-      </div>
-    </FormDescriptionEditorContextProvider>
+      ) : null}
+
+      <FormDescriptionEditorContextProvider
+        editingContextId={editingContextId}
+        representationId={representationId}
+        readOnly={readOnly}
+        formDescriptionEditor={state.formDescriptionEditor}>
+        <div className={classes.formDescriptionEditor}>
+          <div className={classes.header}>
+            <Typography>Form</Typography>
+          </div>
+          {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
+        </div>
+      </FormDescriptionEditorContextProvider>
+    </Box>
   );
 };

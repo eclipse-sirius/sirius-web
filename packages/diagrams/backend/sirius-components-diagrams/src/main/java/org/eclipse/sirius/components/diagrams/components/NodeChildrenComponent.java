@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * The component used to render the node children.
@@ -94,13 +95,15 @@ public class NodeChildrenComponent implements IComponent {
                 .flatMap(Optional::stream)
                 .forEach(borderNodeDescriptions::add);
 
+        var descendantNodesVariableManager = this.getDescendantNodesVariableManager();
+
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
                     .orElse(List.of());
             List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(this.props.getVariableManager())
+                    .variableManager(descendantNodesVariableManager)
                     .nodeDescription(borderNodeDescription)
                     .nodesRequestor(borderNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())
@@ -129,13 +132,15 @@ public class NodeChildrenComponent implements IComponent {
                 .flatMap(Optional::stream)
                 .forEach(childNodeDescriptions::add);
 
+        var descendantNodesVariableManager = this.getDescendantNodesVariableManager();
+
         return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription))
                     .orElse(List.of());
             List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(this.props.getVariableManager())
+                    .variableManager(descendantNodesVariableManager)
                     .nodeDescription(childNodeDescription)
                     .nodesRequestor(childNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())
@@ -160,5 +165,17 @@ public class NodeChildrenComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeComponentProps().getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getNodeComponentProps().getContainmentKind();
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
+    }
+
+    private VariableManager getDescendantNodesVariableManager() {
+        var childNodeVariableManager = this.props.getVariableManager().createChild();
+
+        var oldAncestors = this.props.getVariableManager().get(NodeDescription.ANCESTORS, List.class).orElse(List.of());
+        var ancestors = new ArrayList<>();
+        this.props.getVariableManager().get(VariableManager.SELF, Object.class).ifPresent(ancestors::add);
+        ancestors.addAll(oldAncestors);
+
+        childNodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
+        return childNodeVariableManager;
     }
 }

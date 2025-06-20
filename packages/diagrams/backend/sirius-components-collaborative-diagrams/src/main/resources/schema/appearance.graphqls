@@ -1,0 +1,56 @@
+extend type Mutation {
+  editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  editLabelAppearance(input: EditLabelAppearanceInput!): EditLabelAppearancePayload!
+  resetNodeAppearance(input: ResetNodeAppearanceInput!): ResetNodeAppearancePayload!
+  resetLabelAppearance(input: ResetLabelAppearanceInput!): ResetLabelAppearancePayload!
+}
+
+input EditRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+input RectangularNodeAppearanceInput {
+  background: String
+}
+
+union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  labelId: String!
+  appearance: LabelAppearanceInput!
+}
+
+input LabelAppearanceInput {
+  bold: Boolean
+}
+
+union EditLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  labelId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetNodeAppearancePayload = ErrorPayload | SuccessPayload

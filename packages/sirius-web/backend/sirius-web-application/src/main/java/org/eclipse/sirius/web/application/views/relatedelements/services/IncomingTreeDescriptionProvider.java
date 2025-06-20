@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -61,10 +62,13 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final ComposedAdapterFactory adapterFactory;
 
-    public IncomingTreeDescriptionProvider(IObjectService objectService, ComposedAdapterFactory adapterFactory) {
+    public IncomingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
@@ -133,7 +137,7 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
                 }
             }
         } else if (self != null) {
-            result = this.objectService.getLabel(self);
+            result = this.labelService.getStyledLabel(self).toString();
         }
         return result;
     }
@@ -144,7 +148,7 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
         if (self instanceof IncomingReferences) {
             result = List.of(INCOMING_REFERENCE_ICON_URL);
         } else if (self != null) {
-            result = this.objectService.getImagePath(self);
+            result = this.labelService.getImagePaths(self);
         }
         return result;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,6 @@ public class ObjectLabelDataFetcher implements IDataFetcherWithFieldCoordinates<
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         Object object = environment.getSource();
-        return this.labelService.getLabel(object);
+        return this.labelService.getStyledLabel(object).toString();
     }
 }

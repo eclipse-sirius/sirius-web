@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -70,14 +72,20 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private static final String SELECTION_PREFIX = "selection://";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
+
+    private final ILabelService labelService;
 
     private final IDiagramIdProvider diagramIdProvider;
 
     private final IURLParser urlParser;
 
-    public SelectionDialogDescriptionConverter(IObjectService objectService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public SelectionDialogDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.urlParser = Objects.requireNonNull(urlParser);
     }
@@ -116,8 +124,13 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                     return message;
                 })
                 .idProvider(variableManager -> SELECTION_PREFIX)
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null))
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                        .map(this.labelService::getStyledLabel)
+                        .map(StyledString::toString)
+                        .orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                        .map(this.identityService::getId)
+                        .orElse(null))
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
                 .treeDescription(treeDescription)
@@ -147,20 +160,19 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
         Function<VariableManager, String> treeItemIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getId)
+                    .map(this.identityService::getId)
                     .orElse("");
         };
 
         Function<VariableManager, String> kindProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getKind)
+                    .map(this.identityService::getKind)
                     .orElse("");
         };
 
         Function<VariableManager, StyledString> labelProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getFullLabel)
-                    .map(StyledString::of)
+                    .map(this.labelService::getStyledLabel)
                     .orElse(StyledString.of(""));
         };
 
@@ -170,7 +182,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
         Function<VariableManager, List<String>> imageURLProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class)
-                    .map(this.objectService::getImagePath)
+                    .map(this.labelService::getImagePaths)
                     .orElse(List.of());
         };
 
@@ -232,7 +244,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalObject = this.objectService.getObject(optionalEditingContext.get(), optionalId.get());
+            var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), optionalId.get());
             if (optionalObject.isPresent()) {
                 result = optionalObject.get();
             } else {
@@ -335,7 +347,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         String id = null;
         if (self != null) {
-            id = this.objectService.getId(self);
+            id = this.identityService.getId(self);
         }
         return id;
     }
@@ -353,7 +365,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         Optional.ofNullable(parameters.get(parameterName))
             .filter(list -> !list.isEmpty())
             .map(list -> list.get(0))
-            .flatMap(objectId -> this.objectService.getObject(editingContext, objectId))
+            .flatMap(objectId -> this.objectSearchService.getObject(editingContext, objectId))
             .ifPresent(value -> {
                 variableManager.put(variableName, value);
             });

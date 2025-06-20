@@ -47,7 +47,10 @@ public interface IIdentityService {
      * of the element. While it seemed like a good idea in the beginning, we had to provide more powerful mechanisms to
      * allow Sirius Components based application to be more dynamics with richer preconditions for example. As a result,
      * no new piece of code should be contributed using this method.
+     *
+     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
      */
+    @Deprecated(forRemoval = true)
     String getKind(Object object);
 
     /**

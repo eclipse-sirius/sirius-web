@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ForkedViewSemanticDataInitializer implements IForkedViewSemanticDataInitializer {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IResourceToDocumentService resourceToDocumentService;
 
@@ -49,8 +49,8 @@ public class ForkedViewSemanticDataInitializer implements IForkedViewSemanticDat
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    public ForkedViewSemanticDataInitializer(IObjectService objectService, IResourceToDocumentService resourceToDocumentService, ISemanticDataUpdateService semanticDataUpdateService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ForkedViewSemanticDataInitializer(IIdentityService identityService, IResourceToDocumentService resourceToDocumentService, ISemanticDataUpdateService semanticDataUpdateService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
@@ -61,7 +61,7 @@ public class ForkedViewSemanticDataInitializer implements IForkedViewSemanticDat
         View viewDescription = (View) representationDescription.eContainer();
         viewDescription.getDescriptions().removeAll(viewDescription.getDescriptions().stream().filter(description -> description != representationDescription).toList());
         var optionalDocumentData = this.resourceToDocumentService.toDocument(viewDescription.eResource(), false);
-        var viewId = objectService.getId(viewDescription);
+        var viewId = identityService.getId(viewDescription);
 
         if (optionalDocumentData.isPresent()) {
             var documentData = optionalDocumentData.get();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.core.api;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 
@@ -23,17 +22,10 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
  * @author sbegaudeau
  */
 public interface ILabelService {
-    String getLabel(Object object);
 
     StyledString getStyledLabel(Object object);
 
-    String getFullLabel(Object object);
-
-    Optional<String> getLabelField(Object object);
-
-    boolean isLabelEditable(Object object);
-
-    List<String> getImagePath(Object object);
+    List<String> getImagePaths(Object object);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -42,32 +34,12 @@ public interface ILabelService {
      */
     class NoOp implements ILabelService {
         @Override
-        public String getLabel(Object object) {
-            return "";
-        }
-
-        @Override
         public StyledString getStyledLabel(Object object) {
             return StyledString.of("");
         }
 
         @Override
-        public String getFullLabel(Object object) {
-            return "";
-        }
-
-        @Override
-        public Optional<String> getLabelField(Object object) {
-            return Optional.empty();
-        }
-
-        @Override
-        public boolean isLabelEditable(Object object) {
-            return false;
-        }
-
-        @Override
-        public List<String> getImagePath(Object object) {
+        public List<String> getImagePaths(Object object) {
             return List.of();
         }
     }
