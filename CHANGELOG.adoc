@@ -18,6 +18,9 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] In Sirius Web v2024.3.0, we introduced smaller core services and indicated that `IObjectService` may be deprecated in the future.
 You can now consider that it is deprecated and will be removed soon.
+- https://github.com/eclipse-sirius/sirius-web/issues/5114[#5114] [sirius-web] The properties `targetObjectKind` and `targetObjectLabel` will soon be removed from the various representations were they have been used.
+Those are some remnants of some previous technical debt from the management of the selection on the frontend.
+We have improved the management of the selection to remove this issue so now we can clean those remaining parts.
 
 
 === Breaking changes

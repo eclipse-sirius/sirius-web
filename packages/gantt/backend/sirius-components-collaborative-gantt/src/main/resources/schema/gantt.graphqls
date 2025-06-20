@@ -47,8 +47,8 @@ type Task {
   id: ID!
   descriptionId: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   detail: TaskDetail!
   style: TaskStyle
   subTasks: [Task!]
