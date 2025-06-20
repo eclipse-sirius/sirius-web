@@ -11,22 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import { SelectChangeEvent } from '@mui/material/Select';
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
-
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
+export interface SelectAppearancePropertyProps {
+  icon: JSX.Element;
+  label: string;
+  value: string;
+  onChange: (event: SelectChangeEvent<string>) => void;
+  options: { value: string; label: string }[];
+  onReset: () => void;
+  isDisabled: boolean;
 }

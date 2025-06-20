@@ -10,23 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
+/**
+ * Interface for appearance changes on labels.
+ *
+ * @author nvannier
+ * @see EditAppearanceEvent
+ */
+public interface ILabelAppearanceChange extends IAppearanceChange {
 
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
+    String labelId();
 }

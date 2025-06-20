@@ -16,6 +16,7 @@ import {
   GQLEditLabelAppearanceData,
   GQLEditLabelAppearanceVariables,
   UseEditLabelAppearanceValue,
+  GQLLabelAppearanceInput,
 } from './useEditLabelAppearance.types';
 
 export const editLabelAppearanceMutation = gql`
@@ -46,13 +47,13 @@ export const useEditLabelAppearance = (): UseEditLabelAppearanceValue => {
 
   useReporting(editLabelAppearanceResult, (data: GQLEditLabelAppearanceData) => data.editLabelAppearance);
 
-  const updateBold = (
+  const updateLabelAppearance = (
     editingContextId: string,
     representationId: string,
     diagramElementId: string,
     labelId: string,
-    isBold: boolean
-  ) =>
+    appearance: Partial<GQLLabelAppearanceInput>
+  ) => {
     editLabelAppearance({
       variables: {
         input: {
@@ -61,14 +62,13 @@ export const useEditLabelAppearance = (): UseEditLabelAppearanceValue => {
           representationId,
           diagramElementId,
           labelId,
-          appearance: {
-            bold: isBold,
-          },
+          appearance,
         },
       },
     });
+  };
 
   return {
-    updateBold,
+    updateLabelAppearance,
   };
 };

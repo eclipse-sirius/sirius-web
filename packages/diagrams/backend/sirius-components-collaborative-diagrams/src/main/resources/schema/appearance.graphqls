@@ -29,7 +29,17 @@ input EditLabelAppearanceInput {
 }
 
 input LabelAppearanceInput {
+  fontSize: Int
+  italic: Boolean
   bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+  color: String
+  background: String
 }
 
 union EditLabelAppearancePayload = ErrorPayload | SuccessPayload

@@ -23,6 +23,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -30,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -206,8 +208,22 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(compositeProcessorStyle.getBackground()).isEqualTo("#F0F030");
 
         assertThat(compositeProcessorNode.getInsideLabel()).isNotNull();
-        assertThat(compositeProcessorNode.getInsideLabel().getCustomizedStyleProperties()).allMatch(property -> property.equals("BOLD"));
-        assertThat((compositeProcessorNode.getInsideLabel().getStyle()).isBold()).isFalse();
+        assertThat(compositeProcessorNode.getInsideLabel().getCustomizedStyleProperties()).hasSize(11);
+        assertThat(compositeProcessorNode.getInsideLabel().getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BOLD", "ITALIC", "UNDERLINE", "STRIKE_THROUGH", "COLOR",
+                "FONT_SIZE", "BACKGROUND", "BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
+        var insideLabelStyle = compositeProcessorNode.getInsideLabel().getStyle();
+        assertThat(insideLabelStyle.isBold()).isFalse();
+        assertThat(insideLabelStyle.getColor()).isEqualTo("#002B40");
+        assertThat(insideLabelStyle.getFontSize()).isEqualTo(15);
+        assertThat(insideLabelStyle.isItalic()).isTrue();
+        assertThat(insideLabelStyle.isUnderline()).isTrue();
+        assertThat(insideLabelStyle.isStrikeThrough()).isTrue();
+        assertThat(insideLabelStyle.getBackground()).isEqualTo("red");
+        assertThat(insideLabelStyle.getBorderColor()).isEqualTo("green");
+        assertThat(insideLabelStyle.getBorderSize()).isEqualTo(1);
+        assertThat(insideLabelStyle.getBorderRadius()).isEqualTo(0);
+        assertThat(insideLabelStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
+
 
         var processorNode = diagramNavigator.nodeWithLabel("Processor1").getNode();
         assertThat(nodeLayoutData.get(processorNode.getId())).isNotNull();
@@ -316,18 +332,18 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "text": "CompositeProcessor1",
                       "insideLabelLocation": "TOP_CENTER",
                       "style": {
-                        "color": "#002B3C",
-                        "fontSize": 14,
+                        "color": "#002B40",
+                        "fontSize": 15,
                         "bold": false,
-                        "italic": false,
-                        "underline": false,
-                        "strikeThrough": false,
+                        "italic": true,
+                        "underline": true,
+                        "strikeThrough": true,
                         "iconURL": [],
-                        "background": "transparent",
-                        "borderColor": "black",
-                        "borderSize": 0,
-                        "borderRadius": 3,
-                        "borderStyle": "Solid",
+                        "background": "red",
+                        "borderColor": "green",
+                        "borderSize": 1,
+                        "borderRadius": 0,
+                        "borderStyle": "Dash",
                         "maxWidth": null
                       },
                       "isHeader": true,
@@ -335,7 +351,17 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "overflowStrategy": "NONE",
                       "textAlign": "LEFT",
                       "customizedStyleProperties": [
-                        "BOLD"
+                        "BOLD",
+                        "ITALIC",
+                        "UNDERLINE",
+                        "STRIKE_THROUGH",
+                        "COLOR",
+                        "FONT_SIZE",
+                        "BACKGROUND",
+                        "BORDER_COLOR",
+                        "BORDER_SIZE",
+                        "BORDER_RADIUS",
+                        "BORDER_STYLE"
                       ]
                     },
                     "outsideLabels": [],

@@ -10,13 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events.appearance;
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
+
+import org.eclipse.sirius.components.diagrams.LineStyle;
 
 /**
- * Appearance change to reset a label's style property.
+ * Appearance change for a label's border style property.
  *
- * @author nvannier
+ * @author frouene
  */
-public record ResetLabelAppearanceChange(String labelId, String propertyName) implements ILabelAppearanceChange {
+public record LabelBorderStyleAppearanceChange(String labelId, LineStyle borderStyle) implements ILabelAppearanceChange {
 
 }
