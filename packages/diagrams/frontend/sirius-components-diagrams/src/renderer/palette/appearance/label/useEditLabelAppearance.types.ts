@@ -13,12 +13,12 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseEditLabelAppearanceValue {
-  updateBold: (
+  updateLabelAppearance: (
     editingContextId: string,
     representationId: string,
     diagramElementId: string,
     labelId: string,
-    isBold: boolean
+    appearance: Partial<GQLLabelAppearanceInput>
   ) => void;
 }
 
@@ -42,5 +42,15 @@ export interface GQLEditLabelAppearanceInput {
 }
 
 export interface GQLLabelAppearanceInput {
+  fontSize: number;
+  italic: boolean;
   bold: boolean;
+  underline: boolean;
+  strikeThrough: boolean;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: string;
+  color: string;
+  background: string;
 }

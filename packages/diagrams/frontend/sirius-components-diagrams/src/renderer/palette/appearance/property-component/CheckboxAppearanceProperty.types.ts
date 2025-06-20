@@ -11,22 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
-
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
-
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
+export interface CheckboxAppearancePropertyProps {
+  icon: JSX.Element;
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  onReset: () => void;
+  isDisabled: boolean;
 }

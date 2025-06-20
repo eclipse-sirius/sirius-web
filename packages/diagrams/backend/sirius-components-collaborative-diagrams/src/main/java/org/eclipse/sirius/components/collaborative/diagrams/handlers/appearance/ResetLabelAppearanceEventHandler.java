@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.ResetLabelAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.ResetLabelAppearanceChange;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.springframework.stereotype.Service;
@@ -82,10 +82,10 @@ public class ResetLabelAppearanceEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof ResetLabelAppearanceInput resetAppearanceInput) {
             String diagramElementId = resetAppearanceInput.diagramElementId();
-            Optional<Edge> optionalEdge = diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramElementId);
+            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramElementId);
             Optional<Node> optionalNode = Optional.empty();
             if (optionalEdge.isEmpty()) {
-                optionalNode = diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElementId);
+                optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElementId);
             }
             if (optionalEdge.isPresent() || optionalNode.isPresent()) {
                 String labelId = resetAppearanceInput.labelId();

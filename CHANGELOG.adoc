@@ -156,6 +156,7 @@ The page will now redirect to a 404 if the `tabId` in the URL is not a known tab
 - https://github.com/eclipse-sirius/sirius-web/issues/5101[#5101] [core] Remove state machine from Workbench and EditProjectView
 - https://github.com/eclipse-sirius/sirius-web/issues/5060[#5060] [diagram] Decouple diagram tool invocation from the palette.
 Tools are now invoked in the `DiagramToolExecutor` context, which ensures that tools aren't invoked on an unmounted component.
+- https://github.com/eclipse-sirius/sirius-web/issues/5046[#5046] [diagram] Add missing properties for inside labels custom appearance
 
 
 

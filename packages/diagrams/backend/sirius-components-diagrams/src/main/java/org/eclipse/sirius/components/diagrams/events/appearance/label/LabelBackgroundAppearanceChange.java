@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events.appearance;
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
 /**
- * Interface for appearance changes on labels.
+ * Appearance change for a label's background color property.
  *
- * @author nvannier
- * @see EditAppearanceEvent
+ * @author frouene
  */
-public interface ILabelAppearanceChange extends IAppearanceChange {
+public record LabelBackgroundAppearanceChange(String labelId, String background) implements ILabelAppearanceChange {
 
-    String labelId();
 }

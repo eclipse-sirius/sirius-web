@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -37,8 +35,21 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.LabelBoldAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBackgroundAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBoldAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderColorAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderRadiusAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderSizeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelColorAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelFontSizeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelItalicAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelStrikeThroughAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelUnderlineAppearanceChange;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -77,10 +88,30 @@ public class EditLabelAppearanceEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof EditLabelAppearanceInput editAppearanceInput) {
-            Optional<IDiagramElement> optionalDiagramElement = diagramQueryService.findDiagramElementById(diagramContext.getDiagram(), editAppearanceInput.diagramElementId());
+            Optional<IDiagramElement> optionalDiagramElement = this.diagramQueryService.findDiagramElementById(diagramContext.getDiagram(), editAppearanceInput.diagramElementId());
             if (optionalDiagramElement.isPresent()) {
                 List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+
                 Optional.ofNullable(editAppearanceInput.appearance().bold()).ifPresent(bold -> appearanceChanges.add(new LabelBoldAppearanceChange(editAppearanceInput.labelId(), bold)));
+                Optional.ofNullable(editAppearanceInput.appearance().italic()).ifPresent(italic -> appearanceChanges.add(new LabelItalicAppearanceChange(editAppearanceInput.labelId(), italic)));
+                Optional.ofNullable(editAppearanceInput.appearance().underline())
+                        .ifPresent(underline -> appearanceChanges.add(new LabelUnderlineAppearanceChange(editAppearanceInput.labelId(), underline)));
+                Optional.ofNullable(editAppearanceInput.appearance().strikeThrough())
+                        .ifPresent(strikeThrough -> appearanceChanges.add(new LabelStrikeThroughAppearanceChange(editAppearanceInput.labelId(), strikeThrough)));
+                Optional.ofNullable(editAppearanceInput.appearance().fontSize())
+                        .ifPresent(fontSize -> appearanceChanges.add(new LabelFontSizeAppearanceChange(editAppearanceInput.labelId(), fontSize)));
+                Optional.ofNullable(editAppearanceInput.appearance().color())
+                        .ifPresent(color -> appearanceChanges.add(new LabelColorAppearanceChange(editAppearanceInput.labelId(), color)));
+                Optional.ofNullable(editAppearanceInput.appearance().background())
+                        .ifPresent(background -> appearanceChanges.add(new LabelBackgroundAppearanceChange(editAppearanceInput.labelId(), background)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderColor())
+                        .ifPresent(borderColor -> appearanceChanges.add(new LabelBorderColorAppearanceChange(editAppearanceInput.labelId(), borderColor)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderRadius())
+                        .ifPresent(borderRadius -> appearanceChanges.add(new LabelBorderRadiusAppearanceChange(editAppearanceInput.labelId(), borderRadius)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderSize())
+                        .ifPresent(borderSize -> appearanceChanges.add(new LabelBorderSizeAppearanceChange(editAppearanceInput.labelId(), borderSize)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderStyle())
+                        .ifPresent(borderStyle -> appearanceChanges.add(new LabelBorderStyleAppearanceChange(editAppearanceInput.labelId(), borderStyle)));
 
                 diagramContext.getDiagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
