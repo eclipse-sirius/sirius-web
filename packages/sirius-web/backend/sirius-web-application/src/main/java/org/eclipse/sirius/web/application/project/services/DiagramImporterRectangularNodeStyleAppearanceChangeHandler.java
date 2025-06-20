@@ -19,6 +19,10 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBackgroundAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderColorAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderRadiusAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderSizeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderStyleAppearanceChange;
 import org.eclipse.sirius.web.application.project.services.api.IDiagramImporterNodeStyleAppearanceChangeHandler;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +42,14 @@ public class DiagramImporterRectangularNodeStyleAppearanceChangeHandler implemen
     @Override
     public Optional<IAppearanceChange> handle(String nodeId, INodeStyle nodeStyle, String customizedStyleProperty) {
         if (nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
-            if (RectangularNodeAppearanceHandler.BACKGROUND.equals(customizedStyleProperty)) {
-                return Optional.of(new NodeBackgroundAppearanceChange(nodeId, rectangularNodeStyle.getBackground()));
-            }
+            return switch (customizedStyleProperty) {
+                case RectangularNodeAppearanceHandler.BACKGROUND -> Optional.of(new NodeBackgroundAppearanceChange(nodeId, rectangularNodeStyle.getBackground()));
+                case RectangularNodeAppearanceHandler.BORDER_COLOR -> Optional.of(new NodeBorderColorAppearanceChange(nodeId, rectangularNodeStyle.getBorderColor()));
+                case RectangularNodeAppearanceHandler.BORDER_RADIUS -> Optional.of(new NodeBorderRadiusAppearanceChange(nodeId, rectangularNodeStyle.getBorderRadius()));
+                case RectangularNodeAppearanceHandler.BORDER_SIZE -> Optional.of(new NodeBorderSizeAppearanceChange(nodeId, rectangularNodeStyle.getBorderSize()));
+                case RectangularNodeAppearanceHandler.BORDER_STYLE -> Optional.of(new NodeBorderStyleAppearanceChange(nodeId, rectangularNodeStyle.getBorderStyle()));
+                default -> Optional.empty();
+            };
         }
         return Optional.empty();
     }

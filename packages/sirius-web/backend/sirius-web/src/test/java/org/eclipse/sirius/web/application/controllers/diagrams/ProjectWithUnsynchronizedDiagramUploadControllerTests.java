@@ -200,12 +200,16 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(nodeLayoutData.get(compositeProcessorNode.getId())).isNotNull();
         assertThat(compositeProcessorNode).hasState(ViewModifier.Faded);
         assertThat(compositeProcessorNode.getChildNodes()).hasSize(1);
-        assertThat(compositeProcessorNode.getCustomizedStyleProperties()).hasSize(1);
-        assertThat(compositeProcessorNode.getCustomizedStyleProperties()).allMatch(property -> property.equals("BACKGROUND"));
+        assertThat(compositeProcessorNode.getCustomizedStyleProperties()).hasSize(5);
+        assertThat(compositeProcessorNode.getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BACKGROUND", "BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
         assertThat(compositeProcessorNode.getStyle()).isInstanceOf(RectangularNodeStyle.class);
 
         RectangularNodeStyle compositeProcessorStyle = (RectangularNodeStyle) compositeProcessorNode.getStyle();
         assertThat(compositeProcessorStyle.getBackground()).isEqualTo("#F0F030");
+        assertThat(compositeProcessorStyle.getBorderColor()).isEqualTo("red");
+        assertThat(compositeProcessorStyle.getBorderRadius()).isEqualTo(5);
+        assertThat(compositeProcessorStyle.getBorderSize()).isEqualTo(3);
+        assertThat(compositeProcessorStyle.getBorderStyle()).isEqualTo(LineStyle.Dot);
 
         assertThat(compositeProcessorNode.getInsideLabel()).isNotNull();
         assertThat(compositeProcessorNode.getInsideLabel().getCustomizedStyleProperties()).hasSize(11);
@@ -367,10 +371,10 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                     "outsideLabels": [],
                     "style": {
                       "background": "#F0F030",
-                      "borderColor": "#B1BCBE",
-                      "borderSize": 1,
-                      "borderRadius": 0,
-                      "borderStyle": "Solid"
+                      "borderColor": "red",
+                      "borderSize": 3,
+                      "borderRadius": 5,
+                      "borderStyle": "Dot"
                     },
                     "childrenLayoutStrategy": { "kind": "FreeForm" },
                     "borderNodes": [],
@@ -380,7 +384,11 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                     "labelEditable": true,
                     "pinned": false,
                     "customizedStyleProperties": [
-                      "BACKGROUND"
+                      "BACKGROUND",
+                      "BORDER_COLOR",
+                      "BORDER_RADIUS",
+                      "BORDER_SIZE",
+                      "BORDER_STYLE"
                     ]
                   }
                 ],

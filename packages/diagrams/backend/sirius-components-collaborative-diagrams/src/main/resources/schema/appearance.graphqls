@@ -15,6 +15,10 @@ input EditRectangularNodeAppearanceInput {
 
 input RectangularNodeAppearanceInput {
   background: String
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
 }
 
 union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload

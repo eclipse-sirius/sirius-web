@@ -161,6 +161,7 @@ Tools are now invoked in the `DiagramToolExecutor` context, which ensures that t
 - https://github.com/eclipse-sirius/sirius-web/issues/5046[#5046] [diagram] Add missing properties for inside labels custom appearance
 - https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] Decouple the impact analysis dialog from diagrams.
 The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
+- https://github.com/eclipse-sirius/sirius-web/issues/5044[#5044] [diagram] Add missing properties for rectangular nodes custom appearance
 
 
 
