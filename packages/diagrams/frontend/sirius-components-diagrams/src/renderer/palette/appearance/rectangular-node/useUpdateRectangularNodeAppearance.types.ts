@@ -14,6 +14,15 @@ import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-compo
 
 export interface UseUpdateRectangularNodeAppearanceValue {
   updateBackground: (editingContextId: string, representationId: string, nodeId: string, background: string) => void;
+  updateBorderColor: (editingContextId: string, representationId: string, nodeId: string, borderColor: string) => void;
+  updateBorderRadius: (
+    editingContextId: string,
+    representationId: string,
+    nodeId: string,
+    borderRadius: number
+  ) => void;
+  updateBorderSize: (editingContextId: string, representationId: string, nodeId: string, borderSize: number) => void;
+  updateBorderStyle: (editingContextId: string, representationId: string, nodeId: string, borderStyle: string) => void;
 }
 
 export interface GQLEditRectangularNodeApparenceData {
@@ -36,4 +45,8 @@ export interface GQLEditRectangularNodeApparenceInput {
 
 export interface GQLRectangularNodeAppearanceInput {
   background: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: string;
 }
