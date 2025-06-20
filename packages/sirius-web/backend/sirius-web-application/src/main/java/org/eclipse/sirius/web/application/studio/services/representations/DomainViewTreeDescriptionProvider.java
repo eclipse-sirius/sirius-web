@@ -74,6 +74,8 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     private TreeDescription viewDescription;
 
+    private TreeItemContextMenuEntry toggleAbstractMenuEntry;
+
     public DomainViewTreeDescriptionProvider(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, ITreeIdProvider treeIdProvider) {
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
         this.treeIdProvider = Objects.requireNonNull(treeIdProvider);
@@ -113,6 +115,10 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     public String getRepresentationDescriptionId() {
         return this.treeIdProvider.getId(this.viewDescription);
+    }
+
+    public String getToggleAbstractMenuEntryId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.toggleAbstractMenuEntry).toString().getBytes()).toString();
     }
 
     private TreeDescription domainExplorerDescription(TextStylePalette domainTextStylePalette) {
@@ -285,7 +291,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .urlExression("https://eclipse.dev/sirius/sirius-web.html")
                 .kind(FetchTreeItemContextMenuEntryKind.OPEN)
                 .build();
-        var toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
+        this.toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
                 .labelExpression("Toggle abstract")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .body(callService.build())
@@ -296,6 +302,6 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
                 .build();
 
-        return List.of(expandAllMenuEntry, helpMenuEntry, toggleAbstractMenuEntry);
+        return List.of(expandAllMenuEntry, helpMenuEntry, this.toggleAbstractMenuEntry);
     }
 }

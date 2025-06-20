@@ -50,7 +50,7 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle "impact analysis tool" events.
+ * Handle diagram "impact analysis tool" events.
  *
  * @author frouene
  */
