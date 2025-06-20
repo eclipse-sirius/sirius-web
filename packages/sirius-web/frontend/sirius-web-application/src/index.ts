@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2025 Obeo, CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dilan EESHVARAN (CEA LIST) dilan.eeshvaran@cea.fr - Issue 5111
  *******************************************************************************/
 
 export { SiriusWebApplication } from './application/SiriusWebApplication';
@@ -24,13 +25,13 @@ export {
   type ApolloClientOptionsConfigurer,
   type CacheOptionsConfigurer,
   type HttpOptionsConfigurer,
-  type WebSocketOptionsConfigurer,
+  type WebSocketOptionsConfigurer
 } from './graphql/useCreateApolloClient.types';
 export {
   apolloClientOptionsConfigurersExtensionPoint,
   cacheOptionsConfigurersExtensionPoint,
   httpOptionsConfigurersExtensionPoint,
-  webSocketOptionsConfigurersExtensionPoint,
+  webSocketOptionsConfigurersExtensionPoint
 } from './graphql/useCreateApolloClientExtensionPoints';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
@@ -38,6 +39,20 @@ export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectM
 export { type DuplicateObjectModalProps } from './modals/duplicate-object/DuplicateObjectModal.types';
 export { NewObjectModal } from './modals/new-object/NewObjectModal';
 export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
+export type {
+  GQLCreateChildMutationData,
+  GQLCreateChildPayload,
+  GQLCreateChildSuccessPayload,
+  GQLErrorPayload,
+  GQLGetChildCreationDescriptionsQueryData,
+  GQLGetChildCreationDescriptionsQueryVariables
+} from './modals/new-object/NewObjectModal.types';
+export {
+  CreateChildEvent,
+  FetchedChildCreationDescriptionsEvent,
+  HandleResponseEvent,
+  newObjectModalMachine
+} from './modals/new-object/NewObjectModalMachine';
 export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
 export { type NewRepresentationModalProps } from './modals/new-representation/NewRepresentationModal.types';
 export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal';
@@ -47,24 +62,24 @@ export {
   type NavigationBarIconProps,
   type NavigationBarLeftContributionProps,
   type NavigationBarProps,
-  type NavigationBarRightContributionProps,
+  type NavigationBarRightContributionProps
 } from './navigationBar/NavigationBar.types';
 export {
   navigationBarCenterContributionExtensionPoint,
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
-  navigationBarRightContributionExtensionPoint,
+  navigationBarRightContributionExtensionPoint
 } from './navigationBar/NavigationBarExtensionPoints';
 export {
   type NavigationBarMenuContainerProps,
   type NavigationBarMenuIconProps,
-  type NavigationBarMenuItemProps,
+  type NavigationBarMenuItemProps
 } from './navigationBar/NavigationBarMenu.types';
 export {
   navigationBarMenuContainerExtensionPoint,
   navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
-  navigationBarMenuIconExtensionPoint,
+  navigationBarMenuIconExtensionPoint
 } from './navigationBar/NavigationBarMenuExtensionPoints';
 export { ImportLibraryCommand } from './omnibox/ImportLibraryCommand';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
@@ -72,11 +87,11 @@ export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
 export type {
   EditProjectNavbarMenuContainerProps,
   EditProjectNavbarMenuEntryProps,
-  EditProjectNavbarSubtitleProps,
+  EditProjectNavbarSubtitleProps
 } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
 export {
   editProjectNavbarMenuContainerExtensionPoint,
-  editProjectNavbarMenuEntryExtensionPoint,
+  editProjectNavbarMenuEntryExtensionPoint
 } from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 export { EditProjectView } from './views/edit-project/EditProjectView';
 export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
@@ -93,13 +108,13 @@ export { useExplorerSubscription } from './views/edit-project/workbench-views/ex
 export {
   type GQLTreeEventPayload,
   type GQLTreeRefreshedEventPayload,
-  type UseExplorerSubscriptionValue,
+  type UseExplorerSubscriptionValue
 } from './views/edit-project/workbench-views/explorer/useExplorerSubscription.types';
 export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription';
 export {
   type GQLFormRefreshedEventPayload,
   type GQLRelatedElementsEventPayload,
-  type UseRelatedElementsViewSubscriptionValue,
+  type UseRelatedElementsViewSubscriptionValue
 } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription.types';
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
@@ -112,7 +127,7 @@ export { ProjectActionButton } from './views/project-browser/list-projects-area/
 export { type ProjectContextMenuEntryProps } from './views/project-browser/list-projects-area/ProjectActionButton.types';
 export {
   projectContextMenuContainerExtensionPoint,
-  projectContextMenuEntryExtensionPoint,
+  projectContextMenuEntryExtensionPoint
 } from './views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 export { projectFilterCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsExtensionPoints';
 export { type ProjectFilterCustomizer } from './views/project-browser/list-projects-area/useProjectsExtensionPoints.types';
@@ -126,7 +141,8 @@ export { type GQLImageMetadata } from './views/project-settings/images/useProjec
 export { ProjectSettingsView } from './views/project-settings/ProjectSettingsView';
 export {
   type ProjectSettingTabContribution,
-  type ProjectSettingTabProps,
+  type ProjectSettingTabProps
 } from './views/project-settings/ProjectSettingsView.types';
 export * from './views/project-settings/ProjectSettingsViewExtensionPoints';
 export { UploadProjectView } from './views/upload-project/UploadProjectView';
+

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2025 Obeo, CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dilan EESHVARAN (CEA LIST) dilan.eeshvaran@cea.fr - Issue 5111
  *******************************************************************************/
 
 export { DiagramContext } from './contexts/DiagramContext';
@@ -24,7 +25,7 @@ export { diagramDialogContributionExtensionPoint } from './dialog/DialogContextE
 export type {
   DiagramDialogComponentProps,
   DiagramDialogContribution,
-  DiagramDialogVariable,
+  DiagramDialogVariable
 } from './dialog/DialogContextExtensionPoints.types';
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';
@@ -69,9 +70,29 @@ export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette'
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
 export type {
   DiagramPaletteToolContributionComponentProps,
-  DiagramPaletteToolContributionProps,
+  DiagramPaletteToolContributionProps
 } from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
 export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export {
+  isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection
+} from './renderer/palette/Palette';
+export type {
+  GQLPalette,
+  GQLPaletteDivider,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  PaletteState,
+  PaletteStyleProps
+} from './renderer/palette/Palette.types';
+export { PaletteSearchField } from './renderer/palette/search/PaletteSearchField';
+export { PaletteSearchResult } from './renderer/palette/search/PaletteSearchResult';
+export { ToolListItem } from './renderer/palette/tool-list-item/ToolListItem';
+export type { ToolListItemProps } from './renderer/palette/tool-list-item/ToolListItem.types';
+export { PaletteToolList } from './renderer/palette/tool-list/PaletteToolList';
+export type { PaletteToolListProps } from './renderer/palette/tool-list/PaletteToolList.types';
+export { PaletteToolSectionList } from './renderer/palette/tool-list/PaletteToolSectionList';
+export type { PaletteToolSectionListProps } from './renderer/palette/tool-list/PaletteToolSectionList.types';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/panel/experimental-svg-export/SVGExportEngine.types';
@@ -79,3 +100,4 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+
