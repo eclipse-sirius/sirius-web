@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import org.eclipse.sirius.components.diagrams.LineStyle;
+
 /**
  * Input for the edition of a rectangular node's appearance.
  *
  * @author nvannier
  */
-public record RectangularNodeAppearanceInput(String background) {
+public record RectangularNodeAppearanceInput(String background, String borderColor, Integer borderRadius, Integer borderSize, LineStyle borderStyle) {
 
 }

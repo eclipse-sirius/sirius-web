@@ -10,19 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.events.appearance;
 
-import { GQLRectangularNodeStyle } from '../../../../graphql/subscription/nodeFragment.types';
+import org.eclipse.sirius.components.diagrams.LineStyle;
 
-export interface RectangularNodePartProps {
-  nodeId: string;
-  style: GQLRectangularNodeStyle;
-  customizedStyleProperties: string[];
-}
+/**
+ * Appearance change for a node's border line style property.
+ *
+ * @author frouene
+ */
+public record NodeBorderStyleAppearanceChange(String nodeId, LineStyle borderStyle) implements INodeAppearanceChange {
 
-export interface RectangularNodePartState {
-  background: string;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
 }
