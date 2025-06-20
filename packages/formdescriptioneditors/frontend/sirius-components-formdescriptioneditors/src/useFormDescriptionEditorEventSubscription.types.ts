@@ -49,7 +49,3 @@ export interface GQLFormDescriptionEditorEventInput {
   editingContextId: string;
   formDescriptionEditorId: string;
 }
-
-export interface GQLFormDescriptionEditorEventPayload {
-  __typename: string;
-}
