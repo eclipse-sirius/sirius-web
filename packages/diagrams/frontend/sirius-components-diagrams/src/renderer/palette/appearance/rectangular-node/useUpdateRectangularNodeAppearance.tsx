@@ -15,6 +15,7 @@ import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLEditRectangularNodeApparenceData,
   GQLEditRectangularNodeApparenceVariables,
+  GQLRectangularNodeAppearanceInput,
   UseUpdateRectangularNodeAppearanceValue,
 } from './useUpdateRectangularNodeAppearance.types';
 
@@ -49,7 +50,12 @@ export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAp
     (data: GQLEditRectangularNodeApparenceData) => data.editRectangularNodeAppearance
   );
 
-  const updateBackground = (editingContextId: string, representationId: string, nodeId: string, background: string) =>
+  const updateRectangularNodeAppearance = (
+    editingContextId: string,
+    representationId: string,
+    nodeId: string,
+    appearance: Partial<GQLRectangularNodeAppearanceInput>
+  ) =>
     editRectangularNodeApparence({
       variables: {
         input: {
@@ -57,14 +63,12 @@ export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAp
           editingContextId,
           representationId,
           nodeId,
-          appearance: {
-            background,
-          },
+          appearance,
         },
       },
     });
 
   return {
-    updateBackground,
+    updateRectangularNodeAppearance,
   };
 };

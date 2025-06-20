@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -37,7 +35,14 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBackgroundAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderColorAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderRadiusAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderSizeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderStyleAppearanceChange;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -77,11 +82,15 @@ public class EditRectangularNodeAppearanceEventHandler implements IDiagramEventH
 
         if (diagramInput instanceof EditRectangularNodeAppearanceInput editAppearanceInput) {
             String nodeId = editAppearanceInput.nodeId();
-            Optional<Node> optionalNode = diagramQueryService.findNodeById(diagramContext.getDiagram(), nodeId);
+            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), nodeId);
             if (optionalNode.isPresent()) {
                 List<IAppearanceChange> appearanceChanges = new ArrayList<>();
 
                 Optional.ofNullable(editAppearanceInput.appearance().background()).ifPresent(background -> appearanceChanges.add(new NodeBackgroundAppearanceChange(nodeId, background)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderColor()).ifPresent(borderColor -> appearanceChanges.add(new NodeBorderColorAppearanceChange(nodeId, borderColor)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderRadius()).ifPresent(borderRadius -> appearanceChanges.add(new NodeBorderRadiusAppearanceChange(nodeId, borderRadius)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderSize()).ifPresent(borderSize -> appearanceChanges.add(new NodeBorderSizeAppearanceChange(nodeId, borderSize)));
+                Optional.ofNullable(editAppearanceInput.appearance().borderStyle()).ifPresent(borderStyle -> appearanceChanges.add(new NodeBorderStyleAppearanceChange(nodeId, borderStyle)));
 
                 diagramContext.getDiagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());

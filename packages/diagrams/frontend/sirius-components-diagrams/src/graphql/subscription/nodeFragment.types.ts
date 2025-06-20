@@ -76,7 +76,7 @@ export interface GQLRectangularNodeStyle extends GQLNodeStyle {
   background: string;
   borderColor: string;
   borderStyle: string;
-  borderSize: string;
+  borderSize: number;
   borderRadius: number;
 }
 

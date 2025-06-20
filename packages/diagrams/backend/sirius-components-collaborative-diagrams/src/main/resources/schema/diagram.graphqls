@@ -109,7 +109,11 @@ type Node {
 }
 
 enum NodeStyleProperty {
-  BACKGROUND
+  BACKGROUND,
+  BORDER_COLOR,
+  BORDER_RADIUS,
+  BORDER_SIZE,
+  BORDER_STYLE
 }
 
 type FreeFormLayoutStrategy {
