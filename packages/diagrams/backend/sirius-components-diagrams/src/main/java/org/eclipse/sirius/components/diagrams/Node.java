@@ -102,7 +102,9 @@ public final class Node implements IDiagramElement {
      * @return The kind of the semantic element
      *
      * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
      */
+    @Deprecated(forRemoval = true)
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
@@ -113,7 +115,9 @@ public final class Node implements IDiagramElement {
      * @return The label of the semantic element
      *
      * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
      */
+    @Deprecated(forRemoval = true)
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }

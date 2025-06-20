@@ -55,7 +55,7 @@ type Table implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   stripeRow: Boolean!
   columns: [Column!]!
   lines: [Line!]!
@@ -71,7 +71,7 @@ type Table implements Representation {
 type Column {
   id: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   headerLabel: String!
   headerIconURLs: [String!]!
   headerIndexLabel: String!
@@ -85,7 +85,7 @@ type Column {
 type Line {
   id: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   cells: [Cell!]!
   headerLabel: String!
   headerIconURLs: [String!]!
@@ -105,7 +105,7 @@ interface Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   tooltipValue: String!
 }
 
@@ -113,7 +113,7 @@ type TextfieldCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   value: String!
   tooltipValue: String!
 }
@@ -122,7 +122,7 @@ type TextareaCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   value: String!
   tooltipValue: String!
 }
@@ -131,7 +131,7 @@ type SelectCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   options: [SelectCellOption!]!
   value: String!
   tooltipValue: String!
@@ -141,7 +141,7 @@ type MultiSelectCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   options: [SelectCellOption!]!
   values: [String]!
   tooltipValue: String!
@@ -156,7 +156,7 @@ type IconLabelCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   value: String!
   iconURLs: [String!]!
   tooltipValue: String!
