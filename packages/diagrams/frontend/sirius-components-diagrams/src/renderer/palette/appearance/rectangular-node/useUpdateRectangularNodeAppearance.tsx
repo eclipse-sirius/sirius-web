@@ -64,7 +64,76 @@ export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAp
       },
     });
 
+  const updateBorderColor = (editingContextId: string, representationId: string, nodeId: string, borderColor: string) =>
+    editRectangularNodeApparence({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId,
+          nodeId,
+          appearance: {
+            borderColor,
+          },
+        },
+      },
+    });
+
+  const updateBorderRadius = (
+    editingContextId: string,
+    representationId: string,
+    nodeId: string,
+    borderRadius: number
+  ) =>
+    editRectangularNodeApparence({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId,
+          nodeId,
+          appearance: {
+            borderRadius,
+          },
+        },
+      },
+    });
+
+  const updateBorderSize = (editingContextId: string, representationId: string, nodeId: string, borderSize: number) =>
+    editRectangularNodeApparence({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId,
+          nodeId,
+          appearance: {
+            borderSize,
+          },
+        },
+      },
+    });
+
+  const updateBorderStyle = (editingContextId: string, representationId: string, nodeId: string, borderStyle: string) =>
+    editRectangularNodeApparence({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId,
+          nodeId,
+          appearance: {
+            borderStyle,
+          },
+        },
+      },
+    });
+
   return {
     updateBackground,
+    updateBorderColor,
+    updateBorderRadius,
+    updateBorderSize,
+    updateBorderStyle,
   };
 };
