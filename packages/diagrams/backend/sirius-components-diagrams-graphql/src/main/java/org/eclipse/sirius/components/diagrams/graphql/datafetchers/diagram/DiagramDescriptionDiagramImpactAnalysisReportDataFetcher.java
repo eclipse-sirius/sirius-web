@@ -39,7 +39,7 @@ import reactor.core.publisher.Mono;
  * @author frouene
  */
 @QueryDataFetcher(type = "DiagramDescription", field = "diagramImpactAnalysisReport")
-public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ImpactAnalysisReport>> {
+public class DiagramDescriptionDiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ImpactAnalysisReport>> {
 
     private static final String TOOL_ID = "toolId";
     private static final String DIAGRAM_ELEMENT_ID = "diagramElementId";
@@ -50,7 +50,7 @@ public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithF
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public DiagramImpactAnalysisReportDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
+    public DiagramDescriptionDiagramImpactAnalysisReportDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
