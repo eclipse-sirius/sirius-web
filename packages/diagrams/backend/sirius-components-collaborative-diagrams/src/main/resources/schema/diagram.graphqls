@@ -95,8 +95,8 @@ type Node {
   descriptionId: ID!
   type: String!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   state: ViewModifier!
   pinned: Boolean!
   style: INodeStyle!
@@ -254,8 +254,8 @@ type Edge {
   sourceId: ID!
   targetId: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   state: ViewModifier!
   style: EdgeStyle!
   centerLabelEditable: Boolean!
