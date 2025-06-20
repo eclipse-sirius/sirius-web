@@ -18,11 +18,15 @@ import {
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLFormDescriptionEditorRefreshedEventPayload } from './FormDescriptionEditorEventFragment.types';
-import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
+import {
+  FormDescriptionEditorRepresentationState,
+  WidgetDescriptor,
+} from './FormDescriptionEditorRepresentation.types';
 import { PageList } from './PageList';
 import { coreWidgets } from './coreWidgets';
 import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEditorContext';
@@ -133,11 +137,24 @@ export const FormDescriptionEditorRepresentation = ({
   const { classes } = useFormDescriptionEditorStyles();
   const noop = () => {};
 
+  const [state, setState] = useState<FormDescriptionEditorRepresentationState>({
+    formDescriptionEditor: null,
+  });
+
   const {
     loading,
     payload: formDescriptionEditorEventPayload,
     complete,
   } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
+
+  useEffect(() => {
+    if (isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)) {
+      setState((prevState) => ({
+        ...prevState,
+        formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
+      }));
+    }
+  }, [formDescriptionEditorEventPayload]);
 
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
   const allWidgets: WidgetDescriptor[] = [...coreWidgets];
@@ -166,8 +183,7 @@ export const FormDescriptionEditorRepresentation = ({
   };
 
   let content: JSX.Element | null = null;
-
-  if (isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)) {
+  if (state.formDescriptionEditor) {
     content = (
       <div className={classes.main}>
         <div className={classes.widgets}>
@@ -245,6 +261,7 @@ export const FormDescriptionEditorRepresentation = ({
       </div>
     );
   }
+
   if (complete) {
     content = (
       <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
@@ -253,30 +270,28 @@ export const FormDescriptionEditorRepresentation = ({
         </Typography>
       </div>
     );
-  } else if (loading) {
-    return (
-      <div className={classes.formDescriptionEditor}>
-        <RepresentationLoadingIndicator />
-      </div>
-    );
   }
 
   return (
-    <FormDescriptionEditorContextProvider
-      editingContextId={editingContextId}
-      representationId={representationId}
-      readOnly={readOnly}
-      formDescriptionEditor={
-        isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)
-          ? formDescriptionEditorEventPayload.formDescriptionEditor
-          : null
-      }>
-      <div className={classes.formDescriptionEditor}>
-        <div className={classes.header}>
-          <Typography>Form</Typography>
+    <Box>
+      {!state.formDescriptionEditor || loading ? (
+        <div className={classes.formDescriptionEditor}>
+          <RepresentationLoadingIndicator />
         </div>
-        {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
-      </div>
-    </FormDescriptionEditorContextProvider>
+      ) : null}
+
+      <FormDescriptionEditorContextProvider
+        editingContextId={editingContextId}
+        representationId={representationId}
+        readOnly={readOnly}
+        formDescriptionEditor={state.formDescriptionEditor}>
+        <div className={classes.formDescriptionEditor}>
+          <div className={classes.header}>
+            <Typography>Form</Typography>
+          </div>
+          {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
+        </div>
+      </FormDescriptionEditorContextProvider>
+    </Box>
   );
 };
