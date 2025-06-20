@@ -102,7 +102,8 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 * Add new `IEditingContext` parameter in the method `IRepresentationContentMigrationService#getMigratedContent`
 * Add new `IEditingContext` parameter in the constructor `RepresentationMigrationService`
 - https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
-^
+- https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] `SingleClickTreeItemContextMenuEntry` has a new field `withImpactAnalysis` that needs to be filled by the backend.
+
 
 === Dependency update
 
@@ -162,6 +163,7 @@ Tools are now invoked in the `DiagramToolExecutor` context, which ensures that t
 - https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] Decouple the impact analysis dialog from diagrams.
 The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
 - https://github.com/eclipse-sirius/sirius-web/issues/5044[#5044] [diagram] Add missing properties for rectangular nodes custom appearance
+- https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] Add support for impact analysis in tree item contextual menu actions.
 
 
 

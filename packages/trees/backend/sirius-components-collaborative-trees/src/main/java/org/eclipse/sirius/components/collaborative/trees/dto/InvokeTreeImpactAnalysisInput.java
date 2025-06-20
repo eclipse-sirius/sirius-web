@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.dto;
 
-import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 
 /**
- * Used to represent a single click entry inside a context menu of a tree item.
+ * The input for the tree "impact analysis" query.
  *
- * @author Jerome Gout
+ * @author gdaniel
  */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis) implements ITreeItemContextMenuEntry { }
+public record InvokeTreeImpactAnalysisInput(
+        UUID id,
+        String editingContextId,
+        String representationId,
+        String treeItemId,
+        String menuEntryId) implements ITreeInput {
 
+}

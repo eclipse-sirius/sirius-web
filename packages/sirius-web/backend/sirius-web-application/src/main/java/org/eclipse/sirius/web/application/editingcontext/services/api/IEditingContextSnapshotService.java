@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.dto;
+package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.List;
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Used to represent a single click entry inside a context menu of a tree item.
+ * Creates and restores snapshots of editing contexts.
  *
- * @author Jerome Gout
+ * @author gdaniel
  */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis) implements ITreeItemContextMenuEntry { }
+public interface IEditingContextSnapshotService {
 
+    Optional<IEditingContextSnapshot> createSnapshot(IEditingContext editingContext);
+
+    void restoreSnapshot(IEditingContext editingContext, IEditingContextSnapshot snapshot);
+}
