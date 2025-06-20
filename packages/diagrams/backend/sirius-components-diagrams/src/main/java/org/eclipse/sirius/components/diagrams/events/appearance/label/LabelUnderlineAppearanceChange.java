@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.events.appearance;
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
 /**
- * Appearance change for a label's bold style property.
+ * Appearance change for a label's underline style property.
  *
- * @author nvannier
+ * @author frouene
  */
-public record LabelBoldAppearanceChange(String labelId, boolean bold) implements ILabelAppearanceChange {
+public record LabelUnderlineAppearanceChange(String labelId, boolean underline) implements ILabelAppearanceChange {
 
 }

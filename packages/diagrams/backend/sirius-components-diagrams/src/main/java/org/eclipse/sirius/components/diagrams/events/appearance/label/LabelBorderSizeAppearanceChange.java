@@ -10,23 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+/**
+ * Appearance change for a label's border size property.
+ *
+ * @author frouene
+ */
+public record LabelBorderSizeAppearanceChange(String labelId, int borderSize) implements ILabelAppearanceChange {
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
-
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
 }
