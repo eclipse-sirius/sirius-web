@@ -39,6 +39,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <em>Label Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.SingleClickTreeItemContextMenuEntryImpl#getIconURLExpression
  * <em>Icon URL Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.SingleClickTreeItemContextMenuEntryImpl#isWithImpactAnalysis
+ * <em>With Impact Analysis</em>}</li>
  * </ul>
  *
  * @generated
@@ -94,6 +96,26 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
      * @ordered
      */
     protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isWithImpactAnalysis()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean WITH_IMPACT_ANALYSIS_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isWithImpactAnalysis()
+     * @generated
+     * @ordered
+     */
+    protected boolean withImpactAnalysis = WITH_IMPACT_ANALYSIS_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -179,6 +201,29 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
      * @generated
      */
     @Override
+    public boolean isWithImpactAnalysis() {
+        return this.withImpactAnalysis;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setWithImpactAnalysis(boolean newWithImpactAnalysis) {
+        boolean oldWithImpactAnalysis = this.withImpactAnalysis;
+        this.withImpactAnalysis = newWithImpactAnalysis;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS, oldWithImpactAnalysis, this.withImpactAnalysis));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY:
@@ -201,6 +246,8 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
                 return this.getLabelExpression();
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
                 return this.getIconURLExpression();
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                return this.isWithImpactAnalysis();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -224,6 +271,9 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
                 this.setIconURLExpression((String) newValue);
                 return;
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                this.setWithImpactAnalysis((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -245,6 +295,9 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
                 this.setIconURLExpression(ICON_URL_EXPRESSION_EDEFAULT);
                 return;
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                this.setWithImpactAnalysis(WITH_IMPACT_ANALYSIS_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -263,6 +316,8 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
                 return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                return this.withImpactAnalysis != WITH_IMPACT_ANALYSIS_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -282,6 +337,8 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
         result.append(this.labelExpression);
         result.append(", iconURLExpression: ");
         result.append(this.iconURLExpression);
+        result.append(", withImpactAnalysis: ");
+        result.append(this.withImpactAnalysis);
         result.append(')');
         return result.toString();
     }
