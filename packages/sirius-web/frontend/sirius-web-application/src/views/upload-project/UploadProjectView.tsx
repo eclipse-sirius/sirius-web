@@ -24,6 +24,7 @@ import { StateMachine } from 'xstate';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import {
   SchemaValue,
   UploadProjectEvent,
@@ -96,6 +97,13 @@ export const UploadProjectView = () => {
   const { file, newProjectId, message } = context;
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const {
+    viewer: {
+      capabilities: {
+        projects: { canUpload },
+      },
+    },
+  } = useCurrentViewer();
 
   const onUploadProject = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -132,6 +140,10 @@ export const UploadProjectView = () => {
   const onFileSelected = (file: File) => {
     dispatch({ type: 'HANDLE_SELECTED_FILE', file });
   };
+
+  if (!canUpload) {
+    return <Navigate to={'/errors/404'} />;
+  }
 
   if (uploadProjectView === 'success') {
     return <Navigate to={`/projects/${newProjectId}/edit`} />;

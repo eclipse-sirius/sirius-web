@@ -66,7 +66,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
   return (
     <div className={classes.navbar}>
       <div className={classes.appBarHeader}></div>
-      <AppBar position="static">
+      <AppBar position="static" data-testid="navigation-bar">
         <Toolbar className={classes.toolbar} variant="dense">
           <div className={classes.left}>
             <NavigationBarIcon />

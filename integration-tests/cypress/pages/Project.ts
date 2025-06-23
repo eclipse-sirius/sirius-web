@@ -29,4 +29,16 @@ export class Project {
       win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(false));
     });
   }
+
+  public getProjectNavigationBar(projectName: string): ProjectNavigationBar {
+    cy.getByTestId(`navbar-${projectName}`).should('be.visible');
+    cy.getByTestId('navigation-bar').findByTestId('more').click();
+    return new ProjectNavigationBar();
+  }
+}
+
+class ProjectNavigationBar {
+  public getDownloadLink(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('download-link');
+  }
 }
