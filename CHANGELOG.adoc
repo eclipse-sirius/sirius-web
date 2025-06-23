@@ -164,6 +164,7 @@ Tools are now invoked in the `DiagramToolExecutor` context, which ensures that t
 The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
 - https://github.com/eclipse-sirius/sirius-web/issues/5044[#5044] [diagram] Add missing properties for rectangular nodes custom appearance
 - https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] Add support for impact analysis in tree item contextual menu actions.
+- https://github.com/eclipse-sirius/sirius-web/issues/5123[#5123] [tree] Add support for tree item context menu action impact analysis in the view DSL.
 
 
 

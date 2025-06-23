@@ -99,14 +99,14 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
         if (viewTreeItemContextAction instanceof SingleClickTreeItemContextMenuEntry singleClickTreeItemContextMenuEntry) {
             var label = this.evaluateString(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getLabelExpression());
             var iconURL = this.evaluateStringList(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getIconURLExpression());
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(id, label, iconURL, false);
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(id, label, iconURL, singleClickTreeItemContextMenuEntry.isWithImpactAnalysis());
         } else if (viewTreeItemContextAction instanceof FetchTreeItemContextMenuEntry fetchTreeItemContextMenuEntry) {
             var label = this.evaluateString(variableManager, interpreter, fetchTreeItemContextMenuEntry.getLabelExpression());
             var iconURL = this.evaluateStringList(variableManager, interpreter, fetchTreeItemContextMenuEntry.getIconURLExpression());
             result = new org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry(id, label, iconURL);
         } else if (viewTreeItemContextAction instanceof CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry) {
             // Use a SingleClickTreeItemContextMenuEntry instance with a dedicated ID to pass the information to the frontend.
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), false);
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis());
         }
         return result;
     }
