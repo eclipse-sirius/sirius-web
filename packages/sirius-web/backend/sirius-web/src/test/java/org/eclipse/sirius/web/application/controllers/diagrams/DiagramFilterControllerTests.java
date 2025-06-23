@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -27,6 +27,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramElementInput;
@@ -71,8 +72,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -210,18 +209,14 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagramReference = new AtomicReference<>();
         AtomicReference<String> nodeId = new AtomicReference<>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramReference.set(diagram);
-                    diagram.getNodes().stream()
-                            .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
-                            .map(Node::getId)
-                            .findFirst()
-                            .ifPresent(nodeId::set);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramReference.set(diagram);
+            diagram.getNodes().stream()
+                    .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
+                    .map(Node::getId)
+                    .findFirst()
+                    .ifPresent(nodeId::set);
+        });
 
         StepVerifier.create(diagramFlux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -248,10 +243,9 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 })
                 .isPresent();
 
-        Consumer<Object> udpatedDiagramContentConsumer = object -> this.refreshedDiagram(object).ifPresentOrElse(diagramReference::set, () -> fail("Missing diagram"));
+        Consumer<Object> udpatedDiagramContentConsumer = assertRefreshedDiagramThat(diagramReference::set);
 
         var diagramAndPropertiesFlux = Flux.merge(diagramFlux, diagramFilterFlux);
-
         StepVerifier.create(diagramAndPropertiesFlux)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(formContentMatcher)
@@ -334,18 +328,15 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         var diagramFlux = this.givenSubscriptionToExpandedCollapseDiagram();
         AtomicReference<Diagram> diagramReference = new AtomicReference<>();
         AtomicReference<String> nodeId = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramReference.set(diagram);
-                    diagram.getNodes().stream()
-                            .filter(nodeToSelectPredicate)
-                            .map(Node::getId)
-                            .findFirst()
-                            .ifPresent(nodeId::set);
-                }, () -> fail("Missing diagram"));
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramReference.set(diagram);
+            diagram.getNodes().stream()
+                    .filter(nodeToSelectPredicate)
+                    .map(Node::getId)
+                    .findFirst()
+                    .ifPresent(nodeId::set);
+        });
 
         StepVerifier.create(diagramFlux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -403,12 +394,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 })
                 .isPresent();
 
-        Predicate<Object> updatedDiagramContentMatcher = object -> this.refreshedDiagram(object)
-                .filter(diagram -> isDiagramUpdatedPredicate.apply(diagram, nodeId.get()))
-                .isPresent();
-        Predicate<Object> revertedDiagramContentMatcher = object -> this.refreshedDiagram(object)
-                .filter(Predicate.not(diagram -> isDiagramUpdatedPredicate.apply(diagram, nodeId.get())))
-                .isPresent();
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> assertThat(isDiagramUpdatedPredicate.apply(diagram, nodeId.get())).isTrue());
+        Consumer<Object> revertedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> assertThat(isDiagramUpdatedPredicate.apply(diagram, nodeId.get())).isFalse());
 
         var diagramAndPropertiesFlux = Flux.merge(diagramFlux, diagramFilterFlux);
         StepVerifier.create(diagramAndPropertiesFlux)
@@ -420,13 +407,13 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .then(() -> this.performAction(formId.get(), actionId.get()))
                 // Skip the potential FormRefreshedEventPayload that may be sent before the DiagramRefreshedEventPayload
                 .thenConsumeWhile(payload -> !(payload instanceof DiagramRefreshedEventPayload))
-                .expectNextMatches(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .then(() -> this.performAction(formId.get(), revertActionId.get()))
                 .thenConsumeWhile(payload -> !(payload instanceof DiagramRefreshedEventPayload))
                 // The first diagram refreshed event payload will be triggered by the semantic change since we have pressed the button
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
                 .thenConsumeWhile(payload -> !(payload instanceof DiagramRefreshedEventPayload))
-                .expectNextMatches(revertedDiagramContentMatcher)
+                .consumeNextWith(revertedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -468,13 +455,6 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form);
-    }
-
-    private Optional<Diagram> refreshedDiagram(Object object) {
-        return Optional.of(object)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram);
     }
 
 }

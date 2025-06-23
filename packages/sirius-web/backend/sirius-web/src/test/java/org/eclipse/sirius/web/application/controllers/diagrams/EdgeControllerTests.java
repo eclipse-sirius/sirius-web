@@ -13,19 +13,17 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
@@ -48,7 +46,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -107,22 +104,18 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    siriusWebDomainNodeId.set(siriusWebDomainNode.getId());
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            siriusWebDomainNodeId.set(siriusWebDomainNode.getId());
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
 
-                    var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
-                    siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
-                }, () -> fail("Missing diagram"));
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
+        });
 
         Runnable requestValidConnectorTools = () -> {
             Map<String, Object> variables = Map.of(
@@ -153,23 +146,19 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
 
-                    var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
-                    siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
-                            .isEmpty();
-                }, () -> fail("Missing diagram"));
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .isEmpty();
+        });
 
         Runnable createDependency = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
@@ -190,15 +179,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
-                            .hasSize(1);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .hasSize(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -218,24 +203,20 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         var edgeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
-                    siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
-                    var dependencyEdge = diagram.getEdges().stream()
-                            .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
-                            .findFirst().orElseThrow(IllegalStateException::new);
-                    edgeId.set(dependencyEdge.getId());
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
-                            .isEmpty();
-                }, () -> fail("Missing diagram"));
+            var dependencyEdge = diagram.getEdges().stream()
+                    .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .findFirst().orElseThrow(IllegalStateException::new);
+            edgeId.set(dependencyEdge.getId());
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
+                    .isEmpty();
+        });
 
         Runnable reconnectSource = () -> {
             var input = new ReconnectEdgeInput(
@@ -251,15 +232,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
-                            .hasSize(1);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
+                    .hasSize(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -279,24 +256,20 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         var edgeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
-                    siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
-                    var dependencyEdge = diagram.getEdges().stream()
-                            .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
-                            .findFirst().orElseThrow(IllegalStateException::new);
-                    edgeId.set(dependencyEdge.getId());
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
-                            .isEmpty();
-                }, () -> fail("Missing diagram"));
+            var dependencyEdge = diagram.getEdges().stream()
+                    .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .findFirst().orElseThrow(IllegalStateException::new);
+            edgeId.set(dependencyEdge.getId());
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
+                    .isEmpty();
+        });
 
         Runnable reconnectSource = () -> {
             var input = new ReconnectEdgeInput(
@@ -312,15 +285,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
-                            .hasSize(1);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
+                    .hasSize(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

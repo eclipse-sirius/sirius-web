@@ -13,19 +13,17 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -44,7 +42,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -99,23 +96,19 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebInfrastructureNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
 
-                    var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
-                    siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
+            var siriusWebInfrastructureNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
-                            .isEmpty();
-                }, () -> fail("Missing diagram"));
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .isEmpty();
+        });
 
         Runnable dropNode = () -> {
             var input = new DropNodeInput(
@@ -132,15 +125,11 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getEdges())
-                            .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
-                            .hasSize(1);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .hasSize(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -158,13 +147,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> diagramId.set(diagram.getId()));
 
         Runnable getDropNodeCompatibility = () -> {
             Map<String, Object> variables = Map.of(

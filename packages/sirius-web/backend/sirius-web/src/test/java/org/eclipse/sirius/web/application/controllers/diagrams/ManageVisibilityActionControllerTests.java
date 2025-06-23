@@ -12,9 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.junit.Assert.assertTrue;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jayway.jsonpath.JsonPath;
@@ -22,18 +21,17 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility.InvokeManageVisibilityActionInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.GetManageVisibilityActionsQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeManageVisibilityActionMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisibilityHideAllAction;
 import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisibilityRevealAllAction;
@@ -95,26 +93,19 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a diagram with manage visibility actions, when the actions are requested on this node, then the actions are retrieved")
-    public void testGetManageVisibilityActions() {
+    public void givenDiagramWithManageVisibilityActionsWhenTheActionsAreRequestedOnThisNodeThenTheActionsAreRetrieved() {
         var flux = this.givenSubscriptionToActionDiagram();
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    var node = diagram.getNodes().stream()
-                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
-                            .findFirst();
-                    assertTrue(node.isPresent());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                    nodeId.set(node.get().getId());
-                }, () -> fail("Missing diagram"));
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            node.getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
+            assertThat(node).hasState(ViewModifier.Normal);
+            nodeId.set(node.getId());
+        });
 
         Runnable getActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -146,26 +137,20 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a diagram with manage visibility action, when the action is executed on this node, then the action body is invoked")
-    public void testInvokeManageVisibilityAction() {
+    public void givenDiagramWithManageVisibilityActionWhenTheActionIsExecutedOnThisNodeThenTheActionBodyIsInvoked() {
         var flux = this.givenSubscriptionToActionDiagram();
 
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    var node = diagram.getNodes().stream()
-                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
-                            .findFirst();
-                    assertTrue(node.isPresent());
-                    node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                    nodeId.set(node.get().getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+
+            node.getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
+            assertThat(node).hasState(ViewModifier.Normal);
+            nodeId.set(node.getId());
+        });
 
         Runnable invokeHideAction = () -> {
             var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeId.get(), ManageVisibilityHideAllAction.ACTION_ID);
@@ -181,31 +166,19 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedAfterHideDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var node = diagram.getNodes().stream()
-                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
-                            .findFirst();
-                    assertTrue(node.isPresent());
-                    node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Hidden, childNode.getState()));
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedAfterHideDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
 
-        Consumer<Object> updatedAfterRevealDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var node = diagram.getNodes().stream()
-                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
-                            .findFirst();
-                    assertTrue(node.isPresent());
-                    node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                }, () -> fail("Missing diagram"));
+            node.getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Hidden, childNode.getState()));
+            assertThat(node).hasState(ViewModifier.Normal);
+        });
+
+        Consumer<Object> updatedAfterRevealDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+
+            node.getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
+            assertThat(node).hasState(ViewModifier.Normal);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

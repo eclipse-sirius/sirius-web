@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
@@ -64,10 +65,9 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DomainDiagramControllerTests extends AbstractIntegrationTests {
-
-    private static final String MISSING_DIAGRAM = "Missing diagram";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -102,20 +102,16 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var rootNode = new DiagramNavigator(diagram).nodeWithLabel("Root").getNode();
-                    var namedElementNode = new DiagramNavigator(diagram).nodeWithLabel("NamedElement").getNode();
-                    var humanNode = new DiagramNavigator(diagram).nodeWithLabel("Human").getNode();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var rootNode = new DiagramNavigator(diagram).nodeWithLabel("Root").getNode();
+            var namedElementNode = new DiagramNavigator(diagram).nodeWithLabel("NamedElement").getNode();
+            var humanNode = new DiagramNavigator(diagram).nodeWithLabel("Human").getNode();
 
-                    var nodes = List.of(rootNode, namedElementNode, humanNode);
-                    assertThat(nodes)
-                            .isNotEmpty()
-                            .allSatisfy(node -> assertThat(node).isNotNull().extracting(n -> n.getStyle().getChildrenLayoutStrategy()).isInstanceOf(ListLayoutStrategy.class));
-                }, () -> fail(MISSING_DIAGRAM));
+            var nodes = List.of(rootNode, namedElementNode, humanNode);
+            assertThat(nodes)
+                    .isNotEmpty()
+                    .allSatisfy(node -> assertThat(node).isNotNull().extracting(n -> n.getStyle().getChildrenLayoutStrategy()).isInstanceOf(ListLayoutStrategy.class));
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -153,7 +149,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     diagramId.set(diagram.getId());
                     var humanNode = new DiagramNavigator(diagram).nodeWithLabel("Human").getNode();
                     humanNodeId.set(humanNode.getId());
-                }, () -> fail(MISSING_DIAGRAM));
+                }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, List.of());
@@ -180,7 +176,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                         initialDiagramMetadata.set(representationMetadata);
                         this.representationContentRepository.findById(representationMetadata.getId()).ifPresent(initialDiagramContent::set);
                     }
-                }, () -> fail(MISSING_DIAGRAM));
+                }, () -> fail("Missing diagram"));
 
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, List.of());
@@ -205,7 +201,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
                     var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();
                     assertThat(modifiedDiagramContent.getContent()).isNotEqualTo(initialDiagramContent.get().getContent());
-                }, () -> fail(MISSING_DIAGRAM));
+                }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
