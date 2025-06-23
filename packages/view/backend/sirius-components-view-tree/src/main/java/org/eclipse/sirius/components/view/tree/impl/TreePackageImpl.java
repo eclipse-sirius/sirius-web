@@ -561,6 +561,16 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
+    public EAttribute getSingleClickTreeItemContextMenuEntry_WithImpactAnalysis() {
+        return (EAttribute) this.singleClickTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getFetchTreeItemContextMenuEntry() {
         return this.fetchTreeItemContextMenuEntryEClass;
     }
@@ -623,6 +633,16 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     @Override
     public EAttribute getCustomTreeItemContextMenuEntry_ContributionId() {
         return (EAttribute) this.customTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCustomTreeItemContextMenuEntry_WithImpactAnalysis() {
+        return (EAttribute) this.customTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -700,6 +720,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEReference(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY);
         this.createEAttribute(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION);
         this.createEAttribute(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS);
 
         this.fetchTreeItemContextMenuEntryEClass = this.createEClass(FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY);
         this.createEAttribute(this.fetchTreeItemContextMenuEntryEClass, FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION);
@@ -709,6 +730,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
 
         this.customTreeItemContextMenuEntryEClass = this.createEClass(CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY);
         this.createEAttribute(this.customTreeItemContextMenuEntryEClass, CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID);
+        this.createEAttribute(this.customTreeItemContextMenuEntryEClass, CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS);
 
         // Create enums
         this.fetchTreeItemContextMenuEntryKindEEnum = this.createEEnum(FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND);
@@ -823,6 +845,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
                 SingleClickTreeItemContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSingleClickTreeItemContextMenuEntry_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1,
                 SingleClickTreeItemContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSingleClickTreeItemContextMenuEntry_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1,
+                SingleClickTreeItemContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.fetchTreeItemContextMenuEntryEClass, FetchTreeItemContextMenuEntry.class, "FetchTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getFetchTreeItemContextMenuEntry_UrlExression(), theViewPackage.getInterpretedExpression(), "urlExression", null, 0, 1, FetchTreeItemContextMenuEntry.class,
@@ -837,6 +861,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEClass(this.customTreeItemContextMenuEntryEClass, CustomTreeItemContextMenuEntry.class, "CustomTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCustomTreeItemContextMenuEntry_ContributionId(), theViewPackage.getIdentifier(), "contributionId", null, 0, 1, CustomTreeItemContextMenuEntry.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCustomTreeItemContextMenuEntry_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, CustomTreeItemContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.fetchTreeItemContextMenuEntryKindEEnum, FetchTreeItemContextMenuEntryKind.class, "FetchTreeItemContextMenuEntryKind");

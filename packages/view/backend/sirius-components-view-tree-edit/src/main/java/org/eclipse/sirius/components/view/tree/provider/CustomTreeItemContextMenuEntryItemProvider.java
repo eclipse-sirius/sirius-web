@@ -52,6 +52,7 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
             super.getPropertyDescriptors(object);
 
             this.addContributionIdPropertyDescriptor(object);
+            this.addWithImpactAnalysisPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -66,6 +67,19 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
                 this.getString("_UI_CustomTreeItemContextMenuEntry_contributionId_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_contributionId_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
                 TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the With Impact Analysis feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addWithImpactAnalysisPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -112,6 +126,7 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
 
         switch (notification.getFeatureID(CustomTreeItemContextMenuEntry.class)) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
