@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -110,7 +110,7 @@ public class TextStyleDescriptionImpl extends MinimalEObjectImpl.Container imple
      * @generated
      * @ordered
      */
-    protected static final String IS_BOLD_EXPRESSION_EDEFAULT = "aql:\'false\'";
+    protected static final String IS_BOLD_EXPRESSION_EDEFAULT = "aql:false";
 
     /**
      * The cached value of the '{@link #getIsBoldExpression() <em>Is Bold Expression</em>}' attribute. <!--
@@ -130,7 +130,7 @@ public class TextStyleDescriptionImpl extends MinimalEObjectImpl.Container imple
      * @generated
      * @ordered
      */
-    protected static final String IS_ITALIC_EXPRESSION_EDEFAULT = "aql:\'false\'";
+    protected static final String IS_ITALIC_EXPRESSION_EDEFAULT = "aql:false";
 
     /**
      * The cached value of the '{@link #getIsItalicExpression() <em>Is Italic Expression</em>}' attribute. <!--
@@ -150,7 +150,7 @@ public class TextStyleDescriptionImpl extends MinimalEObjectImpl.Container imple
      * @generated
      * @ordered
      */
-    protected static final String IS_UNDERLINE_EXPRESSION_EDEFAULT = "aql:\'false\'";
+    protected static final String IS_UNDERLINE_EXPRESSION_EDEFAULT = "aql:false";
 
     /**
      * The cached value of the '{@link #getIsUnderlineExpression() <em>Is Underline Expression</em>}' attribute. <!--
