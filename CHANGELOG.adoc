@@ -13,6 +13,7 @@
 
 - [ADR-197] Add support for backend-driven diagram customization
 - [ADR-198] Add the ability to share a URL containing the views of the workbench
+- [ADR-199] Add the ability to control the capabilities of the frontend from the backend
 
 
 === Deprecation warning
