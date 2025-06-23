@@ -27,7 +27,8 @@ export const ProjectDownloadMenuItemExtension = ({ project, onClose }: ProjectCo
       component="a"
       href={`${httpOrigin}/api/projects/${project.id}`}
       type="application/octet-stream"
-      onClick={onClose}>
+      onClick={onClose}
+      disabled={!project.capabilities.canDownload}>
       <ListItemIcon>
         <GetAppIcon />
       </ListItemIcon>

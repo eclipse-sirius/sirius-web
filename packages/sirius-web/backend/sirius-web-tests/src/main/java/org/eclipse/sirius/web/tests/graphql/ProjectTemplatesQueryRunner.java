@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,9 @@ import org.springframework.stereotype.Service;
 public class ProjectTemplatesQueryRunner implements IQueryRunner {
 
     private static final String PROJECT_TEMPLATES_QUERY = """
-            query getProjectTemplates($page: Int!, $limit: Int!) {
+            query getProjectTemplates($page: Int!, $limit: Int!, $context: ProjectTemplateContext!) {
               viewer {
-                projectTemplates(page: $page, limit: $limit) {
+                projectTemplates(page: $page, limit: $limit, context: $context) {
                   edges {
                     node {
                       id

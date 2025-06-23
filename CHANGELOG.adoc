@@ -105,6 +105,12 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 * Add new `IEditingContext` parameter in the constructor `RepresentationMigrationService`
 - https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] `SingleClickTreeItemContextMenuEntry` has a new field `withImpactAnalysis` that needs to be filled by the backend.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] The decision to display the frontend card to create a blank project, upload a project, and browse all template is now made by the backend.
+These cards are not contributed to the `createProjectAreaCardExtensionPoint` extension point anymore.
+They will be displayed if a project template with one of the following specific ID is returned: `create-project`, `upload-project`, or `browse-all-project-templates`.
+Thus, downstream projects that would want to hide these cards, will not be able to do it by not contributing them to the `createProjectAreaCardExtensionPoint` extension point, but by providing a `ICapabilityVoter`.
+Another consequence is that the `projectTemplates` graphql query now requires the `context` parameter.
+A new "demo" profile is now available to start Sirius Web as a demo instance.
 
 
 === Dependency update
@@ -129,7 +135,9 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add backend support for capabilities.
++ Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontent components to prevent their users to use them.
++ Mutations disablement to completely deactivate a feature will be done later.
 
 
 === Improvements

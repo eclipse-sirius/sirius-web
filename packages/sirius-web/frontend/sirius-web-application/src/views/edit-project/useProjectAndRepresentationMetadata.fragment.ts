@@ -20,6 +20,9 @@ export const ProjectAndRepresentationFragment = gql`
     natures {
       name
     }
+    capabilities {
+      canDownload
+    }
     currentEditingContext(name: $name) {
       id
       representation(representationId: $representationId) @include(if: $includeRepresentation) {

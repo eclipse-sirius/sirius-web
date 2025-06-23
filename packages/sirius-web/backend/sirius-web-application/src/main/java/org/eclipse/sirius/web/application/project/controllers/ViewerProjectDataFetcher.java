@@ -12,13 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
@@ -27,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Viewer", field = "project")
-public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinates<ProjectDTO> {
+public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<ProjectDTO>> {
 
     private static final String PROJECT_ID_ARGUMENT = "projectId";
 
@@ -38,8 +42,21 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
     }
 
     @Override
-    public ProjectDTO get(DataFetchingEnvironment environment) throws Exception {
+    public DataFetcherResult<ProjectDTO> get(DataFetchingEnvironment environment) throws Exception {
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
-        return this.projectApplicationService.findById(projectId).orElse(null);
+        var optionalProject = this.projectApplicationService.findById(projectId);
+        if (optionalProject.isEmpty()) {
+            return null;
+        }
+
+        var project = optionalProject.get();
+
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.put(SiriusWebLocalContextConstants.PROJECT_ID, projectId);
+
+        return DataFetcherResult.<ProjectDTO>newResult()
+                .data(project)
+                .localContext(localContext)
+                .build();
     }
 }

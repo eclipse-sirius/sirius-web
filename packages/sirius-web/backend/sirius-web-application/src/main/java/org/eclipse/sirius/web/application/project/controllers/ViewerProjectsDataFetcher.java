@@ -12,6 +12,24 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
+import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
+import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.ScrollPosition;
+
+import graphql.execution.DataFetcherResult;
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnection;
@@ -20,22 +38,6 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
-import org.springframework.data.domain.KeysetScrollPosition;
-import org.springframework.data.domain.ScrollPosition;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Data fetcher for the field Viewer#projects.
@@ -43,7 +45,7 @@ import java.util.stream.Collectors;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Viewer", field = "projects")
-public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectDTO>> {
+public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<DataFetcherResult<ProjectDTO>>> {
 
     private static final String FIRST_ARGUMENT = "first";
 
@@ -65,7 +67,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
     }
 
     @Override
-    public Connection<ProjectDTO> get(DataFetchingEnvironment environment) throws Exception {
+    public Connection<DataFetcherResult<ProjectDTO>> get(DataFetchingEnvironment environment) throws Exception {
         Optional<Integer> first = Optional.ofNullable(environment.getArgument(FIRST_ARGUMENT));
         Optional<Integer> last = Optional.ofNullable(environment.getArgument(LAST_ARGUMENT));
         Optional<String> after = Optional.ofNullable(environment.getArgument(AFTER_ARGUMENT));
@@ -93,12 +95,19 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         return position;
     }
 
-    private Connection<ProjectDTO> toConnection(Window<ProjectDTO> window) {
-        List<Edge<ProjectDTO>> edges = window.stream().map(projectDTO -> {
+    private Connection<DataFetcherResult<ProjectDTO>> toConnection(Window<ProjectDTO> window) {
+        List<Edge<DataFetcherResult<ProjectDTO>>> edges = window.stream().map(projectDTO -> {
             var globalId = new Relay().toGlobalId("Project", projectDTO.id());
             var cursor = new DefaultConnectionCursor(globalId);
-            return (Edge<ProjectDTO>) new DefaultEdge<>(projectDTO, cursor);
-        }).collect(Collectors.toCollection(ArrayList::new));
+
+            Map<String, Object> localContext = new HashMap<>();
+            localContext.put(SiriusWebLocalContextConstants.PROJECT_ID, projectDTO.id());
+
+            return (Edge<DataFetcherResult<ProjectDTO>>) new DefaultEdge<>(DataFetcherResult.<ProjectDTO>newResult()
+                    .data(projectDTO)
+                    .localContext(localContext)
+                    .build(), cursor);
+        }).toList();
 
         ConnectionCursor startCursor = edges.stream().findFirst()
                 .map(Edge::getCursor)

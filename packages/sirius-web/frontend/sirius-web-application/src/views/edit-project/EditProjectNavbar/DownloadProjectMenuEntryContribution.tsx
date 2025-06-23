@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useContext } from 'react';
+import { useCurrentProject } from '../useCurrentProject';
 import { EditProjectNavbarMenuEntryProps } from './EditProjectNavbar.types';
 
 export const DownloadProjectMenuEntryContribution = ({
@@ -23,13 +24,20 @@ export const DownloadProjectMenuEntryContribution = ({
   onCloseContextMenu,
 }: EditProjectNavbarMenuEntryProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const {
+    project: {
+      capabilities: { canDownload },
+    },
+  } = useCurrentProject();
+
   return (
     <MenuItem
       component="a"
       href={`${httpOrigin}/api/projects/${projectId}`}
       type="application/octet-stream"
       onClick={onCloseContextMenu}
-      data-testid="download-link">
+      data-testid="download-link"
+      disabled={!canDownload}>
       <ListItemIcon>
         <GetAppIcon />
       </ListItemIcon>

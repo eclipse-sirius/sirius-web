@@ -44,7 +44,10 @@ export const ProjectsTable = ({
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
-
+    muiTableBodyProps: () =>
+      ({
+        'data-testid': 'projects',
+      } as any),
     state: { globalFilter, isLoading: loading },
 
     enableGlobalFilter: true,
