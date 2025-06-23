@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,12 +112,12 @@ public interface TextStyleDescription extends EObject {
 
     /**
      * Returns the value of the '<em><b>Is Bold Expression</b></em>' attribute. The default value is
-     * <code>"aql:\'false\'"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <code>"aql:false"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Bold Expression</em>' attribute.
      * @see #setIsBoldExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getTextStyleDescription_IsBoldExpression()
-     * @model default="aql:\'false\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @model default="aql:false" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getIsBoldExpression();
@@ -135,12 +135,12 @@ public interface TextStyleDescription extends EObject {
 
     /**
      * Returns the value of the '<em><b>Is Italic Expression</b></em>' attribute. The default value is
-     * <code>"aql:\'false\'"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <code>"aql:false"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Italic Expression</em>' attribute.
      * @see #setIsItalicExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getTextStyleDescription_IsItalicExpression()
-     * @model default="aql:\'false\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @model default="aql:false" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getIsItalicExpression();
@@ -158,12 +158,12 @@ public interface TextStyleDescription extends EObject {
 
     /**
      * Returns the value of the '<em><b>Is Underline Expression</b></em>' attribute. The default value is
-     * <code>"aql:\'false\'"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <code>"aql:false"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Underline Expression</em>' attribute.
      * @see #setIsUnderlineExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getTextStyleDescription_IsUnderlineExpression()
-     * @model default="aql:\'false\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @model default="aql:false" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getIsUnderlineExpression();
