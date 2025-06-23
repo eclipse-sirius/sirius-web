@@ -295,6 +295,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .labelExpression("Toggle abstract")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .body(callService.build())
+                .withImpactAnalysis(true)
                 .build();
 
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()

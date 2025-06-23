@@ -59,6 +59,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//SingleClickTreeItemContextMenuEntry/body"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//SingleClickTreeItemContextMenuEntry/labelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//SingleClickTreeItemContextMenuEntry/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//SingleClickTreeItemContextMenuEntry/withImpactAnalysis"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//FetchTreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/urlExression"/>
@@ -68,6 +69,7 @@
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//CustomTreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/contributionId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/withImpactAnalysis"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -574,13 +574,22 @@ public interface TreePackage extends EPackage {
     int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Single Click Tree Item Context Menu Entry</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 3;
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Single Click Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc
@@ -707,13 +716,22 @@ public interface TreePackage extends EPackage {
     int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc -->
@@ -1162,6 +1180,18 @@ public interface TreePackage extends EPackage {
     EAttribute getSingleClickTreeItemContextMenuEntry_IconURLExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
+     * Impact Analysis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Impact Analysis</em>'.
+     * @see org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#isWithImpactAnalysis()
+     * @see #getSingleClickTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getSingleClickTreeItemContextMenuEntry_WithImpactAnalysis();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry
      * <em>Fetch Tree Item Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1240,6 +1270,18 @@ public interface TreePackage extends EPackage {
      * @generated
      */
     EAttribute getCustomTreeItemContextMenuEntry_ContributionId();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
+     * Impact Analysis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Impact Analysis</em>'.
+     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis()
+     * @see #getCustomTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getCustomTreeItemContextMenuEntry_WithImpactAnalysis();
 
     /**
      * Returns the meta object for enum
@@ -1587,6 +1629,14 @@ public interface TreePackage extends EPackage {
         EAttribute SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = eINSTANCE.getSingleClickTreeItemContextMenuEntry_IconURLExpression();
 
         /**
+         * The meta object literal for the '<em><b>With Impact Analysis</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = eINSTANCE.getSingleClickTreeItemContextMenuEntry_WithImpactAnalysis();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl <em>Fetch Tree Item
          * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1647,6 +1697,14 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EAttribute CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = eINSTANCE.getCustomTreeItemContextMenuEntry_ContributionId();
+
+        /**
+         * The meta object literal for the '<em><b>With Impact Analysis</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = eINSTANCE.getCustomTreeItemContextMenuEntry_WithImpactAnalysis();
 
         /**
          * The meta object literal for the

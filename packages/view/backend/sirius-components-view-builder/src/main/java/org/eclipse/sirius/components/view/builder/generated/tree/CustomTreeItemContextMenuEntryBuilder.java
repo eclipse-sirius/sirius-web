@@ -70,5 +70,15 @@ public class CustomTreeItemContextMenuEntryBuilder {
         return this;
     }
 
+    /**
+     * Setter for WithImpactAnalysis.
+     *
+     * @generated
+     */
+    public CustomTreeItemContextMenuEntryBuilder withImpactAnalysis(java.lang.Boolean value) {
+        this.getCustomTreeItemContextMenuEntry().setWithImpactAnalysis(value);
+        return this;
+    }
+
 }
 

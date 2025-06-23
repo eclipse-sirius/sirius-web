@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.view.Operation;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getIconURLExpression <em>Icon
  * URL Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
+ * Impact Analysis</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry()
@@ -94,5 +96,29 @@ public interface SingleClickTreeItemContextMenuEntry extends TreeItemContextMenu
      * @generated
      */
     void setIconURLExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>With Impact Analysis</em>' attribute.
+     * @see #setWithImpactAnalysis(boolean)
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry_WithImpactAnalysis()
+     * @model
+     * @generated
+     */
+    boolean isWithImpactAnalysis();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
+     * Impact Analysis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>With Impact Analysis</em>' attribute.
+     * @see #isWithImpactAnalysis()
+     * @generated
+     */
+    void setWithImpactAnalysis(boolean value);
 
 } // SingleClickTreeItemContextMenuEntry

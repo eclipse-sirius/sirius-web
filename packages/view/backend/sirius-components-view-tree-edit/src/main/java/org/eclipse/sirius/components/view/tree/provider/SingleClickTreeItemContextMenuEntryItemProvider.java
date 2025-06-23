@@ -56,6 +56,7 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
 
             this.addLabelExpressionPropertyDescriptor(object);
             this.addIconURLExpressionPropertyDescriptor(object);
+            this.addWithImpactAnalysisPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -83,6 +84,19 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
                 this.getString("_UI_SingleClickTreeItemContextMenuEntry_iconURLExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SingleClickTreeItemContextMenuEntry_iconURLExpression_feature", "_UI_SingleClickTreeItemContextMenuEntry_type"),
                 TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the With Impact Analysis feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addWithImpactAnalysisPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SingleClickTreeItemContextMenuEntry_withImpactAnalysis_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SingleClickTreeItemContextMenuEntry_withImpactAnalysis_feature", "_UI_SingleClickTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -160,6 +174,7 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
         switch (notification.getFeatureID(SingleClickTreeItemContextMenuEntry.class)) {
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY:
