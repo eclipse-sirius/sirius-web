@@ -13,15 +13,13 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,30 +78,26 @@ public class AncestorsVariableDiagramControllerTests extends AbstractIntegration
     public void givenAncestorsVariableDiagramWhenItIsOpenedThenNodesShouldAppearWithLabelsContainingAncestorsIds() {
         var flux = this.givenSubscriptionToDiagram();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    List<Node> rootNodes = diagram.getNodes();
-                    assertThat(rootNodes).hasSize(5);
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            List<Node> rootNodes = diagram.getNodes();
+            assertThat(rootNodes).hasSize(5);
 
-                    Node rootNode = rootNodes.get(0);
-                    assertThat(rootNode.getInsideLabel().getText()).isEqualTo("[Sirius Web]");
+            Node rootNode = rootNodes.get(0);
+            assertThat(rootNode.getInsideLabel().getText()).isEqualTo("[Sirius Web]");
 
-                    List<Node> childNodes = rootNode.getChildNodes();
-                    assertThat(childNodes).hasSize(1);
+            List<Node> childNodes = rootNode.getChildNodes();
+            assertThat(childNodes).hasSize(1);
 
-                    Node childNode = childNodes.get(0);
-                    assertThat(childNode.getInsideLabel().getText()).isEqualTo("[sirius-web-domain, Sirius Web]");
+            Node childNode = childNodes.get(0);
+            assertThat(childNode.getInsideLabel().getText()).isEqualTo("[sirius-web-domain, Sirius Web]");
 
-                    List<Node> leafNodes = childNode.getChildNodes();
-                    assertThat(leafNodes).hasSize(2);
+            List<Node> leafNodes = childNode.getChildNodes();
+            assertThat(leafNodes).hasSize(2);
 
-                    Node leafNode = leafNodes.get(0);
-                    assertThat(leafNode.getInsideLabel().getText()).isEqualTo("[services, sirius-web-domain, Sirius Web]");
+            Node leafNode = leafNodes.get(0);
+            assertThat(leafNode.getInsideLabel().getText()).isEqualTo("[services, sirius-web-domain, Sirius Web]");
 
-                }, () -> fail("Missing diagram"));
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

@@ -12,15 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -34,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -64,20 +61,16 @@ public class CustomImageDiagramControllerTests extends AbstractIntegrationTests 
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID.toString(), StudioIdentifiers.DIAGRAM_DESCRIPTION_ID, StudioIdentifiers.ROOT_OBJECT.toString(), "");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getNodes())
-                            .isNotEmpty()
-                            .anySatisfy(node -> {
-                                assertThat(node.getStyle()).isInstanceOf(ImageNodeStyle.class);
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .isNotEmpty()
+                    .anySatisfy(node -> {
+                        assertThat(node.getStyle()).isInstanceOf(ImageNodeStyle.class);
 
-                                var imageNodeStyle = (ImageNodeStyle) node.getStyle();
-                                assertThat(imageNodeStyle).hasImageURL(StudioIdentifiers.PLACEHOLDER_IMAGE_OBJECT.toString());
-                            });
-                }, () -> fail("Missing diagram"));
+                        var imageNodeStyle = (ImageNodeStyle) node.getStyle();
+                        assertThat(imageNodeStyle).hasImageURL(StudioIdentifiers.PLACEHOLDER_IMAGE_OBJECT.toString());
+                    });
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

@@ -12,30 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.NODE;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
-import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -49,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -70,7 +61,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
     private VisibilityDiagramDescriptionProvider visibilityDiagramDescriptionProvider;
@@ -97,29 +88,24 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     public void givenDiagramWithHiddenAndFadedNodesByDefaultWhenItIsOpenedThenSomeNodesAreHiddenAndFaded() {
         var flux = this.givenSubscriptionToVisibilityDiagram();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var siriusWebDomainNode = new DiagramNavigator(diagram)
+                    .nodeWithLabel("sirius-web-domain")
+                    .getNode();
+            assertThat(siriusWebDomainNode).hasModifiers(Set.of(ViewModifier.Hidden));
 
-                    var siriusWebDomainNode = new DiagramNavigator(diagram)
-                            .nodeWithLabel("sirius-web-domain")
-                            .getNode();
-                    assertThat(siriusWebDomainNode).hasModifiers(Set.of(ViewModifier.Hidden));
+            var siriusWebApplicationNode = new DiagramNavigator(diagram)
+                    .nodeWithLabel("sirius-web-application")
+                    .getNode();
+            assertThat(siriusWebApplicationNode).hasModifiers(Set.of(ViewModifier.Faded));
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram)
-                            .nodeWithLabel("sirius-web-application")
-                            .getNode();
-                    assertThat(siriusWebApplicationNode).hasModifiers(Set.of(ViewModifier.Faded));
-
-                    var nonDomainNonApplicationNodes = diagram.getNodes().stream()
-                            .filter(node -> !node.getInsideLabel().getText().endsWith("-domain")
-                                        && !node.getInsideLabel().getText().endsWith("-application"));
-                    assertThat(nonDomainNonApplicationNodes)
-                        .isNotEmpty()
-                        .allSatisfy(node -> assertThat(node).hasModifiers(Set.of()));
-                }, () -> fail("Missing diagram"));
+            var nonDomainNonApplicationNodes = diagram.getNodes().stream()
+                    .filter(node -> !node.getInsideLabel().getText().endsWith("-domain")
+                                && !node.getInsideLabel().getText().endsWith("-application"));
+            assertThat(nonDomainNonApplicationNodes)
+                .isNotEmpty()
+                .allSatisfy(node -> assertThat(node).hasModifiers(Set.of()));
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
@@ -136,34 +122,20 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var hiddenNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    assertThat(siriusWebDomainNode).hasModifiers(Set.of(ViewModifier.Hidden));
-                    hiddenNodeId.set(siriusWebDomainNode.getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(siriusWebDomainNode).hasModifiers(Set.of(ViewModifier.Hidden));
+            hiddenNodeId.set(siriusWebDomainNode.getId());
+        });
 
-        Runnable revealNodes = () -> {
-            String revealNodeToolId = this.visibilityDiagramDescriptionProvider.getRevealNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), hiddenNodeId.get(), revealNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable revealNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), hiddenNodeId.get(), this.visibilityDiagramDescriptionProvider.getRevealNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    assertThat(siriusWebDomainNode).hasModifiers(Set.of());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(siriusWebDomainNode).hasModifiers(Set.of());
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
@@ -182,45 +154,28 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var revealedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    diagram.getNodes().stream()
-                        .filter(node -> node.getModifiers().isEmpty())
-                        .map(Node::getId)
-                        .findFirst()
-                        .ifPresent(revealedNodeId::set);
-                }, () -> fail("Missing diagram"));
+            diagram.getNodes().stream()
+                .filter(node -> node.getModifiers().isEmpty())
+                .map(Node::getId)
+                .findFirst()
+                .ifPresent(revealedNodeId::set);
+        });
 
-        Runnable hideNodes = () -> {
-            String hideNodeToolId = this.visibilityDiagramDescriptionProvider.getHideNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), revealedNodeId.get(), hideNodeToolId, 0, 0, List.of());
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable hideNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), revealedNodeId.get(), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getNodes().stream()
-                            .filter(node -> node.getId().equals(revealedNodeId.get()))
-                            .map(node -> node.getModifiers().contains(ViewModifier.Hidden))
-                            .findFirst()
-                            .orElse(false);
-                })
-                .isPresent();
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(revealedNodeId.get()).getNode();
+            assertThat(node).hasModifiers(Set.of(ViewModifier.Hidden));
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
             .then(hideNodes)
-            .expectNextMatches(updatedDiagramContentMatcher)
+            .consumeNextWith(updatedDiagramContentMatcher)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
     }
@@ -234,45 +189,28 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var unfadedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    diagram.getNodes().stream()
-                        .filter(node -> node.getModifiers().isEmpty())
-                        .map(Node::getId)
-                        .findFirst()
-                        .ifPresent(unfadedNodeId::set);
-                }, () -> fail("Missing diagram"));
+            diagram.getNodes().stream()
+                .filter(node -> node.getModifiers().isEmpty())
+                .map(Node::getId)
+                .findFirst()
+                .ifPresent(unfadedNodeId::set);
+        });
 
-        Runnable fadeNodes = () -> {
-            String fadeNodeToolId = this.visibilityDiagramDescriptionProvider.getFadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), unfadedNodeId.get(), fadeNodeToolId, 0, 0, List.of());
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable fadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), unfadedNodeId.get(), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getNodes().stream()
-                            .filter(node -> node.getId().equals(unfadedNodeId.get()))
-                            .map(node -> node.getModifiers().contains(ViewModifier.Faded))
-                            .findFirst()
-                            .orElse(false);
-                })
-                .isPresent();
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(unfadedNodeId.get()).getNode();
+            assertThat(node).hasModifiers(Set.of(ViewModifier.Faded));
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
             .then(fadeNodes)
-            .expectNextMatches(updatedDiagramContentMatcher)
+            .consumeNextWith(updatedDiagramContentMatcher)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
     }
@@ -286,35 +224,21 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var fadedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    assertThat(siriusWebApplicationNode).hasModifiers(Set.of(ViewModifier.Faded));
-                    fadedNodeId.set(siriusWebApplicationNode.getId());
-                }, () -> fail("Missing diagram"));
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            assertThat(siriusWebApplicationNode).hasModifiers(Set.of(ViewModifier.Faded));
+            fadedNodeId.set(siriusWebApplicationNode.getId());
+        });
 
-        Runnable unfadeNodes = () -> {
-            String unfadeNodeToolId = this.visibilityDiagramDescriptionProvider.getUnfadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), fadedNodeId.get(), unfadeNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable unfadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), fadedNodeId.get(), this.visibilityDiagramDescriptionProvider.getUnfadeNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    assertThat(siriusWebApplicationNode).hasModifiers(Set.of());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            assertThat(siriusWebApplicationNode).hasModifiers(Set.of());
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)
@@ -334,71 +258,39 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
         var nodeToFadeId = new AtomicReference<String>();
         var nodeToHideId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    List<Node> revealedNodes = diagram.getNodes().stream().filter(n -> n.getModifiers().isEmpty()).toList();
-                    nodeToFadeId.set(revealedNodes.get(0).getId());
-                    nodeToHideId.set(revealedNodes.get(1).getId());
-                }, () -> fail("Missing diagram"));
+            List<Node> revealedNodes = diagram.getNodes().stream().filter(n -> n.getModifiers().isEmpty()).toList();
+            nodeToFadeId.set(revealedNodes.get(0).getId());
+            nodeToHideId.set(revealedNodes.get(1).getId());
+        });
 
-        Runnable fadeNode = () -> {
-            String fadeNodeToolId = this.visibilityDiagramDescriptionProvider.getFadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), fadeNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable fadeNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
+        Runnable hideNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-        Runnable hideNode = () -> {
-            String hideNodeToolId = this.visibilityDiagramDescriptionProvider.getHideNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), hideNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable resetFadedNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
+        Runnable resetHiddenNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
+                .isSuccess();
 
-        Runnable resetFadedNodeVisibility = () -> {
-            String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), resetNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var nodeToFade = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToFadeId.get())).findFirst();
+            assertThat(nodeToFade)
+                .isPresent()
+                .get(NODE)
+                .hasModifiers(Set.of());
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-
-        };
-
-        Runnable resetHiddenNodeVisibility = () -> {
-            String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), resetNodeToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
-
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var nodeToFade = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToFadeId.get())).findFirst();
-                    assertThat(nodeToFade)
-                        .isPresent()
-                        .get(NODE)
-                        .hasModifiers(Set.of());
-                    var nodeToHide = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToHideId.get())).findFirst();
-                    assertThat(nodeToHide)
-                        .isPresent()
-                        .get(NODE)
-                        .hasModifiers(Set.of());
-                }, () -> fail("Missing diagram"));
+            var nodeToHide = diagram.getNodes().stream().filter(node -> Objects.equals(node.getId(), nodeToHideId.get())).findFirst();
+            assertThat(nodeToHide)
+                .isPresent()
+                .get(NODE)
+                .hasModifiers(Set.of());
+        });
 
         StepVerifier.create(flux)
             .consumeNextWith(initialDiagramContentConsumer)

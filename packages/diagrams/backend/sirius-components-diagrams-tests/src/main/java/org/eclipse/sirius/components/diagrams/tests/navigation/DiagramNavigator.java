@@ -83,6 +83,14 @@ public class DiagramNavigator {
         return new NodeNavigator(nodes.get(0), this.cache);
     }
 
+    public EdgeNavigator edgeWithId(String id) {
+        var edge = this.cache.getIdToEdge().get(id);
+        if (edge == null) {
+            throw new IllegalArgumentException(MessageFormat.format("No edge found with id \"{0}\"", id));
+        }
+        return new EdgeNavigator(edge, this.cache);
+    }
+
     public EdgeNavigator edgeWithLabel(String label) {
         List<Edge> edges = this.cache.getLabelToEdges().get(label);
         if (edges == null || edges.isEmpty()) {

@@ -14,16 +14,14 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ResetLabelAppearanceInput;
@@ -96,22 +94,18 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebApplicationNodeInsideLabelId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    assertThat(diagram.getNodes())
-                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                            .hasSize(1)
-                            .allMatch(node -> !node.getInsideLabel().getStyle()
-                                    .isBold());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> !node.getInsideLabel().getStyle()
+                            .isBold());
 
-                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
-                    siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
-                    siriusWebApplicationNodeInsideLabelId.set(siriusWebApplicationNode.getInsideLabel().getId());
-                }, () -> fail("Missing diagram or invalid state for tested node."));
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            siriusWebApplicationNodeInsideLabelId.set(siriusWebApplicationNode.getInsideLabel().getId());
+        });
 
         Runnable setLabelBold = () -> {
             var appearanceInput = new LabelAppearanceInput(true);
@@ -128,17 +122,12 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
             this.editLabelAppearanceMutationRunner.run(input);
         };
 
-        Consumer<Object> updatedAfterBoldDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getNodes())
-                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                            .hasSize(1)
-                            .allMatch(node -> node.getInsideLabel().getStyle()
-                                    .isBold());
-                }, () -> fail("Missing diagram or node inside label has not been set to be bold."));
+        Consumer<Object> updatedAfterBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> node.getInsideLabel().getStyle().isBold());
+        });
 
         Runnable resetLabelBold = () -> {
             var input = new ResetLabelAppearanceInput(
@@ -153,17 +142,12 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
             this.resetLabelAppearanceMutationRunner.run(input);
         };
 
-        Consumer<Object> updatedAfterResetBoldDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getNodes())
-                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                            .hasSize(1)
-                            .allMatch(node -> !node.getInsideLabel().getStyle()
-                                    .isBold());
-                }, () -> fail("Missing diagram or node inside label has not been reset to not be bold."));
+        Consumer<Object> updatedAfterResetBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> !node.getInsideLabel().getStyle().isBold());
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
