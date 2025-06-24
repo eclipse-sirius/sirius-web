@@ -34,7 +34,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
     public void create(IEMFEditingContext editingContext) {
         this.createCharts(editingContext);
-        this.createCompatibility(editingContext);
         this.createCore(editingContext);
         this.createDeck(editingContext);
         this.createDiagrams(editingContext);
@@ -73,27 +72,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var resource = this.createResource(editingContext, "Sirius Components - Charts");
         resource.getContents().add(siriusComponentsChartsBackend);
-    }
-
-    private void createCompatibility(IEMFEditingContext editingContext) {
-        var siriusComponentsCompatibilityPackages = List.of(
-                "org.eclipse.sirius.components.compatibility",
-                "org.eclipse.sirius.components.compatibility.api",
-                "org.eclipse.sirius.components.compatibility.configuration",
-                "org.eclipse.sirius.components.compatibility.diagrams",
-                "org.eclipse.sirius.components.compatibility.forms",
-                "org.eclipse.sirius.components.compatibility.messages",
-                "org.eclipse.sirius.components.compatibility.services"
-        );
-        var siriusComponentsCompatibility = new ComponentInitializer().initialize("sirius-components-compatibility", "org.eclipse.sirius.components.compatibility", siriusComponentsCompatibilityPackages::contains);
-        var siriusComponentsCompatibilityEmf = new ComponentInitializer().initialize("sirius-components-compatibility-emf", "org.eclipse.sirius.components.compatibility.emf", packageName -> packageName.startsWith("org.eclipse.sirius.components.compatibility.emf"));
-
-        var siriusComponentsCompatibilityBackend = PapayaFactory.eINSTANCE.createProject();
-        siriusComponentsCompatibilityBackend.setName("backend");
-        siriusComponentsCompatibilityBackend.getElements().addAll(List.of(siriusComponentsCompatibility, siriusComponentsCompatibilityEmf));
-
-        var resource = this.createResource(editingContext, "Sirius Components - Compatibility");
-        resource.getContents().add(siriusComponentsCompatibilityBackend);
     }
 
     private void createCore(IEMFEditingContext editingContext) {
@@ -534,7 +512,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
     @Override
     public void link(IEObjectIndexer eObjectIndexer) {
         this.linkCharts(eObjectIndexer);
-        this.linkCompatibility(eObjectIndexer);
         this.linkCore(eObjectIndexer);
         this.linkDeck(eObjectIndexer);
         this.linkDiagrams(eObjectIndexer);
@@ -561,39 +538,6 @@ public class SiriusWebProjectFactory implements IObjectFactory {
         var siriusComponentsCollaborative = eObjectIndexer.getComponent("sirius-components-collaborative");
         var siriusComponentsCollaborativeCharts = eObjectIndexer.getComponent("sirius-components-collaborative-charts");
         siriusComponentsCollaborativeCharts.getDependencies().addAll(List.of(siriusComponentsCharts, siriusComponentsCollaborative));
-    }
-
-    private void linkCompatibility(IEObjectIndexer eObjectIndexer) {
-        var siriusComponentsCore = eObjectIndexer.getComponent("sirius-components-core");
-        var siriusComponentsForms = eObjectIndexer.getComponent("sirius-components-forms");
-        var siriusComponentsSelection = eObjectIndexer.getComponent("sirius-components-selection");
-        var siriusComponentsTrees = eObjectIndexer.getComponent("sirius-components-trees");
-        var siriusComponentsCollaborativeDiagrams = eObjectIndexer.getComponent("sirius-components-collaborative-diagrams");
-        var siriusComponentsCollaborativeForms = eObjectIndexer.getComponent("sirius-components-collaborative-forms");
-        var siriusComponentsInterpreter = eObjectIndexer.getComponent("sirius-components-interpreter");
-
-        var siriusComponentsCompatibility = eObjectIndexer.getComponent("sirius-components-compatibility");
-        siriusComponentsCompatibility.getDependencies().addAll(List.of(
-                siriusComponentsCore,
-                siriusComponentsForms,
-                siriusComponentsSelection,
-                siriusComponentsTrees,
-                siriusComponentsCollaborativeDiagrams,
-                siriusComponentsCollaborativeForms,
-                siriusComponentsInterpreter
-        ));
-
-        var siriusComponentsEMF = eObjectIndexer.getComponent("sirius-components-emf");
-        var siriusComponentsEMFForms = eObjectIndexer.getComponent("sirius-components-emf-forms");
-
-        var siriusComponentsCompatibilityEMF = eObjectIndexer.getComponent("sirius-components-compatibility-emf");
-        siriusComponentsCompatibilityEMF.getDependencies().addAll(List.of(
-                siriusComponentsCollaborativeDiagrams,
-                siriusComponentsCollaborativeForms,
-                siriusComponentsEMF,
-                siriusComponentsEMFForms,
-                siriusComponentsCompatibility
-        ));
     }
 
     private void linkCore(IEObjectIndexer eObjectIndexer) {
