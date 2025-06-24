@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,13 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
+import { ProjectsCapabilitiesContext } from '../../hooks/ProjectsCapabilitiesContext';
+import { ProjectsCapabilitiesContextValue } from '../../hooks/ProjectsCapabilitiesContext.types';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { GQLCreateProjectMutationData, GQLCreateProjectPayload, GQLErrorPayload } from './NewProjectView.types';
 import {
@@ -103,6 +105,7 @@ export const NewProjectView = () => {
   const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
   const { Component: Footer } = useComponent(footerExtensionPoint);
+  const { canCreate } = useContext<ProjectsCapabilitiesContextValue>(ProjectsCapabilitiesContext);
 
   const onNameChange = (event) => {
     const value = event.target.value;
@@ -146,6 +149,10 @@ export const NewProjectView = () => {
       }
     }
   }, [loading, data, error]);
+
+  if (!canCreate) {
+    return <Navigate to={'/errors/404'} />;
+  }
 
   if (newProjectView === 'success') {
     return <Navigate to={`/projects/${newProjectId}/edit`} />;

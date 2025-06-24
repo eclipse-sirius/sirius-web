@@ -12,13 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
@@ -43,38 +47,67 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectTemplateApplicationService implements IProjectTemplateApplicationService {
 
+    private static final String VOTER_PROJECT_TYPE = "Project";
+
     private final List<IProjectTemplateProvider> projectTemplateProviders;
 
     private final IProjectApplicationService projectApplicationService;
 
     private final ITemplateBasedProjectInitializer templateBasedProjectInitializer;
 
+    private final List<ICapabilityVoter> capabilityVoters;
+
     private final IMessageService messageService;
 
-    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, IProjectApplicationService projectApplicationService, ITemplateBasedProjectInitializer templateBasedProjectInitializer, IMessageService messageService) {
+    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, IProjectApplicationService projectApplicationService, ITemplateBasedProjectInitializer templateBasedProjectInitializer,
+            List<ICapabilityVoter> capabilityVoters, IMessageService messageService) {
         this.projectTemplateProviders = Objects.requireNonNull(projectTemplateProviders);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.templateBasedProjectInitializer = Objects.requireNonNull(templateBasedProjectInitializer);
+        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public Page<ProjectTemplateDTO> findAll(Pageable pageable) {
+    public Page<ProjectTemplateDTO> findAll(Pageable pageable, boolean withDefault) {
         var projectTemplates = this.projectTemplateProviders.stream()
                 .map(IProjectTemplateProvider::getProjectTemplates)
                 .flatMap(List::stream)
                 .sorted(Comparator.comparing(ProjectTemplate::label))
                 .toList();
 
+        List<ProjectTemplate> defaultProjectTemplate = List.of();
+        if (withDefault) {
+            defaultProjectTemplate = this.handleDefaultProjectTemplate();
+        }
+
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
-        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size());
-        var projectTemplateDTOs = projectTemplates.subList(startIndex, endIndex).stream()
+        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size() + defaultProjectTemplate.size());
+        var projectTemplateDTOs = Stream.concat(projectTemplates.subList(startIndex, endIndex - defaultProjectTemplate.size()).stream(), defaultProjectTemplate.stream())
                 .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL()))
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
     }
 
+    private List<ProjectTemplate> handleDefaultProjectTemplate() {
+        List<ProjectTemplate> defaultProjectTemplate = new ArrayList<>();
+        var canCreate = this.capabilityVoters.stream().allMatch(voter -> voter.vote(VOTER_PROJECT_TYPE, null, "canCreate") == CapabilityVote.GRANTED);
+        if (canCreate) {
+            defaultProjectTemplate.add(new ProjectTemplate("create-project", "", "", List.of()));
+        }
+
+        var canUpload = this.capabilityVoters.stream().allMatch(voter -> voter.vote(VOTER_PROJECT_TYPE, null, "canUpload") == CapabilityVote.GRANTED);
+        if (canUpload) {
+            defaultProjectTemplate.add(new ProjectTemplate("upload-project", "", "", List.of()));
+        }
+
+        var canBrowseAllProjectTemplates = this.capabilityVoters.stream().allMatch(voter -> voter.vote(VOTER_PROJECT_TYPE, null, "canBrowseAllProjectTemplates") == CapabilityVote.GRANTED);
+        if (canBrowseAllProjectTemplates) {
+            defaultProjectTemplate.add(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
+        }
+        return List.copyOf(defaultProjectTemplate);
+    }
 
     @Override
     public IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input) {

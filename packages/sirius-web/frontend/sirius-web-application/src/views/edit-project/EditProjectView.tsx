@@ -31,6 +31,7 @@ import { useEffect } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
+import { ProjectCapabilitiesContextProvider } from '../../hooks/ProjectCapabilitiesContext';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
@@ -129,25 +130,27 @@ export const EditProjectView = () => {
     const readOnly = readOnlyPredicate(context.project);
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
-        <SelectionContextProvider initialSelection={initialSelection}>
-          <SelectionSynchronizer>
-            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
-                <UndoRedo>
-                  <EditProjectNavbar readOnly={readOnly} />
-                  <TreeToolBarProvider>
-                    <Workbench
-                      editingContextId={context.project.currentEditingContext.id}
-                      initialRepresentationSelected={context.representation}
-                      onRepresentationSelected={onRepresentationSelected}
-                      readOnly={readOnly}
-                    />
-                  </TreeToolBarProvider>
-                </UndoRedo>
-              </OmniboxProvider>
-            </RepresentationPathContext.Provider>
-          </SelectionSynchronizer>
-        </SelectionContextProvider>
+        <ProjectCapabilitiesContextProvider>
+          <SelectionContextProvider initialSelection={initialSelection}>
+            <SelectionSynchronizer>
+              <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+                <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
+                  <UndoRedo>
+                    <EditProjectNavbar readOnly={readOnly} />
+                    <TreeToolBarProvider>
+                      <Workbench
+                        editingContextId={context.project.currentEditingContext.id}
+                        initialRepresentationSelected={context.representation}
+                        onRepresentationSelected={onRepresentationSelected}
+                        readOnly={readOnly}
+                      />
+                    </TreeToolBarProvider>
+                  </UndoRedo>
+                </OmniboxProvider>
+              </RepresentationPathContext.Provider>
+            </SelectionSynchronizer>
+          </SelectionContextProvider>
+        </ProjectCapabilitiesContextProvider>
       </ProjectContext.Provider>
     );
   }

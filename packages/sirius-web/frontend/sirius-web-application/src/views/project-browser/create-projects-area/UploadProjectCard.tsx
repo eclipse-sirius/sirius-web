@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,11 @@
 
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import Button from '@mui/material/Button';
+import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { ProjectsCapabilitiesContext } from '../../../hooks/ProjectsCapabilitiesContext';
+import { ProjectsCapabilitiesContextValue } from '../../../hooks/ProjectsCapabilitiesContext.types';
 import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 
 const useUploadProjectCardStyles = makeStyles()((theme) => ({
@@ -35,6 +38,13 @@ const useUploadProjectCardStyles = makeStyles()((theme) => ({
 
 export const UploadProjectCard = () => {
   const { classes } = useUploadProjectCardStyles();
+
+  const { canUpload } = useContext<ProjectsCapabilitiesContextValue>(ProjectsCapabilitiesContext);
+
+  if (!canUpload) {
+    return null;
+  }
+
   return (
     <Button to={`/upload/project`} component={RouterLink} className={classes.button} data-testid="upload">
       <CreateProjectAreaCard title="+ Upload project" description="Upload project">

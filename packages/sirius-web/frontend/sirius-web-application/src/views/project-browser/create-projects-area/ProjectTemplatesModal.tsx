@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import gql from 'graphql-tag';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+
+import { ProjectsCapabilitiesContext } from '../../../hooks/ProjectsCapabilitiesContext';
+import { ProjectsCapabilitiesContextValue } from '../../../hooks/ProjectsCapabilitiesContext.types';
 import { NewProjectCard } from './NewProjectCard';
 import { ProjectTemplateCard } from './ProjectTemplateCard';
 import { ProjectTemplatesModalProps, ProjectTemplatesModalState } from './ProjectTemplatesModal.types';
@@ -78,6 +81,8 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     count: null,
   });
 
+  const { canCreate, canUpload } = useContext<ProjectsCapabilitiesContextValue>(ProjectsCapabilitiesContext);
+
   // Index of the last page, including all templates *and* the 2 special cards
   const lastPage: number = state.count ? Math.ceil((state.count + 2) / 12) : 0;
   // Index of the last page which actually contains templates (and not just special cards)
@@ -85,7 +90,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
 
   const skip: boolean = state.projectTemplates !== null && state.page > lastPageWithTemplates;
 
-  const { data, loading } = useProjectTemplates(state.page, state.limit, skip);
+  const { data, loading } = useProjectTemplates(state.page, state.limit, false, skip);
 
   useEffect(() => {
     if (data) {
@@ -121,17 +126,17 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
         />
       ))
       .forEach((card: JSX.Element) => cards.push(card));
-    if (cards.length < 12) {
+    if (cards.length < 12 && canCreate) {
       cards.push(<NewProjectCard key="new-project" />);
     }
-    if (cards.length < 12) {
+    if (cards.length < 12 && canUpload) {
       cards.push(<UploadProjectCard key="upload-project" />);
     }
-  } else if (state.count % 12 === 11) {
+  } else if (state.count % 12 === 11 && canUpload) {
     cards.push(<UploadProjectCard key="upload-project" />);
   } else if (state.count % 12 === 0) {
-    cards.push(<NewProjectCard key="new-project" />);
-    cards.push(<UploadProjectCard key="upload-project" />);
+    canCreate ?? cards.push(<NewProjectCard key="new-project" />);
+    canUpload ?? cards.push(<UploadProjectCard key="upload-project" />);
   }
 
   let content: JSX.Element;

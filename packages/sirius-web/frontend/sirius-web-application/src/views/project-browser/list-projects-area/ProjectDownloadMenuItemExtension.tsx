@@ -16,10 +16,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useContext } from 'react';
+import { useProjectCapabilities } from '../../../hooks/useProjectCapabilities';
 import { ProjectContextMenuEntryProps } from './ProjectActionButton.types';
 
 export const ProjectDownloadMenuItemExtension = ({ project, onClose }: ProjectContextMenuEntryProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
+  const { data, loading } = useProjectCapabilities(project.id);
+  const canDownload: boolean = data?.viewer.project.capabilities.canDownload ?? false;
 
   return (
     <MenuItem
@@ -27,7 +31,8 @@ export const ProjectDownloadMenuItemExtension = ({ project, onClose }: ProjectCo
       component="a"
       href={`${httpOrigin}/api/projects/${project.id}`}
       type="application/octet-stream"
-      onClick={onClose}>
+      onClick={onClose}
+      disabled={loading || !canDownload}>
       <ListItemIcon>
         <GetAppIcon />
       </ListItemIcon>

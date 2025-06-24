@@ -1,0 +1,21 @@
+extend type Viewer {
+  capabilities: ViewerCapabilities!
+}
+
+type ViewerCapabilities {
+  projects: ProjectsCapabilities!
+}
+
+type ProjectsCapabilities {
+  canCreate: Boolean!
+  canUpload: Boolean!
+  canBrowseAllProjectTemplates: Boolean!
+}
+
+extend type Project {
+  capabilities: ProjectCapabilities!
+}
+
+type ProjectCapabilities {
+  canDownload: Boolean!
+}

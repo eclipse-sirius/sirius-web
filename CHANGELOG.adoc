@@ -89,7 +89,11 @@ Note that the `OWNER_ID` variable has also been removed.
 As a result, the difference in behavior between the tests subscribing to existing representations and those which started by the creation of a new representation has been removed.
 As a result, most instances of `flux.filter(DataFetcherResult.class::isInstance).map(DataFetcherResult.class::cast).map(DataFetcherResult::getData)` can be removed.
 Utility classes to help create assertions on those flux have been introduced to write tests more easily such as `DiagramEventPayloadConsumer`, `FormEventPayloadConsumer` or `TreeEventPayloadConsumer` among others.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] The decision to display the frontend card to create a blank project, upload a project, and browse all template is now made by the backend.
+The cards are not contributed to the `createProjectAreaCardExtensionPoint` extension point anymore.
+They will be displayed if a project template with one of the following specific ID is returned: `create-project`, `upload-project`, or `browse-all-project-templates`.
+Thus, downstream projects that would want to hide these cards, will not be able to do it by not contributing them to the `createProjectAreaCardExtensionPoint` extension point, but by providing a `ICapabilityVoter`.
+Another consequences is that the `projectTemplates` graphql query now requires the `withDefault` parameter.
 
 
 === Dependency update
@@ -110,7 +114,9 @@ Utility classes to help create assertions on those flux have been introduced to 
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add backend support for capabilities.
++ Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontent components to prevent their users to use them.
++ Mutations disablement to completely deactivate a feature will be done later.
 
 
 === Improvements

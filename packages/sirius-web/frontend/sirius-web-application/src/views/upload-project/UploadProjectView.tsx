@@ -23,6 +23,8 @@ import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { sendFile } from '../../core/sendFile';
+import { ProjectsCapabilitiesContext } from '../../hooks/ProjectsCapabilitiesContext';
+import { ProjectsCapabilitiesContextValue } from '../../hooks/ProjectsCapabilitiesContext.types';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
@@ -96,6 +98,7 @@ export const UploadProjectView = () => {
   const { file, newProjectId, message } = context;
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { canUpload } = useContext<ProjectsCapabilitiesContextValue>(ProjectsCapabilitiesContext);
 
   const onUploadProject = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -132,6 +135,10 @@ export const UploadProjectView = () => {
   const onFileSelected = (file: File) => {
     dispatch({ type: 'HANDLE_SELECTED_FILE', file });
   };
+
+  if (!canUpload) {
+    return <Navigate to={'/errors/404'} />;
+  }
 
   if (uploadProjectView === 'success') {
     return <Navigate to={`/projects/${newProjectId}/edit`} />;
