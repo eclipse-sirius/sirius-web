@@ -44,7 +44,7 @@ It is _not_ the runtime id of the React Component corresponding to the part.
 It is a predictable and unambiguous id given by the parent part (or by the application for the root part) at creation time.
 ** The value is a `WorkbenchPartShareableState` representing the shareable state of the child part.
 
-Note: A follow-up ADR will focus on the possibility to share the internal state of a part (e.g. which filters of the 'Explorer' view are enabled), but this is out of the scope of this ADR.
+Note: A follow-up ADR (#200) will focus on the possibility to share the internal state of a part (e.g. which filters of the 'Explorer' view are enabled), but this is out of the scope of this ADR.
 
 The main impacts on the Sirius Web frontend components are:
 * `partId` must be added to the props of the components.
