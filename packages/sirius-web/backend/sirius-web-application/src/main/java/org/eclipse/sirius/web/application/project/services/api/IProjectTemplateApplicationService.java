@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.springframework.data.domain.Pageable;
  * @author sbegaudeau
  */
 public interface IProjectTemplateApplicationService {
-    Page<ProjectTemplateDTO> findAll(Pageable pageable);
+    Page<ProjectTemplateDTO> findAll(Pageable pageable, String context);
 
 
     IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input);

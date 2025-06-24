@@ -115,10 +115,6 @@ import { RelatedElementsView } from '../views/edit-project/workbench-views/relat
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
-import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
-import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
-import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
-import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
@@ -287,27 +283,6 @@ export const LibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
 defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
   identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
   Component: LibrariesButtonContribution,
-});
-
-/*******************************************************************************
- *
- * Create project area cards
- *
- * Used to register all the type of cards in the create project area
- *
- *******************************************************************************/
-
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_newProjectCard`,
-  Component: NewProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_uploadProjectCard`,
-  Component: UploadProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_showAllProjectTemplatesCard`,
-  Component: ShowAllProjectTemplatesCard,
 });
 
 /*******************************************************************************

@@ -1,0 +1,17 @@
+= Capabilities
+
+== Description
+
+This document will reference the frontend capabilities that can be enabled or disabled providing a `ICapabilityVoter` in the backend.
+
+== Exhaustive List
+
+=== Projects
+
+* canCreate: Whether a project can be created or not
+* canUpload: Whether a project can be uploaded or not
+* canBrowseAllProjectTemplates: Whether all project templates can be browsed.
+
+=== Project
+
+* canDownload: Whether the project can be downloaded or not

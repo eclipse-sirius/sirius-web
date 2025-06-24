@@ -29,6 +29,7 @@ import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepr
 import { defaultExtensionRegistry } from '../extension/DefaultExtensionRegistry';
 import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExtensionRegistryMergeStrategy';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
+import { ViewerContextProvider } from '../hooks/ViewerContext';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
@@ -77,9 +78,11 @@ export const SiriusWebApplication = ({
               <ToastProvider>
                 <ConfirmationDialogContextProvider>
                   <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                    <div style={style}>
-                      <Router />
-                    </div>
+                    <ViewerContextProvider>
+                      <div style={style}>
+                        <Router />
+                      </div>
+                    </ViewerContextProvider>
                   </NodeTypeContext.Provider>
                 </ConfirmationDialogContextProvider>
               </ToastProvider>

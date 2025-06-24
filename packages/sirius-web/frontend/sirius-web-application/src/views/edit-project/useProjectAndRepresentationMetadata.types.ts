@@ -35,11 +35,16 @@ export interface GQLProject {
   id: string;
   name: string;
   natures: GQLNature[];
+  capabilities: GQLProjectCapabilities;
   currentEditingContext: GQLEditingContext | null;
 }
 
 export interface GQLNature {
   name: string;
+}
+
+export interface GQLProjectCapabilities {
+  canDownload: boolean;
 }
 
 export interface GQLEditingContext {

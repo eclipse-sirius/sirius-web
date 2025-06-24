@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
+import { useCurrentViewer } from '../../hooks/useCurrentViewer';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
@@ -39,6 +40,14 @@ export const ProjectBrowserView = () => {
   const { classes } = useProjectBrowserViewStyles();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
+  const {
+    viewer: {
+      capabilities: {
+        projects: { canCreate },
+      },
+    },
+  } = useCurrentViewer();
+
   return (
     <div className={classes.projectsView}>
       <NavigationBar />
@@ -46,7 +55,7 @@ export const ProjectBrowserView = () => {
         <Grid container justifyContent="center">
           <Grid size={{ xs: 8 }}>
             <main className={classes.main}>
-              <CreateProjectArea />
+              {canCreate ? <CreateProjectArea /> : null}
               <ListProjectsArea />
             </main>
           </Grid>

@@ -1,7 +1,7 @@
 extend type Viewer {
   project(projectId: ID!): Project
   projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilter): ViewerProjectsConnection!
-  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
+  projectTemplates(page: Int!, limit: Int!, context: ProjectTemplateContext!): ViewerProjectTemplatesConnection!
 }
 
 input ProjectFilter {
@@ -31,6 +31,11 @@ type Project {
 
 type Nature {
   name: String!
+}
+
+enum ProjectTemplateContext {
+  PROJECT_BROWSER
+  PROJECT_TEMPLATE_MODAL
 }
 
 type ViewerProjectTemplatesConnection {

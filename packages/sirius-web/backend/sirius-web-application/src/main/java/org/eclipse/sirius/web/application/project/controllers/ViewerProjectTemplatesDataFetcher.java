@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,8 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
 
     private static final String LIMIT_ARGUMENT = "limit";
 
+    private static final String CONTEXT = "context";
+
     private final IProjectTemplateApplicationService projectTemplateApplicationService;
 
     public ViewerProjectTemplatesDataFetcher(IProjectTemplateApplicationService projectTemplateApplicationService) {
@@ -59,8 +61,10 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
                 .filter(limitArgument -> limitArgument > 0)
                 .orElse(20);
 
+        String context = environment.getArgument(CONTEXT);
+
         var pageable = PageRequest.of(page, limit);
-        var projectTemplatePage = this.projectTemplateApplicationService.findAll(pageable);
+        var projectTemplatePage = this.projectTemplateApplicationService.findAll(pageable, context);
         return this.toConnection(projectTemplatePage);
     }
 

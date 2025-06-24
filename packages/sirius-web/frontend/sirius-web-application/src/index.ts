@@ -32,6 +32,12 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { useCurrentViewer } from './hooks/useCurrentViewer';
+export type { UseCurrentViewerValue } from './hooks/useCurrentViewer.types';
+export { useViewer } from './hooks/useViewer';
+export type { UseViewerValue } from './hooks/useViewer.types';
+export { ViewerContext } from './hooks/ViewerContext';
+export type { ViewerContextValue } from './hooks/ViewerContext.types';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
 export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectModal';
