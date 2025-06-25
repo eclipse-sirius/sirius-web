@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingCo
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,8 +40,6 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
     private final ICollaborativeMessageService messageService;
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
-
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
@@ -58,11 +55,10 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService, ApplicationEventPublisher applicationEventPublisher,
+    public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService,
             IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
         this.messageService = Objects.requireNonNull(messageService);
         this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
         this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
@@ -78,7 +74,6 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
                 .messageService(this.messageService)
                 .editingContext(editingContext)
                 .editingContextPersistenceService(this.editingContextPersistenceService)
-                .applicationEventPublisher(this.applicationEventPublisher)
                 .editingContextEventHandlers(this.editingContextEventHandlers)
                 .representationEventProcessorComposedFactory(this.representationEventProcessorComposedFactory)
                 .danglingRepresentationDeletionService(this.representationDeletionService)
