@@ -10,23 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+/**
+ * Appearance change to reset a label's style property.
+ *
+ * @author nvannier
+ */
+public record ResetLabelAppearanceChange(String labelId, String propertyName) implements ILabelAppearanceChange {
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
-}
-
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
 }
