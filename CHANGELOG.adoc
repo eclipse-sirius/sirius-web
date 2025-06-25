@@ -114,7 +114,7 @@ In this package, you can now find the following default implementations:
 - https://github.com/eclipse-sirius/sirius-web/issues/5099[#5099] [formdescriptioneditor] Remove state machine from formdescriptioneditor
 - https://github.com/eclipse-sirius/sirius-web/issues/5103[#5103] [sirius-web] Make `ExpandAllTreeItemContextMenuContribution` reusable by downstream applications
 - https://github.com/eclipse-sirius/sirius-web/issues/5089[#5089] [diagram] Add new `ancestors` variable to Nodes
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
 
 
 == v2025.6.0
