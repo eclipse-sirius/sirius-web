@@ -11,14 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
+import { ImpactAnalysisDialog } from './ImpactAnalysisDialog';
+import { GQLImpactAnalysisReport } from './ImpactAnalysisDialog.types';
 import React, { useState } from 'react';
-import { GQLToolVariable } from '../Palette.types';
 import {
   ImpactAnalysisDialogContextValue,
   ImpactAnalysisDialogContextProviderState,
 } from './ImpactAnalysisDialogContext.types';
-import { useInvokeImpactAnalysis } from './useImpactAnalysis';
 
 const defaultValue: ImpactAnalysisDialogContextValue = {
   showImpactAnalysisDialog: () => {},
@@ -29,43 +28,26 @@ export const ImpactAnalysisDialogContext = React.createContext<ImpactAnalysisDia
 export const ImpactAnalysisDialogContextProvider = ({ children }) => {
   const [state, setState] = useState<ImpactAnalysisDialogContextProviderState>({
     open: false,
-    onConfirm: () => {},
-    editingContextId: null,
-    representationId: null,
-    toolId: null,
+    impactAnalysisReport: null,
+    loading: false,
     toolLabel: null,
-    diagramElementId: null,
-    variables: [],
+    onConfirm: () => {},
   });
 
   const showImpactAnalysisDialog = (
-    editingContextId: string,
-    representationId: string,
-    toolId: string,
+    impactAnalysisReport: GQLImpactAnalysisReport | null,
+    loading: boolean,
     toolLabel: string,
-    diagramElementId: string,
-    variables: GQLToolVariable[],
     onConfirm: () => void
   ) => {
     setState({
       open: true,
-      onConfirm,
-      editingContextId,
-      representationId,
-      toolId,
+      impactAnalysisReport,
+      loading,
       toolLabel,
-      diagramElementId,
-      variables,
+      onConfirm,
     });
   };
-
-  const { impactAnalysisReport, loading } = useInvokeImpactAnalysis(
-    state.editingContextId,
-    state.representationId,
-    state.toolId,
-    state.diagramElementId,
-    state.variables
-  );
 
   const handleConfirm = () => {
     state.onConfirm();
@@ -83,8 +65,8 @@ export const ImpactAnalysisDialogContextProvider = ({ children }) => {
         <ImpactAnalysisDialog
           open={state.open}
           label={state.toolLabel ?? ''}
-          impactAnalysisReport={impactAnalysisReport}
-          loading={loading}
+          impactAnalysisReport={state.impactAnalysisReport}
+          loading={state.loading}
           onCancel={handleClose}
           onConfirm={handleConfirm}
         />
