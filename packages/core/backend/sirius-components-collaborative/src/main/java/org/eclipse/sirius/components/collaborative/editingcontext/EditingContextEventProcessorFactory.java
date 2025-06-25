@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EditingContextEventProcessorFactory implements IEditingContextEventProcessorFactory {
-
-    private final ICollaborativeMessageService messageService;
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
@@ -55,9 +52,7 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService,
-            IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
-        this.messageService = Objects.requireNonNull(messageService);
+    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
         this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
@@ -71,7 +66,6 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
     @Override
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
         var parameters = EditingContextEventProcessorParameters.newEditingContextEventProcessorParameters()
-                .messageService(this.messageService)
                 .editingContext(editingContext)
                 .editingContextPersistenceService(this.editingContextPersistenceService)
                 .editingContextEventHandlers(this.editingContextEventHandlers)

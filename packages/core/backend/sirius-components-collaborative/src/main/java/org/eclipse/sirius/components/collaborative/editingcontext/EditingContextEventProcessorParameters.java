@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 
@@ -33,7 +32,6 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
  * @author sbegaudeau
  */
 public record EditingContextEventProcessorParameters(
-        ICollaborativeMessageService messageService,
         IEditingContext editingContext,
         IEditingContextPersistenceService editingContextPersistenceService,
         List<IEditingContextEventHandler> editingContextEventHandlers,
@@ -46,7 +44,6 @@ public record EditingContextEventProcessorParameters(
 ) {
 
     public EditingContextEventProcessorParameters {
-        Objects.requireNonNull(messageService);
         Objects.requireNonNull(editingContext);
         Objects.requireNonNull(editingContextPersistenceService);
         Objects.requireNonNull(editingContextEventHandlers);
@@ -71,8 +68,6 @@ public record EditingContextEventProcessorParameters(
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class EditingContextEventProcessorParametersBuilder {
 
-        private ICollaborativeMessageService messageService;
-
         private IEditingContext editingContext;
 
         private IEditingContextPersistenceService editingContextPersistenceService;
@@ -93,11 +88,6 @@ public record EditingContextEventProcessorParameters(
 
         private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
-        }
-
-        public EditingContextEventProcessorParametersBuilder messageService(ICollaborativeMessageService messageService) {
-            this.messageService = Objects.requireNonNull(messageService);
-            return this;
         }
 
         public EditingContextEventProcessorParametersBuilder editingContext(IEditingContext editingContext) {
@@ -147,7 +137,6 @@ public record EditingContextEventProcessorParameters(
 
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
-                    this.messageService,
                     this.editingContext,
                     this.editingContextPersistenceService,
                     this.editingContextEventHandlers,
