@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingCo
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.springframework.context.ApplicationEventPublisher;
 
 /**
  * Parameters of the editing context event processor.
@@ -37,7 +36,6 @@ public record EditingContextEventProcessorParameters(
         ICollaborativeMessageService messageService,
         IEditingContext editingContext,
         IEditingContextPersistenceService editingContextPersistenceService,
-        ApplicationEventPublisher applicationEventPublisher,
         List<IEditingContextEventHandler> editingContextEventHandlers,
         IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
         IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
@@ -51,7 +49,6 @@ public record EditingContextEventProcessorParameters(
         Objects.requireNonNull(messageService);
         Objects.requireNonNull(editingContext);
         Objects.requireNonNull(editingContextPersistenceService);
-        Objects.requireNonNull(applicationEventPublisher);
         Objects.requireNonNull(editingContextEventHandlers);
         Objects.requireNonNull(representationEventProcessorComposedFactory);
         Objects.requireNonNull(danglingRepresentationDeletionService);
@@ -79,8 +76,6 @@ public record EditingContextEventProcessorParameters(
         private IEditingContext editingContext;
 
         private IEditingContextPersistenceService editingContextPersistenceService;
-
-        private ApplicationEventPublisher applicationEventPublisher;
 
         private List<IEditingContextEventHandler> editingContextEventHandlers;
 
@@ -112,11 +107,6 @@ public record EditingContextEventProcessorParameters(
 
         public EditingContextEventProcessorParametersBuilder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
             this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-            return this;
-        }
-
-        public EditingContextEventProcessorParametersBuilder applicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-            this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
             return this;
         }
 
@@ -160,7 +150,6 @@ public record EditingContextEventProcessorParameters(
                     this.messageService,
                     this.editingContext,
                     this.editingContextPersistenceService,
-                    this.applicationEventPublisher,
                     this.editingContextEventHandlers,
                     this.representationEventProcessorComposedFactory,
                     this.danglingRepresentationDeletionService,
