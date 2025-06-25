@@ -40,7 +40,7 @@ describe('Diagram - node moving', () => {
       diagram.fitToScreen();
       let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
 
-      cy.get('.react-flow__node:first').then(($el) => {
+      diagram.getNodes('Topography', 'DataSource1').then(($el) => {
         const rect = $el[0]?.getBoundingClientRect();
         initialLeft = rect?.left ?? 0;
         initialTop = rect?.top ?? 0;
@@ -48,10 +48,10 @@ describe('Diagram - node moving', () => {
         initialHeight = rect?.height ?? 0;
       });
 
-      diagram.moveNode('.react-flow__node:first', { x: 50, y: 0 });
+      diagram.moveNode('Topography', 'DataSource1', { x: 50, y: 0 });
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(400);
-      cy.get('.react-flow__node:first').then(($el) => {
+      diagram.getNodes('Topography', 'DataSource1').then(($el) => {
         const rect = $el[0]?.getBoundingClientRect();
         expect(rect?.left).to.approximately(initialLeft + 50, 2);
         expect(rect?.top).to.approximately(initialTop, 2);
