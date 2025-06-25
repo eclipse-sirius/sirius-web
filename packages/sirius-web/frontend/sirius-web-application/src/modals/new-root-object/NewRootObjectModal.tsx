@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
@@ -24,34 +24,20 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import {
   GQLCreateRootObjectMutationData,
+  GQLCreateRootObjectPayload,
+  GQLCreateRootObjectSuccessPayload,
+  GQLErrorPayload,
   GQLGetRootDomainsQueryData,
   GQLGetRootDomainsQueryVariables,
   GQLGetRootObjectCreationDescriptionsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryVariables,
   NewRootObjectModalProps,
+  NewRootObjectModalState,
 } from './NewRootObjectModal.types';
-import {
-  ChangeDomainEvent,
-  ChangeRootObjectCreationDescriptionEvent,
-  ChangeSuggestedEvent,
-  CreateRootObjectEvent,
-  FetchedDomainsEvent,
-  FetchedRootObjectCreationDescriptionsEvent,
-  HandleResponseEvent,
-  HideToastEvent,
-  NewRootObjectModalContext,
-  NewRootObjectModalEvent,
-  NewRootObjectModalStateSchema,
-  SchemaValue,
-  ShowToastEvent,
-  newRootObjectModalMachine,
-} from './NewRootObjectModalMachine';
 
 const createRootObjectMutation = gql`
   mutation createRootObject($input: CreateRootObjectInput!) {
@@ -96,6 +82,12 @@ const getRootObjectCreationDescriptionsQuery = gql`
   }
 `;
 
+const isCreateRootObjectSuccessPayload = (
+  payload: GQLCreateRootObjectPayload
+): payload is GQLCreateRootObjectSuccessPayload => {
+  return payload.__typename === 'CreateRootObjectSuccessPayload';
+};
+
 const useNewRootObjectModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
@@ -115,22 +107,55 @@ const useNewRootObjectModalStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isErrorPayload = (payload: GQLCreateRootObjectPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const { classes } = useNewRootObjectModalStyles();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<NewRootObjectModalContext, NewRootObjectModalStateSchema, NewRootObjectModalEvent>>(
-      newRootObjectModalMachine
-    );
-  const { newRootObjectModal, toast } = value as SchemaValue;
-  const {
-    domains,
-    selectedDomainId,
-    rootObjectCreationDescriptions,
-    selectedRootObjectCreationDescriptionId,
-    suggestedRootObject,
-    objectToSelect,
-    message,
-  } = context;
+  const { addErrorMessage, addMessages } = useMultiToast();
+  const [state, setState] = useState<NewRootObjectModalState>({
+    domains: [],
+    selectedDomainId: '',
+    rootObjectCreationDescriptions: [],
+    selectedRootObjectCreationDescriptionId: '',
+    isSuggestedRootObjectChecked: true,
+  });
+
+  // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
+  const [
+    getRootObjectCreationDescriptions,
+    { loading: descriptionsLoading, data: descriptionsData, error: descriptionError },
+  ] = useLazyQuery<GQLGetRootObjectCreationDescriptionsQueryData, GQLGetRootObjectCreationDescriptionsQueryVariables>(
+    getRootObjectCreationDescriptionsQuery
+  );
+
+  useEffect(() => {
+    getRootObjectCreationDescriptions({
+      variables: {
+        editingContextId,
+        domainId: state.selectedDomainId,
+        suggested: state.isSuggestedRootObjectChecked,
+      },
+    });
+  }, [state.selectedDomainId, state.isSuggestedRootObjectChecked]);
+
+  useEffect(() => {
+    if (!descriptionsLoading) {
+      if (descriptionError) {
+        addErrorMessage(descriptionError.message);
+      }
+      if (descriptionsData) {
+        const { rootObjectCreationDescriptions } = descriptionsData.viewer.editingContext;
+        const selectedRootObjectCreationDescriptionId =
+          rootObjectCreationDescriptions.length > 0 ? rootObjectCreationDescriptions[0].id : '';
+        setState((prevState) => ({
+          ...prevState,
+          rootObjectCreationDescriptions: rootObjectCreationDescriptions,
+          selectedRootObjectCreationDescriptionId: selectedRootObjectCreationDescriptionId,
+        }));
+      }
+    }
+  }, [descriptionsLoading, descriptionsData, descriptionError]);
 
   // Fetch the available domains only once, they are supposed static (at least for the lifetime of the modal)
   const {
@@ -140,58 +165,22 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
   } = useQuery<GQLGetRootDomainsQueryData, GQLGetRootDomainsQueryVariables>(getRootDomainsQuery, {
     variables: { editingContextId },
   });
+
   useEffect(() => {
     if (!domainsLoading) {
       if (domainsError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(domainsError.message);
       }
       if (domainsData) {
-        const fetchDomainsEvent: FetchedDomainsEvent = {
-          type: 'HANDLE_FETCHED_DOMAINS',
-          data: domainsData,
-        };
-        dispatch(fetchDomainsEvent);
+        const domains = domainsData.viewer.editingContext.domains;
+        setState((prevState) => ({
+          ...prevState,
+          domains: domains,
+          selectedDomainId: domains[0] ? domains[0].id : '',
+        }));
       }
     }
   }, [domainsLoading, domainsData, domainsError]);
-
-  // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
-  const [
-    getRootObjectCreationDescriptions,
-    { loading: descriptionsLoading, data: descriptionsData, error: descriptionError },
-  ] = useLazyQuery<GQLGetRootObjectCreationDescriptionsQueryData, GQLGetRootObjectCreationDescriptionsQueryVariables>(
-    getRootObjectCreationDescriptionsQuery
-  );
-  useEffect(() => {
-    if (!descriptionsLoading) {
-      if (descriptionError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
-      }
-      if (descriptionsData) {
-        const fetchDescriptionsEvent: FetchedRootObjectCreationDescriptionsEvent = {
-          type: 'HANDLE_FETCHED_ROOT_OBJECT_CREATION_DESCRIPTIONS',
-          data: descriptionsData,
-        };
-        dispatch(fetchDescriptionsEvent);
-      }
-    }
-  }, [descriptionsLoading, descriptionsData, descriptionError]);
-
-  useEffect(() => {
-    if (newRootObjectModal === 'loadingRootObjectCreationDescriptions' && selectedDomainId) {
-      getRootObjectCreationDescriptions({
-        variables: { editingContextId, domainId: selectedDomainId, suggested: suggestedRootObject },
-      });
-    }
-  }, [newRootObjectModal, getRootObjectCreationDescriptions, editingContextId, selectedDomainId, suggestedRootObject]);
 
   // Create the new child
   const [
@@ -201,57 +190,55 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
   useEffect(() => {
     if (!createRootObjectLoading) {
       if (createRootObjectError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(createRootObjectError.message);
       }
       if (createRootObjectData) {
-        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createRootObjectData };
-        dispatch(handleResponseEvent);
+        const { createRootObject } = createRootObjectData;
+        if (isErrorPayload(createRootObject)) {
+          const { message } = createRootObject;
+          addMessages(message);
+        } else if (isCreateRootObjectSuccessPayload(createRootObject)) {
+          const { object } = createRootObject;
+          onObjectCreated({ entries: [object] });
+        }
       }
     }
   }, [createRootObjectLoading, createRootObjectError, createRootObjectData]);
 
   const onCreateRootObject = () => {
-    dispatch({ type: 'CREATE_ROOT_OBJECT' } as CreateRootObjectEvent);
     const input = {
       id: crypto.randomUUID(),
       editingContextId,
       documentId: item.id,
-      domainId: selectedDomainId,
-      rootObjectCreationDescriptionId: selectedRootObjectCreationDescriptionId,
+      domainId: state.selectedDomainId,
+      rootObjectCreationDescriptionId: state.selectedRootObjectCreationDescriptionId,
     };
     createRootObject({ variables: { input } });
   };
 
   const onDomainChange = (event) => {
     const { value } = event.target;
-    const changeDomainEvent: ChangeDomainEvent = { type: 'CHANGE_DOMAIN', domainId: value };
-    dispatch(changeDomainEvent);
+    setState((prevState) => ({
+      ...prevState,
+      selectedDomainId: value,
+    }));
   };
 
   const onRootObjectCreationDescriptionChange = (event) => {
     const { value } = event.target;
-    const changeRootObjectCreationDescriptionEvent: ChangeRootObjectCreationDescriptionEvent = {
-      type: 'CHANGE_ROOT_OBJECT_CREATION_DESCRIPTION',
-      rootObjectCreationDescriptionId: value,
-    };
-    dispatch(changeRootObjectCreationDescriptionEvent);
+    setState((prevState) => ({
+      ...prevState,
+      selectedRootObjectCreationDescriptionId: value,
+    }));
   };
 
   const onSuggestedRootObjectChange = (event) => {
     const { checked } = event.target;
-    const changeSuggestedRootObject: ChangeSuggestedEvent = { type: 'CHANGE_SUGGESTED', suggestedRootObject: checked };
-    dispatch(changeSuggestedRootObject);
+    setState((prevState) => ({
+      ...prevState,
+      isSuggestedRootObjectChecked: checked,
+    }));
   };
-
-  useEffect(() => {
-    if (newRootObjectModal === 'success') {
-      onObjectCreated({ entries: [objectToSelect] });
-    }
-  }, [newRootObjectModal, objectToSelect]);
 
   return (
     <>
@@ -262,13 +249,13 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             <InputLabel id="domainsLabel">Domain</InputLabel>
             <Select
               variant="standard"
-              value={selectedDomainId}
+              value={state.selectedDomainId}
               onChange={onDomainChange}
-              disabled={newRootObjectModal !== 'valid'}
+              disabled={!state.selectedDomainId}
               labelId="domainsLabel"
               fullWidth
               data-testid="domain">
-              {domains.map((domain) => (
+              {state.domains.map((domain) => (
                 <MenuItem value={domain.id} key={domain.id}>
                   {domain.label}
                 </MenuItem>
@@ -278,13 +265,13 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             <Select
               variant="standard"
               classes={{ select: classes.select }}
-              value={selectedRootObjectCreationDescriptionId}
+              value={state.selectedRootObjectCreationDescriptionId}
               onChange={onRootObjectCreationDescriptionChange}
-              disabled={newRootObjectModal !== 'valid'}
+              disabled={!state.selectedRootObjectCreationDescriptionId}
               labelId="rootObjectCreationDescriptionsLabel"
               fullWidth
               data-testid="type">
-              {rootObjectCreationDescriptions.map((rootObjectCreationDescription) => (
+              {state.rootObjectCreationDescriptions.map((rootObjectCreationDescription) => (
                 <MenuItem value={rootObjectCreationDescription.id} key={rootObjectCreationDescription.id}>
                   {rootObjectCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
@@ -301,7 +288,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={suggestedRootObject}
+                  checked={state.isSuggestedRootObjectChecked}
                   onChange={onSuggestedRootObjectChange}
                   name="suggested"
                   color="primary"
@@ -315,7 +302,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
         <DialogActions>
           <Button
             variant="contained"
-            disabled={newRootObjectModal !== 'valid'}
+            disabled={!state.selectedRootObjectCreationDescriptionId && !state.selectedDomainId}
             data-testid="create-object"
             color="primary"
             onClick={onCreateRootObject}>
@@ -323,11 +310,6 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };
