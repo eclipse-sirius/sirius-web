@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useImpactAnalysisDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
@@ -27,6 +27,8 @@ import {
   GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
 } from './TreeItemContextMenu.types';
 import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
+import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
+import { GQLInvokeImpactAnalysisVariables } from './impact-analysis/useTreeImpactAnalysis.types';
 
 const invokeSingleClickTreeItemContextMenuEntryMutation = gql`
   mutation invokeSingleClickTreeItemContextMenuEntry($input: InvokeSingleClickTreeItemContextMenuEntryInput!) {
@@ -138,9 +140,35 @@ export const DefaultMenuItem = ({ editingContextId, treeId, item, entry, readOnl
     }
   };
 
+  const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
+
+  const {
+    getImpactAnalysisReport,
+    loading: impactAnalysisReportLoading,
+    impactAnalysisReport,
+  } = useInvokeImpactAnalysis();
+
+  useEffect(() => {
+    if (impactAnalysisReport || impactAnalysisReportLoading) {
+      showImpactAnalysisDialog(impactAnalysisReport, impactAnalysisReportLoading, entry.label, () =>
+        invokeContextMenuEntry(entry)
+      );
+    }
+  }, [impactAnalysisReportLoading, impactAnalysisReport]);
+
+  const invokeGetTreeAnalysisReport = () => {
+    const getImpactAnalysisVariables: GQLInvokeImpactAnalysisVariables = {
+      editingContextId,
+      representationId: treeId,
+      treeItemId: item.id,
+      menuEntryId: entry.id,
+    };
+    getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+  };
+
   return (
     <MenuItem
-      onClick={() => invokeContextMenuEntry(entry)}
+      onClick={() => (entry.withImpactAnalysis ? invokeGetTreeAnalysisReport() : invokeContextMenuEntry(entry))}
       data-testid={`context-menu-entry-${entry.label}`}
       disabled={readOnly}
       aria-disabled>

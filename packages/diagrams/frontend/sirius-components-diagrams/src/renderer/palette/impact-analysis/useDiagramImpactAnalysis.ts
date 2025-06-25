@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMultiToast, GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
+import { GQLImpactAnalysisReport, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  GQLInvokeImpactAnalysisToolVariables,
   GQLGetImpactAnalysisReportData,
+  GQLInvokeImpactAnalysisToolVariables,
   UseInvokeImpactAnalysisValue,
-} from './useImpactAnalysis.types';
-import { GQLToolVariable } from '../Palette.types';
+} from './useDiagramImpactAnalysis.types';
 
 const getImpactAnalysisReportQuery = gql`
   query getImpactAnalysisReport(
@@ -47,31 +46,11 @@ const getImpactAnalysisReportQuery = gql`
   }
 `;
 
-export const useInvokeImpactAnalysis = (
-  editingContextId: string | null,
-  representationId: string | null,
-  toolId: string | null,
-  diagramElementId: string | null,
-  variables: GQLToolVariable[] | null
-): UseInvokeImpactAnalysisValue => {
-  const { loading, data, error } = useQuery<GQLGetImpactAnalysisReportData, GQLInvokeImpactAnalysisToolVariables>(
-    getImpactAnalysisReportQuery,
-    {
-      skip:
-        editingContextId === null ||
-        representationId === null ||
-        toolId === null ||
-        diagramElementId === null ||
-        variables === null,
-      variables: {
-        editingContextId,
-        representationId,
-        toolId,
-        diagramElementId,
-        variables,
-      },
-    }
-  );
+export const useInvokeImpactAnalysis = (): UseInvokeImpactAnalysisValue => {
+  const [getImpactAnalysisReport, { loading, data, error }] = useLazyQuery<
+    GQLGetImpactAnalysisReportData,
+    GQLInvokeImpactAnalysisToolVariables
+  >(getImpactAnalysisReportQuery);
 
   const { addErrorMessage } = useMultiToast();
 
@@ -85,5 +64,5 @@ export const useInvokeImpactAnalysis = (
   const impactAnalysisReport: GQLImpactAnalysisReport | null =
     data?.viewer.editingContext.representation.description.diagramImpactAnalysisReport ?? null;
 
-  return { impactAnalysisReport, loading };
+  return { getImpactAnalysisReport, impactAnalysisReport, loading };
 };

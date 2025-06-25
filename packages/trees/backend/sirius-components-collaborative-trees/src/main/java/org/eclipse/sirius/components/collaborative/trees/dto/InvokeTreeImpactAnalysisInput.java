@@ -10,16 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLToolVariable } from '../Palette.types';
+package org.eclipse.sirius.components.collaborative.trees.dto;
 
-export interface UseImpactAnalysisDialogValue {
-  showImpactAnalysisDialog: (
-    editingContextId: string,
-    representationId: string,
-    toolId: string,
-    toolLabel: string,
-    diagramElementId: string,
-    variables: GQLToolVariable[],
-    onConfirm: () => void
-  ) => void;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
+
+/**
+ * The input for the tree "impact analysis" query.
+ *
+ * @author gdaniel
+ */
+public record InvokeTreeImpactAnalysisInput(
+        UUID id,
+        String editingContextId,
+        String representationId,
+        String treeItemId,
+        String menuEntryId) implements ITreeInput {
+
 }

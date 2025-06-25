@@ -39,7 +39,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
     @Override
     public List<ITreeItemContextMenuEntry> getTreeItemContextMenuEntries(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         if (treeItem.isHasChildren()) {
-            return List.of(new SingleClickTreeItemContextMenuEntry("expandAll", "", List.of()));
+            return List.of(new SingleClickTreeItemContextMenuEntry("expandAll", "", List.of(), false));
         } else {
             return List.of();
         }

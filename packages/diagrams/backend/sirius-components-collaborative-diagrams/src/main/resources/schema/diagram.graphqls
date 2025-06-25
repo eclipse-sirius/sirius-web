@@ -364,7 +364,7 @@ type DiagramDescription implements RepresentationDescription {
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
-  diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): DiagramImpactAnalysisReport!
+  diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
 }
 
@@ -693,10 +693,3 @@ input SizeInput {
 }
 
 union LayoutDiagramPayload = ErrorPayload | SuccessPayload
-
-type DiagramImpactAnalysisReport {
-  nbElementDeleted: Int!
-  nbElementModified: Int!
-  nbElementCreated: Int!
-  additionalReports: [String!]!
-}

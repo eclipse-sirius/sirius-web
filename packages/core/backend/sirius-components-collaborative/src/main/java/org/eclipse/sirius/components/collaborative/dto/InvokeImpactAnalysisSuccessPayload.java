@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.collaborative.dto;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +24,9 @@ import org.eclipse.sirius.components.representations.Message;
  *
  * @author frouene
  */
-public record InvokeDiagramImpactAnalysisToolSuccessPayload(UUID id, DiagramImpactAnalysisReport impactAnalysisReport, List<Message> messages) implements IPayload {
+public record InvokeImpactAnalysisSuccessPayload(UUID id, ImpactAnalysisReport impactAnalysisReport, List<Message> messages) implements IPayload {
 
-    public InvokeDiagramImpactAnalysisToolSuccessPayload {
+    public InvokeImpactAnalysisSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(impactAnalysisReport);
         Objects.requireNonNull(messages);

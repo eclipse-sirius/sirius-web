@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
 
-import java.util.List;
-
-/**
- * Report with data to display an impact analysis on diagram.
- *
- * @author frouene
- */
-public record DiagramImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports) {
-
+export interface UseImpactAnalysisDialogValue {
+  showImpactAnalysisDialog: (
+    impactAnalysisReport: GQLImpactAnalysisReport | null,
+    loading: boolean,
+    toolLabel: string,
+    onConfirm: () => void
+  ) => void;
 }
