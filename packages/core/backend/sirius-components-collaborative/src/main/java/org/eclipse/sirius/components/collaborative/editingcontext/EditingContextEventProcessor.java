@@ -42,8 +42,6 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -84,8 +82,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
-    private final ICollaborativeMessageService messageService;
-
     private final IEditingContext editingContext;
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
@@ -115,7 +111,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private final MeterRegistry meterRegistry;
 
     public EditingContextEventProcessor(EditingContextEventProcessorParameters parameters) {
-        this.messageService = parameters.messageService();
         this.editingContext = parameters.editingContext();
         this.editingContextPersistenceService = parameters.editingContextPersistenceService();
         this.editingContextEventHandlers = parameters.editingContextEventHandlers();
@@ -254,11 +249,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         handleTimer.stop(this.meterRegistry.timer(Monitoring.TIMER_PROCESSING_INPUT, "input", input.getClass().getSimpleName(),
                 "inputId", input.id().toString()));
 
-        var timeoutFallback = Mono.just(new ErrorPayload(input.id(), this.messageService.timeout()))
-                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
         return payloadSink.asMono()
                 .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
-                .timeout(Duration.ofSeconds(5), timeoutFallback)
                 .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
     }
 
