@@ -10,11 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
+package org.eclipse.sirius.components.trees.graphql.datafetchers.tree;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,10 +19,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.dto.ImpactAnalysisReport;
 import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSuccessPayload;
+import org.eclipse.sirius.components.collaborative.trees.dto.InvokeTreeImpactAnalysisInput;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
@@ -34,24 +30,20 @@ import graphql.schema.DataFetchingEnvironment;
 import reactor.core.publisher.Mono;
 
 /**
- * Used to retrieve the impact analysis on a tool execution.
+ * Used to retrieve the impact analysis on a contextual menu entry execution.
  *
- * @author frouene
+ * @author gdaniel
  */
-@QueryDataFetcher(type = "DiagramDescription", field = "diagramImpactAnalysisReport")
-public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ImpactAnalysisReport>> {
+@QueryDataFetcher(type = "TreeDescription", field = "treeImpactAnalysisReport")
+public class TreeImpactAnalysisReportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ImpactAnalysisReport>> {
 
-    private static final String TOOL_ID = "toolId";
-    private static final String DIAGRAM_ELEMENT_ID = "diagramElementId";
+    private static final String TREE_ITEM_ID = "treeItemId";
 
-    private static final String VARIABLES = "variables";
-
-    private final ObjectMapper objectMapper;
+    private static final String MENU_ENTRY_ID = "menuEntryId";
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public DiagramImpactAnalysisReportDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
-        this.objectMapper = Objects.requireNonNull(objectMapper);
+    public TreeImpactAnalysisReportDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
@@ -62,28 +54,18 @@ public class DiagramImpactAnalysisReportDataFetcher implements IDataFetcherWithF
 
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
-        String toolId = environment.getArgument(TOOL_ID);
-        String diagramElementId = environment.getArgument(DIAGRAM_ELEMENT_ID);
-        var variables = Optional.ofNullable(environment.getArgument(VARIABLES))
-                .filter(List.class::isInstance)
-                .map(List.class::cast)
-                .map(this::convertToToolVariables)
-                .orElseGet(List::of);
+        String treeItemId = environment.getArgument(TREE_ITEM_ID);
+        String menuEntryId = environment.getArgument(MENU_ENTRY_ID);
+
         if (editingContextId != null && representationId != null) {
-            InvokeDiagramImpactAnalysisToolInput input = new InvokeDiagramImpactAnalysisToolInput(UUID.randomUUID(), editingContextId, representationId, toolId, diagramElementId, variables);
+            InvokeTreeImpactAnalysisInput input = new InvokeTreeImpactAnalysisInput(UUID.randomUUID(), editingContextId, representationId, treeItemId, menuEntryId);
             result = this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                     .filter(InvokeImpactAnalysisSuccessPayload.class::isInstance)
                     .map(InvokeImpactAnalysisSuccessPayload.class::cast)
                     .map(InvokeImpactAnalysisSuccessPayload::impactAnalysisReport)
                     .toFuture();
         }
+
         return result;
     }
-
-    private List<ToolVariable> convertToToolVariables(List<?> arguments) {
-        return arguments.stream()
-                .map(argument -> this.objectMapper.convertValue(argument, ToolVariable.class))
-                .toList();
-    }
-
 }

@@ -99,6 +99,7 @@ type TreeDescription implements RepresentationDescription {
   filters: [TreeFilter!]!
   contextMenu(treeItemId: ID!): [TreeItemContextMenuEntry!]!
   fetchTreeItemContextMenuEntryData(treeItemId: ID!, menuEntryId: ID!): FetchTreeItemContextMenuEntryData!
+  treeImpactAnalysisReport(treeItemId: ID!, menuEntryId: ID!): ImpactAnalysisReport!
 }
 
 type TreeFilter {
@@ -154,6 +155,7 @@ type SingleClickTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
   id: ID!
   label: String!
   iconURL: [String!]!
+  withImpactAnalysis: Boolean!
 }
 
 type FetchTreeItemContextMenuEntry implements TreeItemContextMenuEntry {

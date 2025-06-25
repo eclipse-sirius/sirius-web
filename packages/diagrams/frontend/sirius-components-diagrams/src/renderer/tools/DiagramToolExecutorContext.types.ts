@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.dto;
+import { GQLTool } from '../palette/Palette.types';
 
-import java.util.List;
+export interface DiagramToolExecutorContextValue {
+  executeTool: (
+    x: number,
+    y: number,
+    diagramElementId: string,
+    targetObjectId: string,
+    onDirectEditClick: () => void,
+    tool: GQLTool
+  ) => void;
+}
 
-/**
- * Used to represent a single click entry inside a context menu of a tree item.
- *
- * @author Jerome Gout
- */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis) implements ITreeItemContextMenuEntry { }
-
+export interface DiagramToolExecutorContextProviderProps {
+  children?: React.ReactNode;
+}

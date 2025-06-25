@@ -20,10 +20,10 @@ import {
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
-import { ImpactAnalysisDialogContextProvider } from '../renderer/palette/impact-analysis/ImpactAnalysisDialogContext';
 import { DiagramSubscriptionProviderProps, DiagramSubscriptionState } from './DiagramSubscriptionProvider.types';
 import { StoreContextProvider } from './StoreContext';
 import { useDiagramSubscription } from './useDiagramSubscription';
+import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 
 const isDiagramRefreshedEventPayload = (
   payload: GQLDiagramEventPayload | null
@@ -60,7 +60,7 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
   return (
     <StoreContextProvider>
       <DialogContextProvider>
-        <ImpactAnalysisDialogContextProvider>
+        <DiagramToolExecutorContextProvider>
           <div
             style={{ display: 'inline-block', position: 'relative' }}
             data-representation-kind="diagram"
@@ -70,7 +70,7 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
               diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
             />
           </div>
-        </ImpactAnalysisDialogContextProvider>
+        </DiagramToolExecutorContextProvider>
       </DialogContextProvider>
     </StoreContextProvider>
   );

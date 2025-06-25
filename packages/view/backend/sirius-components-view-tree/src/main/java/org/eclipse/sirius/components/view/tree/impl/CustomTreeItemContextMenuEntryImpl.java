@@ -27,6 +27,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl#getContributionId
  * <em>Contribution Id</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl#isWithImpactAnalysis
+ * <em>With Impact Analysis</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,6 +53,26 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
      * @ordered
      */
     protected String contributionId = CONTRIBUTION_ID_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isWithImpactAnalysis()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean WITH_IMPACT_ANALYSIS_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isWithImpactAnalysis()
+     * @generated
+     * @ordered
+     */
+    protected boolean withImpactAnalysis = WITH_IMPACT_ANALYSIS_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -100,10 +122,35 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
      * @generated
      */
     @Override
+    public boolean isWithImpactAnalysis() {
+        return this.withImpactAnalysis;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setWithImpactAnalysis(boolean newWithImpactAnalysis) {
+        boolean oldWithImpactAnalysis = this.withImpactAnalysis;
+        this.withImpactAnalysis = newWithImpactAnalysis;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS, oldWithImpactAnalysis, this.withImpactAnalysis));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 return this.getContributionId();
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                return this.isWithImpactAnalysis();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,6 +165,9 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 this.setContributionId((String) newValue);
+                return;
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                this.setWithImpactAnalysis((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -134,6 +184,9 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 this.setContributionId(CONTRIBUTION_ID_EDEFAULT);
                 return;
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                this.setWithImpactAnalysis(WITH_IMPACT_ANALYSIS_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -148,6 +201,8 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 return CONTRIBUTION_ID_EDEFAULT == null ? this.contributionId != null : !CONTRIBUTION_ID_EDEFAULT.equals(this.contributionId);
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+                return this.withImpactAnalysis != WITH_IMPACT_ANALYSIS_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -165,6 +220,8 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (contributionId: ");
         result.append(this.contributionId);
+        result.append(", withImpactAnalysis: ");
+        result.append(this.withImpactAnalysis);
         result.append(')');
         return result.toString();
     }
