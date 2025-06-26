@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -190,16 +190,15 @@ export const useDropNode = (): UseDropNodeValue => {
 
       setNodes((nds) =>
         nds.map((n) => {
-          if (compatibleNodes.includes(n.id)) {
-            return {
-              ...n,
-              data: {
-                ...n.data,
-                isDropNodeCandidate: true,
-              },
-            };
-          }
-          return n;
+          return {
+            ...n,
+            data: {
+              ...n.data,
+              isDropNodeCandidate: compatibleNodes.includes(n.id),
+              isDraggedNode: computedNode.id === n.id,
+              isDropNodeTarget: computedNode.parentId === n.id,
+            },
+          };
         })
       );
     },
@@ -213,7 +212,7 @@ export const useDropNode = (): UseDropNodeValue => {
         return;
       }
 
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
 
       if (draggedNode && !draggedNode.data.isBorderNode) {
         const rectNode: Rect = {
@@ -263,7 +262,7 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
     (event) => {
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode);
       const dropPosition = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,

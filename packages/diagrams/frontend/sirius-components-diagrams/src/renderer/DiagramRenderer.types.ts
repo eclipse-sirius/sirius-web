@@ -55,6 +55,7 @@ export interface NodeData extends Record<string, unknown> {
   isListChild: boolean;
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
+  isDraggedNode: boolean;
   isHovered: boolean;
   nodeAppearanceData: NodeAppearanceData;
 }

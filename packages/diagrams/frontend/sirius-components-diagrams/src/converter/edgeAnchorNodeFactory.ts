@@ -61,6 +61,7 @@ export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: 
       isListChild: false,
       isDropNodeTarget: false,
       isDropNodeCandidate: false,
+      isDraggedNode: false,
       isHovered: false,
     },
   };
