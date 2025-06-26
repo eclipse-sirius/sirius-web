@@ -23,6 +23,8 @@ You can now consider that it is deprecated and will be removed soon.
 - https://github.com/eclipse-sirius/sirius-web/issues/5114[#5114] [sirius-web] The properties `targetObjectKind` and `targetObjectLabel` will soon be removed from the various representations were they have been used.
 Those are some remnants of some previous technical debt from the management of the selection on the frontend.
 We have improved the management of the selection to remove this issue so now we can clean those remaining parts.
+- https://github.com/eclipse-sirius/sirius-web/issues/5141[#5141] [core] `getRepresentationEventProcessors` from `IEditingContextEventProcessor` will be removed.
+Add IRepresentationEventProcessorRegistry, it can be use to retrieve any `RepresentationEventProcessor`
 
 
 === Breaking changes
@@ -146,6 +148,7 @@ The route entry of the setting page has been updated to "/projects/:projectId/se
 In `ProjectSettingsView`, we will now rely on the `tabId` from the URL to identify the setting tab that should be opened, and update the URL whenever the selected tab changes.
 The page will now redirect to a 404 if the `tabId` in the URL is not a known tab.
 - https://github.com/eclipse-sirius/sirius-web/issues/5161[#5161] [core] Keep the same order for the payloads of the subscriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/5141[#5141] [core] Lower coupling in the EditingContextEventProcessor thanks to a dedicated service to manage representations
 
 
 
@@ -1283,7 +1286,7 @@ More existing APIs will be migrated to this new common pattern.
  * `public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)`;
  * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
  - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
- - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
+ - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retrieved by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
  - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
  - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Remove the existing mechanisms used to contribute instances of `FormConverter` and `TreeConverter`
  - https://github.com/eclipse-sirius/sirius-web/issues/3859[#3859] [view] View builders has been grouped in dedicated packages

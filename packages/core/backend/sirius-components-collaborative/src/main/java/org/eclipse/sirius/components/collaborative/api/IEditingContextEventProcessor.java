@@ -64,6 +64,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
             return Optional.empty();
         }
 
+        @Deprecated(forRemoval = true)
         @Override
         public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
             return List.of();
