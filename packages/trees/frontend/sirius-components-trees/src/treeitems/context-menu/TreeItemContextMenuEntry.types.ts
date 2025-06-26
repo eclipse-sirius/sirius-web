@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLTreeItem } from '../../views/TreeView.types';
+import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
 export interface TreeItemContextMenuComponentProps {
   editingContextId: string;
   treeId: string;
   item: GQLTreeItem;
+  entry: GQLTreeItemContextMenuEntry | null;
   readOnly: boolean;
   expandItem: () => void;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;

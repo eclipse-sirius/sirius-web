@@ -35,4 +35,8 @@ export class ImpactAnalysis {
   public getNbElementModified(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('impact-analysis-report-nbElementModified').should('exist');
   }
+
+  public getAdditionalReportData(index: number): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId(`additionalReportData_${index}`);
+  }
 }

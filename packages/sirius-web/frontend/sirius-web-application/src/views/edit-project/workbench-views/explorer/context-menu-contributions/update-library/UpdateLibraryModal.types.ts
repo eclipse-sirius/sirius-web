@@ -17,6 +17,7 @@ export interface UpdateLibraryModalProps {
   namespace: string;
   name: string;
   version: string;
+  withImpactAnalysis: boolean;
   onClose: () => void;
 }
 
