@@ -12,21 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.HelpTextQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -44,7 +42,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -120,18 +117,14 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var textfield = groupNavigator.findWidget("Name", Textfield.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var textfield = groupNavigator.findWidget("Name", Textfield.class);
 
-                    textfieldId.set(textfield.getId());
-                }, () -> fail("Missing form"));
+            textfieldId.set(textfield.getId());
+        });
 
         Runnable requestHelpText = () -> {
             Map<String, Object> variables = Map.of(

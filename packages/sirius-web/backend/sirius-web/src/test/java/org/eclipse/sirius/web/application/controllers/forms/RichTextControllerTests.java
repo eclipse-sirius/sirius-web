@@ -12,20 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRichTextInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.tests.graphql.EditRichTextMutationRunner;
@@ -42,7 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -90,20 +87,16 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     public void givenRichTextWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToRichTextForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var richText = groupNavigator.findWidget("Name", RichText.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var richText = groupNavigator.findWidget("Name", RichText.class);
 
-                    assertThat(richText)
-                            .hasLabel("Name")
-                            .hasValue("Improve some features of the diagram")
-                            .hasHelp("The name of the object")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(richText)
+                    .hasLabel("Name")
+                    .hasValue("Improve some features of the diagram")
+                    .hasHelp("The name of the object")
+                    .isNotReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -120,18 +113,14 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var richTextId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var richText = groupNavigator.findWidget("Name", RichText.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var richText = groupNavigator.findWidget("Name", RichText.class);
 
-                    richTextId.set(richText.getId());
-                }, () -> fail("Missing form"));
+            richTextId.set(richText.getId());
+        });
 
         Runnable editRichText = () -> {
             var input = new EditRichTextInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), richTextId.get(), "None");
@@ -141,18 +130,14 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var richText = groupNavigator.findWidget("Name", RichText.class);
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var richText = groupNavigator.findWidget("Name", RichText.class);
 
-                    assertThat(richText)
-                            .hasValue("None")
-                            .isReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(richText)
+                    .hasValue("None")
+                    .isReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

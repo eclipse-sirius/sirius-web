@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -33,7 +33,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -42,7 +41,6 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -61,8 +59,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -126,7 +122,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
@@ -165,7 +161,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
             objectId.set(successPayload.result().toString());
         };
 
-        Consumer<Object> updatedTreeContentConsumer = object -> this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> updatedTreeContentConsumer = object -> assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
@@ -198,7 +194,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerExpendedReprsentationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
-        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
@@ -210,16 +206,5 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialExpandedTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-    }
-
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
 }

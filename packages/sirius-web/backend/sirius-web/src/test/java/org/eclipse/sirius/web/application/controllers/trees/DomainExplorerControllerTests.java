@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -21,15 +21,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
@@ -49,8 +46,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -95,7 +90,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
         var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
         var defaultTreeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDefaultExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialDefaultExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getDescriptionId()).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
             assertThat(tree.getChildren()).hasSize(5);
@@ -115,7 +110,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         var treeId = new AtomicReference<String>();
 
-        Consumer<Object> initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getDescriptionId().startsWith("siriusComponents://representationDescription?kind=treeDescription&sourceKind=view")).isTrue();
             assertThat(tree.getChildren()).hasSize(1);
@@ -151,7 +146,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         var settingId = new AtomicReference<String>();
 
-        Consumer<Object> expandedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> expandedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Domain");
@@ -182,17 +177,6 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
-    }
-
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a domain studio with a domain model and domain representation, when we subscribe to the domain view tree representation, then the tree item representing the domain representation is correct ")
@@ -211,13 +195,14 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
-        Consumer<Object> expandedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> expandedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Domain");
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getLabel().toString()).isEqualTo("buck");
             assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+
             var treeItem = tree.getChildren().get(0).getChildren().get(0).getChildren().get(0);
             assertThat(treeItem.getId()).isNotBlank();
             assertThat(treeItem.getKind()).isEqualTo(Diagram.KIND);

@@ -13,19 +13,18 @@
 package org.eclipse.sirius.web.application.controllers.views;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
@@ -42,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -123,19 +120,24 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(form -> form.getPages().get(0).getGroups().get(0).getWidgets().stream().map(AbstractWidget::getLabel).allMatch(label -> List.of("Name", "Foreground Color Expression",
-                        "Background Color Expression", "Is Bold Expression", "Is Italic Expression", "Is Underline Expression").contains(label)))
-                .isPresent();
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            var firstPage = form.getPages().get(0);
+            var firstGroup = firstPage.getGroups().get(0);
+            var allWidgetsLabel = firstGroup.getWidgets().stream()
+                    .map(AbstractWidget::getLabel)
+                    .toList();
+            assertThat(allWidgetsLabel).allMatch(List.of(
+                    "Name",
+                    "Foreground Color Expression",
+                    "Background Color Expression",
+                    "Is Bold Expression",
+                    "Is Italic Expression",
+                    "Is Underline Expression"
+            )::contains);
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -187,18 +189,18 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(form -> form.getPages().get(0).getGroups().get(0).getWidgets().stream().map(AbstractWidget::getLabel).allMatch(label -> List.of("Name", "Value").contains(label)))
-                .isPresent();
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            var firstPage = form.getPages().get(0);
+            var firstGroup = firstPage.getGroups().get(0);
+
+            var allWidgetLabels = firstGroup.getWidgets().stream()
+                    .map(AbstractWidget::getLabel)
+                    .toList();
+            assertThat(allWidgetLabels).allMatch(List.of("Name", "Value")::contains);
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

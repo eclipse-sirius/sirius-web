@@ -12,14 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
+
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Group;
@@ -72,9 +75,6 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .isPresent();
 
@@ -92,23 +92,17 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
         var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(form -> form.getPages().stream()
-                        .map(Page::getGroups)
-                        .flatMap(Collection::stream)
-                        .map(Group::getWidgets)
-                        .flatMap(Collection::stream)
-                        .allMatch(AbstractWidget::isReadOnly))
-                .isPresent();
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            var allWidgets = form.getPages().stream()
+                    .map(Page::getGroups)
+                    .flatMap(Collection::stream)
+                    .map(Group::getWidgets)
+                    .flatMap(Collection::stream);
+            assertThat(allWidgets).allMatch(AbstractWidget::isReadOnly);
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

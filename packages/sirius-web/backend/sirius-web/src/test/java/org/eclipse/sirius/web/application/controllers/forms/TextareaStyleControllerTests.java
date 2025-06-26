@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,31 +78,27 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
     public void givenTextareaWidgetWithStyleWhenItIsDisplayedThenStyleIsApplied() {
         var flux = this.givenSubscriptionToTextareaForm(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
-                    assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(textarea.getStyle().isItalic()).isFalse();
-                    assertThat(textarea.getStyle().isBold()).isFalse();
-                    assertThat(textarea.getStyle().isStrikeThrough()).isFalse();
-                    assertThat(textarea.getStyle().isUnderline()).isFalse();
-                    assertThat(textarea.getStyle().getFontSize()).isEqualTo(8);
+            assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+            assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+            assertThat(textarea.getStyle().isItalic()).isFalse();
+            assertThat(textarea.getStyle().isBold()).isFalse();
+            assertThat(textarea.getStyle().isStrikeThrough()).isFalse();
+            assertThat(textarea.getStyle().isUnderline()).isFalse();
+            assertThat(textarea.getStyle().getFontSize()).isEqualTo(8);
 
-                    assertThat(textarea.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("none")
-                            .hasGridTemplateRows("none")
-                            .hasGap("normal")
-                            .hasLabelGridRow("auto")
-                            .hasLabelGridColumn("auto")
-                            .hasWidgetGridColumn("auto")
-                            .hasWidgetGridRow("auto");
-                }, () -> fail("Missing form"));
+            assertThat(textarea.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("none")
+                    .hasGridTemplateRows("none")
+                    .hasGap("normal")
+                    .hasLabelGridRow("auto")
+                    .hasLabelGridColumn("auto")
+                    .hasWidgetGridColumn("auto")
+                    .hasWidgetGridRow("auto");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -119,31 +112,27 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
     public void givenTextareaWidgetWithConditionalStyleWhenTheConditionIsValidatedThenConditionalStyleIsApplied() {
         var flux = this.givenSubscriptionToTextareaForm(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var textarea = groupNavigator.findWidget("Name", Textarea.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
-                    assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    assertThat(textarea.getStyle().isItalic()).isTrue();
-                    assertThat(textarea.getStyle().isBold()).isTrue();
-                    assertThat(textarea.getStyle().isUnderline()).isTrue();
-                    assertThat(textarea.getStyle().isStrikeThrough()).isTrue();
-                    assertThat(textarea.getStyle().getFontSize()).isEqualTo(10);
+            assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+            assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+            assertThat(textarea.getStyle().isItalic()).isTrue();
+            assertThat(textarea.getStyle().isBold()).isTrue();
+            assertThat(textarea.getStyle().isUnderline()).isTrue();
+            assertThat(textarea.getStyle().isStrikeThrough()).isTrue();
+            assertThat(textarea.getStyle().getFontSize()).isEqualTo(10);
 
-                    assertThat(textarea.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("max-content")
-                            .hasGridTemplateRows("max-content")
-                            .hasGap("1px")
-                            .hasLabelGridRow("1")
-                            .hasLabelGridColumn("1")
-                            .hasWidgetGridColumn("2")
-                            .hasWidgetGridRow("2");
-                }, () -> fail("Missing form"));
+            assertThat(textarea.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("max-content")
+                    .hasGridTemplateRows("max-content")
+                    .hasGap("1px")
+                    .hasLabelGridRow("1")
+                    .hasLabelGridColumn("1")
+                    .hasWidgetGridColumn("2")
+                    .hasWidgetGridRow("2");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

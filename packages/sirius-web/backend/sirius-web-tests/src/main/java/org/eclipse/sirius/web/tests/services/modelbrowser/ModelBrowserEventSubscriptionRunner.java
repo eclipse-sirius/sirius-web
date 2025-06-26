@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.services.modelbrowser;
 
 import java.util.Objects;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.browser.dto.ModelBrowserEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
@@ -45,7 +46,10 @@ public class ModelBrowserEventSubscriptionRunner implements ISubscriptionRunner<
 
     @Override
     public Flux<Object> run(ModelBrowserEventInput input) {
-        return this.graphQLRequestor.subscribe(MODEL_BROWSER_EVENT_SUBSCRIPTION, input);
+        return this.graphQLRequestor.subscribe(MODEL_BROWSER_EVENT_SUBSCRIPTION, input)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData);
     }
 
 }

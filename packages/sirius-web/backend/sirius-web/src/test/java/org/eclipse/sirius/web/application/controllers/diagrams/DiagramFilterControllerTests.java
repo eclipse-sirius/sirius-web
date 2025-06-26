@@ -14,12 +14,12 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,7 +27,6 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramElementInput;
@@ -37,7 +36,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTreeCheckboxInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PushButtonInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -50,7 +48,6 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnD
 import org.eclipse.sirius.components.diagrams.tests.graphql.PinDiagramElementMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.forms.Button;
-import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.SplitButton;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.TreeWidget;
@@ -227,31 +224,29 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
         var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
-        Predicate<Object> formContentMatcher = object -> this.refreshedForm(object)
-                .filter(form -> {
-                    var diagramNavigator = new DiagramNavigator(diagramReference.get());
-                    var treeWidget = new FormNavigator(form)
-                            .page("ExpandCollapseDiagram")
-                            .group("Filter elements")
-                            .findWidget("", TreeWidget.class);
-                    assertThat(treeWidget.getNodes()).hasSize(diagramNavigator.findDiagramNodeCount());
-                    for (TreeNode treeNode : treeWidget.getNodes()) {
-                        var node = diagramNavigator.nodeWithLabel(treeNode.getLabel()).getNode();
-                        this.assertThatNodeMatchesTreeNodeEndIcons(node, treeNode);
-                    }
-                    return true;
-                })
-                .isPresent();
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            var diagramNavigator = new DiagramNavigator(diagramReference.get());
+            var treeWidget = new FormNavigator(form)
+                    .page("ExpandCollapseDiagram")
+                    .group("Filter elements")
+                    .findWidget("", TreeWidget.class);
+
+            assertThat(treeWidget.getNodes()).hasSize(diagramNavigator.findDiagramNodeCount());
+            for (TreeNode treeNode : treeWidget.getNodes()) {
+                var node = diagramNavigator.nodeWithLabel(treeNode.getLabel()).getNode();
+                this.assertThatNodeMatchesTreeNodeEndIcons(node, treeNode);
+            }
+        });
 
         Consumer<Object> udpatedDiagramContentConsumer = assertRefreshedDiagramThat(diagramReference::set);
 
         var diagramAndPropertiesFlux = Flux.merge(diagramFlux, diagramFilterFlux);
         StepVerifier.create(diagramAndPropertiesFlux)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .then(() -> operationToPerform.apply(diagramReference.get(), nodeId.get()))
                 .consumeNextWith(udpatedDiagramContentConsumer)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -351,48 +346,43 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         AtomicReference<String> treeId = new AtomicReference<>();
         AtomicReference<String> treeNodeToCheckId = new AtomicReference<>();
 
-        Predicate<Object> initialFormContentMatcher = object -> this.refreshedForm(object)
-                .filter(form -> {
-                    formId.set(form.getId());
-                    var diagramNavigator = new DiagramNavigator(diagramReference.get());
-                    var treeWidget = new FormNavigator(form)
-                            .page("ExpandCollapseDiagram")
-                            .group("Filter elements")
-                            .findWidget("", TreeWidget.class);
-                    treeId.set(treeWidget.getId());
-                    for (TreeNode treeNode : treeWidget.getNodes()) {
-                        var node = diagramNavigator.nodeWithLabel(treeNode.getLabel()).getNode();
-                        if (node.getId().equals(nodeId.get())) {
-                            treeNodeToCheckId.set(treeNode.getId());
-                        }
-                    }
-                    return true;
-                })
-                .isPresent();
+        Consumer<Object> initialFormContentMatcher = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var diagramNavigator = new DiagramNavigator(diagramReference.get());
+            var treeWidget = new FormNavigator(form)
+                    .page("ExpandCollapseDiagram")
+                    .group("Filter elements")
+                    .findWidget("", TreeWidget.class);
+
+            treeId.set(treeWidget.getId());
+            for (TreeNode treeNode : treeWidget.getNodes()) {
+                var node = diagramNavigator.nodeWithLabel(treeNode.getLabel()).getNode();
+                if (node.getId().equals(nodeId.get())) {
+                    treeNodeToCheckId.set(treeNode.getId());
+                }
+            }
+        });
 
         AtomicReference<String> actionId = new AtomicReference<>();
         AtomicReference<String> revertActionId = new AtomicReference<>();
 
-        Predicate<Object> updatedFormContentMatcher = object -> this.refreshedForm(object)
-                .filter(form -> {
-                    // We have to set the collapseButtonId after we check the tree node because the id of split button actions change between renders.
-                    var splitButton = new FormNavigator(form)
-                            .page("ExpandCollapseDiagram")
-                            .group("Filter elements")
-                            .findWidget("Apply to 1 selected element: ", SplitButton.class);
-                    splitButton.getActions().stream()
-                            .filter(buttonToClickPredicate)
-                            .map(Button::getId)
-                            .findFirst()
-                            .ifPresent(actionId::set);
-                    splitButton.getActions().stream()
-                            .filter(buttonToClickToRevertPredicate)
-                            .map(Button::getId)
-                            .findFirst()
-                            .ifPresent(revertActionId::set);
-                    return true;
-                })
-                .isPresent();
+        Consumer<Object> updatedFormContentMatcher = assertRefreshedFormThat(form -> {
+            // We have to set the collapseButtonId after we check the tree node because the id of split button actions change between renders.
+            var splitButton = new FormNavigator(form)
+                    .page("ExpandCollapseDiagram")
+                    .group("Filter elements")
+                    .findWidget("Apply to 1 selected element: ", SplitButton.class);
+            splitButton.getActions().stream()
+                    .filter(buttonToClickPredicate)
+                    .map(Button::getId)
+                    .findFirst()
+                    .ifPresent(actionId::set);
+            splitButton.getActions().stream()
+                    .filter(buttonToClickToRevertPredicate)
+                    .map(Button::getId)
+                    .findFirst()
+                    .ifPresent(revertActionId::set);
+        });
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> assertThat(isDiagramUpdatedPredicate.apply(diagram, nodeId.get())).isTrue());
         Consumer<Object> revertedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> assertThat(isDiagramUpdatedPredicate.apply(diagram, nodeId.get())).isFalse());
@@ -400,9 +390,9 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         var diagramAndPropertiesFlux = Flux.merge(diagramFlux, diagramFilterFlux);
         StepVerifier.create(diagramAndPropertiesFlux)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
-                .expectNextMatches(initialFormContentMatcher)
+                .consumeNextWith(initialFormContentMatcher)
                 .then(() -> this.checkTreeNode(formId.get(), treeId.get(), treeNodeToCheckId.get()))
-                .expectNextMatches(updatedFormContentMatcher)
+                .consumeNextWith(updatedFormContentMatcher)
                 .expectNextMatches(DiagramRefreshedEventPayload.class::isInstance)
                 .then(() -> this.performAction(formId.get(), actionId.get()))
                 // Skip the potential FormRefreshedEventPayload that may be sent before the DiagramRefreshedEventPayload
@@ -445,16 +435,6 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
         if (node.getCollapsingState().equals(CollapsingState.COLLAPSED)) {
             assertThat(treeNode.getEndIconsURL()).contains(List.of(DiagramImageConstants.COLLAPSE_SVG));
         }
-    }
-
-    private Optional<Form> refreshedForm(Object object) {
-        return Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form);
     }
 
 }

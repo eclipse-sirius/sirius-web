@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,23 +78,19 @@ public class LinkControllerTests extends AbstractIntegrationTests {
     public void givenLinkWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToLinkForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var link = groupNavigator.findWidget("Link", Link.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var link = groupNavigator.findWidget("Link", Link.class);
 
-                    assertThat(link)
-                            .hasLabel("Link")
-                            .hasUrl("https://www.google.com")
-                            .hasHelp("Links to outside documentation")
-                            .isReadOnly()
-                            .isBold()
-                            .isItalic()
-                            .isUnderline();
-                }, () -> fail("Missing form"));
+            assertThat(link)
+                    .hasLabel("Link")
+                    .hasUrl("https://www.google.com")
+                    .hasHelp("Links to outside documentation")
+                    .isReadOnly()
+                    .isBold()
+                    .isItalic()
+                    .isUnderline();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

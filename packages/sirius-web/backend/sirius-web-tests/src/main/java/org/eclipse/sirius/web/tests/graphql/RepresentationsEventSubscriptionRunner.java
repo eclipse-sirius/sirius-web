@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
@@ -45,6 +46,9 @@ public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunn
 
     @Override
     public Flux<Object> run(RepresentationsEventInput input) {
-        return this.graphQLRequestor.subscribe(REPRESENTATIONS_EVENT_SUBSCRIPTION, input);
+        return this.graphQLRequestor.subscribe(REPRESENTATIONS_EVENT_SUBSCRIPTION, input)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData);
     }
 }

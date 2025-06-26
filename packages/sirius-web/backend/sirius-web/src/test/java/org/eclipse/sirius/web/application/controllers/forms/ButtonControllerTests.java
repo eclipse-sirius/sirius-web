@@ -12,19 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PushButtonInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Button;
@@ -43,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -91,17 +88,13 @@ public class ButtonControllerTests extends AbstractIntegrationTests {
     public void givenButtonWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToButtonForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var button = groupNavigator.findWidget("Button", Button.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var button = groupNavigator.findWidget("Button", Button.class);
 
-                    assertThat(button.getButtonLabel()).isEqualTo("Click");
-                    assertThat(button.getImageURL()).isEqualTo("https://www.example.org/images/test.png");
-                }, () -> fail("Missing form"));
+            assertThat(button.getButtonLabel()).isEqualTo("Click");
+            assertThat(button.getImageURL()).isEqualTo("https://www.example.org/images/test.png");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -118,31 +111,27 @@ public class ButtonControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var buttonId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var label = groupNavigator.findWidget("Name", LabelWidget.class);
-                    assertThat(label.getValue()).isEqualTo("buck");
-                    assertThat(label.getStyle().isBold()).isFalse();
-                    assertThat(label.getStyle().isItalic()).isFalse();
-                    assertThat(label.getStyle().isStrikeThrough()).isFalse();
-                    assertThat(label.getStyle().isUnderline()).isFalse();
-                    assertThat(label.getStyle().getFontSize()).isEqualTo(16);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var label = groupNavigator.findWidget("Name", LabelWidget.class);
+            assertThat(label.getValue()).isEqualTo("buck");
+            assertThat(label.getStyle().isBold()).isFalse();
+            assertThat(label.getStyle().isItalic()).isFalse();
+            assertThat(label.getStyle().isStrikeThrough()).isFalse();
+            assertThat(label.getStyle().isUnderline()).isFalse();
+            assertThat(label.getStyle().getFontSize()).isEqualTo(16);
 
-                    var button = groupNavigator.findWidget("Button", Button.class);
-                    assertThat(button.getStyle().isBold()).isFalse();
-                    assertThat(button.getStyle().isItalic()).isFalse();
-                    assertThat(button.getStyle().isStrikeThrough()).isFalse();
-                    assertThat(button.getStyle().isUnderline()).isFalse();
-                    assertThat(button.getStyle().getFontSize()).isEqualTo(16);
+            var button = groupNavigator.findWidget("Button", Button.class);
+            assertThat(button.getStyle().isBold()).isFalse();
+            assertThat(button.getStyle().isItalic()).isFalse();
+            assertThat(button.getStyle().isStrikeThrough()).isFalse();
+            assertThat(button.getStyle().isUnderline()).isFalse();
+            assertThat(button.getStyle().getFontSize()).isEqualTo(16);
 
-                    buttonId.set(button.getId());
-                }, () -> fail("Missing form"));
+            buttonId.set(button.getId());
+        });
 
         Runnable pushButton = () -> {
             var input = new PushButtonInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), buttonId.get());
@@ -152,27 +141,23 @@ public class ButtonControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var label = groupNavigator.findWidget("Name", LabelWidget.class);
-                    assertThat(label.getValue()).isEqualTo("");
-                    assertThat(label.getStyle().isBold()).isTrue();
-                    assertThat(label.getStyle().isItalic()).isTrue();
-                    assertThat(label.getStyle().isStrikeThrough()).isTrue();
-                    assertThat(label.getStyle().isUnderline()).isTrue();
-                    assertThat(label.getStyle().getFontSize()).isEqualTo(24);
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var label = groupNavigator.findWidget("Name", LabelWidget.class);
+            assertThat(label.getValue()).isEqualTo("");
+            assertThat(label.getStyle().isBold()).isTrue();
+            assertThat(label.getStyle().isItalic()).isTrue();
+            assertThat(label.getStyle().isStrikeThrough()).isTrue();
+            assertThat(label.getStyle().isUnderline()).isTrue();
+            assertThat(label.getStyle().getFontSize()).isEqualTo(24);
 
-                    var button = groupNavigator.findWidget("Button", Button.class);
-                    assertThat(button.getStyle().isBold()).isTrue();
-                    assertThat(button.getStyle().isItalic()).isTrue();
-                    assertThat(button.getStyle().isStrikeThrough()).isTrue();
-                    assertThat(button.getStyle().isUnderline()).isTrue();
-                    assertThat(button.getStyle().getFontSize()).isEqualTo(24);
-                }, () -> fail("Missing form"));
+            var button = groupNavigator.findWidget("Button", Button.class);
+            assertThat(button.getStyle().isBold()).isTrue();
+            assertThat(button.getStyle().isItalic()).isTrue();
+            assertThat(button.getStyle().isStrikeThrough()).isTrue();
+            assertThat(button.getStyle().isUnderline()).isTrue();
+            assertThat(button.getStyle().getFontSize()).isEqualTo(24);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

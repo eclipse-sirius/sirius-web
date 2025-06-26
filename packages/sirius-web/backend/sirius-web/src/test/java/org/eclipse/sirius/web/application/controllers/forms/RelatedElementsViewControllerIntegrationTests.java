@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -38,8 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -73,7 +69,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
         var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
-        Predicate<Form> formPredicate = form -> {
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Human").group("Related Elements");
             assertThat(groupNavigator.getGroup()).hasDisplayMode(GroupDisplayMode.TOGGLEABLE_AREAS);
 
@@ -90,22 +86,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
             var outgoingTreeWidget = groupNavigator.findWidget("Outgoing", TreeWidget.class);
             assertThat(outgoingTreeWidget)
                     .hasTreeItemWithLabel("NamedElement");
-
-            return true;
-        };
-
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(formPredicate)
-                .isPresent();
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -118,7 +102,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
         var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
-        Predicate<Form> formPredicate = form -> {
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Human Node").group("Related Elements");
             assertThat(groupNavigator.getGroup()).hasDisplayMode(GroupDisplayMode.TOGGLEABLE_AREAS);
 
@@ -135,22 +119,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
 
             var outgoingTreeWidget = groupNavigator.findWidget("Outgoing", TreeWidget.class);
             assertThat(outgoingTreeWidget.getNodes()).isEmpty();
-
-            return true;
-        };
-
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(formPredicate)
-                .isPresent();
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

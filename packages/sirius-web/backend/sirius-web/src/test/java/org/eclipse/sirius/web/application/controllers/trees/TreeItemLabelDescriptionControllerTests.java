@@ -13,20 +13,17 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -43,8 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -105,7 +100,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle);
 
-        Consumer<Object> styleTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> styleTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             List<TreeItem> domainChildren = tree.getChildren()
                     .get(0)
@@ -115,6 +110,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
             var rootLabels = domainChildren.get(0).getLabel().styledStringFragments();
             var namedElementLabels = domainChildren.get(1).getLabel().styledStringFragments();
             var humanLabels = domainChildren.get(2).getLabel().styledStringFragments();
+
             assertThat(rootLabels.get(rootLabels.size() - 1).text()).doesNotContain("[abstract]");
             assertThat(namedElementLabels.get(namedElementLabels.size() - 1).text()).contains("[abstract]");
             assertThat(humanLabels).hasSize(9);
@@ -127,16 +123,5 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
                 .consumeNextWith(styleTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(30));
-    }
-
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
 }

@@ -12,20 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditSliderInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.tests.graphql.EditSliderMutationRunner;
@@ -42,7 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -90,20 +87,16 @@ public class SliderControllerTests extends AbstractIntegrationTests {
     public void givenSliderWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToSliderForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var slider = groupNavigator.findWidget("Cost", Slider.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var slider = groupNavigator.findWidget("Cost", Slider.class);
 
-                    assertThat(slider)
-                            .hasLabel("Cost")
-                            .hasValue(1)
-                            .hasHelp("The cost of the task")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(slider)
+                    .hasLabel("Cost")
+                    .hasValue(1)
+                    .hasHelp("The cost of the task")
+                    .isNotReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -120,18 +113,14 @@ public class SliderControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var sliderId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
-                    sliderId.set(slider.getId());
+            var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
+            sliderId.set(slider.getId());
 
-                    assertThat(slider).hasValue(1);
-                }, () -> fail("Missing form"));
+            assertThat(slider).hasValue(1);
+        });
 
         Runnable editSlider = () -> {
             var input = new EditSliderInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), sliderId.get(), 5);
@@ -141,14 +130,10 @@ public class SliderControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
-                    assertThat(slider).hasValue(5);
-                }, () -> fail("Missing form"));
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var slider = new FormNavigator(form).page("Page").group("Group").findWidget("Cost", Slider.class);
+            assertThat(slider).hasValue(5);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

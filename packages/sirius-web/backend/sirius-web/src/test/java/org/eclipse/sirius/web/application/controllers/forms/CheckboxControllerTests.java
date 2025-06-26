@@ -12,20 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
@@ -42,7 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -90,20 +87,16 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     public void givenCheckboxWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToCheckboxForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
 
-                    assertThat(checkbox)
-                            .hasLabel("Name")
-                            .hasValue(true)
-                            .hasHelp("Does the object have a name?")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(checkbox)
+                    .hasLabel("Name")
+                    .hasValue(true)
+                    .hasHelp("Does the object have a name?")
+                    .isNotReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -120,18 +113,14 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var checkboxId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
 
-                    checkboxId.set(checkbox.getId());
-                }, () -> fail("Missing form"));
+            checkboxId.set(checkbox.getId());
+        });
 
         Runnable editCheckbox = () -> {
             var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), checkboxId.get(), false);
@@ -141,20 +130,16 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var checkbox = groupNavigator.findWidget("Name", Checkbox.class);
 
-                    assertThat(checkbox)
-                            .hasLabel("Name")
-                            .hasValue(false)
-                            .hasHelp("Does the object have a name?")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(checkbox)
+                    .hasLabel("Name")
+                    .hasValue(false)
+                    .hasHelp("Does the object have a name?")
+                    .isNotReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

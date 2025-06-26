@@ -13,18 +13,16 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTitleExpressionDescriptionProvider;
@@ -38,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -85,16 +82,11 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
     public void givenFormWithTitleExpressionWhenItIsCreatedThenItsLabelIsInitialized() {
         var flux = this.givenSubscriptionToTitleExpressionForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "representationId", form.getId()));
-                    String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
-                    assertThat(label).isEqualTo("FormWithTitleExpression");
-                }, () -> fail("Missing form"));
-
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "representationId", form.getId()));
+            String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+            assertThat(label).isEqualTo("FormWithTitleExpression");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

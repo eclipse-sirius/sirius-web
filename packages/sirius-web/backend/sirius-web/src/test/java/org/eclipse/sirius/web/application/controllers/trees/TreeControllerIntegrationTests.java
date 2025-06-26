@@ -12,15 +12,26 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.trees;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.portals.tests.PortalEventPayloadConsumer.assertRefreshedPortalThat;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
+
 import com.jayway.jsonpath.JsonPath;
-import graphql.execution.DataFetcherResult;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -48,17 +59,6 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests of the tree controllers.
@@ -159,15 +159,10 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
-        Predicate<Object> projectContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .isPresent();
+        Consumer<Object> projectContentMatcher = assertRefreshedTreeThat(tree -> assertThat(tree).isNotNull());
 
         StepVerifier.create(flux)
-                .expectNextMatches(projectContentMatcher)
+                .consumeNextWith(projectContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -185,24 +180,16 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
         var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(this.documentHasNoObject));
 
-        Predicate<Object> hasNoMoreDocument = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .filter(tree -> tree.getChildren().isEmpty())
-                .isPresent();
+        Consumer<Object> hasNoMoreDocument = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).isEmpty());
 
         StepVerifier.create(flux)
-                .expectNextMatches(hasProjectContent)
+                .consumeNextWith(hasProjectContent)
                 .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION))
-                .expectNextMatches(hasNoMoreRepresentation)
+                .consumeNextWith(hasNoMoreRepresentation)
                 .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT))
-                .expectNextMatches(hasNoMoreObject)
+                .consumeNextWith(hasNoMoreObject)
                 .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT))
-                .expectNextMatches(hasNoMoreDocument)
+                .consumeNextWith(hasNoMoreDocument)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -220,7 +207,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled));
 
         StepVerifier.create(treeFlux)
-                .expectNextMatches(hasProjectContent)
+                .consumeNextWith(hasProjectContent)
                 .then(this.triggerDirectEditTreeItemLabel(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "Sample"))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -233,14 +220,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
-        Predicate<Object> portalRefreshedEventPayloadMatcher = object -> {
-            return Optional.of(object)
-                    .filter(DataFetcherResult.class::isInstance)
-                    .map(DataFetcherResult.class::cast)
-                    .map(DataFetcherResult::getData)
-                    .filter(PortalRefreshedEventPayload.class::isInstance)
-                    .isPresent();
-        };
+        Consumer<Object> portalRefreshedEventPayloadMatcher = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
@@ -252,14 +232,14 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var hasDocumentNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcoreRenamed));
 
         StepVerifier.create(Flux.merge(portalFlux, treeFlux))
-                .expectNextMatches(portalRefreshedEventPayloadMatcher)
-                .expectNextMatches(hasProjectContent)
+                .consumeNextWith(portalRefreshedEventPayloadMatcher)
+                .consumeNextWith(hasProjectContent)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "SampleRenamed"))
-                .expectNextMatches(hasObjectNewLabel)
+                .consumeNextWith(hasObjectNewLabel)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
-                .expectNextMatches(hasDocumentNewLabel)
+                .consumeNextWith(hasDocumentNewLabel)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, "PortalRenamed"))
-                .expectNextMatches(portalRefreshedEventPayloadMatcher)
+                .consumeNextWith(portalRefreshedEventPayloadMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -282,23 +262,13 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         return expandedIds;
     }
 
-    private Predicate<Object> getTreeRefreshedEventPayloadMatcher(List<TreeItemMatcher> treeItemMatchers) {
-        Predicate<Tree> treeMatcher = tree -> treeItemMatchers.stream().allMatch(treeItemMatcher -> {
-            var treeItem = treeItemMatcher.treeItemFinder.apply(tree);
-            return treeItemMatcher.treeItemPredicate.test(treeItem);
+    private Consumer<Object> getTreeRefreshedEventPayloadMatcher(List<TreeItemMatcher> treeItemMatchers) {
+        return assertRefreshedTreeThat(tree -> {
+            assertThat(treeItemMatchers).allMatch(treeItemMatcher -> {
+                var treeItem = treeItemMatcher.treeItemFinder.apply(tree);
+                return treeItemMatcher.treeItemPredicate.test(treeItem);
+            });
         });
-
-        return object -> {
-            return Optional.of(object)
-                    .filter(DataFetcherResult.class::isInstance)
-                    .map(DataFetcherResult.class::cast)
-                    .map(DataFetcherResult::getData)
-                    .filter(TreeRefreshedEventPayload.class::isInstance)
-                    .map(TreeRefreshedEventPayload.class::cast)
-                    .map(TreeRefreshedEventPayload::tree)
-                    .filter(treeMatcher)
-                    .isPresent();
-        };
     }
 
     private Runnable deleteTreeItem(String editingContextId, String treeId, UUID treeItemId) {

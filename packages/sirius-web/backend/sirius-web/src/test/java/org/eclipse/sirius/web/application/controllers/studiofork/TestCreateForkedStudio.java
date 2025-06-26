@@ -14,7 +14,7 @@
 package org.eclipse.sirius.web.application.controllers.studiofork;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -48,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -108,15 +106,11 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
     public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToTable();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(1);
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail("MISSING_TABLE"));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(1);
+            assertThat(table.getLines()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -173,16 +167,12 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
             assertThat(forkedDocument.get().getContent()).contains(sourceElementId.get());
         };
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    representationId.set(table.getId());
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(1);
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail("MISSING_TABLE"));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            representationId.set(table.getId());
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(1);
+            assertThat(table.getLines()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)

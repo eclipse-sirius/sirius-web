@@ -13,17 +13,14 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.tree.DomainExplorerRepresentationDescriptionProvider;
@@ -38,8 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -72,7 +67,7 @@ public class DomainExplorerRepresentationControllerTests extends AbstractIntegra
         var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
         var defaultTreeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDefaultExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialDefaultExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getDescriptionId()).isEqualTo(DomainExplorerRepresentationDescriptionProvider.DESCRIPTION_ID);
             assertThat(tree.getChildren()).hasSize(1);
@@ -86,17 +81,6 @@ public class DomainExplorerRepresentationControllerTests extends AbstractIntegra
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-    }
-
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
 
 }

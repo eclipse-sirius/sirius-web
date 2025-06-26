@@ -13,21 +13,19 @@
 package org.eclipse.sirius.web.application.controllers.tables;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResetTableRowsHeightInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableRowInput;
@@ -55,8 +53,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -69,8 +65,6 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableRowControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String MISSING_TABLE = "Missing table";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -127,17 +121,13 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var rowRef = new AtomicReference<Line>();
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    tableId.set(table.getId());
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    rowRef.set(table.getLines().get(0));
-                    assertThat(table.getLines().get(0).getHeight()).isEqualTo(53);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            tableId.set(table.getId());
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            rowRef.set(table.getLines().get(0));
+            assertThat(table.getLines().get(0).getHeight()).isEqualTo(53);
+        });
 
         Runnable resizeRow = () -> {
             var lineToChange = rowRef.get();
@@ -151,15 +141,11 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    assertThat(table.getLines().get(0).getHeight()).isEqualTo(100);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines().get(0).getHeight()).isEqualTo(100);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -184,19 +170,12 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    tableId.set(table.getId());
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    assertThat(table.getLines().get(1).getHeight()).isEqualTo(100);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            tableId.set(table.getId());
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines().get(1).getHeight()).isEqualTo(100);
+        });
 
         Runnable resetRows = () -> {
             var resetTableRowsHeightInput = new ResetTableRowsHeightInput(
@@ -209,18 +188,11 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    assertThat(table.getLines().get(1).getHeight()).isEqualTo(53);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines().get(1).getHeight()).isEqualTo(53);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -246,19 +218,12 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var tableId = new AtomicReference<String>();
         var rowId = new AtomicReference<UUID>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    tableId.set(table.getId());
-                    rowId.set(table.getLines().get(0).getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            tableId.set(table.getId());
+            rowId.set(table.getLines().get(0).getId());
+        });
 
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -297,19 +262,12 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var tableId = new AtomicReference<String>();
         var rowId = new AtomicReference<UUID>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(1);
-                    tableId.set(table.getId());
-                    rowId.set(table.getLines().get(0).getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(1);
+            tableId.set(table.getId());
+            rowId.set(table.getLines().get(0).getId());
+        });
 
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -350,19 +308,12 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var tableId = new AtomicReference<String>();
         var rowId = new AtomicReference<UUID>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
-                    tableId.set(table.getId());
-                    rowId.set(table.getLines().get(0).getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(3);
+            tableId.set(table.getId());
+            rowId.set(table.getLines().get(0).getId());
+        });
 
         Runnable invokeDeleteRowAction = () -> {
             var invokeRowContextMenuEntryInput = new InvokeRowContextMenuEntryInput(
@@ -379,17 +330,10 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -406,18 +350,14 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var flux = this.givenSubscriptionToTable();
 
         var tableId = new AtomicReference<String>();
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(3);
-                    assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
-                    assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+            tableId.set(table.getId());
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -432,21 +372,14 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         TestTransaction.end();
         TestTransaction.start();
 
-        Consumer<Object> expandedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(4);
-                    assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
-                    assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
-                    assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
-                    assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(0);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> expandedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
+            assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(0);
+        });
 
         StepVerifier.create(expandedFlux)
                 .consumeNextWith(expandedTableContentConsumer)
@@ -461,14 +394,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var flux = this.givenSubscriptionToTable();
 
         var tableId = new AtomicReference<String>();
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> tableId.set(table.getId()));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
