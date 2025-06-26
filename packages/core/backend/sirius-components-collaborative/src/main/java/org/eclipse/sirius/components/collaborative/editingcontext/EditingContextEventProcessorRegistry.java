@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -51,6 +52,8 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final IEditingContextEventProcessorFactory editingContextEventProcessorFactory;
 
+    private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
     private final IEditingContextSearchService editingContextSearchService;
 
     private final List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks;
@@ -61,11 +64,14 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Map<String, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
-    public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
+    public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory,
+                                                IRepresentationEventProcessorRegistry representationEventProcessorRegistry,
+                                                IEditingContextSearchService editingContextSearchService,
                                                 List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks,
                                                 @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay,
                                                 ICollaborativeMessageService messageService) {
         this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
+        this.representationEventProcessorRegistry = representationEventProcessorRegistry;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextEventProcessorInitializationHooks = Objects.requireNonNull(editingContextEventProcessorInitializationHooks);
         this.disposeDelay = disposeDelay;
@@ -106,7 +112,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
                     Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
                         // We will wait for the delay before trying to dispose the editing context event processor
                         // We will check if the editing context event processor is still empty
-                        if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
+                        if (canBeDisposed.booleanValue() && representationEventProcessorRegistry.values(editingContextId).isEmpty()) {
                             this.disposeEditingContextEventProcessor(editingContextId);
                         } else {
                             this.logger.trace("Stopping the disposal of the editing context");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
  */
 public record EditingContextEventProcessorParameters(
         IEditingContext editingContext,
+        IRepresentationEventProcessorRegistry representationEventProcessorRegistry,
         IEditingContextPersistenceService editingContextPersistenceService,
         List<IEditingContextEventHandler> editingContextEventHandlers,
         IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
@@ -45,6 +47,7 @@ public record EditingContextEventProcessorParameters(
 
     public EditingContextEventProcessorParameters {
         Objects.requireNonNull(editingContext);
+        Objects.requireNonNull(representationEventProcessorRegistry);
         Objects.requireNonNull(editingContextPersistenceService);
         Objects.requireNonNull(editingContextEventHandlers);
         Objects.requireNonNull(representationEventProcessorComposedFactory);
@@ -70,6 +73,8 @@ public record EditingContextEventProcessorParameters(
 
         private IEditingContext editingContext;
 
+        private IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
         private IEditingContextPersistenceService editingContextPersistenceService;
 
         private List<IEditingContextEventHandler> editingContextEventHandlers;
@@ -92,6 +97,11 @@ public record EditingContextEventProcessorParameters(
 
         public EditingContextEventProcessorParametersBuilder editingContext(IEditingContext editingContext) {
             this.editingContext = Objects.requireNonNull(editingContext);
+            return this;
+        }
+
+        public EditingContextEventProcessorParametersBuilder representationEventProcessorRegistry(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+            this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
             return this;
         }
 
@@ -138,6 +148,7 @@ public record EditingContextEventProcessorParameters(
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
                     this.editingContext,
+                    this.representationEventProcessorRegistry,
                     this.editingContextPersistenceService,
                     this.editingContextEventHandlers,
                     this.representationEventProcessorComposedFactory,
