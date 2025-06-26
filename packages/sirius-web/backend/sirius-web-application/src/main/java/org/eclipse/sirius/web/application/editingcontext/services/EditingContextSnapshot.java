@@ -19,11 +19,14 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshot;
 
+import jakarta.validation.constraints.NotNull;
+
 /**
  * A snapshot of an editing context.
  *
  * @author gdaniel
  */
-public record EditingContextSnapshot(List<DocumentData> documents, Map<URI, Adapter> libraryAdapterResourcesMap) implements IEditingContextSnapshot {
+public record EditingContextSnapshot(@NotNull List<DocumentData> documents,
+        @NotNull Map<URI, Adapter> libraryAdapterResourcesMap) implements IEditingContextSnapshot {
 
 }

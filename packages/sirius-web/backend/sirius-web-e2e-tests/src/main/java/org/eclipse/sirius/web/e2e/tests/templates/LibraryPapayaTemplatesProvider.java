@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,21 +21,23 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * Provides Papaya project templates.
+ * Provides the template to create a Papaya test project with a dependency to a library.
  *
- * @author frouene
+ * @author gdaniel
  */
 @Profile("test")
 @Service
-public class TablePapayaTemplatesProvider implements IProjectTemplateProvider {
+public class LibraryPapayaTemplatesProvider implements IProjectTemplateProvider {
 
-    public static final String TABLE_PAPAYA_TEMPLATE_ID = "papaya-table-template";
+    public static final String LIBRARY_PAPAYA_TEMPLATE_ID = "papaya-library-template";
 
     public static final String PAPAYA_NATURE = "siriusComponents://nature?kind=papaya";
 
+    public static final String PAPAYA_PROJECT_NAME = "PapayaLibrary";
+
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var papayaTemplate = new ProjectTemplate(TABLE_PAPAYA_TEMPLATE_ID, "PapayaTable", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
+        var papayaTemplate = new ProjectTemplate(LIBRARY_PAPAYA_TEMPLATE_ID, PAPAYA_PROJECT_NAME, "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
         return List.of(papayaTemplate);
     }
 
