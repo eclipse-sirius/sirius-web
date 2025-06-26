@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextDependencyLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceL
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -55,20 +57,27 @@ public class EditingContextLoader implements IEditingContextLoader {
 
     private final ILibrarySearchService librarySearchService;
 
-    public EditingContextLoader(IResourceLoader resourceLoader, IEditingContextDependencyLoader editingContextDependencyLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public EditingContextLoader(IResourceLoader resourceLoader, IEditingContextDependencyLoader editingContextDependencyLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.editingContextDependencyLoader = Objects.requireNonNull(editingContextDependencyLoader);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public void load(EditingContext editingContext, SemanticData semanticData) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
-        this.editingContextDependencyLoader.loadDependencies(editingContext);
+        List<SemanticData> dependenciesSemanticData = new UUIDParser().parse(editingContext.getId())
+                .map(this.semanticDataSearchService::findAllDependenciesRecursivelyById)
+                .orElse(List.of());
+
+        this.editingContextDependencyLoader.loadDependencies(editingContext, dependenciesSemanticData);
         this.loadSemanticData(editingContext, semanticData);
 
         this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {

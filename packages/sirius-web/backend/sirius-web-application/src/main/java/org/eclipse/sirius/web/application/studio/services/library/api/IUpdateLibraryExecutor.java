@@ -10,20 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.studio.services.library.api;
 
-import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
- * Loads dependencies into the editing context.
+ * Used to execute a library update.
  *
  * @author gdaniel
  */
-public interface IEditingContextDependencyLoader {
+public interface IUpdateLibraryExecutor {
 
-    void loadDependencies(IEditingContext editingContext, List<SemanticData> dependenciesSemanticData);
+    IStatus updateLibrary(ICause cause, IEditingContext editingContext, UUID libraryId);
 
 }

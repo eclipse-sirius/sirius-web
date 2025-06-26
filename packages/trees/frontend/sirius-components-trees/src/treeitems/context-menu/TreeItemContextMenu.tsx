@@ -73,6 +73,7 @@ export const TreeItemContextMenu = ({
         <TreeItemMenuContextComponent
           editingContextId={editingContextId}
           item={item}
+          entry={null}
           readOnly={readOnly}
           onClose={onClose}
           onExpandedElementChange={onExpandedElementChange}
@@ -92,6 +93,7 @@ export const TreeItemContextMenu = ({
             <TreeItemMenuContextComponent
               editingContextId={editingContextId}
               item={item}
+              entry={entry}
               readOnly={readOnly}
               onClose={onClose}
               onExpandedElementChange={onExpandedElementChange}

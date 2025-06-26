@@ -112,6 +112,13 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
     enableRowSelection: (row) => row.original.version !== version,
     getRowId: (originalRow) => originalRow.id,
     onRowSelectionChange: setRowSelection,
+    muiTableBodyCellProps: ({ column, row }) => {
+      if (column.columnDef.header === 'Select') {
+        return {
+          'data-testid': 'select-' + row.original.name + '@' + row.original.version,
+        } as any;
+      }
+    },
 
     // Configure pagination
     enablePagination: true,
