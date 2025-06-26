@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.components.LabelIdProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
@@ -394,11 +395,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return null;
         }
 
-        Function<VariableManager, String> labelIdProvider = variableManager -> {
-            Object parentId = variableManager.get(InsideLabelDescription.OWNER_ID, Object.class).orElse(null);
-            return parentId + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
-        };
-
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
             return stylesFactory.createInsideLabelStyle(effectiveStyle);
@@ -421,8 +417,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
 
 
-        return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
-                .idProvider(labelIdProvider)
+        return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelIdProvider.INSIDE_LABEL_SUFFIX)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewInsideLabelDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
@@ -435,10 +430,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private List<OutsideLabelDescription> getOutsideLabelDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, StylesFactory stylesFactory) {
         return viewNodeDescription.getOutsideLabels().stream().map(outsideLabelDescription -> {
-            Function<VariableManager, String> labelIdProvider = variableManager -> {
-                Object parentId = variableManager.get(OutsideLabelDescription.OWNER_ID, Object.class).orElse(null);
-                return parentId + OutsideLabelDescription.OUTSIDE_LABEL_SUFFIX + outsideLabelDescription.getPosition().getLiteral();
-            };
 
             Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
                 var effectiveStyle = this.findEffectiveOutsideLabelStyle(outsideLabelDescription, interpreter, variableManager);
@@ -446,8 +437,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             };
 
             return OutsideLabelDescription.newOutsideLabelDescription(EcoreUtil.getURI(viewNodeDescription)
-                            .toString() + OutsideLabelDescription.OUTSIDE_LABEL_SUFFIX + outsideLabelDescription.getPosition().getLiteral())
-                    .idProvider(labelIdProvider)
+                            .toString() + LabelIdProvider.OUTSIDE_LABEL_SUFFIX + outsideLabelDescription.getPosition().getLiteral())
                     .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, outsideLabelDescription.getLabelExpression()))
                     .styleDescriptionProvider(styleDescriptionProvider)
                     .outsideLabelLocation(OutsideLabelLocation.BOTTOM_MIDDLE)
@@ -477,11 +467,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return Optional.empty();
         }
 
-        Function<VariableManager, String> labelIdProvider = variableManager -> {
-            Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
-            return parentId + labelSuffix;
-        };
-
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
@@ -493,7 +478,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
 
         return Optional.of(LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + labelSuffix)
-                .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .build());
@@ -592,10 +576,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .styleProvider(styleProvider)
                 .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
 
-        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter, stylesFactory).ifPresent(builder::beginLabelDescription);
-        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getCenterLabelExpression(), "_centerlabel", interpreter, stylesFactory)
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX, interpreter, stylesFactory)
+                .ifPresent(builder::beginLabelDescription);
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getCenterLabelExpression(), LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX, interpreter, stylesFactory)
                 .ifPresent(builder::centerLabelDescription);
-        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter, stylesFactory).ifPresent(builder::endLabelDescription);
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), LabelIdProvider.EDGE_END_LABEL_SUFFIX, interpreter, stylesFactory)
+                .ifPresent(builder::endLabelDescription);
         new ToolFinder().findEdgeLabelEditTool(viewEdgeDescription)
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext)));
         EdgeDescription result = builder.build();

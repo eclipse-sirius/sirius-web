@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -43,8 +42,7 @@ public class LabelComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         LabelDescription labelDescription = this.props.getLabelDescription();
         String type = this.props.getType();
-        String idFromProvider = labelDescription.getIdProvider().apply(variableManager);
-        String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
+        String id = new LabelIdProvider().getEdgeLabelId(this.props.getParentEdgeId(), this.props.getPosition());
         String text = labelDescription.getTextProvider().apply(variableManager);
 
         LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);

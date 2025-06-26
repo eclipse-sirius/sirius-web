@@ -187,7 +187,6 @@ public class DiagramRendererEdgeTests {
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
-                .idProvider(variableManager -> "insideLabelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)

@@ -256,7 +256,6 @@ public class ViewPaletteProviderTests {
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("nodeId")
-                .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
                 .isHeaderProvider(vm -> false)

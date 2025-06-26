@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -53,8 +52,7 @@ public class InsideLabelComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         InsideLabelDescription insideLabelDescription = this.props.getInsideLabelDescription();
-        String idFromProvider = insideLabelDescription.getIdProvider().apply(variableManager);
-        String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
+        String id = new LabelIdProvider().getInsideLabelId(this.props.getParentNodeId());
         String text = insideLabelDescription.getTextProvider().apply(variableManager);
 
         boolean isHeader = insideLabelDescription.getIsHeaderProvider().apply(variableManager);

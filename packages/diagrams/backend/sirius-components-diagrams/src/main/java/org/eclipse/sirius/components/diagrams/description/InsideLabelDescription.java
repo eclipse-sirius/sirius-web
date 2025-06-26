@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,20 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class InsideLabelDescription {
 
-    /**
-     * The name of the variable passed to an inside label id provider so that the inside label's own id can include the id of it's
-     * owner/parent diagram element.
-     */
-    public static final String OWNER_ID = "ownerId";
-
-    /**
-     * The suffix used to build an inside label's id given its owner's.
-     */
-    public static final String INSIDE_LABEL_SUFFIX = "_insideLlabel";
-
     private String id;
-
-    private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> textProvider;
 
@@ -70,10 +57,6 @@ public final class InsideLabelDescription {
 
     public String getId() {
         return this.id;
-    }
-
-    public Function<VariableManager, String> getIdProvider() {
-        return this.idProvider;
     }
 
     public Function<VariableManager, String> getTextProvider() {
@@ -120,8 +103,6 @@ public final class InsideLabelDescription {
 
         private final String id;
 
-        private Function<VariableManager, String> idProvider;
-
         private Function<VariableManager, String> textProvider;
 
         private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
@@ -138,11 +119,6 @@ public final class InsideLabelDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder idProvider(Function<VariableManager, String> idProvider) {
-            this.idProvider = Objects.requireNonNull(idProvider);
-            return this;
         }
 
         public Builder textProvider(Function<VariableManager, String> textProvider) {
@@ -183,7 +159,6 @@ public final class InsideLabelDescription {
         public InsideLabelDescription build() {
             InsideLabelDescription labelDescription = new InsideLabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
-            labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
             labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);

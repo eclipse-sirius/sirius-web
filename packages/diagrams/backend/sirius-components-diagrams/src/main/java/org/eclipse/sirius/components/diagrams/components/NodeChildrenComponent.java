@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -63,11 +62,9 @@ public class NodeChildrenComponent implements IComponent {
         List<Element> nodeChildren = new ArrayList<>();
         InsideLabelDescription labelDescription = this.props.getNodeComponentProps().getNodeDescription().getInsideLabelDescription();
         if (labelDescription != null) {
-            this.props.getVariableManager().put(InsideLabelDescription.OWNER_ID, nodeId);
-
             Optional<InsideLabel> optionalPreviousLabel = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getInsideLabel);
             InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription, optionalPreviousLabel,
-                    this.props.getNodeComponentProps().getDiagramEvents());
+                    this.props.getNodeComponentProps().getDiagramEvents(), nodeId);
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
         }
@@ -77,9 +74,7 @@ public class NodeChildrenComponent implements IComponent {
     private List<Element> getOutsideLabel(String nodeId) {
 
         return this.props.getNodeComponentProps().getNodeDescription().getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            this.props.getVariableManager().put(OutsideLabelDescription.OWNER_ID, nodeId);
-
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription);
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId);
             return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
         }).toList();
 

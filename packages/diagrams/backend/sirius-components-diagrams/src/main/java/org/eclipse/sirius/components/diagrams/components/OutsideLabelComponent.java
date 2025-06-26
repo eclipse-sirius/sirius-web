@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -42,8 +41,7 @@ public class OutsideLabelComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         OutsideLabelDescription outsideLabelDescription = this.props.getOutsideLabelDescription();
-        String idFromProvider = outsideLabelDescription.getIdProvider().apply(variableManager);
-        String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
+        String id = new LabelIdProvider().getOutsideLabelId(this.props.getParentNodeId(), outsideLabelDescription.getOutsideLabelLocation().name());
         String text = outsideLabelDescription.getTextProvider().apply(variableManager);
 
         LabelStyleDescription labelStyleDescription = outsideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
