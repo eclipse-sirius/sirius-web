@@ -12,20 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.tests.graphql.DeleteListItemMutationRunner;
@@ -42,7 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -94,23 +91,19 @@ public class ListControllerTests extends AbstractIntegrationTests {
         var listId = new AtomicReference<String>();
         var listItemId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var list = groupNavigator.findWidget("Entities", List.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var list = groupNavigator.findWidget("Entities", List.class);
 
-                    assertThat(list.getItems()).hasSize(3);
-                    assertThat(list.getStyle().isUnderline()).isTrue();
-                    assertThat(list.getStyle().isBold()).isTrue();
+            assertThat(list.getItems()).hasSize(3);
+            assertThat(list.getStyle().isUnderline()).isTrue();
+            assertThat(list.getStyle().isBold()).isTrue();
 
-                    listId.set(list.getId());
-                    listItemId.set(list.getItems().get(0).getId());
-                }, () -> fail("Missing form"));
+            listId.set(list.getId());
+            listItemId.set(list.getItems().get(0).getId());
+        });
 
         Runnable deleteListItem = () -> {
             var input = new DeleteListItemInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), listId.get(), listItemId.get());
@@ -120,16 +113,12 @@ public class ListControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var list = groupNavigator.findWidget("Entities", List.class);
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var list = groupNavigator.findWidget("Entities", List.class);
 
-                    assertThat(list.getItems()).hasSize(2);
-                }, () -> fail("Missing form"));
+            assertThat(list.getItems()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

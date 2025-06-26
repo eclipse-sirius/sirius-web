@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Image;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -37,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -85,17 +82,13 @@ public class ImageControllerTests extends AbstractIntegrationTests {
     public void givenImageWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToImageForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var image = groupNavigator.findWidget("Image", Image.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var image = groupNavigator.findWidget("Image", Image.class);
 
-                    assertThat(image.getMaxWidth()).isEqualTo("200px");
-                    assertThat(image.getUrl()).isEqualTo("https://www.example.org/images/test.png");
-                }, () -> fail("Missing form"));
+            assertThat(image.getMaxWidth()).isEqualTo("200px");
+            assertThat(image.getUrl()).isEqualTo("https://www.example.org/images/test.png");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

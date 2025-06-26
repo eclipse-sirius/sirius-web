@@ -12,17 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.charts.piechart.PieChart;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -38,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -86,32 +83,28 @@ public class PieChartControllerTests extends AbstractIntegrationTests {
     public void givenPieChartWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToPieChartForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var chartWidget = groupNavigator.findWidget("Count", ChartWidget.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var chartWidget = groupNavigator.findWidget("Count", ChartWidget.class);
 
-                    assertThat(chartWidget.getChart()).isInstanceOf(PieChart.class);
-                    PieChart pieChart = (PieChart) chartWidget.getChart();
+            assertThat(chartWidget.getChart()).isInstanceOf(PieChart.class);
+            PieChart pieChart = (PieChart) chartWidget.getChart();
 
-                    assertThat(pieChart.getStyle().getFontSize()).isEqualTo(24);
-                    assertThat(pieChart.getStyle().isBold()).isTrue();
-                    assertThat(pieChart.getStyle().isUnderline()).isTrue();
-                    assertThat(pieChart.getStyle().isItalic()).isTrue();
-                    assertThat(pieChart.getStyle().isStrikeThrough()).isTrue();
-                    assertThat(pieChart.getStyle().getStrokeWidth()).isEqualTo(2);
-                    assertThat(pieChart.getStyle().getColors()).isNotEmpty().contains("red");
+            assertThat(pieChart.getStyle().getFontSize()).isEqualTo(24);
+            assertThat(pieChart.getStyle().isBold()).isTrue();
+            assertThat(pieChart.getStyle().isUnderline()).isTrue();
+            assertThat(pieChart.getStyle().isItalic()).isTrue();
+            assertThat(pieChart.getStyle().isStrikeThrough()).isTrue();
+            assertThat(pieChart.getStyle().getStrokeWidth()).isEqualTo(2);
+            assertThat(pieChart.getStyle().getColors()).isNotEmpty().contains("red");
 
-                    assertThat(pieChart.getEntries())
-                            .isNotEmpty()
-                            .anySatisfy(entry -> {
-                                assertThat(entry.getKey()).isEqualTo("Attribute");
-                                assertThat(entry.getValue().intValue()).isPositive();
-                            });
-                }, () -> fail("Missing form"));
+            assertThat(pieChart.getEntries())
+                    .isNotEmpty()
+                    .anySatisfy(entry -> {
+                        assertThat(entry.getKey()).isEqualTo("Attribute");
+                        assertThat(entry.getValue().intValue()).isPositive();
+                    });
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

@@ -13,22 +13,19 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.tree.DomainTreeRepresentationDescriptionProvider;
@@ -44,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -98,12 +93,11 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a domain tree representation, when we subscribe to its event, then the representation data contains a superTypes node")
     public void givenADomainTreeRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataContainsASuperTypesNode() {
-
         var flux = this.givenSubscriptionToTree();
 
         var treeId = new AtomicReference<String>();
 
-        var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             treeId.set(tree.getId());
@@ -126,7 +120,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
                     "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", StudioIdentifiers.DOMAIN_OBJECT.toString()
-                    );
+            );
             var result = this.expandAllTreePathQueryRunner.run(variables);
             List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
@@ -145,7 +139,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
         var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         Flux<Object> expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 
-        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(4);
@@ -159,14 +153,4 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
-    }
 }

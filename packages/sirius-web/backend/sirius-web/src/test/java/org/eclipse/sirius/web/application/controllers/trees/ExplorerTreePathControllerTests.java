@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -31,7 +31,6 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -57,8 +56,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -109,17 +106,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                    treeId.set(tree.getId());
-                }, () -> fail("Missing tree"));
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
 
         Runnable createView = () -> {
             var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), this.papayaViewInjector);
@@ -148,16 +135,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
             objectId.set(successPayload.result().toString());
         };
 
-        Consumer<Object> updatedTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                }, () -> fail("Missing tree"));
+        Consumer<Object> updatedTreeContentConsumer = assertRefreshedTreeThat(tree -> assertThat(tree).isNotNull());
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(

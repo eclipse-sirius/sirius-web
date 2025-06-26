@@ -12,17 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.charts.barchart.BarChart;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -38,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -86,31 +83,27 @@ public class BarChartControllerTests extends AbstractIntegrationTests {
     public void givenBarChartWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToBarChartForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var chartWidget = groupNavigator.findWidget("Count", ChartWidget.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var chartWidget = groupNavigator.findWidget("Count", ChartWidget.class);
 
-                    assertThat(chartWidget.getChart()).isInstanceOf(BarChart.class);
-                    BarChart barChart = (BarChart) chartWidget.getChart();
+            assertThat(chartWidget.getChart()).isInstanceOf(BarChart.class);
+            BarChart barChart = (BarChart) chartWidget.getChart();
 
-                    assertThat(barChart.getStyle().getFontSize()).isEqualTo(24);
-                    assertThat(barChart.getStyle().isBold()).isTrue();
-                    assertThat(barChart.getStyle().isUnderline()).isTrue();
-                    assertThat(barChart.getStyle().isItalic()).isTrue();
-                    assertThat(barChart.getStyle().isStrikeThrough()).isTrue();
-                    assertThat(barChart.getStyle().getBarsColor()).isNotEmpty().contains("red");
+            assertThat(barChart.getStyle().getFontSize()).isEqualTo(24);
+            assertThat(barChart.getStyle().isBold()).isTrue();
+            assertThat(barChart.getStyle().isUnderline()).isTrue();
+            assertThat(barChart.getStyle().isItalic()).isTrue();
+            assertThat(barChart.getStyle().isStrikeThrough()).isTrue();
+            assertThat(barChart.getStyle().getBarsColor()).isNotEmpty().contains("red");
 
-                    assertThat(barChart.getEntries())
-                            .isNotEmpty()
-                            .anySatisfy(entry -> {
-                                assertThat(entry.getKey()).isEqualTo("Attribute");
-                                assertThat(entry.getValue().intValue()).isPositive();
-                            });
-                }, () -> fail("Missing form"));
+            assertThat(barChart.getEntries())
+                    .isNotEmpty()
+                    .anySatisfy(entry -> {
+                        assertThat(entry.getKey()).isEqualTo("Attribute");
+                        assertThat(entry.getValue().intValue()).isPositive();
+                    });
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

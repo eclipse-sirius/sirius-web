@@ -12,12 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.representations;
 
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+
 import com.jayway.jsonpath.JsonPath;
-import graphql.execution.DataFetcherResult;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -42,18 +50,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 /**
  * Integration tests of the representation controllers.
@@ -245,7 +241,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
-        Predicate<Form> formPredicate = form -> {
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("EPackage Portal").group("Core Properties");
 
             var labelTextField = groupNavigator.findWidget("Label", Textfield.class);
@@ -259,22 +255,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             var nameLabel = groupNavigator.findWidget("Description Name", LabelWidget.class);
             assertThat(nameLabel).isNotNull();
             assertThat(nameLabel.getValue()).isEqualTo("Portal");
-
-            return true;
-        };
-
-        Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .filter(formPredicate)
-                .isPresent();
+        });
 
         StepVerifier.create(flux)
-                .expectNextMatches(formContentMatcher)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -291,9 +275,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         var formId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = this.getFormConsumer(form -> {
-            formId.set(form.getId());
-        });
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> formId.set(form.getId()));
 
         Runnable editLabel = () -> {
             var editLabelInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), "metadata.label", "NewPortal");
@@ -303,7 +285,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updateFormLabel = this.getFormConsumer(form -> {
+        Consumer<Object> updateFormLabel = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("NewPortal").group("Core Properties");
 
             var labelTextfield = groupNavigator.findWidget("Label", Textfield.class);
@@ -329,9 +311,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         var formId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = this.getFormConsumer(form -> {
-            formId.set(form.getId());
-        });
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> formId.set(form.getId()));
 
         Runnable editDocumentation = () -> {
             var editDocumentationInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), "metadata.documentation", "This is a documentation");
@@ -341,7 +321,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updateFormDocumentation = this.getFormConsumer(form -> {
+        Consumer<Object> updateFormDocumentation = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("EPackage Portal").group("Core Properties");
 
             var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
@@ -355,18 +335,6 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
                 .consumeNextWith(updateFormDocumentation)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-    }
-
-    private Consumer<Object> getFormConsumer(Consumer<Form> formConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(formConsumer, () -> fail("Missing form"));
-
     }
 
 }

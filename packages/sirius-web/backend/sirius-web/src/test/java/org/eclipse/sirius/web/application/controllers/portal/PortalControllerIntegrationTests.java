@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.portal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.portals.tests.PortalEventPayloadConsumer.assertRefreshedPortalThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -42,7 +43,6 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.portals.tests.graphql.AddPortalViewMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.LayoutPortalMutationRunner;
@@ -64,8 +64,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -146,20 +144,13 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         var portalViewId = new AtomicReference<String>();
         var portalViewCount = new AtomicReference<Integer>();
 
-        Consumer<Object> portalRefreshedEventPayloadConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getViews()).isNotEmpty();
-                    portalViewId.set(portal.getViews().get(0).getId());
-                    portalViewCount.set(portal.getViews().size());
-                    assertThat(portal.getLayoutData().size()).isEqualTo(portalViewCount.get());
-                    assertThat(portal.getLayoutData().get(0).getPortalViewId()).isEqualTo(portalViewId.get());
-                }, () -> fail("Missing portal"));
+        Consumer<Object> initialPortalConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews()).isNotEmpty();
+            portalViewId.set(portal.getViews().get(0).getId());
+            portalViewCount.set(portal.getViews().size());
+            assertThat(portal.getLayoutData().size()).isEqualTo(portalViewCount.get());
+            assertThat(portal.getLayoutData().get(0).getPortalViewId()).isEqualTo(portalViewId.get());
+        });
 
         Runnable removePortalView = () -> {
             var removePortalViewInput = new RemovePortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
@@ -169,22 +160,15 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getViews().size()).isEqualTo(portalViewCount.get() - 1);
-                    assertThat(portal.getViews()).noneMatch(portalView -> portalViewId.get().equals(portalView.getId()));
-                    assertThat(portal.getLayoutData().size()).isEqualTo(portal.getViews().size());
-                    assertThat(portal.getLayoutData()).noneMatch(portalViewLayoutData -> portalViewId.get().equals(portalViewLayoutData.getPortalViewId()));
-                }, () -> fail("Portal should have been updated"));
+        Consumer<Object> updatedPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews().size()).isEqualTo(portalViewCount.get() - 1);
+            assertThat(portal.getViews()).noneMatch(portalView -> portalViewId.get().equals(portalView.getId()));
+            assertThat(portal.getLayoutData().size()).isEqualTo(portal.getViews().size());
+            assertThat(portal.getLayoutData()).noneMatch(portalViewLayoutData -> portalViewId.get().equals(portalViewLayoutData.getPortalViewId()));
+        });
 
         StepVerifier.create(flux)
-                .consumeNextWith(portalRefreshedEventPayloadConsumer)
+                .consumeNextWith(initialPortalConsumer)
                 .then(removePortalView)
                 .consumeNextWith(updatedPortalContentConsumer)
                 .thenCancel()
@@ -224,15 +208,11 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
         var portalId = new AtomicReference<String>();
 
-        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getViews()).isEmpty();
-                    assertThat(portal.getLayoutData()).isEmpty();
-                    portalId.set(portal.getId());
-                }, () -> fail("Missing portal"));
+        Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews()).isEmpty();
+            assertThat(portal.getLayoutData()).isEmpty();
+            portalId.set(portal.getId());
+        });
 
         Runnable addEmptyPortal = () -> {
             var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, portalId.get(),
@@ -243,21 +223,19 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresent(portal -> {
-                    assertThat(portal.getViews()).isNotEmpty();
-                    var portalView = portal.getViews().get(0);
-                    assertThat(portalView.getRepresentationId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-                    assertThat(portal.getLayoutData()).isNotEmpty();
-                    var portalViewLayoutData = portal.getLayoutData().get(0);
-                    assertThat(portalViewLayoutData.getX()).isEqualTo(0);
-                    assertThat(portalViewLayoutData.getY()).isEqualTo(0);
-                    assertThat(portalViewLayoutData.getWidth()).isEqualTo(200);
-                    assertThat(portalViewLayoutData.getHeight()).isEqualTo(300);
-                });
+        Consumer<Object> updatedPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews()).isNotEmpty();
+
+            var portalView = portal.getViews().get(0);
+            assertThat(portalView.getRepresentationId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+            assertThat(portal.getLayoutData()).isNotEmpty();
+
+            var portalViewLayoutData = portal.getLayoutData().get(0);
+            assertThat(portalViewLayoutData.getX()).isEqualTo(0);
+            assertThat(portalViewLayoutData.getY()).isEqualTo(0);
+            assertThat(portalViewLayoutData.getWidth()).isEqualTo(200);
+            assertThat(portalViewLayoutData.getHeight()).isEqualTo(300);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialPortalContentConsumer)
@@ -304,30 +282,16 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         var emptyPortalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
         var emptyPortalEventFlux = this.portalEventSubscriptionRunner.run(emptyPortalEventInput);
 
-        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-                    assertThat(portal.getViews()).map(PortalView::getRepresentationId).contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-                }, () -> fail("Missing portal"));
+        Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+            assertThat(portal.getViews()).map(PortalView::getRepresentationId).contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+        });
 
-        Consumer<Object> emptyPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-                    assertThat(portal.getViews()).isEmpty();
-                    assertThat(portal.getLayoutData()).isEmpty();
-                }, () -> fail("Missing portal"));
+        Consumer<Object> emptyPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+            assertThat(portal.getViews()).isEmpty();
+            assertThat(portal.getLayoutData()).isEmpty();
+        });
 
         Runnable removeExistingRepresentation = () -> {
             var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
@@ -341,18 +305,11 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-                    assertThat(portal.getViews()).isEmpty();
-                    assertThat(portal.getLayoutData()).isEmpty();
-                }, () -> fail("Missing portal"));
+        Consumer<Object> updatedPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+            assertThat(portal.getViews()).isEmpty();
+            assertThat(portal.getLayoutData()).isEmpty();
+        });
 
         StepVerifier.create(Flux.merge(portalEventFlux, emptyPortalEventFlux))
                 .consumeNextWith(initialPortalContentConsumer)
@@ -371,14 +328,10 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getViews()).isEmpty();
-                    assertThat(portal.getLayoutData()).isEmpty();
-                }, () -> fail("Missing Portal"));
+        Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews()).isEmpty();
+            assertThat(portal.getLayoutData()).isEmpty();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialPortalContentConsumer)
@@ -400,24 +353,16 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    representationId.set(portal.getId());
-                    assertThat(portal.getViews()).isEmpty();
-                    assertThat(portal.getLayoutData()).isEmpty();
-                }, () -> fail("Missing Portal"));
+        Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            representationId.set(portal.getId());
+            assertThat(portal.getViews()).isEmpty();
+            assertThat(portal.getLayoutData()).isEmpty();
+        });
 
-        Consumer<Object> secontPortalContentConsumer = payload -> Optional.of(payload)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portal -> {
-                    assertThat(portal.getViews().size()).isEqualTo(1);
-                    assertThat(portal.getLayoutData().size()).isEqualTo(1);
-                }, () -> fail("Missing Portal"));
+        Consumer<Object> secontPortalContentConsumer = assertRefreshedPortalThat(portal -> {
+            assertThat(portal.getViews().size()).isEqualTo(1);
+            assertThat(portal.getLayoutData().size()).isEqualTo(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialPortalContentConsumer)
@@ -453,14 +398,16 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         var subPortalViewId = "9e277e97-7f71-4bdd-99af-9eeb8bd7f2df";
         AtomicReference<RepresentationContent> initialPortalState = new AtomicReference<>(null);
 
-        Consumer<Object> initialPortalContentConsumer = this.portalRefreshedConsumer(portal -> {
+        Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             assertThat(portal.getLayoutData()).hasSize(1);
+
             var layoutData = portal.getLayoutData().get(0);
             assertThat(layoutData.getPortalViewId()).isEqualTo(subPortalViewId);
             assertThat(layoutData.getX()).isZero();
             assertThat(layoutData.getY()).isZero();
             assertThat(layoutData.getWidth()).isEqualTo(500);
             assertThat(layoutData.getHeight()).isEqualTo(200);
+
             var optionalRepresentationMetadata = this.representationContentRepository.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
             assertThat(optionalRepresentationMetadata).isPresent();
             initialPortalState.set(optionalRepresentationMetadata.get());
@@ -472,14 +419,16 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             this.layoutPortalMutationRunner.run(layoutInput);
         };
 
-        Consumer<Object> layoutedPortalContentConsumer = this.portalRefreshedConsumer(portal -> {
+        Consumer<Object> layoutedPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             assertThat(portal.getLayoutData()).hasSize(1);
+
             var layoutData = portal.getLayoutData().get(0);
             assertThat(layoutData.getPortalViewId()).isEqualTo(subPortalViewId);
             assertThat(layoutData.getX()).isEqualTo(50);
             assertThat(layoutData.getY()).isEqualTo(50);
             assertThat(layoutData.getWidth()).isEqualTo(300);
             assertThat(layoutData.getHeight()).isEqualTo(300);
+
             var optionalRepresentationMetadata = this.representationContentRepository.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
             assertThat(optionalRepresentationMetadata).isPresent();
         });
@@ -512,16 +461,5 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialPortalContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-    }
-
-    private Consumer<Object> portalRefreshedConsumer(Consumer<Portal> portalConsumer) {
-        return payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .map(PortalRefreshedEventPayload.class::cast)
-                .map(PortalRefreshedEventPayload::portal)
-                .ifPresentOrElse(portalConsumer, () -> fail("Missing Portal"));
     }
 }

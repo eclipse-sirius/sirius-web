@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 
 import java.util.Objects;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
@@ -45,6 +46,9 @@ public class TableEventSubscriptionRunner implements ISubscriptionRunner<TableEv
 
     @Override
     public Flux<Object> run(TableEventInput input) {
-        return this.graphQLRequestor.subscribe(TABLE_EVENT_SUBSCRIPTION, input);
+        return this.graphQLRequestor.subscribe(TABLE_EVENT_SUBSCRIPTION, input)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData);
     }
 }

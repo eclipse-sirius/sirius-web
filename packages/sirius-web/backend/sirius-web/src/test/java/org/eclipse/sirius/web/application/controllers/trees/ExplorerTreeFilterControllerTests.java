@@ -13,18 +13,16 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
@@ -43,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -97,16 +93,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
-        Consumer<Object> projectContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree.getChildren()).isEmpty();
-                }, () -> fail("Missing tree"));
+        Consumer<Object> projectContentConsumer = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).isEmpty());
 
         StepVerifier.create(flux)
                 .consumeNextWith(projectContentConsumer)
@@ -124,18 +111,11 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
 
         var defaultPaletteTreeItemId = ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.substring((IEMFEditingContext.RESOURCE_SCHEME + ":///").length());
 
-        Consumer<Object> projectContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree.getChildren())
-                            .hasSize(1)
-                            .allSatisfy(treeItem -> assertThat(treeItem.getId()).isEqualTo(defaultPaletteTreeItemId));
-                }, () -> fail("Missing tree"));
+        Consumer<Object> projectContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree.getChildren())
+                    .hasSize(1)
+                    .allSatisfy(treeItem -> assertThat(treeItem.getId()).isEqualTo(defaultPaletteTreeItemId));
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(projectContentConsumer)

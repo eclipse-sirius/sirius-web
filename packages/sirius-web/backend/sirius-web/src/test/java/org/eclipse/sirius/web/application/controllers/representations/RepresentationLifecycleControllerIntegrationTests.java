@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.representations;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.portals.tests.PortalEventPayloadConsumer.assertRefreshedPortalThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -20,8 +21,10 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -31,7 +34,6 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
@@ -59,8 +61,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -180,12 +180,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             TestTransaction.start();
         };
 
-        Predicate<Object> portalRefreshedEventPayloadConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .isPresent();
+        Consumer<Object> portalRefreshedEventPayloadConsumer = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
 
         Predicate<Object> renamedRepresentationEventPayloadConsumer = payload -> Optional.of(payload)
                 .filter(DataFetcherResult.class::isInstance)
@@ -196,7 +191,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
         StepVerifier.create(Flux.merge(editingContextFlux, flux))
                 .then(renameRepresentation)
-                .expectNextMatches(portalRefreshedEventPayloadConsumer)
+                .consumeNextWith(portalRefreshedEventPayloadConsumer)
                 .expectNextMatches(renamedRepresentationEventPayloadConsumer)
                 .thenCancel()
                 .verify();

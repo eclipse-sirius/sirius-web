@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,29 +78,25 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
     public void givenMultiSelectWidgetWithStyleWhenItIsDisplayedThenStyleIsApplied() {
         var flux = this.givenSubscriptionToMultiSelectForm(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
 
-                    assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(multiselect.getStyle().isShowIcon()).isFalse();
-                    assertThat(multiselect.getStyle().isItalic()).isFalse();
-                    assertThat(multiselect.getStyle().isBold()).isFalse();
-                    assertThat(multiselect.getStyle().getFontSize()).isEqualTo(8);
-                    assertThat(multiselect.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("none")
-                            .hasGridTemplateRows("none")
-                            .hasGap("normal")
-                            .hasLabelGridRow("auto")
-                            .hasLabelGridColumn("auto")
-                            .hasWidgetGridColumn("auto")
-                            .hasWidgetGridRow("auto");
-                }, () -> fail("Missing form"));
+            assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+            assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+            assertThat(multiselect.getStyle().isShowIcon()).isFalse();
+            assertThat(multiselect.getStyle().isItalic()).isFalse();
+            assertThat(multiselect.getStyle().isBold()).isFalse();
+            assertThat(multiselect.getStyle().getFontSize()).isEqualTo(8);
+            assertThat(multiselect.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("none")
+                    .hasGridTemplateRows("none")
+                    .hasGap("normal")
+                    .hasLabelGridRow("auto")
+                    .hasLabelGridColumn("auto")
+                    .hasWidgetGridColumn("auto")
+                    .hasWidgetGridRow("auto");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -117,29 +110,25 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
     public void givenMultiSelectWidgetWithConditionalStyleWhenTheConditionIsValidatedThenConditionalStyleIsApplied() {
         var flux = this.givenSubscriptionToMultiSelectForm(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
 
-                    assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    assertThat(multiselect.getStyle().isShowIcon()).isTrue();
-                    assertThat(multiselect.getStyle().isItalic()).isTrue();
-                    assertThat(multiselect.getStyle().isBold()).isTrue();
-                    assertThat(multiselect.getStyle().getFontSize()).isEqualTo(10);
-                    assertThat(multiselect.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("max-content")
-                            .hasGridTemplateRows("max-content")
-                            .hasGap("1px")
-                            .hasLabelGridRow("1")
-                            .hasLabelGridColumn("1")
-                            .hasWidgetGridColumn("2")
-                            .hasWidgetGridRow("2");
-                }, () -> fail("Missing form"));
+            assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+            assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+            assertThat(multiselect.getStyle().isShowIcon()).isTrue();
+            assertThat(multiselect.getStyle().isItalic()).isTrue();
+            assertThat(multiselect.getStyle().isBold()).isTrue();
+            assertThat(multiselect.getStyle().getFontSize()).isEqualTo(10);
+            assertThat(multiselect.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("max-content")
+                    .hasGridTemplateRows("max-content")
+                    .hasGap("1px")
+                    .hasLabelGridRow("1")
+                    .hasLabelGridColumn("1")
+                    .hasWidgetGridColumn("2")
+                    .hasWidgetGridRow("2");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

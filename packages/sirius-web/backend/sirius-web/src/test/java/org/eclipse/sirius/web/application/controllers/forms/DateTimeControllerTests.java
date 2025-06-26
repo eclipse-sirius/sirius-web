@@ -13,21 +13,19 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditDateTimeInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.tests.graphql.EditDateTimeMutationRunner;
@@ -47,8 +45,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -102,20 +98,16 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     public void givenDateTimeWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToDateTimeForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
 
-                    assertThat(dateTime)
-                            .hasLabel("Start Date")
-                            .hasValue("2023-12-11T09:00:00Z")
-                            .hasHelp("The start Date of the Iteration")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(dateTime)
+                    .hasLabel("Start Date")
+                    .hasValue("2023-12-11T09:00:00Z")
+                    .hasHelp("The start Date of the Iteration")
+                    .isNotReadOnly();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -132,18 +124,14 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var dateTimeId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
-                    dateTimeId.set(dateTime.getId());
+            var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
+            dateTimeId.set(dateTime.getId());
 
-                    assertThat(dateTime).hasValue("2023-12-11T09:00:00Z");
-                }, () -> fail("Missing form"));
+            assertThat(dateTime).hasValue("2023-12-11T09:00:00Z");
+        });
 
         Runnable editDateTime = () -> {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), dateTimeId.get(), "2024-02-02T18:00:00.00Z");
@@ -153,14 +141,10 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
-                    assertThat(dateTime).hasValue("2024-02-02T18:00:00Z");
-                }, () -> fail("Missing form"));
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var dateTime = new FormNavigator(form).page("Page").group("Group").findWidget("Start Date", DateTime.class);
+            assertThat(dateTime).hasValue("2024-02-02T18:00:00Z");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -176,26 +160,19 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     public void givenDateTimeWidgetFromDefaultDetailsWhenItIsEditedThenTheValueIsUpdated() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
         var startDate = new AtomicReference<String>();
 
-        Consumer<FormRefreshedEventPayload> initialFormContentConsumer = payload -> Optional.of(payload)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var startDateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
-                    startDate.set(startDateTime.getId());
+            var startDateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+            startDate.set(startDateTime.getId());
 
-                    assertThat(startDateTime).hasValue("2023-12-11T09:00:00Z");
-                }, () -> fail("Missing form"));
+            assertThat(startDateTime).hasValue("2023-12-11T09:00:00Z");
+        });
 
         Runnable editDateTime = () -> {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "2024-02-11T09:00:00Z");
@@ -205,12 +182,10 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
-                    assertThat(dateTime).hasValue("2024-02-11T09:00:00Z");
-                }, () -> fail("Missing form"));
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+            assertThat(dateTime).hasValue("2024-02-11T09:00:00Z");
+        });
 
         Runnable editDateTime2 = () -> {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "");
@@ -220,12 +195,10 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<FormRefreshedEventPayload> updatedFormContentConsumer2 = payload -> Optional.of(payload)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
-                    assertThat(dateTime).hasValue("");
-                }, () -> fail("Missing form"));
+        Consumer<Object> updatedFormContentConsumer2 = assertRefreshedFormThat(form -> {
+            var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+            assertThat(dateTime).hasValue("");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

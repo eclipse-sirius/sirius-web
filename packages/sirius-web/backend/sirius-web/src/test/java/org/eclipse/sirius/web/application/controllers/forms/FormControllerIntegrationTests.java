@@ -14,12 +14,12 @@ package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
@@ -56,7 +55,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -108,21 +106,17 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var selectId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    // The form contains two widgets displaying both the value of a semantic element...
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            // The form contains two widgets displaying both the value of a semantic element...
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var richText = groupNavigator.findWidget("RichText", RichText.class);
-                    assertThat(richText).hasValue("first");
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var richText = groupNavigator.findWidget("RichText", RichText.class);
+            assertThat(richText).hasValue("first");
 
-                    var select = groupNavigator.findWidget("Select", Select.class);
-                    selectId.set(select.getId());
-                }, () -> fail("Missing form"));
+            var select = groupNavigator.findWidget("Select", Select.class);
+            selectId.set(select.getId());
+        });
 
         Runnable changeMasterValue = () -> {
             // ... updating the value with the select ...
@@ -137,16 +131,12 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
             TestTransaction.start();
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    // ... updates the value of the rich text
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var richText = groupNavigator.findWidget("RichText", RichText.class);
-                    assertThat(richText).hasValue("second");
-                }, () -> fail("Missing form"));
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            // ... updates the value of the rich text
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var richText = groupNavigator.findWidget("RichText", RichText.class);
+            assertThat(richText).hasValue("second");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -169,18 +159,14 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var listWidget = groupNavigator.findWidget("List", org.eclipse.sirius.components.forms.List.class);
-                    assertThat(listWidget.getItems()).hasSize(1);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var listWidget = groupNavigator.findWidget("List", org.eclipse.sirius.components.forms.List.class);
+            assertThat(listWidget.getItems()).hasSize(1);
 
-                    var treeWidget = groupNavigator.findWidget("Tree", TreeWidget.class);
-                    assertThat(treeWidget).hasCheckedTreeItemsSize(1);
-                }, () -> fail("Missing form"));
+            var treeWidget = groupNavigator.findWidget("Tree", TreeWidget.class);
+            assertThat(treeWidget).hasCheckedTreeItemsSize(1);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -204,22 +190,18 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         var formId =  new AtomicReference<String>();
         var representationMetadata = new AtomicReference<RepresentationMetadata>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var listWidget = groupNavigator.findWidget("List", org.eclipse.sirius.components.forms.List.class);
-                    assertThat(listWidget.getItems()).hasSize(1);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var listWidget = groupNavigator.findWidget("List", org.eclipse.sirius.components.forms.List.class);
+            assertThat(listWidget.getItems()).hasSize(1);
 
-                    var treeWidget = groupNavigator.findWidget("Tree", TreeWidget.class);
-                    assertThat(treeWidget).hasCheckedTreeItemsSize(1);
+            var treeWidget = groupNavigator.findWidget("Tree", TreeWidget.class);
+            assertThat(treeWidget).hasCheckedTreeItemsSize(1);
 
-                    var representationId = new UUIDParser().parse(form.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    formId.set(form.getId());
-                    this.representationMetadataRepository.findById(representationId).ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
-                }, () -> fail("Missing form"));
+            var representationId = new UUIDParser().parse(form.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
+            formId.set(form.getId());
+            this.representationMetadataRepository.findById(representationId).ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
+        });
 
         Runnable reloadForm = () -> {
             // Ask the Form to reload (and thus to refresh)

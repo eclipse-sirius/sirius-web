@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -37,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -85,18 +82,14 @@ public class ForIfControllerTests extends AbstractIntegrationTests {
     public void givenFormWithForAndIfWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToForIfForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var upperFirstTextfield = groupNavigator.findWidget("Name", Textfield.class);
-                    assertThat(upperFirstTextfield).hasLabel("Name").hasValue("buck");
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var upperFirstTextfield = groupNavigator.findWidget("Name", Textfield.class);
+            assertThat(upperFirstTextfield).hasLabel("Name").hasValue("buck");
 
-                    var upperTextfield = groupNavigator.findWidget("NAME", Textfield.class);
-                    assertThat(upperTextfield).hasLabel("NAME").hasValue("buck");
-                }, () -> fail("Missing form"));
+            var upperTextfield = groupNavigator.findWidget("NAME", Textfield.class);
+            assertThat(upperTextfield).hasLabel("NAME").hasValue("buck");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

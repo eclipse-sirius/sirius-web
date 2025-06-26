@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -38,8 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -73,20 +69,13 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
         var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
-        Consumer<Object> initialformContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var formNavigator = new FormNavigator(form);
-                    var listWidget = formNavigator.page(RepresentationsFormDescriptionProvider.PAGE_LABEL)
-                            .group(RepresentationsFormDescriptionProvider.GROUP_LABEL)
-                            .findWidget("Representations", org.eclipse.sirius.components.forms.List.class);
-                    assertThat(listWidget).hasListItemWithLabel("Portal");
-                }, () -> fail("missing form"));
+        Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {
+            var formNavigator = new FormNavigator(form);
+            var listWidget = formNavigator.page(RepresentationsFormDescriptionProvider.PAGE_LABEL)
+                    .group(RepresentationsFormDescriptionProvider.GROUP_LABEL)
+                    .findWidget("Representations", org.eclipse.sirius.components.forms.List.class);
+            assertThat(listWidget).hasListItemWithLabel("Portal");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialformContentConsumer)
@@ -102,20 +91,13 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
         var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
-        Consumer<Object> initialformContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var formNavigator = new FormNavigator(form);
-                    var treeWidget = formNavigator.page(RepresentationsFormDescriptionProvider.PAGE_LABEL)
-                            .group(RepresentationsFormDescriptionProvider.GROUP_LABEL)
-                            .findWidget("Portal contents", TreeWidget.class);
-                    assertThat(treeWidget).hasTreeItemWithLabel("Portal");
-                }, () -> fail("missing form"));
+        Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {
+            var formNavigator = new FormNavigator(form);
+            var treeWidget = formNavigator.page(RepresentationsFormDescriptionProvider.PAGE_LABEL)
+                    .group(RepresentationsFormDescriptionProvider.GROUP_LABEL)
+                    .findWidget("Portal contents", TreeWidget.class);
+            assertThat(treeWidget).hasTreeItemWithLabel("Portal");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialformContentConsumer)

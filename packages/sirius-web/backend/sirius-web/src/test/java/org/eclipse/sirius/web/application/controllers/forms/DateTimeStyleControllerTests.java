@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,27 +78,23 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
     public void givenDateTimeWidgetWithStyleWhenItIsDisplayedThenStyleIsApplied() {
         var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
 
-                    assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    assertThat(dateTime.getStyle().isItalic()).isFalse();
-                    assertThat(dateTime.getStyle().isBold()).isFalse();
-                    assertThat(dateTime.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("none")
-                            .hasGridTemplateRows("none")
-                            .hasGap("normal")
-                            .hasLabelGridRow("auto")
-                            .hasLabelGridColumn("auto")
-                            .hasWidgetGridColumn("auto")
-                            .hasWidgetGridRow("auto");
-                }, () -> fail("Missing form"));
+            assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+            assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+            assertThat(dateTime.getStyle().isItalic()).isFalse();
+            assertThat(dateTime.getStyle().isBold()).isFalse();
+            assertThat(dateTime.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("none")
+                    .hasGridTemplateRows("none")
+                    .hasGap("normal")
+                    .hasLabelGridRow("auto")
+                    .hasLabelGridColumn("auto")
+                    .hasWidgetGridColumn("auto")
+                    .hasWidgetGridRow("auto");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -115,33 +108,28 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
     public void givenDateTimeWidgetWithConditionalStyleWhenTheConditionIsValidatedThenConditionalStyleIsApplied() {
         var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.SECOND_ITERATION_OBJECT.toString());
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
 
-                    assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    assertThat(dateTime.getStyle().isItalic()).isTrue();
-                    assertThat(dateTime.getStyle().isBold()).isTrue();
-                    assertThat(dateTime.getStyle().getWidgetGridLayout())
-                            .hasGridTemplateColumns("max-content")
-                            .hasGridTemplateRows("max-content")
-                            .hasGap("1px")
-                            .hasLabelGridRow("1")
-                            .hasLabelGridColumn("1")
-                            .hasWidgetGridColumn("2")
-                            .hasWidgetGridRow("2");
-                }, () -> fail("Missing form"));
+            assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+            assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+            assertThat(dateTime.getStyle().isItalic()).isTrue();
+            assertThat(dateTime.getStyle().isBold()).isTrue();
+            assertThat(dateTime.getStyle().getWidgetGridLayout())
+                    .hasGridTemplateColumns("max-content")
+                    .hasGridTemplateRows("max-content")
+                    .hasGap("1px")
+                    .hasLabelGridRow("1")
+                    .hasLabelGridColumn("1")
+                    .hasWidgetGridColumn("2")
+                    .hasWidgetGridRow("2");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
-
 
 }

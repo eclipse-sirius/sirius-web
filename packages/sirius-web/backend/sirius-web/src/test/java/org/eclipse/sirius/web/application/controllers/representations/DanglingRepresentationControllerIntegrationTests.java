@@ -13,17 +13,16 @@
 package org.eclipse.sirius.web.application.controllers.representations;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.portals.tests.PortalEventPayloadConsumer.assertRefreshedPortalThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
-import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -43,8 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -78,12 +75,7 @@ public class DanglingRepresentationControllerIntegrationTests extends AbstractIn
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
-        Predicate<Object> portalContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(PortalRefreshedEventPayload.class::isInstance)
-                .isPresent();
+        Consumer<Object> portalContentMatcher = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
 
         Runnable deleteProjectContent = () -> {
             BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, input) -> {
@@ -106,7 +98,7 @@ public class DanglingRepresentationControllerIntegrationTests extends AbstractIn
         };
 
         StepVerifier.create(portalFlux)
-                .expectNextMatches(portalContentMatcher)
+                .consumeNextWith(portalContentMatcher)
                 .then(deleteProjectContent)
                 .expectComplete()
                 .verify(Duration.ofSeconds(10));
