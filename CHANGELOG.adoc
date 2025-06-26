@@ -84,6 +84,8 @@ In this package, you can now find the following default implementations:
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] `SingleClickTreeItemContextMenuEntry` has a new field `withImpactAnalysis` that needs to be filled by the backend.
+- https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] The `EditingContextSnapshotService` now handles semantic data's dependencies.
+The method `void restore(IEditingContext, IEditingContextSnapshot)` has been updated to `void restore(IEditingContext, IEditingContextSnapshot, ICause cause)` to reflect this change.
 
 === Dependency update
 
@@ -118,6 +120,10 @@ Tools are now invoked in the `DiagramToolExecutor` context, which ensures that t
 The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
 - https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] Add support for impact analysis in tree item contextual menu actions.
 - https://github.com/eclipse-sirius/sirius-web/issues/5123[#5123] [tree] Add support for tree item context menu action impact analysis in the view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] Add impact analysis before performing a library update.
+The impact analysis report displays the following information:
+* Number of references that will be broken by the update (new proxies that won't be resolved after the update)
+* Number of references that will be fixed by the update (old proxies that will be resolved after the update)
 
 
 == v2025.6.0

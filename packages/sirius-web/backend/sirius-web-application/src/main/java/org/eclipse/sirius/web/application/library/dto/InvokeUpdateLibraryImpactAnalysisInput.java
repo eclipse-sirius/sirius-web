@@ -10,21 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.library.dto;
 
-import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Creates and restores snapshots of editing contexts.
+ * The input for the update library "impact analysis" query.
  *
  * @author gdaniel
  */
-public interface IEditingContextSnapshotService {
+public record InvokeUpdateLibraryImpactAnalysisInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UUID libraryId) implements IInput {
 
-    Optional<IEditingContextSnapshot> createSnapshot(IEditingContext editingContext);
-
-    void restoreSnapshot(IEditingContext editingContext, IEditingContextSnapshot snapshot, ICause cause);
 }

@@ -43,6 +43,10 @@ extend type Object {
   library: Library
 }
 
+extend type EditingContext {
+  updateLibraryImpactAnalysisReport(libraryId: ID!): ImpactAnalysisReport!
+}
+
 input PublishLibrariesInput {
   id: ID!
   projectId: ID!
