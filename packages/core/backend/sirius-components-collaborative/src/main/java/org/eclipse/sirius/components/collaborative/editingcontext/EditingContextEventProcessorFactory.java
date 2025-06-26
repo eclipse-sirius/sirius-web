@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -36,13 +37,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextEventProcessorFactory implements IEditingContextEventProcessorFactory {
 
+    private final IDanglingRepresentationDeletionService representationDeletionService;
+
+    private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
-
-    private final IDanglingRepresentationDeletionService representationDeletionService;
 
     private final IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
@@ -52,11 +55,12 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
+    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, IRepresentationEventProcessorRegistry representationEventProcessorRegistry, EditingContextEventProcessorFactoryParameters parameters) {
+        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
+        this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
-        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
         this.executorServiceProvider = parameters.getExecutorServiceProvider();
         this.inputPreProcessors = parameters.getInputPreProcessors();
         this.inputPostProcessors = parameters.getInputPostProcessors();
@@ -67,10 +71,11 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
         var parameters = EditingContextEventProcessorParameters.newEditingContextEventProcessorParameters()
                 .editingContext(editingContext)
+                .danglingRepresentationDeletionService(this.representationDeletionService)
+                .representationEventProcessorRegistry(this.representationEventProcessorRegistry)
                 .editingContextPersistenceService(this.editingContextPersistenceService)
                 .editingContextEventHandlers(this.editingContextEventHandlers)
                 .representationEventProcessorComposedFactory(this.representationEventProcessorComposedFactory)
-                .danglingRepresentationDeletionService(this.representationDeletionService)
                 .executorServiceProvider(this.executorServiceProvider)
                 .inputPreProcessors(this.inputPreProcessors)
                 .inputPostProcessors(this.inputPostProcessors)
