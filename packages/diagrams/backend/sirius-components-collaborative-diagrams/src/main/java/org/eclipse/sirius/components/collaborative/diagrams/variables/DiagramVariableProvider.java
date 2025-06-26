@@ -45,7 +45,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramVariableProvider implements IVariableProvider {
 
-    public static final Variable OWNER_ID = new Variable("ownerId", List.of(String.class), "The identifier of the node");
     public static final Variable LABEL = new Variable("label", List.of(String.class), "The label of the diagram");
     public static final Variable DIAGRAM_EVENT = new Variable("diagramEvent", List.of(IDiagramEvent.class), "Indicates the potential event which has triggered a new rendering");
     public static final Variable PREVIOUS_DIAGRAM = new Variable("previousDiagram", List.of(Diagram.class), "The diagram rendered during the previous refresh");
@@ -74,7 +73,7 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> nodeSemanticCandidates() {
-        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, SEMANTIC_ELEMENT_IDS, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, LABEL, OWNER_ID, CommonVariables.ENVIRONMENT, ANCESTORS);
+        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, SEMANTIC_ELEMENT_IDS, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, LABEL, CommonVariables.ENVIRONMENT, ANCESTORS);
     }
 
     private List<Variable> nodePrecondition() {
@@ -102,6 +101,6 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> edgeLabels() {
-        return List.of(CommonVariables.SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, CACHE,  LABEL, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, CACHE, LABEL, CommonVariables.ENVIRONMENT);
     }
 }

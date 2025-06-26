@@ -122,7 +122,6 @@ public class DiagramElementChangeVisibilityTests {
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
-                .idProvider(variableManager -> INSIDE_LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)

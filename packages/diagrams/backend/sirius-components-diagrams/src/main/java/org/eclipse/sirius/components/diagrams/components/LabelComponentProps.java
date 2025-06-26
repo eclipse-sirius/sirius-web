@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,10 +31,16 @@ public class LabelComponentProps implements IProps {
 
     private final String type;
 
-    public LabelComponentProps(VariableManager variableManager, LabelDescription labelDescription, String type) {
+    private final String parentEdgeId;
+
+    private final String position;
+
+    public LabelComponentProps(VariableManager variableManager, LabelDescription labelDescription, String type, String parentEdgeId, String position) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.labelDescription = Objects.requireNonNull(labelDescription);
         this.type = Objects.requireNonNull(type);
+        this.parentEdgeId = Objects.requireNonNull(parentEdgeId);
+        this.position = Objects.requireNonNull(position);
     }
 
     public VariableManager getVariableManager() {
@@ -49,4 +55,11 @@ public class LabelComponentProps implements IProps {
         return this.type;
     }
 
+    public String getParentEdgeId() {
+        return this.parentEdgeId;
+    }
+
+    public String getPosition() {
+        return this.position;
+    }
 }

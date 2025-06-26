@@ -287,7 +287,6 @@ public class UnsynchronizedDiagramTests {
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
-                .idProvider(variableManager -> "insideLabelId")
                 .textProvider(variableManager -> "label")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,9 +29,12 @@ public class OutsideLabelComponentProps implements IProps {
 
     private final OutsideLabelDescription outsideLabelDescription;
 
-    public OutsideLabelComponentProps(VariableManager variableManager, OutsideLabelDescription labelDescription) {
+    private final String parentNodeId;
+
+    public OutsideLabelComponentProps(VariableManager variableManager, OutsideLabelDescription labelDescription, String parentNodeId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.outsideLabelDescription = Objects.requireNonNull(labelDescription);
+        this.parentNodeId = Objects.requireNonNull(parentNodeId);
     }
 
     public VariableManager getVariableManager() {
@@ -42,4 +45,7 @@ public class OutsideLabelComponentProps implements IProps {
         return this.outsideLabelDescription;
     }
 
+    public String getParentNodeId() {
+        return this.parentNodeId;
+    }
 }

@@ -94,7 +94,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
@@ -126,7 +125,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
@@ -214,7 +212,6 @@ public class DiagramRendererNodeTests {
                 .build();
 
         InsideLabelDescription insideLbelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
-                .idProvider(variableManager -> INSIDE_LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)

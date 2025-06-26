@@ -82,7 +82,9 @@ In this package, you can now find the following default implementations:
 * `DefaultLabelService`
 * `DefaultObjectSearchService`
 * `DefaultReadOnlyObjectPredicate`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] The `idProvider` has been removed from `InsideLabelDescription`, `OutsideLabelDescription` and `LabelDescription`.
+`LabelIdProvider` is now used to calculate a label's id.
+Note that the `OWNER_ID` variable has also been removed.
 
 
 === Dependency update
@@ -116,6 +118,7 @@ In this package, you can now find the following default implementations:
 - https://github.com/eclipse-sirius/sirius-web/issues/5103[#5103] [sirius-web] Make `ExpandAllTreeItemContextMenuContribution` reusable by downstream applications
 - https://github.com/eclipse-sirius/sirius-web/issues/5089[#5089] [diagram] Add new `ancestors` variable to Nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5097[#5097] [sirius-web] Remove state machine from widget reference
+- https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] Remove `idProvider` from label descriptions
 
 
 

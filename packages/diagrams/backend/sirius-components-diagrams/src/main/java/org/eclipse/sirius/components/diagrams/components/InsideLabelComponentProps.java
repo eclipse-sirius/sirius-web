@@ -34,14 +34,17 @@ public class InsideLabelComponentProps implements IProps {
     private final InsideLabelDescription insideLabelDescription;
 
     private final Optional<InsideLabel> previousLabel;
+    
+    private final String parentNodeId;
 
-    private List<IDiagramEvent> diagramEvents;
+    private final List<IDiagramEvent> diagramEvents;
 
-    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> previousLabel, List<IDiagramEvent> diagramEvents) {
+    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> previousLabel, List<IDiagramEvent> diagramEvents, String parentNodeId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.insideLabelDescription = Objects.requireNonNull(labelDescription);
         this.previousLabel = Objects.requireNonNull(previousLabel);
         this.diagramEvents = Objects.requireNonNull(diagramEvents);
+        this.parentNodeId = Objects.requireNonNull(parentNodeId);
     }
 
     public VariableManager getVariableManager() {
@@ -58,5 +61,9 @@ public class InsideLabelComponentProps implements IProps {
 
     public List<IDiagramEvent> getDiagramEvents() {
         return this.diagramEvents;
+    }
+
+    public String getParentNodeId() {
+        return this.parentNodeId;
     }
 }

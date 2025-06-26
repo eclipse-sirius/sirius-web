@@ -530,7 +530,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")
-                .idProvider(vm -> "")
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
                 .isHeaderProvider(vm -> false)

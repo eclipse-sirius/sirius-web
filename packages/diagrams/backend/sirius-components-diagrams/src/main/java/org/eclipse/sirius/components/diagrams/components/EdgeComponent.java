@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps.Builder;
@@ -392,20 +391,19 @@ public class EdgeComponent implements IComponent {
         List<Element> edgeChildren = new ArrayList<>();
 
         VariableManager labelVariableManager = edgeVariableManager.createChild();
-        labelVariableManager.put(LabelDescription.OWNER_ID, edgeId);
 
         Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_BEGIN.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_BEGIN.getValue(), edgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX);
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
         Optional.ofNullable(edgeDescription.getCenterLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_CENTER.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_CENTER.getValue(), edgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX);
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
         Optional.ofNullable(edgeDescription.getEndLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_END.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_END.getValue(), edgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX);
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
