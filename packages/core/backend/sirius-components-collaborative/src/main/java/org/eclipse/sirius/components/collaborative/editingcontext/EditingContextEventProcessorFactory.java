@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -52,11 +53,14 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
+    private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
+    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters, IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
         this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
         this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
+        this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.executorServiceProvider = parameters.getExecutorServiceProvider();
         this.inputPreProcessors = parameters.getInputPreProcessors();
         this.inputPostProcessors = parameters.getInputPostProcessors();
@@ -74,6 +78,7 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
                 .executorServiceProvider(this.executorServiceProvider)
                 .inputPreProcessors(this.inputPreProcessors)
                 .inputPostProcessors(this.inputPostProcessors)
+                .representationEventProcessorRegistry(this.representationEventProcessorRegistry)
                 .meterRegistry(this.meterRegistry)
                 .build();
         return new EditingContextEventProcessor(parameters);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -40,7 +41,8 @@ public record EditingContextEventProcessorParameters(
         IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
         List<IInputPreProcessor> inputPreProcessors,
         List<IInputPostProcessor> inputPostProcessors,
-        MeterRegistry meterRegistry
+        MeterRegistry meterRegistry,
+        IRepresentationEventProcessorRegistry representationEventProcessorRegistry
 ) {
 
     public EditingContextEventProcessorParameters {
@@ -53,6 +55,7 @@ public record EditingContextEventProcessorParameters(
         Objects.requireNonNull(inputPreProcessors);
         Objects.requireNonNull(inputPostProcessors);
         Objects.requireNonNull(meterRegistry);
+        Objects.requireNonNull(representationEventProcessorRegistry);
     }
 
     public static EditingContextEventProcessorParametersBuilder newEditingContextEventProcessorParameters() {
@@ -85,6 +88,8 @@ public record EditingContextEventProcessorParameters(
         private List<IInputPostProcessor> inputPostProcessors;
 
         private MeterRegistry meterRegistry;
+
+        private IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
         private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
@@ -135,6 +140,11 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
+        public EditingContextEventProcessorParametersBuilder representationEventProcessorRegistry(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+            this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
+            return this;
+        }
+
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
                     this.editingContext,
@@ -145,7 +155,8 @@ public record EditingContextEventProcessorParameters(
                     this.executorServiceProvider,
                     this.inputPreProcessors,
                     this.inputPostProcessors,
-                    this.meterRegistry
+                    this.meterRegistry,
+                    this.representationEventProcessorRegistry
             );
         }
     }
