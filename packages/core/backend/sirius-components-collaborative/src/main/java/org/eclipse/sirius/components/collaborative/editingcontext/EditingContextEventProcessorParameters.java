@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,10 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.springframework.context.ApplicationEventPublisher;
 
 /**
  * Parameters of the editing context event processor.
@@ -34,24 +33,21 @@ import org.springframework.context.ApplicationEventPublisher;
  * @author sbegaudeau
  */
 public record EditingContextEventProcessorParameters(
-        ICollaborativeMessageService messageService,
         IEditingContext editingContext,
         IEditingContextPersistenceService editingContextPersistenceService,
-        ApplicationEventPublisher applicationEventPublisher,
         List<IEditingContextEventHandler> editingContextEventHandlers,
         IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
         IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
         IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
         List<IInputPreProcessor> inputPreProcessors,
         List<IInputPostProcessor> inputPostProcessors,
-        MeterRegistry meterRegistry
+        MeterRegistry meterRegistry,
+        IRepresentationEventProcessorRegistry representationEventProcessorRegistry
 ) {
 
     public EditingContextEventProcessorParameters {
-        Objects.requireNonNull(messageService);
         Objects.requireNonNull(editingContext);
         Objects.requireNonNull(editingContextPersistenceService);
-        Objects.requireNonNull(applicationEventPublisher);
         Objects.requireNonNull(editingContextEventHandlers);
         Objects.requireNonNull(representationEventProcessorComposedFactory);
         Objects.requireNonNull(danglingRepresentationDeletionService);
@@ -59,6 +55,7 @@ public record EditingContextEventProcessorParameters(
         Objects.requireNonNull(inputPreProcessors);
         Objects.requireNonNull(inputPostProcessors);
         Objects.requireNonNull(meterRegistry);
+        Objects.requireNonNull(representationEventProcessorRegistry);
     }
 
     public static EditingContextEventProcessorParametersBuilder newEditingContextEventProcessorParameters() {
@@ -74,13 +71,9 @@ public record EditingContextEventProcessorParameters(
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class EditingContextEventProcessorParametersBuilder {
 
-        private ICollaborativeMessageService messageService;
-
         private IEditingContext editingContext;
 
         private IEditingContextPersistenceService editingContextPersistenceService;
-
-        private ApplicationEventPublisher applicationEventPublisher;
 
         private List<IEditingContextEventHandler> editingContextEventHandlers;
 
@@ -96,13 +89,10 @@ public record EditingContextEventProcessorParameters(
 
         private MeterRegistry meterRegistry;
 
+        private IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
         private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
-        }
-
-        public EditingContextEventProcessorParametersBuilder messageService(ICollaborativeMessageService messageService) {
-            this.messageService = Objects.requireNonNull(messageService);
-            return this;
         }
 
         public EditingContextEventProcessorParametersBuilder editingContext(IEditingContext editingContext) {
@@ -112,11 +102,6 @@ public record EditingContextEventProcessorParameters(
 
         public EditingContextEventProcessorParametersBuilder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
             this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-            return this;
-        }
-
-        public EditingContextEventProcessorParametersBuilder applicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-            this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
             return this;
         }
 
@@ -155,19 +140,23 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
+        public EditingContextEventProcessorParametersBuilder representationEventProcessorRegistry(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+            this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
+            return this;
+        }
+
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
-                    this.messageService,
                     this.editingContext,
                     this.editingContextPersistenceService,
-                    this.applicationEventPublisher,
                     this.editingContextEventHandlers,
                     this.representationEventProcessorComposedFactory,
                     this.danglingRepresentationDeletionService,
                     this.executorServiceProvider,
                     this.inputPreProcessors,
                     this.inputPostProcessors,
-                    this.meterRegistry
+                    this.meterRegistry,
+                    this.representationEventProcessorRegistry
             );
         }
     }

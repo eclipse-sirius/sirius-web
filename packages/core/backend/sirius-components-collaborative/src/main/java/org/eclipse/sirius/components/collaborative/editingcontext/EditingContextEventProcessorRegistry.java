@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -57,12 +58,16 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Map<String, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
+    private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
+
     public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IEditingContextSearchService editingContextSearchService,
-            List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks,
-            @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay) {
+                                                List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks,
+                                                @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay,
+                                                IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
         this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextEventProcessorInitializationHooks = Objects.requireNonNull(editingContextEventProcessorInitializationHooks);
+        this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.disposeDelay = disposeDelay;
     }
 
@@ -97,7 +102,7 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
                     Disposable subscription = editingContextEventProcessor.canBeDisposed().delayElements(this.disposeDelay).subscribe(canBeDisposed -> {
                         // We will wait for the delay before trying to dispose the editing context event processor
                         // We will check if the editing context event processor is still empty
-                        if (canBeDisposed.booleanValue() && editingContextEventProcessor.getRepresentationEventProcessors().isEmpty()) {
+                        if (canBeDisposed.booleanValue() && representationEventProcessorRegistry.values(editingContextId).isEmpty()) {
                             this.disposeEditingContextEventProcessor(editingContextId);
                         } else {
                             this.logger.trace("Stopping the disposal of the editing context");
