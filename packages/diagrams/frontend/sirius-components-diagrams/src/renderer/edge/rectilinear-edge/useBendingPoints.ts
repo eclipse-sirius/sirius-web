@@ -185,7 +185,7 @@ export const useBendingPoints = (
         }
       }
     }
-  }, [sourcePosition, customEdge]);
+  }, [sourcePosition]);
 
   useEffect(() => {
     if (customEdge) {
@@ -207,7 +207,7 @@ export const useBendingPoints = (
         }
       }
     }
-  }, [targetPosition, customEdge]);
+  }, [targetPosition]);
 
   return {
     localBendingPoints,

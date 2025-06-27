@@ -50,28 +50,28 @@ export const getNodesUpdatedWithHandles = (
 
     if (position === Position.Top) {
       XYPosition = {
-        ...XYPosition,
         x: XYPosition.x - HANDLE_OFFSET,
+        y: 0,
       };
     }
 
     if (position === Position.Bottom) {
       XYPosition = {
         x: XYPosition.x - HANDLE_OFFSET,
-        y: XYPosition.y - node.height - DEFAULT_HANDLE_SIZE,
+        y: -DEFAULT_HANDLE_SIZE,
       };
     }
 
     if (position === Position.Right) {
       XYPosition = {
         y: XYPosition.y - HANDLE_OFFSET,
-        x: XYPosition.x - node.width - DEFAULT_HANDLE_SIZE,
+        x: -DEFAULT_HANDLE_SIZE,
       };
     }
 
     if (position === Position.Left) {
       XYPosition = {
-        ...XYPosition,
+        x: 0,
         y: XYPosition.y - HANDLE_OFFSET,
       };
     }
