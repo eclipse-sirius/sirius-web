@@ -23,6 +23,11 @@ type Deck implements Representation {
   style: DeckStyle
 }
 
+type DeckDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
 type DeckStyle {
   backgroundColor: String!
 }
