@@ -222,6 +222,33 @@ export class Diagram {
     });
   }
 
+  public moveRightHandleToLeftPosition(selector): void {
+    const diagram = new Diagram();
+    let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
+    diagram.getNodes('Topography', selector).then(($el) => {
+      if ($el[0]) {
+        const rect = $el[0].getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+        initialWidth = rect.width;
+        initialHeight = rect.height;
+
+        const centerX = initialLeft + initialWidth / 2;
+        const centerY = initialTop + initialHeight / 2;
+        cy.get('@edge')
+          .get('.react-flow__edgeupdater.react-flow__edgeupdater-source')
+          .trigger('mousedown', { force: true, button: 0 });
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(50);
+
+        cy.get('#root').trigger('mousemove', centerX - 10, centerY, { force: true });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.get('#root').wait(50).trigger('mouseup', { view: window, force: true });
+      }
+    });
+  }
+
   public resizeNode(direction: 'top.left' | 'top.right' | 'bottom.left' | 'bottom.right', { x, y }): void {
     cy.window().then((window) => {
       // eslint-disable-next-line cypress/no-assigning-return-values

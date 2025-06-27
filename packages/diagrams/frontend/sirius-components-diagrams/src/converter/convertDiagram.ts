@@ -31,6 +31,7 @@ import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHand
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
+import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { EdgeAnchorNodeData } from '../renderer/node/EdgeAnchorNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
@@ -283,6 +284,7 @@ export const convertDiagram = (
     nodeLookUp.set(node.id, node);
   });
 
+  updateHandleViewModifier(rawDiagram.nodes, state);
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
   layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
