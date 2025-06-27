@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useRef, RefObject, useContext } from 'react';
 import { useViewport } from '@xyflow/react';
+import { RefObject, useContext, useRef } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
-import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 
 export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) => {
   const { zoom } = useViewport();
@@ -33,7 +33,10 @@ export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) =
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
-      <circle style={{ pointerEvents: 'all' }} ref={nodeRef} r={3} fill={'black'} data-testid={`bend-point-${index}`} />
+      <g ref={nodeRef} data-testid={`bend-point-${index}`}>
+        <circle style={{ pointerEvents: 'all' }} r={10} fill={'transparent'} />
+        <circle style={{ pointerEvents: 'none' }} r={3} fill={'black'} />
+      </g>
     </Draggable>
   );
 };

@@ -134,6 +134,7 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 - https://github.com/eclipse-sirius/sirius-web/issues/5097[#5097] [sirius-web] Remove state machine from widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] Remove `idProvider` from label descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/5011[#5011] [diagram] Improve feedback for nodes with list layout strategy when resizing and moving in the same action
+- https://github.com/eclipse-sirius/sirius-web/issues/5064[#5064] [diagram] Increase the interaction radius of bendpoints, they are now easier to move
 
 
 
