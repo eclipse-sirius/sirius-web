@@ -40,6 +40,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * AutoConfiguration of the Sirius Web application.
@@ -143,7 +144,8 @@ public class SiriusWebStarterConfiguration {
                 return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
                         .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
                         .map(representationEventProcessor -> customizeFlux(editingContextId, representationId, input, representationEventProcessor))
-                        .orElse(Flux.empty());
+                        .orElse(Flux.empty())
+                        .publishOn(Schedulers.newSingle("Representation publishing thread - {editingContextId: " + editingContextId + ", representationId: " + representationId + "}"));
             }
         };
     }
