@@ -126,6 +126,7 @@ Utility classes to help create assertions on those flux have been introduced to 
 - https://github.com/eclipse-sirius/sirius-web/issues/5097[#5097] [sirius-web] Remove state machine from widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] Remove `idProvider` from label descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/5011[#5011] [diagram] Improve feedback for nodes with list layout strategy when resizing and moving in the same action
+- https://github.com/eclipse-sirius/sirius-web/issues/5091[#5091] [sirius-web] Remove state machine from EditProjectNavbar and from modals used to manage project images
 
 
 
