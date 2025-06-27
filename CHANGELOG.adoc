@@ -147,6 +147,7 @@ In case of issue with this change, it may have a performance impact and also be 
 === Shapes
 
 - Control the views available in a workbench
+- Add impact analysis before tool execution in trees
 
 
 === Architectural decision records
@@ -156,6 +157,7 @@ In case of issue with this change, it may have a performance impact and also be 
 - [ADR-194] Add the ability to contribute new actions to manage the visibility
 - [ADR-195] Control the views available in a workbench
 - [ADR-196] Add the ability to contribute custom actions on graphical deletion
+- [ADR-197] Add impact analysis for contextual menu actions of trees
 
 === Deprecation warning
 
