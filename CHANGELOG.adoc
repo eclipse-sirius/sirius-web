@@ -134,6 +134,10 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 - https://github.com/eclipse-sirius/sirius-web/issues/5097[#5097] [sirius-web] Remove state machine from widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] Remove `idProvider` from label descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/5011[#5011] [diagram] Improve feedback for nodes with list layout strategy when resizing and moving in the same action
+- [sirius-web] Payloads sent by subscriptions are now published to a dedicated thread before being sent to the frontend.
+As a result, it is now possible to re-enter the thread of the editing context event processor to ask for additional information in the body of a GraphQL subscription.
+While very small, this change is being made in a very important part of the code.
+In case of issue with this change, it may have a performance impact and also be the cause of some regressions.
 
 
 
