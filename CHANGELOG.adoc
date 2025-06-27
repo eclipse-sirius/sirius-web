@@ -140,6 +140,7 @@ As a result, it is now possible to re-enter the thread of the editing context ev
 While very small, this change is being made in a very important part of the code.
 In case of issue with this change, it may have a performance impact and also be the cause of some regressions.
 - https://github.com/eclipse-sirius/sirius-web/issues/4513[#4513] [core] Add `descriptionId` in frontend `RepresentationMetadata`
+- https://github.com/eclipse-sirius/sirius-web/issues/5064[#5064] [diagram] Increase the interaction radius of bendpoints, they are now easier to move
 
 
 
