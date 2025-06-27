@@ -14,7 +14,9 @@ package org.eclipse.sirius.web.application.editingcontext.migration.participants
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +42,7 @@ public class EdgeHandleLayoutDataMigrationParticipant implements IRepresentation
     }
 
     @Override
-    public void replaceJsonNode(ObjectNode root, String currentAttribute, JsonNode currentValue) {
+    public void replaceJsonNode(IEditingContext editingContext, ObjectNode root, String currentAttribute, JsonNode currentValue) {
         if (currentAttribute.equals(EDGE_LAYOUT_DATA)) {
             if (root.get(EDGE_LAYOUT_DATA) instanceof ObjectNode edgeLayoutData) {
                 edgeLayoutData.elements().forEachRemaining(edgeLayoutDataElement -> ((ObjectNode) edgeLayoutDataElement).putArray(EDGE_ANCHOR_LAYOUT_DATA));

@@ -62,14 +62,14 @@ public class RepresentationSearchService implements IRepresentationSearchService
     public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationMetadataSearchService::findMetadataById)
-                .flatMap(this::getRepresentation)
+                .flatMap(representationMetadata -> this.getRepresentation(editingContext, representationMetadata))
                 .filter(representationClass::isInstance)
                 .map(representationClass::cast);
     }
 
-    private Optional<IRepresentation> getRepresentation(RepresentationMetadata representationMetadata) {
+    private Optional<IRepresentation> getRepresentation(IEditingContext editingContext, RepresentationMetadata representationMetadata) {
         return this.representationContentSearchService.findContentById(representationMetadata.getId())
-                .map(representationContent -> this.migratedContent(representationMetadata, representationContent))
+                .map(representationContent -> this.migratedContent(editingContext, representationMetadata, representationContent))
                 .flatMap(this::toRepresentation);
     }
 
@@ -91,8 +91,8 @@ public class RepresentationSearchService implements IRepresentationSearchService
         return optionalRepresentation;
     }
 
-    private String migratedContent(RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
-        return this.representationContentMigrationService.getMigratedContent(representationMetadata, representationContent)
+    private String migratedContent(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+        return this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent)
                 .map(Object::toString)
                 .orElse("");
     }

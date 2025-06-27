@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 
@@ -26,5 +27,5 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
  */
 public interface IRepresentationContentMigrationService {
 
-    Optional<ObjectNode> getMigratedContent(RepresentationMetadata representationMetadata, RepresentationContent representationContent);
+    Optional<ObjectNode> getMigratedContent(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent);
 }

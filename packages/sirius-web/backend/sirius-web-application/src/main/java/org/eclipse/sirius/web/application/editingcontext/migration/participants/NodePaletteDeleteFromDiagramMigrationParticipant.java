@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +38,7 @@ public class NodePaletteDeleteFromDiagramMigrationParticipant implements IMigrat
     }
 
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
         if (eObject instanceof NodeDescription nodeDescription) {
             if (SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy())) {
                 var nodePalette = nodeDescription.getPalette();

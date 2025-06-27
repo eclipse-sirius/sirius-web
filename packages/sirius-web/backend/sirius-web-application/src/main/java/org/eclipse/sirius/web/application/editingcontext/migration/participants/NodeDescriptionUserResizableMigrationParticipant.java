@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,7 +36,7 @@ public class NodeDescriptionUserResizableMigrationParticipant implements IMigrat
     }
 
     @Override
-    public Object getValue(EObject eObject, EStructuralFeature feature, Object value) {
+    public Object getValue(JsonResource resource, EObject eObject, EStructuralFeature feature, Object value) {
         if (eObject instanceof NodeDescription && feature.getName().equals("userResizable")) {
             if (value instanceof String valueStr && this.isBoolean(valueStr)) {
                 var newValue = UserResizableDirection.NONE;

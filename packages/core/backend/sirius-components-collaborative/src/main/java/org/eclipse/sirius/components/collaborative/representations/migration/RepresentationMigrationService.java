@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,15 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+
 /**
  * Used to manipulate the Json content before deserialization.
  *
  * @author mcharfadi
  */
 public class RepresentationMigrationService {
+
+    private final IEditingContext editingContext;
+
     private final List<IRepresentationMigrationParticipant> migrationParticipants;
 
-    public RepresentationMigrationService(List<IRepresentationMigrationParticipant> migrationParticipants, ObjectNode root) {
+    public RepresentationMigrationService(IEditingContext editingContext, List<IRepresentationMigrationParticipant> migrationParticipants, ObjectNode root) {
+        this.editingContext = Objects.requireNonNull(editingContext);
         this.migrationParticipants = Objects.requireNonNull(migrationParticipants);
     }
 
@@ -59,7 +65,7 @@ public class RepresentationMigrationService {
 
     private void replaceJsonNode(ObjectNode root, String currentAttribute, JsonNode currentValue) {
         for (IRepresentationMigrationParticipant migrationParticipant : this.migrationParticipants) {
-            migrationParticipant.replaceJsonNode(root, currentAttribute, currentValue);
+            migrationParticipant.replaceJsonNode(this.editingContext, root, currentAttribute, currentValue);
         }
     }
 

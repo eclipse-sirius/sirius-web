@@ -28,6 +28,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
  * @author mcharfadi
  */
 public interface IMigrationParticipant {
+
     String getVersion();
 
     /**
@@ -56,15 +57,17 @@ public interface IMigrationParticipant {
 
     /**
      * Called during the parsing of JsonResources after loading an eObject. As such the eObject will have all his
-     * features set. The jsonObject is the one that was used to set the features and can be used to retrieve values
-     * of unknown features.
+     * features set. The jsonObject is the one that was used to set the features and can be used to retrieve values of
+     * unknown features.
      *
+     * @param resource
+     *            The JsonResource that is loaded.
      * @param eObject
      *            the eObject that have been loaded.
      * @param jsonObject
      *            the jsonObject used to load the eObject.
      */
-    default void postObjectLoading(EObject eObject, JsonObject jsonObject) {
+    default void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
 
     }
 
@@ -72,6 +75,8 @@ public interface IMigrationParticipant {
      * Called during the parsing of JsonResources (at loading time). If a feature value has changed since a previous
      * version, use this method to return the correct expected value or null if it did not change.
      *
+     * @param resource
+     *            The JsonResource that is loaded.
      * @param eObject
      *            the object containing the feature.
      * @param feature
@@ -80,7 +85,7 @@ public interface IMigrationParticipant {
      *            the initial serialized value.
      * @return the new value, or null otherwise.
      */
-    default Object getValue(EObject eObject, EStructuralFeature feature, Object value)  {
+    default Object getValue(JsonResource resource, EObject eObject, EStructuralFeature feature, Object value) {
         return null;
     }
 
@@ -130,12 +135,17 @@ public interface IMigrationParticipant {
     /**
      * Return the URI used by a proxy.
      *
-     * @param eObject The containing EObject
-     * @param eReference The reference of the containing EObject
-     * @param uri The proxy uri
+     * @param resource
+     *            The JsonResource that is loaded
+     * @param eObject
+     *            The containing EObject
+     * @param eReference
+     *            The reference of the containing EObject
+     * @param uri
+     *            The proxy uri
      * @return The newly updated URI of the proxy
      */
-    default String getEObjectUri(EObject eObject, EReference eReference, String uri) {
+    default String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri) {
         return uri;
     }
 }
