@@ -146,9 +146,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   const onReconnectEdgeEnd = useCallback(
     (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
-      const targetNodeHovered = getNodes().find((node) => node.data.isHovered);
       const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
-      const targetInternalNode = store.getState().nodeLookup.get(targetNodeHovered?.id ?? '');
+      const targetInternalNode = store.getState().connection.toNode;
 
       const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
 

@@ -160,6 +160,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent nodes from dropping onto the diagram background instead of its target node
 - https://github.com/eclipse-sirius/sirius-web/issues/5164[#5164] [diagram] Remove unwanted space between list node header and its first child
 - https://github.com/eclipse-sirius/sirius-web/issues/5207[#5207] [diagram] Fix an issue that prevented palette tools to open dialogs
+- https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Fix an issue where the edges were not correctly centered on the handle
 
 
 === New Features
@@ -168,6 +169,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 + Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontend components to prevent their users to use them.
 + Mutations disablement to completely deactivate a feature will be done later.
 - https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Add support for libraries capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Align the UI and behavior of the reconnect handles with the one of the bending points
 
 
 === Improvements
