@@ -94,5 +94,61 @@ describe('Diagram - edges', () => {
         .should('have.css', 'background-color')
         .and('eq', 'rgb(0, 0, 0)');
     });
+
+    it('Then moving source segment change the source handle position', () => {
+      const diagram = new Diagram();
+      const explorer = new Explorer();
+      explorer.expandWithDoubleClick('DataSource1');
+      diagram.getNodes('Topography', 'CompositeProcessor1').should('exist');
+      diagram.moveNode('Topography', 'CompositeProcessor1', { x: 100, y: 0 });
+      explorer.select('standard');
+      diagram
+        .getEdgePaths('Topography')
+        .eq(0)
+        .invoke('attr', 'd')
+        .then((dValue) => {
+          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M66L129L129L192', 2)).to.be
+            .true;
+        });
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+      diagram.moveEdgeSegment(0, { x: 0, y: 200 });
+      diagram
+        .getEdgePaths('Topography')
+        .eq(0)
+        .invoke('attr', 'd')
+        .then((dValue) => {
+          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M66L66L129L129L192', 2)).to.be
+            .true;
+        });
+    });
+
+    it('Then moving target segment change the target handle position', () => {
+      const diagram = new Diagram();
+      const explorer = new Explorer();
+      explorer.expandWithDoubleClick('DataSource1');
+      diagram.getNodes('Topography', 'CompositeProcessor1').should('exist');
+      diagram.moveNode('Topography', 'CompositeProcessor1', { x: 100, y: 0 });
+      explorer.select('standard');
+      diagram
+        .getEdgePaths('Topography')
+        .eq(0)
+        .invoke('attr', 'd')
+        .then((dValue) => {
+          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M66L129L129L192', 2)).to.be
+            .true;
+        });
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+      diagram.moveEdgeSegment(2, { x: 0, y: 300 });
+      diagram
+        .getEdgePaths('Topography')
+        .eq(0)
+        .invoke('attr', 'd')
+        .then((dValue) => {
+          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M66L129L129L193L192', 2)).to.be
+            .true;
+        });
+    });
   });
 });

@@ -51,15 +51,28 @@ export const getUpdatedHandleForNode = (
     //Take the size of the handle and its position into account
     if (position === Position.Top || position === Position.Bottom) {
       XYPosition = {
-        ...XYPosition,
         x: XYPosition.x - HANDLE_OFFSET,
-        y: position === Position.Bottom ? XYPosition.y - node.height - DEFAULT_HANDLE_SIZE : XYPosition.y,
+        y: 0,
       };
     }
 
-    if (position === Position.Right || position === Position.Left) {
+    if (position === Position.Bottom) {
       XYPosition = {
-        x: position === Position.Right ? XYPosition.x - node.width - DEFAULT_HANDLE_SIZE : XYPosition.x,
+        x: XYPosition.x - HANDLE_OFFSET,
+        y: -DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Right) {
+      XYPosition = {
+        y: XYPosition.y - HANDLE_OFFSET,
+        x: -DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Left) {
+      XYPosition = {
+        x: 0,
         y: XYPosition.y - HANDLE_OFFSET,
       };
     }
