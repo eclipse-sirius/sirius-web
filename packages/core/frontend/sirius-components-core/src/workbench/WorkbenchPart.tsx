@@ -18,7 +18,6 @@ import { WorkbenchPartProps } from './WorkbenchPart.types';
 
 const useSiteStyles = makeStyles()((theme) => ({
   view: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
     minWidth: 0,

@@ -117,6 +117,7 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 - https://github.com/eclipse-sirius/sirius-web/issues/5065[#5065] [diagram] Prevent adding bendpoints on a simple click
 - https://github.com/eclipse-sirius/sirius-web/issues/5116[#5116] [diagram] Prevent custom appearances from being lost after exporting/importing a project
 - https://github.com/eclipse-sirius/sirius-web/issues/4966[#4966] [diagram] Fix an isssue where an edge connection could fail if hovering an outside node label
+- https://github.com/eclipse-sirius/sirius-web/issues/2024[#2024] [explorer] Ensure the _Explorer_'s toolbar is always visible even when scrolling
 
 
 === New Features
