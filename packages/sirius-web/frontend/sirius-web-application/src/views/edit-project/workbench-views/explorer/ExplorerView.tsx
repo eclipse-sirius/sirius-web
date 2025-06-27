@@ -41,12 +41,14 @@ import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorer
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridTemplateRows: 'auto 1fr',
+    justifyItems: 'stretch',
+    overflow: 'auto',
   },
   treeContent: {
     paddingTop: theme.spacing(1),
-    flexGrow: 1,
     overflow: 'auto',
   },
 }));
@@ -304,8 +306,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         editingContextId={editingContextId}
         readOnly={readOnly}
         selectedTreeItem={state.singleTreeItemSelected}>
+        {filterBar}
         <div className={styles.treeContent}>
-          {filterBar}
           {state.tree !== null ? (
             <TreeView
               editingContextId={editingContextId}
