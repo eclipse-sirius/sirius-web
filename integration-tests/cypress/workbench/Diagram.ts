@@ -365,6 +365,31 @@ export class Diagram {
     });
   }
 
+  public moveEdgeSegment(segmentIndex: number, { x, y }): void {
+    cy.window().then((window) => {
+      // eslint-disable-next-line cypress/no-assigning-return-values
+      const segmentToDrag = cy.getByTestId(`temporary-moving-line-${segmentIndex}`);
+      return segmentToDrag.then(($el) => {
+        if ($el[0]) {
+          const { left, top, width, height } = $el[0].getBoundingClientRect();
+          const centerX = left + width / 2;
+          const centerY = top + height / 2;
+          const nextX: number = centerX + x;
+          const nextY: number = centerY + y;
+
+          return segmentToDrag
+            .trigger('mousedown', { view: window, force: true })
+            .wait(250)
+            .trigger('mousemove', { clientX: nextX, clientY: nextY, force: true })
+            .wait(250)
+            .trigger('mouseup', { view: window, force: true });
+        } else {
+          return null;
+        }
+      });
+    });
+  }
+
   /**
    * This method compares two path svgs, comparing each point one by one.
    * A tolerance can be applied to the position of the points.

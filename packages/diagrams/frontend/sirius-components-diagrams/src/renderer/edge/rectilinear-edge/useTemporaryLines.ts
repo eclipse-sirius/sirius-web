@@ -127,6 +127,23 @@ export const useTemporaryLines = (
           sourceNode.height ?? 0,
           sourceNode.width ?? 0
         );
+        const newSource: XYPosition = { ...source };
+        if (direction === 'x' && sourceNode.internals.positionAbsolute.y > eventData.y) {
+          newSource.y = sourceNode.internals.positionAbsolute.y;
+        } else if (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x) {
+          newSource.x = sourceNode.internals.positionAbsolute.x;
+        } else if (
+          direction === 'x' &&
+          sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y
+        ) {
+          newSource.y = sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0);
+        } else if (
+          direction === 'y' &&
+          sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x
+        ) {
+          newSource.x = sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0);
+        }
+        setSource(newSource);
       } else {
         const currentPoint = newPoints[temporaryPointIndex];
         const newSource: XYPosition = { ...source };
@@ -163,9 +180,26 @@ export const useTemporaryLines = (
           targetNode.height ?? 0,
           targetNode.width ?? 0
         );
+        const newTarget: XYPosition = { ...target };
+        if (direction === 'x' && targetNode.internals.positionAbsolute.y > eventData.y) {
+          newTarget.y = targetNode.internals.positionAbsolute.y;
+        } else if (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x) {
+          newTarget.x = targetNode.internals.positionAbsolute.x;
+        } else if (
+          direction === 'x' &&
+          targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y
+        ) {
+          newTarget.y = targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0);
+        } else if (
+          direction === 'y' &&
+          targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x
+        ) {
+          newTarget.x = targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0);
+        }
+        setTarget(newTarget);
       } else {
         const prevPoint = newPoints[temporaryPointIndex - 1];
-        const newTarget = { ...target };
+        const newTarget: XYPosition = { ...target };
         if (direction === 'x') {
           if (prevPoint) {
             prevPoint.y = eventData.y;
