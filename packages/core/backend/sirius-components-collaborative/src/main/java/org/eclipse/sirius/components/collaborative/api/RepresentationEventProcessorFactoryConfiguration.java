@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,12 @@ import org.springframework.stereotype.Service;
  * single object for convenience.
  *
  * @author pcdavid
+ *
+ * @deprecated This class has only been created because of a massive coupling in the responsibilities of the various
+ * representation event processors. This coupling will be reduced and this class eliminated.
  */
 @Service
+@Deprecated(forRemoval = true)
 public class RepresentationEventProcessorFactoryConfiguration {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
