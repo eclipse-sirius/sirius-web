@@ -54,6 +54,7 @@ import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
 import { useEdgeType } from './edge/useEdgeType';
+import { useSelectEdgeChange } from './edgeChange/useSelectEdgeChange';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
@@ -285,8 +286,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
       const isResetChange = changes.find((change) => change.type === 'replace');
+      const isSelectChange = changes.find((change) => change.type === 'select');
+
       if (
         isResetChange ||
+        isSelectChange ||
         (noReadOnlyChanges.length === 1 &&
           noReadOnlyChanges[0]?.type === 'dimensions' &&
           typeof noReadOnlyChanges[0].resizing !== 'boolean')
@@ -306,14 +310,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
+
         setNodes(newNodes);
       }
     },
     [layoutOnBoundsChange, getNodes, getEdges]
   );
 
+  const { onEdgeSelectedChange } = useSelectEdgeChange();
   const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
     (changes: EdgeChange<Edge<EdgeData>>[]) => {
+      onEdgeSelectedChange(changes);
       onEdgesChange(changes);
     },
     [onEdgesChange]

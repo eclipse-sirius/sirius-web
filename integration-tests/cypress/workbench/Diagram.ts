@@ -200,6 +200,32 @@ export class Diagram {
     });
   }
 
+  public moveSourceHandleToLeftPosition(edge: Cypress.Chainable, diagramTitle, selector): void {
+    const diagram = new Diagram();
+    let initialWidth: number, initialHeight: number;
+    diagram.getNodes(diagramTitle, selector).then(($el) => {
+      if ($el[0]) {
+        const rect = $el[0].getBoundingClientRect();
+        initialWidth = rect.width;
+        initialHeight = rect.height;
+
+        const centerX = initialWidth * 0.25;
+        const centerY = initialHeight * 0.75;
+        edge
+          .get('.react-flow__edgeupdater.react-flow__edgeupdater-source')
+          .trigger('mousedown', { force: true, button: 0 });
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, selector).trigger('mousemove', centerX, centerY, { force: true });
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, selector).trigger('mouseup', centerX, centerY, { force: true });
+      }
+    });
+  }
+
   public resizeNode(direction: 'top.left' | 'top.right' | 'bottom.left' | 'bottom.right', { x, y }): void {
     cy.window().then((window) => {
       // eslint-disable-next-line cypress/no-assigning-return-values

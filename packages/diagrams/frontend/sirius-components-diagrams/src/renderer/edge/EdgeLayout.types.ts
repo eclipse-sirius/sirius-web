@@ -79,6 +79,8 @@ export interface NodeCenter {
   y: number;
 }
 
+export type GetHandlePositionWithOffSet = (handleXYPosition: XYPosition, handlePosition: Position) => XYPosition;
+
 export type GetHandleCoordinatesByPosition = (
   node: InternalNode<Node<NodeData>>,
   handlePosition: Position,

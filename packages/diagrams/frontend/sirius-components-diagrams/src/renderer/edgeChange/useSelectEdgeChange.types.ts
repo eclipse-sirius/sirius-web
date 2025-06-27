@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, EdgeChange } from '@xyflow/react';
+import { EdgeData } from '../DiagramRenderer.types';
 
-import { HandleProps, XYPosition } from '@xyflow/react';
-
-export interface ConnectionHandlesProps {
-  connectionHandles: ConnectionHandle[];
-}
-
-export interface ConnectionHandle extends HandleProps {
-  nodeId: string;
-  edgeId: string;
-  index: number;
-  isVirtualHandle: boolean;
-  isHidden: boolean;
-  isFixedHandlePosition: boolean;
-  XYPosition: XYPosition | null;
-}
-export interface ConnectionHandlesState {
-  selectedHandles: string[];
+export interface UseSelectEdgeChangeValue {
+  onEdgeSelectedChange: (changes: EdgeChange<Edge<EdgeData>>[]) => void;
 }
