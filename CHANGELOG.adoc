@@ -89,13 +89,21 @@ Note that the `OWNER_ID` variable has also been removed.
 As a result, the difference in behavior between the tests subscribing to existing representations and those which started by the creation of a new representation has been removed.
 As a result, most instances of `flux.filter(DataFetcherResult.class::isInstance).map(DataFetcherResult.class::cast).map(DataFetcherResult::getData)` can be removed.
 Utility classes to help create assertions on those flux have been introduced to write tests more easily such as `DiagramEventPayloadConsumer`, `FormEventPayloadConsumer` or `TreeEventPayloadConsumer` among others.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5152[#5152] [emf] Update the following methods in `IMigrationParticipant`, by adding a new `JsonResource` parameter:
+* `void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject)`
+* `Object getValue(JsonResource resource, EObject eObject, EStructuralFeature feature, Object value)`
+* `String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri)`
+Those changes reflect the update of `IJsonResourceProcessor` in EMF-JSON 2.5.3.
+See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v253[the Sirius EMF JSON changelog] for details.
+- [sirius-web] Update the signature of the representation migration participants to provide the editing context.
+* Add new `IEditingContext` parameter in the method `IRepresentationMigrationParticipant#replaceJsonNode`
+* Add new `IEditingContext` parameter in the method `IRepresentationContentMigrationService#getMigratedContent`
+* Add new `IEditingContext` parameter in the constructor `RepresentationMigrationService`
 
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0].
-- [releng] Switch to Sirius EMF Json 2.5.2
+- [releng] Switch to Sirius EMF Json 2.5.3
 - [releng] Update to https://github.com/nodejs/node/releases/tag/v22.16.0[node.js 22.16.0] and https://docs.npmjs.com/cli/v10/using-npm/changelog#1092-2024-12-04[npm 10.9.2]
 - [releng] Update to https://github.com/KevinVandy/material-react-table/releases/tag/v3.2.1[Material React Table 3.2.1]
 

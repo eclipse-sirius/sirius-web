@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +38,7 @@ public class NodeLabelStyleShowIconMigrationParticipant implements IMigrationPar
     }
 
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
         if (eObject instanceof NodeLabelStyle nodeLabelStyle) {
             var optionalNodeLabelStyle = Optional.ofNullable(jsonObject.getAsJsonObject("data"));
             optionalNodeLabelStyle.ifPresent(nodeLabelStyleData -> {

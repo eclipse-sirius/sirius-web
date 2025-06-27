@@ -40,7 +40,9 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 public class MigrationService extends BasicExtendedMetaData implements JsonResource.IJsonResourceProcessor {
 
     private final List<IMigrationParticipant> migrationParticipants;
+
     private MigrationData documentMigrationData;
+
     private List<IMigrationParticipant> migrationParticipantsCandidates;
 
     public MigrationService(List<IMigrationParticipant> migrationParticipants) {
@@ -133,17 +135,17 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject, boolean isTopObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject, boolean isTopObject) {
         for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
-            migrationParticipant.postObjectLoading(eObject, jsonObject);
+            migrationParticipant.postObjectLoading(resource, eObject, jsonObject);
         }
     }
 
     @Override
-    public Object getValue(EObject object, EStructuralFeature feature, Object value) {
+    public Object getValue(JsonResource resource, EObject object, EStructuralFeature feature, Object value) {
         Object returnValue = value;
         for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
-            Object newValue = migrationParticipant.getValue(object, feature, value);
+            Object newValue = migrationParticipant.getValue(resource, object, feature, value);
             if (newValue != null) {
                 returnValue = newValue;
             }
@@ -152,10 +154,10 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     @Override
-    public String getEObjectUri(EObject eObject, EReference eReference, String uri) {
+    public String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri) {
         String updatedUri = uri;
         for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
-            String newValue = migrationParticipant.getEObjectUri(eObject, eReference, updatedUri);
+            String newValue = migrationParticipant.getEObjectUri(resource, eObject, eReference, updatedUri);
             if (newValue != null) {
                 updatedUri = newValue;
             }
