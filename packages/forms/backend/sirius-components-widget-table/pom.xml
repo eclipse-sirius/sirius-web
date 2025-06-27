@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-table</artifactId>
-	<version>2025.6.2</version>
+	<version>2025.6.3</version>
 	<name>sirius-components-widget-table</name>
 	<description>Sirius Components Forms :: Table Widget</description>
 
@@ -43,12 +43,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2025.6.2</version>
+			<version>2025.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables</artifactId>
-			<version>2025.6.2</version>
+			<version>2025.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.6.2</version>
+			<version>2025.6.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
