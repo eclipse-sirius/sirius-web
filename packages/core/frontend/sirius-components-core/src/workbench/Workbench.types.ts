@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,11 @@ export type RepresentationMetadata = {
   label: string;
   kind: string;
   iconURLs: string[];
+  description: RepresentationDescription;
+};
+
+export type RepresentationDescription = {
+  id: string;
 };
 
 export type WorkbenchViewSide = 'left' | 'right';

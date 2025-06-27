@@ -52,4 +52,9 @@ export type GQLRepresentationMetadata = {
   label: string;
   kind: string;
   iconURLs: string[];
+  description: GQLRepresentationDescription;
 };
+
+export interface GQLRepresentationDescription {
+  id: string;
+}

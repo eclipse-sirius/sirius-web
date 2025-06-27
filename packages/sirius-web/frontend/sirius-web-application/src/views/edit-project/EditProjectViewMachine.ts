@@ -95,6 +95,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
             label: project.currentEditingContext.representation.label,
             kind: project.currentEditingContext.representation.kind,
             iconURLs: project.currentEditingContext.representation.iconURLs,
+            description: project.currentEditingContext.representation.description,
           };
         }
 

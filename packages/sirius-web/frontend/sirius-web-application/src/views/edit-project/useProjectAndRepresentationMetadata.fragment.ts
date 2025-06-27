@@ -27,6 +27,9 @@ export const ProjectAndRepresentationFragment = gql`
         label
         kind
         iconURLs
+        description {
+          id
+        }
       }
     }
   }

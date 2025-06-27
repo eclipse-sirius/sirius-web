@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ export interface GQLRepresentationMetadataQueryData {
 export interface GQLViewer {
   editingContext: GQLEditingContext;
 }
+
 export interface GQLEditingContext {
   representations: GQLRepresentationMetadataConnection;
 }
@@ -39,6 +40,11 @@ export interface GQLRepresentationMetadata {
   label: string;
   kind: string;
   iconURLs: string[];
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
 }
 
 export interface GQLRepresentationMetadataQueryVariables {

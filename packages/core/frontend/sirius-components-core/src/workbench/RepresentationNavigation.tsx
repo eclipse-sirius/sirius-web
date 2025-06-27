@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,12 +66,14 @@ export const RepresentationNavigation = ({
   const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
     const representationSelected = representations.find((representation) => representation.id === value);
     if (representationSelected) {
-      const { id, label, kind, iconURLs } = representationSelected;
+      const { id, label, kind, iconURLs, description } = representationSelected;
+
       const representation: RepresentationMetadata = {
         id,
         label,
         kind,
         iconURLs,
+        description,
       };
       onRepresentationClick(representation);
     }

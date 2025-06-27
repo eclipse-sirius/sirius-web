@@ -138,6 +138,7 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 As a result, it is now possible to re-enter the thread of the editing context event processor to ask for additional information in the body of a GraphQL subscription.
 While very small, this change is being made in a very important part of the code.
 In case of issue with this change, it may have a performance impact and also be the cause of some regressions.
+- https://github.com/eclipse-sirius/sirius-web/issues/4513[#4513] [core] Add `descriptionId` in frontend `RepresentationMetadata`
 
 
 
@@ -210,7 +211,7 @@ The following dependencies have been updated:
 * `org.eclipse.emf.ecore.edit` from `2.13.0` to `2.15.0`
 * `org.eclipse.emf.codegen` from `2.23.0` to `2.24.0`
 * `org.eclipse.emf.codegen.ecore` from `2.25.0` to `2.39.0`
-* `guava` from `32.0.0-jre` to `33.4.8-jre` 
+* `guava` from `32.0.0-jre` to `33.4.8-jre`
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
 - https://github.com/eclipse-sirius/sirius-web/issues/4895[4895] [releng] Remove the dependency to Sirius Desktop
 - [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
@@ -785,7 +786,6 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
-
 
 == v2025.1.0
 
