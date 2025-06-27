@@ -23,6 +23,11 @@ type Portal implements Representation {
   layoutData: [PortalViewLayoutData!]!
 }
 
+type PortalDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
 type PortalView {
   id: ID!
   representationMetadata: RepresentationMetadata!
