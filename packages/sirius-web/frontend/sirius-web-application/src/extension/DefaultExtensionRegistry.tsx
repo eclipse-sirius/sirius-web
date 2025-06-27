@@ -89,6 +89,7 @@ import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/Siri
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
+import { ProjectsCapabilitiesContextProvider } from '../hooks/ProjectsCapabilitiesContext';
 import { PublishStudioLibraryCommand } from '../libraries/PublishStudioLibraryCommand';
 import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
 import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
@@ -104,8 +105,8 @@ import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
-import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
+import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ObjectTreeItemContextMenuContribution';
 import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
 import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
@@ -115,10 +116,6 @@ import { RelatedElementsView } from '../views/edit-project/workbench-views/relat
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
-import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
-import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
-import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
-import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
@@ -287,27 +284,6 @@ export const LibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
 defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
   identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
   Component: LibrariesButtonContribution,
-});
-
-/*******************************************************************************
- *
- * Create project area cards
- *
- * Used to register all the type of cards in the create project area
- *
- *******************************************************************************/
-
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_newProjectCard`,
-  Component: NewProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_uploadProjectCard`,
-  Component: UploadProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_showAllProjectTemplatesCard`,
-  Component: ShowAllProjectTemplatesCard,
 });
 
 /*******************************************************************************
@@ -611,15 +587,27 @@ defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
 export const siriusWebRouterContributions: PathRouteProps[] = [
   {
     path: '/new/project/*',
-    element: <NewProjectView />,
+    element: (
+      <ProjectsCapabilitiesContextProvider>
+        <NewProjectView />
+      </ProjectsCapabilitiesContextProvider>
+    ),
   },
   {
     path: '/upload/project/*',
-    element: <UploadProjectView />,
+    element: (
+      <ProjectsCapabilitiesContextProvider>
+        <UploadProjectView />
+      </ProjectsCapabilitiesContextProvider>
+    ),
   },
   {
     path: '/projects',
-    element: <ProjectBrowserView />,
+    element: (
+      <ProjectsCapabilitiesContextProvider>
+        <ProjectBrowserView />
+      </ProjectsCapabilitiesContextProvider>
+    ),
   },
   {
     path: '/projects/:projectId/edit/:representationId?/*',

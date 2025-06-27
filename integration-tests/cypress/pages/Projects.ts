@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,13 +28,23 @@ export class Projects {
     return cy.getByTestId('projects').contains('a', name);
   }
 
-  public deleteProject(name: string): void {
-    cy.getByTestId('projects').contains('tr', name).find('[data-testid="more"]').click();
-    cy.getByTestId('delete').click();
-    cy.getByTestId('delete-project').click();
-  }
-
   public goBackToTheHomepage(): void {
     cy.get('[title="Back to the homepage"]').click();
+  }
+
+  public getActionMenu(name: string): ProjectActionMenu {
+    cy.getByTestId('projects').contains('tr', name).find('[data-testid="more"]').click();
+    return new ProjectActionMenu();
+  }
+}
+
+class ProjectActionMenu {
+  public getDownloadLink(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('project-download-action');
+  }
+
+  public deleteProject(): void {
+    cy.getByTestId('delete').click();
+    cy.getByTestId('delete-project').click();
   }
 }

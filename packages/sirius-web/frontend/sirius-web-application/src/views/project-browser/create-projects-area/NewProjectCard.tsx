@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,11 @@
 
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
+import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { ProjectsCapabilitiesContext } from '../../../hooks/ProjectsCapabilitiesContext';
+import { ProjectsCapabilitiesContextValue } from '../../../hooks/ProjectsCapabilitiesContext.types';
 import { CreateProjectAreaCard } from './CreateProjectAreaCard';
 
 const useNewProjectCardStyles = makeStyles()((theme) => ({
@@ -35,6 +38,13 @@ const useNewProjectCardStyles = makeStyles()((theme) => ({
 
 export const NewProjectCard = () => {
   const { classes } = useNewProjectCardStyles();
+
+  const { canCreate } = useContext<ProjectsCapabilitiesContextValue>(ProjectsCapabilitiesContext);
+
+  if (!canCreate) {
+    return null;
+  }
+
   return (
     <Button to={`/new/project`} component={RouterLink} className={classes.button} data-testid="create">
       <CreateProjectAreaCard title="+ Blank project" description="Blank project">

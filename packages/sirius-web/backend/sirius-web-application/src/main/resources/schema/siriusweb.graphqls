@@ -1,7 +1,7 @@
 extend type Viewer {
   project(projectId: ID!): Project
   projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilter): ViewerProjectsConnection!
-  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
+  projectTemplates(page: Int!, limit: Int!, withDefault: Boolean!): ViewerProjectTemplatesConnection!
 }
 
 input ProjectFilter {

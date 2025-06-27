@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,30 +20,21 @@ import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to get the project templates from the GraphQL API.
+ * Used to get the projects capabilities from the GraphQL API.
  *
- * @author gdaniel
+ * @author gcoutable
  */
 @Service
-public class ProjectTemplatesQueryRunner implements IQueryRunner {
+public class ProjectsCapabilitiesQueryRunner implements IQueryRunner {
 
-    private static final String PROJECT_TEMPLATES_QUERY = """
-            query getProjectTemplates($page: Int!, $limit: Int!, $withDefault: Boolean!) {
+    private static final String GET_PROJECTS_CAPABILITIES = """
+            query getProjectsCapabilities {
               viewer {
-                projectTemplates(page: $page, limit: $limit, withDefault: $withDefault) {
-                  edges {
-                    node {
-                      id
-                      label
-                      imageURL
-                    }
-                  }
-                  pageInfo {
-                    hasPreviousPage
-                    hasNextPage
-                    startCursor
-                    endCursor
-                    count
+                capabilities {
+                  projects {
+                    canCreate
+                    canUpload
+                    canBrowseAllProjectTemplates
                   }
                 }
               }
@@ -52,15 +43,12 @@ public class ProjectTemplatesQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ProjectTemplatesQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public ProjectsCapabilitiesQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
     public String run(Map<String, Object> variables) {
-        return this.graphQLRequestor.execute(PROJECT_TEMPLATES_QUERY, variables);
+        return this.graphQLRequestor.execute(GET_PROJECTS_CAPABILITIES, variables);
     }
-
-
-
 }

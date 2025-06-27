@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,9 @@ import {
 } from './useProjectTemplates.types';
 
 export const getProjectTemplatesQuery = gql`
-  query getProjectTemplates($page: Int!, $limit: Int!) {
+  query getProjectTemplates($page: Int!, $limit: Int!, $withDefault: Boolean!) {
     viewer {
-      projectTemplates(page: $page, limit: $limit) {
+      projectTemplates(page: $page, limit: $limit, withDefault: $withDefault) {
         edges {
           node {
             id
@@ -42,10 +42,16 @@ export const getProjectTemplatesQuery = gql`
   }
 `;
 
-export const useProjectTemplates = (page: number, limit: number, skip?: boolean): UseProjectTemplatesValue => {
+export const useProjectTemplates = (
+  page: number,
+  limit: number,
+  withDefault: boolean,
+  skip?: boolean
+): UseProjectTemplatesValue => {
   const variables: GQLgetProjectTemplatesQueryVariables = {
     page,
     limit,
+    withDefault,
   };
   const { data, loading, error } = useQuery<GQLgetProjectTemplatesQueryData, GQLgetProjectTemplatesQueryVariables>(
     getProjectTemplatesQuery,

@@ -32,6 +32,18 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { ProjectCapabilitiesContext, ProjectCapabilitiesContextProvider } from './hooks/ProjectCapabilitiesContext';
+export type { ProjectCapabilitiesContextValue } from './hooks/ProjectCapabilitiesContext.types';
+export { ProjectsCapabilitiesContext, ProjectsCapabilitiesContextProvider } from './hooks/ProjectsCapabilitiesContext';
+export type { ProjectsCapabilitiesContextValue } from './hooks/ProjectsCapabilitiesContext.types';
+export { useProjectCapabilities } from './hooks/useProjectCapabilities';
+export type {
+  GQLGetProjectCapabilitiesQueryData,
+  GQLGetProjectCapabilitiesQueryVariables,
+  UseProjectCapabilitiesValue,
+} from './hooks/useProjectCapabilities.types';
+export { useProjectsCapabilities } from './hooks/useProjectsCapabilities';
+export type { UseProjectsCapabilitiesValue } from './hooks/useProjectsCapabilities.types';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
 export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectModal';
