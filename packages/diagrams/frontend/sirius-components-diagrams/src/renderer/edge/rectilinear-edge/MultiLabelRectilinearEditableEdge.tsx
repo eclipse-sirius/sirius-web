@@ -182,6 +182,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
         })
       );
     }, [edgePath]);
+
     return (
       <>
         <BaseEdge
@@ -191,6 +192,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
             ...edgeStyle,
             ...connectionFeedbackStyle,
           }}
+          className={`target_handle_${targetPosition} source_handle_${sourcePosition}`}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
