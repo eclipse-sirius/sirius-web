@@ -20,12 +20,12 @@ import { NodeComponentsMap } from './NodeTypes';
 
 const edgePathSelector = (state: ReactFlowState, edgeId: string) => state.edgeLookup.get(edgeId)?.data?.edgePath || '';
 
-const handleStyle = (position: Position): React.CSSProperties => {
+const handleStyle = (isHidden: boolean, position: Position): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'absolute',
     transform: 'none',
-    opacity: '0',
     pointerEvents: 'none',
+    border: '1px solid black',
   };
   switch (position) {
     case Position.Left:
@@ -38,6 +38,9 @@ const handleStyle = (position: Position): React.CSSProperties => {
       style.bottom = '100%';
       style.left = '-75%';
       break;
+  }
+  if (isHidden) {
+    style.opacity = 0;
   }
   return style;
 };
@@ -109,7 +112,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
           return (
             <Handle
               id={connectionHandle.id ?? ''}
-              style={handleStyle(connectionHandle.position)}
+              style={handleStyle(connectionHandle.isHidden, connectionHandle.position)}
               type={connectionHandle.type}
               position={connectionHandle.position}
               key={connectionHandle.id}
