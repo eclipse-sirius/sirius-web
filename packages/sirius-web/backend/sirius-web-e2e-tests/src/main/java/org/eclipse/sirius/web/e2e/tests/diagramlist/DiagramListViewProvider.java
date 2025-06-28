@@ -90,6 +90,9 @@ public class DiagramListViewProvider implements IE2EViewProvider {
 
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
+
+        var childrenListDescription = this.getChildrenListDescription(colorProvider);
+        var childrenFreeFormDescription = this.getChildrenFreeFormDescription(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -99,6 +102,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .collapsible(true)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
+                .defaultHeightExpression("200")
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -107,7 +111,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().growableNodes(childrenFreeFormDescription).build())
                                 .build()
                 )
                 .insideLabel(
@@ -136,7 +140,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
-                .childrenDescriptions(this.getChildrenListDescription(colorProvider), this.getChildrenFreeFormDescription(colorProvider))
+                .childrenDescriptions(childrenListDescription, childrenFreeFormDescription)
                 .build();
     }
 
@@ -224,7 +228,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
-                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
                                 .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .borderRadius(0)
                                 .borderSize(1)
