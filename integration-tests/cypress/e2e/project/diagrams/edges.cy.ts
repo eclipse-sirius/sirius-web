@@ -325,5 +325,38 @@ describe('Diagram - edges', () => {
       cy.getByTestId('bend-point-2').click();
       cy.getByTestId('bend-point-4').should('not.exist');
     });
+
+    it('Check that when moving an handle, the style of the handle is updated and can be reseted with a tool', () => {
+      const diagram = new Diagram();
+      diagram.fitToScreen();
+      cy.get('.react-flow__edge:first').as('edge').click({ force: true });
+      cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-right:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(0, 0, 0)');
+
+      diagram.moveRightHandleToLeftPosition('DataSource1');
+
+      cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-left:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(255, 255, 255)');
+
+      cy.get('@edge').rightclick({ force: true });
+      cy.getByTestId('Reset-handles').should('exist');
+      cy.getByTestId('Reset-handles').click();
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-right:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(0, 0, 0)');
+    });
   });
 });
