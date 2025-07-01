@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,13 @@ export interface TextfieldStyleProps {
   underline: boolean | null;
   strikeThrough: boolean | null;
   gridLayout: GQLWidgetGridLayout | null;
+}
+
+export interface TextFieldPropersySectionState {
+  value: string;
+  completionRequest: CompletionRequest | null;
+  proposals: GQLCompletionProposal[] | null;
+  caretPos: number;
 }
 
 export interface TextFieldState {
