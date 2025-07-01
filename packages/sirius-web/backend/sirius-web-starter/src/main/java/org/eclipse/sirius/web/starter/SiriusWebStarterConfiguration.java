@@ -145,7 +145,7 @@ public class SiriusWebStarterConfiguration {
                         .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
                         .map(representationEventProcessor -> customizeFlux(editingContextId, representationId, input, representationEventProcessor))
                         .orElse(Flux.empty())
-                        .publishOn(Schedulers.newSingle("Representation publishing thread - {editingContextId: " + editingContextId + ", representationId: " + representationId + "}"));
+                        .publishOn(Schedulers.single());
             }
         };
     }
