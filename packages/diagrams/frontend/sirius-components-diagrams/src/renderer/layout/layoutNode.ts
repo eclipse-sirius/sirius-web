@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,7 +120,8 @@ export const getChildNodePosition = (
 export const getHeaderHeightFootprint = (
   labelElement: HTMLElement | null,
   insideLabel: InsideLabel | null,
-  headerPosition: string | null
+  headerPosition: string | null,
+  borderWith: number = 0
 ): number => {
   let headerHeightFootprint = 0;
   const withHeader: boolean = insideLabel?.isHeader ?? false;
@@ -132,10 +133,10 @@ export const getHeaderHeightFootprint = (
   if (withHeader && insideLabel?.headerPosition === headerPosition) {
     headerHeightFootprint = labelElement.getBoundingClientRect().height;
     if (displayHeaderSeparator) {
-      headerHeightFootprint += rectangularNodePadding;
+      headerHeightFootprint += borderWith;
     }
   } else {
-    headerHeightFootprint = rectangularNodePadding;
+    headerHeightFootprint = borderWith;
   }
 
   return headerHeightFootprint;

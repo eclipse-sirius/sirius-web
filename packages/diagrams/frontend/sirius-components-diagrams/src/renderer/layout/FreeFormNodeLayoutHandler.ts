@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -93,7 +93,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
-      const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
+      const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
 
       if (!!createdNode) {
         child.position = createdNode.position;
@@ -126,7 +126,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
-    const footerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'BOTTOM');
+    const footerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'BOTTOM', borderWidth);
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
