@@ -233,16 +233,18 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
     private List<IDiagramEvent> getNodeAppearanceEvents(Node oldNode, String newNodeId) {
         List<IDiagramEvent> diagramEvents = new ArrayList<>();
 
-        List<IAppearanceChange> appearanceChanges = this.diagramImporterNodeStyleAppearanceChangeHandlers.stream()
-                .filter(handler -> handler.canHandle(oldNode.getStyle()))
-                .findFirst()
-                .map(handler -> oldNode.getCustomizedStyleProperties().stream()
-                        .flatMap(customizedStyleProperty -> handler.handle(newNodeId, oldNode.getStyle(), customizedStyleProperty).stream())
-                        .toList())
-                .orElse(List.of());
+        if (oldNode.getCustomizedStyleProperties() != null && !oldNode.getCustomizedStyleProperties().isEmpty()) {
+            List<IAppearanceChange> appearanceChanges = this.diagramImporterNodeStyleAppearanceChangeHandlers.stream()
+                    .filter(handler -> handler.canHandle(oldNode.getStyle()))
+                    .findFirst()
+                    .map(handler -> oldNode.getCustomizedStyleProperties().stream()
+                            .flatMap(customizedStyleProperty -> handler.handle(newNodeId, oldNode.getStyle(), customizedStyleProperty).stream())
+                            .toList())
+                    .orElse(List.of());
 
-        if (!appearanceChanges.isEmpty()) {
-            diagramEvents.add(new EditAppearanceEvent(appearanceChanges));
+            if (!appearanceChanges.isEmpty()) {
+                diagramEvents.add(new EditAppearanceEvent(appearanceChanges));
+            }
         }
 
         if (oldNode.getInsideLabel() != null && oldNode.getInsideLabel().getCustomizedStyleProperties() != null && !oldNode.getInsideLabel().getCustomizedStyleProperties().isEmpty()) {

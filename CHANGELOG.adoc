@@ -119,6 +119,7 @@ See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc
 - https://github.com/eclipse-sirius/sirius-web/issues/4966[#4966] [diagram] Fix an isssue where an edge connection could fail if hovering an outside node label
 - https://github.com/eclipse-sirius/sirius-web/issues/2024[#2024] [explorer] Ensure the _Explorer_'s toolbar is always visible even when scrolling
 - https://github.com/eclipse-sirius/sirius-web/issues/5084[#5084] [diagram] Prevent growable nodes from being ignored on node creation
+- https://github.com/eclipse-sirius/sirius-web/issues/5165[#5165] [sirius-web] Fix an issue that prevent import of projects exported before version 2025.6.0
 
 
 === New Features
