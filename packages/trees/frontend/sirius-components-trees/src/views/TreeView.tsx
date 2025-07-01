@@ -10,10 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, DRAG_SOURCES_TYPE, useData } from '@eclipse-sirius/sirius-components-core';
+import { useCallback, useMemo } from 'react';
 import { Tree } from '../trees/Tree';
 import { GQLTree, TreeConverter, TreeViewProps } from './TreeView.types';
 import { treeViewTreeConverterExtensionPoint } from './TreeViewExtensionPoints';
+
+const convertTree = (editingContextId: string, treeConverters: TreeConverter[], tree: GQLTree) => {
+  let convertedTree: GQLTree = tree;
+  treeConverters.forEach((treeConverter) => {
+    convertedTree = treeConverter.convert(editingContextId, convertedTree);
+  });
+  return convertedTree;
+};
 
 export const TreeView = ({
   editingContextId,
@@ -23,19 +32,33 @@ export const TreeView = ({
   textToHighlight,
   textToFilter,
   markedItemIds = [],
-  treeItemActionRender,
-  onExpandedElementChange,
+  selectedTreeItemIds,
   expanded,
   maxDepth,
+  onExpandedElementChange,
   onTreeItemClick,
-  selectedTreeItemIds,
+  treeItemActionRender,
 }: TreeViewProps) => {
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
+  const convertedTree: GQLTree = useMemo(() => {
+    return convertTree(editingContextId, treeConverters, tree);
+  }, [editingContextId, tree, treeConverters]);
 
-  let convertedTree: GQLTree = tree;
-  treeConverters.forEach((treeConverter) => {
-    convertedTree = treeConverter.convert(editingContextId, convertedTree);
-  });
+  const onDragStart: React.DragEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      const target = event.target as HTMLDivElement;
+      const itemId = target.getAttribute('data-treeitemid') || '';
+      const isDraggedItemSelected = selectedTreeItemIds.some((selectedItemId) => selectedItemId === itemId);
+      if (!isDraggedItemSelected) {
+        // If we're dragging a non-selected item, drag it alone
+        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemId]));
+      } else if (selectedTreeItemIds.length > 0) {
+        // Otherwise drag the whole selection
+        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
+      }
+    },
+    [selectedTreeItemIds]
+  );
 
   return (
     <div data-testid={treeId}>
@@ -44,14 +67,15 @@ export const TreeView = ({
         tree={convertedTree}
         expanded={expanded}
         maxDepth={maxDepth}
-        onExpandedElementChange={onExpandedElementChange}
         readOnly={readOnly}
         markedItemIds={markedItemIds}
+        selectedTreeItemIds={selectedTreeItemIds}
         textToFilter={textToFilter}
         textToHighlight={textToHighlight}
-        treeItemActionRender={treeItemActionRender}
+        onExpandedElementChange={onExpandedElementChange}
         onTreeItemClick={onTreeItemClick}
-        selectedTreeItemIds={selectedTreeItemIds}
+        onDragStart={onDragStart}
+        treeItemActionRender={treeItemActionRender}
       />
     </div>
   );
