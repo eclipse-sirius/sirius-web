@@ -27,6 +27,7 @@ import {
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
   getInsideLabelWidthConstraint,
+  getHeaderHeightFootprint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -123,7 +124,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+    const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -146,9 +147,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       if (node.data.resizedByUser) {
         previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? node.width ?? 0) - borderWidth * 2;
         previousChildrenContentBoxHeightToConsider =
-          (previousNode?.height ?? node.height ?? 0) -
-          borderWidth * 2 -
-          (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0);
+          (previousNode?.height ?? node.height ?? 0) - borderWidth * 2 - headerHeightFootprint;
       }
       const fixedWidth: number = Math.max(
         directNodesChildren.reduce<number>(
@@ -189,7 +188,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     directNodesChildren.forEach((child, index) => {
       child.position = {
         x: borderWidth,
-        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0) + node.data.topGap,
+        y: headerHeightFootprint + node.data.topGap,
       };
       const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {

@@ -157,7 +157,7 @@ describe('Diagram - inside outside labels', () => {
               });
           });
           diagram.getNodeCssValue(diagramTitle, 'verylargelabelonmultilinesafterwrap', 'height').then((nodeHeight) => {
-            expect(nodeHeight / scale).to.greaterThan(initialHeight);
+            expect(nodeHeight / scale).to.approximately(initialHeight, 2);
           });
         });
       });
