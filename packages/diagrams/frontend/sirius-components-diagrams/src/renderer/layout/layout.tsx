@@ -80,8 +80,6 @@ export const prepareLayoutArea = (
         role: 'button', // role applied by react flow
         style: {
           maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : node.width,
-          borderWidth: node.data.style.borderWidth,
-          borderStyle: node.data.style.borderStyle,
         },
         children,
       });
