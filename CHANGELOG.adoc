@@ -145,6 +145,7 @@ In case of issue with this change, it may have a performance impact and also be 
 The route entry of the setting page has been updated to "/projects/:projectId/settings/:tabId?".
 In `ProjectSettingsView`, we will now rely on the `tabId` from the URL to identify the setting tab that should be opened, and update the URL whenever the selected tab changes.
 The page will now redirect to a 404 if the `tabId` in the URL is not a known tab.
+- https://github.com/eclipse-sirius/sirius-web/issues/5161[#5161] [core] Keep the same order for the payloads of the subscriptions
 
 
 
