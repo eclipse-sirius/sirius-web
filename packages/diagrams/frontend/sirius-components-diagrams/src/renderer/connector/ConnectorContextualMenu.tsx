@@ -283,9 +283,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       onClose={onShouldConnectorContextualMenuClose}
       anchorEl={connectionTarget}
       anchorReference="anchorPosition"
+      data-testid="connectorContextualMenu"
       anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
       {connectorTools.map((tool) => (
-        <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
+        <MenuItem key={tool.id} onClick={() => invokeTool(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
           <ListItemIcon>
             <IconOverlay iconURL={tool.iconURL} alt={tool.label} title={tool.label} />
           </ListItemIcon>

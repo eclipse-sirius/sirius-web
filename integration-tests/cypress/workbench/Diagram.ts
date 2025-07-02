@@ -287,6 +287,22 @@ export class Diagram {
     });
   }
 
+  public createEdgeFromTopHandleToCenterNode(diagramTitle: string, fromNode: string, toNode: string): void {
+    const diagram = new Diagram();
+    this.selectNode(diagramTitle, fromNode);
+    cy.getByTestId('creationhandle-top').should('exist');
+
+    cy.getByTestId('creationhandle-top').trigger('mousedown', { force: true, button: 0 });
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    diagram.getNodes(diagramTitle, toNode).trigger('mousemove', { force: true });
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    diagram.getNodes(diagramTitle, toNode).trigger('mouseup', { force: true });
+  }
+
   /**
    * This method compares two path svgs, comparing each point one by one.
    * A tolerance can be applied to the position of the points.
