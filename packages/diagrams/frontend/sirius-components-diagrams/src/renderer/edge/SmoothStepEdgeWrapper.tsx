@@ -175,7 +175,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetX={targetX}
       targetY={targetY}
       bendingPoints={bendingPoints}
-      customEdge={!!data?.bendingPoints}
+      customEdge={!!(data && data.bendingPoints && data.bendingPoints.length > 0)}
       sourceNode={sourceNode}
       targetNode={targetNode}
     />
