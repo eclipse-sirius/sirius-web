@@ -29,13 +29,12 @@ describe('Diagram - edit node label', () => {
         explorer.expandWithDoubleClick('Flow');
         explorer.expandWithDoubleClick('NewSystem');
         explorer.selectRepresentation('Topography');
+        new Diagram().centerViewport();
       });
     });
 
     it('Then we can use direct edit on a node', () => {
       const diagram = new Diagram();
-      //Wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Select a node
       diagram.getDiagram('Topography').should('exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -53,8 +52,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then we can use direct edit on a node by typing', () => {
       const diagram = new Diagram();
-      //Wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Select a node
       diagram.getDiagram('Topography').should('exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -67,8 +64,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then during edit triggering escape cancel the current edition', () => {
       const diagram = new Diagram();
-      //Wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Select a node
       diagram.getDiagram('Topography').should('exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -86,8 +81,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then we can use direct edit on a node even if the palette is opened', () => {
       const diagram = new Diagram();
-      //Wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Select a node
       diagram.getDiagram('Topography').should('exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -108,8 +101,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then we can use direct edit on a node even after closing the palette', () => {
       const diagram = new Diagram();
-      //Wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Select a node
       diagram.getDiagram('Topography').should('exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -133,8 +124,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then we can use direct after creating a new node', () => {
       const diagram = new Diagram();
-      // wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Open the palette
       cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 800).rightclick(100, 800);
       diagram.getPalette().should('exist');
@@ -144,7 +133,6 @@ describe('Diagram - edit node label', () => {
       diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
       diagram.getPalette().getByTestId('tool-Composite Processor').click();
       diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Trigger direct edit with f2
       diagram.getSelectedNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
@@ -159,8 +147,6 @@ describe('Diagram - edit node label', () => {
 
     it('Then we can use direct by typing after creating a new node', () => {
       const diagram = new Diagram();
-      // wait for the fit to screen
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Open the palette
       cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 800).rightclick(100, 800);
       diagram.getPalette().should('exist');
@@ -170,7 +156,6 @@ describe('Diagram - edit node label', () => {
       diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
       diagram.getPalette().getByTestId('tool-Composite Processor').click();
       diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
-      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Edit
       diagram.getSelectedNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.focused().type('Edited2{enter}');
