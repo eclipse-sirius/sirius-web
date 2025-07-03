@@ -33,6 +33,7 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
                 project(projectId: $projectId) {
                   capabilities {
                     canDownload
+                    canRename
                   }
                 }
               }

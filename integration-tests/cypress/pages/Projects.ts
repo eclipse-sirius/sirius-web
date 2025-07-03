@@ -43,6 +43,10 @@ class ProjectActionMenu {
     return cy.getByTestId('project-download-action');
   }
 
+  public getRenameButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('rename');
+  }
+
   public deleteProject(): void {
     cy.getByTestId('delete').click();
     cy.getByTestId('delete-project').click();

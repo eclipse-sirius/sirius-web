@@ -220,7 +220,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
                 };
                 dispatch(showModal);
               }}
-              disabled={readOnly}
+              disabled={!project.capabilities.canRename}
               data-testid="rename">
               <ListItemIcon>
                 <EditIcon />

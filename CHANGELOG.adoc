@@ -106,6 +106,8 @@ The cards are not contributed to the `createProjectAreaCardExtensionPoint` exten
 They will be displayed if a project template with one of the following specific ID is returned: `create-project`, `upload-project`, or `browse-all-project-templates`.
 Thus, downstream projects that would want to hide these cards, will not be able to do it by not contributing them to the `createProjectAreaCardExtensionPoint` extension point, but by providing a `ICapabilityVoter`.
 Another consequences is that the `projectTemplates` graphql query now requires the `withDefault` parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Remove `readonly` props from EditProjectNavbar since this props was only used to enable or disable the project rename button.
+This purpose can be achieved with the `canRename` capabilities.
 
 
 === Dependency update

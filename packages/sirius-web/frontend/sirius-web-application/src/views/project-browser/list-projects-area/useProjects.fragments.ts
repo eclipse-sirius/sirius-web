@@ -39,6 +39,7 @@ export const ProjectFragment = gql`
     name
     capabilities {
       canDownload
+      canRename
     }
   }
 `;

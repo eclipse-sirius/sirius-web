@@ -15,3 +15,4 @@ This document will reference the frontend capabilities that can be enabled or di
 === Project
 
 * canDownload: Whether the project can be downloaded or not
+* canRename: Whether the project can be renamed or not

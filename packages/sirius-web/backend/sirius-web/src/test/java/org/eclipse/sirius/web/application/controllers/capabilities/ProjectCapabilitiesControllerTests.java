@@ -46,16 +46,20 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
     public void givenAServerWhenQueryToRetrieveCapabilitiesIsExecutedThenItReturnsTrueByDefault() {
         var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT));
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
+        boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
         assertThat(canDownload).isTrue();
+        assertThat(canRename).isTrue();
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a capability voter that deny the project download on a specific project, when a query to retrieve capabilities on that specific project is executed, then the canDownload is false")
-    public void givenACapabilityVoterThatDenyTheProjectDownloadOnASpecificProjectWhenAQueryToRetrieveCapabilitiesOnThatSpecificProjectIsExecutedThenTheCanDownloadIsFalse() {
+    @DisplayName("Given a capability voter that deny all capabilities on a specific project, when a query to retrieve capabilities on that specific project is executed, then capabilities are all false")
+    public void givenACapabilityVoterThatDenyAllCapabilitiesOnASpecificProjectWhenAQueryToRetrieveCapabilitiesOnThatSpecificProjectIsExecutedThenCapabilitiesAreAllFalse() {
         var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT));
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
+        boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
         assertThat(canDownload).isFalse();
+        assertThat(canRename).isFalse();
     }
 
 }

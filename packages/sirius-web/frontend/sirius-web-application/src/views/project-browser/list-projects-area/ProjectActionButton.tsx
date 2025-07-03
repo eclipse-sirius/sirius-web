@@ -110,7 +110,7 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         keepMounted
         open={true}
         onClose={onClose}>
-        <MenuItem onClick={onRename} data-testid="rename">
+        <MenuItem onClick={onRename} data-testid="rename" disabled={!project.capabilities.canRename}>
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
