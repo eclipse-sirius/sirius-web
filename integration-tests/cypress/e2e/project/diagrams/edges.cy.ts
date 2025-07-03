@@ -23,6 +23,7 @@ describe('Diagram - edges', () => {
         projectId = createdProjectData.projectId;
         const project = new Project();
         project.visit(projectId);
+        new Diagram().disableFitView();
         const explorer = new Explorer();
         explorer.expandWithDoubleClick('Flow');
         explorer.expandWithDoubleClick('NewSystem');
@@ -46,7 +47,6 @@ describe('Diagram - edges', () => {
     it('Check no new bend point is created when simply clicking on a bendpoint', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
-      diagram.fitToScreen();
       explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
@@ -60,16 +60,14 @@ describe('Diagram - edges', () => {
       const explorer = new Explorer();
       explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.fitToScreen();
       diagram.moveNode('Topography', 'DataSource1', { x: -100, y: 0 });
       explorer.select('standard');
-      diagram.fitToScreen();
       diagram
         .getEdgePaths('Topography')
         .eq(0)
         .invoke('attr', 'd')
         .then((dValue) => {
-          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M32L63L63L93', 2)).to.be.true;
+          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M-35L29L29L93', 2)).to.be.true;
         });
       diagram.moveBendPoint(1, { x: -50, y: 50 });
       diagram
@@ -77,8 +75,9 @@ describe('Diagram - edges', () => {
         .eq(0)
         .invoke('attr', 'd')
         .then((dValue) => {
-          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M32L63L63L44L44L78L78L93', 2))
-            .to.be.true;
+          expect(
+            diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M-35L29L29L-21L-21L61L61L93', 2)
+          ).to.be.true;
         });
     });
   });

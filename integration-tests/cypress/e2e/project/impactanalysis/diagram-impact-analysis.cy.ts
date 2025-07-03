@@ -41,7 +41,7 @@ describe('Impact analysis - diagram', () => {
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InitialName{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
-        diagram.fitToScreen();
+        diagram.centerViewport();
         diagram.getNodes('Impact analysis diagram', 'InitialName').findByTestId('Label - InitialName').rightclick();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('tool-Tool with impact analysis').click();
@@ -58,7 +58,7 @@ describe('Impact analysis - diagram', () => {
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InitialName{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
-        diagram.fitToScreen();
+        diagram.centerViewport();
         diagram.getNodes('Impact analysis diagram', 'InitialName').findByTestId('Label - InitialName').rightclick();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('tool-Tool with impact analysis').click();

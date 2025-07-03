@@ -16,9 +16,22 @@ export class Diagram {
     return cy.get(`[data-representation-kind="diagram"][data-representation-label="${diagramLabel}"]`);
   }
 
+  public centerViewport() {
+    cy.get('.react-flow__viewport').should('exist');
+    cy.get('.react-flow__viewport').invoke('attr', 'style', 'transform: translate(280px, 300px) scale(1);');
+    /* eslint-disable-next-line cypress/no-unnecessary-waiting */
+    cy.wait(500);
+  }
+
+  public disableFitView() {
+    cy.window().then((win) => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      win.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+  }
+
   public fitToScreen() {
     cy.getByTestId('fit-to-screen').click();
-
     /* eslint-disable-next-line cypress/no-unnecessary-waiting */
     cy.wait(1000);
   }
@@ -44,8 +57,8 @@ export class Diagram {
   }
 
   public selectNode(diagramLabel: string, nodeLabel: string): void {
-    this.getNodes(diagramLabel, nodeLabel).click('topLeft');
-    this.getSelectedNodes(diagramLabel, nodeLabel).should('exist');
+    this.getNodes(diagramLabel, nodeLabel).click('topLeft', { force: true });
+    cy.get('div.react-flow__node.selected').contains('.react-flow__node', nodeLabel).should('exist');
   }
 
   public getEdgePaths(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -209,11 +222,11 @@ export class Diagram {
 
           return elementToDrag
             .trigger('mousedown', { view: window, force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mousemove', centerX + 1, centerY + 1, { force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mousemove', nextX, nextY, { force: true })
-            .wait(50)
+            .wait(150)
             .trigger('mouseup', { view: window, force: true });
         } else {
           return null;

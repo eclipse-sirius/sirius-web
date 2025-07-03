@@ -30,6 +30,7 @@ describe('Diagram - list', () => {
         studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
           instanceProjectId = res.projectId;
         });
+        new Diagram().disableFitView();
 
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('list{enter}');
@@ -40,7 +41,6 @@ describe('Diagram - list', () => {
 
       it('Then the node is correctly displayed with the proper separator', () => {
         const diagram = new Diagram();
-        diagram.fitToScreen();
         // Compartment list without label
         diagram
           .getDiagram(diagramTitle)
@@ -64,9 +64,6 @@ describe('Diagram - list', () => {
       it('Then after width resizing, child nodes conserve their width', () => {
         const diagram = new Diagram();
         diagram.getNodes(diagramTitle, 'list').should('exist');
-        diagram.fitToScreen();
-        diagram.zoomOut();
-
         diagram.selectNode(diagramTitle, 'list');
         let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
 
@@ -97,7 +94,6 @@ describe('Diagram - list', () => {
 
       it('Then child node are correctly initialized to respect growable nodes', () => {
         const diagram = new Diagram();
-        diagram.fitToScreen();
         // Compartment list without label
         diagram
           .getDiagram(diagramTitle)
@@ -105,7 +101,7 @@ describe('Diagram - list', () => {
           .should('exist')
           .invoke('css', 'height')
           .then((nodeHeight) => {
-            expect(parseFloat(nodeHeight.toString())).to.approximately(265, 5);
+            expect(parseFloat(nodeHeight.toString())).to.approximately(70, 5);
           });
         // Compartment freeform
         diagram
@@ -114,16 +110,13 @@ describe('Diagram - list', () => {
           .should('exist')
           .invoke('css', 'height')
           .then((nodeHeight) => {
-            expect(parseFloat(nodeHeight.toString())).to.approximately(486, 5);
+            expect(parseFloat(nodeHeight.toString())).to.approximately(128, 5);
           });
       });
 
       it('Then after height resizing, growable node should grow', () => {
         const diagram = new Diagram();
         diagram.getNodes(diagramTitle, 'list').should('exist');
-        diagram.fitToScreen();
-        diagram.zoomOut();
-        diagram.zoomOut();
 
         diagram.selectNode(diagramTitle, 'list');
         let initialWidthList: number,
@@ -148,7 +141,6 @@ describe('Diagram - list', () => {
             initialWidthFreeForm = rect?.width ?? 0;
             initialHeightFreeForm = rect?.height ?? 0;
           });
-
         diagram.resizeNode('bottom.right', { x: 0, y: 50 });
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000); //Wait for animation
