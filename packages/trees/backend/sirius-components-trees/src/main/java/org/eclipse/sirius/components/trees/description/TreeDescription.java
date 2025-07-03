@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,11 @@ public final class TreeDescription implements IRepresentationDescription {
      * The variable name used to store a reference to a tree.
      */
     public static final String TREE = "tree";
+
+    /**
+     * The name of the variable used to store and retrieve the input that caused a renameTreeItemEvent.
+     */
+    public static final String RENAME_INPUT = "rename_input";
 
     public static final String LABEL = "label";
 
@@ -170,6 +175,15 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.deleteHandler;
     }
 
+    /**
+     * Provides a function which will be used when the end user wants to rename a tree item.
+     *
+     * @return A function used to execute some behavior when a tree item is renamed
+     *
+     * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
+     * into the description also provides a poor extensibility of the tree representation by preventing downstream
+     * consumers from updating the existing behavior or adding a new one easily
+     */
     public BiFunction<VariableManager, String, IStatus> getRenameHandler() {
         return this.renameHandler;
     }
