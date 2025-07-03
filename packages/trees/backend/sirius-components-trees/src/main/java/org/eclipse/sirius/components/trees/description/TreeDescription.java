@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,11 @@ public final class TreeDescription implements IRepresentationDescription {
      * The variable name used to store a reference to a tree.
      */
     public static final String TREE = "tree";
+
+    /**
+     * The name of the variable used to store and retrieve the input that caused a renameTreeItemEvent.
+     */
+    public static final String RENAME_INPUT = "rename_input";
 
     public static final String LABEL = "label";
 

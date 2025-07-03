@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
@@ -196,8 +197,9 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
+        var optionalRenameTreeItemInput = variableManager.get(TreeDescription.RENAME_INPUT, RenameTreeItemInput.class);
 
-        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
+        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent() && optionalRenameTreeItemInput.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
@@ -207,7 +209,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
 
             if (optionalHandler.isPresent()) {
                 IRenameTreeItemHandler renameTreeItemHandler = optionalHandler.get();
-                return renameTreeItemHandler.handle(editingContext, treeItem, newLabel, optionalTree.get());
+                return renameTreeItemHandler.handle(editingContext, optionalRenameTreeItemInput.get(), treeItem, newLabel, optionalTree.get());
             }
         }
         return new Failure("");

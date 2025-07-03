@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -129,14 +128,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                     DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (String) representationId);
                     this.doHandle(Sinks.one(), deleteRepresentationInput);
                 }
-            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind())) {
-                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
-                Object representationLabel = changeDescription.getParameters().get(REPRESENTATION_LABEL);
-                if (representationId instanceof String && representationLabel instanceof String) {
-                    RenameRepresentationInput renameRepresentationInput = new RenameRepresentationInput(UUID.randomUUID(), this.getEditingContextId(), (String) representationId,
-                            (String) representationLabel);
-                    this.doHandle(Sinks.one(), renameRepresentationInput);
-                }
             } else if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
                 return;
             }
@@ -187,11 +178,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         if (this.sink.currentSubscriberCount() > 0) {
             IInput input = changeDescription.getInput();
             UUID correlationId = input.id();
-            if (input instanceof RenameRepresentationInput renameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
-                String representationId = renameRepresentationInput.representationId();
-                String newLabel = renameRepresentationInput.newLabel();
-                this.tryEmitRepresentationRenamedEvent(correlationId, representationId, newLabel);
-            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
+
+            if (ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
                 Map<String, Object> parameters = changeDescription.getParameters();
 
                 var optionalRepresentationId = Optional.ofNullable(parameters.get(REPRESENTATION_ID))

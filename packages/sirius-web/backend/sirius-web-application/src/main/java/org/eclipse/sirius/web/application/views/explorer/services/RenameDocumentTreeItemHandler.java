@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -50,7 +51,7 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree) {
+    public IStatus handle(IEditingContext editingContext, RenameTreeItemInput renameTreeItemInput, TreeItem treeItem, String newLabel, Tree tree) {
         IStatus result = new Failure("Something went wrong while handling this rename action.");
 
         var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())

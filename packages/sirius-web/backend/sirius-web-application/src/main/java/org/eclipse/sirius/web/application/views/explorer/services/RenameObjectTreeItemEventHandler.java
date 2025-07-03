@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
@@ -53,7 +54,7 @@ public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler 
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree) {
+    public IStatus handle(IEditingContext editingContext, RenameTreeItemInput renameTreeItemInput, TreeItem treeItem, String newLabel, Tree tree) {
         IStatus result = new Failure("Something went wrong while handling this rename action.");
 
         var optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, tree.getDescriptionId())

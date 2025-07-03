@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.api;
 
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.trees.Tree;
@@ -25,5 +26,5 @@ import org.eclipse.sirius.components.trees.TreeItem;
 public interface IRenameTreeItemHandler {
     boolean canHandle(IEditingContext editingContext, TreeItem treeItem, String newLabel);
 
-    IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree);
+    IStatus handle(IEditingContext editingContext, RenameTreeItemInput renameTreeItemInput, TreeItem treeItem, String newLabel, Tree tree);
 }

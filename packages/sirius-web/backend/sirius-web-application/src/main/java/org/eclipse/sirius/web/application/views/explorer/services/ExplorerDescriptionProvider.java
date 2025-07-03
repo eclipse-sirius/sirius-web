@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
+import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.ILabelService;
@@ -193,8 +194,9 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
+        var optionalRenameTreeItemInput = variableManager.get(TreeDescription.RENAME_INPUT, RenameTreeItemInput.class);
 
-        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
+        if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent() && optionalRenameTreeItemInput.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
@@ -204,7 +206,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
             if (optionalHandler.isPresent()) {
                 IRenameTreeItemHandler renameTreeItemHandler = optionalHandler.get();
-                return renameTreeItemHandler.handle(editingContext, treeItem, newLabel, optionalTree.get());
+                return renameTreeItemHandler.handle(editingContext, optionalRenameTreeItemInput.get(), treeItem, newLabel, optionalTree.get());
             }
         }
         return new Failure("");
