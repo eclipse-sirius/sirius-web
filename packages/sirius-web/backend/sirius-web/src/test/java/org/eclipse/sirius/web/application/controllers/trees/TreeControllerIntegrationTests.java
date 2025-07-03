@@ -221,6 +221,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         Consumer<Object> portalRefreshedEventPayloadMatcher = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
+        Consumer<Object> treeRefreshedEventPayloadMatcher = assertRefreshedTreeThat(tree -> assertThat(tree).isNotNull());
+
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
@@ -239,6 +241,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
                 .consumeNextWith(hasDocumentNewLabel)
                 .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, "PortalRenamed"))
+                .consumeNextWith(treeRefreshedEventPayloadMatcher)
                 .consumeNextWith(portalRefreshedEventPayloadMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
