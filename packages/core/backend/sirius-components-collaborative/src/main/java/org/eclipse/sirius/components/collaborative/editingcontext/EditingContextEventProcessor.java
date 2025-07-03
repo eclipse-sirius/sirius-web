@@ -122,11 +122,10 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     @SuppressWarnings("checkstyle:IllegalCatch")
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> {
-            if (ChangeKind.REPRESENTATION_TO_DELETE.equals(changeDescription.getKind())) {
-                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
-                if (representationId instanceof String) {
-                    DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (String) representationId);
-                    this.doHandle(Sinks.one(), deleteRepresentationInput);
+            if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION)) {
+                var representationIdParameter = changeDescription.getParameters().get(REPRESENTATION_ID);
+                if (representationIdParameter instanceof String representationId) {
+                    this.disposeRepresentation(representationId);
                 }
             } else if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
                 return;
