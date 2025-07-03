@@ -30,6 +30,7 @@ describe('Diagram - inside outside labels', () => {
           instanceProjectId = res.projectId;
           new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
         });
+        new Diagram().disableFitView();
       });
 
       afterEach(() => cy.deleteProject(instanceProjectId));
@@ -40,7 +41,6 @@ describe('Diagram - inside outside labels', () => {
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
-        diagram.fitToScreen();
         let initialWidth: number;
         let initialHeight: number;
         diagram.getDiagramScale(diagramTitle).then((scale) => {
@@ -95,7 +95,6 @@ describe('Diagram - inside outside labels', () => {
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
-        diagram.fitToScreen();
         let initialWidth: number;
         let initialHeight: number;
         diagram.getDiagramScale(diagramTitle).then((scale) => {
@@ -136,7 +135,6 @@ describe('Diagram - inside outside labels', () => {
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
-        diagram.fitToScreen();
         let initialWidth: number;
         let initialHeight: number;
         diagram.getDiagramScale(diagramTitle).then((scale) => {
@@ -189,7 +187,6 @@ describe('Diagram - inside outside labels', () => {
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
-        diagram.fitToScreen();
         let initialWidth: number;
         let initialHeight: number;
         diagram.getDiagramScale(diagramTitle).then((scale) => {
@@ -221,7 +218,6 @@ describe('Diagram - inside outside labels', () => {
         const details = new Details();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('small{enter}');
-        diagram.fitToScreen();
         let initialWidth: number;
         let initialHeight: number;
         diagram.getDiagramScale(diagramTitle).then((scale) => {

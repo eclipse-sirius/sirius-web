@@ -24,9 +24,11 @@ describe('Diagram - group palette', () => {
         projectId = createdProjectData.projectId;
         new Project().visit(projectId);
       });
+      new Diagram().disableFitView();
       const explorer = new Explorer();
       explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
+      new Diagram().centerViewport();
     });
 
     afterEach(() => cy.deleteProject(projectId));
@@ -36,25 +38,17 @@ describe('Diagram - group palette', () => {
       const explorer = new Explorer();
 
       diagram.getDiagram('diagram').should('exist');
-      diagram.fitToScreen();
 
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
 
-      // Added because selecting in the explorer adjusts the viewport to the selection,
-      // thus, it seems it needs the animation to finish before clicking on the node in the diagram
-      /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-      cy.wait(4000);
-
       diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
       diagram.getGroupPalette().findByTestId('expand').click();
       diagram.getGroupPalette().findByTestId('Arrange in column').click();
-
-      diagram.fitToScreen();
 
       diagram.getGroupPalette().should('not.exist');
       diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
@@ -67,7 +61,6 @@ describe('Diagram - group palette', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
       diagram.getDiagram('diagram').should('exist');
-      diagram.fitToScreen();
       explorer.select('Wifi');
       diagram.getSelectedNodes('diagram', 'Wifi');
       cy.getByTestId('creationhandle-top').should('exist');
