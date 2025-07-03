@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
+import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
@@ -118,7 +119,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
             // The Portal's structure itself has not changed, but clients need to refresh to show the updated names.
-            String renamedRepresentationId = changeDescription.getSourceId();
+            String renamedRepresentationId = Optional.ofNullable(changeDescription.getParameters().get(EditingContextEventProcessor.REPRESENTATION_ID))
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .orElse("");
             if (renamedRepresentationId.equals(this.currentPortal.getId()) || portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
                 this.emitNewPortal(changeDescription.getInput());
             }
