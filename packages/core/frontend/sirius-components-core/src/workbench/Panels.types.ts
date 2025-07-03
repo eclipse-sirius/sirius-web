@@ -27,3 +27,17 @@ export type PanelState = {
   selectedContributionIndex: number;
   isOpen: boolean;
 };
+
+export interface WorkbenchPanelHandle {
+  getPanelConfigurations: () => WorkbenchPanelConfiguration[];
+}
+
+export interface WorkbenchPanelConfiguration {
+  id: string;
+  views: WorkbenchViewConfiguration[];
+}
+
+export interface WorkbenchViewConfiguration {
+  id: string;
+  active: boolean;
+}

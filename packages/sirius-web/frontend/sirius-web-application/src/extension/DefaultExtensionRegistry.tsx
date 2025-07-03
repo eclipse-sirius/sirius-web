@@ -162,36 +162,42 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  *******************************************************************************/
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
+    id: 'explorer',
     side: 'left',
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
   },
   {
+    id: 'validation',
     side: 'left',
     title: 'Validation',
     icon: <WarningIcon />,
     component: ValidationView,
   },
   {
+    id: 'details',
     side: 'right',
     title: 'Details',
     icon: <MenuIcon />,
     component: DetailsView,
   },
   {
+    id: 'query',
     side: 'right',
     title: 'Query',
     icon: <PlayArrowIcon />,
     component: QueryView,
   },
   {
+    id: 'representations',
     side: 'right',
     title: 'Representations',
     icon: <Filter />,
     component: RepresentationsView,
   },
   {
+    id: 'related-elements',
     side: 'right',
     title: 'Related Elements',
     icon: <LinkIcon />,

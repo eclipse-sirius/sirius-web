@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
+import { WorkbenchPanelConfiguration } from './Panels.types';
 
 export type WorkbenchState = {
   id: string;
@@ -33,6 +34,7 @@ export type RepresentationDescription = {
 export type WorkbenchViewSide = 'left' | 'right';
 
 export interface WorkbenchViewContribution {
+  id: string;
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
@@ -67,3 +69,11 @@ export type RepresentationComponent = React.ComponentType<RepresentationComponen
 export type RepresentationComponentFactory = {
   (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
 };
+
+export interface WorkbenchHandle {
+  getConfiguration(): WorkbenchConfiguration;
+}
+
+export interface WorkbenchConfiguration {
+  panels: WorkbenchPanelConfiguration[];
+}

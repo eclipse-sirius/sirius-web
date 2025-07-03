@@ -19,6 +19,7 @@ import {
   SelectionEntry,
   useData,
   Workbench,
+  WorkbenchHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import {
@@ -26,7 +27,7 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -96,6 +97,8 @@ export const EditProjectView = () => {
     }));
   };
 
+  const workbenchRef = useRef<WorkbenchHandle | null>(null);
+
   useSynchronizeSelectionAndURL(
     projectId,
     name,
@@ -134,13 +137,14 @@ export const EditProjectView = () => {
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
               <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
                 <UndoRedo>
-                  <EditProjectNavbar readOnly={readOnly} />
+                  <EditProjectNavbar workbenchHandle={workbenchRef.current} readOnly={readOnly} />
                   <TreeToolBarProvider>
                     <Workbench
                       editingContextId={state.project.currentEditingContext.id}
                       initialRepresentationSelected={state.representation}
                       onRepresentationSelected={onRepresentationSelected}
                       readOnly={readOnly}
+                      ref={workbenchRef}
                     />
                   </TreeToolBarProvider>
                 </UndoRedo>

@@ -58,6 +58,7 @@ import {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,
 } from './EditProjectNavbarMenuExtensionPoints';
+import { ShareProjectMenuItem } from './ShareProjectMenuItem';
 
 const projectEventSubscription = gql`
   subscription projectEvent($input: ProjectEventInput!) {
@@ -96,7 +97,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
+export const EditProjectNavbar = ({ workbenchHandle, readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
 
@@ -227,6 +228,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
               </ListItemIcon>
               <ListItemText primary="Rename" />
             </MenuItem>
+            {workbenchHandle ? <ShareProjectMenuItem workbenchHandle={workbenchHandle} /> : null}
             {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
               <ProjectContextMenuItem
                 key={index}
