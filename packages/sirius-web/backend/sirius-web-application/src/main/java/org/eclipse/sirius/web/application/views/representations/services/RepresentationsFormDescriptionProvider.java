@@ -27,6 +27,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
@@ -54,6 +55,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -82,14 +84,17 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final IRepresentationMetadataDeletionService representationMetadataDeletionService;
+
     private final IRepresentationSearchService representationSearchService;
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders) {
+    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
@@ -268,14 +273,23 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getId)
                 .map(UUID::toString)
-                .map(this::getSuccessStatus)
+                .map(this::deleteRepresentation)
                 .orElse(new Failure(""));
     }
 
-    private IStatus getSuccessStatus(String representationId) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationId);
-        return new Success(ChangeKind.REPRESENTATION_TO_DELETE, parameters);
+    private IStatus deleteRepresentation(String representationId) {
+        var optionalRepresentationUUID = new UUIDParser().parse(representationId);
+        var input = new DeleteRepresentationInput(UUID.randomUUID(), representationId);
+        if (optionalRepresentationUUID.isPresent()) {
+            var representationUUID = optionalRepresentationUUID.get();
+            var result = this.representationMetadataDeletionService.delete(input, representationUUID);
+            if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
+                Map<String, Object> parameters = new HashMap<>();
+                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationId);
+                return new Success(ChangeKind.REPRESENTATION_DELETION, parameters);
+            }
+        }
+        return new Failure("");
     }
 
     private List<?> getChildren(VariableManager variableManager) {
