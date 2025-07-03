@@ -41,4 +41,8 @@ class ProjectNavigationBar {
   public getDownloadLink(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('download-link');
   }
+
+  public getRenameButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('rename');
+  }
 }

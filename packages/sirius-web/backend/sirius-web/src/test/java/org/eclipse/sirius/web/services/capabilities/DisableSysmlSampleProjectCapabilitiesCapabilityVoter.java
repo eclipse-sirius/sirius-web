@@ -19,15 +19,15 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.springframework.stereotype.Service;
 
 /**
- * Disable frontend project download of a specific project for test purpose.
+ * Disable capabilities of the Sysml sample project for test purpose.
  *
  * @author gcoutable
  */
 @Service
-public class DisableProjectDownloadCapabilityVoter implements ICapabilityVoter {
+public class DisableSysmlSampleProjectCapabilitiesCapabilityVoter implements ICapabilityVoter {
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        if (SiriusWebCapabilities.PROJECT.equals(type) && TestIdentifiers.SYSML_SAMPLE_PROJECT.equals(identifier) && SiriusWebCapabilities.Project.DOWNLOAD.equals(capability)) {
+        if (SiriusWebCapabilities.PROJECT.equals(type) && TestIdentifiers.SYSML_SAMPLE_PROJECT.equals(identifier)) {
             return CapabilityVote.DENIED;
         }
         return CapabilityVote.GRANTED;

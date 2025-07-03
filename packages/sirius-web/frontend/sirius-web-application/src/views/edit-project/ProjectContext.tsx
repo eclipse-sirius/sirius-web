@@ -21,6 +21,7 @@ const value: ProjectContextValue = {
     natures: [],
     capabilities: {
       canDownload: false,
+      canRename: false,
     },
     currentEditingContext: {
       id: '',

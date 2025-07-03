@@ -114,6 +114,8 @@ A new "demo" profile is now available to start Sirius Web as a demo instance.
 - https://github.com/eclipse-sirius/sirius-web/issues/5185[#5185] [sirius-web] The two project download buttons have been removed from their extension point contribution `projectContextMenuEntryExtensionPoint` and `ProjectDownloadMenuItemExtension` to become a standard button.
 They were contributed by extension points in order to let downstream projects disable them using a custom `ExtensionRegistryMergeStrategy`.
 Downstream projects are now able to disable the project download frontend support by contributing a `ICapabilityVoter` that disables the `download` capability on project.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Remove `readonly` props from `EditProjectNavbar` since this props was only used to enable or disable the project rename button.
+This purpose can be achieved with the `rename` capabilities.
 
 
 === Dependency update
