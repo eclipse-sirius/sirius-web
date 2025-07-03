@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
+import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -77,6 +78,8 @@ public class RenameRepresentationEventHandler implements IEditingContextEventHan
                 if (result instanceof Success<Void>) {
                     payload = new SuccessPayload(renameRepresentationInput.id());
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), renameRepresentationInput);
+                    changeDescription.getParameters().put(EditingContextEventProcessor.REPRESENTATION_ID, renameRepresentationInput.representationId());
+                    changeDescription.getParameters().put(EditingContextEventProcessor.REPRESENTATION_LABEL, renameRepresentationInput.newLabel());
                 }
             }
         }

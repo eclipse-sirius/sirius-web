@@ -25,6 +25,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
@@ -132,12 +133,17 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
             var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
             if (self.isPresent()) {
                 var representationMetadata = self.get();
-
-                // delegate the renaming of the representation to EditingContextEventProcessor
-                Map<String, Object> parameters = new HashMap<>();
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationMetadata.getId().toString());
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newValue);
-                return new Success(ChangeKind.REPRESENTATION_TO_RENAME, parameters);
+                var editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+                if (editingContext.isPresent()) {
+                    var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.get().getId(), representationMetadata.getId().toString(), newValue);
+                    var result = this.representationMetadataUpdateService.updateLabel(input, representationMetadata.getId(), newValue);
+                    if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
+                        Map<String, Object> parameters = new HashMap<>();
+                        parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationMetadata.getId().toString());
+                        parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newValue);
+                        return new Success(ChangeKind.REPRESENTATION_RENAMING, parameters);
+                    }
+                }
             }
             return new Failure("");
         };
