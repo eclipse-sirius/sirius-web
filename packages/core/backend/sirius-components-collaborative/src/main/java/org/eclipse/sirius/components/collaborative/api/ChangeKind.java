@@ -31,8 +31,6 @@ public final class ChangeKind {
 
     public static final String FOCUS_CHANGE = "FOCUS_CHANGE";
 
-    public static final String REPRESENTATION_TO_DELETE = "REPRESENTATION_TO_DELETE";
-
     public static final String RELOAD_REPRESENTATION = "RELOAD_REPRESENTATION";
 
     public static final String REPRESENTATION_METADATA_UPDATE = "REPRESENTATION_METADATA_UPDATE";

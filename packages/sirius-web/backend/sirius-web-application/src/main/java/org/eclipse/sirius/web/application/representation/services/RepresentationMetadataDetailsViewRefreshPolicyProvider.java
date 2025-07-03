@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 Obeo & CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,6 @@ public class RepresentationMetadataDetailsViewRefreshPolicyProvider implements I
             ChangeKind.REPRESENTATION_CREATION,
             ChangeKind.REPRESENTATION_DELETION,
             ChangeKind.REPRESENTATION_RENAMING,
-            ChangeKind.REPRESENTATION_TO_DELETE,
             ChangeKind.REPRESENTATION_METADATA_UPDATE,
             ChangeKind.SEMANTIC_CHANGE);
 

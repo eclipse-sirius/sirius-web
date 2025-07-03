@@ -213,6 +213,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5123[#5123] [tree] Add support for tree item context menu action impact analysis in the view DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/5185[#5185] [sirius-web] Hide the download button instead of disabling it when the download capability is disabled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
 
 
 
