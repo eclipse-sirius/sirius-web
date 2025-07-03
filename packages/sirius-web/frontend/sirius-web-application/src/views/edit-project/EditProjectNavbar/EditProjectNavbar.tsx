@@ -224,21 +224,22 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
       {navbar === 'contextualMenuDisplayedState' ? (
         <ContextMenuContainer>
           <Menu open anchorEl={projectMenuAnchor} data-testid="navbar-contextmenu" onClose={onCloseContextMenu}>
-            <MenuItem
-              onClick={() => {
-                const showModal: HandleShowModalEvent = {
-                  type: 'HANDLE_SHOW_MODAL_EVENT',
-                  modalName: 'RenameProject',
-                };
-                dispatch(showModal);
-              }}
-              disabled={readOnly}
-              data-testid="rename">
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Rename" />
-            </MenuItem>
+            {project.capabilities.canRename ? (
+              <MenuItem
+                onClick={() => {
+                  const showModal: HandleShowModalEvent = {
+                    type: 'HANDLE_SHOW_MODAL_EVENT',
+                    modalName: 'RenameProject',
+                  };
+                  dispatch(showModal);
+                }}
+                data-testid="rename">
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Rename" />
+              </MenuItem>
+            ) : null}
             {canDownload ? (
               <MenuItem
                 component="a"

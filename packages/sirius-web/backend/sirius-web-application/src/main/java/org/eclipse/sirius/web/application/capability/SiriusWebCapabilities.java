@@ -51,5 +51,12 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String DOWNLOAD = "download";
+
+        /**
+         * Used to check if a project can be renamed.
+         *
+         * @since v2025.8.0
+         */
+        public static final String RENAME = "rename";
     }
 }
