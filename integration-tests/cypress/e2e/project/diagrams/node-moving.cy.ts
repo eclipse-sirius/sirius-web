@@ -37,7 +37,6 @@ describe('Diagram - node moving', () => {
     it('Then it is possible to move a node', () => {
       const diagram = new Diagram();
       diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.fitToScreen();
       let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;
 
       diagram.getNodes('Topography', 'DataSource1').then(($el) => {
@@ -49,8 +48,6 @@ describe('Diagram - node moving', () => {
       });
 
       diagram.moveNode('Topography', 'DataSource1', { x: 50, y: 0 });
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(400);
       diagram.getNodes('Topography', 'DataSource1').then(($el) => {
         const rect = $el[0]?.getBoundingClientRect();
         expect(rect?.left).to.approximately(initialLeft + 50, 2);

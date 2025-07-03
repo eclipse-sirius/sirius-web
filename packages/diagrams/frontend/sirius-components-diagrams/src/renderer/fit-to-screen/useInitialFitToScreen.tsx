@@ -15,6 +15,7 @@ import { Edge, Node, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseInitialFitToScreenState } from './useInitialFitToScreen.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 
 const options = {
   includeHiddenNodes: false,
@@ -23,13 +24,14 @@ const options = {
 export const useInitialFitToScreen = () => {
   const nodesInitialized = useNodesInitialized(options);
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { diagramDescription } = useDiagramDescription();
   const [state, setState] = useState<UseInitialFitToScreenState>({
     initialFitToScreenPerformed: false,
   });
   console.debug('fit-to-screen has been performed:' + state.initialFitToScreenPerformed);
   // We cannot perform the fit to screen directly but instead need to wait for the next render in order to retrieve the updated nodes and edges in the react flow instance
   useEffect(() => {
-    if (nodesInitialized && !state.initialFitToScreenPerformed) {
+    if (nodesInitialized && !state.initialFitToScreenPerformed && !diagramDescription.disableFitView) {
       reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() }).then(() => {
         setState({ initialFitToScreenPerformed: true });
       });

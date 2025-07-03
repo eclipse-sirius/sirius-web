@@ -36,6 +36,7 @@ import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
+import { useFitView } from '../fit-to-screen/useFitView';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
@@ -65,7 +66,8 @@ export const DiagramPanel = memo(
       diagramPanelActionExtensionPoint
     );
 
-    const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { getNodes, getEdges, zoomIn, zoomOut } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { fitView } = useFitView();
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);

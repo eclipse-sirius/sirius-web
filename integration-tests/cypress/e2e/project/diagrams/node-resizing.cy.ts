@@ -39,7 +39,6 @@ describe('Diagram - node resizing', () => {
     it('Then is possible to resize a node', () => {
       const diagram = new Diagram();
       diagram.getNodes('Topography', 'CompositeProcessor1').should('exist');
-      diagram.fitToScreen();
       diagram.selectNode('Topography', 'CompositeProcessor1');
 
       let initialLeft: number, initialTop: number, initialWidth: number, initialHeight: number;

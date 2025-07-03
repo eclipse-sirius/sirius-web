@@ -12,10 +12,11 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useOnSelectionChange, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useOnSelectionChange, useStoreApi } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useFitView } from '../fit-to-screen/useFitView';
 
 // Compute a deterministic key from a selection
 const selectionKey = (entries: SelectionEntry[]) => {
@@ -28,7 +29,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
 
-  const { fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { fitView } = useFitView();
   const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
   // Called when the workbench-level selection is changed.
