@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -135,24 +135,28 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
 
-    const nodeWith = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
-    if (node.data.resizedByUser) {
+    if (node.data.resizedByUser && !forceDimensions?.width) {
       if (nodeMinComputeWidth > previousDimensions.width) {
         node.width = nodeMinComputeWidth;
       } else {
         node.width = previousDimensions.width;
       }
+    } else {
+      node.width = nodeWidth;
+    }
+
+    if (node.data.resizedByUser && !forceDimensions?.height) {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = nodeWith;
       node.height = nodeHeight;
     }
 

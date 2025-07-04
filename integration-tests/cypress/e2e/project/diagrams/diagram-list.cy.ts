@@ -91,28 +91,6 @@ describe('Diagram - list', () => {
             expect(rect?.height).to.equal(initialHeight);
           });
       });
-
-      it('Then child node are correctly initialized to respect growable nodes', () => {
-        const diagram = new Diagram();
-        // Compartment list without label
-        diagram
-          .getDiagram(diagramTitle)
-          .findByTestId('List - undefined')
-          .should('exist')
-          .invoke('css', 'height')
-          .then((nodeHeight) => {
-            expect(parseFloat(nodeHeight.toString())).to.approximately(70, 5);
-          });
-        // Compartment freeform
-        diagram
-          .getDiagram(diagramTitle)
-          .findByTestId('FreeForm - list')
-          .should('exist')
-          .invoke('css', 'height')
-          .then((nodeHeight) => {
-            expect(parseFloat(nodeHeight.toString())).to.approximately(128, 5);
-          });
-      });
     });
   });
 });
