@@ -24,6 +24,7 @@ export const ProjectAndRepresentationFragment = gql`
       canDownload
       canRename
       canDelete
+      canEdit
     }
     currentEditingContext(name: $name) {
       id

@@ -116,6 +116,25 @@ They were contributed by extension points in order to let downstream projects di
 Downstream projects are now able to disable the project download frontend support by contributing a `ICapabilityVoter` that disables the `download` capability on project.
 - https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Remove `readonly` props from `EditProjectNavbar` since this props was only used to enable or disable the project rename button.
 This purpose can be achieved with the `rename` capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [sirius-web] Remove the `editProjectViewReadOnlyPredicateExtensionPoint` that was use to define whether the edit project view should be read-only or not.
+This purpose can be achieve with the `edit` project capabilities by contributing a `ICapabilityVoter`:
+[source,java]
+----
+@Service
+public class CanEditProjectCapabilityVoter implements ICapabilityVoter {
+
+  public CapabilityVote vote(String type, String identifier, String capability) {
+    if ("Project".equals(type) && "edit".equals(capability) && identifier != null) {
+      if (projectCanBeEdited(identifier)) {
+        return CapabilityVote.GRANTED;
+      }
+    }
+
+    return CapabilityVote.DENIED;
+  }
+
+}
+----
 
 
 === Dependency update

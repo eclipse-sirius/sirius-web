@@ -39,8 +39,7 @@ export class Explorer {
   }
 
   public createRootObject(documentTreeItemLabel: string, domain: string, entity: string) {
-    this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
-    cy.getByTestId('new-object').click();
+    this.openTreeItemAction(documentTreeItemLabel).getNewObjectButton().click();
 
     cy.getByTestId('create-object').should('not.be.disabled');
 
@@ -54,8 +53,7 @@ export class Explorer {
   }
 
   public createObject(objectTreeItemLabel: string, childCreationDescriptionLabel: string) {
-    this.getTreeItemByLabel(objectTreeItemLabel).find('button').click();
-    cy.getByTestId('new-object').click();
+    this.openTreeItemAction(objectTreeItemLabel).getNewObjectButton().click();
 
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
@@ -88,8 +86,8 @@ export class Explorer {
     representationDescriptionName: string,
     representationLabel: string
   ): void {
-    this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    this.openTreeItemAction(treeItemLabel).getNewRepresentationButton().click();
+
     cy.get('[aria-labelledby="dialog-title"]').then((modal) => {
       cy.wrap(modal).findByTestId('name').clear();
       cy.wrap(modal).findByTestId('name').type(representationLabel);
@@ -105,8 +103,7 @@ export class Explorer {
   }
 
   public rename(treeItemLabel: string, newName: string): void {
-    this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    this.openTreeItemAction(treeItemLabel).getRenameItemButton().click();
     cy.getByTestId('name-edit');
     cy.getByTestId('name-edit').get('input').should('have.value', treeItemLabel);
     cy.getByTestId('name-edit').type(`${newName}{enter}`);
@@ -115,8 +112,7 @@ export class Explorer {
   }
 
   public delete(treeItemLabel: string): void {
-    this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    this.openTreeItemAction(treeItemLabel).getDeleteItemButton().click();
   }
 
   public dragTreeItem(treeItemLabel: string, dataTransfer: DataTransfer): void {
@@ -137,7 +133,34 @@ export class Explorer {
     cy.getByTestId('create-new-model').findByTestId('create-document').click();
   }
 
-  public openTreeItemAction(treeItemLabel: string): void {
+  public openTreeItemAction(treeItemLabel: string): ExplorerTreeItemActions {
+    cy.getByTestId(`${treeItemLabel}-more`).should('be.visible');
     cy.getByTestId(`${treeItemLabel}-more`).click();
+    return new ExplorerTreeItemActions();
+  }
+}
+
+/**
+ * All actions may not be available for all items.
+ */
+class ExplorerTreeItemActions {
+  public getTreeItemMenu(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('treeitem-contextmenu');
+  }
+
+  public getNewObjectButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getTreeItemMenu().findByTestId('new-object');
+  }
+
+  public getNewRepresentationButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getTreeItemMenu().findByTestId('new-representation');
+  }
+
+  public getRenameItemButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getTreeItemMenu().findByTestId('rename-tree-item');
+  }
+
+  public getDeleteItemButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getTreeItemMenu().findByTestId('delete');
   }
 }

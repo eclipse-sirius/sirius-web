@@ -32,5 +32,3 @@ export interface TreeToolBarProviderProps {
 export interface DiagramPaletteToolProviderProps {
   children: React.ReactNode;
 }
-
-export type ProjectReadOnlyPredicate = (project: GQLProject) => boolean;

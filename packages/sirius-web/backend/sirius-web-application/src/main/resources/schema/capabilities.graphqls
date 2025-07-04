@@ -19,4 +19,5 @@ type ProjectCapabilities {
   canDownload: Boolean!
   canRename: Boolean!
   canDelete: Boolean!
+  canEdit: Boolean!
 }
