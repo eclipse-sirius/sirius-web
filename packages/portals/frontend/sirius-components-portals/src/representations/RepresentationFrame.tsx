@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,10 @@ import {
   representationFactoryExtensionPoint,
   useData,
 } from '@eclipse-sirius/sirius-components-core';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
 
 const useFrameStyles = makeStyles()((theme) => ({
