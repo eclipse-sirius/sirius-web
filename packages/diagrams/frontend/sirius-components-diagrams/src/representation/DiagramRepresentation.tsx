@@ -57,6 +57,7 @@ export const getDiagramDescription = gql`
                 droppableOnNodeTypes
               }
               debug
+              disableFitView
               arrangeLayoutDirection
             }
           }

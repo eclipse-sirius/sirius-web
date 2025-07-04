@@ -28,6 +28,7 @@ describe('Diagram - Palette', () => {
       const explorer = new Explorer();
       explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
+      new Diagram().centerViewport();
     });
 
     afterEach(() => cy.deleteProject(projectId));
@@ -38,8 +39,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Open manage visibility modal
         diagram.getNodes('diagram', 'Central_Unit').should('exist').trigger('mouseover', 'topRight');
         cy.getByTestId('manage-visibility').should('exist').click();
@@ -60,8 +59,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Open manage visibility modal
         diagram.getNodes('diagram', 'Central_Unit').should('exist').trigger('mouseover', 'topRight');
         cy.getByTestId('manage-visibility').should('exist').click();
@@ -84,8 +81,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Open manage visibility modal
         diagram.getNodes('diagram', 'Central_Unit').should('exist').trigger('mouseover', 'topRight');
         cy.getByTestId('manage-visibility').should('exist').click();
