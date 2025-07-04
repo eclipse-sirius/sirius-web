@@ -29,8 +29,13 @@ import {
 } from './EditProjectNavbarMenuExtensionPoints';
 import { ProjectSettingsMenuItem } from './ProjectSettingsMenuItem';
 import { RenameProjectMenuItem } from './RenameProjectMenuItem';
+import { ShareProjectMenuItem } from './ShareProjectMenuItem';
 
-export const EditProjectNavbarContextMenu = ({ anchorEl, onClose }: EditProjectNavbarContextMenuProps) => {
+export const EditProjectNavbarContextMenu = ({
+  anchorEl,
+  onClose,
+  workbenchHandle,
+}: EditProjectNavbarContextMenuProps) => {
   const [state, setState] = useState<EditProjectNavbarContextMenuState>({
     redirectUrl: null,
   });
@@ -54,6 +59,7 @@ export const EditProjectNavbarContextMenu = ({ anchorEl, onClose }: EditProjectN
         {project.capabilities.canRename ? (
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onClose} />
         ) : null}
+        <ShareProjectMenuItem projectId={project.id} workbenchHandle={workbenchHandle} />
         {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />

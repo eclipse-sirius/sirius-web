@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
@@ -29,9 +29,13 @@ import {
   GQLRepresentationRenamedEventPayload,
 } from './useEditingContextEventSubscription.types';
 import {
+  PanelsHandle,
   RepresentationComponentProps,
   RepresentationMetadata,
+  RepresentationNavigationHandle,
+  WorkbenchHandle,
   WorkbenchProps,
+  WorkbenchSidePanelConfiguration,
   WorkbenchState,
   WorkbenchViewContribution,
 } from './Workbench.types';
@@ -63,180 +67,221 @@ const isRepresentationRenamedEventPayload = (
 const getRepresentationMetadata = (data: GQLRepresentationMetadataQueryData | null): GQLRepresentationMetadata[] =>
   data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [];
 
-export const Workbench = ({
-  editingContextId,
-  initialRepresentationSelected,
-  onRepresentationSelected,
-  readOnly,
-}: WorkbenchProps) => {
-  const { classes } = useWorkbenchStyles();
-  const [state, setState] = useState<WorkbenchState>({
-    id: crypto.randomUUID(),
-    displayedRepresentationMetadata: initialRepresentationSelected,
-    representationsMetadata: initialRepresentationSelected ? [initialRepresentationSelected] : [],
-  });
+export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
+  (
+    {
+      editingContextId,
+      initialRepresentationSelected,
+      onRepresentationSelected,
+      readOnly,
+      initialWorkbenchConfiguration,
+    }: WorkbenchProps,
+    refWorkbenchHandle: ForwardedRef<WorkbenchHandle | null>
+  ) => {
+    const { classes } = useWorkbenchStyles();
 
-  const { selection, setSelection } = useSelection();
-  const { data: representationMetadataQueryData } = useRepresentationMetadata(editingContextId, selection);
-  const { payload: editingContextEventPayload } = useEditingContextEventSubscription(editingContextId);
+    const initialRepresentationsFromConfiguration: RepresentationMetadata[] =
+      initialWorkbenchConfiguration?.mainPanel?.representationEditors?.flatMap((configuration) =>
+        configuration ? [configuration.representationMetadata] : []
+      ) ?? [];
+    const initialRepresentations: RepresentationMetadata[] =
+      initialRepresentationsFromConfiguration ?? (initialRepresentationSelected ? [initialRepresentationSelected] : []);
 
-  const { data: representationFactories } = useData(representationFactoryExtensionPoint);
-  useEffect(() => {
-    if (isRepresentationRenamedEventPayload(editingContextEventPayload)) {
-      const { representationId, newLabel } = editingContextEventPayload;
-      const representationsMetadata = [...state.representationsMetadata];
+    const [state, setState] = useState<WorkbenchState>({
+      id: crypto.randomUUID(),
+      displayedRepresentationMetadata: initialRepresentationSelected,
+      representationsMetadata: initialRepresentations,
+    });
 
-      representationsMetadata.forEach((representationMetadata) => {
-        if (representationMetadata.id === representationId) {
-          representationMetadata.label = newLabel;
-        }
-      });
+    const refPanelsHandle: RefObject<PanelsHandle | null> = useRef<PanelsHandle | null>(null);
+    const refRepresentationNavigationHandle: RefObject<RepresentationNavigationHandle | null> =
+      useRef<RepresentationNavigationHandle | null>(null);
 
-      setState((prevState) => ({
-        ...prevState,
-        representationsMetadata: representationsMetadata,
-      }));
-    }
-  }, [editingContextEventPayload]);
+    useImperativeHandle(refWorkbenchHandle, () => {
+      return {
+        getConfiguration: () => {
+          return {
+            sidePanels: refPanelsHandle.current?.getSidePanelConfigurations() ?? [],
+            mainPanel: refRepresentationNavigationHandle.current?.getMainPanelConfiguration() ?? null,
+          };
+        },
+      };
+    });
 
-  // When opening a representation
-  useEffect(() => {
-    const selectedElementRepresentationMetadata = getRepresentationMetadata(representationMetadataQueryData);
-    if (
-      selectedElementRepresentationMetadata.length > 0 &&
-      selectedElementRepresentationMetadata[0]?.id !== state.displayedRepresentationMetadata?.id
-    ) {
-      const displayedRepresentationMetadata = selectedElementRepresentationMetadata[0];
+    const { selection, setSelection } = useSelection();
+    const { data: representationMetadataQueryData } = useRepresentationMetadata(editingContextId, selection);
+    const { payload: editingContextEventPayload } = useEditingContextEventSubscription(editingContextId);
 
-      const representationsMetadata = [...state.representationsMetadata];
-      const newRepresentationsMetadata = selectedElementRepresentationMetadata.filter(
-        (selectedRepresentation) =>
-          !representationsMetadata.find((representation) => selectedRepresentation.id === representation.id)
-      );
+    const { data: representationFactories } = useData(representationFactoryExtensionPoint);
+    useEffect(() => {
+      if (isRepresentationRenamedEventPayload(editingContextEventPayload)) {
+        const { representationId, newLabel } = editingContextEventPayload;
+        const representationsMetadata = [...state.representationsMetadata];
 
-      const newSelectedRepresentations = [...representationsMetadata, ...newRepresentationsMetadata];
+        representationsMetadata.forEach((representationMetadata) => {
+          if (representationMetadata.id === representationId) {
+            representationMetadata.label = newLabel;
+          }
+        });
 
-      setState((prevState) => ({
-        ...prevState,
-        displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
-        representationsMetadata: newSelectedRepresentations,
-      }));
-    }
-  }, [representationMetadataQueryData, selection]);
+        setState((prevState) => ({
+          ...prevState,
+          representationsMetadata: representationsMetadata,
+        }));
+      }
+    }, [editingContextEventPayload]);
 
-  const onClose = (representationToHide: RepresentationMetadata) => {
-    const previousIndex = state.representationsMetadata.findIndex(
-      (representation) =>
-        state.displayedRepresentationMetadata && representation.id === state.displayedRepresentationMetadata.id
-    );
-    const newRepresentationsMetadata = state.representationsMetadata.filter(
-      (representation) => representation.id !== representationToHide.id
-    );
+    // When opening a representation
+    useEffect(() => {
+      const selectedElementRepresentationMetadata = getRepresentationMetadata(representationMetadataQueryData);
+      if (
+        selectedElementRepresentationMetadata.length > 0 &&
+        selectedElementRepresentationMetadata[0]?.id !== state.displayedRepresentationMetadata?.id
+      ) {
+        const displayedRepresentationMetadata = selectedElementRepresentationMetadata[0];
 
-    if (newRepresentationsMetadata.length === 0) {
-      // There are no representations anymore
-      setState((prevState) => ({
-        ...prevState,
-        displayedRepresentationMetadata: null,
-        representationsMetadata: [],
-      }));
-    } else {
-      const newIndex = newRepresentationsMetadata.findIndex(
+        const representationsMetadata = [...state.representationsMetadata];
+        const newRepresentationsMetadata = selectedElementRepresentationMetadata.filter(
+          (selectedRepresentation) =>
+            !representationsMetadata.find((representation) => selectedRepresentation.id === representation.id)
+        );
+
+        const newSelectedRepresentations = [...representationsMetadata, ...newRepresentationsMetadata];
+
+        setState((prevState) => ({
+          ...prevState,
+          displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
+          representationsMetadata: newSelectedRepresentations,
+        }));
+      }
+    }, [representationMetadataQueryData, selection]);
+
+    const onClose = (representationToHide: RepresentationMetadata) => {
+      const previousIndex = state.representationsMetadata.findIndex(
         (representation) =>
           state.displayedRepresentationMetadata && representation.id === state.displayedRepresentationMetadata.id
       );
+      const newRepresentationsMetadata = state.representationsMetadata.filter(
+        (representation) => representation.id !== representationToHide.id
+      );
 
-      if (newIndex !== -1) {
-        // The previously displayed representation has not been closed
+      if (newRepresentationsMetadata.length === 0) {
+        // There are no representations anymore
         setState((prevState) => ({
           ...prevState,
-          representationsMetadata: newRepresentationsMetadata,
-        }));
-      } else if (newRepresentationsMetadata.length === previousIndex) {
-        // The previous representation has been closed and it was the last one
-        const displayedRepresentationMetadata = newRepresentationsMetadata[previousIndex - 1];
-        setState((prevState) => ({
-          ...prevState,
-          displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
-          representationsMetadata: newRepresentationsMetadata,
+          displayedRepresentationMetadata: null,
+          representationsMetadata: [],
         }));
       } else {
-        const displayedRepresentationMetadata = newRepresentationsMetadata[previousIndex];
-        setState((prevState) => ({
-          ...prevState,
-          displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
-          representationsMetadata: newRepresentationsMetadata,
-        }));
+        const newIndex = newRepresentationsMetadata.findIndex(
+          (representation) =>
+            state.displayedRepresentationMetadata && representation.id === state.displayedRepresentationMetadata.id
+        );
+
+        if (newIndex !== -1) {
+          // The previously displayed representation has not been closed
+          setState((prevState) => ({
+            ...prevState,
+            representationsMetadata: newRepresentationsMetadata,
+          }));
+        } else if (newRepresentationsMetadata.length === previousIndex) {
+          // The previous representation has been closed and it was the last one
+          const displayedRepresentationMetadata = newRepresentationsMetadata[previousIndex - 1];
+          setState((prevState) => ({
+            ...prevState,
+            displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
+            representationsMetadata: newRepresentationsMetadata,
+          }));
+        } else {
+          const displayedRepresentationMetadata = newRepresentationsMetadata[previousIndex];
+          setState((prevState) => ({
+            ...prevState,
+            displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
+            representationsMetadata: newRepresentationsMetadata,
+          }));
+        }
+      }
+    };
+
+    useEffect(() => {
+      if (
+        state.displayedRepresentationMetadata &&
+        state.displayedRepresentationMetadata.id !== initialRepresentationSelected?.id
+      ) {
+        onRepresentationSelected(state.displayedRepresentationMetadata);
+      } else if (state.displayedRepresentationMetadata === null && initialRepresentationSelected) {
+        onRepresentationSelected(null);
+      }
+    }, [onRepresentationSelected, initialRepresentationSelected, state.displayedRepresentationMetadata]);
+
+    const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
+    const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
+
+    const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
+    for (const workbenchViewContribution of workbenchViewContributions) {
+      if (workbenchViewContribution.side === 'left') {
+        workbenchViewLeftSideContributions.push(workbenchViewContribution);
+      } else if (workbenchViewContribution.side === 'right') {
+        workbenchViewRightSideContributions.push(workbenchViewContribution);
       }
     }
-  };
 
-  useEffect(() => {
-    if (
-      state.displayedRepresentationMetadata &&
-      state.displayedRepresentationMetadata.id !== initialRepresentationSelected?.id
-    ) {
-      onRepresentationSelected(state.displayedRepresentationMetadata);
-    } else if (state.displayedRepresentationMetadata === null && initialRepresentationSelected) {
-      onRepresentationSelected(null);
-    }
-  }, [onRepresentationSelected, initialRepresentationSelected, state.displayedRepresentationMetadata]);
+    const leftPanelConfiguration: WorkbenchSidePanelConfiguration | null =
+      initialWorkbenchConfiguration?.sidePanels.find((configuration) => configuration && configuration.id === 'left') ??
+      null;
+    const rightPanelConfiguration: WorkbenchSidePanelConfiguration | null =
+      initialWorkbenchConfiguration?.sidePanels.find(
+        (configuration) => configuration && configuration.id === 'right'
+      ) ?? null;
 
-  const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
-  const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
+    const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
+    let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
 
-  const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
-  for (const workbenchViewContribution of workbenchViewContributions) {
-    if (workbenchViewContribution.side === 'left') {
-      workbenchViewLeftSideContributions.push(workbenchViewContribution);
-    } else if (workbenchViewContribution.side === 'right') {
-      workbenchViewRightSideContributions.push(workbenchViewContribution);
-    }
-  }
-
-  const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
-  let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
-
-  const onRepresentationClick = (representation: RepresentationMetadata) => {
-    setSelection({ entries: [{ id: representation.id }] });
-  };
-
-  if (state.displayedRepresentationMetadata) {
-    const displayedRepresentationMetadata = state.displayedRepresentationMetadata;
-    const RepresentationComponent = representationFactories
-      .map((representationFactory) => representationFactory(displayedRepresentationMetadata))
-      .find((component) => component != null);
-    const props: RepresentationComponentProps = {
-      editingContextId,
-      readOnly,
-      representationId: displayedRepresentationMetadata.id,
+    const onRepresentationClick = (representation: RepresentationMetadata) => {
+      setSelection({ entries: [{ id: representation.id }] });
     };
-    if (RepresentationComponent) {
-      main = (
-        <div className={classes.representationArea} data-testid="representation-area">
-          <RepresentationNavigation
-            representations={state.representationsMetadata}
-            displayedRepresentation={displayedRepresentationMetadata}
-            onRepresentationClick={onRepresentationClick}
-            onClose={onClose}
-          />
-          <RepresentationComponent key={`${editingContextId}#${displayedRepresentationMetadata.id}`} {...props} />
-        </div>
-      );
-    }
-  }
 
-  return (
-    <ImpactAnalysisDialogContextProvider>
-      <Panels
-        editingContextId={editingContextId}
-        readOnly={readOnly}
-        leftContributions={workbenchViewLeftSideContributions}
-        leftPanelInitialSize={25}
-        rightContributions={workbenchViewRightSideContributions}
-        rightPanelInitialSize={25}
-        mainArea={main}
-      />
-    </ImpactAnalysisDialogContextProvider>
-  );
-};
+    if (state.displayedRepresentationMetadata) {
+      const displayedRepresentationMetadata = state.displayedRepresentationMetadata;
+      const RepresentationComponent = representationFactories
+        .map((representationFactory) => representationFactory(displayedRepresentationMetadata))
+        .find((component) => component != null);
+      const props: RepresentationComponentProps = {
+        editingContextId,
+        readOnly,
+        representationId: displayedRepresentationMetadata.id,
+      };
+      if (RepresentationComponent) {
+        main = (
+          <div className={classes.representationArea} data-testid="representation-area">
+            <RepresentationNavigation
+              representations={state.representationsMetadata}
+              displayedRepresentation={displayedRepresentationMetadata}
+              onRepresentationClick={onRepresentationClick}
+              onClose={onClose}
+              ref={refRepresentationNavigationHandle}
+            />
+            <RepresentationComponent key={`${editingContextId}#${displayedRepresentationMetadata.id}`} {...props} />
+          </div>
+        );
+      }
+    }
+
+    return (
+      <ImpactAnalysisDialogContextProvider>
+        <Panels
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          leftContributions={workbenchViewLeftSideContributions}
+          leftPanelConfiguration={leftPanelConfiguration}
+          leftPanelInitialSize={25}
+          rightContributions={workbenchViewRightSideContributions}
+          rightPanelConfiguration={rightPanelConfiguration}
+          rightPanelInitialSize={25}
+          mainArea={main}
+          ref={refPanelsHandle}
+        />
+      </ImpactAnalysisDialogContextProvider>
+    );
+  }
+);

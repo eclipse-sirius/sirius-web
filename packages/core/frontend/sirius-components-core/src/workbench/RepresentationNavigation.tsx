@@ -13,10 +13,11 @@
 import CloseIcon from '@mui/icons-material/Close';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { IconOverlay } from '../icon/IconOverlay';
 import { RepresentationNavigationProps } from './RepresentationNavigation.types';
-import { RepresentationMetadata } from './Workbench.types';
+import { RepresentationMetadata, RepresentationNavigationHandle } from './Workbench.types';
 
 const useRepresentationNavigationStyles = makeStyles()((theme) => ({
   tabsRoot: {
@@ -55,73 +56,94 @@ const a11yProps = (id: string) => {
   };
 };
 
-export const RepresentationNavigation = ({
-  representations,
-  displayedRepresentation,
-  onRepresentationClick,
-  onClose,
-}: RepresentationNavigationProps) => {
-  const { classes } = useRepresentationNavigationStyles();
+export const RepresentationNavigation = forwardRef<
+  RepresentationNavigationHandle | null,
+  RepresentationNavigationProps
+>(
+  (
+    { representations, displayedRepresentation, onRepresentationClick, onClose }: RepresentationNavigationProps,
+    refRepresentationNavigationHandle: ForwardedRef<RepresentationNavigationHandle | null>
+  ) => {
+    const { classes } = useRepresentationNavigationStyles();
 
-  const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
-    const representationSelected = representations.find((representation) => representation.id === value);
-    if (representationSelected) {
-      const { id, label, kind, iconURLs, description } = representationSelected;
+    const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
+      const representationSelected = representations.find((representation) => representation.id === value);
+      if (representationSelected) {
+        const { id, label, kind, iconURLs, description } = representationSelected;
 
-      const representation: RepresentationMetadata = {
-        id,
-        label,
-        kind,
-        iconURLs,
-        description,
-      };
-      onRepresentationClick(representation);
-    }
-  };
+        const representation: RepresentationMetadata = {
+          id,
+          label,
+          kind,
+          iconURLs,
+          description,
+        };
+        onRepresentationClick(representation);
+      }
+    };
 
-  const onRepresentationClose = (event: React.MouseEvent<SVGSVGElement>, representation: RepresentationMetadata) => {
-    event.stopPropagation();
-    onClose(representation);
-  };
+    const onRepresentationClose = (event: React.MouseEvent<SVGSVGElement>, representation: RepresentationMetadata) => {
+      event.stopPropagation();
+      onClose(representation);
+    };
 
-  return (
-    <Tabs
-      classes={{ root: classes.tabsRoot }}
-      value={displayedRepresentation.id}
-      onChange={onChange}
-      variant="scrollable"
-      scrollButtons
-      textColor="primary"
-      indicatorColor="primary">
-      {representations.map((representation) => {
-        return (
-          <Tab
-            {...a11yProps(representation.id)}
-            classes={{ root: classes.tabRoot }}
-            value={representation.id}
-            label={
-              <div className={classes.tabLabel}>
-                {representation.iconURLs && (
-                  <div className={classes.tabRepresentationIcon}>
-                    <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
-                  </div>
-                )}
-                <div className={classes.tabLabelText}>{representation.label}</div>
-                <CloseIcon
-                  className={classes.tabCloseIcon}
-                  fontSize="small"
-                  onClick={(event) => onRepresentationClose(event, representation)}
-                  data-testid={`close-representation-tab-${representation.label}`}
-                />
-              </div>
-            }
-            key={representation.id}
-            data-testid={`representation-tab-${representation.label}`}
-            data-testselected={representation.id === displayedRepresentation.id}
-            data-representationid={representation.id}
-          />
-        );
-      })}
-    </Tabs>
-  );
-};
+    useImperativeHandle(
+      refRepresentationNavigationHandle,
+      () => {
+        return {
+          getMainPanelConfiguration: () => {
+            return {
+              id: 'main',
+              representationEditors: representations.map((representation) => ({
+                representationMetadata: representation,
+                isActive: representation.id === displayedRepresentation.id,
+              })),
+            };
+          },
+        };
+      },
+      [representations, displayedRepresentation]
+    );
+
+    return (
+      <Tabs
+        classes={{ root: classes.tabsRoot }}
+        value={displayedRepresentation.id}
+        onChange={onChange}
+        variant="scrollable"
+        scrollButtons
+        textColor="primary"
+        indicatorColor="primary">
+        {representations.map((representation) => {
+          return (
+            <Tab
+              {...a11yProps(representation.id)}
+              classes={{ root: classes.tabRoot }}
+              value={representation.id}
+              label={
+                <div className={classes.tabLabel}>
+                  {representation.iconURLs && (
+                    <div className={classes.tabRepresentationIcon}>
+                      <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                    </div>
+                  )}
+                  <div className={classes.tabLabelText}>{representation.label}</div>
+                  <CloseIcon
+                    className={classes.tabCloseIcon}
+                    fontSize="small"
+                    onClick={(event) => onRepresentationClose(event, representation)}
+                    data-testid={`close-representation-tab-${representation.label}`}
+                  />
+                </div>
+              }
+              key={representation.id}
+              data-testid={`representation-tab-${representation.label}`}
+              data-testselected={representation.id === displayedRepresentation.id}
+              data-representationid={representation.id}
+            />
+          );
+        })}
+      </Tabs>
+    );
+  }
+);

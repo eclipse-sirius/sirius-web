@@ -11,13 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchViewContribution } from './Workbench.types';
+import { WorkbenchSidePanelConfiguration, WorkbenchViewContribution } from './Workbench.types';
 
 export interface PanelsProps {
   editingContextId: string;
   readOnly: boolean;
   leftContributions: WorkbenchViewContribution[];
+  leftPanelConfiguration: WorkbenchSidePanelConfiguration | null;
   rightContributions: WorkbenchViewContribution[];
+  rightPanelConfiguration: WorkbenchSidePanelConfiguration | null;
   mainArea: JSX.Element;
   leftPanelInitialSize: number;
   rightPanelInitialSize: number;
