@@ -426,7 +426,7 @@ Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view
 The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.
 - https://github.com/eclipse-sirius/sirius-web/issues/5017[#5017] [sirius-web] Improve the consistency and documentation of the extension points of the frontend
 - https://github.com/eclipse-sirius/sirius-web/issues/3180[#3180] [diagram] Preserve the position of border nodes when resizing the parent
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5137[#5137] [diagram] Improve feedback on growable nodes when resizing the parent
 
 
 == v2025.4.0
