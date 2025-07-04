@@ -116,7 +116,7 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
           </ListItemIcon>
           <ListItemText primary="Rename" />
         </MenuItem>
-        <MenuItem onClick={onDelete} data-testid="delete">
+        <MenuItem onClick={onDelete} data-testid="delete" disabled={!project.capabilities.canDelete}>
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>

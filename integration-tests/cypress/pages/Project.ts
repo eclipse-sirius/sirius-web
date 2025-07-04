@@ -45,4 +45,8 @@ class ProjectNavigationBar {
   public getRenameButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('rename');
   }
+
+  public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('delete');
+  }
 }

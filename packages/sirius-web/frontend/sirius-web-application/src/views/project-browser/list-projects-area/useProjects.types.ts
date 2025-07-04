@@ -62,6 +62,7 @@ export interface GQLProject {
 export interface GQLProjectCapabilities {
   canDownload: boolean;
   canRename: boolean;
+  canDelete: boolean;
 }
 
 export interface GQLPageInfo {

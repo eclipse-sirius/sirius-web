@@ -33,11 +33,7 @@ import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProject
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { useCurrentProject } from '../useCurrentProject';
-import {
-  EditProjectNavbarMenuEntryProps,
-  EditProjectNavbarProps,
-  GQLProjectEventSubscription,
-} from './EditProjectNavbar.types';
+import { EditProjectNavbarMenuEntryProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
@@ -96,7 +92,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
+export const EditProjectNavbar = () => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
 
@@ -253,7 +249,7 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
                 };
                 dispatch(showModal);
               }}
-              disabled={readOnly}
+              disabled={!project.capabilities.canDelete}
               data-testid="delete">
               <ListItemIcon>
                 <DeleteIcon />
