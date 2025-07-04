@@ -47,6 +47,7 @@ export interface GQLProjectCapabilities {
   canDownload: boolean;
   canRename: boolean;
   canDelete: boolean;
+  canEdit: boolean;
 }
 
 export interface GQLEditingContext {

@@ -23,6 +23,7 @@ const value: ProjectContextValue = {
       canDownload: false,
       canRename: false,
       canDelete: false,
+      canEdit: false,
     },
     currentEditingContext: {
       id: '',

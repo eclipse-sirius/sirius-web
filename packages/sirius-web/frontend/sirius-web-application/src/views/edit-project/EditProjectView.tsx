@@ -17,7 +17,6 @@ import {
   Selection,
   SelectionContextProvider,
   SelectionEntry,
-  useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
 import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
@@ -34,7 +33,6 @@ import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, TreeToolBarProviderProps } from './EditProjectView.types';
-import { editProjectViewReadOnlyPredicateExtensionPoint } from './EditProjectViewExtensionPoints';
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
@@ -107,8 +105,6 @@ export const EditProjectView = () => {
     return `/projects/${projectId}/edit/${representationId}`;
   };
 
-  const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
-
   const [urlSearchParams] = useSearchParams();
 
   let content: React.ReactNode = null;
@@ -126,7 +122,6 @@ export const EditProjectView = () => {
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
     const initialSelection: Selection = { entries };
 
-    const readOnly = readOnlyPredicate(context.project);
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
@@ -140,7 +135,7 @@ export const EditProjectView = () => {
                       editingContextId={context.project.currentEditingContext.id}
                       initialRepresentationSelected={context.representation}
                       onRepresentationSelected={onRepresentationSelected}
-                      readOnly={readOnly}
+                      readOnly={!context.project.capabilities.canEdit}
                     />
                   </TreeToolBarProvider>
                 </UndoRedo>

@@ -85,8 +85,6 @@ export {
   editProjectNavbarMenuEntryExtensionPoint,
 } from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 export { EditProjectView } from './views/edit-project/EditProjectView';
-export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
-export { editProjectViewReadOnlyPredicateExtensionPoint } from './views/edit-project/EditProjectViewExtensionPoints';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';

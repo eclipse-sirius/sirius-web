@@ -108,6 +108,25 @@ Thus, downstream projects that would want to hide these cards, will not be able 
 Another consequences is that the `projectTemplates` graphql query now requires the `withDefault` parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Remove `readonly` props from EditProjectNavbar since this props was only used to enable or disable the project rename button.
 This purpose can be achieved with the `canRename` capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [sirius-web] Remove the `editProjectViewReadOnlyPredicateExtensionPoint` that was use to define whether the edit project view should be read-only or not.
+This purpose can be achieve with the `canEdit` project capabilities by contributing a `ICapabilityVoter`:
+[source,java]
+----
+@Service
+public class canEditProjectCapabilityVoter implements ICapabilityVoter {
+
+  public CapabilityVote vote(String type, String identifier, String capability) {
+    if ("Project".equals(type) && "canEdit".equals(capability) && identifier != null) {
+      if (projectCanBeEdited(identifier)) {
+        return CapabilityVote.GRANTED;
+      }
+    }
+
+    return CapabilityVote.DENIED;
+  }
+
+}
+----
 
 
 === Dependency update

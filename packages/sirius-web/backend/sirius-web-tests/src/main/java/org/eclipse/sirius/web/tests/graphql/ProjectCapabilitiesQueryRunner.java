@@ -35,6 +35,8 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
                     canDownload
                     canRename
                     canDelete
+                    canEdit
+                    canEdit
                   }
                 }
               }
