@@ -380,6 +380,7 @@ type DiagramDescription implements RepresentationDescription {
   initialDirectEditElementLabel(labelId: ID!): String!
   diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
+  disableFitView: Boolean
 }
 
 enum ArrangeLayoutDirection {

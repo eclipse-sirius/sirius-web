@@ -29,6 +29,7 @@ describe('Diagram - Palette', () => {
       const explorer = new Explorer();
       explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
+      new Diagram().centerViewport();
     });
 
     afterEach(() => cy.deleteProject(projectId));
@@ -40,8 +41,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // left click on the diagram background
         cy.getByTestId('rf__wrapper').should('exist').click(100, 100);
         // the palette is closed
@@ -58,8 +57,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // right click on the diagram background
         // workaround: the first right-click doesn't seem catch by Cypress, the second one does
         cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 100).rightclick(100, 100);
@@ -77,8 +74,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // left click on the Wifi node
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         // the palette is closed
@@ -97,8 +92,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // right click on the Wifi node
         // workaround: the first right-click doesn't seem catch by Cypress, the second one does
         diagram.getNodes('diagram', 'Wifi').should('exist').rightclick().rightclick();
@@ -118,8 +111,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // left click on the edge between Wifi and DSP (with label '4')
         cy.getByTestId('Label - 4').should('exist').click({ force: true });
         // the palette is closed
@@ -138,8 +129,6 @@ describe('Diagram - Palette', () => {
         // no element is selected in the diagram
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
-        // wait for the fit to screen
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // right click on the edge between Wifi and DSP (with label '4')
         // workaround: the first right-click doesn't seem catch by Cypress, the second one does
         cy.getByTestId('Label - 4').should('exist').rightclick({ force: true }).rightclick({ force: true });
@@ -158,9 +147,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
@@ -177,9 +164,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
@@ -197,9 +182,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
@@ -216,9 +199,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
@@ -235,9 +216,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
@@ -254,9 +233,7 @@ describe('Diagram - Palette', () => {
         const diagram = new Diagram();
         const explorer = new Explorer();
         const details = new Details();
-        // wait for the fit to screen
         diagram.getDiagram('diagram').should('exist');
-        cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
         // Wifi element is selected in the diagram
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');

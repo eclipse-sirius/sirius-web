@@ -59,6 +59,7 @@ export interface GQLDiagramDescription {
   nodeDescriptions: GQLNodeDescription[];
   dropNodeCompatibility: GQLDropNodeCompatibility[];
   debug: boolean;
+  disableFitView: boolean;
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
 }
 
