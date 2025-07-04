@@ -17,7 +17,6 @@ import {
   Selection,
   SelectionContextProvider,
   SelectionEntry,
-  useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
 import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
@@ -31,7 +30,6 @@ import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, EditProjectViewState, TreeToolBarProviderProps } from './EditProjectView.types';
-import { editProjectViewReadOnlyPredicateExtensionPoint } from './EditProjectViewExtensionPoints';
 import { ProjectContext } from './ProjectContext';
 import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
@@ -110,8 +108,6 @@ export const EditProjectView = () => {
     return `/projects/${projectId}/edit/${representationId}`;
   };
 
-  const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
-
   const [urlSearchParams] = useSearchParams();
 
   const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
@@ -126,7 +122,6 @@ export const EditProjectView = () => {
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
     const initialSelection: Selection = { entries };
 
-    const readOnly = readOnlyPredicate(state.project);
     content = (
       <ProjectContext.Provider value={{ project: state.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
@@ -140,7 +135,7 @@ export const EditProjectView = () => {
                       editingContextId={state.project.currentEditingContext.id}
                       initialRepresentationSelected={state.representation}
                       onRepresentationSelected={onRepresentationSelected}
-                      readOnly={readOnly}
+                      readOnly={!state.project.capabilities.canEdit}
                     />
                   </TreeToolBarProvider>
                 </UndoRedo>

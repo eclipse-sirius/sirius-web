@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,9 @@ import { Project } from '../../../pages/Project';
 import { Flow } from '../../../usecases/Flow';
 import { Explorer } from '../../../workbench/Explorer';
 
-const projectName = 'Cypress - explorer';
-
 describe('Explorer', () => {
   context('Given a flow project with a robot document', () => {
+    const projectName = 'Cypress - explorer';
     let projectId: string = '';
     beforeEach(() =>
       new Flow().createRobotProject(projectName).then((createdProjectData) => {
@@ -103,6 +102,33 @@ describe('Explorer', () => {
         cy.getByTestId('Central_Unit-fullrow').click('left');
         explorer.getSelectedTreeItems().should('have.length', 1);
         explorer.getSelectedTreeItems().contains('Central_Unit').should('exist');
+      });
+    });
+  });
+
+  context('Given a read-only project with a robot document', () => {
+    const projectName = 'Cypress - Disabled Edit Project';
+    let projectId: string = '';
+    beforeEach(() =>
+      new Flow().createRobotProject(projectName).then((createdProjectData) => {
+        projectId = createdProjectData.projectId;
+        new Project().visit(projectId);
+      })
+    );
+
+    afterEach(() => cy.deleteProject(projectId));
+
+    context('When we display actions of a tree item', () => {
+      it('Then they are all disabled', () => {
+        const explorer = new Explorer();
+        explorer.expandWithDoubleClick('robot');
+        explorer.getTreeItemByLabel('System').should('exist');
+        const actions = explorer.openTreeItemAction('System');
+
+        actions.getNewObjectButton().should('have.class', 'Mui-disabled');
+        actions.getNewRepresentationButton().should('have.class', 'Mui-disabled');
+        actions.getRenameItemButton().should('have.class', 'Mui-disabled');
+        actions.getDeleteItemButton().should('have.class', 'Mui-disabled');
       });
     });
   });

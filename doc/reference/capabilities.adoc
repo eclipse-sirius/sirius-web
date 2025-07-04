@@ -17,3 +17,4 @@ This document will reference the frontend capabilities that can be enabled or di
 * canDownload: Whether the project can be downloaded or not
 * canRename: Whether the project can be renamed or not
 * canDelete: Whether the project can be deleted or not
+* canEdit: Whether the project is readonly or not

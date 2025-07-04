@@ -48,9 +48,11 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
         boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
+        boolean canEdit = JsonPath.read(result, "$.data.viewer.project.capabilities.canEdit");
         assertThat(canDownload).isTrue();
         assertThat(canRename).isTrue();
         assertThat(canDelete).isTrue();
+        assertThat(canEdit).isTrue();
     }
 
     @Test
@@ -61,9 +63,11 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
         boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
+        boolean canEdit = JsonPath.read(result, "$.data.viewer.project.capabilities.canEdit");
         assertThat(canDownload).isFalse();
         assertThat(canRename).isFalse();
         assertThat(canDelete).isFalse();
+        assertThat(canEdit).isFalse();
     }
 
 }

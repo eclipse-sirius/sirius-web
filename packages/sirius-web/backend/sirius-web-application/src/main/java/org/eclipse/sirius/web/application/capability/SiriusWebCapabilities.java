@@ -65,5 +65,17 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String DELETE = "delete";
+
+        /**
+         * Used to check is a project can be edited.
+         *
+         * <p>
+         *     It involves only the content of a project.
+         *     Renaming or deleting a project are handled by their own capabilities.
+         * </p>
+         *
+         * @since v2025.8.0
+         */
+        public static final String EDIT = "edit";
     }
 }
