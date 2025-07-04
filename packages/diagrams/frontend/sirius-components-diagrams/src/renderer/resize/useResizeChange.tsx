@@ -38,20 +38,52 @@ const applyResizeToListContain = (
   change: NodeDimensionChange
 ): NodeChange<Node<NodeData>>[] => {
   const newChanges: NodeChange<Node<NodeData>>[] = [];
-  if (isListData(resizedNode)) {
+  if (isListData(resizedNode) && change.dimensions) {
     const borderWidth: number = getBorderWidth(resizedNode);
+    const growableChildNodeId = nodes
+      .filter(
+        (node) =>
+          !node.data.isBorderNode &&
+          node.parentId === resizedNode.id &&
+          resizedNode.data.growableNodeIds.includes(node.data.descriptionId)
+      )
+      .map((node) => node.id);
+    const heightToAddToEachGrowableNode =
+      growableChildNodeId.length > 0
+        ? (change.dimensions.height - (resizedNode.height ?? 0)) / growableChildNodeId.length
+        : 0;
+    let growableNodeIndex = 0;
     nodes
       .filter((node) => !node.data.isBorderNode)
       .forEach((node) => {
         if (node.parentId === resizedNode.id && change.dimensions?.width) {
-          newChanges.push({
+          const newDimensionChange: NodeChange<Node<NodeData>> = {
             id: node.id,
             type: 'dimensions',
-            resizing: true,
+            resizing: change.resizing,
             setAttributes: true,
-            dimensions: { width: change.dimensions?.width - borderWidth * 2, height: node.height ?? 0 },
-          });
-          newChanges.push(...applyResizeToListContain(node, nodes, change));
+            dimensions: {
+              width: change.dimensions.width - borderWidth * 2,
+              height: growableChildNodeId.includes(node.id)
+                ? (node.height ?? 0) + heightToAddToEachGrowableNode
+                : node.height ?? 0,
+            },
+          };
+          newChanges.push(newDimensionChange);
+          if (growableNodeIndex > 0) {
+            newChanges.push({
+              id: node.id,
+              type: 'position',
+              position: {
+                x: node.position.x,
+                y: node.position.y + growableNodeIndex * heightToAddToEachGrowableNode,
+              },
+            });
+          }
+          if (growableChildNodeId.includes(node.id)) {
+            growableNodeIndex++;
+          }
+          newChanges.push(...applyResizeToListContain(node, nodes, newDimensionChange));
         }
       });
   }

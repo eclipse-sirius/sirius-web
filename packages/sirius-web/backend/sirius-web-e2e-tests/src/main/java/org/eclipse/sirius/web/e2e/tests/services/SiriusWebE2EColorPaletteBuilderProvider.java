@@ -41,6 +41,12 @@ public class SiriusWebE2EColorPaletteBuilderProvider {
 
     public static final String COLOR_RED = "color_red";
 
+    public static final String COLOR_PINK = "color_pink";
+
+    public static final String COLOR_YELLOW = "color_yellow";
+
+    public static final String COLOR_ORANGE = "color_orange";
+
     public ColorPaletteBuilder getColorPaletteBuilder() {
         var colorDark = new ViewBuilders().newFixedColor()
                 .name(COLOR_DARK)
@@ -72,10 +78,24 @@ public class SiriusWebE2EColorPaletteBuilderProvider {
                 .value("transparent")
                 .build();
 
-
         var colorRed = new ViewBuilders().newFixedColor()
                 .name(COLOR_RED)
                 .value("red")
+                .build();
+
+        var colorPink = new ViewBuilders().newFixedColor()
+                .name(COLOR_PINK)
+                .value("pink")
+                .build();
+
+        var colorYellow = new ViewBuilders().newFixedColor()
+                .name(COLOR_YELLOW)
+                .value("yellow")
+                .build();
+
+        var colorOrange = new ViewBuilders().newFixedColor()
+                .name(COLOR_ORANGE)
+                .value("orange")
                 .build();
 
         return new ViewBuilders().newColorPalette()
@@ -87,7 +107,10 @@ public class SiriusWebE2EColorPaletteBuilderProvider {
                         borderBlue,
                         borderGreen,
                         colorTransparent,
-                        colorRed
+                        colorRed,
+                        colorPink,
+                        colorYellow,
+                        colorOrange
                 );
     }
 }
