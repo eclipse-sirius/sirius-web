@@ -82,7 +82,12 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
               value={{
                 payload: payload,
               }}>
-              <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
+              <FormBasedView
+                editingContextId={editingContextId}
+                form={state.form}
+                readOnly={readOnly}
+                initialConfiguration={null}
+              />
             </FormContext.Provider>
           </Box>
         ) : null}

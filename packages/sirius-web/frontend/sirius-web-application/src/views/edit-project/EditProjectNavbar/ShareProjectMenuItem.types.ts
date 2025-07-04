@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewConfiguration, WorkbenchViewContribution, WorkbenchViewSide } from './Workbench.types';
 
-export interface WorkbenchPartProps {
-  editingContextId: string;
-  readOnly: boolean;
-  side: WorkbenchViewSide;
-  contribution: WorkbenchViewContribution;
-  initialConfiguration: WorkbenchViewConfiguration | null;
+import { WorkbenchConfigurationSupplier } from '@eclipse-sirius/sirius-components-core';
+
+export interface ShareProjectMenuItemProps {
+  projectId: string;
+  workbenchConfigurationSupplier: WorkbenchConfigurationSupplier | null;
+}
+
+export interface ShareProjectMenuItemState {
+  isOpen: boolean;
 }

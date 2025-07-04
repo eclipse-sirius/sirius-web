@@ -118,6 +118,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
             form={state.form}
             readOnly={readOnly}
             postProcessor={extractFirstGroup}
+            initialConfiguration={null}
           />
         </FormContext.Provider>
       </div>

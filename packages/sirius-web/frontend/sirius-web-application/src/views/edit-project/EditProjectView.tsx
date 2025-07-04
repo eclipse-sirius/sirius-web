@@ -19,6 +19,8 @@ import {
   SelectionEntry,
   useData,
   Workbench,
+  WorkbenchConfiguration,
+  WorkbenchConfigurationSupplier,
 } from '@eclipse-sirius/sirius-components-core';
 import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import {
@@ -26,7 +28,7 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -60,11 +62,15 @@ export const EditProjectView = () => {
     project: null,
     representation: null,
   });
+  const [urlSearchParams] = useSearchParams();
 
   const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
   const name: string | null =
     separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
+  const workbenchConfiguration: WorkbenchConfiguration | null = urlSearchParams.has('workbenchConfiguration')
+    ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
+    : null;
 
   const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
   useEffect(() => {
@@ -96,6 +102,9 @@ export const EditProjectView = () => {
     }));
   };
 
+  const workbenchConfigurationSupplierRef: RefObject<WorkbenchConfigurationSupplier | null> =
+    useRef<WorkbenchConfigurationSupplier | null>(null);
+
   useSynchronizeSelectionAndURL(
     projectId,
     name,
@@ -111,8 +120,6 @@ export const EditProjectView = () => {
   };
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
-
-  const [urlSearchParams] = useSearchParams();
 
   const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
   if (isMissing) {
@@ -134,13 +141,18 @@ export const EditProjectView = () => {
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
               <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
                 <UndoRedo>
-                  <EditProjectNavbar readOnly={readOnly} />
+                  <EditProjectNavbar
+                    workbenchConfigurationSupplier={workbenchConfigurationSupplierRef.current}
+                    readOnly={readOnly}
+                  />
                   <TreeToolBarProvider>
                     <Workbench
                       editingContextId={state.project.currentEditingContext.id}
                       initialRepresentationSelected={state.representation}
                       onRepresentationSelected={onRepresentationSelected}
                       readOnly={readOnly}
+                      initialWorkbenchConfiguration={workbenchConfiguration}
+                      ref={workbenchConfigurationSupplierRef}
                     />
                   </TreeToolBarProvider>
                 </UndoRedo>

@@ -33,6 +33,7 @@ export type RepresentationDescription = {
 export type WorkbenchViewSide = 'left' | 'right';
 
 export interface WorkbenchViewContribution {
+  id: string;
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
@@ -42,11 +43,13 @@ export interface WorkbenchViewContribution {
 export interface WorkbenchViewComponentProps {
   editingContextId: string;
   readOnly: boolean;
+  initialConfiguration: WorkbenchViewConfiguration | null;
 }
 
 export interface MainAreaComponentProps {
   editingContextId: string;
   readOnly: boolean;
+  initialConfiguration: WorkbenchMainPanelConfiguration | null;
 }
 
 export type WorkbenchProps = {
@@ -54,12 +57,14 @@ export type WorkbenchProps = {
   initialRepresentationSelected: RepresentationMetadata | null;
   onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
   readOnly: boolean;
+  initialWorkbenchConfiguration: WorkbenchConfiguration | null;
 };
 
 export type RepresentationComponentProps = {
   editingContextId: string;
   representationId: string;
   readOnly: boolean;
+  initialConfiguration: WorkbenchMainPanelConfiguration | null;
 };
 
 export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;
@@ -67,3 +72,39 @@ export type RepresentationComponent = React.ComponentType<RepresentationComponen
 export type RepresentationComponentFactory = {
   (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
 };
+
+export interface WorkbenchConfigurationSupplier {
+  getConfiguration(): WorkbenchConfiguration | null;
+}
+
+export interface WorkbenchSidePanelConfigurationsSupplier {
+  getSidePanelConfigurations: () => Array<WorkbenchSidePanelConfiguration | null> | null;
+}
+
+export interface WorkbenchMainPanelConfigurationSupplier {
+  getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
+}
+
+export interface WorkbenchConfiguration {
+  sidePanels: Array<WorkbenchSidePanelConfiguration | null> | null;
+  mainPanel: WorkbenchMainPanelConfiguration | null;
+}
+export interface WorkbenchSidePanelConfiguration {
+  id: string;
+  views: Array<WorkbenchViewConfiguration | null> | null;
+}
+
+export interface WorkbenchViewConfiguration {
+  id: string;
+  isActive: boolean;
+}
+
+export interface WorkbenchMainPanelConfiguration {
+  id: string;
+  representationEditors: Array<WorkbenchRepresentationEditorConfiguration | null> | null;
+}
+
+export interface WorkbenchRepresentationEditorConfiguration {
+  representationMetadata: RepresentationMetadata;
+  isActive: boolean;
+}

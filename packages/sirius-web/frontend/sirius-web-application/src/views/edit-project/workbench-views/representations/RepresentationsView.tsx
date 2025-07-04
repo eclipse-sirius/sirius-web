@@ -140,6 +140,7 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
             form={state.form}
             readOnly={readOnly}
             postProcessor={extractPlainList}
+            initialConfiguration={null}
           />
         </FormContext.Provider>
       </div>

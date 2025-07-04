@@ -111,6 +111,7 @@ They will be displayed if a project template with one of the following specific 
 Thus, downstream projects that would want to hide these cards, will not be able to do it by not contributing them to the `createProjectAreaCardExtensionPoint` extension point, but by providing a `ICapabilityVoter`.
 Another consequence is that the `projectTemplates` graphql query now requires the `context` parameter.
 A new "demo" profile is now available to start Sirius Web as a demo instance.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] In the frontend, `WorkbenchViewContribution` now need to have an ID. This ID is used to share the workbench state through shareable URLs.
 
 
 === Dependency update
@@ -138,6 +139,10 @@ A new "demo" profile is now available to start Sirius Web as a demo instance.
 - https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add backend support for capabilities.
 + Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontent components to prevent their users to use them.
 + Mutations disablement to completely deactivate a feature will be done later.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add an action, when editing a project, in the project contextual menu, to create a shareable URL.
++ This URL includes the current workbench selection and the current workbench state.
++ For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
++ Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
 
 
 === Improvements
