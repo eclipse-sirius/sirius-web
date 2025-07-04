@@ -58,5 +58,12 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String RENAME = "rename";
+
+        /**
+         * Used to check if a project can be deleted.
+         *
+         * @since v2025.8.0
+         */
+        public static final String DELETE = "delete";
     }
 }

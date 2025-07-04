@@ -134,7 +134,7 @@ export const EditProjectView = () => {
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
               <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
                 <UndoRedo>
-                  <EditProjectNavbar readOnly={readOnly} />
+                  <EditProjectNavbar />
                   <TreeToolBarProvider>
                     <Workbench
                       editingContextId={state.project.currentEditingContext.id}

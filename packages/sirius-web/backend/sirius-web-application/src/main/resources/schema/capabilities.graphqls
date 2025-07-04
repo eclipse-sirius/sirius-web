@@ -18,4 +18,5 @@ extend type Project {
 type ProjectCapabilities {
   canDownload: Boolean!
   canRename: Boolean!
+  canDelete: Boolean!
 }

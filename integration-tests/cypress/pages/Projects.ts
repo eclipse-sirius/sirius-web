@@ -47,8 +47,12 @@ class ProjectActionMenu {
     return cy.getByTestId('rename');
   }
 
+  public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('delete');
+  }
+
   public deleteProject(): void {
-    cy.getByTestId('delete').click();
+    this.getDeleteButton().click();
     cy.getByTestId('delete-project').click();
   }
 }

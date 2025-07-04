@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface EditProjectNavbarProps {
-  readOnly: boolean;
-}
-
 export interface EditProjectNavbarSubtitleProps {}
 
 export interface EditProjectNavbarMenuContainerProps {
