@@ -41,11 +41,7 @@ import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProject
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { useCurrentProject } from '../useCurrentProject';
-import {
-  EditProjectNavbarMenuEntryProps,
-  EditProjectNavbarProps,
-  GQLProjectEventSubscription,
-} from './EditProjectNavbar.types';
+import { EditProjectNavbarMenuEntryProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
@@ -104,7 +100,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
+export const EditProjectNavbar = () => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -271,21 +267,22 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </MenuItem>
-            <MenuItem
-              onClick={() => {
-                const showModal: HandleShowModalEvent = {
-                  type: 'HANDLE_SHOW_MODAL_EVENT',
-                  modalName: 'DeleteProject',
-                };
-                dispatch(showModal);
-              }}
-              disabled={readOnly}
-              data-testid="delete">
-              <ListItemIcon>
-                <DeleteIcon />
-              </ListItemIcon>
-              <ListItemText primary="Delete" />
-            </MenuItem>
+            {project.capabilities.canDelete ? (
+              <MenuItem
+                onClick={() => {
+                  const showModal: HandleShowModalEvent = {
+                    type: 'HANDLE_SHOW_MODAL_EVENT',
+                    modalName: 'DeleteProject',
+                  };
+                  dispatch(showModal);
+                }}
+                data-testid="delete">
+                <ListItemIcon>
+                  <DeleteIcon />
+                </ListItemIcon>
+                <ListItemText primary="Delete" />
+              </MenuItem>
+            ) : null}
           </Menu>
         </ContextMenuContainer>
       ) : null}

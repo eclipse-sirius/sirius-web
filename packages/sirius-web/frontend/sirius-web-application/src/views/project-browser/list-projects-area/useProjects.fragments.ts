@@ -40,6 +40,7 @@ export const ProjectFragment = gql`
     capabilities {
       canDownload
       canRename
+      canDelete
     }
   }
 `;

@@ -22,6 +22,7 @@ const value: ProjectContextValue = {
     capabilities: {
       canDownload: false,
       canRename: false,
+      canDelete: false,
     },
     currentEditingContext: {
       id: '',

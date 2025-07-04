@@ -126,12 +126,6 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
             <ListItemText primary="Rename" />
           </MenuItem>
         ) : null}
-        <MenuItem onClick={onDelete} data-testid="delete">
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Delete" />
-        </MenuItem>
         {project.capabilities.canDownload ? (
           <MenuItem
             data-testid="project-download-action"
@@ -143,6 +137,14 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
               <GetAppIcon />
             </ListItemIcon>
             <ListItemText primary="Download" />
+          </MenuItem>
+        ) : null}
+        {project.capabilities.canDelete ? (
+          <MenuItem onClick={onDelete} data-testid="delete">
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Delete" />
           </MenuItem>
         ) : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (

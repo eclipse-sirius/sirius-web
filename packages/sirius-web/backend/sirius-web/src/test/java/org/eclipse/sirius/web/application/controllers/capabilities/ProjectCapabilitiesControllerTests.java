@@ -47,8 +47,10 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT));
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
+        boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
         assertThat(canDownload).isTrue();
         assertThat(canRename).isTrue();
+        assertThat(canDelete).isTrue();
     }
 
     @Test
@@ -58,8 +60,10 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT));
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
+        boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
         assertThat(canDownload).isFalse();
         assertThat(canRename).isFalse();
+        assertThat(canDelete).isFalse();
     }
 
 }
