@@ -18,6 +18,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
+import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
@@ -39,6 +40,8 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
   };
   const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
     change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
+
+  const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
   const isBoundsChangeFinished = (
     changes: NodeChange<Node<NodeData>>[],
@@ -68,7 +71,19 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
     nodes: Node<NodeData, DiagramNodeType>[]
   ): Node<NodeData, DiagramNodeType>[] => {
     return nodes.map((node) => {
-      if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
+      const parentNode = nodes.find((n) => n.id === node.parentId);
+      if (
+        changes
+          .filter(isResizeFinished)
+          .find(
+            (dimensionChange) =>
+              dimensionChange.id === node.id ||
+              (parentNode &&
+                dimensionChange.id === parentNode.id &&
+                isListData(parentNode) &&
+                parentNode.data.growableNodeIds.includes(node.data.descriptionId))
+          )
+      ) {
         return {
           ...node,
           data: {
