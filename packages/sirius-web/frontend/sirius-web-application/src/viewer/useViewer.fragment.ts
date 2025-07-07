@@ -20,6 +20,9 @@ export const ViewerFragment = gql`
         canCreate
         canUpload
       }
+      libraries {
+        canView
+      }
     }
   }
 `;

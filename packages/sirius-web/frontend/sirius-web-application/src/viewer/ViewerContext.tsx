@@ -22,6 +22,9 @@ const defaultValue: ViewerContextValue = {
         canCreate: false,
         canUpload: false,
       },
+      libraries: {
+        canView: false,
+      },
     },
   },
 };

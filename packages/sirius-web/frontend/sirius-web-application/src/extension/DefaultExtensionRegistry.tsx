@@ -71,7 +71,6 @@ import {
   TableWidgetPropertySection,
 } from '@eclipse-sirius/sirius-components-widget-table';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Filter from '@mui/icons-material/Filter';
 import FolderIcon from '@mui/icons-material/Folder';
 import ImageIcon from '@mui/icons-material/Image';
@@ -264,22 +263,6 @@ export const ProjectsButtonContribution = ({}: NavigationBarMenuItemProps) => {
 defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
   identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_projects`,
   Component: ProjectsButtonContribution,
-});
-
-export const LibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
-  return (
-    <MenuItem component={RouterLink} to="/libraries">
-      <ListItemIcon>
-        <FileCopyIcon />
-      </ListItemIcon>
-      <ListItemText primary="Libraries" />
-    </MenuItem>
-  );
-};
-
-defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
-  Component: LibrariesButtonContribution,
 });
 
 /*******************************************************************************
@@ -591,11 +574,19 @@ export const siriusWebRouterContributions: PathRouteProps[] = [
   },
   {
     path: '/libraries',
-    element: <LibraryBrowserView />,
+    element: (
+      <ViewerContextProvider>
+        <LibraryBrowserView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/libraries/:namespace/:name/:version',
-    element: <DisplayLibraryView />,
+    element: (
+      <ViewerContextProvider>
+        <DisplayLibraryView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/',
