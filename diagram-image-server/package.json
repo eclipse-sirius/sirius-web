@@ -1,0 +1,16 @@
+{
+  "name": "diagram-image-server",
+  "version": "2025.6.9",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "puppeteer": "^24.12.0"
+  }
+}

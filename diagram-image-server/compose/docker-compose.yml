@@ -1,0 +1,68 @@
+name: sw-diagram
+
+services:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    networks:
+      - sirius-web
+    healthcheck:
+      test: "exit 0"
+  app-server:
+    image: "eclipsesirius/sirius-web:master"
+    pull_policy: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
+      SPRING_DATASOURCE_USERNAME: username
+      SPRING_DATASOURCE_PASSWORD: password
+      SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
+      SERVER_PORT: 8081
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - sirius-web
+    depends_on:
+      database:
+        condition: service_healthy
+  diagram-server:
+    build:
+      context: ../
+    pull_policy: always
+    command: "-- -s http://localhost:8081/ -p 3000"
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider  http://localhost:3000 || exit 1"
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 1s
+    network_mode: service:app-server
+    depends_on:
+      database:
+        condition: service_healthy
+      app-server:
+        condition: service_healthy
+
+  elb:
+    image: haproxy
+    volumes:
+      - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:z"
+    networks:
+      - sirius-web
+    depends_on:
+      diagram-server:
+        condition: service_healthy
+      app-server:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+networks:
+  sirius-web:

@@ -191,7 +191,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (tags, labels) for main Docker image
         id: extract-metadata
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
@@ -247,6 +247,7 @@ jobs:
 
       - name: Log in to Docker Hub
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        if: env.GITHUB_EVENT_NAME == 'push' && (env.GITHUB_REF == 'refs/heads/master' || startsWith(env.GITHUB_REF, 'refs/tags/v'))
         with:
           username: ${{ env.DOCKER_HUB_USER }}
           password: ${{ env.DOCKER_HUB_TOKEN }}
@@ -263,3 +264,34 @@ jobs:
           push: true
           tags: ${{ steps.extract-metadata.outputs.tags }}
           labels: ${{ steps.extract-metadata.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for diagram image server Docker image
+        id: extract-metadata-image-server
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        with:
+          images: eclipsesirius/sirius-web
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+
+      - name: Build the diagram image server Docker image
+        id: build-image-server
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        with:
+          context: diagram-image-server
+          load: true
+          tags: ${{ steps.extract-metadata-image-server.outputs.tags }}
+          labels: ${{ steps.extract-metadata-image-server.outputs.labels }}
+
+      - name: Push diagram image server Docker image
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        id: push-image-server
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: diagram-image-server
+          push: true
+          tags: ${{ steps.extract-metadata-image-server.outputs.tags }}
+          labels: ${{ steps.extract-metadata-image-server.outputs.labels }}
