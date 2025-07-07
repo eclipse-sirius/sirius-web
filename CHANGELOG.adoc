@@ -135,6 +135,8 @@ public class CanEditProjectCapabilityVoter implements ICapabilityVoter {
 
 }
 ----
+- https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Remove the contribution that contribute the link to libraries to the `navigationBarMenuEntryExtensionPoint` extension point.
+The link to libraries has become a standard menu item which can be hidden providing a `ICapabilityVoter` with the type `Library` and the capability `view`.
 
 
 === Dependency update
@@ -160,9 +162,10 @@ public class CanEditProjectCapabilityVoter implements ICapabilityVoter {
 
 === New Features
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add backend support for capabilities.
-+ Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontent components to prevent their users to use them.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add support for capabilities.
++ Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontend components to prevent their users to use them.
 + Mutations disablement to completely deactivate a feature will be done later.
+- https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Add support for libraries capabilities.
 
 
 === Improvements

@@ -4,11 +4,16 @@ extend type Viewer {
 
 type ViewerCapabilities {
   projects: ProjectsCapabilities!
+  libraries: LibrariesCapabilities!
 }
 
 type ProjectsCapabilities {
   canCreate: Boolean!
   canUpload: Boolean!
+}
+
+type LibrariesCapabilities {
+  canView: Boolean!
 }
 
 extend type Project {

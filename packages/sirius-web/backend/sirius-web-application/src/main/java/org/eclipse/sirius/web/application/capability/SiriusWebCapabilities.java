@@ -78,4 +78,22 @@ public final class SiriusWebCapabilities {
          */
         public static final String EDIT = "edit";
     }
+
+    public static final String LIBRARY = "Library";
+
+    /**
+     * The list of library-specific capabilities.
+     *
+     * @author gcoutable
+     * @since v2025.8.0
+     */
+    public static final class Library {
+
+        /**
+         * Used to check if the library can be viewed.
+         *
+         * @since v2025.8.0
+         */
+        public static final String VIEW = "view";
+    }
 }

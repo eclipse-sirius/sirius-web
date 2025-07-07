@@ -27,9 +27,14 @@ export interface GQLViewer {
 
 export interface GQLViewerCapabilities {
   projects: GQLProjectsCapabilities;
+  libraries: GQLLibrariesCapabilities;
 }
 
 export interface GQLProjectsCapabilities {
   canCreate: boolean;
   canUpload: boolean;
+}
+
+export interface GQLLibrariesCapabilities {
+  canView: boolean;
 }

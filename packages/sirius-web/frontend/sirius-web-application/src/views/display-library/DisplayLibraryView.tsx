@@ -14,6 +14,7 @@ import { RepresentationPathContext, SelectionContextProvider, Workbench } from '
 import { Navigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { DisplayLibraryNavbar } from './DisplayLibraryNavbar';
 import { DisplayLibraryViewParams } from './DisplayLibraryView.types';
 import { useLibrary } from './useLibrary';
@@ -37,12 +38,20 @@ export const DisplayLibraryView = () => {
     decodeURIComponent(version ?? '')
   );
 
+  const {
+    viewer: {
+      capabilities: {
+        libraries: { canView },
+      },
+    },
+  } = useCurrentViewer();
+
   const getRepresentationPath = (representationId: string) => {
     // Note that this should match the corresponding route configuration
     return `/libraries/${namespace}/${name}/${version}/edit/${representationId}`;
   };
 
-  if (data && !data.viewer.library) {
+  if (!canView || (data && !data.viewer.library)) {
     return <Navigate to="/errors/404" replace />;
   }
 

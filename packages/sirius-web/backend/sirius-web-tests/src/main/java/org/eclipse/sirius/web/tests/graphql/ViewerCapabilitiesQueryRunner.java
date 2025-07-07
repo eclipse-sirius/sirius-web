@@ -35,6 +35,9 @@ public class ViewerCapabilitiesQueryRunner implements IQueryRunner {
                     canCreate
                     canUpload
                   }
+                  libraries {
+                    canView
+                  }
                 }
               }
             }

@@ -12,12 +12,15 @@
  *******************************************************************************/
 
 import { ComponentExtension, useComponent, useComponents, useData } from '@eclipse-sirius/sirius-components-core';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import HelpIcon from '@mui/icons-material/Help';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { useCurrentViewer } from '../viewer/useCurrentViewer';
 import { NavigationBarMenuItemProps, NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
 import {
   navigationBarMenuContainerExtensionPoint,
@@ -30,6 +33,14 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
   const [state, setState] = useState<NavigationBarMenuState>({
     menuAnchor: null,
   });
+
+  const {
+    viewer: {
+      capabilities: {
+        libraries: { canView: canViewLibrary },
+      },
+    },
+  } = useCurrentViewer();
 
   const { Component: NavigationBarMenuContainer } = useComponent(navigationBarMenuContainerExtensionPoint);
   const { Component: MenuIcon } = useComponent(navigationBarMenuIconExtensionPoint);
@@ -51,6 +62,14 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
         open={Boolean(state.menuAnchor)}
         anchorEl={state.menuAnchor}
         onClose={handleClose}>
+        {canViewLibrary ? (
+          <MenuItem component={RouterLink} to="/libraries" data-testid="libraries-link">
+            <ListItemIcon>
+              <FileCopyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Libraries" />
+          </MenuItem>
+        ) : null}
         {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (
           <NavigationBarMenuItem key={index} />
         ))}
