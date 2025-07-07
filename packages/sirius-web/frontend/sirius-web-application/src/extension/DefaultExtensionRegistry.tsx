@@ -98,6 +98,7 @@ import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { routerExtensionPoint } from '../router/RouterExtensionPoints';
 import { CheckboxCell } from '../table/CheckboxCell';
+import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
@@ -586,15 +587,27 @@ defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
 export const siriusWebRouterContributions: PathRouteProps[] = [
   {
     path: '/new/project/*',
-    element: <NewProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <NewProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/upload/project/*',
-    element: <UploadProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <UploadProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/projects',
-    element: <ProjectBrowserView />,
+    element: (
+      <ViewerContextProvider>
+        <ProjectBrowserView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/projects/:projectId/edit/:representationId?/*',

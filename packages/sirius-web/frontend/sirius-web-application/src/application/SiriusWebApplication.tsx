@@ -31,7 +31,6 @@ import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExten
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
-import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
 
 const style = {
@@ -78,11 +77,9 @@ export const SiriusWebApplication = ({
               <ToastProvider>
                 <ConfirmationDialogContextProvider>
                   <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                    <ViewerContextProvider>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </ViewerContextProvider>
+                    <div style={style}>
+                      <Router />
+                    </div>
                   </NodeTypeContext.Provider>
                 </ConfirmationDialogContextProvider>
               </ToastProvider>
