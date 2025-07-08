@@ -11,9 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  ServerContext,
+  ServerContextValue,
+  useComponent,
+  useComponents,
+} from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -21,7 +28,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { ComponentType, useState } from 'react';
+import { ComponentType, useContext, useState } from 'react';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import {
@@ -81,6 +88,7 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
   const [state, setState] = useState<ProjectContextMenuState>({
     modalToDisplay: null,
   });
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const { Component: ProjectContextMenuContainer } = useComponent(projectContextMenuContainerExtensionPoint);
 
@@ -122,6 +130,19 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
           </ListItemIcon>
           <ListItemText primary="Delete" />
         </MenuItem>
+        {project.capabilities.canDownload ? (
+          <MenuItem
+            data-testid="project-download-action"
+            component="a"
+            href={`${httpOrigin}/api/projects/${project.id}`}
+            type="application/octet-stream"
+            onClick={onClose}>
+            <ListItemIcon>
+              <GetAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Download" />
+          </MenuItem>
+        ) : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} project={project} onChange={onChange} onClose={onClose} />
         ))}

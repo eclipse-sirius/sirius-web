@@ -32,7 +32,7 @@ describe('Project download', () => {
       beforeEach(() => new Projects().visit());
 
       it('Then the download button should be disabled', () => {
-        new Projects().getActionMenu(projectName).getDownloadLink().should('have.class', 'Mui-disabled');
+        new Projects().getActionMenu(projectName).getDownloadLink().should('not.exist');
       });
     });
 
@@ -40,7 +40,7 @@ describe('Project download', () => {
       beforeEach(() => new Project().visit(projectId));
 
       it('Then the download button should be disabled', () => {
-        new Project().getProjectNavigationBar(projectName).getDownloadLink().should('have.class', 'Mui-disabled');
+        new Project().getProjectNavigationBar(projectName).getDownloadLink().should('not.exist');
       });
     });
   });
