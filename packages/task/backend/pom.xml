@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-task-parent</artifactId>
-	<version>2025.6.7</version>
+	<version>2025.6.8</version>
 
 	<name>sirius-components-task-parent</name>
 	<description>Sirius Components Task Parent</description>
