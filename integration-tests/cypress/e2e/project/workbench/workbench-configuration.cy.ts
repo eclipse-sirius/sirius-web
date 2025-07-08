@@ -172,6 +172,27 @@ describe('Workbench Configuration Resolution', () => {
         });
       }
     );
+
+    context('When opening the project with a workbench configuration with a configuration for the "Query" view', () => {
+      let workbench: Workbench;
+      beforeEach(() => {
+        new Project().visit(projectId, undefined, {
+          qs: {
+            workbenchConfiguration: workbenchConfigurationWithQueryView,
+          },
+        });
+        workbench = new Workbench();
+      });
+      it('Then, in the "Query" view, the text is set as specified in the configuration', () => {
+        workbench.checkPanelContent('right', ['Query']);
+        cy.getByTestId('query-textfield')
+          .should('exist')
+          .get('div')
+          .get('textarea')
+          .invoke('val')
+          .should('equal', 'aql:self');
+      });
+    });
   });
 });
 
@@ -236,3 +257,13 @@ type RepresentationEditorConfiguration = {
   representationId: string;
   isActive: boolean;
 };
+
+const workbenchConfigurationWithQueryView: string = JSON.stringify({
+  sidePanels: [
+    {
+      id: 'right',
+      isOpen: true,
+      views: [{ id: 'query', isActive: true, queryText: 'aql:self' }],
+    },
+  ],
+});
