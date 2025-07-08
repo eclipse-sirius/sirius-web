@@ -170,6 +170,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 + Mutations disablement to completely deactivate a feature will be done later.
 - https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Add support for libraries capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Align the UI and behavior of the reconnect handles with the one of the bending points
+- https://github.com/eclipse-sirius/sirius-web/issues/5183[#5183] [sirius-web] Add support for project settings capabilities.
 
 
 === Improvements

@@ -31,7 +31,7 @@ describe('Project rename', () => {
     context('When we try to rename the project from the project browser view', () => {
       beforeEach(() => new Projects().visit());
 
-      it('Then the rename button should be disabled', () => {
+      it('Then the rename button should not exist', () => {
         new Projects().getActionMenu(projectName).getRenameButton().should('not.exist');
       });
     });
@@ -39,7 +39,7 @@ describe('Project rename', () => {
     context('When we try to rename the project from the workbench', () => {
       beforeEach(() => new Project().visit(projectId));
 
-      it('Then the rename button should be disabled', () => {
+      it('Then the rename button should not exist', () => {
         new Project().getProjectNavigationBar(projectName).getRenameButton().should('not.exist');
       });
     });

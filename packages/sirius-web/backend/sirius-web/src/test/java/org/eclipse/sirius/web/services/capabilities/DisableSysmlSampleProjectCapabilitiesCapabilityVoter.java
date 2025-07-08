@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.capabilities;
 
-import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.data.TestIdentifiers;
@@ -27,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class DisableSysmlSampleProjectCapabilitiesCapabilityVoter implements ICapabilityVoter {
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        if (SiriusWebCapabilities.PROJECT.equals(type) && TestIdentifiers.SYSML_SAMPLE_PROJECT.equals(identifier)) {
+        if (TestIdentifiers.SYSML_SAMPLE_PROJECT.equals(identifier)) {
             return CapabilityVote.DENIED;
         }
         return CapabilityVote.GRANTED;

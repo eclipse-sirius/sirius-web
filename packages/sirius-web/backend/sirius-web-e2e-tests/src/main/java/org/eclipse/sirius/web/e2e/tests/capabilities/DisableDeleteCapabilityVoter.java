@@ -38,7 +38,6 @@ public class DisableDeleteCapabilityVoter implements ICapabilityVoter {
 
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-
         if (SiriusWebCapabilities.PROJECT.equals(type) && SiriusWebCapabilities.Project.DELETE.equals(capability) && identifier != null && !identifier.isBlank()) {
             var optionalProject = this.projectApplicationService.findById(identifier);
             if (optionalProject.isPresent()) {

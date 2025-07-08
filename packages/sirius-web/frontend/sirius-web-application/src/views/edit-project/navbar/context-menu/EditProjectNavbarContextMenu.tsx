@@ -58,7 +58,7 @@ export const EditProjectNavbarContextMenu = ({ anchorEl, onClose }: EditProjectN
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />
         ))}
-        <ProjectSettingsMenuItem project={project} onClick={onClose} />
+        {project.capabilities.settings.canView ? <ProjectSettingsMenuItem project={project} onClick={onClose} /> : null}
         {project.capabilities.canDelete ? (
           <DeleteProjectMenuItem project={project} onCancel={onClose} onSuccess={onProjectDeleted} />
         ) : null}
