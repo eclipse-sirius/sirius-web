@@ -20,16 +20,18 @@ import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensi
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = memo(({ editingContextId, form, readOnly, postProcessor }: FormBasedViewProps) => {
-  const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
+export const FormBasedView = memo(
+  ({ editingContextId, form, readOnly, postProcessor, initialConfiguration }: FormBasedViewProps) => {
+    const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
 
-  let convertedForm: GQLForm = form;
-  formConverters.forEach((formConverter) => {
-    convertedForm = formConverter.convert(editingContextId, convertedForm);
-  });
+    let convertedForm: GQLForm = form;
+    formConverters.forEach((formConverter) => {
+      convertedForm = formConverter.convert(editingContextId, convertedForm);
+    });
 
-  if (postProcessor) {
-    return postProcessor({ editingContextId, readOnly }, convertedForm);
+    if (postProcessor) {
+      return postProcessor({ editingContextId, readOnly, initialConfiguration }, convertedForm);
+    }
+    return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
   }
-  return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
-});
+);
