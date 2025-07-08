@@ -14,6 +14,7 @@ import {
   RepresentationLoadingIndicator,
   useSelection,
   WorkbenchViewComponentProps,
+  WorkbenchViewConfigurationSupplier,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   FormBasedView,
@@ -27,9 +28,9 @@ import {
   TreePropertySection,
 } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { RepresentationsViewState } from './RepresentationsView.types';
+import { RepresentationsViewConfigurationSupplier, RepresentationsViewState } from './RepresentationsView.types';
 import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
 import { GQLFormRefreshedEventPayload } from './useRepresentationsViewSubscription.types';
 
@@ -48,102 +49,110 @@ const isFormRefreshedEventPayload = (
   payload: GQLRepresentationsEventPayload
 ): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
 
-export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const [state, setState] = useState<RepresentationsViewState>({
-    currentSelection: { entries: [] },
-    form: null,
-  });
+export const RepresentationsView = forwardRef<
+  RepresentationsViewConfigurationSupplier | null,
+  WorkbenchViewComponentProps
+>(
+  (
+    { editingContextId, readOnly }: WorkbenchViewComponentProps,
+    _representationsViewConfigurationSupplierRef: ForwardedRef<WorkbenchViewConfigurationSupplier | null>
+  ) => {
+    const [state, setState] = useState<RepresentationsViewState>({
+      currentSelection: { entries: [] },
+      form: null,
+    });
 
-  const { selection } = useSelection();
+    const { selection } = useSelection();
 
-  /**
-   * Displays another form if the selection indicates that we should display another properties view.
-   */
-  const currentSelectionKey: string = state.currentSelection.entries
-    .map((entry) => entry.id)
-    .sort()
-    .join(':');
-  const newSelectionKey: string = selection.entries
-    .map((entry) => entry.id)
-    .sort()
-    .join(':');
-  useEffect(() => {
-    if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
-      setState((prevState) => ({ ...prevState, currentSelection: selection }));
-    } else if (selection.entries.length === 0) {
-      setState((prevState) => ({ ...prevState, currentSelection: { entries: [] } }));
-    }
-  }, [currentSelectionKey, newSelectionKey]);
+    /**
+     * Displays another form if the selection indicates that we should display another properties view.
+     */
+    const currentSelectionKey: string = state.currentSelection.entries
+      .map((entry) => entry.id)
+      .sort()
+      .join(':');
+    const newSelectionKey: string = selection.entries
+      .map((entry) => entry.id)
+      .sort()
+      .join(':');
+    useEffect(() => {
+      if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
+        setState((prevState) => ({ ...prevState, currentSelection: selection }));
+      } else if (selection.entries.length === 0) {
+        setState((prevState) => ({ ...prevState, currentSelection: { entries: [] } }));
+      }
+    }, [currentSelectionKey, newSelectionKey]);
 
-  const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
-  const skip = objectIds.length === 0;
+    const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
+    const skip = objectIds.length === 0;
 
-  const { payload, complete } = useRepresentationsViewSubscription(editingContextId, objectIds, skip);
-  useEffect(() => {
-    if (isFormRefreshedEventPayload(payload)) {
-      setState((prevState) => ({ ...prevState, form: payload.form }));
-    }
-  }, [payload]);
+    const { payload, complete } = useRepresentationsViewSubscription(editingContextId, objectIds, skip);
+    useEffect(() => {
+      if (isFormRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, form: payload.form }));
+      }
+    }, [payload]);
 
-  const { classes } = useRepresentationsViewStyles();
+    const { classes } = useRepresentationsViewStyles();
 
-  const extractPlainList = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
-    const widget: GQLWidget | undefined = form.pages[0]?.groups[0]?.widgets[0];
-    if (isList(widget)) {
+    const extractPlainList = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
+      const widget: GQLWidget | undefined = form.pages[0]?.groups[0]?.widgets[0];
+      if (isList(widget)) {
+        return (
+          <div className={classes.content}>
+            <ListPropertySection
+              editingContextId={props.editingContextId}
+              formId={form.id}
+              readOnly={props.readOnly}
+              widget={widget}
+            />
+          </div>
+        );
+      } else if (isTree(widget)) {
+        return (
+          <div className={classes.content}>
+            <TreePropertySection
+              editingContextId={props.editingContextId}
+              formId={form.id}
+              readOnly={props.readOnly}
+              widget={widget}
+            />
+          </div>
+        );
+      } else {
+        return <div className={classes.content} />;
+      }
+    };
+
+    if (complete || skip) {
       return (
-        <div className={classes.content}>
-          <ListPropertySection
-            editingContextId={props.editingContextId}
-            formId={form.id}
-            readOnly={props.readOnly}
-            widget={widget}
-          />
+        <div className={classes.idle}>
+          <Typography variant="subtitle2">No object selected</Typography>
         </div>
       );
-    } else if (isTree(widget)) {
+    } else if (!state.form) {
       return (
-        <div className={classes.content}>
-          <TreePropertySection
-            editingContextId={props.editingContextId}
-            formId={form.id}
-            readOnly={props.readOnly}
-            widget={widget}
-          />
+        <div className={classes.idle}>
+          <RepresentationLoadingIndicator />
         </div>
       );
     } else {
-      return <div className={classes.content} />;
+      return (
+        <div data-representation-kind="form-representation-list">
+          <FormContext.Provider
+            value={{
+              payload: payload,
+            }}>
+            <FormBasedView
+              editingContextId={editingContextId}
+              form={state.form}
+              readOnly={readOnly}
+              postProcessor={extractPlainList}
+              initialConfiguration={null}
+            />
+          </FormContext.Provider>
+        </div>
+      );
     }
-  };
-
-  if (complete || skip) {
-    return (
-      <div className={classes.idle}>
-        <Typography variant="subtitle2">No object selected</Typography>
-      </div>
-    );
-  } else if (!state.form) {
-    return (
-      <div className={classes.idle}>
-        <RepresentationLoadingIndicator />
-      </div>
-    );
-  } else {
-    return (
-      <div data-representation-kind="form-representation-list">
-        <FormContext.Provider
-          value={{
-            payload: payload,
-          }}>
-          <FormBasedView
-            editingContextId={editingContextId}
-            form={state.form}
-            readOnly={readOnly}
-            postProcessor={extractPlainList}
-            initialConfiguration={null}
-          />
-        </FormContext.Provider>
-      </div>
-    );
   }
-};
+);

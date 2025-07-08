@@ -221,6 +221,7 @@ export const Workbench = forwardRef<WorkbenchConfigurationSupplier | null, Workb
 
     const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
     for (const workbenchViewContribution of workbenchViewContributions) {
+      workbenchViewContribution.ref = workbenchViewContribution.createRef();
       if (workbenchViewContribution.side === 'left') {
         workbenchViewLeftSideContributions.push(workbenchViewContribution);
       } else if (workbenchViewContribution.side === 'right') {

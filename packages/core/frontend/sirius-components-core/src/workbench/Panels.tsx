@@ -106,14 +106,20 @@ export const Panels = forwardRef<WorkbenchSidePanelConfigurationsSupplier | null
       () => {
         return {
           getSidePanelConfigurations: () => {
-            const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => ({
-              id: contribution.id,
-              isActive: contribution.id === leftContribution?.id,
-            }));
-            const rightViewConfigurations: WorkbenchViewConfiguration[] = rightContributions.map((contribution) => ({
-              id: contribution.id,
-              isActive: contribution.id === rightContribution?.id,
-            }));
+            const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => {
+              return {
+                ...contribution.ref?.current?.getWorkbenchViewConfiguration(),
+                id: contribution.id,
+                isActive: contribution.id === leftContribution?.id,
+              };
+            });
+            const rightViewConfigurations: WorkbenchViewConfiguration[] = rightContributions.map((contribution) => {
+              return {
+                ...contribution.ref?.current?.getWorkbenchViewConfiguration(),
+                id: contribution.id,
+                isActive: contribution.id === rightContribution?.id,
+              };
+            });
             return [
               { id: 'left', views: leftViewConfigurations },
               { id: 'right', views: rightViewConfigurations },

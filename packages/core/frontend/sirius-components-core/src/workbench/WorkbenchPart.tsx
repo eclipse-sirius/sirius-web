@@ -70,6 +70,7 @@ export const WorkbenchPart = ({
           editingContextId={editingContextId}
           readOnly={readOnly}
           initialConfiguration={initialConfiguration}
+          ref={contribution.ref}
         />
       </div>
     </div>

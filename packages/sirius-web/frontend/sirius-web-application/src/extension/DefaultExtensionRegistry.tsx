@@ -59,6 +59,7 @@ import {
   treeItemContextMenuEntryOverrideExtensionPoint,
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
+import { ValidationViewConfigurationSupplier } from '@eclipse-sirius/sirius-components-validation/dist/Validation.types';
 import {
   GQLReferenceWidget,
   ReferenceIcon,
@@ -83,6 +84,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import { useRef } from 'react';
 import { Navigate, PathRouteProps, Link as RouterLink, useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
@@ -104,6 +106,7 @@ import { DownloadProjectMenuEntryContribution } from '../views/edit-project/Edit
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
+import { DetailsViewConfigurationSupplier } from '../views/edit-project/workbench-views/details/DetailsView.types';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
 import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
@@ -111,9 +114,13 @@ import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/wor
 import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
 import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
+import { ExplorerViewConfigurationSupplier } from '../views/edit-project/workbench-views/explorer/ExplorerView.types';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
+import { QueryViewConfigurationSupplier } from '../views/edit-project/workbench-views/query/QueryView.types';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
+import { RelatedElementsViewConfigurationSupplier } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView.types';
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
+import { RepresentationsViewConfigurationSupplier } from '../views/edit-project/workbench-views/representations/RepresentationsView.types';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
@@ -157,6 +164,7 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  * Used to register all the views available in the left and right of the workbench
  *
  *******************************************************************************/
+
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
     id: 'explorer',
@@ -164,6 +172,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
+    ref: undefined,
+    createRef: () => useRef<ExplorerViewConfigurationSupplier>(null),
   },
   {
     id: 'validation',
@@ -171,6 +181,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Validation',
     icon: <WarningIcon />,
     component: ValidationView,
+    ref: undefined,
+    createRef: () => useRef<ValidationViewConfigurationSupplier>(null),
   },
   {
     id: 'details',
@@ -178,6 +190,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Details',
     icon: <MenuIcon />,
     component: DetailsView,
+    ref: undefined,
+    createRef: () => useRef<DetailsViewConfigurationSupplier>(null),
   },
   {
     id: 'query',
@@ -185,6 +199,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Query',
     icon: <PlayArrowIcon />,
     component: QueryView,
+    ref: undefined,
+    createRef: () => useRef<QueryViewConfigurationSupplier>(null),
   },
   {
     id: 'representations',
@@ -192,6 +208,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Representations',
     icon: <Filter />,
     component: RepresentationsView,
+    ref: undefined,
+    createRef: () => useRef<RepresentationsViewConfigurationSupplier>(null),
   },
   {
     id: 'related-elements',
@@ -199,6 +217,8 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Related Elements',
     icon: <LinkIcon />,
     component: RelatedElementsView,
+    ref: undefined,
+    createRef: () => useRef<RelatedElementsViewConfigurationSupplier>(null),
   },
 ];
 defaultExtensionRegistry.putData(workbenchViewContributionExtensionPoint, {

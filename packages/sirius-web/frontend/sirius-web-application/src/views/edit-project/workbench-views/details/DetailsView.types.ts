@@ -11,8 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchViewConfiguration, WorkbenchViewConfigurationSupplier } from '@eclipse-sirius/sirius-components-core';
 import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface DetailsViewState {
   form: GQLForm | null;
 }
+
+export interface DetailsViewConfigurationSupplier extends WorkbenchViewConfigurationSupplier {
+  getWorkbenchViewConfiguration: () => DetailsViewConfiguration | null;
+}
+
+export interface DetailsViewConfiguration extends WorkbenchViewConfiguration {}

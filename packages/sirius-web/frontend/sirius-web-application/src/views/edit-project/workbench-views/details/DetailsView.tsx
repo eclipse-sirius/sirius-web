@@ -14,11 +14,12 @@ import {
   RepresentationLoadingIndicator,
   useSelection,
   WorkbenchViewComponentProps,
+  WorkbenchViewConfigurationSupplier,
 } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DetailsViewState } from './DetailsView.types';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
@@ -37,61 +38,66 @@ const useDetailsViewStyles = makeStyles()((theme) => ({
 const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload && payload.__typename === 'FormRefreshedEventPayload';
 
-export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const [state, setState] = useState<DetailsViewState>({
-    form: null,
-  });
+export const DetailsView = forwardRef<WorkbenchViewConfigurationSupplier | null, WorkbenchViewComponentProps>(
+  (
+    { editingContextId, readOnly }: WorkbenchViewComponentProps,
+    _detailsViewConfigurationSupplierRef: ForwardedRef<WorkbenchViewConfigurationSupplier | null>
+  ) => {
+    const [state, setState] = useState<DetailsViewState>({
+      form: null,
+    });
 
-  const { selection } = useSelection();
+    const { selection } = useSelection();
 
-  const objectIds: string[] = selection.entries.map((entry) => entry.id);
-  const skip = objectIds.length === 0;
-  const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+    const objectIds: string[] = selection.entries.map((entry) => entry.id);
+    const skip = objectIds.length === 0;
+    const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
-  useEffect(() => {
-    if (isFormRefreshedEventPayload(payload)) {
-      setState((prevState) => ({ ...prevState, form: payload.form }));
+    useEffect(() => {
+      if (isFormRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, form: payload.form }));
+      }
+    }, [payload]);
+
+    const { classes } = useDetailsViewStyles();
+
+    if (complete || skip) {
+      return (
+        <div className={classes.idle}>
+          <Typography variant="subtitle2">No object selected</Typography>
+        </div>
+      );
+    } else {
+      return (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateRows: '1fr',
+            gridTemplateColumns: '1fr',
+          }}
+          data-representation-kind="form-details">
+          {!state.form || loading ? (
+            <Box sx={{ gridRow: '1', gridColumn: '1', zIndex: 1 }}>
+              <RepresentationLoadingIndicator />
+            </Box>
+          ) : null}
+          {state.form ? (
+            <Box sx={{ gridRow: '1', gridColumn: '1' }}>
+              <FormContext.Provider
+                value={{
+                  payload: payload,
+                }}>
+                <FormBasedView
+                  editingContextId={editingContextId}
+                  form={state.form}
+                  readOnly={readOnly}
+                  initialConfiguration={null}
+                />
+              </FormContext.Provider>
+            </Box>
+          ) : null}
+        </Box>
+      );
     }
-  }, [payload]);
-
-  const { classes } = useDetailsViewStyles();
-
-  if (complete || skip) {
-    return (
-      <div className={classes.idle}>
-        <Typography variant="subtitle2">No object selected</Typography>
-      </div>
-    );
-  } else {
-    return (
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateRows: '1fr',
-          gridTemplateColumns: '1fr',
-        }}
-        data-representation-kind="form-details">
-        {!state.form || loading ? (
-          <Box sx={{ gridRow: '1', gridColumn: '1', zIndex: 1 }}>
-            <RepresentationLoadingIndicator />
-          </Box>
-        ) : null}
-        {state.form ? (
-          <Box sx={{ gridRow: '1', gridColumn: '1' }}>
-            <FormContext.Provider
-              value={{
-                payload: payload,
-              }}>
-              <FormBasedView
-                editingContextId={editingContextId}
-                form={state.form}
-                readOnly={readOnly}
-                initialConfiguration={null}
-              />
-            </FormContext.Provider>
-          </Box>
-        ) : null}
-      </Box>
-    );
   }
-};
+);

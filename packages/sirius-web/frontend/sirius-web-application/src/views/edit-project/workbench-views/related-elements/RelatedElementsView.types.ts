@@ -11,10 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import {
+  Selection,
+  WorkbenchViewConfiguration,
+  WorkbenchViewConfigurationSupplier,
+} from '@eclipse-sirius/sirius-components-core';
 import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface RelatedElementsViewState {
   currentSelection: Selection;
   form: GQLForm | null;
 }
+export interface RelatedElementsViewConfigurationSupplier extends WorkbenchViewConfigurationSupplier {
+  getWorkbenchViewConfiguration: () => RelatedElementsViewConfiguration | null;
+}
+
+export interface RelatedElementsViewConfiguration extends WorkbenchViewConfiguration {}

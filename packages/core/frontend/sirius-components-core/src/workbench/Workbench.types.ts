@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
+import React, { ForwardRefExoticComponent, MutableRefObject, PropsWithoutRef, RefAttributes } from 'react';
 
 export type WorkbenchState = {
   id: string;
@@ -37,7 +37,11 @@ export interface WorkbenchViewContribution {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
+  component: ForwardRefExoticComponent<
+    PropsWithoutRef<WorkbenchViewComponentProps> & RefAttributes<WorkbenchViewConfigurationSupplier>
+  >;
+  ref: MutableRefObject<WorkbenchViewConfigurationSupplier | null> | undefined;
+  createRef: () => MutableRefObject<WorkbenchViewConfigurationSupplier | null>;
 }
 
 export interface WorkbenchViewComponentProps {
@@ -85,10 +89,15 @@ export interface WorkbenchMainPanelConfigurationSupplier {
   getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
 }
 
+export interface WorkbenchViewConfigurationSupplier {
+  getWorkbenchViewConfiguration: () => WorkbenchViewConfiguration | null;
+}
+
 export interface WorkbenchConfiguration {
   sidePanels: Array<WorkbenchSidePanelConfiguration | null> | null;
   mainPanel: WorkbenchMainPanelConfiguration | null;
 }
+
 export interface WorkbenchSidePanelConfiguration {
   id: string;
   views: Array<WorkbenchViewConfiguration | null> | null;
