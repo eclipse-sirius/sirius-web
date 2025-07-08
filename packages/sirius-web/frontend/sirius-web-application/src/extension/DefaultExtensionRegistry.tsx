@@ -100,8 +100,6 @@ import { routerExtensionPoint } from '../router/RouterExtensionPoints';
 import { CheckboxCell } from '../table/CheckboxCell';
 import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
-import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
-import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
@@ -116,8 +114,6 @@ import { RelatedElementsView } from '../views/edit-project/workbench-views/relat
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
-import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
-import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
@@ -519,30 +515,6 @@ const defaultSettingPages: ProjectSettingTabContribution[] = [
 defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
   identifier: `siriusWeb_${projectSettingsTabExtensionPoint.identifier}`,
   data: defaultSettingPages,
-});
-
-/*******************************************************************************
- *
- * Edit project navbar context menu items
- *
- * Used to register menu items available on project's context menu in the edit project view
- *
- *******************************************************************************/
-defaultExtensionRegistry.addComponent(editProjectNavbarMenuEntryExtensionPoint, {
-  identifier: `siriusWeb_${editProjectNavbarMenuEntryExtensionPoint.identifier}_download`,
-  Component: DownloadProjectMenuEntryContribution,
-});
-
-/*******************************************************************************
- *
- * Project action buttons
- *
- * Used to register menu items available on projects in the project browser viewx
- *
- *******************************************************************************/
-defaultExtensionRegistry.addComponent(projectContextMenuEntryExtensionPoint, {
-  identifier: `siriusWeb_${projectContextMenuEntryExtensionPoint.identifier}_download`,
-  Component: ProjectDownloadMenuItemExtension,
 });
 
 /*******************************************************************************

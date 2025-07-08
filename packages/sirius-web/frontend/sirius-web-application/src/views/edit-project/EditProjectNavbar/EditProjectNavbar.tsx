@@ -11,9 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
-import { ComponentExtension, Toast, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  ServerContext,
+  ServerContextValue,
+  Toast,
+  useComponent,
+  useComponents,
+} from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +32,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
 import { useMachine } from '@xstate/react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { flushSync } from 'react-dom';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
@@ -99,6 +107,10 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const {
+    capabilities: { canDownload },
+  } = project;
 
   const [{ value, context }, dispatch] = useMachine<
     StateMachine<EditProjectNavbarContext, EditProjectNavbarStateSchema, EditProjectNavbarEvent>
@@ -227,17 +239,30 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
               </ListItemIcon>
               <ListItemText primary="Rename" />
             </MenuItem>
+            {canDownload ? (
+              <MenuItem
+                component="a"
+                href={`${httpOrigin}/api/projects/${project.id}`}
+                type="application/octet-stream"
+                onClick={onCloseContextMenu}
+                data-testid="download-link">
+                <ListItemIcon>
+                  <GetAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Download" />
+              </MenuItem>
+            ) : null}
             {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
               <ProjectContextMenuItem
                 key={index}
-                projectId={project?.id || ''}
+                projectId={project.id || ''}
                 onCloseContextMenu={onCloseContextMenu}
               />
             ))}
             <MenuItem
               divider
               component={RouterLink}
-              to={`/projects/${project?.id}/settings`}
+              to={`/projects/${project.id}/settings`}
               onClick={onCloseContextMenu}
               data-testid="project-settings-link">
               <ListItemIcon>

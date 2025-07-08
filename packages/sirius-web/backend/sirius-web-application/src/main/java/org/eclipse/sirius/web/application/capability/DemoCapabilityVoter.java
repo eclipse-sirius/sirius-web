@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.capability;
 
-import java.util.List;
-
 import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.springframework.context.annotation.Profile;
@@ -29,13 +27,6 @@ import org.springframework.stereotype.Service;
 public class DemoCapabilityVoter implements ICapabilityVoter {
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        var grantedCapabilities = List.of(
-                SiriusWebCapabilities.Project.DOWNLOAD
-        );
-
-        if (grantedCapabilities.contains(capability)) {
-            return CapabilityVote.GRANTED;
-        }
         return CapabilityVote.DENIED;
     }
 }

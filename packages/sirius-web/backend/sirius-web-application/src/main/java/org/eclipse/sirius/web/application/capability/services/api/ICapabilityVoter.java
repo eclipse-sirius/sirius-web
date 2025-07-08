@@ -25,18 +25,20 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  *     Example to disable a capability:
  * </p>
  *
- * {@snippet id="disable-create-project-capability" lang="java" :
+ * {@snippet id = "disable-create-project-capability" lang = "java":
+ * import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+ *
  * public class DisableCanCreateProjectCapabilityVoter implements ICapabilityVoter {
  *
  *     @Override
-*      public CapabilityVote vote(String type, String identifier, String capability) {
-*          if ("Project".equals(type) && identifier == null && "canCreate".equals(capability)) {
-*              return CapabilityVote.DENIED;
-*          }
-*          return CapabilityVote.GRANTED;
-*      }
+ *      public CapabilityVote vote(String type, String identifier, String capability) {
+ *          if (SiriusWebCapabilities.PROJECT.equals(type) && identifier == null && SiriusWebCapabilities.Project.CREATE.equals(capability)) {
+ *              return CapabilityVote.DENIED;
+ *          }
+ *          return CapabilityVote.GRANTED;
+ *      }
  * }
- * }
+ *}
  *
  * @see org.eclipse.sirius.web.application.capability.controllers.ProjectsCapabilitiesCanCreateDataFetcher
  * @author gcoutable
