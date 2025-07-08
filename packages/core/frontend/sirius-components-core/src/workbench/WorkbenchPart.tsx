@@ -49,7 +49,13 @@ const useSiteStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const WorkbenchPart = ({ editingContextId, readOnly, side, contribution }: WorkbenchPartProps) => {
+export const WorkbenchPart = ({
+  editingContextId,
+  readOnly,
+  side,
+  contribution,
+  initialConfiguration,
+}: WorkbenchPartProps) => {
   const { classes } = useSiteStyles();
 
   const { title, icon, component: Component } = contribution;
@@ -60,7 +66,12 @@ export const WorkbenchPart = ({ editingContextId, readOnly, side, contribution }
         <Typography className={classes.viewHeaderTitle}>{title}</Typography>
       </div>
       <div className={classes.viewContent} data-testid={`view-${title}`}>
-        <Component editingContextId={editingContextId} readOnly={readOnly} />
+        <Component
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          initialConfiguration={initialConfiguration}
+          ref={contribution.ref}
+        />
       </div>
     </div>
   );
