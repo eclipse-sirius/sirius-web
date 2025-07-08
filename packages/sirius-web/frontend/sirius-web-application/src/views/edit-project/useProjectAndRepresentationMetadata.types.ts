@@ -48,6 +48,11 @@ export interface GQLProjectCapabilities {
   canRename: boolean;
   canDelete: boolean;
   canEdit: boolean;
+  settings: GQLProjectSettingsCapabilities;
+}
+
+export interface GQLProjectSettingsCapabilities {
+  canView: boolean;
 }
 
 export interface GQLEditingContext {

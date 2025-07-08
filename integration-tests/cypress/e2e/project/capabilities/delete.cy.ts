@@ -31,7 +31,7 @@ describe('Project deletion', () => {
     context('When we try to delete the project from the project browser view', () => {
       beforeEach(() => new Projects().visit());
 
-      it('Then the delete button should be disabled', () => {
+      it('Then the delete button should not exist', () => {
         new Projects().getActionMenu(projectName).getDeleteButton().should('not.exist');
       });
     });
@@ -39,7 +39,7 @@ describe('Project deletion', () => {
     context('When we try to delete the project from the workbench', () => {
       beforeEach(() => new Project().visit(projectId));
 
-      it('Then the delete button should be disabled', () => {
+      it('Then the delete button should be not exist', () => {
         new Project().getProjectNavigationBar(projectName).getDeleteButton().should('not.exist');
       });
     });

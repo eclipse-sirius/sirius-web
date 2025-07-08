@@ -38,6 +38,11 @@ const getProjectQuery = gql`
       project(projectId: $projectId) {
         id
         name
+        capabilities {
+          settings {
+            canView
+          }
+        }
       }
     }
   }
@@ -147,7 +152,7 @@ export const ProjectSettingsView = () => {
   if (loading) {
     return null;
   }
-  if (!project) {
+  if (!project || !project.capabilities.settings.canView) {
     return <Navigate to="/errors/404" replace />;
   }
   if (tabId && !projectSettingsTabContributions.find((tab) => tab.id == tabId)) {

@@ -96,4 +96,22 @@ public final class SiriusWebCapabilities {
          */
         public static final String VIEW = "view";
     }
+
+    public static final String PROJECT_SETTINGS = "ProjectSettings";
+
+    /**
+     * The list of project-settings-specific capabilities.
+     *
+     * @author gcoutable
+     * @since v2025.8.0
+     */
+    public static final class ProjectSettings {
+
+        /**
+         * Used to check if the project settings view can be viewed.
+         *
+         * @since v2025.8.0
+         */
+        public static final String VIEW = "view";
+    }
 }
