@@ -37,4 +37,13 @@ export interface GQLViewer {
 export interface GQLProject {
   id: string;
   name: string;
+  capabilities: GQLProjectCapabilities;
+}
+
+export interface GQLProjectCapabilities {
+  settings: GQLProjectSettingsCapabilities;
+}
+
+export interface GQLProjectSettingsCapabilities {
+  canView: boolean;
 }

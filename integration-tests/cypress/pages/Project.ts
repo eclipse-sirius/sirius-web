@@ -49,4 +49,8 @@ class ProjectNavigationBar {
   public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('delete');
   }
+
+  public getSettingsButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('project-settings-link');
+  }
 }

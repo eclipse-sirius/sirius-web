@@ -24,6 +24,9 @@ const value: ProjectContextValue = {
       canRename: false,
       canDelete: false,
       canEdit: false,
+      settings: {
+        canView: false,
+      },
     },
     currentEditingContext: {
       id: '',

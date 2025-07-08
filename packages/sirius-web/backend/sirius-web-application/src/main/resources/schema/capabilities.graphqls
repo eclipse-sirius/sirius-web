@@ -25,4 +25,9 @@ type ProjectCapabilities {
   canRename: Boolean!
   canDelete: Boolean!
   canEdit: Boolean!
+  settings: ProjectSettingsCapabilities!
+}
+
+type ProjectSettingsCapabilities {
+  canView: Boolean!
 }

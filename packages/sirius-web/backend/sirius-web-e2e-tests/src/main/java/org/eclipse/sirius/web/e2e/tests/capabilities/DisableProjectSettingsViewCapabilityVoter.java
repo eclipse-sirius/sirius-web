@@ -22,27 +22,27 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * Make a specific project read-only.
+ * Make settings of a specific project unable to be displayed.
  *
  * @author gcoutable
  */
 @Profile("test")
 @Service
-public class DisableEditCapabilityVoter implements ICapabilityVoter {
+public class DisableProjectSettingsViewCapabilityVoter implements ICapabilityVoter {
 
     private final IProjectApplicationService projectApplicationService;
 
-    public DisableEditCapabilityVoter(IProjectApplicationService projectApplicationService) {
+    public DisableProjectSettingsViewCapabilityVoter(IProjectApplicationService projectApplicationService) {
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
     }
 
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        if (SiriusWebCapabilities.PROJECT.equals(type) && SiriusWebCapabilities.Project.EDIT.equals(capability) && identifier != null && !identifier.isBlank()) {
+        if (SiriusWebCapabilities.PROJECT_SETTINGS.equals(type) && SiriusWebCapabilities.ProjectSettings.VIEW.equals(capability) && identifier != null && !identifier.isBlank()) {
             var optionalProject = this.projectApplicationService.findById(identifier);
             if (optionalProject.isPresent()) {
                 var project = optionalProject.get();
-                if (project.name().contains("Cypress - Disabled Edit Project")) {
+                if (project.name().contains("Cypress - Disabled Settings Project")) {
                     return CapabilityVote.DENIED;
                 }
             }
