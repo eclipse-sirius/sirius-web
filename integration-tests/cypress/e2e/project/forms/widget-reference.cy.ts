@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Project } from '../../../pages/Project';
-import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
 import { Flow } from '../../../usecases/Flow';
 import { Studio } from '../../../usecases/Studio';
 import { Details } from '../../../workbench/Details';
@@ -283,176 +282,6 @@ describe('Forms Widget-reference', () => {
         explorer.expandWithDoubleClick('DataSource1');
         explorer.getTreeItemByLabel('unused').should('exist');
       });
-    });
-  });
-
-  context.skip('Given a studio template', () => {
-    let studioProjectId: string = '';
-    let domainName: string = '';
-    let instanceProjectId: string = '';
-
-    beforeEach(() => {
-      cy.createProjectFromTemplate('studio-template').then((res) => {
-        const payload = res.body.data.createProjectFromTemplate;
-        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
-          const projectId = payload.project.id;
-          studioProjectId = projectId;
-          new Project().visit(projectId);
-          const explorer = new Explorer();
-          explorer.getTreeItemByLabel('DomainNewModel').dblclick();
-          cy.get('[title="domain::Domain"]').then(($div) => {
-            domainName = $div.data().testid;
-          });
-        }
-      });
-    });
-
-    afterEach(() => {
-      cy.deleteProject(studioProjectId);
-      cy.deleteProject(instanceProjectId);
-    });
-    it('Then I can create element action on a mono valued and containment reference', () => {
-      const explorer = new Explorer();
-      const details = new Details();
-      const form = new Form();
-      explorer.createObject(domainName, 'types-Entity');
-
-      details.getTextField('Name').should('have.value', 'NewEntity');
-      details.getTextField('Name').type('{selectall}SuperEntity1{enter}');
-      details.getCheckBox('Abstract').check();
-
-      explorer.createObject(domainName, 'types-Entity');
-      details.getTextField('Name').should('have.value', 'NewEntity');
-      details.getTextField('Name').type('{selectall}MonoValuedContainment{enter}');
-
-      explorer.createObject('MonoValuedContainment', 'attributes-Attribute');
-      details.getTextField('Name').should('have.value', 'newString');
-      details.getTextField('Name').type('{selectall}Name{enter}');
-
-      explorer.createObject('SuperEntity1', 'relations-Relation');
-      details.getCheckBox('Containment').check();
-      details.getCheckBox('Many').uncheck();
-      details.openReferenceWidgetOptions('Target Type');
-      details.selectReferenceWidgetOption('MonoValuedContainment');
-
-      explorer.select('Entity1');
-      details.getTextField('Name').should('have.value', 'Entity1');
-      details.openReferenceWidgetOptions('Super Type');
-      details.selectReferenceWidgetOption('SuperEntity1');
-
-      explorer.expandWithDoubleClick('ViewNewModel');
-      createFormWithWidgetRef(`${domainName}::Entity1`, 'WidgetRefRepresentation', 'relation');
-
-      new Studio().createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
-        instanceProjectId = res.projectId;
-      });
-
-      explorer.createObject('Root', 'entity1s-Entity1');
-      explorer.select('Entity1');
-      details.getTextField('Name').type('{selectall}Entity1{enter}');
-
-      explorer.createRepresentation('Entity1', 'WidgetRefRepresentation', 'WidgetRefRepresentation');
-
-      form.getWidgetElement('Test Widget Reference', 'reference-value-').should('not.exist');
-
-      form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-add').click();
-      cy.getByTestId('create-modal').should('exist');
-      cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
-      cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
-      cy.getByTestId('childCreationDescription')
-        .children('[role="combobox"]')
-        .invoke('text')
-        .should('have.length.gt', 1);
-      cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
-      cy.getByTestId('childCreationDescription')
-        .get('[data-value="relation-MonoValuedContainment"]')
-        .should('exist')
-        .click();
-      cy.getByTestId('create-modal').findByTestId('create-object').click();
-
-      cy.getByTestId('reference-value-').should('exist');
-
-      explorer.select('MonoValuedContainment');
-      details.getTextField('Name').should('not.have.value', 'Entity1');
-      details.getTextField('Name').type('Test{enter}');
-      form.getWidgetElement('Test Widget Reference', 'reference-value-Test').should('exist');
-
-      form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-add').click();
-      cy.getByTestId('create-modal').should('exist');
-      cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
-      cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
-      cy.getByTestId('childCreationDescription')
-        .children('[role="combobox"]')
-        .invoke('text')
-        .should('have.length.gt', 1);
-      cy.getByTestId('childCreationDescription').click();
-      cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
-      cy.getByTestId('childCreationDescription')
-        .get('[data-value="relation-MonoValuedContainment"]')
-        .should('exist')
-        .click();
-      cy.getByTestId('create-modal').findByTestId('create-object').click();
-      form.getWidgetElement('Test Widget Reference', 'reference-value-Test').should('exist');
-    });
-
-    it('Then widget reference filters ancestor only for containment reference', () => {
-      const explorer = new Explorer();
-      const details = new Details();
-      const form = new Form();
-
-      explorer.expandWithDoubleClick(domainName);
-      explorer.createObject('Entity1', 'relations-Relation');
-      details.getCheckBox('Containment').check();
-      details.openReferenceWidgetOptions('Target Type');
-      details.selectReferenceWidgetOption('Entity2');
-      explorer.createObject('Entity2', 'relations-Relation');
-      details.getCheckBox('Containment').check();
-      details.openReferenceWidgetOptions('Target Type');
-      details.selectReferenceWidgetOption('Entity1');
-
-      explorer.expandWithDoubleClick('ViewNewModel');
-      explorer.createObject('View', 'descriptions-FormDescription');
-      explorer.select('New Form Description');
-      details.getTextField('Domain Type').type(`${domainName}::Entity1`);
-      details.getTextField('Name').type(`{selectall}WidgetRefRepresentation{enter}`);
-      details.getTextField('Title Expression').type(`{selectall}WidgetRefRepresentation{enter}`);
-      explorer.expandWithDoubleClick('WidgetRefRepresentation');
-      explorer.expandWithDoubleClick('PageDescription');
-      explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
-      details.getTextField('Reference Name Expression').should('exist');
-      details.getTextField('Label Expression').type('Test Widget Reference linkedTo');
-      details.getTextField('Reference Name Expression').type(`linkedTo{enter}`);
-      explorer.createObject('Group Description', 'children-ReferenceWidgetDescription');
-      details.getTextField('Reference Name Expression').should('exist');
-      details.getTextField('Label Expression').type('Test Widget Reference relation');
-      details.getTextField('Reference Name Expression').type(`relation{enter}`);
-
-      new Studio().createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
-        instanceProjectId = res.projectId;
-      });
-
-      explorer.createObject('Root', 'entity2s-Entity2');
-      explorer.select('Entity2');
-      details.getTextField('Name').type('{selectall}Entity2{enter}');
-      explorer.createObject('Entity2', 'relation-Entity1');
-      explorer.createRepresentation('Entity1', 'WidgetRefRepresentation', 'WidgetRefRepresentation');
-
-      form.getWidget('Test Widget Reference linkedTo').click();
-      cy.getByTestId('option-Entity2').should('exist');
-      form.getWidgetElement('Test Widget Reference linkedTo', 'Test Widget Reference linkedTo-more').click();
-      cy.getByTestId('transfer-modal').findByTestId('tree-root-elements').click();
-      cy.getByTestId('transfer-modal').findByTestId('expand-all').click();
-      cy.getByTestId('transfer-modal').findByTestId('Entity2').should('exist');
-      cy.getByTestId('close-transfer-modal').click();
-
-      form.getWidget('Test Widget Reference relation').click();
-      cy.getByTestId('option-Entity2').should('not.exist');
-      form.getWidgetElement('Test Widget Reference relation', 'Test Widget Reference relation-more').click();
-      cy.getByTestId('transfer-modal').findByTestId('tree-root-elements').click();
-      cy.getByTestId('transfer-modal').findByTestId('expand-all').click();
-      cy.getByTestId('transfer-modal').findByTestId('Entity2').should('not.exist');
-      cy.getByTestId('close-transfer-modal').click();
     });
   });
 });
