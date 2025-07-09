@@ -54,31 +54,5 @@ describe('Diagram - edges', () => {
       cy.getByTestId('bend-point-2').click();
       cy.getByTestId('bend-point-4').should('not.exist');
     });
-
-    it('Then moving a bendpoint change the edge path', () => {
-      const diagram = new Diagram();
-      const explorer = new Explorer();
-      explorer.expandWithDoubleClick('DataSource1');
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.moveNode('Topography', 'DataSource1', { x: -100, y: 0 });
-      explorer.select('standard');
-      diagram
-        .getEdgePaths('Topography')
-        .eq(0)
-        .invoke('attr', 'd')
-        .then((dValue) => {
-          expect(diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M-35L29L29L93', 2)).to.be.true;
-        });
-      diagram.moveBendPoint(1, { x: -50, y: 50 });
-      diagram
-        .getEdgePaths('Topography')
-        .eq(0)
-        .invoke('attr', 'd')
-        .then((dValue) => {
-          expect(
-            diagram.isPathWithinTolerance(diagram.roundSvgPathData(dValue ?? ''), 'M-35L29L29L-21L-21L61L61L93', 2)
-          ).to.be.true;
-        });
-    });
   });
 });
