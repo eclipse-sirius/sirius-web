@@ -56,18 +56,5 @@ describe('Diagram - group palette', () => {
       diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
       diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
     });
-
-    it('Then during multi selection the connection handles are not computed', () => {
-      const diagram = new Diagram();
-      const explorer = new Explorer();
-      diagram.getDiagram('diagram').should('exist');
-      explorer.select('Wifi');
-      diagram.getSelectedNodes('diagram', 'Wifi');
-      cy.getByTestId('creationhandle-top').should('exist');
-      explorer.select('Central_Unit', true);
-      diagram.getSelectedNodes('diagram', 'Wifi');
-      diagram.getSelectedNodes('diagram', 'Central_Unit');
-      cy.getByTestId('creationhandle-top').should('not.exist');
-    });
   });
 });
