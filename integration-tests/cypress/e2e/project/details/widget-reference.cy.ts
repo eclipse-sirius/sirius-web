@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Project } from '../../../pages/Project';
-import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
 import { Flow } from '../../../usecases/Flow';
 import { Details } from '../../../workbench/Details';
 import { Explorer } from '../../../workbench/Explorer';
@@ -39,47 +38,6 @@ describe('Details - Widget-reference', () => {
       details.getReferenceWidget('Target').find('p[class*="Mui-error"]').should('not.exist');
       details.getReferenceWidget('Target').findByTestId('Target-clear').click();
       details.getReferenceWidget('Target').find('p[class*="Mui-error"]').should('exist');
-    });
-  });
-  context.skip('Given a studio', () => {
-    let studioProjectId: string = '';
-    let domainName: string = '';
-
-    before(() => {
-      cy.createProjectFromTemplate('studio-template').then((res) => {
-        const payload = res.body.data.createProjectFromTemplate;
-        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
-          const projectId = payload.project.id;
-          studioProjectId = projectId;
-          new Project().visit(projectId);
-          const explorer = new Explorer();
-          explorer.getTreeItemByLabel('DomainNewModel').dblclick();
-          cy.get('[title="domain::Domain"]').then(($div) => {
-            domainName = $div.data().testid;
-          });
-        }
-      });
-    });
-
-    after(() => cy.deleteProject(studioProjectId));
-    it('check widget reference click navigation to filter tree item', () => {
-      const explorer = new Explorer();
-      explorer.expandWithDoubleClick(domainName);
-      explorer.expandWithDoubleClick('Entity1');
-      explorer.expandWithDoubleClick('Entity2');
-      explorer.select('linkedTo');
-      cy.getByTestId('reference-value-Entity2').should('exist');
-
-      explorer.getTreeItemByLabel('linkedTo').type('{ctrl+f}');
-      cy.getByTestId('filterbar-textfield').type('Entity1');
-      cy.getByTestId('filterbar-filter-button').click();
-      explorer.getTreeItemByLabel('Entity2').should('not.exist');
-
-      cy.getByTestId('reference-value-Entity2').click();
-      cy.getByTestId('page-tab-Entity2').should('exist');
-      cy.getByTestId('filterbar-close-button').click();
-      explorer.getSelectedTreeItems().should('have.length', 1);
-      explorer.getSelectedTreeItems().contains('Entity2').should('exist');
     });
   });
 });
