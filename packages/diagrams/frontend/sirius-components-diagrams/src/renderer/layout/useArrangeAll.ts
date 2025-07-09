@@ -174,6 +174,20 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     const edges: Edge<EdgeData>[] = getEdges();
     for (const [parentNodeId, nodes] of subNodes) {
       const parentNode = allNodes.find((node) => node.id === parentNodeId);
+      const subGroupEdges: Edge<EdgeData>[] = [];
+      edges.forEach((edge) => {
+        const isTargetInside = nodes.some((node) => node.id === edge.target);
+        const isSourceInside = nodes.some((node) => node.id === edge.source);
+        if (isTargetInside && isSourceInside) {
+          subGroupEdges.push(edge);
+        }
+        if (isTargetInside && !isSourceInside) {
+          edge.target = parentNodeId;
+        }
+        if (!isTargetInside && isSourceInside) {
+          edge.source = parentNodeId;
+        }
+      });
       if ((parentNode && isListData(parentNode)) || nodes.every((node) => node.data.isBorderNode)) {
         // No elk layout for child of container list or for border node
         layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
@@ -186,20 +200,6 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         .map((node) => {
           return parentNodeWithNewSize.find((layoutNode) => layoutNode.id === node.id) ?? node;
         });
-      const subGroupEdges: Edge<EdgeData>[] = [];
-      edges.forEach((edge) => {
-        const isTargetInside = subGroupNodes.some((node) => node.id === edge.target);
-        const isSourceInside = subGroupNodes.some((node) => node.id === edge.source);
-        if (isTargetInside && isSourceInside) {
-          subGroupEdges.push(edge);
-        }
-        if (isTargetInside && !isSourceInside) {
-          edge.target = parentNodeId;
-        }
-        if (!isTargetInside && isSourceInside) {
-          edge.source = parentNodeId;
-        }
-      });
       await getELKLayout(
         subGroupNodes,
         subGroupEdges,
