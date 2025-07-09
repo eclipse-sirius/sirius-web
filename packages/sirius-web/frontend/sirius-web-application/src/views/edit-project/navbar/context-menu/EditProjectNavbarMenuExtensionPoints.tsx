@@ -12,7 +12,10 @@
  *******************************************************************************/
 
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { EditProjectNavbarMenuContainerProps, EditProjectNavbarMenuEntryProps } from './EditProjectNavbar.types';
+import {
+  EditProjectNavbarMenuContainerProps,
+  EditProjectNavbarMenuEntryProps,
+} from './EditProjectNavbarContextMenu.types';
 
 const FallbackEditProjectNavbarMenuContainer = ({ children }: EditProjectNavbarMenuContainerProps) => {
   return children;

@@ -75,16 +75,16 @@ export type { UseViewerValue } from './viewer/useViewer.types';
 export { ViewerContext } from './viewer/ViewerContext';
 export type { ViewerContextValue } from './viewer/ViewerContext.types';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
+export { EditProjectView } from './views/edit-project/EditProjectView';
 export type {
   EditProjectNavbarMenuContainerProps,
   EditProjectNavbarMenuEntryProps,
-  EditProjectNavbarSubtitleProps,
-} from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
+} from './views/edit-project/navbar/context-menu/EditProjectNavbarContextMenu.types';
 export {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,
-} from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
-export { EditProjectView } from './views/edit-project/EditProjectView';
+} from './views/edit-project/navbar/context-menu/EditProjectNavbarMenuExtensionPoints';
+export type { EditProjectNavbarSubtitleProps } from './views/edit-project/navbar/EditProjectNavbar.types';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';

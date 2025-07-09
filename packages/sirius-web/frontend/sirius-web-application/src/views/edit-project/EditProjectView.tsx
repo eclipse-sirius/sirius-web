@@ -28,8 +28,8 @@ import {
 import { useEffect, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
 import { EditProjectViewParams, EditProjectViewState, TreeToolBarProviderProps } from './EditProjectView.types';
+import { EditProjectNavbar } from './navbar/EditProjectNavbar';
 import { ProjectContext } from './ProjectContext';
 import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';

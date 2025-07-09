@@ -33,10 +33,6 @@ export interface ProjectContextMenuProps {
   onClose: () => void;
 }
 
-export interface ProjectContextMenuState {
-  modalToDisplay: ProjectContextMenuModal | null;
-}
-
 export interface ProjectContextMenuEntryProps {
   project: GQLProject;
   onChange: () => void;
