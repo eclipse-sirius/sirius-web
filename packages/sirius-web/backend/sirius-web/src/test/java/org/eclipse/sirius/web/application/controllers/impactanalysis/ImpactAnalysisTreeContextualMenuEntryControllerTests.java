@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -104,6 +105,7 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
         };
 
         StepVerifier.create(flux)
+            .expectNextMatches(TreeRefreshedEventPayload.class::isInstance)
             .then(invokeImpactAnalysisReport)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
