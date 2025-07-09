@@ -72,8 +72,8 @@ export { useCurrentViewer } from './viewer/useCurrentViewer';
 export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
 export { useViewer } from './viewer/useViewer';
 export type { UseViewerValue } from './viewer/useViewer.types';
-export { ViewerContext } from './viewer/ViewerContext';
-export type { ViewerContextValue } from './viewer/ViewerContext.types';
+export { ViewerContext, ViewerContextProvider } from './viewer/ViewerContext';
+export type { ViewerContextProviderProps, ViewerContextValue } from './viewer/ViewerContext.types';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
 export { EditProjectView } from './views/edit-project/EditProjectView';
 export type {
@@ -119,6 +119,8 @@ export {
   projectContextMenuContainerExtensionPoint,
   projectContextMenuEntryExtensionPoint,
 } from './views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
+export { ProjectsTable } from './views/project-browser/list-projects-area/ProjectsTable';
+export type { ProjectsTableProps } from './views/project-browser/list-projects-area/ProjectsTable.types';
 export { projectFilterCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsExtensionPoints';
 export { type ProjectFilterCustomizer } from './views/project-browser/list-projects-area/useProjectsExtensionPoints.types';
 export { projectsTableColumnCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints';
