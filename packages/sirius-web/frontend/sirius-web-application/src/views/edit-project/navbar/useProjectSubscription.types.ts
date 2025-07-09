@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,29 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface EditProjectNavbarSubtitleProps {}
-
-export interface EditProjectNavbarMenuContainerProps {
-  children?: React.ReactNode;
+export interface UseProjectSubscriptionValue {
+  loading: boolean;
+  payload: GQLProjectEventPayload | null;
+  complete: boolean;
 }
 
-export interface EditProjectNavbarMenuEntryProps {
-  projectId: string;
-  onCloseContextMenu: () => void;
+export interface UseProjectSubscriptionState {
+  id: string;
+  complete: boolean;
+  payload: GQLProjectEventPayload | null;
 }
 
 export interface GQLProjectEventSubscription {
   projectEvent: GQLProjectEventPayload;
+}
+
+export interface GQLProjectEventVariables {
+  input: GQLProjectEventInput;
+}
+
+export interface GQLProjectEventInput {
+  id: string;
+  projectId: string;
 }
 
 export interface GQLProjectEventPayload {
