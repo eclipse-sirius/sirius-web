@@ -139,7 +139,7 @@ public class CanEditProjectCapabilityVoter implements ICapabilityVoter {
 ----
 - https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Remove the contribution that contribute the link to libraries to the `navigationBarMenuEntryExtensionPoint` extension point.
 The link to libraries has become a standard menu item which can be hidden providing a `ICapabilityVoter` with the type `Library` and the capability `view`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] Custom nodes should use `useConnectionLineNodeStyle` in order to get the correct style feedback when creating a connection near the border of a node, this can be use like `connectionFeedbackStyle or dropFeedbackStyle`.
 
 === Dependency update
 
@@ -177,6 +177,9 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5183[#5183] [sirius-web] Add support for project settings capabilities.
 - [releng] The default Sirius Web application is now available as a Docker image https://hub.docker.com/orgs/eclipsesirius/:[on Docker Hub] as `eclipsesirius/sirius-web`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5178[#5178] [sirius-web] Add experimental server to fetch and return SVG or PNG images from existing diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] If the connection line is hovering the border of a node, then the handle is placed manually on the current position.
+If the connection line is hovering the middle of a node, then the handle is placed automatically using the layout algorithm.
+
 
 === Improvements
 

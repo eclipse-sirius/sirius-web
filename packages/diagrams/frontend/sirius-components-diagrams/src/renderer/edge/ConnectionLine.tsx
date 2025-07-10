@@ -21,12 +21,17 @@ import {
   useStoreApi,
   useUpdateNodeInternals,
 } from '@xyflow/react';
-import React, { memo, useContext, useEffect } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
-import { getNearestPointInPath, getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
+import {
+  getNearestPointInPath,
+  getNearestPointInPerimeter,
+  getUpdatedHandleForNode,
+  isCursorNearCenterOfTheNode,
+} from './EdgeLayout';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -50,13 +55,24 @@ export const ConnectionLine = memo(
     const theme = useTheme();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
     const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
-    const { getNodes, setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
+    const [previousToNodeId, setPreviousToNodeId] = useState<String>(toNode?.id || '');
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
     const targetHandle = getEdges().find((e) => e.id === edgeId)?.targetHandle;
     const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
     const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
+
+    let updatedToY = toY;
+    let updatedToX = toX;
+
+    useEffect(() => {
+      // When reconnection to a node
+      if (previousToNodeId != toNode?.id) {
+        setPreviousToNodeId(toNode?.id || '');
+      }
+    });
 
     // When reconnecting an edge
     if (edgeId) {
@@ -65,9 +81,14 @@ export const ConnectionLine = memo(
         const edgeBase = getEdge(edge.target);
         // Snap the ConnectionLine to the border of the targetted edge
         if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
-          const { position, handlePosition } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath, fromNode);
-          toX = position.x;
-          toY = position.y;
+          const { position, handlePosition } = getNearestPointInPath(
+            updatedToX,
+            updatedToY,
+            edgeBase.data.edgePath,
+            fromNode
+          );
+          updatedToX = position.x;
+          updatedToY = position.y;
           toPosition = handlePosition;
         }
       }
@@ -81,17 +102,18 @@ export const ConnectionLine = memo(
           toNode.internals.positionAbsolute.y,
           toNode.width,
           toNode.height,
-          toX,
-          toY
+          updatedToX,
+          updatedToY
         );
 
-        toX = pointToSnap.XYPosition.x;
-        toY = pointToSnap.XYPosition.y;
+        updatedToX = pointToSnap.XYPosition.x;
+        updatedToY = pointToSnap.XYPosition.y;
         toPosition = pointToSnap.position;
       }
     }
 
     // When creating an edge
+    let candidate: InternalNode<Node<NodeData>> | null | undefined = toNode;
     if (
       fromHandle &&
       fromHandle.id &&
@@ -101,7 +123,6 @@ export const ConnectionLine = memo(
       toNode.height
     ) {
       let isNodeCandidate = false;
-      let candidate: InternalNode<Node<NodeData>> | undefined = toNode;
 
       while (!isNodeCandidate && !!candidate) {
         isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
@@ -111,11 +132,11 @@ export const ConnectionLine = memo(
             candidate.internals.positionAbsolute.y,
             candidate.width,
             candidate.height,
-            toX,
-            toY
+            updatedToX,
+            updatedToY
           );
-          toX = pointToSnap.XYPosition.x;
-          toY = pointToSnap.XYPosition.y;
+          updatedToX = pointToSnap.XYPosition.x;
+          updatedToY = pointToSnap.XYPosition.y;
           toPosition = pointToSnap.position;
         } else {
           candidate = store.getState().nodeLookup.get(candidate.parentId || '');
@@ -123,29 +144,43 @@ export const ConnectionLine = memo(
       }
     }
 
+    // Update handle position early to avoid flicking effect after onReconnectEnd
     useEffect(() => {
+      // When reconnection to a node
       if (toNode && edgeId && handleToUpdate) {
-        // Update handle position early to avoid flicking effect after onReconnectEnd
-        const nodes = getNodesUpdatedWithHandles(
-          getNodes(),
+        const updatedHandles = getUpdatedHandleForNode(
           toNode,
           edgeId,
           handleToUpdate,
-          { x: toX, y: toY },
+          { x: updatedToX, y: updatedToY },
           toPosition
         );
-        setNodes(nodes);
+        setNodes((previousNodes) =>
+          previousNodes.map((previousNode) => {
+            if (previousNode.id === toNode.id) {
+              return {
+                ...previousNode,
+                data: {
+                  ...previousNode.data,
+                  connectionHandles: updatedHandles,
+                },
+              };
+            }
+            return previousNode;
+          })
+        );
         updateNodeInternals(toNode.id);
       }
 
+      // When reconnection to an edge
       if (edgeId) {
         const edge = getEdge(edgeId);
         if (edge) {
           const edgeBase = getEdge(edge.target);
           if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
             const { position, positionRatio, handlePosition } = getNearestPointInPath(
-              toX,
-              toY,
+              updatedToX,
+              updatedToY,
               edgeBase.data.edgePath,
               fromNode
             );
@@ -176,14 +211,58 @@ export const ConnectionLine = memo(
           }
         }
       }
-    }, [toX, toY]);
+
+      setNodes((previousNodes) =>
+        previousNodes.map((previousNode) => {
+          if (previousToNodeId && previousToNodeId !== toNode?.id && previousToNodeId === previousNode.id) {
+            return {
+              ...previousNode,
+              data: {
+                ...previousNode.data,
+                connectionLinePositionOnNode: 'none',
+              },
+            };
+          }
+
+          return previousNode;
+        })
+      );
+
+      if (candidate) {
+        const isNearCenter = isCursorNearCenterOfTheNode(candidate, { x: toX, y: toY });
+        setNodes((previousNodes) =>
+          previousNodes.map((previousNode) => {
+            if (previousNode.id === candidate.id) {
+              if (isNearCenter && previousNode.data.isConnectionLineOnCenter !== 'center') {
+                return {
+                  ...previousNode,
+                  data: {
+                    ...previousNode.data,
+                    connectionLinePositionOnNode: 'center',
+                  },
+                };
+              } else if (!isNearCenter && previousNode.data.isConnectionLineOnCenter !== 'border') {
+                return {
+                  ...previousNode,
+                  data: {
+                    ...previousNode.data,
+                    connectionLinePositionOnNode: 'border',
+                  },
+                };
+              }
+            }
+            return previousNode;
+          })
+        );
+      }
+    }, [updatedToX, updatedToY]);
 
     const [edgePath] = getSmoothStepPath({
       sourceX: fromX,
       sourceY: fromY,
       sourcePosition: fromPosition,
-      targetX: toX,
-      targetY: toY,
+      targetX: updatedToX,
+      targetY: updatedToY,
       targetPosition: toPosition,
     });
 

@@ -60,6 +60,7 @@ const createEdgeAnchorNodeCreationHandles = (
       isListChild: false,
       isDropNodeTarget: false,
       isDropNodeCandidate: false,
+      connectionLinePositionOnNode: 'none',
       isHovered: false,
       edgeId: edgeId,
     },

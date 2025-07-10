@@ -17,13 +17,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useReactFlow, XYPosition } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useStoreApi, XYPosition } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramDialogVariable } from '../../dialog/DialogContextExtensionPoints.types';
 import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
 import {
   ConnectorContextualMenuProps,
   GetConnectorToolsData,
@@ -114,6 +115,7 @@ const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingle
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
     useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
@@ -201,6 +203,17 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     let targetHandlePosition: XYPosition = { x: 0, y: 0 };
     if (position) {
       targetHandlePosition = screenToFlowPosition({ x: position.x, y: position.y });
+    }
+    const target = store.getState().nodeLookup.get(targetDiagramElementId);
+    if (target && position) {
+      const isNearCenter = isCursorNearCenterOfTheNode(target, {
+        x: targetHandlePosition.x,
+        y: targetHandlePosition.y,
+      });
+
+      if (isNearCenter) {
+        targetHandlePosition = { x: 0, y: 0 };
+      }
     }
 
     const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
