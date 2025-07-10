@@ -37,6 +37,9 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
                     canDelete
                     canEdit
                     canEdit
+                    settings {
+                      canView
+                    }
                   }
                 }
               }

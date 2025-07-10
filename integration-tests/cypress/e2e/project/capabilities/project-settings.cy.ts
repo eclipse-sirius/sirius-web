@@ -12,12 +12,11 @@
  *******************************************************************************/
 
 import { Project } from '../../../pages/Project';
-import { Projects } from '../../../pages/Projects';
 import { Flow } from '../../../usecases/Flow';
 
-const projectName = 'Cypress - Disabled Download Project';
+const projectName = 'Cypress - Disabled Settings Project';
 
-describe('Project download', () => {
+describe('Project Settings', () => {
   context('Given a project with a specific name', () => {
     let projectId: string = '';
     beforeEach(() => {
@@ -28,19 +27,11 @@ describe('Project download', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('When we try to download the project from the project browser view', () => {
-      beforeEach(() => new Projects().visit());
-
-      it('Then the download button should not exist', () => {
-        new Projects().getActionMenu(projectName).getDownloadLink().should('not.exist');
-      });
-    });
-
-    context('When we try to download the project from the workbench', () => {
+    context('When we try to access the project from the workbench', () => {
       beforeEach(() => new Project().visit(projectId));
 
-      it('Then the download button should not exist', () => {
-        new Project().getProjectNavigationBar(projectName).getDownloadLink().should('not.exist');
+      it('Then the settings button should not exist', () => {
+        new Project().getProjectNavigationBar(projectName).getSettingsButton().should('not.exist');
       });
     });
   });

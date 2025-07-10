@@ -22,3 +22,7 @@ This document will reference the frontend capabilities that can be enabled or di
 === Libraries
 
 * canView: Whether the view displaying libraries can be displayed or not.
+
+=== Project Settings
+
+* canView: Whether the view displaying project settings can be displayed or not.
