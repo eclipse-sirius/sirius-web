@@ -175,6 +175,9 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5183[#5183] [sirius-web] Add support for project settings capabilities.
 - [releng] The default Sirius Web application is now available as a Docker image https://hub.docker.com/orgs/eclipsesirius/:[on Docker Hub] as `eclipsesirius/sirius-web`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5178[#5178] [sirius-web] Add experimental server to fetch and return SVG or PNG images from existing diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/5202[#5202] [sirius-web] Add support for project settings tab capabilities.
+Make the project image settings view contribution rely on the project tab capabilities.
+The extension point contribution ID is used as the _type_ for the `ICapabilityVoter#vote`
 
 === Improvements
 

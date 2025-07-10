@@ -18,6 +18,7 @@ package org.eclipse.sirius.web.application.capability;
  * @author sbegaudeau
  * @since v2025.8.0
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public final class SiriusWebCapabilities {
 
     public static final String PROJECT = "Project";
@@ -114,4 +115,21 @@ public final class SiriusWebCapabilities {
          */
         public static final String VIEW = "view";
     }
+
+    /**
+     * The list of project-settings-tab capabilities.
+     *
+     * @author gcoutable
+     * @since v2025.8.0
+     */
+    public static final class ProjectSettingsTab {
+
+        /**
+         * Used to check if the project settings tab view can be viewed.
+         *
+         * @since v2025.8.0
+         */
+        public static final String VIEW = "view";
+    }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type ProjectSettingsParams = 'projectId' | 'tabId';
-
-export interface ProjectSettingTabContribution {
-  id: string;
-  title: string;
-  icon: React.ReactElement;
-  component: (props: ProjectSettingTabProps) => JSX.Element | null;
+export class ProjectSettings {
+  visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit(`/projects/${projectId}/settings`);
+  }
 }
-
-export interface ProjectSettingTabProps {}
