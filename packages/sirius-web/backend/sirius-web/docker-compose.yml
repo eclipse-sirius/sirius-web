@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: test_username
       POSTGRES_PASSWORD: test_password
   app:
-    image: siriusweb
+    image: '${IMAGE_TAG:-eclipsesirius/sirius-web:latest}'
     ports:
       - "8080:8080"
     environment:

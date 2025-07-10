@@ -171,7 +171,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Add support for libraries capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Align the UI and behavior of the reconnect handles with the one of the bending points
 - https://github.com/eclipse-sirius/sirius-web/issues/5183[#5183] [sirius-web] Add support for project settings capabilities.
-
+- [releng] The default Sirius Web application is now available as a Docker image https://hub.docker.com/orgs/eclipsesirius/:[on Docker Hub] as `eclipsesirius/sirius-web`.
 
 === Improvements
 
