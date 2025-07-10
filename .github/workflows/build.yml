@@ -180,13 +180,28 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build the Docker image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: sirius-web
-          IMAGE_TAG: ${{ env.git_describe }}
-        run: |
-          docker build -t siriusweb packages/sirius-web/backend/sirius-web
+      - name: Extract metadata (tags, labels) for Docker
+        id: extract-metadata
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+        with:
+          images: eclipsesirius/sirius-web
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+
+      - name: Set up Docker Buildx to use cache feature
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: packages/sirius-web/backend/sirius-web
+          load: true
+          tags: ${{ steps.extract-metadata.outputs.tags }}
+          labels: ${{ steps.extract-metadata.outputs.labels }}
+
       - name: Check the integration test code
         run: |
           npm ci
@@ -208,7 +223,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: sirius-web
-          IMAGE_TAG: ${{ env.git_describe }}
+          IMAGE_TAG: eclipsesirius/sirius-web:${{ steps.extract-metadata.outputs.version }}
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Store Cypress screenshots
@@ -218,3 +233,22 @@ jobs:
           name: cypress-screenshots
           path: integration-tests/target/screenshots/**/*.png
           retention-days: 5
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          username: ${{ env.DOCKER_HUB_USER }}
+          password: ${{ env.DOCKER_HUB_TOKEN }}
+        env:
+          DOCKER_HUB_USER: ${{ secrets.ORG_DOCKER_HUB_USER }}
+          DOCKER_HUB_TOKEN: ${{ secrets.ORG_DOCKER_HUB_TOKEN }}
+
+      - name: Push Docker image
+        if: env.GITHUB_EVENT_NAME == 'push' && (env.GITHUB_REF == 'refs/heads/master' || startsWith(env.GITHUB_REF, 'refs/tags/v'))
+        id: push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: packages/sirius-web/backend/sirius-web
+          push: true
+          tags: ${{ steps.extract-metadata.outputs.tags }}
+          labels: ${{ steps.extract-metadata.outputs.labels }}
