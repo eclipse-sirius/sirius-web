@@ -37,14 +37,16 @@ describe('Diagram - edges creation', () => {
         explorer.createObject('Root', 'entity2s-Entity2');
         details.getTextField('Name').type('Entity2{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
-        new Diagram().centerViewport();
       });
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
-      it('Then we can create an edge between 2 nodes', () => {
+      it('Then we can create an edge between 2 nodes with the handle auto layouted', () => {
         const diagram = new Diagram();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
         diagram.createEdgeFromTopHandleToCenterNode(diagramTitle, 'Entity1', 'Entity2');
+
         cy.getByTestId('connectorContextualMenu-E1toE2A').should('exist');
         cy.getByTestId('connectorContextualMenu-E1toE2B').should('exist');
         cy.getByTestId('connectorContextualMenu-E1toE2A').click();
@@ -52,6 +54,54 @@ describe('Diagram - edges creation', () => {
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(500);
         cy.get('.react-flow__edge:first').should('exist');
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
+        cy.get('.react-flow__edge:first').click({ force: true });
+        cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+        diagram
+          .getNodes(diagramTitle, 'Entity2')
+          .get('.react-flow__handle.react-flow__handle-left:first')
+          .should('have.css', 'background-color')
+          .and('eq', 'rgb(0, 0, 0)');
+      });
+
+      it('Then we can create an edge between 2 nodes with the handle manualy positioned and reconnect it to the middle of the node to swithc to auto layout for the handle', () => {
+        const diagram = new Diagram();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
+
+        diagram.createEdgeFromTopHandleToBottomSideNode(diagramTitle, 'Entity1', 'Entity2');
+
+        cy.getByTestId('connectorContextualMenu-E1toE2A').should('exist');
+        cy.getByTestId('connectorContextualMenu-E1toE2B').should('exist');
+        cy.getByTestId('connectorContextualMenu-E1toE2A').click();
+
+        cy.get('.react-flow__edge:first').should('exist');
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
+        cy.get('.react-flow__edge:first').as('edge').click({ force: true });
+        cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+        diagram
+          .getNodes(diagramTitle, 'Entity2')
+          .get('.react-flow__handle.react-flow__handle-bottom:first')
+          .should('have.css', 'background-color')
+          .and('eq', 'rgb(255, 255, 255)');
+
+        diagram.moveSelectedEdgeTargetHandleToMiddleOfTheNode(diagramTitle, 'Entity2');
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
+        cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+        diagram
+          .getNodes(diagramTitle, 'Entity2')
+          .get('.react-flow__handle.react-flow__handle-left:first')
+          .should('have.css', 'background-color')
+          .and('eq', 'rgb(0, 0, 0)');
       });
     });
   });

@@ -41,7 +41,6 @@ export const convertHandles = (
           alreadyLaidOutSourceHandle && (alreadyLaidOutSourceHandle.position.x || alreadyLaidOutSourceHandle.position.y)
             ? alreadyLaidOutSourceHandle.position
             : null,
-        isFixedHandlePosition: alreadyLaidOutSourceHandle != undefined,
         type: 'source',
         isVirtualHandle: edge.state === GQLViewModifier.Hidden,
         isHidden: true,
@@ -64,7 +63,6 @@ export const convertHandles = (
           alreadyLaidOutTargetHandle && (alreadyLaidOutTargetHandle.position.x || alreadyLaidOutTargetHandle.position.y)
             ? alreadyLaidOutTargetHandle.position
             : null,
-        isFixedHandlePosition: alreadyLaidOutTargetHandle != undefined,
         type: 'target',
         isVirtualHandle: edge.state === GQLViewModifier.Hidden,
         isHidden: true,
@@ -81,7 +79,6 @@ export const convertHandles = (
     position: Position.Right,
     type: 'source',
     XYPosition: null,
-    isFixedHandlePosition: false,
     isVirtualHandle: true,
     isHidden: true,
   });
@@ -94,7 +91,6 @@ export const convertHandles = (
     position: Position.Left,
     type: 'target',
     XYPosition: null,
-    isFixedHandlePosition: false,
     isVirtualHandle: true,
     isHidden: true,
   });

@@ -26,11 +26,11 @@ export const useInitialFitToScreen = () => {
   const [state, setState] = useState<UseInitialFitToScreenState>({
     initialFitToScreenPerformed: false,
   });
-  console.debug('fit-to-screen has been performed:' + state.initialFitToScreenPerformed);
   // We cannot perform the fit to screen directly but instead need to wait for the next render in order to retrieve the updated nodes and edges in the react flow instance
   useEffect(() => {
     // @ts-ignore
     if (nodesInitialized && !state.initialFitToScreenPerformed && !document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS) {
+      console.debug('fit-to-screen has been performed:' + state.initialFitToScreenPerformed);
       reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() }).then(() => {
         setState({ initialFitToScreenPerformed: true });
       });

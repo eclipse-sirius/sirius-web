@@ -26,8 +26,13 @@ import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
+import {
+  getNearestPointInPerimeter,
+  getNodesUpdatedWithHandles,
+  isCursorNearCenterOfTheNode,
+} from '../edge/EdgeLayout';
 import { determineSegmentAxis, getNewPointToGoAroundNode } from '../edge/rectilinear-edge/RectilinearEdgeCalculation';
+import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import {
@@ -72,6 +77,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { screenToFlowPosition, getNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { removeNodeHandleLayoutData } = useHandlesLayout();
   const updateNodeInternals = useUpdateNodeInternals();
 
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
@@ -224,104 +230,116 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         y: event.clientY,
       });
 
-      const pointToSnap = getNearestPointInPerimeter(
-        targetInternalNode.internals.positionAbsolute.x,
-        targetInternalNode.internals.positionAbsolute.y,
-        targetInternalNode.width,
-        targetInternalNode.height,
-        XYPosition.x,
-        XYPosition.y
-      );
+      const isNearCenter = isCursorNearCenterOfTheNode(targetInternalNode, { x: XYPosition.x, y: XYPosition.y });
 
-      const nodes = getNodesUpdatedWithHandles(
-        getNodes(),
-        targetInternalNode,
-        edge.id,
-        handleId,
-        pointToSnap.XYPosition,
-        pointToSnap.position
-      );
+      if (!isNearCenter) {
+        const pointToSnap = getNearestPointInPerimeter(
+          targetInternalNode.internals.positionAbsolute.x,
+          targetInternalNode.internals.positionAbsolute.y,
+          targetInternalNode.width,
+          targetInternalNode.height,
+          XYPosition.x,
+          XYPosition.y
+        );
 
-      //Create a new bending point if the edge was manualy layouted
-      let newEdges = store.getState().edges;
-      if (edge.data?.bendingPoints) {
-        if (handleType === 'source') {
-          const newPoints = [...edge.data.bendingPoints];
-          const lastPoint = newPoints[newPoints.length - 1];
-          const penultimatePoint = newPoints[newPoints.length - 2];
-          if (lastPoint && penultimatePoint) {
-            const segmentAxis = determineSegmentAxis(penultimatePoint, lastPoint);
-            const newPoint = getNewPointToGoAroundNode(
-              segmentAxis,
-              pointToSnap.position,
-              pointToSnap.XYPosition.x,
-              pointToSnap.XYPosition.y
-            );
+        const nodes = getNodesUpdatedWithHandles(
+          getNodes(),
+          targetInternalNode,
+          edge.id,
+          handleId,
+          pointToSnap.XYPosition,
+          pointToSnap.position
+        );
 
-            if (newPoint) {
-              newPoints.push(newPoint);
-              if (segmentAxis === 'x') {
-                lastPoint.x = newPoint.x;
-              } else if (segmentAxis === 'y') {
-                lastPoint.y = newPoint.y;
-              }
-              newEdges = newEdges.map((previousEdge) => {
-                if (previousEdge.data && previousEdge.id === edge.id) {
-                  return {
-                    ...previousEdge,
-                    data: {
-                      ...previousEdge.data,
-                      bendingPoints: newPoints,
-                    },
-                  };
+        //Create a new bending point if the edge was manualy layouted
+        let newEdges = store.getState().edges;
+        if (edge.data?.bendingPoints) {
+          if (handleType === 'source') {
+            const newPoints = [...edge.data.bendingPoints];
+            const lastPoint = newPoints[newPoints.length - 1];
+            const penultimatePoint = newPoints[newPoints.length - 2];
+            if (lastPoint && penultimatePoint) {
+              const segmentAxis = determineSegmentAxis(penultimatePoint, lastPoint);
+              const newPoint = getNewPointToGoAroundNode(
+                segmentAxis,
+                pointToSnap.position,
+                pointToSnap.XYPosition.x,
+                pointToSnap.XYPosition.y
+              );
+
+              if (newPoint) {
+                newPoints.push(newPoint);
+                if (segmentAxis === 'x') {
+                  lastPoint.x = newPoint.x;
+                } else if (segmentAxis === 'y') {
+                  lastPoint.y = newPoint.y;
                 }
-                return previousEdge;
-              });
+                newEdges = newEdges.map((previousEdge) => {
+                  if (previousEdge.data && previousEdge.id === edge.id) {
+                    return {
+                      ...previousEdge,
+                      data: {
+                        ...previousEdge.data,
+                        bendingPoints: newPoints,
+                      },
+                    };
+                  }
+                  return previousEdge;
+                });
+              }
             }
-          }
-        } else {
-          const newPoints = [...edge.data.bendingPoints];
-          const firstPoint = newPoints[0];
-          const secondPoint = newPoints[1];
-          if (firstPoint && secondPoint) {
-            const segmentAxis = determineSegmentAxis(firstPoint, secondPoint);
-            const newPoint = getNewPointToGoAroundNode(
-              segmentAxis,
-              pointToSnap.position,
-              pointToSnap.XYPosition.x,
-              pointToSnap.XYPosition.y
-            );
+          } else {
+            const newPoints = [...edge.data.bendingPoints];
+            const firstPoint = newPoints[0];
+            const secondPoint = newPoints[1];
+            if (firstPoint && secondPoint) {
+              const segmentAxis = determineSegmentAxis(firstPoint, secondPoint);
+              const newPoint = getNewPointToGoAroundNode(
+                segmentAxis,
+                pointToSnap.position,
+                pointToSnap.XYPosition.x,
+                pointToSnap.XYPosition.y
+              );
 
-            if (newPoint) {
-              newPoints.unshift(newPoint);
-              if (segmentAxis === 'x') {
-                firstPoint.x = newPoint.x;
-              } else if (segmentAxis === 'y') {
-                firstPoint.y = newPoint.y;
-              }
-              newEdges = newEdges.map((previousEdge) => {
-                if (previousEdge.data && previousEdge.id === edge.id) {
-                  return {
-                    ...previousEdge,
-                    data: {
-                      ...previousEdge.data,
-                      bendingPoints: newPoints,
-                    },
-                  };
+              if (newPoint) {
+                newPoints.unshift(newPoint);
+                if (segmentAxis === 'x') {
+                  firstPoint.x = newPoint.x;
+                } else if (segmentAxis === 'y') {
+                  firstPoint.y = newPoint.y;
                 }
-                return previousEdge;
-              });
+                newEdges = newEdges.map((previousEdge) => {
+                  if (previousEdge.data && previousEdge.id === edge.id) {
+                    return {
+                      ...previousEdge,
+                      data: {
+                        ...previousEdge.data,
+                        bendingPoints: newPoints,
+                      },
+                    };
+                  }
+                  return previousEdge;
+                });
+              }
             }
           }
         }
-      }
 
-      const finalDiagram: RawDiagram = {
-        nodes: nodes,
-        edges: newEdges,
-      };
-      updateNodeInternals(targetInternalNode.id);
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        const finalDiagram: RawDiagram = {
+          nodes: nodes,
+          edges: newEdges,
+        };
+        updateNodeInternals(targetInternalNode.id);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      } else {
+        const currentHandle = targetInternalNode.data.connectionHandles.find(
+          (connectionHandle) => connectionHandle.id === handleId
+        );
+
+        if (currentHandle && currentHandle.XYPosition && (currentHandle.XYPosition.x || currentHandle.XYPosition.y)) {
+          removeNodeHandleLayoutData([targetInternalNode.id], edge.id);
+        }
+      }
     }
   };
 

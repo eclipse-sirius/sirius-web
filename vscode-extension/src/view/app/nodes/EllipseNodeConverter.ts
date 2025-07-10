@@ -100,6 +100,7 @@ const toEllipseNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    connectionLinePositionOnNode: 'none',
     nodeAppearanceData: {
       gqlStyle: style,
       customizedStyleProperties,
@@ -109,7 +110,7 @@ const toEllipseNode = (
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
-    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
   );
 
   const node: Node<EllipseNodeData> = {
