@@ -22,6 +22,10 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  * </p>
  *
  * <p>
+ *    <em>Ensure your capability voter returns {@link CapabilityVote#GRANTED} by default in order to prevent all other capabilities to be disabled by default.</em>
+ * </p>
+ * <hr/>
+ * <p>
  *     Example to disable a capability:
  * </p>
  *
@@ -39,6 +43,7 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  *      }
  * }
  *}
+ *
  *
  * @see org.eclipse.sirius.web.application.capability.controllers.ProjectsCapabilitiesCanCreateDataFetcher
  * @author gcoutable

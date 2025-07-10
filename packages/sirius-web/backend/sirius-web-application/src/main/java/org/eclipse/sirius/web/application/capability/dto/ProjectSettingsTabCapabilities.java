@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.capability.dto;
 
-export type ProjectSettingsParams = 'projectId' | 'tabId';
+import jakarta.validation.constraints.NotNull;
 
-export interface ProjectSettingTabContribution {
-  id: string;
-  title: string;
-  icon: React.ReactElement;
-  component: (props: ProjectSettingTabProps) => JSX.Element | null;
+/**
+ * Whether the tab can be viewed.
+ *
+ * @author gcoutable
+ */
+public record ProjectSettingsTabCapabilities(@NotNull String tabId, @NotNull boolean canView) {
 }
-
-export interface ProjectSettingTabProps {}

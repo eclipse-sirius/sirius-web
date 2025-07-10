@@ -3,26 +3,54 @@
 == Description
 
 This document will reference the frontend capabilities that can be enabled or disabled providing a `ICapabilityVoter` in the backend.
+`ICapabilityVoter#vote` takes three arguments:
+
+* The `type` of the "resource"
+* The `identifier`, when the capability tested is on one specific element, it can be `null`.
+* The `capability`
 
 == Exhaustive List
 
 === Projects
 
-* canCreate: Whether a project can be created or not.
-* canUpload: Whether a project can be uploaded or not.
-* canBrowseAllProjectTemplates: Whether all project templates can be browsed.
+* type: `Project`
+* identifier: *should* be `null`
+* capability:
+** canCreate: Whether a project can be created or not.
+** canUpload: Whether a project can be uploaded or not.
 
 === Project
 
-* canDownload: Whether the project can be downloaded or not.
-* canRename: Whether the project can be renamed or not.
-* canDelete: Whether the project can be deleted or not.
-* canEdit: Whether the project is readonly or not.
+* type: `Project`
+* identifier: *should* be the ID of a project
+* capability:
+** canDownload: Whether the project can be downloaded or not.
+** canRename: Whether the project can be renamed or not.
+** canDelete: Whether the project can be deleted or not.
+** canEdit: Whether the project is readonly or not.
 
 === Libraries
 
-* canView: Whether the view displaying libraries can be displayed or not.
+* type: `Library`
+* identifier: *should* be `null`
+* capability:
+** canView: Whether the view displaying libraries can be displayed or not.
 
 === Project Settings
 
-* canView: Whether the view displaying project settings can be displayed or not.
+* type: `ProjectSettings`
+* identifier: *should* be the ID of a project
+* capability:
+** canView: Whether the view displaying project settings can be displayed or not.
+
+=== Project Settings Tab
+
+All tabs displayed in the frontend are contributed thanks to the `projectSettingsTabExtensionPoint` extension point.
+Thus, we will use the ID of the contribution as the `type`.
+
+==== Project Image Settings
+
+* type: `images`
+* identifier: *should* be the ID of a project
+* capability:
+** canView: Whether the project image settings tab is displayed or not.
