@@ -30,4 +30,7 @@ export interface ExplorerViewHandle extends WorkbenchViewHandle {
   getWorkbenchViewConfiguration: () => ExplorerViewConfiguration | null;
 }
 
-export interface ExplorerViewConfiguration extends WorkbenchViewConfiguration {}
+export interface ExplorerViewConfiguration extends WorkbenchViewConfiguration {
+  activeTreeDescriptionId: string | null;
+  activeTreeFilters: TreeFilter[];
+}

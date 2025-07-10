@@ -137,6 +137,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Remove the `workbenchConfiguration` query parameter from the URL after loading the workbench.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project which representations are opened.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project, if the "Query" view is opened, the query text.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project, if the "Explorer" view is opened, the active tree description ID and the active filter IDs.
 
 
 == v2025.8.0

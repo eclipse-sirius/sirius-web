@@ -31,10 +31,10 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
-import { ExplorerViewState } from './ExplorerView.types';
+import { ExplorerViewConfiguration, ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
@@ -61,18 +61,20 @@ const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is G
 
 export const ExplorerView = forwardRef<WorkbenchViewHandle | null, WorkbenchViewComponentProps>(
   (
-    { editingContextId, readOnly }: WorkbenchViewComponentProps,
-    _refExplorerViewHandle: ForwardedRef<WorkbenchViewHandle | null>
+    { editingContextId, readOnly, initialConfiguration }: WorkbenchViewComponentProps,
+    refExplorerViewHandle: ForwardedRef<WorkbenchViewHandle | null>
   ) => {
     const { classes: styles } = useStyles();
+    const initialExplorerViewConfiguration: ExplorerViewConfiguration =
+      initialConfiguration as ExplorerViewConfiguration;
 
     const initialState: ExplorerViewState = {
       synchronizedWithSelection: true,
       filterBar: false,
       filterBarText: '',
       filterBarTreeFiltering: false,
-      treeFilters: [],
-      activeTreeDescriptionId: null,
+      treeFilters: initialExplorerViewConfiguration?.activeTreeFilters ?? [],
+      activeTreeDescriptionId: initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null,
       expanded: {},
       maxDepth: {},
       tree: null,
@@ -83,6 +85,23 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle | null, WorkbenchView
       (contribution) => contribution.props.component
     );
     const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+
+    useImperativeHandle(
+      refExplorerViewHandle,
+      () => {
+        return {
+          getWorkbenchViewConfiguration: () => {
+            return {
+              id: undefined,
+              isActive: undefined,
+              activeTreeDescriptionId: state.activeTreeDescriptionId,
+              activeTreeFilters: state.treeFilters,
+            };
+          },
+        };
+      },
+      [refExplorerViewHandle, state.treeFilters, state.activeTreeDescriptionId]
+    );
 
     const { selection, setSelection } = useSelection();
 
@@ -100,8 +119,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle | null, WorkbenchView
       }
     }, [payload]);
 
-    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
-
     const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
 
     useEffect(() => {
@@ -112,24 +129,38 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle | null, WorkbenchView
           expandedInitiated[explorerDescription.id] = [];
           maxDepthInitiated[explorerDescription.id] = 1;
         });
-
         setState((prevState) => ({
           ...prevState,
-          activeTreeDescriptionId: explorerDescriptions[0].id,
+          activeTreeDescriptionId: state.activeTreeDescriptionId ?? explorerDescriptions[0].id,
           expanded: expandedInitiated,
           maxDepth: maxDepthInitiated,
         }));
       }
     }, [explorerDescriptions]);
 
+    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+
     useEffect(() => {
       if (!loading) {
-        const allFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
+        const allAvailableFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
           id: gqlTreeFilter.id,
           label: gqlTreeFilter.label,
           state: gqlTreeFilter.defaultState,
         }));
-        setState((prevState) => ({ ...prevState, treeFilters: allFilters }));
+        setState((prevState) => ({
+          ...prevState,
+          treeFilters: allAvailableFilters.map((availableFilter) => {
+            const existingFilter: TreeFilter = state.treeFilters.find((filter) => filter.id === availableFilter.id);
+            if (existingFilter) {
+              return {
+                ...availableFilter,
+                state: existingFilter.state,
+              };
+            } else {
+              return availableFilter;
+            }
+          }),
+        }));
       }
     }, [loading, treeFilters]);
 
