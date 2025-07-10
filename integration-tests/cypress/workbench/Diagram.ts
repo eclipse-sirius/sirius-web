@@ -226,6 +226,20 @@ export class Diagram {
     });
   }
 
+  public moveSelectedEdgeTargetHandleToMiddleOfTheNode(diagramTitle: string, toNode: string): void {
+    const diagram = new Diagram();
+    cy.get('.react-flow__edge:first').as('edge').click({ force: true });
+    cy.get('@edge')
+      .get('.react-flow__edgeupdater.react-flow__edgeupdater-target')
+      .trigger('mousedown', { force: true, button: 0 });
+
+    diagram.getNodes(diagramTitle, toNode).trigger('mousemove', { force: true, position: 'center' });
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    diagram.getNodes(diagramTitle, toNode).trigger('mouseup', { force: true, position: 'center' });
+  }
+
   public resizeNode(direction: 'top.left' | 'top.right' | 'bottom.left' | 'bottom.right', { x, y }): void {
     cy.window().then((window) => {
       // eslint-disable-next-line cypress/no-assigning-return-values
@@ -306,18 +320,49 @@ export class Diagram {
 
   public createEdgeFromTopHandleToCenterNode(diagramTitle: string, fromNode: string, toNode: string): void {
     const diagram = new Diagram();
+
+    this.selectNode(diagramTitle, fromNode);
+    cy.getByTestId('creationhandle-top').should('exist');
+
+    cy.getByTestId('creationhandle-top').trigger('mousedown', { force: true, button: 0 });
+
+    diagram.getNodes(diagramTitle, toNode).then(($el) => {
+      if ($el[0]) {
+        const rect = $el[0].getBoundingClientRect();
+        const centerX = rect.width * 0.5;
+        const centerY = rect.height * 0.5;
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, toNode).trigger('mousemove', centerX, centerY, { force: true });
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, toNode).trigger('mouseup', centerX, centerY, { force: true });
+      }
+    });
+  }
+
+  public createEdgeFromTopHandleToBottomSideNode(diagramTitle: string, fromNode: string, toNode: string): void {
+    const diagram = new Diagram();
     this.selectNode(diagramTitle, fromNode);
     cy.getByTestId('creationhandle-top').should('exist');
 
     cy.getByTestId('creationhandle-top').trigger('mousedown', { force: true, button: 0 });
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    diagram.getNodes(diagramTitle, toNode).trigger('mousemove', { force: true });
+    diagram.getNodes(diagramTitle, toNode).then(($el) => {
+      if ($el[0]) {
+        const rect = $el[0].getBoundingClientRect();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, toNode).trigger('mousemove', rect.width / 2, rect.height - 5, { force: true });
 
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    diagram.getNodes(diagramTitle, toNode).trigger('mouseup', { force: true });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(400);
+        diagram.getNodes(diagramTitle, toNode).trigger('mouseup', rect.width / 2, rect.height - 5, { force: true });
+      }
+    });
   }
 
   /**

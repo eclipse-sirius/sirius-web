@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
+import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -123,6 +124,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
 
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: connectionLineActiveNodeStlye } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
     const nodeStyle = useMemo(
       () => freeFormNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, !!selected, data.isHovered, data.faded]
@@ -161,6 +163,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...nodeStyle,
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
+            ...connectionLineActiveNodeStlye,
           }}
           data-svg="rect"
           onDragOver={onDragOver}

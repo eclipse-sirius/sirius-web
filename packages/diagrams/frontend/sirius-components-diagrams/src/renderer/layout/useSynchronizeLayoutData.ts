@@ -105,13 +105,6 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
               handlePosition: handle.position,
               type: handle.type,
             });
-          } else if (handle.isFixedHandlePosition) {
-            handleLayoutDatas.push({
-              edgeId: handle.edgeId,
-              position: { x: 0, y: 0 },
-              handlePosition: handle.position,
-              type: handle.type,
-            });
           }
         });
 

@@ -97,6 +97,7 @@ const toRectangularNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
+    connectionLinePositionOnNode: 'none',
     isHovered: false,
     nodeAppearanceData: {
       gqlStyle: style,

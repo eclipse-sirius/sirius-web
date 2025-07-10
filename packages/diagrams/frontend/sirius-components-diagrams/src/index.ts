@@ -38,6 +38,7 @@ export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
 export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
 export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
+export { useConnectionLineNodeStyle } from './renderer/connector/useConnectionLineNodeStyle';
 export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';

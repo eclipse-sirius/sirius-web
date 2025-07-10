@@ -56,8 +56,11 @@ export interface NodeData extends Record<string, unknown> {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  connectionLinePositionOnNode: ConnectionLinePositionOnNode;
   nodeAppearanceData: NodeAppearanceData;
 }
+
+export type ConnectionLinePositionOnNode = 'none' | 'center' | 'border';
 
 export interface NodeAppearanceData {
   customizedStyleProperties: string[];

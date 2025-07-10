@@ -26,7 +26,12 @@ import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
+import {
+  getNearestPointInPerimeter,
+  getNodesUpdatedWithHandles,
+  isCursorNearCenterOfTheNode,
+} from '../edge/EdgeLayout';
+import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import {
@@ -71,6 +76,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { screenToFlowPosition, getNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { removeNodeHandleLayoutData } = useHandlesLayout();
   const updateNodeInternals = useUpdateNodeInternals();
 
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
@@ -165,30 +171,41 @@ export const useReconnectEdge = (): UseReconnectEdge => {
           y: event.clientY,
         });
 
-        const pointToSnap = getNearestPointInPerimeter(
-          targetInternalNode.internals.positionAbsolute.x,
-          targetInternalNode.internals.positionAbsolute.y,
-          targetInternalNode.width,
-          targetInternalNode.height,
-          XYPosition.x,
-          XYPosition.y
-        );
+        const isNearCenter = isCursorNearCenterOfTheNode(targetInternalNode, { x: XYPosition.x, y: XYPosition.y });
 
-        const nodes = getNodesUpdatedWithHandles(
-          getNodes(),
-          targetInternalNode,
-          edge.id,
-          handle,
-          pointToSnap.XYPosition,
-          pointToSnap.position
-        );
+        if (!isNearCenter) {
+          const pointToSnap = getNearestPointInPerimeter(
+            targetInternalNode.internals.positionAbsolute.x,
+            targetInternalNode.internals.positionAbsolute.y,
+            targetInternalNode.width,
+            targetInternalNode.height,
+            XYPosition.x,
+            XYPosition.y
+          );
 
-        const finalDiagram: RawDiagram = {
-          nodes: nodes,
-          edges: getEdges(),
-        };
-        updateNodeInternals(targetInternalNode.id);
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          const nodes = getNodesUpdatedWithHandles(
+            getNodes(),
+            targetInternalNode,
+            edge.id,
+            handle,
+            pointToSnap.XYPosition,
+            pointToSnap.position
+          );
+
+          const finalDiagram: RawDiagram = {
+            nodes: nodes,
+            edges: getEdges(),
+          };
+          updateNodeInternals(targetInternalNode.id);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        } else {
+          const currentHandle = targetInternalNode.data.connectionHandles.find(
+            (connectionHandle) => connectionHandle.id === handle
+          );
+          if (currentHandle && currentHandle.XYPosition && currentHandle.XYPosition.x && currentHandle.XYPosition.y) {
+            removeNodeHandleLayoutData([targetInternalNode.id], edge.id);
+          }
+        }
       }
 
       // Reconnect an edge on another edge
