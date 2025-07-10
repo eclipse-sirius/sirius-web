@@ -182,7 +182,23 @@ It occurred when we were trying to type the first letter of any menu item of the
 - https://github.com/eclipse-sirius/sirius-web/issues/5178[#5178] [sirius-web] Add experimental server to fetch and return SVG or PNG images from existing diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] If the connection line is hovering the border of a node, then the handle is placed manually on the current position.
 If the connection line is hovering the middle of a node, then the handle is placed automatically using the layout algorithm.
+- https://github.com/eclipse-sirius/sirius-web/issues/5202[#5202] [sirius-web] Add support for project settings tab capabilities.
+Make the project image settings view contribution rely on the project tab capabilities.
+The extension point contribution ID is used as the _type_ for the `ICapabilityVoter#vote`
 
+[source,java]
+----
+public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter {
+
+    public CapabilityVote vote(String type, String identifier, String capability) {
+        // We are testing the type with "images" because it is the ID of the frontend contribution to the `projectSettingsTabExtensionPoint` extension point.
+        if (type.equals("images") && ...) {
+
+        }
+        return CapabilityVote.GRANTED;
+    }
+}
+----
 
 === Improvements
 

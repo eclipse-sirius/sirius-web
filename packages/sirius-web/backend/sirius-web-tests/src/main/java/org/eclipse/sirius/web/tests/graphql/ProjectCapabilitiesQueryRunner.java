@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
 
     private static final String GET_PROJECT_CAPABILITIES = """
-            query getProjectCapabilities($projectId: ID!) {
+            query getProjectCapabilities($projectId: ID!, $tabIds: [ID!]!) {
               viewer {
                 project(projectId: $projectId) {
                   capabilities {
@@ -39,6 +39,10 @@ public class ProjectCapabilitiesQueryRunner implements IQueryRunner {
                     canEdit
                     settings {
                       canView
+                      tabs(tabIds: $tabIds) {
+                        tabId
+                        canView
+                      }
                     }
                   }
                 }
