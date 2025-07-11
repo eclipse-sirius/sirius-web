@@ -1,0 +1,81 @@
+= ADR-202 - Add support for project duplication
+
+== Context
+
+An contextual menu action in the `projects` page is provided to duplicate an existing project.
+
+== Decision
+
+We will add an API to duplicate a project.
+
+=== Frontend
+
+A new `DuplicateProjectMenuItem` will be added.
+This item should be self-contained, and will not defer its state or other requirements to its parent (see for example `RenameProjectMenuItem` or `DuplicateProjectMenuItem`).
+
+[source, typescript]
+----
+export const DuplicateProjectMenuItem = ({project, onClick}: DuplicateProjectMenuItemProps) => {
+  // Just ask for what you need from the project and use onClick to close the context menu once you are done.
+}
+----
+
+The new item will be reused in `EditProjectNavbarContextMenu` and `ProjectActionButton`.
+
+=== GraphQL schema
+
+We will add a new mutation in `sirius-web.graphqls` and the corresponding input/payload.
+
+----
+extend type Mutation {
+  // [...]
+  duplicateProject(input: DuplicateProjectInput!): DuplicateProjectPayload!
+}
+
+input DuplicateProjectInput {
+  id: ID!
+  projectId: ID!
+}
+
+union DuplicateProjectPayload = ErrorPayload | DuplicateProjectSuccessPayload
+
+type DuplicateProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+----
+
+
+=== Backend
+
+We will create a new service in Sirius Web to duplicate a project.
+This service will take care of duplicating the original project's:
+
+- Semantic Data (including domains and dependencies)
+- Representations
+- Nature
+- Settings
+
+The created project should have a different ID than the original project.
+The elements contained in the created project's semantic data should have different IDs than the ones in the original project.
+The target objects of the representations should be adapted to target the duplicated objects (with their new ID).
+
+Avoiding ID duplication (for project and elements) is key to avoid clashes in library contexts.
+
+The overall behavior of this new service should be the same as a download followed by an upload of a project.
+To achieve this, this work should reuse as much as possible the work that has been done to handle the upload of a project (see `ProjectImportService` as an entry point).
+A refactoring of `ProjectImportService` may be necessary to extract common behavior that can be reused regardless of the source (uploaded zip file or existing project in the database).
+
+We will also add a capability for project duplication, allowing to (de)activate it like the "rename" or "delete" feature.
+
+== Rabbit holes
+
+None.
+
+
+== Consequences
+
+
+
+== Cutting backs
+
