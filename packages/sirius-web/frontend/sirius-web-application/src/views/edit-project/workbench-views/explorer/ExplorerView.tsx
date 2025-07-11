@@ -43,12 +43,14 @@ const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
+    gridTemplateRows: 'auto auto 1fr',
     justifyItems: 'stretch',
     overflow: 'auto',
   },
-  treeContent: {
+  treeFilter: {
     paddingTop: theme.spacing(1),
+  },
+  treeContent: {
     overflow: 'auto',
   },
 }));
@@ -212,30 +214,32 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     }));
   };
 
-  let filterBar: JSX.Element;
+  let filterBar: JSX.Element = <div />;
   if (state.filterBar) {
     filterBar = (
-      <FilterBar
-        onTextChange={(event) => {
-          const {
-            target: { value },
-          } = event;
-          setState((prevState) => {
-            return { ...prevState, filterBarText: value };
-          });
-        }}
-        onFilterButtonClick={(enabled) =>
-          setState((prevState) => ({
-            ...prevState,
-            filterBarTreeFiltering: enabled,
-          }))
-        }
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-          })
-        }
-      />
+      <div className={styles.treeFilter}>
+        <FilterBar
+          onTextChange={(event) => {
+            const {
+              target: { value },
+            } = event;
+            setState((prevState) => {
+              return { ...prevState, filterBarText: value };
+            });
+          }}
+          onFilterButtonClick={(enabled) =>
+            setState((prevState) => ({
+              ...prevState,
+              filterBarTreeFiltering: enabled,
+            }))
+          }
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+            })
+          }
+        />
+      </div>
     );
   }
 

@@ -311,7 +311,7 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/5003[#5003] [diagram] Fix an issue with the position of smart edges when having an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronised diagram if the targetObject of a node was from a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronised diagram.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5204[#5204] [explorer] Fix regression in the Explorer layout when the filter bar is visible
 
 === New Features
 
