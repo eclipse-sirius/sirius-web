@@ -16,10 +16,14 @@ import {
   WorkbenchViewComponentProps,
   WorkbenchViewConfigurationSupplier,
 } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormBasedView,
+  FormBasedViewConfigurationSupplier,
+  FormContext,
+} from '@eclipse-sirius/sirius-components-forms';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DetailsViewState } from './DetailsView.types';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
@@ -40,8 +44,8 @@ const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload i
 
 export const DetailsView = forwardRef<WorkbenchViewConfigurationSupplier | null, WorkbenchViewComponentProps>(
   (
-    { editingContextId, readOnly }: WorkbenchViewComponentProps,
-    _detailsViewConfigurationSupplierRef: ForwardedRef<WorkbenchViewConfigurationSupplier | null>
+    { editingContextId, readOnly, initialConfiguration }: WorkbenchViewComponentProps,
+    detailsViewConfigurationSupplierRef: ForwardedRef<WorkbenchViewConfigurationSupplier | null>
   ) => {
     const [state, setState] = useState<DetailsViewState>({
       form: null,
@@ -58,6 +62,27 @@ export const DetailsView = forwardRef<WorkbenchViewConfigurationSupplier | null,
         setState((prevState) => ({ ...prevState, form: payload.form }));
       }
     }, [payload]);
+
+    const formBasedViewConfigurationSupplierRef: RefObject<FormBasedViewConfigurationSupplier> =
+      useRef<FormBasedViewConfigurationSupplier>({
+        getWorkbenchViewConfiguration() {
+          return null;
+        },
+      });
+
+    useImperativeHandle(
+      detailsViewConfigurationSupplierRef,
+      () => {
+        return {
+          getWorkbenchViewConfiguration: () => {
+            return {
+              ...formBasedViewConfigurationSupplierRef.current.getWorkbenchViewConfiguration(),
+            };
+          },
+        };
+      },
+      [formBasedViewConfigurationSupplierRef]
+    );
 
     const { classes } = useDetailsViewStyles();
 
@@ -91,7 +116,8 @@ export const DetailsView = forwardRef<WorkbenchViewConfigurationSupplier | null,
                   editingContextId={editingContextId}
                   form={state.form}
                   readOnly={readOnly}
-                  initialConfiguration={null}
+                  initialConfiguration={initialConfiguration}
+                  ref={formBasedViewConfigurationSupplierRef}
                 />
               </FormContext.Provider>
             </Box>

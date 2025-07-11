@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  WorkbenchViewComponentProps,
+  WorkbenchViewConfiguration,
+  WorkbenchViewConfigurationSupplier,
+} from '@eclipse-sirius/sirius-components-core';
 import { GQLForm } from '../form/FormEventFragments.types';
 
 export interface FormBasedViewProps extends WorkbenchViewComponentProps {
@@ -22,4 +26,12 @@ export interface FormBasedViewProps extends WorkbenchViewComponentProps {
 
 export interface FormConverter {
   convert(editingContextId: string, form: GQLForm): GQLForm;
+}
+
+export interface FormBasedViewConfigurationSupplier extends WorkbenchViewConfigurationSupplier {
+  getWorkbenchViewConfiguration: () => FormBasedViewConfiguration | null;
+}
+
+export interface FormBasedViewConfiguration extends WorkbenchViewConfiguration {
+  selectedPageId: string;
 }
