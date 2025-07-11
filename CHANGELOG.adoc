@@ -159,6 +159,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5165[#5165] [sirius-web] Fix an issue that prevent import of projects exported before version 2025.6.0
 - https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent nodes from dropping onto the diagram background instead of its target node
 - https://github.com/eclipse-sirius/sirius-web/issues/5164[#5164] [diagram] Remove unwanted space between list node header and its first child
+- https://github.com/eclipse-sirius/sirius-web/issues/5207[#5207] [diagram] Fix an issue that prevented palette tools to open dialogs
 
 
 === New Features
