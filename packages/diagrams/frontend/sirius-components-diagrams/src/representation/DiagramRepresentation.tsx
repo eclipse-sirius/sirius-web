@@ -34,6 +34,7 @@ import {
   GQLDiagramDescriptionVariables,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
+import { DialogContextProvider } from '../dialog/DialogContext';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -127,13 +128,15 @@ export const DiagramRepresentation = memo(
                             readOnly,
                           }}>
                           <ManageVisibilityContextProvider>
-                            <DiagramToolExecutorContextProvider>
-                              <DiagramSubscriptionProvider
-                                diagramId={representationId}
-                                editingContextId={editingContextId}
-                                readOnly={readOnly}
-                              />
-                            </DiagramToolExecutorContextProvider>
+                            <DialogContextProvider>
+                              <DiagramToolExecutorContextProvider>
+                                <DiagramSubscriptionProvider
+                                  diagramId={representationId}
+                                  editingContextId={editingContextId}
+                                  readOnly={readOnly}
+                                />
+                              </DiagramToolExecutorContextProvider>
+                            </DialogContextProvider>
                           </ManageVisibilityContextProvider>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>

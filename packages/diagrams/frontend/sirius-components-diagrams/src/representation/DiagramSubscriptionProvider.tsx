@@ -14,7 +14,6 @@
 import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
-import { DialogContextProvider } from '../dialog/DialogContext';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
@@ -58,17 +57,15 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
 
   return (
     <StoreContextProvider>
-      <DialogContextProvider>
-        <div
-          style={{ display: 'inline-block', position: 'relative' }}
-          data-representation-kind="diagram"
-          data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-          <DiagramRenderer
-            key={state.diagramRefreshedEventPayload.diagram.id}
-            diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-          />
-        </div>
-      </DialogContextProvider>
+      <div
+        style={{ display: 'inline-block', position: 'relative' }}
+        data-representation-kind="diagram"
+        data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
+        <DiagramRenderer
+          key={state.diagramRefreshedEventPayload.diagram.id}
+          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+        />
+      </div>
     </StoreContextProvider>
   );
 });
