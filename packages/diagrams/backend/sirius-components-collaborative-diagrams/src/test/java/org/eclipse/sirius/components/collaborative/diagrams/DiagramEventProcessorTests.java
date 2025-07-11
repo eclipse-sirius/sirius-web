@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -150,6 +151,7 @@ public class DiagramEventProcessorTests {
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
                 .diagramEventConsumers(List.of())
                 .diagramInputReferencePositionProviders(List.of())
+                .diagramPostProcessors(List.of())
                 .build();
         return new DiagramEventProcessor(parameters);
     }

@@ -18,10 +18,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramPostProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -46,6 +45,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+
 /**
  * Service used to create diagrams.
  *
@@ -64,17 +66,21 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
 
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers, MeterRegistry meterRegistry) {
+                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers,
+            List<IDiagramPostProcessor> diagramPostProcessors, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
         this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
+        this.diagramPostProcessors = Objects.requireNonNull(diagramPostProcessors);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
@@ -112,6 +118,14 @@ public class DiagramCreationService implements IDiagramCreationService {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
+
+            for (var diagramPostProcessor: this.diagramPostProcessors) {
+                DiagramContext currentDiagramContext = new DiagramContext(diagram);
+                if (diagramPostProcessor.canHandle(editingContext, currentDiagramContext)) {
+                    diagram = diagramPostProcessor.postProcess(editingContext, currentDiagramContext).orElse(diagram);
+                }
+            }
+
             return Optional.of(diagram);
         }
         return Optional.empty();

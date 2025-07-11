@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreation
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramPostProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -58,9 +59,11 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final List<IDiagramEventConsumer> diagramEventConsumers;
 
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
     public DiagramEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IDiagramCreationService diagramCreationService,
             List<IDiagramEventHandler> diagramEventHandlers, IRepresentationPersistenceService representationPersistenceService, List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders,
-            List<IDiagramEventConsumer> diagramEventConsumers) {
+            List<IDiagramEventConsumer> diagramEventConsumers, List<IDiagramPostProcessor> diagramPostProcessors) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
@@ -70,6 +73,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.diagramInputReferencePositionProviders = Objects.requireNonNull(diagramInputReferencePositionProviders);
         this.diagramEventConsumers = Objects.requireNonNull(diagramEventConsumers);
+        this.diagramPostProcessors = Objects.requireNonNull(diagramPostProcessors);
     }
 
     @Override
@@ -96,6 +100,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
                     .representationSearchService(this.representationSearchService)
                     .diagramInputReferencePositionProviders(this.diagramInputReferencePositionProviders)
                     .diagramEventConsumers(this.diagramEventConsumers)
+                    .diagramPostProcessors(this.diagramPostProcessors)
                     .build();
 
             IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
