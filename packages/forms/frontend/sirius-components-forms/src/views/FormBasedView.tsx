@@ -10,28 +10,45 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
-import { memo } from 'react';
+import { DataExtension, useData, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import { ForwardedRef, forwardRef, memo } from 'react';
 import { Form } from '../form/Form';
 import { GQLForm } from '../form/FormEventFragments.types';
-import { FormBasedViewProps, FormConverter } from './FormBasedView.types';
+import { FormBasedViewConfiguration, FormBasedViewProps, FormConverter } from './FormBasedView.types';
 import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensionPoints';
 
 /**
  * Used to define workbench views based on a form.
  */
 export const FormBasedView = memo(
-  ({ editingContextId, form, readOnly, postProcessor, initialConfiguration }: FormBasedViewProps) => {
-    const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
+  forwardRef<WorkbenchViewHandle | null, FormBasedViewProps>(
+    (
+      { editingContextId, form, readOnly, postProcessor, initialConfiguration }: FormBasedViewProps,
+      refFormBasedViewHandle: ForwardedRef<WorkbenchViewHandle | null>
+    ) => {
+      const initialFormBasedViewConfiguration: FormBasedViewConfiguration | null =
+        initialConfiguration as FormBasedViewConfiguration;
+      const { data: formConverters }: DataExtension<FormConverter[]> = useData(
+        formBasedViewFormConverterExtensionPoint
+      );
 
-    let convertedForm: GQLForm = form;
-    formConverters.forEach((formConverter) => {
-      convertedForm = formConverter.convert(editingContextId, convertedForm);
-    });
+      let convertedForm: GQLForm = form;
+      formConverters.forEach((formConverter) => {
+        convertedForm = formConverter.convert(editingContextId, convertedForm);
+      });
 
-    if (postProcessor) {
-      return postProcessor({ editingContextId, readOnly, initialConfiguration }, convertedForm);
+      if (postProcessor) {
+        return postProcessor({ editingContextId, readOnly, initialConfiguration: null }, convertedForm);
+      }
+      return (
+        <Form
+          editingContextId={editingContextId}
+          form={convertedForm}
+          readOnly={readOnly}
+          initiallySelectedPageId={initialFormBasedViewConfiguration?.selectedPageId}
+          ref={refFormBasedViewHandle}
+        />
+      );
     }
-    return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
-  }
+  )
 );

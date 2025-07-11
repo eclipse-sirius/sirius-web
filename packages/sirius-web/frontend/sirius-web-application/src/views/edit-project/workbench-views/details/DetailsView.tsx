@@ -16,10 +16,10 @@ import {
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import { FormBasedView, FormBasedViewHandle, FormContext } from '@eclipse-sirius/sirius-components-forms';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DetailsViewState } from './DetailsView.types';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
@@ -40,8 +40,8 @@ const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload i
 
 export const DetailsView = forwardRef<WorkbenchViewHandle | null, WorkbenchViewComponentProps>(
   (
-    { editingContextId, readOnly }: WorkbenchViewComponentProps,
-    _detailsViewHandleRef: ForwardedRef<WorkbenchViewHandle | null>
+    { editingContextId, readOnly, initialConfiguration }: WorkbenchViewComponentProps,
+    refDetailsViewHandle: ForwardedRef<WorkbenchViewHandle | null>
   ) => {
     const [state, setState] = useState<DetailsViewState>({
       form: null,
@@ -58,6 +58,26 @@ export const DetailsView = forwardRef<WorkbenchViewHandle | null, WorkbenchViewC
         setState((prevState) => ({ ...prevState, form: payload.form }));
       }
     }, [payload]);
+
+    const refFormBasedViewHandle: RefObject<FormBasedViewHandle> = useRef<FormBasedViewHandle>({
+      getWorkbenchViewConfiguration() {
+        return null;
+      },
+    });
+
+    useImperativeHandle(
+      refDetailsViewHandle,
+      () => {
+        return {
+          getWorkbenchViewConfiguration: () => {
+            return {
+              ...refFormBasedViewHandle.current.getWorkbenchViewConfiguration(),
+            };
+          },
+        };
+      },
+      [refFormBasedViewHandle]
+    );
 
     const { classes } = useDetailsViewStyles();
 
@@ -91,7 +111,8 @@ export const DetailsView = forwardRef<WorkbenchViewHandle | null, WorkbenchViewC
                   editingContextId={editingContextId}
                   form={state.form}
                   readOnly={readOnly}
-                  initialConfiguration={null}
+                  initialConfiguration={initialConfiguration}
+                  ref={refDetailsViewHandle}
                 />
               </FormContext.Provider>
             </Box>
