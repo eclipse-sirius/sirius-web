@@ -1,0 +1,45 @@
+= Add support for project duplication
+
+== Problem
+
+Users can't duplicate projects.
+
+== Key Result
+
+- On the `projects` page, a new action should be available in the contextual menu to duplicate a project.
+- This action should also be available in the project's contextual menu in the workbench view (inside the navbar)
+- The duplicated project contains a copy of the original project's semantic data (including a copy of its domains and dependencies)
+- The duplicated project contains a copy of the original project's representations
+- The duplicated project has the same natures as the original project
+- The duplicated project contains a copy of the original project's settings
+- The duplicated project's name is `<Original project's name> (copy)`
+
+=== Acceptance Criteria
+
+- A Cypress test should leverage the new functionality and validate the whole user experience.
+- Backend integration tests should also be available to ensure that the core parts of the behavior are working as expected.
+
+== Solution
+
+=== Scenario
+
+=== Duplicate a project from the projects page
+
+On the `projects` page, the user opens the contextual menu of a project they want to duplicate.
+The contextual menu contains a "Duplicate" entry.
+The user clicks on the entry, a loading indicator appears in the contextual menu.
+The user is redirected to the duplicated project once it is ready.
+The new project is named `<Original project's name> (copy)`, and contains the same semantic data, dependencies, representations, and settings as the original project.
+
+=== Breadboarding
+
+image::images/duplicate-project-menu-entry.png[Duplicate project menu entry, width=500, align=center]
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+
+== No-gos
+
