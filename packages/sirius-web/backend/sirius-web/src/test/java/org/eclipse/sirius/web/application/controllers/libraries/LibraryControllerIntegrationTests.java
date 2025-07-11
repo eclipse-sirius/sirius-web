@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -86,7 +86,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Test
     @GivenSiriusWebServer
@@ -179,7 +179,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                 assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
                     .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
-                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
                     .isPresent()
                     .get()
@@ -211,7 +211,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "2.0.0"))
                     .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
-                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
                     .isPresent()
                     .get()

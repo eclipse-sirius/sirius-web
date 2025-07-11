@@ -103,7 +103,7 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
                 var diff = changeRecorder.summarize();
                 changeRecorder.endRecording();
 
-                this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get());
+                this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get(), invokeTreeImpactAnalysisInput);
 
                 if (entryExecutionResult instanceof Success success) {
                     payload = new InvokeImpactAnalysisSuccessPayload(invokeTreeImpactAnalysisInput.id(), new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), List.of()), success.getMessages());

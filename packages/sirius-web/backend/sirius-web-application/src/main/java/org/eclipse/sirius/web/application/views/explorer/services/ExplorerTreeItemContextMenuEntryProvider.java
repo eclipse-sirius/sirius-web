@@ -97,7 +97,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
                 var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
                 if (this.isDirectDependency(emfEditingContext, libraryMetadataAdapter)) {
                     // We do not support the update of a transitive dependency for the moment.
-                    result = Optional.of(new SingleClickTreeItemContextMenuEntry("updateLibrary", "Update the library", List.of(), false));
+                    result = Optional.of(new SingleClickTreeItemContextMenuEntry("updateLibrary", "Update the library", List.of(), true));
                 }
             }
         }

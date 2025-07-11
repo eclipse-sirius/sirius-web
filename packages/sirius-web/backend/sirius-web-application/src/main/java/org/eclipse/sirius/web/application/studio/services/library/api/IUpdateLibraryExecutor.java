@@ -10,21 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.studio.services.library.api;
 
-import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
- * Creates and restores snapshots of editing contexts.
+ * Used to execute a library update.
  *
  * @author gdaniel
  */
-public interface IEditingContextSnapshotService {
+public interface IUpdateLibraryExecutor {
 
-    Optional<IEditingContextSnapshot> createSnapshot(IEditingContext editingContext);
+    IStatus updateLibrary(IEditingContext editingContext, UUID libraryId, ICause cause);
 
-    void restoreSnapshot(IEditingContext editingContext, IEditingContextSnapshot snapshot, ICause cause);
 }
