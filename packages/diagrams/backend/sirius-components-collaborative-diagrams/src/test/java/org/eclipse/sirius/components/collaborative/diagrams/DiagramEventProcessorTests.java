@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
+
 import reactor.test.StepVerifier;
 
 /**

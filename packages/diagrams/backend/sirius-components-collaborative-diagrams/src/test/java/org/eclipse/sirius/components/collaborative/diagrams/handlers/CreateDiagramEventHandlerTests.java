@@ -73,7 +73,7 @@ public class CreateDiagramEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IDiagramCreationService diagramCreationService = new IDiagramCreationService.NoOp() {
             @Override
-            public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+            public Diagram create(IEditingContext editingContext, DiagramDescription diagramDescription, Object targetObject) {
                 hasBeenCalled.set(true);
                 return new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
             }

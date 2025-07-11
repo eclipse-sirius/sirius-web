@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.diagrams;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -31,10 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventPro
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -44,10 +40,6 @@ import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,32 +129,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
             if (LayoutDiagramInput.CAUSE_LAYOUT.equals(layoutDiagramInput.cause()) || layoutDiagramInput.id().equals(this.currentRevisionId)) {
                 var diagram = this.diagramContext.diagram();
-                var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(),
-                                       nodeLayoutDataInput.movedByUser(), nodeLayoutDataInput.handleLayoutData(), nodeLayoutDataInput.minComputedSize()),
-                                (oldValue, newValue) -> newValue
-                        ));
-
-                var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                EdgeLayoutDataInput::id,
-                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
-                                (oldValue, newValue) -> newValue
-                        ));
-
-                var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                LabelLayoutDataInput::id,
-                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(), labelLayoutDataInput.resizedByUser()),
-                                (oldValue, newValue) -> newValue
-                        ));
-
-                var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
-                var laidOutDiagram = Diagram.newDiagram(diagram)
-                        .layoutData(layoutData)
-                        .build();
+                var laidOutDiagram = this.diagramCreationService.updateLayout(this.editingContext, diagram, layoutDiagramInput);
 
                 this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext = new DiagramContext(laidOutDiagram);
@@ -204,7 +171,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             }
 
             this.diagramContext = new DiagramContext(refreshedDiagram);
-
             this.currentRevisionId = changeDescription.getInput().id();
             this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
 

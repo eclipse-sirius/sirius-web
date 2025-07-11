@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -39,7 +40,7 @@ public class MockDiagramCreationService implements IDiagramCreationService {
     }
 
     @Override
-    public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+    public Diagram create(IEditingContext editingContext, DiagramDescription diagramDescription, Object targetObject) {
         return this.diagram;
     }
 
@@ -59,4 +60,8 @@ public class MockDiagramCreationService implements IDiagramCreationService {
         return Optional.of(this.diagram);
     }
 
+    @Override
+    public Diagram updateLayout(IEditingContext editingContext, Diagram diagramToUpdate, LayoutDiagramInput layoutDiagramInput) {
+        return diagramToUpdate;
+    }
 }

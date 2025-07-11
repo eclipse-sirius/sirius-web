@@ -30,7 +30,12 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
  * Parameters of the diagram event processor.
  *
  * @author sbegaudeau
+ *
+ * @technical-debt The diagram event processor has way too many responsibilities. We should not add new responsibilities
+ * to this class but remove existing ones instead. As a result, this class should have less parameters and be deleted in
+ * the near future.
  */
+@Deprecated(forRemoval = true)
 public record DiagramEventProcessorParameters(
         IEditingContext editingContext,
         DiagramContext diagramContext,

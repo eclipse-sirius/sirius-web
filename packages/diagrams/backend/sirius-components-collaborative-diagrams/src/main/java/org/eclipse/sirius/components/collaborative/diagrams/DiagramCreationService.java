@@ -17,12 +17,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramPostProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -36,6 +40,9 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.B
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
@@ -45,6 +52,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * Service used to create diagrams.
@@ -64,24 +74,28 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
 
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers, MeterRegistry meterRegistry) {
+                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers,
+            List<IDiagramPostProcessor> diagramPostProcessors, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
         this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
+        this.diagramPostProcessors = Objects.requireNonNull(diagramPostProcessors);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
     }
 
     @Override
-    public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+    public Diagram create(IEditingContext editingContext, DiagramDescription diagramDescription, Object targetObject) {
         var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
                 .values()
                 .stream()
@@ -112,6 +126,14 @@ public class DiagramCreationService implements IDiagramCreationService {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
+
+            for (var diagramPostProcessor: this.diagramPostProcessors) {
+                DiagramContext currentDiagramContext = new DiagramContext(diagram);
+                if (diagramPostProcessor.canHandle(editingContext, currentDiagramContext)) {
+                    diagram = diagramPostProcessor.postProcess(editingContext, currentDiagramContext).orElse(diagram);
+                }
+            }
+
             return Optional.of(diagram);
         }
         return Optional.empty();
@@ -159,5 +181,44 @@ public class DiagramCreationService implements IDiagramCreationService {
         this.logger.trace("diagram refreshed in {}ms", end - start);
 
         return newDiagram;
+    }
+
+    @Override
+    public Diagram updateLayout(IEditingContext editingContext, Diagram diagram, LayoutDiagramInput layoutDiagramInput) {
+        var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
+                .collect(Collectors.toMap(
+                        NodeLayoutDataInput::id,
+                        nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(),
+                                nodeLayoutDataInput.movedByUser(), nodeLayoutDataInput.handleLayoutData(), nodeLayoutDataInput.minComputedSize()),
+                        (oldValue, newValue) -> newValue
+                ));
+
+        var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
+                .collect(Collectors.toMap(
+                        EdgeLayoutDataInput::id,
+                        edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
+                        (oldValue, newValue) -> newValue
+                ));
+
+        var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
+                .collect(Collectors.toMap(
+                        LabelLayoutDataInput::id,
+                        labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(), labelLayoutDataInput.resizedByUser()),
+                        (oldValue, newValue) -> newValue
+                ));
+
+        var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
+        var laidOutDiagram = Diagram.newDiagram(diagram)
+                .layoutData(layoutData)
+                .build();
+
+        for (var diagramPostProcessor: this.diagramPostProcessors) {
+            var diagramContext = new DiagramContext(laidOutDiagram);
+            if (diagramPostProcessor.canHandle(editingContext, diagramContext)) {
+                laidOutDiagram = diagramPostProcessor.postProcess(editingContext, diagramContext).orElse(laidOutDiagram);
+            }
+        }
+
+        return laidOutDiagram;
     }
 }

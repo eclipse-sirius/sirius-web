@@ -76,7 +76,7 @@ public class StudioRepresentationInitializer {
                 String label = domainDiagramDescription.getLabelProvider().apply(variableManager);
                 List<String> iconURLs = domainDiagramDescription.getIconURLsProvider().apply(variableManager);
 
-                Diagram diagram = this.diagramCreationService.create(semanticTarget, domainDiagramDescription, editingContext);
+                Diagram diagram = this.diagramCreationService.create(editingContext, domainDiagramDescription, semanticTarget);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                         .kind(diagram.getKind())
                         .label(label)
