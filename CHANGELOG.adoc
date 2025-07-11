@@ -8,6 +8,7 @@
 - Add the ability to share the workbench state
 - Add selected project setting tab to the URL
 - Add impact analysis before tool execution in trees
+- Add support for project duplication
 
 
 === Architectural decision records
@@ -17,6 +18,7 @@
 - [ADR-199] Add the ability to control the capabilities of the frontend from the backend
 - [ADR-200] Add configurable render variables to TreeDescription
 - [ADR-201] Add impact analysis for contextual menu actions of trees
+- [ADR-202] Add support for project duplication
 
 === Deprecation warning
 
