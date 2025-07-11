@@ -8,7 +8,7 @@
 - Add the ability to share the workbench state
 - Add selected project setting tab to the URL
 - Add impact analysis before tool execution in trees
-
+- Provide a backend-only API to retrieve a diagram as PNG or SVG file
 
 === Architectural decision records
 

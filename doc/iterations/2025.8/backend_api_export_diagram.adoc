@@ -1,0 +1,81 @@
+= (M) Provide a backend-only API to retrieve a diagram as PNG or SVG file
+
+== Problem
+
+We currently support the export of diagrams as SVG and PNG files, but only from the frontend.
+
+However, in both cases the actual rendering work is performed by the frontend itself (using the 'html-to-image' library or custom SVG rendering code).
+
+This makes it cumbersome to automate and use this feature in (for example) document generation workflows, as it requires running a full browser and scraping the resulting page.
+
+== Key Result
+
+We should provide a simple HTTP API to export a specific diagram as a PNG or SVG file.
+This API could be either exposed directly by our current backend or by a new, separate process.
+Both approaches have pros and cons, see below for a discussion until we reach a decision.
+
+It should be possible to invoke this API using a simple HTTP request that can be used from any other program, from a simple shell script using `curl` to tools like M2Doc.
+Something like (details not final yet):
+
+[source]
+----
+% curl -s -H "Accept: image/png"     -o diagram.png https://example.com/api/diagram-image/026c6e4d-24ad-4cf1-a349-35a66e55257b
+% curl -s -H "Accept: image/svg+xml" -o diagram.svg https://example.com/api/diagram-image/026c6e4d-24ad-4cf1-a349-35a66e55257b
+----
+
+The resulting images should be as close as possible to what is actually rendered in a normal browser (Chrome being the reference).
+They should include all the elements visible on the diagram and take into account all visual modifiers (e.g. hidden/faded/collapsed states).
+They should _not_ include the global diagram palette, or any selection or highlight markers.
+
+* The background of the exported images (PNG or SVG) should be transparent.
+* For PNG images, we will hard-code a specific resolution (probably 1920x1200, to be adapted to the actual aspect ratio of the diagram's content).
+* For SVG images, we we reuse the existing experimental SVG rendering code (`useExperimentalSvgExport`).
+Any limitations of this code (e.g. not supporting all diagram elements) will *not* be adressed as part of this work.
+On the other hand, this means any later improvements to the SVG rendering code will automatically be available through this new API.
+
+This feature may require more complex deployment than is normal at the moment (e.g. a separate process), and thus should be kept optional for cases when we want to keep deployment simple.
+If we decide to expose this new optional API directly from the existing backend, then when the feature is not enabled, the corresponding HTTP endpoint should still be present, but respond with code `501 Not Implem​ented`.
+
+In the cases where the feature *is* enabled, any additional requirements in terms of deployment should be made as simple and robust as possible, and be documented.
+If the solution choosen involves a separate process, the main backend should be resilient in cases the process in question is not available or not responsive in a reasonable delay; in this case it should react as mentioned above when the feature is not enabled (and log a message for ops to detect and fix the issue in a timely manner).
+
+== Solution
+
+The current separation of responsibility regarding the rendering of diagrams in the frontend and the backend means the Java-based backend is not able to produce a PNG or SVG image by itself from the information it has (diagram structure and high-level layout data), as it does not have access to the actual rendered DOM and CSS styles.
+We *need* an actual browser engine involved to execute the same code as our frontned (including React Flow, html-to-image and our own SVG export code) to interpret the DOM and CSS styles reliably.
+
+We will used the Chrome engine, through a headless browser like [Puppeteer](https://pptr.dev/) or similar.
+
+This is why we need to implement a new HTTP endpoint that will be able to produce the actual images, either by using the existing frontend code (in a headless browser) or by implementing a new rendering process that can produce the images directly from the diagram structure and layout data.
+
+We will implement this feature as a simple HTTP server (probably in node/express or something equivalent), which will expose two HTTP endpoints: one for PNG and one for SVG.
+Both endpoints will take as input the ID of the diagram to export and of its containing editing context.
+The server will be configured on startup with the URL of the main application.
+
+As mentioned above, we have two main options to expose this new API:
+
+1. Implement the HTTP endpoint directly in the current Spring Boot backend, and delegate any request to an external process (possibly though HTTP).
+  * Pros: the secondary process which would be hidden from clients as an implementation detail and not exposed to the rest of the network.
+  * Cons: the backend will need to be able to start and manage the external process, which may require additional configuration and deployment steps; 
+
+2. Implement the HTTP endpoint in a separate process, that user who want to use this feature will need to deploy and run separately.
+  * Pros: the backend will not need to be modified, and the new process can be deployed independently.
+  * Cons: this is less transparent to clients/users, as they will need to interact with a separate process/server; in cases where the main server includes features like authentication, the new process will need to handle that and transfer any client credentials to the actual application.
+
+We will take the second approach, as it is simpler to implement and deploy, and does not require any changes to the existing backend.
+
+=== Breadboarding
+
+No UI, we will only add a new HTTP endpoint.
+
+=== Cutting backs
+
+* Provide diagram metadata (name, project, target object, etc.) as additional headers in the HTTP response.
+* For PNG, allow the client to request a specific resolution (up to some reasonable maximum value) with additional headers or URL parameters.
+* Allow the client to request (through additional headers or URL parameters) that an "Arrange All" is performed on the diagram before it is rendered and exported.
+* Embed metadata and traceability information directly into the resulting file when exporting in SVG.
+Something similar to [what Sirius Desktop does](https://github.com/eclipse-sirius/sirius-desktop/blob/master/plugins/org.eclipse.sirius.diagram.ui/src-diag/org/eclipse/sirius/diagram/ui/tools/internal/render/AnnotatedSVGShape.java#L31) with `diagram:semanticTargetId` attributes on SVG elements to indicate which semantic element they represent.
+
+== Rabbit holes
+
+== No-gos
