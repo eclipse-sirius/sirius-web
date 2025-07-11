@@ -17,11 +17,12 @@ import parse from 'svg-path-parser';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
-import { borderLeftAndRight, horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
+import { horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
 import {
   GetEdgeParameters,
   GetEdgeParametersWhileMoving,
   GetHandleCoordinatesByPosition,
+  GetHandlePositionWithOffSet,
   GetNodeCenter,
   GetParameters,
   GetUpdatedConnectionHandlesParameters,
@@ -31,7 +32,7 @@ import {
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
-export const HANDLE_OFFSET = 4;
+export const HANDLE_OFFSET = 3;
 
 export const getNodesUpdatedWithHandles = (
   nodes: Node<NodeData>[],
@@ -42,36 +43,24 @@ export const getNodesUpdatedWithHandles = (
   position: Position
 ): Node<NodeData>[] => {
   if (node.height && node.width) {
-    //Take the size of the handle and its position into account
+    //Get the position of the handle relative to the parent node
     XYPosition = {
       x: XYPosition.x - node.internals.positionAbsolute.x,
       y: XYPosition.y - node.internals.positionAbsolute.y,
     };
 
-    if (position === Position.Top) {
+    //Take the size of the handle and its position into account
+    if (position === Position.Top || position === Position.Bottom) {
       XYPosition = {
         ...XYPosition,
         x: XYPosition.x - HANDLE_OFFSET,
+        y: position === Position.Bottom ? XYPosition.y - node.height - DEFAULT_HANDLE_SIZE : XYPosition.y,
       };
     }
 
-    if (position === Position.Bottom) {
+    if (position === Position.Right || position === Position.Left) {
       XYPosition = {
-        x: XYPosition.x - HANDLE_OFFSET,
-        y: XYPosition.y - node.height - DEFAULT_HANDLE_SIZE,
-      };
-    }
-
-    if (position === Position.Right) {
-      XYPosition = {
-        y: XYPosition.y - HANDLE_OFFSET,
-        x: XYPosition.x - node.width - DEFAULT_HANDLE_SIZE,
-      };
-    }
-
-    if (position === Position.Left) {
-      XYPosition = {
-        ...XYPosition,
+        x: position === Position.Right ? XYPosition.x - node.width - DEFAULT_HANDLE_SIZE : XYPosition.x,
         y: XYPosition.y - HANDLE_OFFSET,
       };
     }
@@ -471,6 +460,23 @@ export const getNodeCenter: GetNodeCenter = (node, nodeLookUp) => {
   }
 };
 
+export const getHandlePositionWithOffSet: GetHandlePositionWithOffSet = (handleXYPosition, handlePosition) => {
+  // The offeset is equal to the size of the node divided per 2 to center the edge on the handle
+  // And one extra pixel is added/removed to point to the border of the handle
+  const { x, y } = handleXYPosition;
+  if (handlePosition === Position.Left || handlePosition === Position.Right) {
+    return {
+      x: handlePosition === Position.Left ? x + DEFAULT_HANDLE_SIZE / 2 - 1 : x + DEFAULT_HANDLE_SIZE / 2 + 1,
+      y: y + DEFAULT_HANDLE_SIZE / 2,
+    };
+  } else {
+    return {
+      x: x + DEFAULT_HANDLE_SIZE / 2,
+      y: handlePosition === Position.Top ? y + DEFAULT_HANDLE_SIZE / 2 - 1 : y + DEFAULT_HANDLE_SIZE / 2 + 1,
+    };
+  }
+};
+
 export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
   node,
   handlePosition,
@@ -487,19 +493,7 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
     if (calculateCustomNodeEdgeHandlePosition) {
       handleXYPosition = calculateCustomNodeEdgeHandlePosition(node, handlePosition, handle);
     } else {
-      let offsetX = handle.width / 2 + borderLeftAndRight / 2;
-      let offsetY = handle.height / 2 + borderLeftAndRight / 2;
-
-      if (handlePosition === Position.Left) {
-        offsetX = handle.width - offsetX;
-      } else if (handlePosition === Position.Top) {
-        offsetY = handle.height - offsetY;
-      }
-
-      handleXYPosition = {
-        x: handle.x + offsetX,
-        y: handle.y + offsetY,
-      };
+      handleXYPosition = getHandlePositionWithOffSet({ x: handle.x, y: handle.y }, handlePosition);
     }
   }
 

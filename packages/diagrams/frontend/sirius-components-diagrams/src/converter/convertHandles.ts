@@ -43,7 +43,8 @@ export const convertHandles = (
             : null,
         isFixedHandlePosition: alreadyLaidOutSourceHandle != undefined,
         type: 'source',
-        hidden: edge.state === GQLViewModifier.Hidden,
+        isVirtualHandle: edge.state === GQLViewModifier.Hidden,
+        isHidden: true,
       });
       sourceHandlesCounter += 1;
     }
@@ -65,7 +66,8 @@ export const convertHandles = (
             : null,
         isFixedHandlePosition: alreadyLaidOutTargetHandle != undefined,
         type: 'target',
-        hidden: edge.state === GQLViewModifier.Hidden,
+        isVirtualHandle: edge.state === GQLViewModifier.Hidden,
+        isHidden: true,
       });
       targetHandlesCounter += 1;
     }
@@ -80,7 +82,8 @@ export const convertHandles = (
     type: 'source',
     XYPosition: null,
     isFixedHandlePosition: false,
-    hidden: true,
+    isVirtualHandle: true,
+    isHidden: true,
   });
 
   connectionHandles.push({
@@ -92,7 +95,8 @@ export const convertHandles = (
     type: 'target',
     XYPosition: null,
     isFixedHandlePosition: false,
-    hidden: true,
+    isVirtualHandle: true,
+    isHidden: true,
   });
 
   return connectionHandles;

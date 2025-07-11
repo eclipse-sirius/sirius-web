@@ -54,5 +54,45 @@ describe('Diagram - edges', () => {
       cy.getByTestId('bend-point-2').click();
       cy.getByTestId('bend-point-4').should('not.exist');
     });
+
+    it('Check that when reconnecting an edge, the style of the handle is updated and can be reseted with a tool', () => {
+      const diagram = new Diagram();
+
+      // We select a node before an edge to avoid a known issue with selection
+      diagram.selectNode('Topography', 'DataSource1');
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(300);
+
+      cy.get('.react-flow__edge:first').as('edge').click({ force: true });
+      cy.get('.react-flow__edge:first').should('have.class', 'selected');
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-right:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(0, 0, 0)');
+
+      diagram.moveSourceHandleToLeftPosition(cy.get('@edge'), 'Topography', 'DataSource1');
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(300);
+      cy.get('.react-flow__edge:first').click({ force: true });
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-left:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(255, 255, 255)');
+
+      cy.get('.react-flow__edge:first').rightclick({ force: true });
+      cy.getByTestId('Reset-handles').should('exist');
+      cy.getByTestId('Reset-handles').click();
+
+      diagram
+        .getNodes('Topography', 'DataSource1')
+        .get('.react-flow__handle.react-flow__handle-right:first')
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(0, 0, 0)');
+    });
   });
 });
