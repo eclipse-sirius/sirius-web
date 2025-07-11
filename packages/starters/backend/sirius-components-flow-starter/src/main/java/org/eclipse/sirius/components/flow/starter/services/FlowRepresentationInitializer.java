@@ -69,16 +69,16 @@ public class FlowRepresentationInitializer {
 
                 if (optionalResource.isPresent() && optionalTopographyDiagram.isPresent()) {
                     var resource = optionalResource.get();
-                    DiagramDescription topographyDiagram = optionalTopographyDiagram.get();
+                    DiagramDescription topographyDiagramDescription = optionalTopographyDiagram.get();
                     Object semanticTarget = resource.getContents().get(0);
 
                     var variableManager = new VariableManager();
                     variableManager.put(VariableManager.SELF, semanticTarget);
-                    variableManager.put(DiagramDescription.LABEL, topographyDiagram.getLabel());
-                    String label = topographyDiagram.getLabelProvider().apply(variableManager);
-                    List<String> iconURLs = topographyDiagram.getIconURLsProvider().apply(variableManager);
+                    variableManager.put(DiagramDescription.LABEL, topographyDiagramDescription.getLabel());
+                    String label = topographyDiagramDescription.getLabelProvider().apply(variableManager);
+                    List<String> iconURLs = topographyDiagramDescription.getIconURLsProvider().apply(variableManager);
 
-                    Diagram diagram = this.diagramCreationService.create(semanticTarget, topographyDiagram, editingContext);
+                    Diagram diagram = this.diagramCreationService.create(editingContext, topographyDiagramDescription, semanticTarget);
                     var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                             .kind(diagram.getKind())
                             .label(label)

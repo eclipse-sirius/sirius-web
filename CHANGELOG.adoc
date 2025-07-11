@@ -369,6 +369,7 @@ In particular, this can be used to customize the tree used for the model browser
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
 - https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes at once.
 - https://github.com/eclipse-sirius/sirius-web/issues/5795[#5795] [diagram] Make edge and outside labels resizable
+- https://github.com/eclipse-sirius/sirius-web/issues/5215[#5215] [diagram] Add the ability to programmatically change the layout of a diagram on the backend
 
 
 === Improvements

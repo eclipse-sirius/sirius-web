@@ -114,7 +114,7 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
                 String label = diagramDescription.getLabelProvider().apply(variableManager);
                 List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
 
-                Diagram diagram = this.diagramCreationService.create(object, diagramDescription, editingContext);
+                Diagram diagram = this.diagramCreationService.create(editingContext, diagramDescription, object);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                         .kind(diagram.getKind())
                         .label(label)
