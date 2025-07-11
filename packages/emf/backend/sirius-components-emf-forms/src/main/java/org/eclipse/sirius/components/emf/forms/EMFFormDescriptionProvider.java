@@ -75,6 +75,21 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         List<PageDescription> pageDescriptions = new ArrayList<>();
         PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
         pageDescriptions.add(firstPageDescription);
+        final PageDescription secondPageDescription = PageDescription.newPageDescription("secondPageId")
+                .idProvider( variableManager -> {
+                    var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+                    if (optionalSelf.isPresent()) {
+                        Object self = optionalSelf.get();
+                        return this.identityService.getId(self) + "_2";
+                    }
+                    return UUID.randomUUID().toString();
+                })
+                .labelProvider(firstPageDescription.getLabelProvider())
+                .semanticElementsProvider(firstPageDescription.getSemanticElementsProvider())
+                .groupDescriptions(firstPageDescription.getGroupDescriptions())
+                .canCreatePredicate(firstPageDescription.getCanCreatePredicate())
+                .build();
+        pageDescriptions.add(secondPageDescription);
 
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
 
@@ -155,7 +170,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         };
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(identityService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
