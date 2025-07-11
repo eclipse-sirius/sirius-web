@@ -11,15 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  Edge,
-  Node as ReactFlowNode,
-  Rect,
-  Viewport,
-  getNodesBounds,
-  getViewportForBounds,
-  useReactFlow,
-} from '@xyflow/react';
+import { Edge, Node as ReactFlowNode, Rect, Viewport, getViewportForBounds, useReactFlow } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -29,7 +21,8 @@ export const useExportToImage = (): UseExportToImage => {
   const reactFlow = useReactFlow<ReactFlowNode<NodeData>, Edge<EdgeData>>();
 
   const exportToSVG = useCallback((callback: (dataUrl: string) => void) => {
-    const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
+    const visibleNodes = reactFlow.getNodes().filter((node) => !node.hidden);
+    const nodesBounds: Rect = reactFlow.getNodesBounds(visibleNodes);
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
 
@@ -60,7 +53,8 @@ export const useExportToImage = (): UseExportToImage => {
   }, []);
 
   const exportToPNG = useCallback((callback: (dataUrl: string) => void) => {
-    const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
+    const visibleNodes = reactFlow.getNodes().filter((node) => !node.hidden);
+    const nodesBounds: Rect = reactFlow.getNodesBounds(visibleNodes);
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
 

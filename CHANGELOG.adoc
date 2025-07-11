@@ -326,6 +326,8 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronised diagram if the targetObject of a node was from a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronised diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/5204[#5204] [explorer] Fix regression in the Explorer layout when the filter bar is visible
+- https://github.com/eclipse-sirius/sirius-web/issues/5203[#5203] [diagram] When exporting a diagram as an image, hidden nodes are now ignored when computing the area to export.
+This avoid possibly large blank areas in the resulting images where invisible nodes are.
 
 === New Features
 
