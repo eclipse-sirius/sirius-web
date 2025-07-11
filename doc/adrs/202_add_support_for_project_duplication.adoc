@@ -1,0 +1,63 @@
+= ADR-202 - Add support for project duplication
+
+== Context
+
+An contextual menu action in the `projects` page is provided to duplicate an existing project.
+
+== Decision
+
+We will add an API to duplicate a project.
+
+=== GraphQL shema
+
+We will add a new mutation in `sirius-web.graphqls` and the corresponding input/payload.
+
+----
+extend type Mutation {
+  // [...]
+  duplicateProject(input: DuplicateProjectInput!): DuplicateProjectPayload!
+}
+
+input DuplicateProjectInput {
+  id: ID!
+  projectId: ID!
+}
+
+union DuplicateProjectPayload = ErrorPayload | DuplicateProjectSuccessPayload
+
+type DuplicateProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+----
+
+
+=== Backend
+
+We will create a new service in Sirius Web to duplicate a project.
+This service will take care of duplicating the original project's:
+
+- Semantic Data (including domains)
+- Representations
+- Nature
+- Settings
+
+The created project should have a different ID than the original project.
+The elements contained in the created project's semantic data should have different IDs than the ones in the original project.
+The target objects of the representations should be adapted to target the duplicated objects (with their new ID).
+
+Avoiding ID duplication (for project and elements) is key to avoid clashes in library contexts.
+
+
+== Rabbit holes
+
+None.
+
+
+== Consequences
+
+
+
+== Cutting backs
+
+If possible we will look to factorize common behavior between the "Upload project" and "Duplicate project" features.
