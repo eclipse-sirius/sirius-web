@@ -25,12 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.api.*;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
@@ -88,6 +83,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
 
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
     private UUID currentRevisionId = UUID.randomUUID();
 
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
@@ -106,6 +103,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.representationSearchService = parameters.representationSearchService();
         this.diagramCreationService = parameters.diagramCreationService();
         this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
+        this.diagramPostProcessors = parameters.diagramPostProcessors();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
@@ -137,21 +135,39 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
                                 NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(), nodeLayoutDataInput.handleLayoutData()),
+                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(),
+                                        nodeLayoutDataInput.position(),
+                                        nodeLayoutDataInput.size(),
+                                        nodeLayoutDataInput.resizedByUser(),
+                                        nodeLayoutDataInput.handleLayoutData()),
                                 (oldValue, newValue) -> newValue
                         ));
 
                 var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
                         .collect(Collectors.toMap(
                                 EdgeLayoutDataInput::id,
-                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
+                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(),
+                                        edgeLayoutDataInput.bendingPoints(),
+                                        edgeLayoutDataInput.edgeAnchorLayoutData()),
                                 (oldValue, newValue) -> newValue
                         ));
 
                 var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, Map.of());
+                var optionalDiagramDescription =
+                        this.representationDescriptionSearchService.findById(this.editingContext, diagram.getDescriptionId())
+                                .filter(DiagramDescription.class::isInstance)
+                                .map(DiagramDescription.class::cast);
+
+
                 var laidOutDiagram = Diagram.newDiagram(diagram)
                         .layoutData(layoutData)
                         .build();
+
+                for (var diagramPostProcessor: this.diagramPostProcessors) {
+                    if(diagramPostProcessor.canHandle(editingContext, optionalDiagramDescription))
+                        laidOutDiagram = diagramPostProcessor.postProcess(laidOutDiagram, editingContext,
+                                optionalDiagramDescription, Optional.of(diagramContext));
+                }
 
                 this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext.reset();
@@ -189,6 +205,18 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             if (refreshedDiagram != null) {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
+            }
+
+            var optionalDiagramDescription =
+                    this.representationDescriptionSearchService.findById(this.editingContext, refreshedDiagram.getDescriptionId())
+                            .filter(DiagramDescription.class::isInstance)
+                            .map(DiagramDescription.class::cast);
+
+            for (var diagramPostProcessor: this.diagramPostProcessors) {
+                if(diagramPostProcessor.canHandle(editingContext, optionalDiagramDescription))
+                    refreshedDiagram = diagramPostProcessor.postProcess(refreshedDiagram,
+                            editingContext,
+                            optionalDiagramDescription, Optional.of(diagramContext));
             }
 
             this.diagramContext.reset();
