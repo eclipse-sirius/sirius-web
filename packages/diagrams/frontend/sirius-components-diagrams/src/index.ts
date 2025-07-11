@@ -33,6 +33,7 @@ export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graph
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export { default as siriusComponentsDiagramsEn } from './locales/en.json';
 export type { ActionProps } from './renderer/actions/Action.types';
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoints';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
