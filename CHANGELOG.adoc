@@ -145,6 +145,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - [releng] Switch to Sirius EMF Json 2.5.3
 - [releng] Update to https://github.com/nodejs/node/releases/tag/v22.16.0[node.js 22.16.0] and https://docs.npmjs.com/cli/v10/using-npm/changelog#1092-2024-12-04[npm 10.9.2]
 - [releng] Update to https://github.com/KevinVandy/material-react-table/releases/tag/v3.2.1[Material React Table 3.2.1]
+- [releng] Switch to Cypress 14.5.1
 
 
 === Bug fixes
