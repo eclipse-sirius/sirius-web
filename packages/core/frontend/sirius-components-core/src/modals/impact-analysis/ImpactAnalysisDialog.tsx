@@ -161,7 +161,7 @@ const ReportViewer = ({
                 <ListItemIcon sx={listItemIconStyle}>
                   <FiberManualRecordIcon sx={iconStyle} />
                 </ListItemIcon>
-                <ListItemText primary={additionalReport} />
+                <ListItemText primary={additionalReport} data-testid={`additionalReportData_${index}`} />
               </ListItem>
             );
           })}

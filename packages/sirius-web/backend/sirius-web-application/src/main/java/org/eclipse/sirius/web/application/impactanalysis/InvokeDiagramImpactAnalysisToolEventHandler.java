@@ -97,7 +97,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
                 var diff = siriusEditingContext.getChangeRecorder().summarize();
                 siriusEditingContext.getChangeRecorder().endRecording();
 
-                this.editingContextSnapshotService.restoreSnapshot(siriusEditingContext, editingContextSnapshot.get());
+                this.editingContextSnapshotService.restoreSnapshot(siriusEditingContext, editingContextSnapshot.get(), diagramInput);
 
                 if (toolExecutionResult instanceof Success success) {
                     List<String> additionalReports = new ArrayList<>();
