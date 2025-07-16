@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, XYPosition, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -31,28 +30,17 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const store = useStoreApi();
 
-  const { selection } = useSelection();
-
   const onDiagramElementContextMenu = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node<NodeData> | Edge<EdgeData>) => {
+    (event: React.MouseEvent<Element, MouseEvent>, _elementClicked: Node<NodeData> | Edge<EdgeData>) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
-      if (
-        !event.altKey &&
-        !event.ctrlKey &&
-        !(
-          !!selection.entries.find((selection) => selection.id === elementClicked.data?.targetObjectId) &&
-          selection.entries.length > 1
-        )
-      ) {
+      if (!event.altKey && !event.ctrlKey) {
         event.preventDefault();
         showDiagramElementPalette(palettePosition.x, palettePosition.y);
-      } else {
-        hideDiagramElementPalette();
       }
     },
-    [showDiagramElementPalette, hideDiagramElementPalette, selection]
+    [showDiagramElementPalette]
   );
 
   return {
