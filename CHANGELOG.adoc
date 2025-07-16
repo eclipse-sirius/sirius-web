@@ -81,6 +81,8 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5402[#5402] [sirius-web] Add missing line breaks on library impact analysis report
 - https://github.com/eclipse-sirius/sirius-web/issues/5310[#5310] [diagram] Prevent edge center label to blink during node moves
 - https://github.com/eclipse-sirius/sirius-web/issues/4994[#4994] [table] Fix rendering issue when a row menu entry has missing or invalid icon URL
+- https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Fix a lifecycle issue on diagram with nodes change event
+
 
 === New Features
 

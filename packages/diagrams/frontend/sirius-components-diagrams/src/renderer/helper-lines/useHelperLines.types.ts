@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ export interface UseHelperLinesValue {
   setHelperLinesEnabled: (enable: boolean) => void;
   verticalHelperLine: number | null;
   horizontalHelperLine: number | null;
-  applyHelperLines: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
+  applyHelperLines: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => NodeChange<Node<NodeData>>[];
   resetHelperLines: (changes: NodeChange<Node<NodeData>>[]) => void;
 }
 
