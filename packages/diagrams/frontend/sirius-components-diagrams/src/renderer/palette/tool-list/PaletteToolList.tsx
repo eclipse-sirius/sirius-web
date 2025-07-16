@@ -27,12 +27,15 @@ import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
 
+const listMaxHeight = 220;
+
 const useStyle = makeStyles()((theme) => ({
   container: {
     display: 'grid',
     gridTemplateRows: `repeat(2,min-content) 1fr`,
     overflowY: 'auto',
     overflowX: 'hidden',
+    maxHeight: listMaxHeight,
   },
   toolListContainer: {
     display: 'grid',
