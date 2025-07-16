@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { useStore } from '../../representation/useStore';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { ListNodeData } from '../node/ListNode.types';
@@ -156,32 +155,28 @@ const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChang
   change.type === 'position' && !change.dragging;
 
 export const useResizeChange = (): UseResizeChangeValue => {
-  const { getNodes } = useStore();
-
   const transformResizeListNodeChanges = useCallback(
-    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
       const newChanges: NodeChange<Node<NodeData>>[] = [];
       const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((change) => {
         if (isResize(change)) {
-          const resizedNode = getNodes().find((node) => change.id === node.id);
+          const resizedNode = nodes.find((node) => change.id === node.id);
           if (resizedNode) {
-            newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
-            newChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
+            newChanges.push(...applyResizeToListContain(resizedNode, nodes, change));
+            newChanges.push(...applyMoveToBorderNodes(resizedNode, nodes, change));
           }
         }
         if (isMove(change)) {
-          const movedNode = getNodes()
-            .filter((node) => !node.data.isBorderNode)
-            .find((node) => change.id === node.id);
+          const movedNode = nodes.filter((node) => !node.data.isBorderNode).find((node) => change.id === node.id);
           if (movedNode) {
-            return applyMoveToListContain(movedNode, getNodes(), change);
+            return applyMoveToListContain(movedNode, nodes, change);
           }
         }
         return change;
       });
       return [...newChanges, ...updatedChanges];
     },
-    [getNodes]
+    []
   );
 
   return { transformResizeListNodeChanges };
