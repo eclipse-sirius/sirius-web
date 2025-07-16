@@ -13,24 +13,35 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  GITHUB_EVENT_NAME: ${{ github.event_name }}$
+  GITHUB_EVENT_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  GITHUB_REF: ${{ github.ref }}
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
+        if: env.GITHUB_EVENT_NAME != 'pull_request'
         with:
           fetch-depth: 0
 
       - name: Checkout
         uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
+        if: env.GITHUB_EVENT_NAME == 'pull_request'
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
+          persist-credentials: false
 
       - name: Setup Node SDK
         uses: actions/setup-node@v4
@@ -168,13 +179,13 @@ jobs:
         run: jshell scripts/check-coverage.jsh
 
       - name: Publish the backend
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: mvn -B deploy -f packages/pom.xml
 
       - name: Publish the frontend packages
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         run: |
           npm publish --workspaces
         env:
@@ -209,7 +220,7 @@ jobs:
         working-directory: integration-tests
 
       - name: Run end to end tests against the sirius-web application
-        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/cooldown'
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
         uses: cypress-io/github-action@v6
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
