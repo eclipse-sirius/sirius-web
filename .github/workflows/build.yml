@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  GITHUB_EVENT_NAME: ${{ github.event_name }}$
+  GITHUB_EVENT_NAME: ${{ github.event_name }}
   GITHUB_EVENT_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
   GITHUB_REF: ${{ github.ref }}
 
