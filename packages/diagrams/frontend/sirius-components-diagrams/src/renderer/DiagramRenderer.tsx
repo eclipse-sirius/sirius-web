@@ -276,40 +276,41 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     resetHelperLines,
   } = useHelperLines();
 
-  const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
-    (changes: NodeChange<Node<NodeData>>[]) => {
-      const noReadOnlyChanges = filterReadOnlyChanges(changes);
-      const isResetChange = changes.find((change) => change.type === 'replace');
-      const isSelectChange = changes.find((change) => change.type === 'select');
+  const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback((changes: NodeChange<Node<NodeData>>[]) => {
+    const noReadOnlyChanges = filterReadOnlyChanges(changes);
+    const isResetChange = changes.find((change) => change.type === 'replace');
+    const isSelectChange = changes.find((change) => change.type === 'select');
 
-      if (
-        isResetChange ||
-        isSelectChange ||
-        (noReadOnlyChanges.length === 1 &&
-          noReadOnlyChanges[0]?.type === 'dimensions' &&
-          typeof noReadOnlyChanges[0].resizing !== 'boolean')
-      ) {
-        setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
-      } else {
+    if (
+      isResetChange ||
+      isSelectChange ||
+      (noReadOnlyChanges.length === 1 &&
+        noReadOnlyChanges[0]?.type === 'dimensions' &&
+        typeof noReadOnlyChanges[0].resizing !== 'boolean')
+    ) {
+      setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
+    } else {
+      setNodes((oldNodes) => {
         resetHelperLines(changes);
-        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
-        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
-        transformedNodeChanges = applyHelperLines(transformedNodeChanges);
-        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(
+          noReadOnlyChanges,
+          oldNodes
+        );
+        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges, oldNodes);
+        transformedNodeChanges = applyHelperLines(transformedNodeChanges, oldNodes);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges, oldNodes);
 
-        let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
+        let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
 
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
-
-        setNodes(newNodes);
-      }
-    },
-    [layoutOnBoundsChange, getNodes, getEdges]
-  );
+        return newNodes;
+      });
+    }
+  }, []);
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
   const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
