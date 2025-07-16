@@ -96,13 +96,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const {
-    onDiagramBackgroundContextMenu,
-    onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
-    hideDiagramPalette,
-  } = useDiagramPalette();
-  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
-    useDiagramElementPalette();
+  const { onDiagramBackgroundContextMenu } = useDiagramPalette();
+  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu } = useDiagramElementPalette();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -251,7 +246,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         setEdges(laidOutDiagram.edges);
         setNodes(laidOutDiagram.nodes);
-        hideAllPalettes();
 
         if (!readOnly) {
           synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
@@ -353,15 +347,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
-  const hideAllPalettes = useCallback(() => {
-    hideDiagramPalette();
-    hideDiagramElementPalette();
-    hideGroupPalette();
-  }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
-
   const handleNodeContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData>) => {
-      if (selection.entries.length <= 1 && !event.shiftKey) {
+      const selectedElements = [...store.getState().nodes, ...store.getState().edges].filter(
+        (element) => element.selected
+      );
+      if (
+        (selectedElements.length <= 1 ||
+          (selectedElements.length > 1 &&
+            !selectedElements.find((selectedElements) => selectedElements.id === element.id))) &&
+        !event.shiftKey
+      ) {
         const rightClickAndSelect: Selection = {
           entries: [
             {
@@ -371,18 +367,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         };
         store.getState().addSelectedNodes([element.id]);
         setSelection(rightClickAndSelect);
-        diagramPaletteOnDiagramElementContextMenu();
         elementPaletteOnDiagramElementContextMenu(event, element);
       } else if (!event.shiftKey) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       }
     },
-    [
-      setSelection,
-      elementPaletteOnDiagramElementContextMenu,
-      diagramPaletteOnDiagramElementContextMenu,
-      groupPaletteOnDiagramElementContextMenu,
-    ]
+    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
   );
 
   const handleEdgeContextMenu = useCallback(
@@ -397,24 +387,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         };
         store.getState().addSelectedEdges([element.id]);
         setSelection(rightClickAndSelect);
-        diagramPaletteOnDiagramElementContextMenu();
         elementPaletteOnDiagramElementContextMenu(event, element);
       } else if (!event.shiftKey) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       }
     },
-    [
-      setSelection,
-      elementPaletteOnDiagramElementContextMenu,
-      diagramPaletteOnDiagramElementContextMenu,
-      groupPaletteOnDiagramElementContextMenu,
-    ]
+    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
   );
 
   const handleSelectionStart = useCallback(() => {
-    hideAllPalettes();
     setShiftSelection(true);
-  }, [hideAllPalettes, setShiftSelection]);
+  }, [setShiftSelection]);
 
   const handleSelectionEnd = useCallback(() => {
     setShiftSelection(false);
@@ -427,22 +410,14 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [groupPaletteOnDiagramElementContextMenu]
   );
 
-  const onClick = useCallback(
-    (_: React.MouseEvent<Element, MouseEvent>) => {
-      hideAllPalettes();
-    },
-    [hideAllPalettes]
-  );
-
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
 
   const handleNodeDrag = useCallback(
     (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
       onNodeDrag(event, node, nodes);
-      hideAllPalettes();
     },
-    [onNodeDrag, hideAllPalettes]
+    [onNodeDrag]
   );
 
   const { nodesDraggable } = useNodesDraggable();
@@ -451,12 +426,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
-    onMoveStart: hideAllPalettes,
     edges: edges,
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
-    onClick: onClick,
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
