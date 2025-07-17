@@ -13,6 +13,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
+import { useCurrentProject } from '../../project/useCurrentProject';
 import {
   GQLRedoData,
   GQLRedoInput,
@@ -22,7 +23,6 @@ import {
   GQLUndoRedoItemPayload,
   GQLUndoVariables,
 } from './UndoRedo.types';
-import { useCurrentProject } from './useCurrentProject';
 
 const undoMutation = gql`
   mutation undo($input: UndoInput!) {

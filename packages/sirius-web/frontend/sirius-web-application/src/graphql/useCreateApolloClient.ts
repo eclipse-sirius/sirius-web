@@ -29,11 +29,12 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { useMemo } from 'react';
 import { EditingContextStereotypesFragment, StereotypeFragment } from '../modals/new-document/useStereotypes.fragments';
+import { UseProjectFragment } from '../project/useProject.fragment';
 import { ViewerFragment } from '../viewer/useViewer.fragment';
-import { ProjectAndRepresentationFragment } from '../views/edit-project/useProjectAndRepresentationMetadata.fragment';
+import { CurrentEditingContextRepresentationFragment } from '../views/edit-project/useProjectAndRepresentationMetadata.fragment';
 import { LibraryFragment, ViewerLibrariesFragment } from '../views/library-browser/useLibraries.fragments';
 import {
-  ProjectFragment,
+  ViewerProjectFragment,
   ViewerProjectsFragment,
 } from '../views/project-browser/list-projects-area/useProjects.fragments';
 import { ApolloLoggerLink } from './ApolloLoggerLink';
@@ -68,10 +69,11 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
   let fragmentRegistry: FragmentRegistryAPI = createFragmentRegistry();
   fragmentRegistry.register(
     ViewerProjectsFragment,
-    ProjectFragment,
+    ViewerProjectFragment,
     ViewerLibrariesFragment,
     LibraryFragment,
-    ProjectAndRepresentationFragment,
+    CurrentEditingContextRepresentationFragment,
+    UseProjectFragment,
     EditingContextStereotypesFragment,
     StereotypeFragment,
     ViewerFragment

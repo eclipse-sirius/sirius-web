@@ -67,6 +67,8 @@ export {
   navigationBarMenuIconExtensionPoint,
 } from './navigationBar/NavigationBarMenuExtensionPoints';
 export { ImportLibraryCommand } from './omnibox/ImportLibraryCommand';
+export { useCurrentProject } from './project/useCurrentProject';
+export type { UseCurrentProjectValue } from './project/useCurrentProject.types';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export { useCurrentViewer } from './viewer/useCurrentViewer';
 export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
@@ -85,8 +87,6 @@ export {
   editProjectNavbarMenuEntryExtensionPoint,
 } from './views/edit-project/navbar/context-menu/EditProjectNavbarMenuExtensionPoints';
 export type { EditProjectNavbarSubtitleProps } from './views/edit-project/navbar/EditProjectNavbar.types';
-export { useCurrentProject } from './views/edit-project/useCurrentProject';
-export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';

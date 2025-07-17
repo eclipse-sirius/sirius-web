@@ -33,7 +33,7 @@ export const ViewerProjectsFragment = gql`
   }
 `;
 
-export const ProjectFragment = gql`
+export const ViewerProjectFragment = gql`
   fragment Project on Project {
     id
     name

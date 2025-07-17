@@ -12,12 +12,10 @@
  *******************************************************************************/
 
 import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
-import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 
 export type EditProjectViewParams = 'projectId' | 'representationId';
 
 export type EditProjectViewState = {
-  project: GQLProject | null;
   representation: RepresentationMetadata | null;
 };
 

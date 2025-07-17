@@ -17,7 +17,7 @@ import { emphasize } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
-import { useCurrentProject } from '../useCurrentProject';
+import { useCurrentProject } from '../../../project/useCurrentProject';
 import { EditProjectNavbarState } from './EditProjectNavbar.types';
 import { EditProjectNavbarContextMenu } from './context-menu/EditProjectNavbarContextMenu';
 import { useProjectSubscription } from './useProjectSubscription';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,27 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseProjectAndRepresentationMetadataValue {
-  data: GQLGetProjectAndRepresentationMetadataQueryData | null;
+export interface UseProjectValue {
   loading: boolean;
+  data?: GQLGetProjectQueryData;
 }
 
-export interface GQLGetProjectAndRepresentationMetadataQueryVariables {
+export interface GQLGetProjectQueryVariables {
   projectId: string;
   name: string | null;
-  representationId: string;
-  includeRepresentation: boolean;
 }
 
-export interface GQLGetProjectAndRepresentationMetadataQueryData {
+export interface GQLGetProjectQueryData {
   viewer: GQLViewer;
 }
 
 export interface GQLViewer {
   project: GQLProject | null;
 }
-
-// TODO: remove the part related to project once its has been handled by useCurrentProject.
 
 export interface GQLProject {
   id: string;
@@ -58,18 +54,5 @@ export interface GQLProjectSettingsCapabilities {
 }
 
 export interface GQLEditingContext {
-  id: string;
-  representation?: GQLRepresentationMetadata;
-}
-
-export type GQLRepresentationMetadata = {
-  id: string;
-  label: string;
-  kind: string;
-  iconURLs: string[];
-  description: GQLRepresentationDescription;
-};
-
-export interface GQLRepresentationDescription {
   id: string;
 }

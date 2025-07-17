@@ -16,7 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
-import { useCurrentProject } from '../../../../useCurrentProject';
+import { useCurrentProject } from '../../../../../../project/useCurrentProject';
 import { UpdateLibraryModalProps, UpdateLibraryModalState } from './UpdateLibraryModal.types';
 import { UpdateLibraryTable } from './UpdateLibraryTable';
 import { useUpdateLibrary } from './useUpdateLibrary';

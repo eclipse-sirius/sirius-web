@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,24 @@
 
 import { gql } from '@apollo/client';
 
-// TODO: Add an api break on the fragment name in the change log.
-
-export const CurrentEditingContextRepresentationFragment = gql`
-  fragment CurrentEditingContextRepresentationFragment on EditingContext {
-    representation(representationId: $representationId) @include(if: $includeRepresentation) {
-      id
-      label
-      kind
-      iconURLs
-      description {
-        id
+export const UseProjectFragment = gql`
+  fragment UseProjectFragment on Project {
+    id
+    name
+    natures {
+      name
+    }
+    capabilities {
+      canDownload
+      canRename
+      canDelete
+      canEdit
+      settings {
+        canView
       }
+    }
+    currentEditingContext(name: $name) {
+      id
     }
   }
 `;

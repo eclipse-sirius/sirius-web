@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { useCurrentProject } from '../views/edit-project/useCurrentProject';
+import { useCurrentProject } from '../project/useCurrentProject';
 import { PublishLibraryDialogProps, PublishLibraryDialogState } from './PublishLibraryDialog.types';
 import { usePublishLibraries } from './usePublishLibraries';
 

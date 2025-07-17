@@ -95,6 +95,7 @@ import { NavigationBarMenuItemProps } from '../navigationBar/NavigationBarMenu.t
 import { navigationBarMenuEntryExtensionPoint } from '../navigationBar/NavigationBarMenuExtensionPoints';
 import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
+import { ProjectContextProvider } from '../project/ProjectContext';
 import { routerExtensionPoint } from '../router/RouterExtensionPoints';
 import { CheckboxCell } from '../table/CheckboxCell';
 import { ViewerContextProvider } from '../viewer/ViewerContext';
@@ -566,11 +567,19 @@ export const siriusWebRouterContributions: PathRouteProps[] = [
   },
   {
     path: '/projects/:projectId/edit/:representationId?/*',
-    element: <EditProjectView />,
+    element: (
+      <ProjectContextProvider>
+        <EditProjectView />
+      </ProjectContextProvider>
+    ),
   },
   {
     path: '/projects/:projectId/settings/:tabId?',
-    element: <ProjectSettingsView />,
+    element: (
+      <ProjectContextProvider>
+        <ProjectSettingsView />
+      </ProjectContextProvider>
+    ),
   },
   {
     path: '/libraries',

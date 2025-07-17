@@ -29,11 +29,17 @@ const getProjectQuery = gql`
   ) {
     viewer {
       project(projectId: $projectId) {
-        ...ProjectAndRepresentationFragment
+        currentEditingContext(name: $name) {
+          ...CurrentEditingContextRepresentationFragment
+        }
       }
     }
   }
 `;
+
+// TODO: Rename the hook.
+// TODO: Update associated types
+// TODO: See if associated types were referenced in the index.ts, thus update api break of the changelog
 
 export const useProjectAndRepresentationMetadata = (
   projectId: string,

@@ -28,17 +28,15 @@ import {
 import { useEffect, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { useCurrentProject } from '../../project/useCurrentProject';
 import { EditProjectViewParams, EditProjectViewState, TreeToolBarProviderProps } from './EditProjectView.types';
 import { EditProjectNavbar } from './navbar/EditProjectNavbar';
-import { ProjectContext } from './ProjectContext';
 import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
-
-const PROJECT_ID_SEPARATOR = '@';
 
 const useEditProjectViewStyles = makeStyles()((_) => ({
   editProjectView: {
@@ -51,20 +49,15 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 }));
 
 export const EditProjectView = () => {
-  const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
+  const { representationId } = useParams<EditProjectViewParams>();
+  const { project, name } = useCurrentProject();
   const { classes } = useEditProjectViewStyles();
 
   const [state, setState] = useState<EditProjectViewState>({
-    project: null,
     representation: null,
   });
 
-  const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
-  const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
-  const name: string | null =
-    separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
-
-  const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
+  const { data, loading } = useProjectAndRepresentationMetadata(project.id, name, representationId);
   useEffect(() => {
     if (data) {
       const { project } = data.viewer;
@@ -94,18 +87,19 @@ export const EditProjectView = () => {
     }));
   };
 
+  // TODO: remove the skip argument, because now, the project is always defined.
   useSynchronizeSelectionAndURL(
-    projectId,
+    project.id,
     name,
     representationId,
-    state.project ? state.project.id : null,
+    project.id,
     state.representation ? state.representation.id : null,
-    !state.project
+    true
   );
 
   const getRepresentationPath = (representationId: string) => {
     // Note that this should match the corresponding route configuration
-    return `/projects/${projectId}/edit/${representationId}`;
+    return `/projects/${project.id}/edit/${representationId}`;
   };
 
   const [urlSearchParams] = useSearchParams();
@@ -116,36 +110,32 @@ export const EditProjectView = () => {
   }
 
   let content: React.ReactNode = null;
-  if (state.project && state.project.currentEditingContext) {
-    const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
-    const entries: SelectionEntry[] =
-      urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
-    const initialSelection: Selection = { entries };
+  const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
+  const entries: SelectionEntry[] =
+    urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
+  const initialSelection: Selection = { entries };
 
-    content = (
-      <ProjectContext.Provider value={{ project: state.project }}>
-        <SelectionContextProvider initialSelection={initialSelection}>
-          <SelectionSynchronizer>
-            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
-                <UndoRedo>
-                  <EditProjectNavbar />
-                  <TreeToolBarProvider>
-                    <Workbench
-                      editingContextId={state.project.currentEditingContext.id}
-                      initialRepresentationSelected={state.representation}
-                      onRepresentationSelected={onRepresentationSelected}
-                      readOnly={!state.project.capabilities.canEdit}
-                    />
-                  </TreeToolBarProvider>
-                </UndoRedo>
-              </OmniboxProvider>
-            </RepresentationPathContext.Provider>
-          </SelectionSynchronizer>
-        </SelectionContextProvider>
-      </ProjectContext.Provider>
-    );
-  }
+  content = (
+    <SelectionContextProvider initialSelection={initialSelection}>
+      <SelectionSynchronizer>
+        <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+          <OmniboxProvider editingContextId={project.currentEditingContext.id}>
+            <UndoRedo>
+              <EditProjectNavbar />
+              <TreeToolBarProvider>
+                <Workbench
+                  editingContextId={project.currentEditingContext.id}
+                  initialRepresentationSelected={state.representation}
+                  onRepresentationSelected={onRepresentationSelected}
+                  readOnly={!project.capabilities.canEdit}
+                />
+              </TreeToolBarProvider>
+            </UndoRedo>
+          </OmniboxProvider>
+        </RepresentationPathContext.Provider>
+      </SelectionSynchronizer>
+    </SelectionContextProvider>
+  );
 
   return <div className={classes.editProjectView}>{content}</div>;
 };

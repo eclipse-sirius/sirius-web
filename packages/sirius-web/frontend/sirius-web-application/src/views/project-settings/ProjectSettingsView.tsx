@@ -10,43 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useQuery } from '@apollo/client';
-import { useComponent, useData, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useComponent, useData } from '@eclipse-sirius/sirius-components-core';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { SyntheticEvent, useEffect } from 'react';
+import { SyntheticEvent } from 'react';
 import { generatePath, Navigate, Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentProject } from '../../project/useCurrentProject';
 import {
-  GQLGetProjectData,
-  GQLGetProjectVariables,
-  GQLProject,
   ProjectSettingsParams,
   ProjectSettingTabContribution,
   ProjectSettingTabProps,
 } from './ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from './ProjectSettingsViewExtensionPoints';
-
-const getProjectQuery = gql`
-  query getProject($projectId: ID!) {
-    viewer {
-      project(projectId: $projectId) {
-        id
-        name
-        capabilities {
-          settings {
-            canView
-          }
-        }
-      }
-    }
-  }
-`;
 
 const useProjectSettingsViewStyles = makeStyles()((theme) => ({
   projectSettingsView: {
@@ -106,19 +87,7 @@ export const ProjectSettingsView = () => {
   const { classes } = useProjectSettingsViewStyles();
   const { projectId, tabId } = useParams<ProjectSettingsParams>();
   const { data: projectSettingsTabContributions } = useData(projectSettingsTabExtensionPoint);
-  const { loading, data, error } = useQuery<GQLGetProjectData, GQLGetProjectVariables>(getProjectQuery, {
-    variables: {
-      projectId,
-    },
-  });
-
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
-  const project: GQLProject | null = data?.viewer.project;
+  const { project } = useCurrentProject();
 
   const selectedTabId: string | null =
     tabId && projectSettingsTabContributions.find((tab) => tab.id == tabId)
@@ -149,9 +118,6 @@ export const ProjectSettingsView = () => {
 
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
-  if (loading) {
-    return null;
-  }
   if (!project || !project.capabilities.settings.canView) {
     return <Navigate to="/errors/404" replace />;
   }

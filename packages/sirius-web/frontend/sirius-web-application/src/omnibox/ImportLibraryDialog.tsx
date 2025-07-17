@@ -25,7 +25,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
-import { useCurrentProject } from '../views/edit-project/useCurrentProject';
+import { useCurrentProject } from '../project/useCurrentProject';
 import {
   ImportLibraryDialogProps,
   ImportLibraryDialogState,

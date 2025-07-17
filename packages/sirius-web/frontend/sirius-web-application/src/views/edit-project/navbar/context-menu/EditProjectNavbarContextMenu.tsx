@@ -15,7 +15,7 @@ import { ComponentExtension, useComponent, useComponents } from '@eclipse-sirius
 import Menu from '@mui/material/Menu';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useCurrentProject } from '../../useCurrentProject';
+import { useCurrentProject } from '../../../../project/useCurrentProject';
 import { DeleteProjectMenuItem } from './DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from './DownloadProjectMenuItem';
 import {

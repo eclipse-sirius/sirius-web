@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLProject } from './useProjectAndRepresentationMetadata.types';
+import { GQLProject } from './useProject.types';
 
 export interface UseCurrentProjectValue {
   project: GQLProject;
+  name: string | null;
 }
