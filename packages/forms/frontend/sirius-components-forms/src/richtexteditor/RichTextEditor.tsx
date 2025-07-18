@@ -214,7 +214,7 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onBlur }: RichTex
     <LexicalComposer initialConfig={initialConfig}>
       <OnBlurPlugin onBlur={onBlur}>
         <UpdateValuePlugin markdownText={value} />
-        <ToolbarPlugin readOnly={readOnly} />
+        {!readOnly && <ToolbarPlugin />}
         <div className={classes.editorContainer}>
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <ListPlugin />
