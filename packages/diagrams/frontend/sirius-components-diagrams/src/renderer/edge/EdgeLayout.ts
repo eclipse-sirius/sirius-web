@@ -34,14 +34,13 @@ import {
 export const DEFAULT_HANDLE_SIZE = 6;
 export const HANDLE_OFFSET = 3;
 
-export const getNodesUpdatedWithHandles = (
-  nodes: Node<NodeData>[],
+export const getUpdatedHandleForNode = (
   node: InternalNode<Node<NodeData>>,
   edgeId: string,
   handleId: string,
   XYPosition: XYPosition,
   position: Position
-): Node<NodeData>[] => {
+): ConnectionHandle[] => {
   if (node.height && node.width) {
     //Get the position of the handle relative to the parent node
     XYPosition = {
@@ -66,26 +65,37 @@ export const getNodesUpdatedWithHandles = (
     }
   }
 
+  return node.data.connectionHandles.map((handle) => {
+    if (handle.id === handleId) {
+      return {
+        ...handle,
+        edgeId,
+        XYPosition,
+        position,
+      };
+    }
+    return handle;
+  });
+};
+
+export const getNodesUpdatedWithHandles = (
+  nodes: Node<NodeData>[],
+  node: InternalNode<Node<NodeData>>,
+  edgeId: string,
+  handleId: string,
+  XYPosition: XYPosition,
+  position: Position
+): Node<NodeData>[] => {
+  const updatedHanlde = getUpdatedHandleForNode(node, edgeId, handleId, XYPosition, position);
+
   const nodeId = node.id;
   return nodes.map((node) => {
     if (nodeId === node.id) {
-      const handles = node.data.connectionHandles.map((handle) => {
-        if (handle.id === handleId) {
-          return {
-            ...handle,
-            edgeId,
-            XYPosition,
-            position,
-          };
-        }
-        return handle;
-      });
-
       return {
         ...node,
         data: {
           ...node.data,
-          connectionHandles: handles,
+          connectionHandles: updatedHanlde,
         },
       };
     }
@@ -211,7 +221,6 @@ export const getNearestPointInPerimeter = (
 };
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
-  isNodeChange,
   sourceNode,
   targetNode,
   sourcePosition,
@@ -224,10 +233,8 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
       if (
         nodeConnectionHandle.id === sourceHandle &&
         nodeConnectionHandle.type === 'source' &&
-        !nodeConnectionHandle.XYPosition &&
-        (isNodeChange || (!isNodeChange && !nodeConnectionHandle.isFixedHandlePosition))
+        !nodeConnectionHandle.XYPosition
       ) {
-        nodeConnectionHandle.isFixedHandlePosition = false;
         nodeConnectionHandle.position = sourcePosition;
       }
       return nodeConnectionHandle;
@@ -239,10 +246,8 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
       if (
         nodeConnectionHandle.id === targetHandle &&
         nodeConnectionHandle.type === 'target' &&
-        !nodeConnectionHandle.XYPosition &&
-        (isNodeChange || (!isNodeChange && !nodeConnectionHandle.isFixedHandlePosition))
+        !nodeConnectionHandle.XYPosition
       ) {
-        nodeConnectionHandle.isFixedHandlePosition = false;
         nodeConnectionHandle.position = targetPosition;
       }
       return nodeConnectionHandle;
@@ -501,4 +506,18 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
     x: (node.internals.positionAbsolute.x ?? 0) + handleXYPosition.x,
     y: (node.internals.positionAbsolute.y ?? 0) + handleXYPosition.y,
   };
+};
+
+export const isCursorNearCenterOfTheNode = (node: InternalNode<Node<NodeData>>, position: XYPosition): boolean => {
+  if (node.width && node.height) {
+    const offsetX = 5;
+    const offSetY = 5;
+    const x = node.internals.positionAbsolute.x + offsetX;
+    const y = node.internals.positionAbsolute.y + offSetY;
+    const right = node.internals.positionAbsolute.x + node.width - offsetX;
+    const bottom = node.internals.positionAbsolute.y + node.height - offSetY;
+
+    return position.x > x && position.x < right && position.y > y && position.y < bottom;
+  }
+  return false;
 };

@@ -62,6 +62,7 @@ export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: 
       isDropNodeTarget: false,
       isDropNodeCandidate: false,
       isHovered: false,
+      connectionLinePositionOnNode: 'none',
     },
   };
 };

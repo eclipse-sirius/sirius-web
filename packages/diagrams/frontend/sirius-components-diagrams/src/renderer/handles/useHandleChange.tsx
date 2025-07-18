@@ -105,7 +105,6 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 nodeTargetConnectionHandle?.position !== targetPosition
               ) {
                 const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
-                  true,
                   sourceNode,
                   targetNode,
                   sourcePosition,

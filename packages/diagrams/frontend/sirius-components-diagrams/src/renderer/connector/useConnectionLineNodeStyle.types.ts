@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { HandleProps, XYPosition } from '@xyflow/react';
-
-export interface ConnectionHandlesProps {
-  connectionHandles: ConnectionHandle[];
-}
-
-export interface ConnectionHandle extends HandleProps {
-  nodeId: string;
-  edgeId: string;
-  index: number;
-  isVirtualHandle: boolean;
-  isHidden: boolean;
-  XYPosition: XYPosition | null;
-}
-export interface ConnectionHandlesState {
-  selectedHandles: string[];
+export interface UseConnectionLineNodeStyleValues {
+  style: React.CSSProperties;
 }

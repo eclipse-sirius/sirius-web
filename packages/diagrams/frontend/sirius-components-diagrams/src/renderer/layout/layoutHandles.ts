@@ -162,7 +162,6 @@ const layoutHandlePosition = (
         nodeTargetConnectionHandle?.position !== targetPosition
       ) {
         const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
-          false,
           sourceNode,
           targetNode,
           sourcePosition,
