@@ -18,10 +18,18 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.DeleteProjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectCapabilitiesQueryRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +50,18 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
 
     @Autowired
     private ProjectCapabilitiesQueryRunner projectCapabilitiesQueryRunner;
+
+    @Autowired
+    private CreateProjectMutationRunner createProjectMutationRunner;
+
+    @Autowired
+    private DeleteProjectMutationRunner deleteProjectMutationRunner;
+
+    @Autowired
+    private IProjectRepository projectRepository;
+
+    @Autowired
+    private IMessageService messageService;
 
     @Test
     @GivenSiriusWebServer
@@ -69,6 +89,37 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         List<String> tabIds = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.tabs[*].tabId");
         assertThat(canViewProjectTabSettings).allMatch(Boolean.FALSE::equals);
         assertThat(tabIds).contains("images");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given the demo profile, when a mutation to create a project is performed, then it returns an error payload")
+    public void givenTheDemoProfileWhenAMutationToCreateAProjectIsPerformedThenItReturnsAnErrorPayload() {
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var result = this.createProjectMutationRunner.run(input);
+
+        String typeName = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
+
+        String message = JsonPath.read(result, "$.data.createProject.message");
+        assertThat(message).isEqualTo(this.messageService.unauthorized());
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given the demo profile, when a mutation to delete a project is performed, then it returns an error payload")
+    public void givenTheDemoProfileWhenAMutationToDeleteAProjectIsPerformedThenItReturnsAnErrorPayload() {
+        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT);
+        var result = this.deleteProjectMutationRunner.run(input);
+
+        String typeName = JsonPath.read(result, "$.data.deleteProject.__typename");
+        assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
+
+        String message = JsonPath.read(result, "$.data.deleteProject.message");
+        assertThat(message).isEqualTo(this.messageService.unauthorized());
+
+        var project = this.projectRepository.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
+        assertThat(project).isPresent();
     }
 
 }

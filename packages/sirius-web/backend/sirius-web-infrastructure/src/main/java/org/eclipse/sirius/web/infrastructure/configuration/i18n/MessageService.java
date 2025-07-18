@@ -122,4 +122,9 @@ public class MessageService implements IMessageService {
     public String objectDoesNotExist(String objectId) {
         return this.messageSourceAccessor.getMessage("OBJECT_DOES_NOT_EXIST", new Object[] {objectId});
     }
+
+    @Override
+    public String unauthorized() {
+        return this.messageSourceAccessor.getMessage("UNAUTHORIZED");
+    }
 }
