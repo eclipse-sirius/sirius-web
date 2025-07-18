@@ -20,8 +20,8 @@ export interface UseReconnectEdge {
     edge: Edge<EdgeData>,
     handleType: HandleType
   ) => void;
-  reconnectEdge: (oldEdge: Edge, newConnection: Connection) => void;
-  onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge, handleType: 'source' | 'target') => void;
+  reconnectEdge: (oldEdge: Edge<EdgeData>, newConnection: Connection) => void;
+  onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: 'source' | 'target') => void;
 }
 
 export interface GQLReconnectEdgeVariables {
