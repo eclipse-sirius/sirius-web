@@ -163,7 +163,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5164[#5164] [diagram] Remove unwanted space between list node header and its first child
 - https://github.com/eclipse-sirius/sirius-web/issues/5207[#5207] [diagram] Fix an issue that prevented palette tools to open dialogs
 - https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Fix an issue where the edges were not correctly centered on the handle
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5225[#5225] [diagram] Fix an issue where `synchronizeLayoutData` was called twice when moving the handle of a manually layouted edge
 
 === New Features
 

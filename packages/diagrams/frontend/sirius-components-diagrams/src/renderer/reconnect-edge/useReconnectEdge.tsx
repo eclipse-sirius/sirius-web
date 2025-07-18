@@ -27,6 +27,7 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
+import { determineSegmentAxis, getNewPointToGoAroundNode } from '../edge/rectilinear-edge/RectilinearEdgeCalculation';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import {
@@ -125,7 +126,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   }, [reconnectEdgeData, reconnectEdgeError]);
 
   const reconnectEdge = useCallback(
-    (oldEdge: Edge, newConnection: Connection) => {
+    (oldEdge: Edge<EdgeData>, newConnection: Connection) => {
       // Reconnect an edge on another node
       if (oldEdge.target !== newConnection.target || oldEdge.source !== newConnection.source) {
         const edgeId = oldEdge.id;
@@ -145,95 +146,184 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   );
 
   const onReconnectEdgeEnd = useCallback(
-    (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
-      const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
-      const targetInternalNode = store.getState().connection.toNode;
-
-      const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
-
-      // Reconnect an edge on the same node to update handle position
-      if (
-        'clientX' in event &&
-        'clientY' in event &&
-        targetInternalNode &&
-        targetInternalNode.width &&
-        targetInternalNode.height &&
-        handle
-      ) {
-        let XYPosition: XYPosition = screenToFlowPosition({
-          x: event.clientX,
-          y: event.clientY,
-        });
-
-        const pointToSnap = getNearestPointInPerimeter(
-          targetInternalNode.internals.positionAbsolute.x,
-          targetInternalNode.internals.positionAbsolute.y,
-          targetInternalNode.width,
-          targetInternalNode.height,
-          XYPosition.x,
-          XYPosition.y
-        );
-
-        const nodes = getNodesUpdatedWithHandles(
-          getNodes(),
-          targetInternalNode,
-          edge.id,
-          handle,
-          pointToSnap.XYPosition,
-          pointToSnap.position
-        );
-
-        const finalDiagram: RawDiagram = {
-          nodes: nodes,
-          edges: getEdges(),
-        };
-        updateNodeInternals(targetInternalNode.id);
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-      }
-
-      // Reconnect an edge on another edge
-      if (targetEdgeHovered) {
-        let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
-        if (
-          targetEdgeHovered.id !== edge.id &&
-          ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id !== edge.target) ||
-            (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id !== edge.source))
-        ) {
-          handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
-        }
-      }
-      // Reconnect an edge on the same edge to update handle position
-      if (targetEdgeHovered && targetEdgeHovered.data && targetEdgeHovered.data.edgePath) {
-        let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
-        if (
-          'clientX' in event &&
-          'clientY' in event &&
-          ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id === edge.target) ||
-            (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id === edge.source))
-        ) {
-          const finalDiagram: RawDiagram = {
-            nodes: getNodes(),
-            edges: getEdges(),
-          };
-          updateNodeInternals(targetEdgeHovered.id);
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-        }
-      }
-
-      setEdges((prevEdges) =>
-        prevEdges.map((prevEdge) => {
-          if (prevEdge.id === edge.id) {
-            return {
-              ...prevEdge,
-              reconnectable: true,
-            };
-          }
-          return prevEdge;
-        })
-      );
+    (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+      reconnectEdgeOnSameNode(event, edge, handleType);
+      reconnectEdgeOnSameEdge(event, edge, handleType);
+      reconnectEdgeOnAnotherEdge(event, edge, handleType);
     },
     [getNodes, getEdges]
   );
+
+  const reconnectEdgeOnSameEdge = (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+    const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
+    // Reconnect an edge on the same edge to update handle position
+    if (targetEdgeHovered && targetEdgeHovered.data && targetEdgeHovered.data.edgePath) {
+      let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
+      if (
+        'clientX' in event &&
+        'clientY' in event &&
+        ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id === edge.target) ||
+          (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id === edge.source))
+      ) {
+        const finalDiagram: RawDiagram = {
+          nodes: getNodes(),
+          edges: getEdges(),
+        };
+        updateNodeInternals(targetEdgeHovered.id);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      }
+    }
+  };
+
+  const reconnectEdgeOnAnotherEdge = (
+    _event: MouseEvent | TouchEvent,
+    edge: Edge<EdgeData>,
+    handleType: HandleType
+  ) => {
+    const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
+    // Reconnect an edge on another edge
+    if (targetEdgeHovered) {
+      let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
+      if (
+        targetEdgeHovered.id !== edge.id &&
+        ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id !== edge.target) ||
+          (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id !== edge.source))
+      ) {
+        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
+      }
+    }
+
+    setEdges((prevEdges) =>
+      prevEdges.map((prevEdge) => {
+        if (prevEdge.id === edge.id) {
+          return {
+            ...prevEdge,
+            reconnectable: true,
+          };
+        }
+        return prevEdge;
+      })
+    );
+  };
+
+  const reconnectEdgeOnSameNode = (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+    const targetInternalNode = store.getState().connection.toNode;
+    const handleId = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
+
+    // Reconnect an edge on the same node to update handle position
+    if (
+      'clientX' in event &&
+      'clientY' in event &&
+      targetInternalNode &&
+      targetInternalNode.width &&
+      targetInternalNode.height &&
+      handleId
+    ) {
+      let XYPosition: XYPosition = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const pointToSnap = getNearestPointInPerimeter(
+        targetInternalNode.internals.positionAbsolute.x,
+        targetInternalNode.internals.positionAbsolute.y,
+        targetInternalNode.width,
+        targetInternalNode.height,
+        XYPosition.x,
+        XYPosition.y
+      );
+
+      const nodes = getNodesUpdatedWithHandles(
+        getNodes(),
+        targetInternalNode,
+        edge.id,
+        handleId,
+        pointToSnap.XYPosition,
+        pointToSnap.position
+      );
+
+      //Create a new bending point if the edge was manualy layouted
+      let newEdges = store.getState().edges;
+      if (edge.data?.bendingPoints) {
+        if (handleType === 'source') {
+          const newPoints = [...edge.data.bendingPoints];
+          const lastPoint = newPoints[newPoints.length - 1];
+          const penultimatePoint = newPoints[newPoints.length - 2];
+          if (lastPoint && penultimatePoint) {
+            const segmentAxis = determineSegmentAxis(penultimatePoint, lastPoint);
+            const newPoint = getNewPointToGoAroundNode(
+              segmentAxis,
+              pointToSnap.position,
+              pointToSnap.XYPosition.x,
+              pointToSnap.XYPosition.y
+            );
+
+            if (newPoint) {
+              newPoints.push(newPoint);
+              if (segmentAxis === 'x') {
+                lastPoint.x = newPoint.x;
+              } else if (segmentAxis === 'y') {
+                lastPoint.y = newPoint.y;
+              }
+              newEdges = newEdges.map((previousEdge) => {
+                if (previousEdge.data && previousEdge.id === edge.id) {
+                  return {
+                    ...previousEdge,
+                    data: {
+                      ...previousEdge.data,
+                      bendingPoints: newPoints,
+                    },
+                  };
+                }
+                return previousEdge;
+              });
+            }
+          }
+        } else {
+          const newPoints = [...edge.data.bendingPoints];
+          const firstPoint = newPoints[0];
+          const secondPoint = newPoints[1];
+          if (firstPoint && secondPoint) {
+            const segmentAxis = determineSegmentAxis(firstPoint, secondPoint);
+            const newPoint = getNewPointToGoAroundNode(
+              segmentAxis,
+              pointToSnap.position,
+              pointToSnap.XYPosition.x,
+              pointToSnap.XYPosition.y
+            );
+
+            if (newPoint) {
+              newPoints.unshift(newPoint);
+              if (segmentAxis === 'x') {
+                firstPoint.x = newPoint.x;
+              } else if (segmentAxis === 'y') {
+                firstPoint.y = newPoint.y;
+              }
+              newEdges = newEdges.map((previousEdge) => {
+                if (previousEdge.data && previousEdge.id === edge.id) {
+                  return {
+                    ...previousEdge,
+                    data: {
+                      ...previousEdge.data,
+                      bendingPoints: newPoints,
+                    },
+                  };
+                }
+                return previousEdge;
+              });
+            }
+          }
+        }
+      }
+
+      const finalDiagram: RawDiagram = {
+        nodes: nodes,
+        edges: newEdges,
+      };
+      updateNodeInternals(targetInternalNode.id);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+    }
+  };
 
   return { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd };
 };

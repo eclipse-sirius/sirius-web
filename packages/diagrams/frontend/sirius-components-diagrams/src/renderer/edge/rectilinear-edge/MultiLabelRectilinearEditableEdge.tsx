@@ -114,9 +114,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
       source.y,
       target.x,
       target.y,
-      customEdge,
-      sourcePosition,
-      targetPosition
+      customEdge
     );
 
     const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
