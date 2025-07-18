@@ -136,8 +136,9 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
 
     private Optional<ProjectTemplate> getBrowseAllProjectTemplates() {
         Optional<ProjectTemplate> result = Optional.empty();
+        var aTemplateExists = this.projectTemplateProviders.stream().mapToLong(providers -> providers.getProjectTemplates().size()).sum() > 0;
         var canCreate = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE) == CapabilityVote.GRANTED);
-        if (canCreate) {
+        if (canCreate && aTemplateExists) {
             result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
         }
         return  result;
