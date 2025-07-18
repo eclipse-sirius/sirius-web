@@ -17,54 +17,21 @@ To test _Sirius Web_ you have two possible options:
 [#quick-start]
 == Quick Start
 
-If you want a quick overview of how Sirius Web looks and feels like without building the sample application yourself, you will simply need:
+If you want a quick overview of how Sirius Web looks and feels like without building the sample application yourself:
 
-* https://adoptium.net/temurin/releases/[Java 17]
-* https://www.docker.com/[Docker], or an existing PostgreSQL 12 (or later) installation with a DB user that has admin rights on the database (those are needed by the application to create its schema on first startup).
+1. Install https://www.docker.com/[Docker] if you do not have it already.
+2. Download the https://raw.githubusercontent.com/eclipse-sirius/sirius-web/refs/heads/master/docker-compose.yml[`docker-compose.yml`] file from the root of the Sirius Web git repository.
+3. Open a terminal in the directory where you put the `docker-compose.yml` file, and issue `docker compose up`.
 
-Then, download the latest pre-built JAR:
+Docker will automatically download and start both the database (PostgreSQL) image and the latest version of Sirius Web published https://hub.docker.com/r/eclipsesirius/sirius-web[on Docker Hub].
 
-. Go to the link:../../packages?tab=packages&q=+org.eclipse.sirius.sirius-web[packages tab of the github project] and look for `sirius-web`.
-. Download the latest jar available
+WARNING: This may take a while the first time you run this as Docker will first pull the required Docker images.
 
-This is a single "fat JAR" named `sirius-web.jar` which contains the complete sample application with all its dependencies.
+Once the application is started, simply point your browser at http://localhost:8080 and enjoy!
 
-To actually run the application:
+When you are done, you can stop the application by hitting Ctrl-c from the terminal where you launcher `docker compose up`.
 
-1. Sirius Web uses PostgreSQL for its database. For development or local testing, the easiest way is to start a PostgreSQL instance using Docker.
-+
-[source,sh]
-----
-docker run -p 5433:5432 --rm --name sirius-web-postgres \
-                             -e POSTGRES_USER=dbuser \
-                             -e POSTGRES_PASSWORD=dbpwd \
-                             -e POSTGRES_DB=sirius-web-db \
-                             -d postgres:15
-----
-+
-WARNING: This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
-+
-If you do not have Docker or want to use an existing PostgreSQL installation, adjust the command-line parameters below and make sure the DB user has admin rights on the database; they are needed to automatically create the DB schema.
-2. Start the application:
-+
-[source,sh]
-----
-java -jar sirius-web.jar \
-          --spring.datasource.url=jdbc:postgresql://localhost:5433/sirius-web-db \
-          --spring.datasource.username=dbuser \
-          --spring.datasource.password=dbpwd
-----
-+
-WARNING: If you encounter an error similar to `org.postgresql.util.PSQLException: FATAL: authentification`, check if your 5433 port is already used by another application. If so, change the command lines for docker and the application java launcher with 5434 or any other free port.
-
-3. Point your browser at http://localhost:8080 and enjoy!
-+
-WARNING: The initial version of Sirius Web has some known issues with Firefox.
-It is recommended to use a Chrome-based browser until these are fixed.
-
-NOTE: Do not forget to stop the PostgreSQL container once you are done: `docker kill sirius-web-postgres`. 
-Note that this will remove all the data you have created while testing the application.
-
+NOTE: This way of running the application is only useful for quick testing and should not be used for actual deployments.
 
 [#build]
 == Building

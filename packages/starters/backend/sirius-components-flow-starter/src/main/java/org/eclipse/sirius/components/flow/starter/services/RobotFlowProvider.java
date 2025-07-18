@@ -93,6 +93,7 @@ public class RobotFlowProvider implements IRobotFlowProvider {
         secondFan.setSpeed(20);
 
         var captureSubsystemCompositeProcessor = FlowFactory.eINSTANCE.createCompositeProcessor();
+        captureSubsystemCompositeProcessor.setName("Capture_Subsystem");
         captureSubsystemCompositeProcessor.getElements().addAll(List.of(
                 radarCaptureProcessor,
                 backCameraDataSource,

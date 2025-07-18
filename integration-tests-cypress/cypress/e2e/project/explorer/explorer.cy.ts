@@ -36,12 +36,12 @@ describe('Explorer', () => {
 
         explorer.expandWithDoubleClick('System');
         explorer.getTreeItemByLabel('Central_Unit').should('exist');
-        explorer.getTreeItemByLabel('CompositeProcessor').should('exist');
+        explorer.getTreeItemByLabel('Capture_Subsystem').should('exist');
         explorer.getTreeItemByLabel('Wifi').should('exist');
 
         explorer.collapseWithDoubleClick('System');
         explorer.getTreeItemByLabel('Central_Unit').should('not.exist');
-        explorer.getTreeItemByLabel('CompositeProcessor').should('not.exist');
+        explorer.getTreeItemByLabel('Capture_Subsystem').should('not.exist');
         explorer.getTreeItemByLabel('Wifi').should('not.exist');
       });
 
@@ -57,7 +57,7 @@ describe('Explorer', () => {
         explorer.toggle('System');
         // Check that its children are visible (i.e. it is correcly expanded)
         explorer.getTreeItemByLabel('Central_Unit').should('exist');
-        explorer.getTreeItemByLabel('CompositeProcessor').should('exist');
+        explorer.getTreeItemByLabel('Capture_Subsystem').should('exist');
         explorer.getTreeItemByLabel('Wifi').should('exist');
         // Check that this has not changed the selection (still on 'robot')
         explorer.getSelectedTreeItems().should('have.length', 1);
@@ -67,7 +67,7 @@ describe('Explorer', () => {
         explorer.toggle('System');
         // Check that its children are no longer visible (i.e. it is correcly collapsed)
         explorer.getTreeItemByLabel('Central_Unit').should('not.exist');
-        explorer.getTreeItemByLabel('CompositeProcessor').should('not.exist');
+        explorer.getTreeItemByLabel('Capture_Subsystem').should('not.exist');
         explorer.getTreeItemByLabel('Wifi').should('not.exist');
         // Check that this has not changed the selection (still on 'robot')
         explorer.getSelectedTreeItems().should('have.length', 1);
