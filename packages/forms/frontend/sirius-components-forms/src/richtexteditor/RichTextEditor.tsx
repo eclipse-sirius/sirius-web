@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,9 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { makeStyles } from 'tss-react/mui';
 import { $setSelection, TextNode } from 'lexical';
 import { FocusEvent, useCallback, useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ListPlugin } from './ListPlugin';
 import {
   ContentEditableProps,
@@ -214,7 +214,7 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onBlur }: RichTex
     <LexicalComposer initialConfig={initialConfig}>
       <OnBlurPlugin onBlur={onBlur}>
         <UpdateValuePlugin markdownText={value} />
-        <ToolbarPlugin readOnly={readOnly} />
+        {!readOnly ? <ToolbarPlugin readOnly={readOnly} /> : null}
         <div className={classes.editorContainer}>
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <ListPlugin />
