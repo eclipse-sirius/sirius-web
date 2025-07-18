@@ -23,6 +23,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import {
   GQLPalette,
   GQLPaletteDivider,
@@ -41,8 +43,6 @@ import { PaletteToolList } from './tool-list/PaletteToolList';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
-import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
-import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 
 const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
   palette: {
@@ -112,6 +112,7 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  elementDescriptionId,
   targetObjectId,
   onDirectEditClick,
   onClose,
@@ -144,7 +145,7 @@ export const Palette = ({
     domNode?.focus();
     executeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
     if (palette) {
-      setLastToolInvoked(palette.id, tool);
+      setLastToolInvoked(elementDescriptionId, tool);
     }
   };
 
@@ -225,7 +226,8 @@ export const Palette = ({
             palette={palette}
             onToolClick={handleToolClick}
             onBackToMainList={handleBackToMainList}
-            diagramElementId={diagramElementId}>
+            diagramElementId={diagramElementId}
+            elementDescriptionId={elementDescriptionId}>
             {children}
           </PaletteToolList>
         )}

@@ -115,6 +115,7 @@ export const MultiLabelEdge = memo(
         {selected ? (
           <DiagramElementPalette
             diagramElementId={id}
+            elementDescriptionId={data?.descriptionId ?? ''}
             targetObjectId={data?.targetObjectId ?? ''}
             labelId={label ? label.id : null}
           />
