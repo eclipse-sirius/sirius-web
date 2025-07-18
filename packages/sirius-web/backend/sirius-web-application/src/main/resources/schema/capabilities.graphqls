@@ -30,4 +30,10 @@ type ProjectCapabilities {
 
 type ProjectSettingsCapabilities {
   canView: Boolean!
+  tabs(tabIds: [ID!]!): [ProjectSettingsTabCapabilities!]!
+}
+
+type ProjectSettingsTabCapabilities {
+  tabId: ID!
+  canView: Boolean!
 }

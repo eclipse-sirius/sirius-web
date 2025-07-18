@@ -10,43 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useQuery } from '@apollo/client';
-import { useComponent, useData, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useComponent, useData } from '@eclipse-sirius/sirius-components-core';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { SyntheticEvent, useEffect } from 'react';
+import { SyntheticEvent } from 'react';
 import { generatePath, Navigate, Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
-  GQLGetProjectData,
-  GQLGetProjectVariables,
-  GQLProject,
   ProjectSettingsParams,
   ProjectSettingTabContribution,
   ProjectSettingTabProps,
 } from './ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from './ProjectSettingsViewExtensionPoints';
-
-const getProjectQuery = gql`
-  query getProject($projectId: ID!) {
-    viewer {
-      project(projectId: $projectId) {
-        id
-        name
-        capabilities {
-          settings {
-            canView
-          }
-        }
-      }
-    }
-  }
-`;
+import { useProjectAndProjectSettingTabCapabilities } from './useProjectAndProjectSettingTabCapabilities';
+import { GQLProject, GQLProjectSettingsCapabilities } from './useProjectAndProjectSettingTabCapabilities.types';
 
 const useProjectSettingsViewStyles = makeStyles()((theme) => ({
   projectSettingsView: {
@@ -106,27 +88,12 @@ export const ProjectSettingsView = () => {
   const { classes } = useProjectSettingsViewStyles();
   const { projectId, tabId } = useParams<ProjectSettingsParams>();
   const { data: projectSettingsTabContributions } = useData(projectSettingsTabExtensionPoint);
-  const { loading, data, error } = useQuery<GQLGetProjectData, GQLGetProjectVariables>(getProjectQuery, {
-    variables: {
-      projectId,
-    },
-  });
+  const { loading, data } = useProjectAndProjectSettingTabCapabilities(
+    projectId,
+    projectSettingsTabContributions.map((tab) => tab.id)
+  );
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
   const project: GQLProject | null = data?.viewer.project;
-
-  const selectedTabId: string | null =
-    tabId && projectSettingsTabContributions.find((tab) => tab.id == tabId)
-      ? tabId
-      : projectSettingsTabContributions[0]?.id ?? null;
-  const settingContentContribution: ProjectSettingTabContribution | null = selectedTabId
-    ? projectSettingsTabContributions.filter((contribution) => contribution.id === selectedTabId)[0]
-    : null;
 
   const navigate = useNavigate();
   const handleTabChange = (_event: SyntheticEvent, tabId: string) => {
@@ -136,6 +103,19 @@ export const ProjectSettingsView = () => {
     });
     navigate(pathname);
   };
+  const { Component: Footer } = useComponent(footerExtensionPoint);
+
+  const settings: GQLProjectSettingsCapabilities | null = data?.viewer.project.capabilities.settings;
+
+  const viewableTabContributions: ProjectSettingTabContribution[] = projectSettingsTabContributions.filter(
+    (contribution) => settings?.tabs.find((tab) => tab.tabId === contribution.id && tab.canView)
+  );
+
+  const selectedTabId: string | null =
+    tabId && viewableTabContributions.find((tab) => tab.id == tabId) ? tabId : viewableTabContributions[0]?.id ?? null;
+  const settingContentContribution: ProjectSettingTabContribution | null = selectedTabId
+    ? viewableTabContributions.filter((contribution) => contribution.id === selectedTabId)[0]
+    : null;
 
   const SettingContent: () => JSX.Element = () => {
     if (settingContentContribution) {
@@ -147,19 +127,19 @@ export const ProjectSettingsView = () => {
     return null;
   };
 
-  const { Component: Footer } = useComponent(footerExtensionPoint);
-
   if (loading) {
     return null;
   }
   if (!project || !project.capabilities.settings.canView) {
     return <Navigate to="/errors/404" replace />;
   }
-  if (tabId && !projectSettingsTabContributions.find((tab) => tab.id == tabId)) {
+  if (tabId && !viewableTabContributions.find((tab) => tab.id === tabId)) {
     return <Navigate to="/errors/404" replace />;
   }
 
   const { id, name } = project;
+  const hasSettings = viewableTabContributions.length > 0 && settingContentContribution != null;
+
   return (
     <div className={classes.projectSettingsView}>
       <NavigationBar>
@@ -177,16 +157,15 @@ export const ProjectSettingsView = () => {
           </div>
         </div>
       </NavigationBar>
-
       <main className={classes.main}>
         <Container maxWidth="xl">
           <div className={classes.header}>
             <Typography variant="h4">Settings</Typography>
           </div>
-          {projectSettingsTabContributions.length > 0 && settingContentContribution != null ? (
+          {hasSettings ? (
             <div className={classes.tabs}>
               <Tabs value={selectedTabId} onChange={handleTabChange} orientation="vertical">
-                {projectSettingsTabContributions.map(({ id, title, icon }) => (
+                {viewableTabContributions.map(({ id, title, icon }) => (
                   <Tab className={classes.tab} label={title} icon={icon} iconPosition="start" key={id} value={id} />
                 ))}
               </Tabs>

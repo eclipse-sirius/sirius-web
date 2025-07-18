@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles(value = "demo")
 public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -42,26 +45,9 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a server, when a query to retrieve capabilities of a project is executed, then it return true by default")
-    public void givenAServerWhenQueryToRetrieveCapabilitiesIsExecutedThenItReturnsTrueByDefault() {
-        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT));
-        boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
-        boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
-        boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
-        boolean canEdit = JsonPath.read(result, "$.data.viewer.project.capabilities.canEdit");
-        boolean canViewSettings = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.canView");
-        assertThat(canDownload).isTrue();
-        assertThat(canRename).isTrue();
-        assertThat(canDelete).isTrue();
-        assertThat(canEdit).isTrue();
-        assertThat(canViewSettings).isTrue();
-    }
-
-    @Test
-    @GivenSiriusWebServer
-    @DisplayName("Given a capability voter that deny all capabilities on a specific project, when a query to retrieve capabilities on that specific project is executed, then capabilities are all false")
-    public void givenACapabilityVoterThatDenyAllCapabilitiesOnASpecificProjectWhenAQueryToRetrieveCapabilitiesOnThatSpecificProjectIsExecutedThenCapabilitiesAreAllFalse() {
-        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT));
+    @DisplayName("Given the demo profile, when a query to retrieve capabilities on a project is executed, then it returns the expected capabilities values")
+    public void givenTheDemoProfileWhenAQueryToRetrieveCapabilitiesOnAProjectIsExecutedThenItReturnsTheExpectedCapabilitiesValues() {
+        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of()));
         boolean canDownload = JsonPath.read(result, "$.data.viewer.project.capabilities.canDownload");
         boolean canRename = JsonPath.read(result, "$.data.viewer.project.capabilities.canRename");
         boolean canDelete = JsonPath.read(result, "$.data.viewer.project.capabilities.canDelete");
@@ -72,6 +58,17 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
         assertThat(canDelete).isFalse();
         assertThat(canEdit).isFalse();
         assertThat(canViewSettings).isFalse();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given the demo profile, when a query to retrieve capabilities the settings of a project is executed, then it returns the expected capabilities values")
+    public void givenTheDemoProfileWhenAQueryToRetrieveTheSettingsOfAProjectIsExecutedThenItReturnsTheExpectedCapabilitiesValue() {
+        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of("images")));
+        List<Boolean> canViewProjectTabSettings = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.tabs[*].canView");
+        List<String> tabIds = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.tabs[*].tabId");
+        assertThat(canViewProjectTabSettings).allMatch(Boolean.FALSE::equals);
+        assertThat(tabIds).contains("images");
     }
 
 }
