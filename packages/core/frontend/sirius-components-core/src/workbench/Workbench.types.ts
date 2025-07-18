@@ -36,7 +36,7 @@ export interface WorkbenchViewContribution {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
+  component: React.ComponentType<WorkbenchViewComponentProps>;
 }
 
 export interface WorkbenchViewComponentProps {
