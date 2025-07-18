@@ -16,13 +16,11 @@ import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeId: string): void => {
@@ -55,7 +53,6 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-        hideDiagramElementPalette();
       });
     }
   };

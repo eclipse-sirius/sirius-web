@@ -11,7 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { XYPosition } from '@xyflow/react';
+import { DraggableBounds } from 'react-draggable';
 
 export interface UseGetUpdatedModalPositionValue {
   getUpdatedModalPosition: (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => XYPosition;
+  getUpdatedBounds: (modalRef: React.RefObject<HTMLDivElement>) => DraggableBounds;
 }
