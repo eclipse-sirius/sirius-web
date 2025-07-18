@@ -200,6 +200,8 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 }
 ----
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5227[#5227] [sirius-web] Add support for capability check on create and delete project mutations.
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
