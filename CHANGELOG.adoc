@@ -167,6 +167,8 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5197[#5197] [diagram] Include edges connected to border nodes in ELK input for improved automatic layout
 - https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [sirius-web] Prevent the rename project modal to lose focus while typing.
 It occurred when we were trying to type the first letter of any menu item of the project browser action menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/5228[#5228] [sirius-web] Hide the modal to browser project templates when no template are provided
+
 
 === New Features
 
@@ -220,7 +222,6 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5185[#5185] [sirius-web] Hide the download button instead of disabling it when the download capability is disabled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
-
 
 
 == v2025.6.0
