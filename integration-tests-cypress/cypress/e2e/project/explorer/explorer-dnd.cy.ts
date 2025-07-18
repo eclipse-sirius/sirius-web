@@ -36,11 +36,11 @@ describe('Explorer', () => {
         explorer.expandWithDoubleClick('Central_Unit');
         explorer.getTreeItemByLabel('Radar').should('not.exist');
 
-        explorer.expandWithDoubleClick('CompositeProcessor');
+        explorer.expandWithDoubleClick('Capture_Subsystem');
         const dataTransfer = new DataTransfer();
         explorer.dragTreeItem('Radar', dataTransfer);
         explorer.dopOnTreeItem('Central_Unit', dataTransfer);
-        explorer.collapseWithDoubleClick('CompositeProcessor');
+        explorer.collapseWithDoubleClick('Capture_Subsystem');
 
         explorer.getTreeItemByLabel('Radar').should('exist');
       });
