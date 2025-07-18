@@ -23,6 +23,7 @@ import {
   XYPosition,
 } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -67,6 +68,7 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
   payload.__typename === 'SuccessPayload';
 
 export const useReconnectEdge = (): UseReconnectEdge => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -115,7 +117,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   useEffect(() => {
     if (reconnectEdgeError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (reconnectEdgeData) {
       const { reconnectEdge } = reconnectEdgeData;
@@ -123,7 +125,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         addMessages(reconnectEdge.messages);
       }
     }
-  }, [reconnectEdgeData, reconnectEdgeError]);
+  }, [coreT, reconnectEdgeData, reconnectEdgeError]);
 
   const reconnectEdge = useCallback(
     (oldEdge: Edge<EdgeData>, newConnection: Connection) => {
