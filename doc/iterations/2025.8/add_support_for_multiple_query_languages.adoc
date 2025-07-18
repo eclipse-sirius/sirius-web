@@ -1,0 +1,42 @@
+= Add support for multiple query languages
+
+== Problem
+
+Sirius Web provides a view to execute queries on a model, but this view only supports AQL as its query language.
+
+== Key Result
+
+- Downstream applications can contribute new languages to evaluate queries
+- New languages can be selected by the user through the query prefix (like `aql:` at the moment)
+
+=== Acceptance Criteria
+
+- A new query language will be available to run queries over Papaya/Studio models in Sirius Web.
+- A Cypress test should leverage the new functionality and validate the whole user experience.
+- Backend integration tests should also be available to ensure that the core parts of the behavior are working as expected.
+
+== Solution
+
+=== Scenario
+
+=== Evaluate a query with a non-AQL language on an element
+
+In the project workbench, the user opens the _query_ view and enter an expression with a prefix different from `aql:`.
+The user runs the query.
+The view displays the results.
+
+=== Breadboarding
+
+Nothing to change on the UI.
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+
+== No-gos
+
+We only consider the addition of new languages in the _query_ view, not in other parts of Sirius Web.
+Specifically, we will not integrate new languages/interpreter into the view DSL.
+
