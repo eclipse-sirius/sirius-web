@@ -58,6 +58,7 @@ Stop the propagation on the dialog instead of the input.
 - Add impact analysis before tool execution in trees
 - Provide a backend-only API to retrieve a diagram as PNG or SVG file
 - Add support for project duplication
+- Add support for multiple query languages
 
 === Architectural decision records
 
@@ -67,6 +68,7 @@ Stop the propagation on the dialog instead of the input.
 - [ADR-200] Add configurable render variables to TreeDescription
 - [ADR-201] Add impact analysis for contextual menu actions of trees
 - [ADR-202] Add support for project duplication
+- [ADR-203] Add support for multiple query interpreters
 
 === Deprecation warning
 
