@@ -165,7 +165,8 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Fix an issue where the edges were not correctly centered on the handle
 - https://github.com/eclipse-sirius/sirius-web/issues/5225[#5225] [diagram] Fix an issue where `synchronizeLayoutData` was called twice when moving the handle of a manually layouted edge
 - https://github.com/eclipse-sirius/sirius-web/issues/5197[#5197] [diagram] Include edges connected to border nodes in ELK input for improved automatic layout
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [sirius-web] Prevent the rename project modal to lose focus while typing.
+It occurred when we were trying to type the first letter of any menu item of the project browser action menu.
 
 === New Features
 

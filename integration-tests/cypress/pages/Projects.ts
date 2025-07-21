@@ -47,6 +47,11 @@ class ProjectActionMenu {
     return cy.getByTestId('rename');
   }
 
+  public getRenameDialog(): RenameProjectDialog {
+    this.getRenameButton().should('exist').click();
+    return new RenameProjectDialog();
+  }
+
   public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('delete');
   }
@@ -54,5 +59,11 @@ class ProjectActionMenu {
   public deleteProject(): void {
     this.getDeleteButton().click();
     cy.getByTestId('delete-project').click();
+  }
+}
+
+class RenameProjectDialog {
+  public getInnerRenameTextField(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('rename-project-dialog').findByTestId('inner-rename-textfield');
   }
 }
