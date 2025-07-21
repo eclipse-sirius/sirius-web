@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,13 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
     !state.pristine && (state.newName.trim().length === 0 || state.newName.trim().length > 1024);
 
   return (
-    <Dialog open onClose={onCancel} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+    <Dialog
+      open
+      onClose={onCancel}
+      aria-labelledby="dialog-title"
+      maxWidth="xs"
+      data-testid="rename-project-dialog"
+      fullWidth>
       <DialogTitle id="dialog-title">Rename the project</DialogTitle>
       <DialogContent>
         <TextField
@@ -60,8 +66,10 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
           label="Name"
           placeholder="Enter a new project name"
           data-testid="rename-textfield"
+          slotProps={{ htmlInput: { 'data-testid': 'inner-rename-textfield' } }}
           autoFocus
           fullWidth
+          onKeyDown={(e) => e.stopPropagation()}
         />
       </DialogContent>
       <DialogActions>
