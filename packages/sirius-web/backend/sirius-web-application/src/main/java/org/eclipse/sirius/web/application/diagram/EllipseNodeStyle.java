@@ -46,6 +46,10 @@ public final class EllipseNodeStyle implements INodeStyle {
         return new Builder();
     }
 
+    public static Builder newEllipseNodeStyle(EllipseNodeStyle ellipseNodeStyle) {
+        return new Builder(ellipseNodeStyle);
+    }
+
     public String getBackground() {
         return this.background;
     }
@@ -95,6 +99,14 @@ public final class EllipseNodeStyle implements INodeStyle {
             // Prevent instantiation
         }
 
+        private Builder(EllipseNodeStyle ellipseNodeStyle) {
+            this.background = ellipseNodeStyle.getBackground();
+            this.borderColor = ellipseNodeStyle.getBorderColor();
+            this.borderSize = ellipseNodeStyle.getBorderSize();
+            this.borderStyle = ellipseNodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = ellipseNodeStyle.getChildrenLayoutStrategy();
+        }
+
         public Builder background(String background) {
             this.background = Objects.requireNonNull(background);
             return this;
@@ -119,7 +131,6 @@ public final class EllipseNodeStyle implements INodeStyle {
             this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
             return this;
         }
-
 
         public EllipseNodeStyle build() {
             EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
