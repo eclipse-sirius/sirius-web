@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-table-customcells</artifactId>
-	<version>2025.6.9</version>
+	<version>2025.6.10</version>
 	<name>sirius-components-view-table-customcells</name>
 	<description>Support for additional table custom cells</description>
 
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.6.9</version>
+			<version>2025.6.10</version>
 		</dependency>
 	</dependencies>
 
