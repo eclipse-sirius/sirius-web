@@ -147,6 +147,7 @@ public class TestDiagramBuilder {
                 .style(style)
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 

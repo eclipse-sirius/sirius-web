@@ -25,6 +25,7 @@ import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
 import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
 import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
+import { EdgeAppearancePart } from './edge/EdgeAppearancePart';
 import { ImageNodeAppearanceSection } from './ImageNodeAppearanceSection';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
@@ -54,6 +55,9 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const isEdgeElement = (element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined): element is Edge<EdgeData> =>
+  !!element && element.type === 'smoothStepEdge';
+
 const isFreeFormNode = (
   element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
 ): element is InternalNode<Node<NodeData>> => !!element && element.type === 'freeFormNode';
@@ -63,8 +67,8 @@ export const PaletteAppearanceSection = ({
   onBackToMainList,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
-  const { nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const diagramElement = nodeLookup.get(diagramElementId);
+  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -76,7 +80,7 @@ export const PaletteAppearanceSection = ({
   );
 
   const paletteAppearanceSectionComponents: JSX.Element[] = [];
-  if (diagramElement) {
+  if (isFreeFormNode(diagramElement)) {
     paletteAppearanceSectionData.data
       .filter((data) => data.canHandle(diagramElement))
       .map((data) => data.component)
@@ -102,6 +106,14 @@ export const PaletteAppearanceSection = ({
         <ImageNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />
       );
     }
+  } else if (isEdgeElement(diagramElement) && diagramElement.data) {
+    paletteAppearanceSectionComponents.push(
+      <EdgeAppearancePart
+        edgeId={diagramElement.id}
+        style={diagramElement.data.edgeAppearanceData.gqlStyle}
+        customizedStyleProperties={diagramElement.data.edgeAppearanceData.customizedStyleProperties}
+      />
+    );
   }
 
   return (
