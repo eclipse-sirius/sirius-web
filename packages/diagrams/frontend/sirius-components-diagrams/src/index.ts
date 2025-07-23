@@ -66,6 +66,13 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export type {
+  PaletteAppearanceSectionContributionComponentProps,
+  PaletteAppearanceSectionContributionProps,
+} from './renderer/palette/appearance/extensions/PaletteAppearanceSectionContribution.types';
+export { paletteAppearanceSectionExtensionPoint } from './renderer/palette/appearance/extensions/PaletteAppearanceSectionExtensionPoints';
+export { LabelAppearancePart } from './renderer/palette/appearance/label/LabelAppearancePart';
+export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNodeAppearance';
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
 export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
