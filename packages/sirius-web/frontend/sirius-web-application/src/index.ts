@@ -16,7 +16,7 @@ export type { SiriusWebApplicationProps } from './application/SiriusWebApplicati
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
 export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';
-export { ellipseNodeStyleDocumentTransform } from './extension/EllipseNodeDocumentTransform';
+export { ellipseNodeStyleDocumentTransform } from './extension/ellipsenode/EllipseNodeDocumentTransform';
 export { referenceWidgetDocumentTransform } from './extension/ReferenceWidgetDocumentTransform';
 export type { FooterProps } from './footer/Footer.types';
 export { footerExtensionPoint } from './footer/FooterExtensionPoints';
