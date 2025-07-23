@@ -93,7 +93,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents());
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents(), this.props.getEdgeAppearanceHandlers());
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();

@@ -68,3 +68,32 @@ input ResetNodeAppearanceInput {
 }
 
 union ResetNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditEdgeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: ID!
+  appearance: EdgeAppearanceInput!
+}
+
+input EdgeAppearanceInput {
+  size: Int
+  color: String
+  lineStyle: LineStyle
+  sourceArrowStyle: ArrowStyle
+  targetArrowStyle: ArrowStyle
+}
+
+union EditEdgeAppearancePayload = ErrorPayload | SuccessPayload
+
+
+input ResetEdgeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetEdgeAppearanceInput = ErrorPayload | SuccessPayload
