@@ -274,6 +274,15 @@ type Edge {
   state: ViewModifier!
   style: EdgeStyle!
   centerLabelEditable: Boolean!
+  customizedStyleProperties: [EdgeStyleProperty!]!
+}
+
+enum EdgeStyleProperty {
+  SIZE,
+  COLOR,
+  LINESTYLE,
+  SOURCE_ARROW,
+  TARGET_ARROW
 }
 
 type EdgeStyle {

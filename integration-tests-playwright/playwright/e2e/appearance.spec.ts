@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { expect, test } from '@playwright/test';
+import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightLabel } from '../helpers/PlaywrightLabel';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('appearance', () => {
   let projectId;
@@ -29,7 +30,7 @@ test.describe('appearance', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('change outside label appearance', async ({ page }) => {
+  test('change outside label appearance of an image node', async ({ page }) => {
     const playwrightLabel = new PlaywrightLabel(page, 'DataSource1');
     const fontSizeBefore = await playwrightLabel.getFontSize();
     expect(fontSizeBefore).toBe('14px');
@@ -49,5 +50,30 @@ test.describe('appearance', () => {
       },
       { timeout: 2000 }
     );
+  });
+
+  test('change edge appearance', async ({ page }) => {
+    //Move the node so it's easier to select the edge
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 250, y: 0 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+    const edgeStyle = await playwrightEdge.getEdgeStyle();
+    await expect(edgeStyle).toHaveCSS('stroke-width', '1px');
+    await expect(edgeStyle).toHaveCSS('stroke', 'rgb(190, 26, 120)');
+
+    await playwrightEdge.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Color"] input').fill('red');
+    await page.locator('[data-testid="toolSection-Appearance-Size"] input').fill('5');
+
+    //Unselect the edge by selecting the node in order to test the validation on blur
+    await playwrightNode.click();
+    await expect(edgeStyle).toHaveCSS('stroke-width', '5px');
+    await expect(edgeStyle).toHaveCSS('stroke', 'rgb(255, 0, 0)');
   });
 });

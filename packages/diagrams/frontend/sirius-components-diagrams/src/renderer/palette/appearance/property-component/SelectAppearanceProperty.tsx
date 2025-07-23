@@ -19,7 +19,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { SelectAppearancePropertyProps } from './SelectAppearanceProperty.types';
-
+//maxWidth: theme.spacing(18),
+//sx={{ whiteSpace: 'normal' }}
 export const SelectAppearanceProperty = ({
   icon,
   label,
@@ -33,13 +34,20 @@ export const SelectAppearanceProperty = ({
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       {label && <Typography variant="caption">{label}</Typography>}
       <Box sx={{ display: 'grid', gridTemplateColumns: '1fr min-content' }}>
-        <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'end', gap: theme.spacing(1) })}>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'end',
+            gap: theme.spacing(1),
+            maxWidth: theme.spacing(17),
+          })}>
           {icon}
           <FormControl variant="standard" sx={{ width: '100%' }}>
             <Select value={value} onChange={onChange}>
               {options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                  <Typography sx={{ textWrap: 'wrap' }}>{option.label}</Typography>
                 </MenuItem>
               ))}
             </Select>

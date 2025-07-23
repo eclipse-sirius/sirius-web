@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
+import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IOperationValidator;
@@ -61,16 +62,19 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final List<INodeAppearanceHandler> nodeAppearanceHandlers;
 
+    private final List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-            IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, MeterRegistry meterRegistry) {
+                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
+        this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
@@ -137,7 +141,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
                 .diagramEvents(diagramEvents)
-                .nodeAppearanceHandlers(this.nodeAppearanceHandlers);
+                .nodeAppearanceHandlers(this.nodeAppearanceHandlers)
+                .edgeAppearanceHandlers(edgeAppearanceHandlers);
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);

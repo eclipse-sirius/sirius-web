@@ -67,6 +67,8 @@ public final class Edge implements IDiagramElement {
 
     private boolean centerLabelEditable;
 
+    private Set<String> customizedStyleProperties;
+
     private Edge() {
         // Prevent instantiation
     }
@@ -143,6 +145,10 @@ public final class Edge implements IDiagramElement {
         return this.centerLabelEditable;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, sourceId: {6}, targetId: {7}, state: {8}'}'";
@@ -188,6 +194,8 @@ public final class Edge implements IDiagramElement {
 
         private boolean centerLabelEditable;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -208,6 +216,7 @@ public final class Edge implements IDiagramElement {
             this.state = edge.getState();
             this.style = edge.getStyle();
             this.centerLabelEditable = edge.isCenterLabelEditable();
+            this.customizedStyleProperties = edge.getCustomizedStyleProperties();
         }
 
         public Builder type(String type) {
@@ -280,6 +289,11 @@ public final class Edge implements IDiagramElement {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public Edge build() {
             Edge edge = new Edge();
             edge.id = Objects.requireNonNull(this.id);
@@ -297,6 +311,7 @@ public final class Edge implements IDiagramElement {
             edge.state = Objects.requireNonNull(this.state);
             edge.style = Objects.requireNonNull(this.style);
             edge.centerLabelEditable = this.centerLabelEditable;
+            edge.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return edge;
         }
     }

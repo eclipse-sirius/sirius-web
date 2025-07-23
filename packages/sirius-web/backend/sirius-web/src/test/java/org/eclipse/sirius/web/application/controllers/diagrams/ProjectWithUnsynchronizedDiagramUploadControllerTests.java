@@ -29,13 +29,15 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
-import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
@@ -80,7 +82,6 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
 
     @Autowired
     private IProjectSearchService projectSearchService;
@@ -187,22 +188,23 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();
-        assertThat(diagram.getNodes().size()).isEqualTo(2);
 
         var diagramNavigator = new DiagramNavigator(diagram);
 
         var nodeLayoutData = diagram.getLayoutData().nodeLayoutData();
         assertThat(nodeLayoutData).hasSize(3);
 
-        this.checkImageNode(diagramNavigator, nodeLayoutData);
-        this.checkRectangularNode(diagramNavigator, nodeLayoutData);
-
-        assertThat(diagram.getEdges().size()).isEqualTo(1);
-        assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
-        assertThat(diagram.getLayoutData().edgeLayoutData().get(diagram.getEdges().get(0).getId())).isNotNull();
+        this.checkImageNode(diagramNavigator, diagram);
+        this.checkRectangularNode(diagramNavigator, diagram);
+        this.checkImportedEdges(diagramNavigator, diagram);
     }
 
-    private void checkRectangularNode(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
+    private void checkRectangularNode(DiagramNavigator diagramNavigator, Diagram diagram) {
+        assertThat(diagram.getNodes().size()).isEqualTo(2);
+
+        var nodeLayoutData = diagram.getLayoutData().nodeLayoutData();
+        Assertions.assertThat(nodeLayoutData).hasSize(3);
+
         var compositeProcessorNode = diagramNavigator.nodeWithLabel("CompositeProcessor1").getNode();
         assertThat(nodeLayoutData.get(compositeProcessorNode.getId())).isNotNull();
         assertThat(compositeProcessorNode).hasState(ViewModifier.Faded);
@@ -241,7 +243,10 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(processorNode).hasState(ViewModifier.Normal);
     }
 
-    private void checkImageNode(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
+    private void checkImageNode(DiagramNavigator diagramNavigator, Diagram diagram) {
+        var nodeLayoutData = diagram.getLayoutData().nodeLayoutData();
+        Assertions.assertThat(nodeLayoutData).hasSize(3);
+
         var dataSourceNode = diagramNavigator.nodeWithLabel("DataSource1").getNode();
         assertThat(nodeLayoutData.get(dataSourceNode.getId())).isNotNull();
         assertThat(dataSourceNode).hasState(ViewModifier.Normal);
@@ -272,6 +277,24 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(outsideLabelStyle.getBorderSize()).isEqualTo(1);
         assertThat(outsideLabelStyle.getBorderRadius()).isEqualTo(0);
         assertThat(outsideLabelStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
+    }
+
+    private void checkImportedEdges(DiagramNavigator diagramNavigator, Diagram diagram) {
+        assertThat(diagram.getEdges().size()).isEqualTo(1);
+        assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
+        assertThat(diagram.getLayoutData().edgeLayoutData().get(diagram.getEdges().get(0).getId())).isNotNull();
+
+        var standardEdge = diagramNavigator.edgeWithLabel("6").getEdge();
+        assertThat(standardEdge).hasState(ViewModifier.Faded);
+
+        assertThat(standardEdge.getCustomizedStyleProperties()).hasSize(5);
+        assertThat(standardEdge.getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("SIZE", "COLOR", "LINESTYLE", "SOURCE_ARROW", "TARGET_ARROW"));
+
+        EdgeStyle edgeStyle = standardEdge.getStyle();
+        assertThat(edgeStyle.getLineStyle()).isEqualTo(LineStyle.Dot);
+        assertThat(edgeStyle.getSize()).isEqualTo(2);
+        assertThat(edgeStyle.getSourceArrow()).isEqualTo(ArrowStyle.Circle);
+        assertThat(edgeStyle.getTargetArrow()).isEqualTo(ArrowStyle.Circle);
     }
 
     private byte[] getZipTestFile() {
@@ -644,15 +667,22 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                     "endLabel": null,
                     "sourceId": "8c413729-434f-33f0-b54f-1f299baffaf0",
                     "targetId": "eab592b4-afe6-3fdd-af54-b03d03a0269e",
-                    "modifiers": [],
-                    "state": "Normal",
+                    "modifiers": ["Faded"],
+                    "state": "Faded",
                     "style": {
-                      "size": 1,
-                      "lineStyle": "Dash",
-                      "sourceArrow": "None",
-                      "targetArrow": "InputClosedArrow",
-                      "color": "#B1BCBE"
+                      "size": 2,
+                      "lineStyle": "Dot",
+                      "sourceArrow": "Circle",
+                      "targetArrow": "Circle",
+                      "color": "red"
                     },
+                    "customizedStyleProperties": [
+                      "SIZE",
+                      "COLOR",
+                      "LINESTYLE",
+                      "SOURCE_ARROW",
+                      "TARGET_ARROW"
+                    ],
                     "centerLabelEditable": true
                   }
                 ],

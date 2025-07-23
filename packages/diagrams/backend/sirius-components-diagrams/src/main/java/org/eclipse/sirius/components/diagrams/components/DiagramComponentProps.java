@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
@@ -54,6 +55,8 @@ public final class DiagramComponentProps implements IProps {
     private List<IDiagramEvent> diagramEvents;
 
     private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+    private List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
 
     private DiagramComponentProps() {
         // Prevent instantiation
@@ -95,6 +98,10 @@ public final class DiagramComponentProps implements IProps {
         return this.nodeAppearanceHandlers;
     }
 
+    public List<IEdgeAppearanceHandler> getEdgeAppearanceHandlers() {
+        return this.edgeAppearanceHandlers;
+    }
+
     public static Builder newDiagramComponentProps() {
         return new Builder();
     }
@@ -124,6 +131,8 @@ public final class DiagramComponentProps implements IProps {
         private List<IDiagramEvent> diagramEvents;
 
         private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+        private List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -170,6 +179,11 @@ public final class DiagramComponentProps implements IProps {
             return this;
         }
 
+        public Builder edgeAppearanceHandlers(List<IEdgeAppearanceHandler> edgeAppearanceHandlers) {
+            this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
+            return this;
+        }
+
         public DiagramComponentProps build() {
             DiagramComponentProps diagramComponentProps = new DiagramComponentProps();
             diagramComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -181,6 +195,7 @@ public final class DiagramComponentProps implements IProps {
             diagramComponentProps.viewDeletionRequests = List.copyOf(Objects.requireNonNull(this.viewDeletionRequests));
             diagramComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
             diagramComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
+            diagramComponentProps.edgeAppearanceHandlers = Objects.requireNonNull(this.edgeAppearanceHandlers);
             return diagramComponentProps;
         }
     }
