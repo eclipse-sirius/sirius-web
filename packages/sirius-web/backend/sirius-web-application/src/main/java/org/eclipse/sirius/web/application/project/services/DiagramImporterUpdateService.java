@@ -28,11 +28,13 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.EdgeAppearanceHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -47,6 +49,11 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeColorAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeLineStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSizeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSourceArrowStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTargetArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBackgroundAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBoldAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderColorAppearanceChange;
@@ -127,7 +134,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 Map<String, ViewModifier> elementIdToViewModifier = new HashMap<>();
 
                 this.handleNodes(oldRepresentation.getNodes(), nodeElementOldNewIds, elementIdToViewModifier, diagramDescription.get(), newRepresentationId, diagramContext, semanticElementsIdMappings);
-                this.handleEdges(oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, elementIdToViewModifier, semanticElementsIdMappings);
+                this.handleEdges(diagramContext, oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, elementIdToViewModifier, semanticElementsIdMappings);
 
                 Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
                 Map<String, EdgeLayoutData> edgeLayoutData = new HashMap<>();
@@ -329,7 +336,34 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         return diagramEvents;
     }
 
-    private void handleEdges(List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
+    private List<IDiagramEvent> getEdgeAppearanceEvents(Edge oldEdge, String newEdgeId) {
+        List<IDiagramEvent> diagramEvents = new ArrayList<>();
+
+        if (oldEdge.getCustomizedStyleProperties() != null && !oldEdge.getCustomizedStyleProperties().isEmpty()) {
+            List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            oldEdge.getCustomizedStyleProperties().forEach(customizedProperty -> {
+                getEdgeAppearanceEvent(newEdgeId, oldEdge.getStyle(), customizedProperty).ifPresent(appearanceChanges::add);
+            });
+
+            if (!appearanceChanges.isEmpty()) {
+                diagramEvents.add(new EditAppearanceEvent(appearanceChanges));
+            }
+        }
+        return diagramEvents;
+    }
+
+    private  Optional<IAppearanceChange> getEdgeAppearanceEvent(String edgeId, EdgeStyle edgeStyle, String customizedStyleProperty) {
+        return switch (customizedStyleProperty) {
+            case EdgeAppearanceHandler.COLOR -> Optional.of(new EdgeColorAppearanceChange(edgeId, edgeStyle.getColor()));
+            case EdgeAppearanceHandler.SIZE -> Optional.of(new EdgeSizeAppearanceChange(edgeId, edgeStyle.getSize()));
+            case EdgeAppearanceHandler.LINESTYLE -> Optional.of(new EdgeLineStyleAppearanceChange(edgeId, edgeStyle.getLineStyle()));
+            case EdgeAppearanceHandler.SOURCE_ARROW -> Optional.of(new EdgeSourceArrowStyleAppearanceChange(edgeId, edgeStyle.getSourceArrow()));
+            case EdgeAppearanceHandler.TARGET_ARROW -> Optional.of(new EdgeTargetArrowStyleAppearanceChange(edgeId, edgeStyle.getTargetArrow()));
+            default -> Optional.empty();
+        };
+    }
+
+    private void handleEdges(DiagramContext diagramContext, List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
         int count = 0;
         // Create edges on edges last
         for (Edge oldEdge : oldEdges) {
@@ -338,6 +372,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
                 elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
+                diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
                 count++;
             }
         }
@@ -356,6 +391,8 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 }
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), newSourceId, newTargetId, count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
+                elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
+                diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
                 count++;
             }
         }

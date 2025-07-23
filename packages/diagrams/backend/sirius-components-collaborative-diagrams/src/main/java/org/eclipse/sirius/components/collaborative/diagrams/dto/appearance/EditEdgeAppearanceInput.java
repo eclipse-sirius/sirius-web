@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,35 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto.appearance;
 
-export const edgeFragment = `
-fragment edgeFragment on Edge {
-  id
-  type
-  targetObjectId
-  targetObjectKind
-  targetObjectLabel
-  descriptionId
-  sourceId
-  targetId
-  state
-  beginLabel {
-    ...labelFragment
-  }
-  centerLabel {
-    ...labelFragment
-  }
-  endLabel {
-    ...labelFragment
-  }
-  style {
-    size
-    lineStyle
-    sourceArrow
-    targetArrow
-    color
-  }
-  centerLabelEditable
-  customizedStyleProperties
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+import java.util.UUID;
+
+/**
+ * Input for the edition of an edge appearance.
+ *
+ * @author mcharfadi
+ */
+public record EditEdgeAppearanceInput(UUID id, String editingContextId, String representationId, String edgeId, EdgeAppearanceInput appearance) implements IDiagramInput {
+
 }
-`;

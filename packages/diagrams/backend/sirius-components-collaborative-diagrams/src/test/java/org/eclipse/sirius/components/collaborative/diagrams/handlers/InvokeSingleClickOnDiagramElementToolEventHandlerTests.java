@@ -593,6 +593,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectLabel("")
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 

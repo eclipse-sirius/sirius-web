@@ -32,4 +32,16 @@ export class PlaywrightEdge {
   async getEdgePath() {
     return await this.edgeLocator.locator('path').first().getAttribute('d');
   }
+
+  async getEdgeStyle() {
+    return await this.edgeLocator.locator('.react-flow__edge-path').first();
+  }
+
+  async openPalette() {
+    await this.edgeLocator.click({ button: 'right' });
+  }
+
+  async closePalette() {
+    await this.page.getByTestId('Close-palette').click();
+  }
 }
