@@ -207,6 +207,16 @@ export const convertDiagram = (
     const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
       (layoutData) => layoutData.id === gqlEdge.id
     );
+
+    let strokeDasharray: string | undefined = undefined;
+    if (gqlEdge.style.lineStyle === 'Dash') {
+      strokeDasharray = '5,5';
+    } else if (gqlEdge.style.lineStyle === 'Dot') {
+      strokeDasharray = '2,2';
+    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
+      strokeDasharray = '10,5,2,2,2,5';
+    }
+
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -218,6 +228,10 @@ export const convertDiagram = (
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
       edgePath,
       isHovered: false,
+      edgeAppearanceData: {
+        gqlStyle: gqlEdge.style,
+        customizedStyleProperties: gqlEdge.customizedStyleProperties,
+      },
     };
 
     if (gqlEdge.beginLabel) {
@@ -242,15 +256,6 @@ export const convertDiagram = (
       usedHandles.push(sourceHandle?.id, targetHandle.id);
     }
 
-    let strokeDasharray: string | undefined = undefined;
-    if (gqlEdge.style.lineStyle === 'Dash') {
-      strokeDasharray = '5,5';
-    } else if (gqlEdge.style.lineStyle === 'Dot') {
-      strokeDasharray = '2,2';
-    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
-      strokeDasharray = '10,5,2,2,2,5';
-    }
-
     return {
       id: gqlEdge.id,
       type: edgeType,
@@ -259,11 +264,6 @@ export const convertDiagram = (
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
       markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
       zIndex: 2000,
-      style: {
-        stroke: gqlEdge.style.color,
-        strokeWidth: gqlEdge.style.size,
-        strokeDasharray,
-      },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
       sourceHandle: sourceHandle?.id,
@@ -271,6 +271,11 @@ export const convertDiagram = (
       sourceNode: sourceNode,
       targetNode: targetNode,
       reconnectable: !!state.edgeLookup.get(gqlEdge.id)?.reconnectable,
+      style: {
+        stroke: gqlEdge.style.color,
+        strokeWidth: gqlEdge.style.size,
+        strokeDasharray,
+      },
     };
   });
 
