@@ -215,6 +215,11 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 + This URL includes the current workbench selection and the current workbench state.
 + For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
+- https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point, `PaletteAppearanceSectionContribution`, an exemple is available on ellipse node.
+* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance 
+* `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
+* `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
+* A GraphQL mutation is also added `editEllipseNodeAppearance`.
 
 === Improvements
 

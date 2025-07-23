@@ -25,9 +25,11 @@ import {
   DiagramDialogContribution,
   DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
+  PaletteAppearanceSectionContributionProps,
   diagramDialogContributionExtensionPoint,
   diagramNodeActionOverrideContributionExtensionPoint,
   diagramPanelActionExtensionPoint,
+  paletteAppearanceSectionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
@@ -120,7 +122,8 @@ import { ProjectSettingTabContribution } from '../views/project-settings/Project
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { checkboxCellDocumentTransform } from './CheckboxCelllDocumentTransform';
-import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
+import { ellipseNodeStyleDocumentTransform } from './ellipsenode/EllipseNodeDocumentTransform';
+import { EllipseNodeAppearanceSection } from './ellipsenode/EllipseNodePaletteAppearanceSection';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
 
@@ -628,5 +631,26 @@ defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
     data: diagramNodeActionOverrides,
   }
 );
+
+/*******************************************************************************
+ *
+ * Palette ellipse node appearance contribution
+ *
+ * Used to contribute custom node appearance section on the palette for ellipse nodes
+ *
+ *******************************************************************************/
+const ellipseNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+  {
+    canHandle: (element) => {
+      return element.type === 'ellipseNode';
+    },
+    component: EllipseNodeAppearanceSection,
+  },
+];
+
+defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
+  identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
+  data: ellipseNodePaletteAppearanceSectionContribution,
+});
 
 export { defaultExtensionRegistry };
