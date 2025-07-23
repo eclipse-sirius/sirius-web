@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
 /**
  * The ellipse node style.
@@ -34,6 +35,8 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     private int borderSize;
 
+    private int borderRadius;
+
     private LineStyle borderStyle;
 
     private ILayoutStrategy childrenLayoutStrategy;
@@ -46,6 +49,10 @@ public final class EllipseNodeStyle implements INodeStyle {
         return new Builder();
     }
 
+    public static Builder newEllipseNodeStyle(EllipseNodeStyle ellipseNodeStyle) {
+        return new Builder(ellipseNodeStyle);
+    }
+
     public String getBackground() {
         return this.background;
     }
@@ -56,6 +63,10 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     public int getBorderSize() {
         return this.borderSize;
+    }
+
+    public int getBorderRadius() {
+        return this.borderRadius;
     }
 
     public LineStyle getBorderStyle() {
@@ -87,12 +98,23 @@ public final class EllipseNodeStyle implements INodeStyle {
 
         private int borderSize;
 
+        private int borderRadius;
+
         private LineStyle borderStyle;
 
         private ILayoutStrategy childrenLayoutStrategy;
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(EllipseNodeStyle ellipseNodeStyle) {
+            this.background = ellipseNodeStyle.getBackground();
+            this.borderColor = ellipseNodeStyle.getBorderColor();
+            this.borderSize = ellipseNodeStyle.getBorderSize();
+            this.borderRadius = ellipseNodeStyle.getBorderRadius();
+            this.borderStyle = ellipseNodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = ellipseNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder background(String background) {
@@ -107,6 +129,11 @@ public final class EllipseNodeStyle implements INodeStyle {
 
         public Builder borderSize(int borderSize) {
             this.borderSize = borderSize;
+            return this;
+        }
+
+        public Builder borderRadius(int borderRadius) {
+            this.borderRadius = borderRadius;
             return this;
         }
 
@@ -126,6 +153,7 @@ public final class EllipseNodeStyle implements INodeStyle {
             nodeStyleDescription.background = Objects.requireNonNull(this.background);
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;
+            nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
             nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;

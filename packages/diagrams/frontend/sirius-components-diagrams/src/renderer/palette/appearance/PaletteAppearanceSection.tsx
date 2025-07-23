@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,6 +22,8 @@ import { Edge, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
+import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
 import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
@@ -65,6 +68,32 @@ export const PaletteAppearanceSection = ({
     onBackToMainList();
   };
 
+  const paletteAppearanceSectionData: DataExtension<PaletteAppearanceSectionContributionProps[]> = useData(
+    paletteAppearanceSectionExtensionPoint
+  );
+
+  const paletteAppearanceSectionComponents: JSX.Element[] = [];
+  if (diagramElement) {
+    paletteAppearanceSectionData.data
+      .filter((data) => data.canHandle(diagramElement))
+      .map((data) => data.component)
+      .forEach((PaletteAppearanceSectionComponent, index) =>
+        paletteAppearanceSectionComponents.push(
+          <PaletteAppearanceSectionComponent
+            element={diagramElement}
+            elementId={diagramElementId}
+            key={'paletteAppearanceSectionComponents_' + index.toString()}
+          />
+        )
+      );
+  }
+
+  if (diagramElement && nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
+    paletteAppearanceSectionComponents.push(
+      <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data as NodeData} />
+    );
+  }
+
   return (
     <List className={classes.toolList} component="nav">
       <Tooltip title="Appearance" key="tooltip_appearance" placement="right">
@@ -77,8 +106,8 @@ export const PaletteAppearanceSection = ({
           <ListItemText className={classes.sectionTitleListItemText} primary="Appearance" />
         </ListItemButton>
       </Tooltip>
-      {diagramElement && nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle' ? (
-        <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data as NodeData} />
+      {paletteAppearanceSectionComponents.length > 0 ? (
+        paletteAppearanceSectionComponents
       ) : (
         <ListItem>
           <Typography>No appearance editor available for this style of element</Typography>

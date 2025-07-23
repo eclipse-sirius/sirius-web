@@ -7,3 +7,25 @@ type EllipseNodeStyle {
   background: String!
   childrenLayoutStrategy: ILayoutStrategy!
 }
+
+input ElipseNodeAppearanceInput {
+  background: String
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+}
+
+input EditElipseNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: ElipseNodeAppearanceInput!
+}
+
+extend type Mutation {
+  editElipseNodeAppearance(input: EditElipseNodeAppearanceInput!): EditElipseNodeAppearancePayload!
+}
+
+union EditElipseNodeAppearancePayload = ErrorPayload | SuccessPayload

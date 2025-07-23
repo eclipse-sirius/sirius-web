@@ -201,6 +201,7 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 ----
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5227[#5227] [sirius-web] Add support for capability check on create and delete project mutations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point `PaletteAppearanceSectionContribution`, an exemple is available on elipse node.
 
 === Improvements
 
