@@ -65,7 +65,7 @@ export const useCollapseExpand = (): UseCollapseExpandValue => {
     rawCollapseExpand({ variables: { input } });
   };
 
-  useReporting(rawCollapseExpandResult, (data: GQLUpdateCollapsingStateData) => data.collapseExpandDiagramElement);
+  useReporting(rawCollapseExpandResult, (data: GQLUpdateCollapsingStateData) => data.updateCollapsingState);
 
   return {
     collapseExpandElement,

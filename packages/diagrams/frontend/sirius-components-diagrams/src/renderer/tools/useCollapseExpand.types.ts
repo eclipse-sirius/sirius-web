@@ -41,7 +41,7 @@ export interface GQLUpdateCollapsingStateInput {
 }
 
 export interface GQLUpdateCollapsingStateData {
-  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
+  updateCollapsingState: GQLUpdateCollapsingStatePayload;
 }
 
 export type GQLUpdateCollapsingStatePayload = GQLErrorPayload | GQLSuccessPayload;

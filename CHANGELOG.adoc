@@ -155,7 +155,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5080[#5080] [diagram] Prevent border nodes from being resized during their parent resizing
 - https://github.com/eclipse-sirius/sirius-web/issues/5065[#5065] [diagram] Prevent adding bendpoints on a simple click
 - https://github.com/eclipse-sirius/sirius-web/issues/5116[#5116] [diagram] Prevent custom appearances from being lost after exporting/importing a project
-- https://github.com/eclipse-sirius/sirius-web/issues/4966[#4966] [diagram] Fix an isssue where an edge connection could fail if hovering an outside node label
+- https://github.com/eclipse-sirius/sirius-web/issues/4966[#4966] [diagram] Fix an issue where an edge connection could fail if hovering an outside node label
 - https://github.com/eclipse-sirius/sirius-web/issues/2024[#2024] [explorer] Ensure the _Explorer_'s toolbar is always visible even when scrolling
 - https://github.com/eclipse-sirius/sirius-web/issues/5084[#5084] [diagram] Prevent growable nodes from being ignored on node creation
 - https://github.com/eclipse-sirius/sirius-web/issues/5165[#5165] [sirius-web] Fix an issue that prevent import of projects exported before version 2025.6.0
@@ -171,6 +171,7 @@ It occurred when we were trying to type the first letter of any menu item of the
 - https://github.com/eclipse-sirius/sirius-web/issues/5249[#5249] [sirius-web] Fix an issue where the papaya table description was missing some unique ids
 - https://github.com/eclipse-sirius/sirius-web/issues/5251[#5251] [diagram] Support for resizing border nodes is not available at this time.
 Removing resizing anchors for border nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5241[#5241] [diagram] Fix an issue where expand/collapse action causes the application to crash
 
 === New Features
 
@@ -289,7 +290,7 @@ Every implementation of `IRepresentationMetadataUpdateService` should add its ow
 * `MigrationData getMigrationData()` method has been renamed to `MigrationData getLastMigrationData()`.
 * `void setMigrationData()` method has been renamed/changed to `boolean addMigrationData()`.
 * A new method `List<MigrationData> getAllMigrationData()` method has been added.
-* https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] The `hasChildren()` and `getDefaultChildren()` of the [`IExplorerSerices`](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-application/src/main/java/org/eclipse/sirius/web/application/views/explorer/services/api/IExplorerServices.java) interface now expect an additional `List<RepresentationMetadata> existingRepresentations` argument with the list of all the representations to consider when rendering explorer items.
+* https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] The `hasChildren()` and `getDefaultChildren()` of the [`IExplorerServices`](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-application/src/main/java/org/eclipse/sirius/web/application/views/explorer/services/api/IExplorerServices.java) interface now expect an additional `List<RepresentationMetadata> existingRepresentations` argument with the list of all the representations to consider when rendering explorer items.
 In the default implementation (in `ExplorerChildrenProvider`) its value comes from the new variable `existingRepresentations` injected by `ExplorerRenderVariablesCustomizer`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] The `Delete from diagram` tool is no longer automatically added to the palette from a node with an unsynchronized
 layout.
@@ -345,8 +346,8 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4723[#4723] [core] Restore the proper behavior of the share representation dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/5018[#5018] [sirius-web] Fix a bug that remove node layout strategy after fork a representation
 - https://github.com/eclipse-sirius/sirius-web/issues/5003[#5003] [diagram] Fix an issue with the position of smart edges when having an edge on another edge
-- https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronised diagram if the targetObject of a node was from a library.
-- https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronised diagram.
+- https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronized diagram if the targetObject of a node was from a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronized diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/5204[#5204] [explorer] Fix regression in the Explorer layout when the filter bar is visible
 - https://github.com/eclipse-sirius/sirius-web/issues/5203[#5203] [diagram] When exporting a diagram as an image, hidden nodes are now ignored when computing the area to export.
 This avoid possibly large blank areas in the resulting images where invisible nodes are.
@@ -384,7 +385,7 @@ This mechanism is currently provisional and only available for `TreeDescription`
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4308[#4308] [diagram] Handles now take bending points into account
-- https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customisation
+- https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customization
 - https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
 - [sirius-web] Avoid a database access if not necessary.
 Refactor the test to leverage boolean expression shortcut and avoid an unnecessary call to this.semanticDataSearchService.findById() if we already know we are inside a studio or a papaya project.
@@ -432,7 +433,7 @@ Thanks to this mechanism one can trigger some behavior after the entire loading 
 - https://github.com/eclipse-sirius/sirius-web/issues/4935[#4935] [sirius-web] Add loading indicator when uploading a project or document.
 - https://github.com/eclipse-sirius/sirius-web/issues/4946[#4946] [sirius-web] Add loading indicator in dialogs used to publish, import or update a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
-- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Impove handles placement on edges during connection or when the EdgeAnchorNode is rerendered
+- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Improve handles placement on edges during connection or when the EdgeAnchorNode is rerendered
 - https://github.com/eclipse-sirius/sirius-web/issues/4822[#4822] [core] Allow the retrieval of all the representations.
 The onboard area can now display all the representations created in the project and it is not limited to the first 20 representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4963[#4963] [core] Avoid change recording overhead for some well-known read-only operations.
@@ -446,8 +447,8 @@ This changes the behavior if there are delegates which *override* the default re
 - https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] Move View DSL node layout strategy from node description to node style.
 This modification will enable a conditional style with a different layout strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/667[#667] [sirius-web] Restore layout and unsynchronized nodes when importing a project with a diagram
-- https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reacivity of the explorer rendering when hovering on a tree with many items are expanded/visible
-Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independant of how many of its descendants are expanded/visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reactivity of the explorer rendering when hovering on a tree with many items are expanded/visible
+Handle the recursive part of the tree rendering in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independent of how many of its descendants are expanded/visible.
 - https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
 Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
 The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.
@@ -507,7 +508,7 @@ There is no more need for a specific serializer for this `RestDataVersion#payloa
 The `Map<String, Object>` is handled by the default serializer/deserializer.
 `RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
 The `Map<String, Object>` is handled by the default serializer/deserializer.
-- [releng] We now use Sirius EMF JSON 2.4.0 (from 2.3.2 before), which changed its Mave `groupId` from `org.eclipse.sirius.emfjson` to `org.eclipse.sirius` to match all other Maven artifacts produced in Eclipse Sirius.
+- [releng] We now use Sirius EMF JSON 2.4.0 (from 2.3.2 before), which changed its Maven `groupId` from `org.eclipse.sirius.emfjson` to `org.eclipse.sirius` to match all other Maven artifacts produced in Eclipse Sirius.
 The new GAV is `org.eclipse.sirius:org.eclipse.sirius.emfjson:2.4.0-SNAPSHOT`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4679[#4679] [tree] `TreeView` no longer handles selection.
 The parent component is now responsible for this.
