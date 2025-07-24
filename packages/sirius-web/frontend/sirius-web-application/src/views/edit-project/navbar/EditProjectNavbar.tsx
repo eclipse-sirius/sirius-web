@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { useCurrentProject } from '../useCurrentProject';
-import { EditProjectNavbarState } from './EditProjectNavbar.types';
+import { EditProjectNavbarProps, EditProjectNavbarState } from './EditProjectNavbar.types';
 import { EditProjectNavbarContextMenu } from './context-menu/EditProjectNavbarContextMenu';
 import { useProjectSubscription } from './useProjectSubscription';
 import { GQLProjectEventPayload, GQLProjectRenamedEventPayload } from './useProjectSubscription.types';
@@ -51,7 +51,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 const isProjectRenamedEventPayload = (payload: GQLProjectEventPayload): payload is GQLProjectRenamedEventPayload =>
   payload.__typename === 'ProjectRenamedEventPayload';
 
-export const EditProjectNavbar = () => {
+export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const [state, setState] = useState<EditProjectNavbarState>({
     anchorEl: null,
@@ -105,7 +105,13 @@ export const EditProjectNavbar = () => {
           </div>
         </div>
       </NavigationBar>
-      {state.anchorEl ? <EditProjectNavbarContextMenu anchorEl={state.anchorEl} onClose={onCloseContextMenu} /> : null}
+      {state.anchorEl ? (
+        <EditProjectNavbarContextMenu
+          anchorEl={state.anchorEl}
+          onClose={onCloseContextMenu}
+          workbenchHandle={workbenchHandle}
+        />
+      ) : null}
     </>
   );
 };

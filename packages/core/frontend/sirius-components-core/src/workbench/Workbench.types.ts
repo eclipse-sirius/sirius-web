@@ -33,6 +33,7 @@ export type RepresentationDescription = {
 export type WorkbenchViewSide = 'left' | 'right';
 
 export interface WorkbenchViewContribution {
+  id: string;
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
@@ -54,6 +55,7 @@ export type WorkbenchProps = {
   initialRepresentationSelected: RepresentationMetadata | null;
   onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
   readOnly: boolean;
+  initialWorkbenchConfiguration: WorkbenchConfiguration | null;
 };
 
 export type RepresentationComponentProps = {
@@ -67,3 +69,39 @@ export type RepresentationComponent = React.ComponentType<RepresentationComponen
 export type RepresentationComponentFactory = {
   (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
 };
+
+export interface WorkbenchHandle {
+  getConfiguration(): WorkbenchConfiguration | null;
+}
+
+export interface PanelsHandle {
+  getSidePanelConfigurations: () => WorkbenchSidePanelConfiguration[] | null;
+}
+
+export interface RepresentationNavigationHandle {
+  getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
+}
+
+export interface WorkbenchConfiguration {
+  sidePanels: WorkbenchSidePanelConfiguration[] | null;
+  mainPanel: WorkbenchMainPanelConfiguration | null;
+}
+export interface WorkbenchSidePanelConfiguration {
+  id: string;
+  views: WorkbenchViewConfiguration[] | null;
+}
+
+export interface WorkbenchViewConfiguration {
+  id: string;
+  isActive: boolean;
+}
+
+export interface WorkbenchMainPanelConfiguration {
+  id: string;
+  representationEditors: WorkbenchRepresentationEditorConfiguration[] | null;
+}
+
+export interface WorkbenchRepresentationEditorConfiguration {
+  representationMetadata: RepresentationMetadata;
+  isActive: boolean;
+}

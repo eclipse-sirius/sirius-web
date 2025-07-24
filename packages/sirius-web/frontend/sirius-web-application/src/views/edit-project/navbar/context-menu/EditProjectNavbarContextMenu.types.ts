@@ -11,9 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
+
 export interface EditProjectNavbarContextMenuProps {
   anchorEl: HTMLElement;
   onClose: () => void;
+  workbenchHandle: WorkbenchHandle;
 }
 
 export interface EditProjectNavbarContextMenuState {
