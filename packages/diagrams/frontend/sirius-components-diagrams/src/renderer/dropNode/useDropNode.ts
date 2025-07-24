@@ -306,19 +306,25 @@ export const useDropNode = (): UseDropNodeValue => {
 
         resetDrop();
 
-        setNodes((nds) =>
-          nds.map((n) => {
-            if (n.data.isDropNodeCandidate || n.data.isDropNodeTarget) {
+        setNodes((previousNodes) =>
+          previousNodes.map((previousNode) => {
+            if (previousNode.data.isDropNodeCandidate || previousNode.data.isDropNodeTarget) {
               return {
-                ...n,
+                ...previousNode,
                 data: {
-                  ...n.data,
+                  ...previousNode.data,
                   isDropNodeCandidate: false,
                   isDropNodeTarget: false,
                 },
               };
             }
-            return n;
+            if (previousNode.dragging) {
+              return {
+                ...previousNode,
+                dragging: false,
+              };
+            }
+            return previousNode;
           })
         );
       }

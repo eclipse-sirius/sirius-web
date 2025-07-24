@@ -100,8 +100,7 @@ const applyMoveToListContain = (
     const borderWidth: number = getBorderWidth(parentNode);
     if (movedNode.id === change.id && change.position) {
       change = {
-        id: change.id,
-        type: 'position',
+        ...change,
         position: { x: borderWidth, y: movedNode.position.y },
       };
     }
