@@ -168,6 +168,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [sirius-web] Prevent the rename project modal to lose focus while typing.
 It occurred when we were trying to type the first letter of any menu item of the project browser action menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/5228[#5228] [sirius-web] Hide the modal to browser project templates when no template are provided
+- https://github.com/eclipse-sirius/sirius-web/issues/5249[#5249] [sirius-web] Fix an issue where the papaya table description was missing some unique ids
 
 
 === New Features
