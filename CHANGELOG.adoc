@@ -176,6 +176,7 @@ Removing resizing anchors for border nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/4217[#4217] [sirius-web] Fix the project rename with invalid project name.
 Prevent the mutation to be send if the name is invalid.
 Fix how error messages are handled.
+- https://github.com/eclipse-sirius/sirius-web/issues/5248[#5248] [diagram] Fix an issue where the diagram was in an incorrect state after moving a node that was inside a list node
 
 
 === New Features
