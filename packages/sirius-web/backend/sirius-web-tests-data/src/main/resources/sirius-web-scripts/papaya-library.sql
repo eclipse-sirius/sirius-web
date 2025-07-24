@@ -573,3 +573,91 @@ INSERT INTO library (
   '2025-03-14 12:25:11.524',
   '2025-03-14 12:25:11.524'
 );
+
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '194ba253-70ee-4c09-928f-3541e8a0e906', 
+  '2025-07-09 12:00:00.703625+00', 
+  '2025-07-09 12:00:00.361539+00'
+);
+
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '194ba253-70ee-4c09-928f-3541e8a0e906',
+  'https://www.eclipse.org/sirius-web/papaya'
+);
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '27d8bea1-c595-4616-9208-a97218ad2316', 
+  '194ba253-70ee-4c09-928f-3541e8a0e906', 
+  'Sirius Web Tests Data', 
+  '{
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "papaya":"https://www.eclipse.org/sirius-web/papaya"
+    },"content":[
+      {
+        "id": "fd766e2d-dfdf-41b4-b3df-89066ecd975d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "backend",
+          "elements": [
+            {
+              "id": "429fb025-f429-4f78-a314-a8502024997a",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "sirius-web-tests-data",
+                "packages": [
+                  {
+                    "id": "f7804002-16b6-4bac-935a-e2eda2e0a753",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "org.eclipse.sirius.web.tests.data"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2025-03-14 12:58:52.703625+00', 
+  '2025-03-14 12:59:22.361539+00'
+);
+
+INSERT INTO library (
+  id,
+  namespace,
+  name,
+  version,
+  semantic_data_id,
+  description,
+  created_on,
+  last_modified_on
+) VALUES (
+  'af292062-6a2a-4484-a671-edae354a8a13',
+  'papaya',
+  'sirius-web-tests-data',
+  '3.0.0',
+  '194ba253-70ee-4c09-928f-3541e8a0e906',
+  'The Sirius Web Tests Data library',
+  '2025-07-09 12:00:00.524',
+  '2025-07-09 12:00:00.524'
+);

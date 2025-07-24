@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,14 +24,17 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil.UnresolvedProxyCrossReferencer;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.papaya.Interface;
@@ -48,6 +52,8 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.UpdateLibraryMutationRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +62,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import reactor.test.StepVerifier;
 
 /**
  * Integration tests of the library controllers.
@@ -66,6 +74,9 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LibraryControllerIntegrationTests extends AbstractIntegrationTests {
+
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
     private LibrariesQueryRunner librariesQueryRunner;
@@ -86,7 +97,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer
@@ -174,12 +193,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "2.0.0");
         assertThat(optionalLibrary).isPresent();
 
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+
         BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
                 assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
                     .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
-                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
                     .isPresent()
                     .get()
@@ -195,14 +217,18 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
         };
 
-        var checkInitialEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkInitialEditingContextFunction);
-        var checkInitialEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkInitialEditingContextInput).block();
-        assertThat(checkInitialEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        Runnable checkInitialEditingContext = () -> {
+            var checkInitialEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkInitialEditingContextFunction);
+            var checkInitialEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkInitialEditingContextInput).block();
+            assertThat(checkInitialEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        };
 
-        var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
-        var result = this.updateLibraryMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
-        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        Runnable updateLibrary = () -> {
+            var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
+            var result = this.updateLibraryMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
 
         BiFunction<IEditingContext, IInput, IPayload> checkUpdatedEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -211,7 +237,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "2.0.0"))
                     .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
                             && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
-                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
                     .isPresent()
                     .get()
@@ -228,9 +254,94 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
         };
 
-        var checkUpdatedEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkUpdatedEditingContextFunction);
-        var checkUpdatedEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkUpdatedEditingContextInput).block();
-        assertThat(checkUpdatedEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        Runnable checkUpdatedEditingContext = () -> {
+            var checkUpdatedEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkUpdatedEditingContextFunction);
+            var checkUpdatedEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkUpdatedEditingContextInput).block();
+            assertThat(checkUpdatedEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        };
+
+        StepVerifier.create(flux)
+            .then(checkInitialEditingContext)
+            .then(updateLibrary)
+            .then(checkUpdatedEditingContext)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with dependencies, when a dependency is updated, then the editing context does not contain proxies")
+    public void givenProjectWithDependenciesWhenDependencyIsUpdatedThenEditingContextDoesNotContainProxies() {
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        assertThat(optionalLibrary).isPresent();
+
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+
+        BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                var unresolvedProxies = UnresolvedProxyCrossReferencer.find(emfEditingContext.getDomain().getResourceSet());
+                assertThat(unresolvedProxies).isEmpty();
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                assertThat(abstractTestInterface.getAnnotations())
+                    .hasSize(1)
+                    .allMatch(annotation -> !annotation.eIsProxy()
+                            && annotation.eResource() != null
+                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        Runnable checkInitialEditingContext = () -> {
+            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkInitialEditingContextFunction);
+            IPayload result = this.executeEditingContextFunctionRunner.execute(input).block();
+            assertThat(result).isInstanceOf(SuccessPayload.class);
+        };
+
+        Runnable updateLibrary = () -> {
+            var updateLibraryInput = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
+            var result = this.updateLibraryMutationRunner.run(updateLibraryInput);
+            String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        BiFunction<IEditingContext, IInput, IPayload> checkUpdatedEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                var unresolvedProxies = UnresolvedProxyCrossReferencer.find(emfEditingContext.getDomain().getResourceSet());
+                assertThat(unresolvedProxies).isEmpty();
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                // The annotation should be removed during the update, since the target object doesn't exist anymore in the resource set.
+                assertThat(abstractTestInterface.getAnnotations())
+                    .isEmpty();
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        Runnable checkUpdatedEditingContext = () -> {
+            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkUpdatedEditingContextFunction);
+            IPayload result = this.executeEditingContextFunctionRunner.execute(input).block();
+            assertThat(result).isInstanceOf(SuccessPayload.class);
+        };
+
+        StepVerifier.create(flux)
+            .then(checkInitialEditingContext)
+            .then(updateLibrary)
+            .then(checkUpdatedEditingContext)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+
     }
 
     private void assertThatLibraryHasCorrectDescriptionAndDependencies(Library library, String description, List<Library> dependencyLibraries) {
