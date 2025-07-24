@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,7 +21,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil.UnresolvedProxyCrossReferencer;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -122,6 +126,11 @@ public class UpdateLibraryEventHandler implements IEditingContextEventHandler {
 
                         this.editingContextDependencyLoader.loadDependencies(siriusWebEditingContext);
 
+                        long start = System.nanoTime();
+                        this.removeUnresolvedProxies(siriusWebEditingContext.getDomain().getResourceSet());
+                        Duration timeToRemoveProxies = Duration.ofNanos(System.nanoTime() - start);
+                        this.logger.trace("Removed proxies in {}ms", timeToRemoveProxies.toMillis());
+
                         payload = new SuccessPayload(input.id(), List.of(new Message("Library " + oldLibrary.getName() + " updated to version " + newLibrary.getVersion(), MessageLevel.SUCCESS)));
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                     } else {
@@ -199,5 +208,26 @@ public class UpdateLibraryEventHandler implements IEditingContextEventHandler {
             .ifPresent(semanticData -> {
                 this.semanticDataUpdateService.removeDependencies(updateLibraryInput, AggregateReference.to(semanticData.getId()), List.of(library.getSemanticData()));
             });
+    }
+
+    private void removeUnresolvedProxies(ResourceSet resourceSet) {
+        List<Resource> nonLibraryResources = resourceSet.getResources().stream()
+                .filter(resource -> resource.eAdapters().stream()
+                        .noneMatch(LibraryMetadataAdapter.class::isInstance))
+                .toList();
+        // Only look for proxies in Resources that are persisted in the project's semantic data
+        UnresolvedProxyCrossReferencer.find(nonLibraryResources).forEach((proxyObject, settings) -> {
+            for (Setting setting : settings) {
+                if (!setting.getEStructuralFeature().isDerived()) {
+                    if (setting.getEStructuralFeature().isMany()) {
+                        List<?> value = (List<?>) setting.get(false);
+                        value.remove(proxyObject);
+                    } else {
+                        setting.unset();
+                    }
+                }
+            }
+        });
+
     }
 }
