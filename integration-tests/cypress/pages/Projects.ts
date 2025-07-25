@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { RenameProjectDialog } from './RenameProject';
+
 export class Projects {
   public visit(): Cypress.Chainable<Cypress.AUTWindow> {
     return cy.visit('/projects');
@@ -59,11 +61,5 @@ class ProjectActionMenu {
   public deleteProject(): void {
     this.getDeleteButton().click();
     cy.getByTestId('delete-project').click();
-  }
-}
-
-class RenameProjectDialog {
-  public getInnerRenameTextField(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy.getByTestId('rename-project-dialog').findByTestId('inner-rename-textfield');
   }
 }

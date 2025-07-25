@@ -66,7 +66,9 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
           label="Name"
           placeholder="Enter a new project name"
           data-testid="rename-textfield"
-          slotProps={{ htmlInput: { 'data-testid': 'inner-rename-textfield' } }}
+          slotProps={{
+            htmlInput: { 'data-testid': 'inner-rename-textfield' },
+          }}
           autoFocus
           fullWidth
           onKeyDown={(e) => e.stopPropagation()}
@@ -75,7 +77,7 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
       <DialogActions>
         <Button
           variant="contained"
-          disabled={loading}
+          disabled={loading || nameIsInvalid}
           onClick={onRenameProject}
           color="primary"
           data-testid="rename-project">
