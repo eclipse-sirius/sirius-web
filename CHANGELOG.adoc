@@ -172,6 +172,10 @@ It occurred when we were trying to type the first letter of any menu item of the
 - https://github.com/eclipse-sirius/sirius-web/issues/5251[#5251] [diagram] Support for resizing border nodes is not available at this time.
 Removing resizing anchors for border nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/5241[#5241] [diagram] Fix an issue where expand/collapse action causes the application to crash
+- https://github.com/eclipse-sirius/sirius-web/issues/4217[#4217] [sirius-web] Fix the project rename with invalid project name.
+Prevent the mutation to be send if the name is invalid.
+Fix how error messages are handled.
+
 
 === New Features
 

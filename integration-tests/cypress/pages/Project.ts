@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { RenameProjectDialog } from './RenameProject';
+
 export class Project {
   public visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
     return cy.visit(`/projects/${projectId}/edit`, {
@@ -31,9 +33,18 @@ export class Project {
   }
 
   public getProjectNavigationBar(projectName: string): ProjectNavigationBar {
+    this.isLoaded();
     cy.getByTestId(`navbar-${projectName}`).should('be.visible');
     cy.getByTestId('navigation-bar').findByTestId('more').click();
     return new ProjectNavigationBar();
+  }
+
+  private isLoaded(): void {
+    cy.get('@consoleDebug').should('be.calledWith', 'query getProjectAndRepresentation: response received');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getOnboardData: response received');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getRepresentationMetadata: response received');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getAllTreeFilters: response received');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getAllExplorerDescriptions: response received');
   }
 }
 
@@ -44,6 +55,11 @@ class ProjectNavigationBar {
 
   public getRenameButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('rename');
+  }
+
+  public getRenameDialog(): RenameProjectDialog {
+    this.getRenameButton().should('exist').click();
+    return new RenameProjectDialog();
   }
 
   public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
