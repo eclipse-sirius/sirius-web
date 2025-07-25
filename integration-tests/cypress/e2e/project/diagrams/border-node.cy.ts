@@ -72,6 +72,16 @@ describe('Diagram - border node', () => {
             expect(newTransformX).to.eq(initialTransformX - 25);
           });
       });
+
+      it('Then when selected, a border node should not be resizable', () => {
+        const diagram = new Diagram();
+        diagram.getNodes(diagramTitle, 'border').should('exist');
+        diagram.selectNode(diagramTitle, 'border');
+        cy.get('react-flow__resize-control nodrag top left handle').should('not.exist');
+        cy.get('react-flow__resize-control nodrag top right handle').should('not.exist');
+        cy.get('react-flow__resize-control nodrag bottom left handle').should('not.exist');
+        cy.get('react-flow__resize-control nodrag bottom right handle').should('not.exist');
+      });
     });
   });
 });
