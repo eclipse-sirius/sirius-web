@@ -67,6 +67,8 @@ export const DisplayLibraryView = () => {
               initialRepresentationSelected={null}
               onRepresentationSelected={null}
               readOnly
+              initialWorkbenchConfiguration={null}
+              ref={null}
             />
           </SelectionContextProvider>
         </RepresentationPathContext.Provider>

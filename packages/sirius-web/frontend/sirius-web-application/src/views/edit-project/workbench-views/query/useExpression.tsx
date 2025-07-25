@@ -14,10 +14,12 @@
 import { useEffect, useState } from 'react';
 import { UseExpressionState, UseExpressionValue } from './useExpression.types';
 
-export const useExpression = (editingContextId: string): UseExpressionValue => {
+export const useExpression = (editingContextId: string, initialExpression: string | null): UseExpressionValue => {
   const sessionStorageKey = `query_view_expression#${editingContextId}`;
 
-  const defaultValue: string = isSessionStorageAvailable()
+  const defaultValue: string = initialExpression
+    ? initialExpression
+    : isSessionStorageAvailable()
     ? window.sessionStorage.getItem(sessionStorageKey) ?? ''
     : '';
   const [state, setState] = useState<UseExpressionState>({

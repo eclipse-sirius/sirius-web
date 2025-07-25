@@ -73,7 +73,14 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
   let content: JSX.Element | null = null;
   if (state.form) {
     if (state.form.pages.length > 1) {
-      content = <Form editingContextId={editingContextId} form={state.form} readOnly={readOnly} />;
+      content = (
+        <Form
+          editingContextId={editingContextId}
+          form={state.form}
+          readOnly={readOnly}
+          initiallySelectedPageId={null}
+        />
+      );
     } else if (state.form.pages.length === 1) {
       let selectedPageToolbar = null;
       if (state.form.pages[0].toolbarActions?.length > 0) {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SelectionSynchronizerProps } from './SelectionSynchronizer.types';
@@ -22,8 +22,7 @@ export const SelectionSynchronizer = ({ children }: SelectionSynchronizerProps) 
   useEffect(() => {
     setUrlSearchParams((urlSearchParams: URLSearchParams) => {
       if (selection.entries.length > 0) {
-        const selectionValue: string = selection.entries.map((entry) => entry.id).join(',');
-        urlSearchParams.set('selection', selectionValue);
+        urlSearchParams.set('selection', selectionToSearchParamsValue(selection));
       } else {
         if (urlSearchParams.has('selection')) {
           urlSearchParams.delete('selection');
@@ -34,4 +33,8 @@ export const SelectionSynchronizer = ({ children }: SelectionSynchronizerProps) 
   }, [selection]);
 
   return children;
+};
+
+export const selectionToSearchParamsValue: (selection: Selection) => string = (selection) => {
+  return selection.entries.map((entry) => entry.id).join(',');
 };
