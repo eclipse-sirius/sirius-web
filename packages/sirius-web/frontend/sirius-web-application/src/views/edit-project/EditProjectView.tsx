@@ -70,7 +70,7 @@ export const EditProjectView = () => {
       const { project } = data.viewer;
 
       let representation: RepresentationMetadata | null = null;
-      if (project.currentEditingContext.representation) {
+      if (project?.currentEditingContext.representation) {
         representation = {
           id: project.currentEditingContext.representation.id,
           label: project.currentEditingContext.representation.label,
