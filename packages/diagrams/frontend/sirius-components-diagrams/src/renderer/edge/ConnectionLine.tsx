@@ -15,6 +15,7 @@ import {
   ConnectionLineComponentProps,
   Edge,
   getSmoothStepPath,
+  HandleType,
   InternalNode,
   Node,
   useReactFlow,
@@ -22,11 +23,13 @@ import {
   useUpdateNodeInternals,
 } from '@xyflow/react';
 import React, { memo, useContext, useEffect, useState } from 'react';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import {
+  getEdgeParameters,
   getNearestPointInPath,
   getNearestPointInPerimeter,
   getUpdatedHandleForNode,
@@ -55,6 +58,7 @@ export const ConnectionLine = memo(
     const theme = useTheme();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
     const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+    const { diagramDescription } = useDiagramDescription();
     const { setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
     const [previousToNodeId, setPreviousToNodeId] = useState<String>(toNode?.id || '');
@@ -148,28 +152,35 @@ export const ConnectionLine = memo(
     useEffect(() => {
       // When reconnection to a node
       if (toNode && edgeId && handleToUpdate) {
-        const updatedHandles = getUpdatedHandleForNode(
-          toNode,
-          edgeId,
-          handleToUpdate,
-          { x: updatedToX, y: updatedToY },
-          toPosition
-        );
-        setNodes((previousNodes) =>
-          previousNodes.map((previousNode) => {
-            if (previousNode.id === toNode.id) {
-              return {
-                ...previousNode,
-                data: {
-                  ...previousNode.data,
-                  connectionHandles: updatedHandles,
-                },
-              };
-            }
-            return previousNode;
-          })
-        );
-        updateNodeInternals(toNode.id);
+        const isNearCenter = isCursorNearCenterOfTheNode(toNode, { x: toX, y: toY });
+        if (!isNearCenter) {
+          const updatedHandles = getUpdatedHandleForNode(
+            toNode,
+            edgeId,
+            handleToUpdate,
+            { x: updatedToX, y: updatedToY },
+            toPosition
+          );
+          setNodes((previousNodes) =>
+            previousNodes.map((previousNode) => {
+              if (previousNode.id === toNode.id) {
+                return {
+                  ...previousNode,
+                  data: {
+                    ...previousNode.data,
+                    connectionHandles: updatedHandles,
+                  },
+                };
+              }
+              return previousNode;
+            })
+          );
+          updateNodeInternals(toNode.id);
+        } else {
+          setHandleToAutoLayout();
+        }
+      } else {
+        setHandleToAutoLayout();
       }
 
       // When reconnection to an edge
@@ -256,6 +267,50 @@ export const ConnectionLine = memo(
         );
       }
     }, [updatedToX, updatedToY]);
+
+    const setHandleToAutoLayout = () => {
+      const edge = getEdge(edgeId ?? '');
+      if (edge) {
+        const handleType: HandleType = edge.target === fromNode.id ? 'source' : 'target';
+        const nodeIdToUpdate = handleType === 'source' ? edge.source : edge.target;
+        const nodeToUpdate = store.getState().nodeLookup.get(nodeIdToUpdate);
+
+        if (nodeToUpdate) {
+          const { targetPosition } = getEdgeParameters(
+            fromNode,
+            nodeToUpdate,
+            store.getState().nodeLookup,
+            diagramDescription.arrangeLayoutDirection,
+            edge.data?.bendingPoints ?? []
+          );
+
+          setNodes((previousNodes) =>
+            previousNodes.map((previousNode) => {
+              if (previousNode.id === nodeToUpdate.id) {
+                return {
+                  ...previousNode,
+                  data: {
+                    ...previousNode.data,
+                    connectionHandles: previousNode.data.connectionHandles.map((handle) => {
+                      if (handle.id === handleToUpdate && handle.XYPosition) {
+                        return {
+                          ...handle,
+                          XYPosition: null,
+                          position: targetPosition,
+                        };
+                      }
+                      return handle;
+                    }),
+                  },
+                };
+              }
+              return previousNode;
+            })
+          );
+          updateNodeInternals(nodeToUpdate.id);
+        }
+      }
+    };
 
     const [edgePath] = getSmoothStepPath({
       sourceX: fromX,
