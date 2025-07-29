@@ -1,0 +1,85 @@
+= ADR-205 - Add support for exporting query result
+
+== Context
+
+A button is available on the `query` view to export the query result.
+
+== Decision
+
+We will add an API to export objects to a given format.
+
+=== Frontend
+
+A new button will be added in the `query` view.
+
+[source, typescript]
+----
+<Button
+  data-testid="export-csv-button"
+  variant="contained"
+  color="primary"
+  component="a"
+  href={`${httpOrigin}/api/editingcontexts/${editingContextId}/objects?contentType=text/csv&elementIds=[${elementIds}]`}
+  type="application/octet-stream"
+  onClick={onClick}>
+</Button>
+----
+
+This button will contain a single hardcoded option which allows to export results as CSV.
+This button will be hidden if the result is not yet available or if it does not contain objects.
+
+=== GraphQL schema
+
+No change in the GraphQL schema, since downloads are directly handled by REST controllers.
+
+=== Backend
+
+We will create an `ObjectsDownloadController` that will produce a the file to download.
+
+[source, java]
+----
+@RestController
+@RequestMapping("/api/editingcontexts/{editingContextId}/objects")
+public class ObjectsDownloadController {
+
+  private final List<IObjectExporter> objectExporters;
+
+  @ResponseBody
+  @GetMapping
+  public ResponseEntity<Resource> downloadObjects(@PathVariable String editingContextId, @RequestParam String contentType, @RequestParam List<String> elementIds) {
+    // Get the elements from the editing context
+    // Find the IObjectExporter that can handle the provided contentType
+    // Get the bytes from the exporter
+    // Create the ResponseEntity with the result
+  }
+
+}
+----
+
+We will create the `IObjectExporter` interface to let downstream applications contribute export capabilities
+
+[source, java]
+----
+public interface IObjectExporter {
+
+  boolean canHandle(List<Object> elements, String contentType);
+
+  Optional<byte[]> getBytes(List<Object> elements, String contentType);
+
+}
+----
+
+We will provide an implementation for the content type `text/csv` that will produce a CSV file with the following information for each element:
+- ID
+- Type
+- Label (if any)
+
+== Rabbit holes
+
+
+== Consequences
+
+This new API is not bound to the `query` view by any means, and can be called with any list of element IDs.
+
+
+== Cutting backs
