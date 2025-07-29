@@ -202,14 +202,13 @@ export class Diagram {
 
   public moveSourceHandleToLeftPosition(edge: Cypress.Chainable, diagramTitle, selector): void {
     const diagram = new Diagram();
-    let initialWidth: number, initialHeight: number;
+    let initialHeight: number;
     diagram.getNodes(diagramTitle, selector).then(($el) => {
       if ($el[0]) {
         const rect = $el[0].getBoundingClientRect();
-        initialWidth = rect.width;
         initialHeight = rect.height;
 
-        const centerX = initialWidth * 0.25;
+        const centerX = 4;
         const centerY = initialHeight * 0.75;
         edge
           .get('.react-flow__edgeupdater.react-flow__edgeupdater-source')

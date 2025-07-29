@@ -49,7 +49,7 @@ export const getUpdatedHandleForNode = (
     };
 
     //Take the size of the handle and its position into account
-    if (position === Position.Top || position === Position.Bottom) {
+    if (position === Position.Top) {
       XYPosition = {
         x: XYPosition.x - HANDLE_OFFSET,
         y: 0,
