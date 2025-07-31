@@ -123,6 +123,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection in favor of useState
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 * The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
+- https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export these stateful components `AppearanceColorPicker`, `AppearanceNumberTextfield ` and `AppearanceSelect` to use in custom node appearance section
 
 
 == v2025.8.0
