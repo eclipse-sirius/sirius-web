@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+export interface AppearanceNumberTextfieldProps {
+  icon: JSX.Element;
+  label: string;
+  initialValue: number;
+  isDisabled: boolean;
+  onEdit: (value: number) => void;
+  onReset: () => void;
+}
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+export interface AppearanceNumberTextfieldState {
+  value: number;
 }

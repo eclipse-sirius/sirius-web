@@ -22,11 +22,11 @@ export interface UseResetNodeAppearanceValue {
   ) => void;
 }
 
-export interface GQLResetNodeApparenceData {
-  resetNodeAppearance: GQLResetNodeApparencePayload;
+export interface GQLResetNodeAppearanceData {
+  resetNodeAppearance: GQLResetNodeAppearancePayload;
 }
 
-export type GQLResetNodeApparencePayload = GQLErrorPayload | GQLSuccessPayload;
+export type GQLResetNodeAppearancePayload = GQLErrorPayload | GQLSuccessPayload;
 
 export interface GQLResetNodeAppearanceInput {
   id: string;
@@ -36,6 +36,6 @@ export interface GQLResetNodeAppearanceInput {
   propertiesToReset: string[];
 }
 
-export interface GQLResetNodeApparenceVariables {
+export interface GQLResetNodeAppearanceVariables {
   input: GQLResetNodeAppearanceInput;
 }

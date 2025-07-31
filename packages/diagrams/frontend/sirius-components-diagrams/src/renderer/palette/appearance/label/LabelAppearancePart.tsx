@@ -17,22 +17,28 @@ import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatSizeIcon from '@mui/icons-material/FormatSize';
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import LineWeightIcon from '@mui/icons-material/LineWeight';
 import LineStyleIcon from '@mui/icons-material/LineStyle';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
-import { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
-import { Color } from '../Color';
-import { LabelAppearancePartProps, LabelPartState } from './LabelAppearancePart.types';
-import { useEditLabelAppearance } from './useEditLabelAppearance';
-import { useResetLabelAppearance } from './useResetLabelAppearance';
-import { TextFieldAppearanceProperty } from '../property-component/TextFieldAppearanceProperty';
 import { CheckboxAppearanceProperty } from '../property-component/CheckboxAppearanceProperty';
-import { SelectAppearanceProperty } from '../property-component/SelectAppearanceProperty';
+import { AppearanceColorPicker } from '../widget/AppearanceColorPicker';
+import { AppearanceNumberTextfield } from '../widget/AppearanceNumberTextfield ';
+import { AppearanceSelect } from '../widget/AppearanceSelect';
+import { LabelAppearancePartProps } from './LabelAppearancePart.types';
+import { useEditLabelAppearance } from './useEditLabelAppearance';
+import { GQLLabelAppearanceInput } from './useEditLabelAppearance.types';
+import { useResetLabelAppearance } from './useResetLabelAppearance';
+
+const LINE_STYLE_OPTIONS = [
+  { value: 'Solid', label: 'Solid' },
+  { value: 'Dash', label: 'Dash' },
+  { value: 'Dot', label: 'Dot' },
+  { value: 'Dash_Dot', label: 'Dash Dot' },
+];
 
 export const LabelAppearancePart = ({
   diagramElementId,
@@ -42,267 +48,109 @@ export const LabelAppearancePart = ({
   customizedStyleProperties,
 }: LabelAppearancePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const [state, setState] = useState<LabelPartState>({
-    fontSize: style.fontSize,
-    borderRadius: style.borderRadius,
-    borderColor: style.borderColor,
-    borderSize: style.borderSize,
-    borderStyle: style.borderStyle,
-    color: style.color,
-    background: style.background,
-  });
 
   const { updateLabelAppearance } = useEditLabelAppearance();
   const { resetLabelStyleProperties } = useResetLabelAppearance();
 
-  const onFontSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFontSize = Number(event.target.value);
-    if (!isNaN(newFontSize) && isFinite(newFontSize)) {
-      setState((prevState) => ({
-        ...prevState,
-        fontSize: newFontSize,
-      }));
-    }
-  };
+  const handleResetProperty = (customizedStyleProperty: string) =>
+    resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, [customizedStyleProperty]);
 
-  const onBorderColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((prevState) => ({
-      ...prevState,
-      borderColor: event.target.value,
-    }));
-  };
+  const handleEditProperty = (newValue: Partial<GQLLabelAppearanceInput>) =>
+    updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, newValue);
 
-  const onBorderRadiusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newBorderRadius = Number(event.target.value);
-    if (!isNaN(newBorderRadius) && isFinite(newBorderRadius)) {
-      setState((prevState) => ({
-        ...prevState,
-        borderRadius: newBorderRadius,
-      }));
-    }
-  };
-
-  const onBorderSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newBorderSize = Number(event.target.value);
-    if (!isNaN(newBorderSize) && isFinite(newBorderSize)) {
-      setState((prevState) => ({
-        ...prevState,
-        borderSize: newBorderSize,
-      }));
-    }
-  };
-
-  const onBorderStyleChange = (event: SelectChangeEvent<string>) => {
-    updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { borderStyle: event.target.value });
-    setState((prevState) => ({
-      ...prevState,
-      borderStyle: event.target.value,
-    }));
-  };
-
-  const onColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((prevState) => ({
-      ...prevState,
-      color: event.target.value,
-    }));
-  };
-
-  const onBackgroundChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((prevState) => ({
-      ...prevState,
-      background: event.target.value,
-    }));
-  };
+  const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 
   return (
     <ListItem disablePadding sx={(theme) => ({ paddingX: theme.spacing(1) })}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Typography variant="subtitle2">{position}</Typography>
 
-        <TextFieldAppearanceProperty
+        <AppearanceNumberTextfield
           icon={<FormatSizeIcon />}
-          label="Font Size"
-          value={state.fontSize}
-          onChange={onFontSizeChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-                fontSize: state.fontSize,
-              });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { fontSize: state.fontSize })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['FONT_SIZE'])
-          }
-          isDisabled={!customizedStyleProperties.includes('FONT_SIZE')}
-        />
+          label={'Font Size'}
+          initialValue={style.fontSize}
+          isDisabled={isDisabled('FONT_SIZE')}
+          onEdit={(newValue) => handleEditProperty({ fontSize: newValue })}
+          onReset={() => handleResetProperty('FONT_SIZE')}></AppearanceNumberTextfield>
+
         <CheckboxAppearanceProperty
           icon={<FormatItalicIcon />}
           label="Italic"
           checked={style.italic}
-          onChange={(checked) =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { italic: checked })
-          }
-          onReset={() => resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['ITALIC'])}
-          isDisabled={!customizedStyleProperties.includes('ITALIC')}
+          isDisabled={isDisabled('ITALIC')}
+          onChange={(checked) => handleEditProperty({ italic: checked })}
+          onReset={() => handleResetProperty('ITALIC')}
         />
         <CheckboxAppearanceProperty
           icon={<FormatBoldIcon />}
           label="Bold"
           checked={style.bold}
-          onChange={(checked) =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { bold: checked })
-          }
-          onReset={() => resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BOLD'])}
-          isDisabled={!customizedStyleProperties.includes('BOLD')}
+          isDisabled={isDisabled('BOLD')}
+          onChange={(checked) => handleEditProperty({ bold: checked })}
+          onReset={() => handleResetProperty('BOLD')}
         />
         <CheckboxAppearanceProperty
           icon={<FormatUnderlinedIcon />}
           label="Underline"
           checked={style.underline}
-          onChange={(checked) =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { underline: checked })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['UNDERLINE'])
-          }
-          isDisabled={!customizedStyleProperties.includes('UNDERLINE')}
+          isDisabled={isDisabled('UNDERLINE')}
+          onChange={(checked) => handleEditProperty({ underline: checked })}
+          onReset={() => handleResetProperty('UNDERLINE')}
         />
         <CheckboxAppearanceProperty
           icon={<FormatStrikethroughIcon />}
           label="Strike Through"
           checked={style.strikeThrough}
-          onChange={(checked) =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { strikeThrough: checked })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['STRIKE_THROUGH'])
-          }
-          isDisabled={!customizedStyleProperties.includes('STRIKE_THROUGH')}
+          isDisabled={isDisabled('STRIKE_THROUGH')}
+          onChange={(checked) => handleEditProperty({ strikeThrough: checked })}
+          onReset={() => handleResetProperty('STRIKE_THROUGH')}
         />
-        <TextFieldAppearanceProperty
-          icon={<Color value={state.borderColor} />}
-          label="Border Color"
-          value={state.borderColor}
-          onChange={onBorderColorChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-                borderColor: state.borderColor,
-              });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-              borderColor: state.borderColor,
-            })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BORDER_COLOR'])
-          }
-          isDisabled={!customizedStyleProperties.includes('BORDER_COLOR')}
-        />
-        <TextFieldAppearanceProperty
+
+        <AppearanceColorPicker
+          label={'Border Color'}
+          initialValue={style.borderColor}
+          isDisabled={isDisabled('BORDER_COLOR')}
+          onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
+          onReset={() => handleResetProperty('BORDER_COLOR')}></AppearanceColorPicker>
+
+        <AppearanceNumberTextfield
           icon={<Crop32Icon />}
-          label="Border Radius"
-          value={state.borderRadius}
-          onChange={onBorderRadiusChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-                borderRadius: state.borderRadius,
-              });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-              borderRadius: state.borderRadius,
-            })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BORDER_RADIUS'])
-          }
-          isDisabled={!customizedStyleProperties.includes('BORDER_RADIUS')}
-        />
-        <TextFieldAppearanceProperty
-          icon={<LineWeightIcon />}
-          label="Border Size"
-          value={state.borderSize}
-          onChange={onBorderSizeChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-                borderSize: state.borderSize,
-              });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-              borderSize: state.borderSize,
-            })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BORDER_SIZE'])
-          }
-          isDisabled={!customizedStyleProperties.includes('BORDER_SIZE')}
-        />
-        <SelectAppearanceProperty
+          label={'Border Radius'}
+          initialValue={style.borderRadius}
+          isDisabled={isDisabled('BORDER_RADIUS')}
+          onEdit={(newValue) => handleEditProperty({ borderRadius: newValue })}
+          onReset={() => handleResetProperty('BORDER_RADIUS')}></AppearanceNumberTextfield>
+
+        <AppearanceNumberTextfield
+          icon={<Crop32Icon />}
+          label={'Border Size'}
+          initialValue={style.borderSize}
+          isDisabled={isDisabled('BORDER_SIZE')}
+          onEdit={(newValue) => handleEditProperty({ borderSize: newValue })}
+          onReset={() => handleResetProperty('BORDER_SIZE')}></AppearanceNumberTextfield>
+
+        <AppearanceSelect
           icon={<LineStyleIcon />}
-          label="Border Line Style"
-          value={state.borderStyle}
-          onChange={onBorderStyleChange}
-          options={[
-            { value: 'Solid', label: 'Solid' },
-            { value: 'Dash', label: 'Dash' },
-            { value: 'Dot', label: 'Dot' },
-            { value: 'Dash_Dot', label: 'Dash Dot' },
-          ]}
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BORDER_STYLE'])
-          }
-          isDisabled={!customizedStyleProperties.includes('BORDER_STYLE')}
-        />
-        <TextFieldAppearanceProperty
-          icon={<Color value={state.color} />}
-          label="Label Color"
-          value={state.color}
-          onChange={onColorChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { color: state.color });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, { color: state.color })
-          }
-          onReset={() => resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['COLOR'])}
-          isDisabled={!customizedStyleProperties.includes('COLOR')}
-        />
-        <TextFieldAppearanceProperty
-          icon={<Color value={state.background} />}
-          label="Background"
-          value={state.background}
-          onChange={onBackgroundChange}
-          onKeyDown={(event) => {
-            if (event.code === 'Enter') {
-              updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-                background: state.background,
-              });
-            }
-          }}
-          onBlur={() =>
-            updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, {
-              background: state.background,
-            })
-          }
-          onReset={() =>
-            resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, ['BACKGROUND'])
-          }
-          isDisabled={!customizedStyleProperties.includes('BACKGROUND')}
-        />
+          label={'Border Line Style'}
+          options={LINE_STYLE_OPTIONS}
+          initialValue={style.borderStyle}
+          isDisabled={isDisabled('BORDER_STYLE')}
+          onEdit={(newValue) => handleEditProperty({ borderStyle: newValue })}
+          onReset={() => handleResetProperty('BORDER_STYLE')}></AppearanceSelect>
+
+        <AppearanceColorPicker
+          label={'Label Color'}
+          initialValue={style.color}
+          isDisabled={isDisabled('COLOR')}
+          onEdit={(newValue) => handleEditProperty({ color: newValue })}
+          onReset={() => handleResetProperty('COLOR')}></AppearanceColorPicker>
+
+        <AppearanceColorPicker
+          label={'Background'}
+          initialValue={style.background}
+          isDisabled={isDisabled('BACKGROUND')}
+          onEdit={(newValue) => handleEditProperty({ background: newValue })}
+          onReset={() => handleResetProperty('BACKGROUND')}></AppearanceColorPicker>
       </Box>
     </ListItem>
   );
