@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
@@ -110,11 +109,14 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         PortalServices portalServices = new PortalServices(this.representationSearchService, this.editingContext);
-        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION) && changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
-            var deletedRepresentationId = deleteRepresentationInput.representationId();
+        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION)) {
+            var deletedRepresentationId = Optional.ofNullable(changeDescription.getParameters().get(EditingContextEventProcessor.REPRESENTATION_ID))
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .orElse("");
             if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
                 var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
-                this.updatePortal(deleteRepresentationInput, newPortal);
+                this.updatePortal(changeDescription.getInput(), newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
