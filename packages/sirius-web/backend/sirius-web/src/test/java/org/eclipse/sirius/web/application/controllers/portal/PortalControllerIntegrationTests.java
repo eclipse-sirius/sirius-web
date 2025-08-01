@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.controllers.portal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.portals.tests.PortalEventPayloadConsumer.assertRefreshedPortalThat;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -30,33 +31,37 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.AddPortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.RemovePortalViewInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
+import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeQueryService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.portals.tests.graphql.AddPortalViewMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.LayoutPortalMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.RemovePortalViewMutationRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.portal.services.PortalDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.portals.GivenCreatedPortalSubscription;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,6 +69,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -124,7 +130,13 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     private RemovePortalViewMutationRunner removePortalViewMutationRunner;
 
     @Autowired
-    private DeleteRepresentationMutationRunner deleteRepresentationMutationRunner;
+    private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
+
+    @Autowired
+    private ITreeQueryService treeQueryService;
+
+    @Autowired
+    private DeleteTreeItemMutationRunner deleteTreeItemMutationRunner;
 
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
@@ -272,38 +284,51 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a portal with a representation, when we delete the representation, then the portal should be refreshed")
-    public void givenPortalWithRepresentationWhenWeDeleteTheRepresentationThenThePortalShouldBeRefreshed() {
-        this.givenCommittedTransaction.commit();
+    @DisplayName("Given an expanded explorer containing a portal with a representation, when we delete the tree item representing the representation, then the portal should be refreshed")
+    public void givenExpandedExplorerContainingPortalWithRepresentationWhenWeDeleteTheTreeItemRepresentingTheRepresentationThenThePortalShouldBeRefreshed() {
+        var representationIdBuilder = new RepresentationIdBuilder();
+        var explorerId = representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID,
+                List.of(
+                        TestIdentifiers.ECORE_SAMPLE_DOCUMENT.toString(),
+                        TestIdentifiers.EPACKAGE_OBJECT.toString(),
+                        TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
+                        TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(),
+                        TestIdentifiers.ECLASS_OBJECT.toString()
+                ),
+                List.of());
+        var explorerEventFlux = this.explorerEventSubscriptionRunner.run(new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, explorerId));
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalEventFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
-
-        var emptyPortalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-        var emptyPortalEventFlux = this.portalEventSubscriptionRunner.run(emptyPortalEventInput);
+        var flux = Flux.merge(explorerEventFlux, portalEventFlux);
 
         Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
             assertThat(portal.getViews()).map(PortalView::getRepresentationId).contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+            assertThat(portal.getLayoutData()).isNotEmpty();
         });
 
-        Consumer<Object> emptyPortalContentConsumer = assertRefreshedPortalThat(portal -> {
-            assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-            assertThat(portal.getViews()).isEmpty();
-            assertThat(portal.getLayoutData()).isEmpty();
+        var treeInstanceId = new AtomicReference<String>();
+        Consumer<Object> intialTreeConsumer = assertRefreshedTreeThat(tree -> {
+            treeInstanceId.set(tree.getId());
         });
 
         Runnable removeExistingRepresentation = () -> {
-            var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
-            var result = this.deleteRepresentationMutationRunner.run(input);
+            var input = new DeleteTreeItemInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, treeInstanceId.get(), TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION);
+            var result = this.deleteTreeItemMutationRunner.run(input);
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
 
-            String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
-            assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result, "$.data.deleteTreeItem.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
+
+        Consumer<Object> updatedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            var optionalTreeItem = this.treeQueryService.findTreeItem(tree, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+            assertThat(optionalTreeItem).isEmpty();
+        });
 
         Consumer<Object> updatedPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             assertThat(portal.getId()).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
@@ -311,10 +336,11 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(portal.getLayoutData()).isEmpty();
         });
 
-        StepVerifier.create(Flux.merge(portalEventFlux, emptyPortalEventFlux))
+        StepVerifier.create(flux)
+                .consumeNextWith(intialTreeConsumer)
                 .consumeNextWith(initialPortalContentConsumer)
-                .consumeNextWith(emptyPortalContentConsumer)
                 .then(removeExistingRepresentation)
+                .consumeNextWith(updatedExplorerContentConsumer)
                 .consumeNextWith(updatedPortalContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
