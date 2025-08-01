@@ -215,6 +215,7 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 + This URL includes the current workbench selection and the current workbench state.
 + For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
+- https://github.com/eclipse-sirius/sirius-web/issues/5273[#5273] [tree] Add keyboard shortcut 'F2' and 'Delete' for rename and deletion in Tree explorer.
 
 === Improvements
 

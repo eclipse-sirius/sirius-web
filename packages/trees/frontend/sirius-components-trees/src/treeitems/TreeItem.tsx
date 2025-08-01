@@ -21,6 +21,10 @@ import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { TreeItemIcon } from './TreeItemIcon';
 import { isFilterCandidate } from './filterTreeItem';
 import { useDropTreeItem } from './useDropTreeItem';
+import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
+import { deleteTreeItemMutation, handleDeleteItem } from './context-menu/DeleteMenuItem';
+import { useMutation } from '@apollo/client';
+import { GQLDeleteTreeItemData, GQLDeleteTreeItemVariables } from './context-menu/DeleteMenuItem.types';
 
 interface TreeItemStyleProps {
   depth: number;
@@ -199,6 +203,37 @@ export const TreeItem = ({
     refDom.current.focus();
   };
 
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const [deleteTreeItem] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(deleteTreeItemMutation);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!state.editingMode && event.key === 'F2') {
+      refDom.current.focus();
+      if (!item.selectable) {
+        return;
+      }
+
+      const treeItemArrowTestId = `${getString(item.label)}-toggle`;
+      if ((event.target as HTMLElement).getAttribute('data-testid') === treeItemArrowTestId) {
+        return;
+      }
+      enterEditingMode();
+    }
+
+    if (!state.editingMode && event.key === 'Delete') {
+      if (!item.selectable) {
+        return;
+      }
+
+      // Don't change the selection if the user clicked on the TreeItemArrow
+      const treeItemArrowTestId = `${getString(item.label)}-toggle`;
+      if ((event.target as HTMLElement).getAttribute('data-testid') === treeItemArrowTestId) {
+        return;
+      }
+      handleDeleteItem(editingContextId, treeId, item, deleteTreeItem, showDeletionConfirmation, onClick);
+    }
+  };
+
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
       refDom.current.focus();
@@ -310,6 +345,7 @@ export const TreeItem = ({
         <div
           className={className}
           onClick={onClick}
+          onKeyDown={onKeyDown}
           onDragEnter={() => handleMouseEnter('item')}
           onDragExit={handleMouseLeave}
           onDrop={onDropItem}
