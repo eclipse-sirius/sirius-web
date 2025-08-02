@@ -95,7 +95,7 @@ To build `sirius-web` locally, you need a _GitHub Access Token_ so that:
 * Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
 * Node can download the `@ObeoNetwork/react-trello` and `@ObeoNetwork/gantt-task-react` artifacts.
 
-. Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
+. Create a personal token with a scope of `read:packages` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
 +
 WARNING: Once generated, a token cannot be displayed anymore, so make sure to copy it in a secure location.
 . Create or edit `$HOME/.m2/settings.xml` to tell Maven to use this token when accessing the Sirius EMF JSON repository:
