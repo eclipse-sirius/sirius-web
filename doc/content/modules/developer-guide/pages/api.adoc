@@ -1,0 +1,30 @@
+= APIs overview
+
+{product} exposes two complimentary APIs:
+
+* GraphQL API used by the web client.
+* REST API implementing a subset of the SysML v2 REST API.
+
+Choose the approach that best fits your deployment, then dive into the detailed pages linked below.
+
+
+== GraphQL HTTP API
+
+GraphQL powers the web client and is ideal when building custom front ends or extensions that the same capabilities as the Sirius Web frontend.
+
+* A single `/api/graphql` endpoint serves both queries and mutations.
+* The schema mirrors the concepts exposed in the UI (projects, libraries, representations, etc.).
+* You can introspect the schema using GraphiQL or any GraphQL IDE.
+
+See xref:developer-guide:api-graphql.adoc[] for details and examples related to the GraphQL API.
+
+
+== REST APIs
+
+The REST API is a subset of the SysML v2 REST API, and is ideal for integrations with other tools or services.
+
+* Every endpoint is rooted at `/api/rest/…`.
+* OpenAPI documentation is generated automatically; you can inspect it via `/swagger-ui/index.html` in your deployment.
+
+See xref:developer-guide:api-rest.adoc[] for the full list of endpoints, request/response payloads, and usage tips.
+

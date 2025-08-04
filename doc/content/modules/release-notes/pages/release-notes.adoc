@@ -1,0 +1,5 @@
+= Release notes
+
+:sectnums!:
+
+include::release-notes:2026.7.0.adoc[leveloffset=+1]

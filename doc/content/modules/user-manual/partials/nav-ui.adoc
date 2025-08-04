@@ -1,0 +1,3 @@
+* xref:user-manual:tour.adoc[]
+** xref:user-manual:features/project-browser.adoc[]
+** xref:user-manual:features/workbench.adoc[]

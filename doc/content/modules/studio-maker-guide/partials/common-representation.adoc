@@ -1,0 +1,16 @@
+=== Core Properties
+
+Every representation description provides the following fundamentals:
+
+* `name: String` A unique identifier of the description. If the name is changed, existing representations created from this description will stop working.
+* [.domain-type]#domainType: DomainType# Fully qualified type of the semantic element on which the representation can be created. For example `flow::System` or `ecore::EClass`.
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Expression evaluated on the semantic element on which the representation may be created; the representation is available only when it returns `true`. If the expression is not set, the representation is always available. Here are the variables available for this expression:
+  - `self: Object` The semantic element on which the representation may be created
+* [.interpreted-expression]#titleExpression: InterpretedExpression# Use to compute the default representation label visible when the new representation creation dialog is opened. The end user can choose not to use it and provide instead their own label. This Here are the variables available for this expression:
+  - `self: Object` The semantic element on which the representation may be created
+* [.interpreted-expression]#iconExpression: InterpretedExpression# Used to compute the icon associated with the representation. This expression should return an icon path, for example the path of an image file in the application like `aql:'/folder/icon.svg'` for an icon available in a specific folder of a maven module.
+  - `self: Object` The semantic element on which the representation is being created
+* `description: String` Some documentation to let the studio makers understand the purpose of the representation.
+* `endUserDocumentation: String` Some documentation to let the end users understand the purpose of the representation.
+
+

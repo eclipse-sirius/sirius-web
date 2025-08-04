@@ -1,0 +1,91 @@
+= Backend architecture
+
+{product} is a modular monolith organised along domain-driven design (DDD) principles so that contributors can extend or replace capabilities without forking the entire stack.
+This page summarises the structure of the backend modules and the conventions followed inside each layer.
+
+== Layers and modules
+
+The code base is split into three coarse-grained layers, each delivered as a Maven module:
+
+* `sirius-web-domain` — aggregates, repositories, and domain services that capture the core business concepts.
+* `sirius-web-application` — coordination logic, transactions, and controllers that expose REST/GraphQL/WebSocket APIs.
+* `sirius-web-infrastructure` — Spring configuration, adapters (database, messaging, monitoring), schema/resources.
+
+A fourth module, `sirius-web-starter`, packages the previous ones as a Spring Boot starter so downstream applications only depend on a single artifact.
+
+Keeping these boundaries explicit clarifies responsibilities and helps downstream teams reason about where to add or override behaviour.
+
+== Domain module (`sirius-web-domain`)
+
+This module contains the heart of the business logic and provides the aggregates and services used by the rest of the system.
+
+=== Dependencies
+
+The domain intentionally depends on a small set of Spring libraries:
+
+* `spring-boot-starter-data-jdbc` (and Spring Data Relational) for aggregate persistence (`@Table`, `@Column`, `@Id`, etc.).
+* `spring-boot-starter-validation` for bean validation.
+* Spring Modulith / jMolecules to document and verify module boundaries.
+
+We do not aim for a persistence-agnostic domain—the current implementation focuses on PostgreSQL via Spring Data JDBC.
+
+=== Bounded contexts and aggregates
+
+The domain is organised into bounded contexts, themselves composed of aggregates.
+Most contexts are simple today (a single aggregate), but the structure scales as features grow.
+
+* Aggregate roots extend Spring Data’s `AbstractAggregateRoot` so they can emit events.
+* Each aggregate root has a dedicated Spring Data repository; other entities cannot be persisted independently.
+* Mutations must go through the aggregate root to keep structural consistency and ensure events are emitted from a single entry point.
+* Aggregate roots typically expose creation/last-modified timestamps; entities and value objects may do the same.
+
+Entities are represented as regular classes with a stable identity (usually a `UUID`), whereas value objects are implemented as records with no identity beyond their properties.
+We deliberately avoid JavaBean-style setters; instead, methods on the aggregate root orchestrate the changes (often touching several objects at once) and emit events.
+
+=== Events and domain services
+
+Aggregates emit events to describe what changed and when it occurred; events always carry a creation timestamp.
+Domain services encapsulate small pieces of business logic that query or mutate aggregates.
+They should not start transactions or throw unchecked exceptions—instead they return typed success/failure objects and rely on `AggregateReference` to keep identifiers explicit.
+
+Where useful, `package-info.java` files describe the dependencies between packages so Spring Modulith/jMolecules can enforce layering rules.
+
+== Application module (`sirius-web-application`)
+
+The application layer handles interactions with the outside world:
+
+* Controllers for REST and GraphQL (HTTP + WebSocket) APIs.
+* Cross-aggregate queries or updates and the orchestration of domain services.
+* Static frontend assets served by the backend.
+
+Application services receive inputs (for example the `IInput` instances from the collaborative layer), open transactions, invoke domain services, and return typed payloads (`IPayload`).
+Transactions should preferably change data within a single bounded context; when that is not possible, emit domain events so other contexts can react asynchronously.
+
+Event listeners live in this layer too—they subscribe to domain events and perform cross-aggregate synchronisation while handling their own transactions.
+
+== Infrastructure module (`sirius-web-infrastructure`)
+
+This module wires the technical stack:
+
+* Spring Data + PostgreSQL configuration and Liquibase changelogs.
+* GraphQL Java registration and HTTP/WebSocket handlers.
+* Static configuration data (GraphQL schema files, resources).
+* Spring configuration for Sirius Components themselves.
+
+Downstream adopters rarely modify this module, but it is the place to override datasource, messaging, or monitoring configuration if needed.
+
+== Starter module (`sirius-web-starter`)
+
+`sirius-web-starter` packages the domain, application, and infrastructure modules as a single Spring Boot starter.
+Embedding {product} in another application is therefore as simple as depending on the starter and importing the configuration class.
+
+== Event-driven workflow
+
+Domain services publish events when something changes; application services and listeners react to those events.
+This event-driven approach keeps features loosely coupled and provides visibility into the runtime lifecycle.
+
+== Persistence technology
+
+Aggregates are persisted with Spring Data JDBC instead of JPA.
+JDBC is a better fit for aggregate-centric modelling, reduces implicit magic, and still works seamlessly with PostgreSQL (the supported database).
+Studio makers and API consumers do not need to change anything, but contributors can rely on richer domain objects and explicit state transitions inside the backend.

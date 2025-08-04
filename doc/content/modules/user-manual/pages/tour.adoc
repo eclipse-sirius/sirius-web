@@ -1,0 +1,14 @@
+= Tour the interface
+
+Embark on a comprehensive exploration of {product}'s interface as we guide you through the key features and functionalities.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+a|image::homepage.png[xref=user-manual:features/project-browser]
+
+xref:user-manual:features/project-browser.adoc[Explore the {project-browser}...]
+
+a|image::editor.png[xref=user-manual:features/workbench.adoc]
+
+xref:user-manual:features/workbench.adoc[Explore the {workbench}...]
+|===

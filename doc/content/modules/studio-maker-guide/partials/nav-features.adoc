@@ -1,0 +1,13 @@
+// Reference all the files defined in the features folder
+* Studio Maker Guide
+** xref:studio-maker-guide:features/studio.adoc[]
+** xref:studio-maker-guide:features/meta-modeling.adoc[]
+** xref:studio-maker-guide:features/aql.adoc[]
+** xref:studio-maker-guide:features/domain.adoc[]
+** xref:studio-maker-guide:features/view-description.adoc[]
+** xref:studio-maker-guide:features/deck-description.adoc[]
+** xref:studio-maker-guide:features/diagram-description.adoc[]
+** xref:studio-maker-guide:features/form-description.adoc[]
+** xref:studio-maker-guide:features/gantt-description.adoc[]
+** xref:studio-maker-guide:features/table-description.adoc[]
+** xref:studio-maker-guide:features/tree-description.adoc[]

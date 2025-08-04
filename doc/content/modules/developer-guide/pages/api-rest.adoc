@@ -1,0 +1,43 @@
+= REST APIs
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+Use this page to explore the REST endpoints provided by {product}.
+They are best suited for integration with other tools using the SysML v2 REST API.
+
+
+== Endpoint prefix
+
+All endpoints start with `/api/rest/`.
+For example:
+
+* `/api/rest/projects` – list projects.
+* `/api/rest/projects/projectId` – manage a specific project.
+
+
+== OpenAPI and Swagger UI
+
+{product} ships with generated OpenAPI documentation.
+Open `http://<host>:<port>/swagger-ui/index.html` in your deployment to browse all endpoints interactively.
+You can also export the specification from `/_/attachments/sirius-web-openapi.json`.
+
+[TIP]
+====
+The Swagger UI embedded in the documentation disables “Try it out” by default.
+Use your local instance if you want to test requests directly in a browser.
+====
+
+
+== Supported endpoints
+
+Highlights include:
+
+* **Projects**: create, list, delete projects; import/export models.
+* **Object**: manage objects within projects.
+
+
+== Usage tips
+
+* For advanced interactions, consider the GraphQL API instead.
+* When uploading files, set the correct `Content-Type` (typically `application/json` for models).
+* Combine the REST API with automation scripts (shell, Python, CI runners) to bootstrap workspaces.

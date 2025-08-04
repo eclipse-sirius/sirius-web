@@ -1,0 +1,124 @@
+= Deck Description
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page explains the deck description defined in {product}.
+It allows you to create Kanban-style boards.
+It enables you to visualize and organize semantic elements as cards within lanes.
+You can configure it inside a **Studio** project by using both the xref:user-manual:features/explorer-view.adoc[] and the xref:user-manual:features/details-view.adoc[]
+
+
+== Introduction
+
+The `DeckDescription` extends the shared `RepresentationDescription`, so it follows the same naming, icon, and domain-type conventions used by diagrams, forms, tables, and trees.
+Deck descriptions describe how semantic elements become lanes and cards, which tools users can trigger from various actions and how styling is applied to the board.
+
+== Configuring deck descriptions
+
+image::representations/deck-description-overview.png[Deck description overview]
+
+When authoring a deck description you typically follow this workflow:
+
+1. Create a `DeckDescription` with a name, the type of the semantic element on which the deck can be created (`domainType`), and optional style.
+2. Add one or more `LaneDescription` entries to map semantic elements to lanes.
+3. Under each lane, add `CardDescription` entries for the cards you want to display.
+4. Configure drag-and-drop and edit tools so the board reacts when users move lanes or cards.
+
+== Deck Description
+
+=== Creation
+
+include::partial$common-representation.adoc[]
+
+=== Rendering
+
+All the expressions evaluated during the rendering of the Deck representation can have access to the following variables:
+
+* `self`: The semantic element used as a target for the concept being rendered
+* `editingContext`: The editing context which can be used to access additional data (find other semantic elements, find representation descriptions, etc).
+
+==== Deck Description
+
+Under a `DeckDescription`, you can use the following concepts to render the deck:
+
+* `laneDescriptions`: Ordered collection of `LaneDescription` entries.
+* `style`: An instance of `DeckDescriptionStyle` that controls board-level styling.
+* `conditionalStyles`: A list of `ConditionalDeckDescriptionStyle` entries that override the base style when their condition evaluates to `true`.
+
+Under the `DeckDescriptionStyle`, you can configure the following attributes to change the style of the board:
+
+* `backgroundColor`: Reference of a color used as the background of the board
+
+The same properties are available on `ConditionalDeckElementDescriptionStyle` along with a `preconditionExpression` used to detect if the conditional style should override the default style.
+
+==== Lane Description
+
+The `LaneDescription` includes the following attributes to configure the rendering:
+
+* `name`: The unique identifier of the lane
+* `semanticCandidatesExpression`: The expression that returns the collection of semantic elements handled by the lane (defaults to `aql:self`). One can return a list of semantic element to create a lane for each element using one lane description.
+* `titleExpression`: The expression used for the title visible on the top left of the lane.
+* `labelExpression`: The expression used for the secondary text shown in the top right of the lane.
+* `domainType`: The qualified name of an entity used to filter the results of the `semanticCandidatesExpression`.
+* `isCollapsibleExpression`: The expression used to indicate if a lane can be collapsed (defaults to `aql:true`).
+
+image::representations/deck-lane.png[Lane rendering]
+
+It also contains the following objects
+
+* `style`: `DeckElementDescriptionStyle` used to configure the style of the lane
+* `conditionalStyles`: list of `ConditionalDeckElementDescriptionStyle` entries evaluated in order, each inheriting condition logic from the shared `Conditional` class.
+* `ownedCardDescriptions`: containment reference that stores all `CardDescriptions` shown in the lane.
+
+By combining these attributes you can control which semantic objects produce lanes, what happens when new cards appear, and whether individual lanes can be hidden on demand.
+
+==== Card Description
+
+The `CardDescription` includes the following attributes to configure the rendering:
+
+* `name`: The unique identifier of the lane
+* `semanticCandidatesExpression`: The expression that returns the collection of semantic elements handled by the lane (defaults to `aql:self`). One can return a list of semantic element to create a lane for each element using one lane description.
+* `titleExpression`: The expression used for the title visible on the top left of the lane.
+* `labelExpression`: The expression used for the secondary text shown in the top right of the lane.
+* `domainType`: The qualified name of an entity used to filter the results of the `semanticCandidatesExpression`.
+* `descriptionExpression`: expression used to render the body of the card (defaults to `aql:self`).
+
+image::representations/deck-card.png[Card rendering]
+
+It also contains the following objects
+
+* `style`: `DeckElementDescriptionStyle` used to configure the style of the card
+* `conditionalStyles`: list of `ConditionalDeckElementDescriptionStyle` entries evaluated in order, each inheriting condition logic from the shared `Conditional` class.
+
+==== Styles
+
+
+* `DeckDescriptionStyle` exposes a `backgroundColor` reference so you can align the board with your branding.
+* `ConditionalDeckDescriptionStyle` inherits from `Conditional` and lets you override the board style using expressions (for example, based on workspace or project type).
+
+=== Tools
+
+Under `DeckDescription`:
+* `laneDropTool`: The tool executed when users reorder lanes.
+
+Under `LaneDescription`:
+* `editTool`: `EditLaneTool` used when a user renames or edits lane properties.
+* `createTool`: `CreateCardTool` that creates a new card inside the lane.
+* `cardDropTool`: executed when a card is dropped into the lane to move or clone semantic elements.
+
+Under `CardDescription`:
+* `editTool`: `EditCardTool` that runs when inline edits or dialogs submit new values.
+* `deleteTool`: `DeleteCardTool` responsible for removing the card and its semantic element.
+
+
+Every deck tool inherits from `DeckTool`, which defines the `name` of the tool and a `body` made of operations executed when the tool runs.
+The representation description provides the following concrete tools:
+
+* `CreateCardTool`: creates a semantic element and its card inside a lane.
+* `EditCardTool`: updates semantic data or view attributes after inline edits.
+* `DeleteCardTool`: removes a card and runs cleanup logic.
+* `EditLaneTool`: lets users rename, recolor, or otherwise edit lane-level metadata.
+* `CardDropTool`: handles drag-and-drop of cards between lanes, typically updating attributes such as status or owner.
+* `LaneDropTool`: manages lane reordering or drops that target the board background.
+
+Tool bodies use the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so you can orchestrate domain-specific workflows whenever users interact with the deck.

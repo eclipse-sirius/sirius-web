@@ -1,0 +1,86 @@
+= GraphQL APIs
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+GraphQL powers the {product} web client. You can leverage the same endpoint to build custom front ends or automation scripts that need fine-grained access to projects, representations, and view descriptions.
+
+== Endpoint and schema
+
+* The GraphQL endpoint is available at `/api/graphql`.
+* The schema follows the types used in the UI (projects, libraries,representations, etc.).
+* You can introspect the schema using tools such as GraphiQL, or any GraphQL IDE:
++
+```graphql
+{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+```
+
+== Queries and mutations
+
+* **Queries** fetch data (projects, libraries, representations, etc.) and are ideal for building read-only dashboards.
+* **Mutations** trigger actions (create projects and representations, execute tool, etc.) and mirror what the UI does.
+* The GraphQL payloads match the concepts defined in the low-code editor, making it straightforward to reuse your domain knowledge.
+
+Example of a query to list projects:
+
+```graphql
+query getProjects($after: String, $before: String, $first: Int, $last: Int, $filter: ProjectFilter) {
+  viewer {
+    projects(after: $after, before: $before, first: $first, last: $last, filter: $filter) {
+      edges {
+        node {
+          id
+          name
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+        count
+      }
+    }
+  }
+}
+```
+
+Example of a mutation to create a new project:
+
+```graphql
+mutation createProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    __typename
+    ... on CreateProjectSuccessPayload {
+      project {
+        id
+      }
+    }
+    ... on ErrorPayload {
+      messages {
+        body
+        level
+      }
+    }
+  }
+}
+```
+
+== Tooling tips
+
+* Use GraphiQL to auto-complete schema fields when crafting queries.
+* Log requests from the web UI (developer tools / network tab) to see which queries the client uses for a given action.
+* When exposing the GraphQL API to external consumers, consider applying rate limiting or query complexity guards.
+
+
+== When to choose GraphQL
+
+* You need a single endpoint for rich clients (React, Angular, etc.).
+* You want to request exactly the fields you need without multiple roundtrips.
+* You are building advanced features (custom dashboards, automation UIs) that mirror the {product} client behavior.

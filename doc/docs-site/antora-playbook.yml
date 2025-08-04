@@ -1,0 +1,30 @@
+site:
+  title: Sirius Web Docs
+  start_page: master@sirius-web::index.adoc
+
+output:
+  clean: true
+
+content:
+  sources:
+    - url: https://github.com/eclipse-sirius/sirius-web.git
+      start_paths: doc/content
+      branches: ["master"]
+
+ui:
+  bundle:
+    url: /home/antora/ui-bundle.zip
+
+asciidoc:
+  attributes:
+    icons: font
+    icon-set: fas
+    sectanchors:
+    sectlinks:
+    sectnums: all
+    page-toclevels: 3
+
+antora:
+  extensions:
+    - require: "@antora/lunr-extension"
+      languages: [en, fr]

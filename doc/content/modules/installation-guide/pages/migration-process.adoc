@@ -1,0 +1,7 @@
+= Migration process
+
+If you're upgrading from an older version of {product} to the latest release, this section provides step-by-step guidance on migrating your existing data and settings to the new version.
+
+== 2026.7.0
+
+Adopting the version 2026.7.0 doesn't require a migration process.
