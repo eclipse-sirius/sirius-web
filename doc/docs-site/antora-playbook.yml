@@ -7,11 +7,9 @@ output:
 
 content:
   sources:
-    - url: https://github.com/eclipse-sirius/sirius-web.git
+    - url: /usr/app
       start_paths: doc/content
-      branches: ["main"]
-      tags:
-        ["v*.0", "!v2025.6.*", "!v2025.4.*", "!v2025.2.*", "!v2025.1.*", "!v2024.*.*", "!v2023.*.*", "!v2022.*.*", "!v2021.*.*", "!v0.*.*"]
+      branches: HEAD
 
 ui:
   bundle:
