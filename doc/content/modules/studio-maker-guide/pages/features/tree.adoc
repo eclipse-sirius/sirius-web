@@ -1,0 +1,70 @@
+= Tree
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page documents the tree description defined in the {product} view configuration.
+
+== Introduction
+
+`TreeDescription` extends the shared `RepresentationDescription`, so it inherits the same naming, icon, and domain-type conventions used across diagrams, forms, tables, and Gantt representations.
+Tree definitions describe how semantic elements become tree items, which attributes drive expandability, and which context menu entries provide actions, all using the familiar expression editor.
+Tree definitions describe how semantic elements become tree items, which attributes drive expandability, and which context menu entries provide actions.
+All of this is done using the familiar expression editor.
+By combining these expressions you fully control which semantic elements appear, how they expand, and what interactions are permitted per node.
+== Tree Description
+
+include::partial$common-representation.adoc[]
+
+`TreeDescription` aggregates all expressions required to compute and render tree items:
+
+* `kindExpression`: optional expression that tags each item with a kind identifier so the frontend can group or style items differently.
+* `treeItemIconExpression`: returns an icon URL shown next to the label of each item.
+* `treeItemIdExpression`: expression that yields a stable identifier per item, ensuring consistent selection and refresh.
+* `treeItemObjectExpression`: expression that resolves to the semantic object represented by the tree node (defaults to the current element).
+* `elementsExpression`: entry-point expression that returns the collection of root elements displayed when the tree loads.
+* `hasChildrenExpression`: boolean expression indicating whether the item can be expanded without fetching children eagerly.
+* `childrenExpression`: expression returning the children of a given node when it expands.
+* `parentExpression`: expression used when the runtime needs to navigate upward in the hierarchy (for example when synchronizing selections).
+* `editableExpression`: boolean expression that enables or disables inline rename or editing behavior for a node.
+* `selectableExpression`: expression that determines if a node participates in selection synchronization with other representations.
+* `deletableExpression`: expression that toggles the availability of delete actions in context menus.
+* `treeItemLabelDescriptions`: containment reference that stores the label definition for each item (see Labels and fragments).
+* `contextMenuEntries`: ordered list of context menu entries attached to every node (see Context menu entries).
+
+By combining these expressions, you fully control which semantic elements appear.
+You also control how they expand, and what interactions are permitted per node.
+== Labels and fragments
+
+Tree labels are modeled with `TreeItemLabelDescription` elements:
+
+* `name`: identifier used when referencing the label description from tools or extensions.
+* `preconditionExpression`: expression that decides whether the label applies to the current node.
+* `children`: list of `TreeItemLabelElementDescription` entries that compose the final label.
+
+`TreeItemLabelElementDescription` is the shared base definition implemented by:
+
+* `TreeItemLabelFragmentDescription`: defines a literal piece of text with `labelExpression` and an optional `TextStyleDescription` reference for styling.
+* `IfTreeItemLabelElementDescription`: wraps a predicate and renders its child label fragments only when the condition is true.
+* `ForTreeItemLabelElementDescription`: iterates over a collection (`iterator`, `iterableExpression`) and renders its children for each value to build composite labels such as tag lists or counters.
+
+This structure lets you author rich labels with conditional parts, loops, and styled fragments.
+You can do this without duplicating expressions across node mappings.
+Operation bodies reuse the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
+== Context menu entries
+
+All context menu entries inherit from `TreeItemContextMenuEntry`, which defines `name` and `preconditionExpression`.
+Three concrete types are available:
+
+* `SingleClickTreeItemContextMenuEntry`: declares inline actions stored in the `body` (list of operations) and exposes `labelExpression`, `iconURLExpression`, plus an optional `withImpactAnalysis` flag when the operation has significant side effects.
+* `FetchTreeItemContextMenuEntry`: lets you describe actions that fetch external resources, with `urlExpression`, a `kind` enum (`DOWNLOAD`, `OPEN`), and optional label/icon expressions.
+* `CustomTreeItemContextMenuEntry`: registers contribution identifiers provided by the frontend (`contributionId`) and can optionally set `withImpactAnalysis`.
+
+Operation bodies reuse the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
+Context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
+== Styles
+
+Styling for tree items is primarily handled through `TreeItemLabelFragmentDescription`, which has an optional `TextStyleDescription` reference.
+This allows you to control the color and font style of different parts of a tree item's label.
+Additionally, the `treeItemIconExpression` can be used to display custom icons for each node.
+This allows you to control the color and font style of different parts of a tree item's label.
+Additionally, the `treeItemIconExpression` can be used to display custom icons for each node.

@@ -1,0 +1,78 @@
+= Extend the frontend through extension points
+
+{product} is itself an application built on top of Sirius Components.
+You can customize many aspects of the UI by contributing components to its extension points.
+
+== Palette tool extension point
+
+Contribute custom tools to the diagram palette by registering React components that accept `PaletteToolComponentProps`.
+Tool components are responsible for deciding whether they should render (for example, only on specific diagram types) and can execute GraphQL queries/mutations.
+Retrieve the `editingContextId` and `representationId` through the router params:
+
+[source,typescript]
+----
+const { projectId: editingContextId, representationId } = useParams<EditProjectViewParams>();
+----
+
+Register the tool with the `paletteToolExtensionPoint`:
+
+[source,typescript]
+----
+const papayaExtensionRegistry = new ExtensionRegistry();
+papayaExtensionRegistry.addComponent(paletteToolExtensionPoint, {
+  identifier: 'papaya_customtool',
+  Component: PapayaOperationActivityLabelDetailToolContribution,
+});
+----
+
+If the tool needs the click coordinates (for example to create nodes precisely), implement an `IDiagramInputReferencePositionProvider`.
+The default implementation (`GenericDiagramToolReferencePositionProvider`) reads the palette coordinates from `DiagramPaletteToolContributionComponentProps`.
+
+== Tree item context menu extension point
+
+Add custom entries to the tree explorer’s context menu with components that accept `TreeItemContextMenuComponentProps`.
+Components should generally return a `MenuItem` (or similar), and must return `null` when they do not apply to the given tree/tree item.
+
+[source,typescript]
+----
+export const DocumentTreeItemContextMenuContribution = forwardRef(
+  (
+    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
+    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusWeb://document')) {
+      return null;
+    }
+
+    return (
+      <Fragment key="document-tree-item-context-menu-contribution">
+        <MenuItem
+          key="download"
+          onClick={onClose}
+          component="a"
+          href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
+          type="application/octet-stream"
+          data-testid="download"
+          aria-disabled>
+          <ListItemIcon>
+            <GetAppIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Download" aria-disabled />
+        </MenuItem>
+      </Fragment>
+    );
+  }
+);
+----
+
+Register the component with `treeItemContextMenuEntryExtensionPoint`:
+
+[source,typescript]
+----
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: 'document-custom-tree-menu-entry',
+  Component: DocumentTreeItemContextMenuContribution,
+});
+----

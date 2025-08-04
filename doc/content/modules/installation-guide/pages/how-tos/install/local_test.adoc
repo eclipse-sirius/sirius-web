@@ -1,0 +1,77 @@
+= Local installation of {product} for single-user testing purposes
+
+Use this guide to spin up a local {product} instance for evaluation or workshops.
+It relies on Docker to provide the PostgreSQL database and mirrors the steps commonly used in trainings.
+
+[CAUTION]
+.Stable versions
+====
+Only `YEAR.MONTH.0` releases are supported outside of test environments.
+Intermediate versions are meant for experimentation and can change without notice, so always pick the `.0` tag for evaluation or demos you share with others.
+See xref:user-manual:cycle.adoc[] for the release cycle details.
+====
+
+== Prerequisites
+
+Make sure your workstation satisfies the xref:installation-guide:requirements.adoc[hardware prerequisites] and that the following tools are installed:
+
+* Java 17 (JDK). Verify with:
++
+```bash
+java -version
+```
+* Docker Desktop or Engine, so you can run a PostgreSQL container.
+* Network access to download the sample application and container images.
+
+TIP: If you already have PostgreSQL 15 or newer installed locally, you can reuse it instead of Docker. Adjust the connection parameters accordingly.
+
+== Start PostgreSQL with Docker
+
+[source,bash]
+----
+docker run -p 5433:5432 --name sirius-web-postgres \
+  -e POSTGRES_USER=dbuser \
+  -e POSTGRES_PASSWORD=dbpwd \
+  -e POSTGRES_DB=sirius-web-db \
+  -d postgres:15
+----
+
+This command:
+
+* Maps container port `5432` to `5433` on your machine.
+* Creates a `dbuser`/`dbpwd` account and a `sirius-web-db` database.
+* Runs PostgreSQL 15 in the background.
+
+Add `--rm` if you want Docker to remove the container automatically when it stops.
+
+Stop the container when you are done testing:
+
+```bash
+docker stop sirius-web-postgres
+```
+
+== Launch the sample application
+
+Download the sample `{product-jar}` from the xref:installation-guide:how-tos/install/production_deploy.adoc#download[packages page], then run:
+
+[source,bash]
+----
+java -jar sirius-web-sample-application.jar \
+  --spring.datasource.url=jdbc:postgresql://localhost:5433/sirius-web-db \
+  --spring.datasource.username=dbuser \
+  --spring.datasource.password=dbpwd
+----
+
+The application starts on `http://localhost:8080` by default. Keep the terminal open so you can stop the server with `Ctrl+C` when you finish testing.
+
+== Next steps
+
+* Open your browser and navigate to `http://localhost:8080` to reach the {homepage}.
+* Create a blank project or import one of the templates to explore the studio features.
+* When you are ready for multi-user or production deployments, move on to xref:installation-guide:how-tos/install/production_deploy.adoc[] for SSL, scaling, and hardening guidance.
+
+[CAUTION]
+====
+Remember to stop both the Java process (`Ctrl+C`) and the PostgreSQL container (or your native database service) when you finish a session.
+If you used Docker volumes only, removing the container also deletes all data created during testing.
+====

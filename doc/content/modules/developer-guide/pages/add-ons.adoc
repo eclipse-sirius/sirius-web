@@ -1,0 +1,70 @@
+= Runtime add-ons
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+{product} applications support loading additional features at runtime. Use add-ons to extend an existing deployment without rebuilding or repackaging the core application.
+
+== Add-on structure
+
+An add-on is a Maven multi-module project that typically contains:
+
+* Backend services (`backend/services/your-add-on-services`)
+* View definitions (`backend/views/your-add-on-view`)
+* A distribution module that assembles the deployable artifact
+
+Example top-level `pom.xml` snippet:
+
+```xml
+<project>
+  <groupId>com.example.siriusweb</groupId>
+  <artifactId>your-add-on</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>backend/services/your-add-on-services</module>
+    <module>backend/views/your-add-on-view</module>
+    <module>distribution</module>
+  </modules>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
+```
+
+Build the add-on with:
+
+```bash
+mvn clean package
+```
+
+The distribution module produces a JAR that bundles both backend and view contributions.
+
+== Deploying an add-on
+
+1. Copy the generated JAR to a folder accessible by your {product} application, for example:
+   ```bash
+   cp distribution/target/your-add-on.jar distribution/src/main/resources/your-add-on
+   ```
+2. Start the application with the extra classpath:
+   ```bash
+   java -cp your-application.jar \
+     -Dloader.path='file:your-add-on/' \
+     -Dloader.main=your.Application \
+     org.springframework.boot.loader.launch.PropertiesLauncher
+   ```
+3. The add-on classes and view definitions become available immediately. Restart the application when you update the add-on jar to pick up changes.
+
+TIP: Follow the Spring Boot documentation for `PropertiesLauncher` to combine multiple add-ons or external configuration directories.
+
+== Best practices
+
+* Version your add-ons independently from the base application and document compatibility.
+* Keep add-ons modular: expose clear extension points so they can evolve without impacting core modules.
+* Automate packaging and publishing so teams can consume add-ons from an artifact repository.

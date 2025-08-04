@@ -1,0 +1,16 @@
+= {details}
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+The {details} view provides a comprehensive overview of the selected element, presenting distinct _Property_ sections for each _characteristic_ of the semantic object.
+
+image::details-right-sidebar-details.png[{details}]
+
+Properties are grouped into collapsible sections so you can focus on the attributes that matter. Inline validation messages appear next to fields when a constraint fails, making it easy to correct issues without leaving the view. Editing scalar values, toggling flags, or selecting referenced elements updates the underlying model instantly; the changes propagate to diagrams, tables, and other representations straight away.
+
+EXAMPLE: Select a `Component` and update its *Label*, choose a different *Owner* from a reference picker, then add a tag to the *Categories* list. The model is saved as soon as you leave each field, and the linked diagram node refreshes in real time.
+
+[WARNING]
+====
+It's important to note that any changes made in the {details} view have a direct and immediate effect on the underlying model, making these modifications instantly available to everyone accessing the model.
+====

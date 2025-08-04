@@ -1,0 +1,236 @@
+= Diagram (API builder)
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+This page explains how to create and register a diagram representation using the {product} API builder rather than the graphical view editor.
+Use it if you are embedding {product} in your own application or need to define representations programmatically.
+
+== Overview
+
+{product} exposes builders that mirror the elements of the `view.ecore` metamodel.
+In the backend, you declare configuration beans (typically Spring `@Configuration` classes) that provide `ViewConfiguration`, `RepresentationDescription`, and the related mapping definitions.
+At runtime, these beans are picked up automatically and exposed to end users just like the low-code definitions.
+For the layout rules and node box model used by those diagrams, see xref:developer-guide:features/layout.adoc[].
+
+== Minimal setup
+
+1. **Create a Spring configuration class** that implements `IViewConfiguration` or registers a `ViewConfiguration` bean.
+2. Inside the configuration, use the builders from `org.eclipse.sirius.web.api.configuration.builders` (or the convenience DSLs) to describe:
+   * The domain types targeted by the representation (`domainType`).
+   * The diagram description (`DiagramDescription`, `NodeDescription`, `EdgeDescription`, palettes, and styles).
+3. Register the configuration in your backend module so the Spring context can discover it.
+4. Restart (or hot-reload) the application; the representation becomes available to end users.
+
+The source tree contains sample modules (for example `sirius-components-sample`), which you can use as a template.
+
+== Example snippet
+
+```java
+@Configuration
+public class RadarDiagramConfiguration {
+
+    @Bean
+    public ViewConfiguration radarViewConfig() {
+        DiagramDescription diagram = DiagramDescription.newDiagramDescription("RadarDiagram")
+            .domainType("com.acme.radar.RadarSystem")
+            .titleExpression("aql:'Radar: '.concat(self.name)")
+            .nodeDescriptions(List.of(radarNode()))
+            .edgeDescriptions(List.of(linkEdge()))
+            .build();
+
+        return ViewConfiguration.newViewConfiguration("com.acme.radar.view")
+            .representationDescriptions(List.of(diagram))
+            .build();
+    }
+
+    private NodeDescription radarNode() {
+        return NodeDescription.newNodeDescription("RadarNode", "com.acme.radar.Station")
+            .labelExpression("aql:self.name")
+            .style(NodeStyle.newNodeStyle()
+                .backgroundColor("#2ecc71")
+                .borderColor("#1b5e20")
+                .build())
+            .build();
+    }
+
+    private EdgeDescription linkEdge() {
+        return EdgeDescription.newEdgeDescription("Link", "com.acme.radar.Link")
+            .sourceExpression("aql:self.source")
+            .targetExpression("aql:self.target")
+            .style(EdgeStyle.newEdgeStyle()
+                .lineStyle(LineStyle.Manhattan)
+                .targetArrowStyle(ArrowStyle.InputClosedArrow)
+                .build())
+            .build();
+    }
+}
+```
+
+== Key builder elements
+
+* `DiagramDescription`: sets metadata (name, domain type, title, icon) and holds nodes, edges, palettes, and layout information.
+* `NodeDescription`: targets a domain class, defines label/style expressions, and lists child mappings.
+* `EdgeDescription`: specifies the domain class or relation, plus source/target expressions and style.
+* Palettes (`DiagramPalette`, `NodePalette`, `EdgePalette`): declare the tools available to end users.
+* Styles (`NodeStyle`, `EdgeStyle`, `LabelStyle`): control the visual appearance, similar to the low-code editor.
+
+Refer to the JavaDoc in `org.eclipse.sirius.components.diagrams.*` for the exhaustive list of builders and their options.
+
+== Conditional styles in code
+
+Conditional styles mirror the declarative counterparts.
+Attach as many `ConditionalNodeStyle` (or edge/label equivalents) as needed:
+
+```java
+private NodeDescription radarNode() {
+    return NodeDescription.newNodeDescription("RadarNode", "com.acme.radar.Station")
+        .labelExpression("aql:self.name")
+        .style(NodeStyle.newNodeStyle()
+            .backgroundColor("#2ecc71")
+            .borderColor("#1b5e20")
+            .conditionalStyles(List.of(
+                ConditionalNodeStyle.newConditionalNodeStyle()
+                    .conditionExpression("aql:self.status = 'ALERT'")
+                    .backgroundColor("#f44336")
+                    .borderColor("#b71c1c")
+                    .build(),
+                ConditionalNodeStyle.newConditionalNodeStyle()
+                    .conditionExpression("aql:self.status = 'MAINTENANCE'")
+                    .backgroundColor("#ff9800")
+                    .build()))
+            .build())
+        .build();
+}
+```
+
+The list order is respected at runtime, so place the most specific rules first.
+Each conditional style only needs to override the attributes you want to change; the base style supplies the rest.
+
+== Defining palettes and tools
+
+Palettes are created with the `DiagramPalette` builder and can mix diagram-level tools plus node- or edge-specific sections:
+
+```java
+private DiagramPalette diagramPalette() {
+    return DiagramPalette.newDiagramPalette()
+        .diagramToolSections(List.of(
+            DiagramToolSection.newDiagramToolSection()
+                .name("Components")
+                .nodeTools(List.of(createStationTool()))
+                .edgeTools(List.of(createLinkTool()))
+                .build()))
+        .quickAccessTools(List.of(createStationTool()))
+        .build();
+}
+
+private NodeTool createStationTool() {
+    return NodeTool.newNodeTool("CreateStation", "com.acme.radar.Station")
+        .iconURLsExpression("aql:'/icons/station.svg'")
+        .dialogDescription(SelectionDialogDescription.newSelectionDialogDescription()
+            .titleExpression("aql:'Choose station kind'")
+            .build())
+        .elementsToSelectExpression("aql:newElement")
+        .operations(List.of(
+            CreateNodeOperation.newCreateNodeOperation()
+                .nodeDescriptionName("RadarNode")
+                .build()))
+        .build();
+}
+```
+
+For drag-and-drop, add `DropNodeTool` definitions on container nodes and restrict `acceptedNodeTypes` so only the right mappings can be dropped.
+
+Edge tools follow the same pattern and can reference dialog descriptions when you need to disambiguate the relationship type.
+
+== Wiring Java services
+
+Any Spring bean can expose helper logic to AQL and the builders.
+Declare a service as usual:
+
+```java
+@Service
+public class RadarServices {
+
+    public String nextStationName(Station parent) {
+        return parent.getName() + " #" + (parent.getStations().size() + 1);
+    }
+}
+```
+
+Then reference it from expressions in your builder configuration:
+
+```java
+private NodeDescription radarNode() {
+    return NodeDescription.newNodeDescription("RadarNode", "com.acme.radar.Station")
+        .labelExpression("aql:service:com.acme.RadarServices.nextStationName(self)")
+        .build();
+}
+```
+
+Services are autodiscovered through Spring’s component scan, so they become available as soon as the context loads.
+Keep services stateless and unit-test them like any other Spring bean to ensure your programmatic representation stays reliable.
+
+== Tips
+
+* Keep configuration classes cohesive—group related representations together so they are easy to maintain.
+* Externalize reusable expressions or colors in constants to avoid duplication.
+* Use Spring profiles or conditional beans if you need to enable/disable representations dynamically.
+* You can mix and match code-based and low-code representations; they all end up as `ViewConfiguration` beans.
+
+== Expression variables
+
+Most expressions (label, semantic candidates, preconditions, etc.) are evaluated with a context that exposes additional variables.
+Knowing what is available helps you avoid brittle `aql:self.eContainer().eContainer()`‑style explorations.
+
+=== Node description variables
+
+|===
+|Expression |Available variables
+
+|`semanticCandidatesExpression`
+|`self`, `collapsingState`, `editingContext`, `semanticElementIds`, `diagramEvent`, `previousDiagram`, `label`, `ownerId`, `environment`
+
+|`preconditionExpression`
+|`self`, `editingContext`, `environment`
+
+|`labelExpression`
+|`self`, `collapsingState`, `editingContext`, `environment`
+
+|`widthComputationExpression`
+|`self`, `editingContext`, `environment`
+
+|`heightComputationExpression`
+|`self`, `editingContext`, `environment`
+|===
+
+=== Edge description variables
+
+|===
+|Expression |Available variables
+
+|`semanticCandidatesExpression`
+|`self`, `editingContext`, `environment`
+
+|`preconditionExpression`
+|`self`, `semanticEdgeSource`, `semanticEdgeTarget`, `graphicalEdgeSource`, `graphicalEdgeTarget`, `editingContext`, `diagramEvent`, `previousDiagram`, `cache`, `label`, `environment`
+
+|`beginLabelExpression`, `labelExpression`, `endLabelExpression`
+|`self`, `semanticEdgeSource`, `semanticEdgeTarget`, `graphicalEdgeSource`, `graphicalEdgeTarget`, `editingContext`, `diagramEvent`, `previousDiagram`, `cache`, `label`, `environment`
+
+|`sourceNodesExpression`
+|`self`, `editingContext`, `environment`
+
+|`targetNodesExpression`
+|`self`, `editingContext`, `environment`
+|===
+
+=== Node tools and selection dialogs
+
+When a `NodeTool` defines a `SelectionDialogDescription`, the following variables become available:
+
+* `selectedObject` — semantic element chosen by the end user in the dialog.
+* `self` — current diagram element targeted by the tool.
+* `targetElement` — semantic element associated with `self`.
+* `editingContext`, `environment` — same as above.
+
+Use these variables to filter candidates (`selectionCandidatesExpression`) or to react to the user selection when executing the tool’s operations.

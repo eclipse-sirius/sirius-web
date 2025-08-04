@@ -1,0 +1,92 @@
+= Studio definition approaches
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+{product} currently supports three complementary ways to define a modeling studio.
+This page explains when to use each option, how to enable the in-browser studio-definition feature, and which best practices apply while the feature is still experimental.
+
+== Ways to build a studio
+
+[cols="1,2,2",options="header"]
+|===
+|Approach
+|When to use it
+|How it works
+
+|Web Studio definition
+|You want to author domains and views directly from the browser without writing code (ideal for prototypes or simple DSLs).
+|Create Domain and View models inside {product}; the runtime hot-reloads your changes. See xref:studio-maker-guide:features/domain.adoc[] and xref:studio-maker-guide:features/view.adoc[] for authoring details.
+
+|Custom code (Java APIs)
+|You need full control over representations, operations, or integrations with existing backend code (or you are migrating from older Sirius Desktop assets by rewriting the viewpoints in code).
+|Create Spring beans that contribute `ViewConfiguration` and `IRepresentationDescription` implementations. See xref:developer-guide:features/diagram.adoc[] for builder examples.
+|===
+
+Most teams combine these approaches: for example, prototype in the browser, then stabilize the studio by packaging the domain/meta-model in code, rewriting viewpoints in Java, and extending the representations once the DSL matures.
+
+== Availability and feature flags
+
+The browser-based Studio Definition feature is **experimental**.
+Expect breaking changes and the possibility of losing data when you evolve domains in incompatible ways.
+
+[cols="1,2"]
+|===
+|Deployment
+|How to enable/disable
+
+|{product} (standalone)
+|Enabled by default. Disable with the system property `-Dorg.eclipse.sirius.web.features.studioDefinition=false` or environment variable `ORG_ECLIPSE_SIRIUS_WEB_FEATURES_STUDIODEFINITION=false`.
+
+|Obeo Studio (commercial distribution)
+|Disabled by default. Enable with `-Dobeo.studio.studioDefinition.enabled=true` or `OBEO_STUDIO_STUDIODEFINITION_ENABLED=true`.
+
+|Demo instance (https://demo.obeostudio.com[demo.obeostudio.com])
+|Feature is currently enabled.
+|===
+
+Regardless of the deployment, only users with edit rights on a project can define or update a studio.
+
+== Anatomy of a studio definition
+
+A studio definition contains two kinds of models:
+
+* **Domain descriptions** — define the semantic concepts (entities, attributes, relations). Equivalent to EMF/Ecore meta-models.
+* **View descriptions** — define representations (diagrams, forms, tables…) and the palette tools/end-user actions.
+
+Both are regular models managed by the same infrastructure as other {product} resources, which means they benefit from hot-reload and collaborative editing but also inherit the current limitations of the feature (see below).
+
+== Project layout best practices
+
+To minimize data-loss risks while the feature is experimental:
+
+* Create a dedicated project for each studio definition.
+** Inside that project, create one model for the domain definition and a separate model for the view definition.
+* Pick a domain name that is globally unique on the server (valid Java identifier, no spaces/special characters). If two domains share a name, only one will be loaded and the behavior is undefined.
+* Do **not** create domain instances inside the same project that contains the domain definition. Use separate “instance” projects for actual models.
+* When you update a domain definition, close every project that contains instances of that domain, wait a few seconds, then reopen it so the new definition is applied.
+* When only the view changes (and the domain stays the same), a simple browser refresh in the instance project is enough.
+
+== Deploying studios to end users
+
+* Instance projects must be created separately from the studio project. End users open those instance projects, create models from your domain, and use the representations defined in your view.
+* To distribute the studio beyond the authoring environment:
+** Package your server with Maven (`mvn clean package` on the backend aggregator). The resulting fat JAR or Docker image contains the domain/view models that exist on the server.
+** If you maintain the meta-model in EMF code, register the `EPackage` during backend startup so it is available at runtime (see xref:studio-maker-guide:features/meta-modeling.adoc#_reusing_an_existing_ecore_meta_model[]).
+** Follow the deployment guidance in xref:developer-guide:extend.adoc[] or the packaging section of the training material (fat JAR vs. Docker).
+
+== Current limitations (experimental status)
+
+* Modifying a domain definition requires closing and reopening every project that contains instances of that domain; reloading the browser tab is not enough.
+* The model that defines a domain should not contain anything else (no instances of other dynamic domains).
+* There is no automatic migration between domain versions. Changing the structure (renames, removals) may partially or completely invalidate existing data.
+* Domains must have unique names on the server; collisions lead to undefined behavior.
+* Custom Java services used in View expressions must be deployed on the backend ahead of time and should operate on generic `EObject`s (the dynamic domain is not known during server startup).
+* It is not currently possible to express EMF `eOpposite` references or custom data types within the in-browser Domain editor (attributes support strings, booleans, numbers).
+
+Because of these limitations, treat the web studio definition feature as a prototyping accelerator; plan to harden production studios by packaging the meta-model and views alongside your application code.
+
+== Next steps
+
+* Learn how to describe your DSL with the xref:studio-maker-guide:features/domain.adoc[Domain editor].
+* See xref:studio-maker-guide:features/view.adoc[] for authoring representations.
+* Consult xref:studio-maker-guide:features/advanced-authoring.adoc[] for advanced palette and tooling techniques.

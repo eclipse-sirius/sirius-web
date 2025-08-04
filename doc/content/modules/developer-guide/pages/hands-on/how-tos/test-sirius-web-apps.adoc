@@ -1,0 +1,53 @@
+= Test {product}–based applications
+
+== Execute GraphQL requests programmatically
+
+{product} exposes dedicated runners to execute GraphQL queries, mutations, and subscriptions from tests:
+
+* `IQueryRunner` implementations execute read queries.
+* `IMutationRunner` implementations dispatch mutations.
+* `ISubscriptionRunner` implementations subscribe to data streams and notify listeners about updates.
+
+These runners encapsulate the request body and transport layer so contributors and downstream projects can exercise the backend APIs in a consistent way.
+
+== Test custom data fetchers inside subscriptions
+
+Many tests in the `sirius-web` project rely on subscriptions.
+When subscribing through `IGraphQLRequestor#subscribe`, you receive the raw `Flux<Object>` emitted by the event processor; child data fetchers are not invoked.
+Even if the subscription document contains inline fragments and custom fields, the raw subscription does not trigger the fetchers:
+
+```
+subscription someRepresentationEvent($input: SomeRepresentationEventInput!) {
+  someRepresentationEvent(input: $input) {
+    __typename
+    ... on SomeRepresentationRefreshedEventPayload {
+      someValue {
+        customDataFetcherWithSomeParameters(arg1: "foo", arg2: "bar")
+      }
+    }
+  }
+}
+```
+
+To execute the fetchers (mirroring frontend behaviour), use `IGraphQLRequestor#subscribeToSpecification`.
+It returns a `Flux<String>` that streams JSON payloads compliant with the GraphQL spec and triggers every data fetcher referenced by the document.
+
+You can then assert the JSON payloads with tools such as `JsonPath`:
+
+```
+var flux = this.graphQLRequestor.subscribeToSpecification(SUBSCRIPTION, input);
+
+Consumer<String> consumer = payload -> Optional.of(payload)
+    .ifPresentOrElse(body -> {
+        String typename = JsonPath.read(body, "$.data.someRepresentationEvent.__typename");
+        assertThat(typename).isEqualTo("SomeRepresentationRefreshedEventPayload");
+
+        String value = JsonPath.read(body, "$.data.someRepresentationEvent.someValue.customDataFetcherWithSomeParameters");
+        assertThat(value).isEqualTo("foobar");
+    }, () -> fail("Missing data"));
+
+StepVerifier.create(flux)
+    .consumeNextWith(consumer)
+    .thenCancel()
+    .verify(Duration.ofSeconds(10));
+```

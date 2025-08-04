@@ -1,0 +1,72 @@
+= Customization and extensions
+
+{product} is extendable.
+The platform enables the contribution of new specific views and the specific methodologies implementation.
+Users can seamlessly extend {product}'s capability to meet their specific requirements, such as creating dedicated libraries or contributing specific metadata by adding new representations.
+Extensibility is a key strength of {product}, offering organizations the potential to enhance their processes within the tool, ensuring consistency in modeling practices throughout their practitioners.
+
+Interested in extending {product}?
+Feel free to xref:ROOT:help.adoc[contact us] for more details.
+
+== Custom backend and frontend entry points
+
+The recommended approach for large projects is to take over the entry points of both the backend and the frontend.
+You depend on the {product} artifacts, reuse the default Spring Boot configuration, and then add your own services, assets, or dependencies.
+
+This strategy gives you full control over the build so you can ship your own branding, disable unwanted features, or deploy the frontend independently (for instance on a CDN) while keeping the backend as a self contained jar.
+
+== Additional Spring Boot jars
+
+When you cannot or do not want to rebuild the main application you can still extend it by attaching extra jars at launch time.
+Spring Boot lets you drop additional jars on the classpath to contribute new services or override beans without touching the binary delivered by {product}.
+
+This works well to add targeted backend capabilities or to extend a {product} distribution provided by a third party.
+
+You can also combine this technique with custom entry points if you want to share reusable extensions across several branded applications.
+
+== {product} vs Sirius Components
+
+The {product} project is an opinionated platform that packages a ready to use web application, complete with backend, frontend, and sensible defaults so developers can build tools quickly.
+Sirius Components is a modular framework extracted from the same code base to maximize reusability when you only need specific capabilities (rendering, APIs, frontend widgets, and so on).
+
+Choose {product} when you want the out of the box experience and plan to tweak it through new entry points or extra jars.
+
+Choose Sirius Components when you need to embed only a subset of those capabilities inside another host, accept that nothing about persistence or deployment is provided, and want the smallest possible opinionated footprint.
+Regardless of the approach, developers should expect to be able to challenge and configure every behavior so the resulting tooling matches their end users' complex needs.
+
+== Embedding Sirius Components
+
+Some scenarios require embedding the Sirius experience inside an existing product such as another web application or VS Code.
+In that case you take a dependency only on the Sirius Components modules that compute and render representations, alongside their optional building blocks (collaboration lifecycle, low code definitions, semantic constraints, etc.).
+
+You remain responsible for cross cutting concerns such as persistence, networking, theming, and application lifecycle, but you gain the flexibility to fit Sirius into very opinionated environments.
+
+== Sirius Components technology stack
+
+Sirius Components deliberately focuses its innovation on modeling, not on reinventing UI widgets or rendering engines.
+
+All frontends rely on Material UI for the graphical toolkit so we benefit from a mature, well documented, and actively maintained component library instead of maintaining custom widgets.
+Diagrams are rendered with React Flow, which fits naturally with our React code base.
+
+If you take control of the frontend entry point, you can still add your own dependencies or wrap Sirius Components inside your corporate design system, but the default stack stays opinionated.
+
+== Secure context requirements
+
+Sirius Components consumes browser APIs that are only available in a secure context.
+As a result, {product} (and any derivative built on Sirius Components) must run on `https://` or `http://localhost`.
+
+This constraint aligns with the expectations of enterprises that entrust {product} with sensitive data, and we do not plan to support plain HTTP deployments.
+
+== Reuse model and packaging
+
+Our goal is to let developers reuse representations anywhere, so Sirius Components is split into layers with clear contracts.
+The GraphQL API defines the mandatory interface between the backend and any frontend.
+
+That schema enforces some constraints on the shape of your services, but it gives every frontend (including yours) the same predictable contract.
+If you only need backend services, you can consume those GraphQL modules from your own UI without bringing the default frontend.
+
+Low-code description support is entirely optional: you can define representations purely programmatically without impacting the lifecycle or collaboration features of the other layers.
+
+On the backend, the modules are published as Maven artifacts; on the frontend they are delivered as NPM packages.
+
+When you need additional widgets, control the frontend entry point, add your dependencies, and register the extra React components through the Sirius Components extension mechanisms.

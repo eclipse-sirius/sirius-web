@@ -1,0 +1,16 @@
+= {validation}
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+The {validation} view displays diagnostics for the entire project, organized by their kind such as `ERROR`, `WARNING`, or `INFO`.
+Users can expand or collapse each severity group using the accordion to focus on critical issues first. Clicking a diagnostic highlights the associated element elsewhere in the editor so you can correct it immediately.
+
+image::validation-view-collapsed.png[Validation View collapsed, width=85%,height=85%]
+
+The {validation} view displays the result of the execution of the constraints (a.k.a. validation rules) from the language.
+
+image::validation-view-expanded.png[Validation View expanded, width=85%,height=85%]
+
+TIP: Some configurations provide a *Re-run validation* command in the toolbar or command palette. Trigger it after making fixes to refresh the list without leaving the editor.
+
+Feel free to xref:ROOT:help.adoc[contact us] for more details.

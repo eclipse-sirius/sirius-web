@@ -1,0 +1,94 @@
+= Portal
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+The *Portal* in {product} acts as a customizable landing page or entry point into your project.
+It provides a structured, high-level overview of the model and can serve as a dashboard to guide users toward important areas or actions.
+
+image::representations/portal-sample.png[]
+
+Each portal is preconfigured to present a custom view composed of multiple existing representations, such as diagrams, forms, Gantt, and more.
+
+image::representations/portal-sample.png[Portal example]
+
+== What You Can Do
+
+In a portal representation, you can:
+
+* View high-level summaries of your project or system
+* Access important elements or representations directly
+* Navigate to frequently used forms, diagrams, tables, or trees
+
+The portal is read-only in most cases, but interactive elements are available based on the configuration.
+
+== When to Use It
+
+Use the portal representation when:
+
+* You want a guided entry point into the model
+* You need quick access to key representations or data
+* You’re unfamiliar with the structure and want to orient yourself
+* The project defines a custom workflow and you want to follow the suggested steps
+
+Portals are ideal for simplifying onboarding, standardizing modeling processes, or surfacing key actions for users in complex projects.
+
+== Example
+
+In a project context, a portal might display:
+
+* The project name and description
+* The system diagram
+* A form to create a new subsystem
+* A summary of key metrics or project status
+
+This gives users a structured, user-friendly overview to help them get started quickly and navigate the model with confidence.
+
+[NOTE]
+====
+The layout and available actions in the portal depend on how it was configured and may vary between projects or domains.
+====
+
+== Creating and configuring a portal
+
+If portals are enabled on your instance (default), any user can create one:
+
+. In the Explorer, right-click a semantic element and select *New representation*.
+. Choose *Portal* as the type, give it a name, and confirm.
+. The portal opens in *portal edition mode* so you can add content immediately.
+
+An empty portal looks like this:
+
+image::representations/empty-portal.png[Empty portal]
+
+Drag any existing representation from the Explorer onto the portal canvas to embed it:
+
+image::representations/portal-setup.png[Adding a representation]
+
+You can move, resize, or remove embedded frames while the portal is in edition mode:
+
+image::representations/portal-add.png[Add], image::representations/portal-resize.png[Resize], image::representations/portal-move.png[Move], image::representations/portal-remove.png[Remove]
+
+== Edition mode vs representation mode
+
+A portal operates in two modes:
+
+* *Portal edition mode* (pen icon): configure the layout, add/remove representations, move frames.
+* *Representation edition mode* (hand icon): interact normally with the embedded representations while the layout stays fixed.
+
+image::representations/edit-portal-mode-button.png[Portal edition mode, width=200]
+
+image::representations/edit-representation-mode-button.png[Representation edition mode, width=200]
+
+Use the toolbar buttons to switch modes at any time.
+A newly created or empty portal always starts in edition mode.
+
+== Portal toolbar
+
+image::representations/portal-toolbar.png[Portal toolbar]
+
+From left to right:
+
+* Full-screen toggle.
+* Share link.
+* Switch to portal edition mode.
+* Switch to representation edition mode.

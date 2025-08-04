@@ -1,0 +1,106 @@
+= Deck
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page documents the deck description defined in the {product} view configuration.
+It allows you to create Kanban-style boards.
+It enables you to visualize and organize semantic elements as cards within lanes.
+Every option reuses the same expression editor and palette pickers you know from other representations.
+
+== Introduction
+
+`DeckDescription` extends the shared `RepresentationDescription`, so it follows the same naming, icon, and domain-type conventions used by diagrams, forms, tables, and trees.
+Deck definitions describe how semantic elements become lanes and cards, which tools users can trigger from drag-and-drop or context menus, and how global styles apply to the whole board.
+
+== Configuring decks visually
+
+image::representations/deck-description-overview.png[Deck description overview]
+
+When authoring a deck you typically follow this workflow:
+
+1. Create a `DeckDescription` that defines the semantic type (`domainType`), name, and optional style.
+2. Add one or more `LaneDescription` entries to map semantic elements to lanes.
+3. Under each lane, add `CardDescription` entries for the cards you want to display.
+4. Configure drag-and-drop and edit tools so the board reacts when users move lanes or cards.
+
+TIP: Remember that the special `deckTarget` variable is available inside lane/card expressions and style definitions; it references the semantic element associated with the representation instance.
+
+== Deck Description
+
+include::partial$common-representation.adoc[]
+
+`DeckDescription` aggregates the top-level configuration of the board:
+
+* `laneDescriptions`: ordered collection of `LaneDescription` entries keyed by `name`.
+* `laneDropTool`: tool executed when users drop content onto the board background or reorder lanes.
+* `style`: `DeckDescriptionStyle` reference that controls board-level colors.
+* `conditionalStyles`: list of `ConditionalDeckDescriptionStyle` entries that override the base style when their condition evaluates to true.
+
+== Lane descriptions
+
+`LaneDescription` specializes `DeckElementDescription`, so it inherits the shared attributes described later.
+Lane-specific fields include:
+
+* `name`: identifier used by tools and extensions.
+* `domainType`: semantic class used to compute lane instances.
+* `ownedCardDescriptions`: containment reference that stores all `CardDescription` mappings shown in the lane.
+* `editTool`: `EditLaneTool` used when a user renames or edits lane properties.
+* `createTool`: `CreateCardTool` that creates a new card inside the lane.
+* `cardDropTool`: executed when a card is dropped into the lane to move or clone semantic elements.
+* `isCollapsibleExpression`: expression that toggles the collapse affordance (defaults to `aql:true`).
+
+By combining these attributes you can control which semantic objects produce lanes, what happens when new cards appear, and whether individual lanes can be hidden on demand.
+
+image::representations/deck-lane.png[Lane rendering]
+
+== Card descriptions
+
+`CardDescription` also extends `DeckElementDescription` and adds the following fields:
+
+* `name`: identifier used for referencing the card definition from tools.
+* `domainType`: semantic class displayed as cards.
+* `descriptionExpression`: expression used to render the body of the card (defaults to `aql:self`).
+* `editTool`: `EditCardTool` that runs when inline edits or dialogs submit new values.
+* `deleteTool`: `DeleteCardTool` responsible for removing the card and its semantic element.
+
+Cards inherit the title, label, style, and conditional style configuration from the shared deck element type, ensuring consistent rendering across lanes.
+
+image::representations/deck-card.png[Card rendering]
+
+== Shared element attributes
+
+`DeckElementDescription` is the shared definition used by both lanes and cards.
+It defines the attributes that drive semantic selection, labels, and styling:
+
+* `semanticCandidatesExpression`: expression that returns the collection of semantic elements handled by the lane or card (defaults to `aql:self`).
+* `titleExpression`: expression used for the primary title.
+* `labelExpression`: secondary text shown in badges or subtitles.
+* `style`: `DeckElementDescriptionStyle`, which inherits from `LabelStyle` and exposes `backgroundColor` and `color`.
+* `conditionalStyles`: list of `ConditionalDeckElementDescriptionStyle` entries evaluated in order, each inheriting condition logic from the shared `Conditional` class.
+
+Because lanes and cards share this base, you can reuse the same expressions or styles across multiple descriptions and build decks that remain visually consistent.
+
+== Tools
+
+Every deck tool inherits from `DeckTool`, which defines the `name` of the tool and a `body` made of operations executed when the tool runs.
+The view configuration provides the following concrete tools:
+
+* `CreateCardTool`: creates a semantic element and its card inside a lane.
+* `EditCardTool`: updates semantic data or view attributes after inline edits.
+* `DeleteCardTool`: removes a card and runs cleanup logic.
+* `EditLaneTool`: lets users rename, recolor, or otherwise edit lane-level metadata.
+* `CardDropTool`: handles drag-and-drop of cards between lanes, typically updating attributes such as status or owner.
+* `LaneDropTool`: manages lane reordering or drops that target the board background.
+
+Tool bodies use the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so you can orchestrate domain-specific workflows whenever users interact with the deck.
+
+== Styles
+
+Deck styles mirror the palette system used elsewhere in the view configuration:
+
+* `DeckDescriptionStyle` exposes a `backgroundColor` reference so you can align the board with your branding.
+* `ConditionalDeckDescriptionStyle` inherits from `Conditional` and lets you override the board style using expressions (for example, based on workspace or project type).
+* `DeckElementDescriptionStyle` extends `LabelStyle` and adds `backgroundColor` and `color`, allowing cards and lanes to reuse existing text style palettes while defining their own fills.
+* `ConditionalDeckElementDescriptionStyle` applies the same conditional override pattern to individual lanes or cards.
+
+By combining base styles, user-defined color palettes, and conditional overrides you can emphasize priority, ownership, or workflow states directly on the kanban board.

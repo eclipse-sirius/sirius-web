@@ -1,0 +1,35 @@
+= Guided Path: Start Here
+
+Welcome to the documentation! {product} supports three distinct user roles.
+
+If you are unsure where to begin, use the table below to determine your goal.
+Click the link that best matches what you want to achieve with the platform.
+
+== 1. Find Your Role
+
+This guide directs you to the relevant documentation based on your **primary goal** and the component you are working with.
+
+[cols="2,2,4"]
+|===
+| **If your primary goal is to...** | **Your Role is...** | **Start Reading Here**
+
+| **Create diagrams, edit properties, and organize layouts using a pre-defined modeling language.**
+| **End-User**
+| xref:user-manual:index.adoc[User Manual: Model Creation and Editing]
+
+| **Define the modeling language, design the palettes and style the diagrams.**
+| **Studio Maker**
+| xref:studio-maker-guide:index.adoc[Studio Maker Guide: Viewpoint Specification Model]
+
+| **Write code, extend the platform's core APIs, integrate with other systems, or customize the UI/UX.**
+| **Developer**
+| xref:developer-guide:index.adoc[Developer Guide: Platform Architecture and APIs]
+|===
+
+== 2. Core Documentation Links
+
+If you are looking for general information common to all roles, please review these essential starting points:
+
+* xref:user-manual:concepts.adoc[Glossary of Terms] (Important for understanding concepts)
+* xref:user-manual:key-features.adoc[Workspace and Interface Navigation] (How to use the common UI elements)
+* xref:installation-guide:index.adoc[Installation and Setup Guide] (How to get the platform running locally)

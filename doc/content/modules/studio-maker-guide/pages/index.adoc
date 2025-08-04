@@ -1,0 +1,4 @@
+= Studio maker guide
+
+This studio maker guide explains how to define the authoring models (domains, views, automation) that power {product}.
+Whenever we mention the *“view configuration”*, we refer to the definitions that describe how representations behave inside {product}.

@@ -1,0 +1,38 @@
+= Create your first view
+
+This tutorial shows how to configure a view model once your domain is ready.
+
+== Prerequisites
+
+* A studio project that already contains the domain definitions for your DSL.
+* At least one test project where you can create representations to validate the result.
+
+== Steps
+
+. **Open or create a studio project**
+.. From the *Studios* page, create a project or reuse the one that stores your domain.
+. **Add a view model**
+.. Create a new View resource (this replaces the `.odesign` file from Sirius Desktop).
+.. Name it after the DSL or the representation bundle (for example `DatabaseReview` or `RequirementFlow`).
+. **Create the representation description**
+.. Inside the view, add the representation type you need (Diagram, Table, Deck, Form, Tree, …).
+.. Set the `domainType` so the runtime knows on which semantic elements users can instantiate the representation.
+.. Configure the `titleExpression` and `iconExpression` that appear in tabs or launchers.
+. **Map semantic elements**
+.. Add mappings (nodes, edges, cards, rows, widgets) and point them to the appropriate domain entities.
+.. Provide `semanticCandidatesExpression`, preconditions, and label expressions using AQL.
+.. Reuse existing mappings when the same domain concept must appear in multiple contexts.
+. **Style and organize the view**
+.. Reference color palettes and text style palettes to keep visual consistency.
+.. Add conditional styles to react to semantic state (status, priority, ownership, etc.).
+. **Add tools**
+.. Configure palette entries (create/delete/link) and customize the default tools if needed.
+.. Combine operations and optional Java services to implement complex behaviors.
+. **Test iteratively**
+.. Save the view, reopen the test project, and create the representation.
+.. Adjust expressions, refresh the representation, and repeat until the UI matches your expectations.
+
+== Next steps
+
+* When the view behaves as expected, export the studio project or package it into your {product} application.
+* Continue with other representation types or move on to xref:studio-maker-guide:features/view.adoc[] for deeper customization options.

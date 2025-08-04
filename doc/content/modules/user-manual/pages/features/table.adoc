@@ -1,0 +1,113 @@
+= Table
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+The *Table* representation in {product} offers a spreadsheet-like view of your model. It lists elements as rows and exposes their properties as columns, making it easier to compare values, edit attributes inline, or capture structured information without switching to a diagram.
+
+Tables display rows and columns that have been predefined for you, including which properties appear, how rows are grouped, and which actions are available.
+
+image::representations/table-overview.png[Table overview]
+
+== What You Can Do
+
+* Browse model elements line by line and sort columns to surface the information you need.
+* Inline-edit cells: click a value to type a new one, pick an entry from a drop-down, or toggle a checkbox.
+* Add or remove rows using palette actions (for example, create a new entity or delete an obsolete one).
+* Expand hierarchical rows when the configuration exposes nested data, such as subcomponents or related elements.
+* Apply filters to highlight rows that match a value or expression, helping you focus on a subset of the data.
+* Trigger custom commands directly from the table (e.g., duplicate a row, generate a report, validate a record).
+
+== When to Use It
+
+Use a table representation when:
+
+* You need to edit many elements quickly without opening each one in a form.
+* Comparing attributes side by side is more efficient than navigating a diagram.
+* The data is inherently tabular (think requirements, configurations, or reference lists).
+* You want to export or copy values easily—for example, to share with stakeholders.
+
+== Columns and actions
+
+Columns can display text, numbers, booleans, enumerations, or computed values defined with AQL expressions. Depending on how the table was configured, you may also:
+
+* Provide column-specific formatters (dates, units, status icons).
+* Enable sorting and grouping by particular columns.
+* Expose toolbar or context-menu commands that operate on selected rows.
+* Pin columns on the left or right so that important attributes remain visible while you scroll horizontally.
+* Hide columns you do not need (and restore them later); column visibility is persistent per table.
+
+If the table supports multi-selection, use `Shift+Click` or `Ctrl/Cmd+Click` to pick several rows and run actions on all of them at once.
+
+=== Toolbars and menus
+
+The top toolbar groups global actions:
+
+image::representations/table-top-toolbar.png[Table top toolbar]
+
+* *Settings* menu (CSV export, reset layout, etc.).
+* *Global filter* field which searches across every textual cell.
+* *Reset row height* to return manually resized rows to their default.
+* *Row filters* menu (switches for domain-specific filters provided by the specifier).
+* *Toggle column filters* to show or hide the per-column filter row.
+* *Column management* menu to reorder, pin, and toggle column visibility.
+* *Full screen* toggle and sharing tools, common to other representations.
+
+Each column header also exposes a menu for column-specific operations:
+
+image::representations/table-column-menu.png[Column menu, width=260]
+
+Use it to clear/apply the filter, pin it left/right, hide it, or show all columns again.
+
+The column management dialog is handy when many columns are available:
+
+image::representations/table-columns-management-menu.png[Column management, width=260]
+
+Drag handles to reorder columns, use the pin icons to keep key information on screen, and toggle the switch to hide/display each column.
+
+=== Pagination
+
+Large tables are paginated automatically. Use the bottom toolbar to switch pages or change the page size (5/10/20/50 rows):
+
+image::representations/table-pagination-toolbar.png[Pagination toolbar, width=320]
+
+=== Selection and editing
+
+Click a row header to select the underlying semantic element and synchronize other views such as Explorer or Details:
+
+image::representations/table-selection.png[Selecting a row]
+
+Editable cells switch to their widget when you click them (for example text fields, text areas, combos). Press `Tab` to move to the next editable cell or `Shift+Tab` to go backwards.
+
+=== Filtering data
+
+Tables provide several ways to focus on the data you need:
+
+* *Global filter*: searches all textual content in visible columns.
+* *Column filter*: restricts rows based on a specific column's value.
+* *Row filters*: domain-specific toggles defined in the representation.
+* *Hierarchy*: collapse or expand rows to focus on the relevant subtree.
+
+Column filters stack together, so only the rows that satisfy every active filter remain visible.
+
+=== Row actions
+
+The right-most column usually contains a context menu that triggers domain-specific commands on that row:
+
+image::representations/table-row-action-example.png[Row action menu, width=320]
+
+Examples include duplicate, delete, or open-in-diagram actions—whatever the specifier configured for this table.
+
+== Example
+
+In the relational database training lab, a table lists the `Table` elements of the DSL:
+
+* Each row represents a database table.
+* Columns display the name, the number of columns (`aql:self.ownedTableElements->size()`), and ownership metadata.
+* Palette actions let you create a new table element or remove an existing one.
+
+This layout gives stakeholders an overview of the schema while enabling them to add or adjust structures rapidly.
+
+[NOTE]
+====
+Tables in {product} are not spreadsheets: they reflect and edit the underlying model. Any inline change is immediately synchronized with other representations and shared with collaborators.
+====

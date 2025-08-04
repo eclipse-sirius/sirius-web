@@ -1,0 +1,122 @@
+= Contributor Guide
+
+This developer guide provides step-by-step instructions on how to set up your developer environment, contribute to the codebase, and enhance the capability of {product}.
+
+== Retrieving the Source Code
+
+{product} is licensed under the xref:product-legal:index.adoc[(EPL v2)] Open Source license
+The source code is openly accessible on GitHub:{source-code-url}
+
+To get the source code, clone the repository using either SSH:
+
+[source, bash, subs="attributes+"]
+----
+git clone git@github.com:{github-project}.git
+----
+
+or HTTPS:
+
+[source, bash, subs="attributes+"]
+----
+git clone {source-code-url}.git
+----
+
+== Setting Up your Development Environment
+
+. Download your coding environment https://spring.io/tools[Spring Tools 4.22.0] (or newer).
+. Ensure that m2e version from your environment is >= 2.6.0
++
+image::environment-m2e-version.png[m2e version]
++
+. Retrieve the source code or fork it if you want to make contribution
+. Import _backend_ plugins from {product} repository in your workspace
+. Update _settings.xml_ file from your _.m2_ folder to give access to other repositories during the build
+  In order to see dependence with access to add in _settings.xml_, have a look on _backend\application\sirius-web-application\pom.xml_
+  You need to create https://github.com/settings/tokens[access tokens] on Github to complete _settings.xml_.
++
+image::environment-settings.png[settings file]
++
+. Right click on sirius-web-services_ module and then _Properties>JavaBuildPath>Source_
+  Add _main/generated_ folder and remove _excluded_ content and former _antlr/grammar_
+  You should retrieve the following _Java build path_
++
+image::environment-java-build-path.png[Java build path]
++
+. Update Maven project by launching "ALT+F5" shortcut on all modules of your workspace
+
+Staying current with {product} ensures access to the latest features, fixes, and security updates. This guide summarizes the upgrade process used by {product}-based applications and draws from the advanced training material.
+
+== Generate a new OpenAPI documentation of REST API
+
+. Build and run the {}} server locally (using docker compose as example) on `http://localhost:8080`.
+. Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
+. The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
+
+== Release cadence
+
+* *Calendar versioning (CalVer)*: releases follow the `YEAR.MONTH.PATCH` pattern (for example `2024.11.0`).
+* *Stable releases*: versions ending with `.0` are the general availability (GA) builds recommended for production.
+* *Intermediate releases*: follow-up versions such as `2024.11.1` provide early access to fixes. Use them for evaluation; breaking changes may still occur.
+* *8-week development cycle*:
+** Development (4 weeks): new features and enhancements land.
+** Stabilization and feature freeze (2 weeks): focus on testing and bug fixing.
+** Cool down and planning (2 weeks): dependency refresh, documentation updates, and planning of the next cycle.
+
+Refer to the published changelog for the detailed scope of each release.
+
+== Upgrade checklist
+
+. *Review the changelog*: list breaking changes for both backend and frontend modules.
+. *Update backend dependencies*:
+.. Bump {product} artifacts in your build files (for example, Maven `pom.xml`).
+.. Rebuild and resolve any compilation errors introduced by API changes.
+. *Update frontend dependencies*:
+.. Update npm packages referencing {product} libraries.
+.. Run `npm install` and `npm run build` (or the equivalent) to detect build-time regressions.
+. *Run automated tests*:
+.. Backend: unit and integration tests.
+.. Frontend: Node.js tests and end-to-end scenarios (Cypress or Playwright, depending on the suite).
+. *Perform manual validation* using your acceptance checklist to confirm the studio still behaves as expected.
+. *Package and deploy* once the upgraded build passes the quality gates.
+
+TIP: Automate the checklist whenever possible. Continuous integration pipelines help flag regressions early.
+
+== Model and schema migrations
+
+{product} migrates representation and view models automatically when resources are loaded. Database schema updates are also applied on startup if needed, so most upgrades are seamless for end users.
+
+When your studio introduces structural changes that require custom migration steps, implement an `IMigrationParticipant`:
+
+* Provide a unique participant version (`ITERATION-YYYYMMDDHHMM`).
+* Inspect and update the model elements that need to change.
+* Register the participant so it runs after the built-in migrations.
+
+[source,java]
+----
+@Service
+public class NameFeatureChangeMigrationParticipant implements IMigrationParticipant {
+  private static final String PARTICIPANT_VERSION = "202405011030";
+
+  @Override
+  public String getVersion() {
+    return PARTICIPANT_VERSION;
+  }
+
+  @Override
+  public EStructuralFeature getStructuralFeature(EClass eClass, String featureName) {
+    if (DomainPackage.eINSTANCE.getDomain().equals(eClass)
+        && "name2".equals(featureName)) {
+      return DomainPackage.eINSTANCE.getNamedElement_Name();
+    }
+    return null;
+  }
+}
+----
+
+Only participants with a version newer than the one stored in a model run during upgrade, preventing redundant work.
+
+== Communicating upgrades
+
+* Announce the target version and planned downtime (if any) to stakeholders.
+* Highlight user-visible changes and new capabilities.
+* Encourage teams to test their projects on a staging environment built from the new release before you promote it to production.

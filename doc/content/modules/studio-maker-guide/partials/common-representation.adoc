@@ -1,0 +1,14 @@
+Every view configuration provides the following fundamentals:
+
+
+* `name`: Public identifier shown to end users (defaults to `NewRepresentationDescription`).
+* `domainType`: Fully qualified semantic type on which the representation can be created.
+* `preconditionExpression`: Expression evaluated on the semantic element; the representation is available only when it returns `true`.
+* `titleExpression`: Computed label shown in the tab header (defaults to `aql:'New Representation'`).
+* `iconExpression`: Optional expression that resolves to an icon path displayed alongside the title.
+
+[TIP]
+====
+When writing expressions, you can use context-specific variables.
+See the xref:studio-maker-guide:features/aql.adoc#_built_in_variables[built-in AQL variable list] for a complete reference of available variables for each context.
+====

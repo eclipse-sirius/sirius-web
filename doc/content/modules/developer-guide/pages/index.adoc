@@ -1,0 +1,23 @@
+=  Integration and Development
+
+Modeling rarely happens in isolation.
+In real-world projects, models must interact with other tools used throughout the development lifecycle, whether for requirements management, code generation, simulation, documentation, or version control.
+
+This section explains how {product} can be integrated with external tools and platforms.
+It covers both built-in mechanisms and extension points that allow you to connect {product} to your existing toolchain.
+Common integration scenarios include linking to repositories, exchanging data with other modeling tools, automating workflows, or generating artifacts.
+
+By supporting open standards and offering extensibility at multiple levels, {product} helps you embed modeling into broader engineering environments without disrupting existing processes.
+
+[TIP]
+====
+Not sure whether you should rely on the low-code editor or the programmatic APIs?
+See the xref:user-manual:sirius-approach.adoc#_specifier_profiles[Specifier profiles] section to understand the two main specifier personas (UI-only vs. programmatic) and choose the approach that matches your team.
+====
+
+[NOTE]
+====
+Before you dive into the tutorials and APIs, verify your workstation meets the xref:developer-guide:workstation.adoc[local tooling requirements] (JDK 17, Maven, Node.js 18, Docker, Git, etc.).
+====
+
+include::developer-guide:partial$nav.adoc[]

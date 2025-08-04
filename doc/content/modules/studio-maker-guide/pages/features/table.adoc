@@ -1,0 +1,135 @@
+= Table
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page documents the table description defined in the {product} view configuration.
+
+== Introduction
+
+`TableDescription` extends the shared `RepresentationDescription`, so tables inherit the same naming, icon, title, and domain-type conventions as other representations.
+The view configuration organizes table definitions around columns, rows, and cells.
+Every setting uses the same expression editor and palette pickers you already know.
+This allows you to expose hierarchical data with inline editing, contextual commands, and controllable pagination.
+
+== Configuring tables step by step
+
+image::representations/table-overview.png[Table overview]
+
+image::representations/table-table-description.png[Table description view model,500,align=center]
+
+When you create a `TableDescription` inside your view file you will typically configure it in three stages:
+
+1. **Table-level options** such as page sizes, striped rows, or row filters.
+2. **RowDescription** to determine which semantic elements appear and how they behave (height, header, context menu, sub rows).
+3. **Column/Cell descriptions** so each column renders the right widget and exposes inline editing where needed.
+
+The same variables, operation language, and palette pickers used in diagrams and forms are available here, so you can reuse existing AQL expressions and Java services.
+
+== Table Description
+
+include::partial$common-representation.adoc[]
+
+`TableDescription` aggregates the global behavior of the representation.
+
+* `useStripedRowsExpression`: returns a boolean to alternate row backgrounds for readability.
+* `columnDescriptions`: ordered containment of `ColumnDescription` elements keyed by `name`.
+* `rowDescription`: single `RowDescription` that provides the root collection of semantic elements.
+* `cellDescriptions`: collection of `CellDescription` entries, each referencing a column and defining the widget rendered in that column.
+* `enableSubRows`: boolean toggling nested rows so you can expand hierarchical data.
+* `rowFilters`: optional `RowFilterDescription` entries that appear above the table for quick filtering.
+* `pageSizeOptionsExpression`: expression returning the list of page sizes (for example `aql:[10,25,50]`).
+* `defaultPageSizeIndexExpression`: expression returning the zero-based index of the default page size among the options.
+
+Together, these attributes determine how many rows are loaded.
+They also control how rows can be grouped, and which interactive controls appear in the toolbar and footer.
+
+== Column descriptions
+
+`ColumnDescription` configures the header and behavioral aspects of a column.
+
+* `name`: unique identifier referenced by cells.
+* `domainType`: semantic class handled by the column when it differs from the row element.
+* `semanticCandidatesExpression`: overrides the semantic element used by the column, which is useful when the column targets a related object.
+* `preconditionExpression`: hides the column when the condition evaluates to `false`.
+* `headerIndexLabelExpression`: optional expression used when the header displays an index or numbering scheme.
+* `headerLabelExpression`: main column title displayed to end users.
+* `headerIconExpression`: optional icon shown next to the header label.
+* `initialWidthExpression`: numeric expression defining the default width in pixels.
+* `isResizableExpression`: expression evaluated to decide whether end users can resize the column.
+* `filterWidgetExpression`: selects the widget type used by column-level filters (text field, select, etc.).
+* `isSortableExpression`: expression indicating whether the runtime exposes sorting affordances for this column.
+
+Columns act as anchors for cell descriptions.
+This allows multiple rows to reuse the same presentation and editing capabilities.
+
+== Row description
+
+`RowDescription` describes how semantic elements are retrieved and how each row behaves visually.
+
+* `name`: identifier used when referencing the row description from cells.
+* `semanticCandidatesExpression`: collection expression that retrieves every element displayed as a row.
+* `headerLabelExpression`: optional text displayed in the row header (leftmost gutter).
+* `headerIconExpression`: optional icon placed near the row header label.
+* `headerIndexLabelExpression`: expression used when displaying row numbers.
+* `initialHeightExpression`: expression controlling the default row height.
+* `isResizableExpression`: expression allowing or forbidding manual row resizing.
+* `contextMenuEntries`: containment list of `RowContextMenuEntry` actions rendered when a user opens the context menu on a row.
+* `depthLevelExpression`: expression evaluated per row when `enableSubRows` is true to compute the indent level of nested rows.
+
+Rows stay synchronized with the semantic model.
+When the candidate expression changes, the table updates to reflect additions, deletions, or reordered elements automatically.
+When authoring the `semanticCandidatesExpression` remember that pagination and filtering hints are supplied through variables:
+
+* `cursor` / `direction` / `size` — provided by pagination helpers so you can load the next or previous page.
+* `globalFilterData` — contents of the global search box.
+* `columnFilters` — list of `{ id, value }` pairs entered in column headers.
+* `activeRowFilterIds` — identifiers of row filters toggled on in the toolbar.
+* `expandedIds` — semantic identifiers of rows currently expanded when hierarchical sub rows are enabled.
+
+== Cell descriptions and widgets
+
+`CellDescription` binds a row, a column, and a widget so end users can view or edit data inline.
+
+* `name`: identifier used during debugging or reuse.
+* `preconditionExpression`: governs whether the cell is rendered for a given row.
+* `selectedTargetObjectExpression`: optional expression that remaps the semantic element targeted by operations triggered from the cell.
+* `valueExpression`: interpreted expression that returns the value displayed or edited in the cell.
+* `tooltipExpression`: optional expression whose result appears when hovering the cell.
+* `cellWidgetDescription`: containment reference to a `CellWidgetDescription` instance.
+
+`CellWidgetDescription` is the shared base definition implemented by the following widgets.
+
+* `CellLabelWidgetDescription`: read-only cell that displays text and an optional `iconExpression`.
+* `CellTextfieldWidgetDescription`: inline text field that can execute operations (`body`) when the user commits a change.
+* `CellTextareaWidgetDescription`: multi-line editor that also exposes an operation `body` for custom persistence logic.
+
+The operation bodies reuse the shared operation language (`ChangeContext`, `SetValue`, `CreateInstance`, etc.).
+Editing a cell can trigger complex semantic updates beyond simple attribute assignment.
+
+== Row actions and context menus
+Row-level actions are modeled with `RowContextMenuEntry` and attached to the `contextMenuEntries` reference of the row description.
+Each entry defines a `labelExpression`, an optional `iconURLExpression`, a `preconditionExpression`, and a `body` containing the operations to execute.
+
+== Styles
+Table styling is primarily controlled through expressions on the `TableDescription` and its children.
+For example, `useStripedRowsExpression` alternates row backgrounds.
+More complex styling can be achieved by referencing `TextStyleDescription` from cell widgets, similar to other representations.
+
+Row-level actions are modeled with `RowContextMenuEntry`.
+
+* `name`: unique identifier of the entry.
+* `labelExpression`: text displayed in the menu.
+* `iconURLExpression`: optional icon path shown next to the label.
+* `preconditionExpression`: expression evaluated before rendering the entry, allowing you to hide actions on specific rows.
+* `body`: ordered list of operations executed when the entry is selected.
+
+== Row filters and pagination
+
+`RowFilterDescription` instances define the quick filters available above the table.
+
+* `id`: identifier used to store user preferences.
+* `labelExpression`: label displayed next to the filter control.
+* `initialStateExpression`: expression returning the initial enabled or disabled state.
+
+Use multiple filter descriptions to expose facets such as status, owner, or type.
+Combine them with `ColumnDescription.filterWidgetExpression` for per-column filtering.

@@ -1,0 +1,84 @@
+= Diagram layout pipeline
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+{product} diagrams rely on a combination of ELK and our incremental layout engine.
+
+When a diagram is created, or when the user invokes *Arrange all*, we run ELK to compute an absolute layout for every element and persist it as layout data on the representation.
+Every subsequent refresh reuses that stored layout and applies incremental updates to keep user changes (manual moves, manual resizing, border-node adjustments) while reacting to new events (creating nodes, dropping elements, expanding/collapsing, etc.).
+
+All layout decisions are materialised in the `DiagramLayoutData` structure (`NodeLayoutData`, `EdgeLayoutData`, etc.) that travels through GraphQL and back.
+The frontend renderer (`LayoutEngine`, `ListNodeLayoutHandler`, `FreeFormNodeLayoutHandler`, …​) reads those values, adjusts them when the user interacts with the diagram, and sends the updated data back to the backend so the next refresh can start from the exact same state.
+
+== Node boxes that exist today
+
+The renderer already uses a layered box model—each node is represented by nested rectangles with specific responsibilities:
+
+1. `Content box`: the area reserved for child nodes and free-form graphics.
+2. `Inside label box`: optional header/footer label (with optional icon) rendered inside the node; it can be aligned at the top or bottom.
+3. `Border box`: the node’s visible border; its size matches the width/height stored in `NodeLayoutData`.
+4. `Border nodes box`: reserved area around the border for border nodes (port-like nodes).
+5. `Outside label box`: labels drawn outside the border (currently supported at the bottom left/middle/right positions).
+6. `Margin`: spacing used when positioning border nodes so they do not touch the node, although the margin is not yet part of the footprint calculation (see the warnings in `layoutNode.ts`).
+
+image::layout/box_model_sample.png[Current box layering]
+
+=== Size vs footprint (as implemented)
+
+*Size* refers to the `width`/`height` stored in `NodeLayoutData`. It includes the content box, inside label, and border.
+The renderer derives a *minimal* size (`minComputedSize`) from the content: it measures the inside label, the header separator, and the largest child footprint so nodes never shrink below what is required.
+
+*Footprint* is the rectangle used to avoid collisions inside a container.
+Today it is computed from the node rectangle plus any border nodes and the bottom outside label (`getNodeFootprint`), which matches the behaviour implemented in `layoutNode.ts`.
+Margins are only applied when positioning border nodes; they will be folded into the footprint in a future iteration once the TODOs in the code are tackled.
+
+image::layout/box_model_node_size.png[Nodes sharing the same size]
+
+image::layout/box_model_node_footprint.png[Nodes with different footprints]
+
+== Layout strategies available in code
+
+Only two strategies exist in the DSL and runtime today:
+
+* `FreeFormLayoutStrategy`: child nodes keep their absolute positions.
+  The incremental layout engine uses the layout data as-is. Users can drag children anywhere (unless the specifier disables dragging), and resizing the parent does not change the children.
+* `ListLayoutStrategy`: children are arranged vertically like compartments.
+  The strategy exposes the options defined in `ListLayoutStrategy`:
+  ** `areChildNodesDraggable`: whether children can be manually rearranged or are anchored to the list.
+  ** `topGap` / `bottomGap`: extra spacing above and below the list content.
+  ** `growableNodeIds`: description ids of child nodes that must stretch to consume the remaining height (for example *Attributes* or *Operations* compartments in a class).
+
+The frontend implementation (`ListNodeLayoutHandler`) runs the child layout handler for every child so the child’s own min size is honoured, then distributes any extra height evenly across the growable children.
+When a user manually resizes a child we leave the `resizedByUser` flag on, so automatic height distribution skips it.
+
+== Labels, border nodes, and handles
+
+Inside labels (cf. `InsideLabel` type) support top or bottom headers, separator lines, and three overflow strategies (`NONE`, `WRAP`, `ELLIPSIS`).
+Their rendered size is measured in the DOM and propagated back to the node so the incremental layout can use it as part of `minComputedSize`.
+
+Outside labels exist for the bottom edge only (`BOTTOM_BEGIN`, `BOTTOM_MIDDLE`, `BOTTOM_END`).
+They contribute to the node footprint through `getNodeFootprint`.
+
+Border nodes are stored as regular nodes flagged with `isBorderNode`.
+The helper methods in `layoutNode.ts` keep their relative offset: when you resize a node, the border nodes stay at the same ratio along their edge (e.g., “40 % from the top”).
+They also inherit the default margin defined in `layoutParams.ts` so they never overlap the border.
+
+Handles (connection points, resize handles) read the same layout data.
+For example the resize handles rely on `minComputedSize` to clamp how far a node can shrink, while connection handles use the border-node positions calculated above.
+
+== Resizing and manual edits
+
+* Manual moves flag nodes with `movedByUser`; the incremental layout engine propagates that flag so future refreshes do not snap the node back to its previous ELK position.
+* Manual resizes flag nodes with `resizedByUser` and preserve the user size across refreshes.
+  Layout handlers still honour the computed minimum: if the content grows larger than the saved size, the node expands accordingly.
+* Arrange-all resets the diagram to ELK’s output but keeps the layout data, so the next refresh uses the new baseline.
+* The `minComputedSize` of every node is stored with the layout data so backend migrations (see `DiagramMinComputedSizeMigrationParticipant`) can initialise it for older projects.
+
+== Implementation pointers
+
+* Backend types: `org.eclipse.sirius.components.diagrams.layoutdata` (layout data structures) and `org.eclipse.sirius.components.diagrams.{List,FreeForm}LayoutStrategy`.
+* GraphQL: `diagram.graphqls` exposes layout data and layout strategy fragments. Clients must include `childrenLayoutStrategy` in their queries to render list nodes correctly.
+* Frontend: `LayoutEngine.ts` orchestrates the layout handlers. `ListNodeLayoutHandler.ts` and `FreeFormNodeLayoutHandler.ts` implement the behaviours described above, while `layoutNode.ts` contains the actual computations for footprints, header size, border nodes, and margins.
+
+This reflects the behaviour that currently ships in {product}.
+Any future work (for example folding margins into the footprint) should update both the code and this page once it is released.
