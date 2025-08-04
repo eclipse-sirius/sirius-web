@@ -1,0 +1,2 @@
+* xref:release-notes:2026.7.0.adoc[]
+* xref:user-manual:cycle.adoc[]

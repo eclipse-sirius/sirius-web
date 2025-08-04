@@ -1,0 +1,44 @@
+name: sirius-web
+title: Sirius Web
+version: true
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    sirius: "Sirius"
+
+    product: "Sirius Web"
+    product-tag: "v2026.1.0"
+    product-artefact: "sirius-web"
+    product-jar: "{product-artefact}-YYYY.M.X.jar"
+
+    github-project: "eclipse-sirius/sirius-web"
+    source-code-url: "https://github.com/{github-project}"
+    bug-url: "{source-code-url}/issues"
+    milestones: "{source-code-url}/milestones"
+    packages-url: "{source-code-url}/packages/2069582/versions"
+    forum-url: "{source-code-url}/discussions"
+    changelog-url: "{source-code-url}/blob/master/CHANGELOG.adoc"
+    resources-url: "https://eclipse.dev/sirius/sirius-web.html"
+    git-ssh-url: "git@github.com:eclipse-sirius/sirius-web.git"
+    website-url: "https://eclipse.dev/sirius/sirius-web.html"
+
+    homepage: "Homepage"
+    project-browser: "Project Browser"
+    projects-list: "Projects List"
+    projects-list-menu: "Project Options Menu"
+
+    project-workbench: "Project Workbench"
+    workbench: "Workbench"
+
+    details-view: "Details View"
+    explorer-view: "Explorer View"
+    explorer-filter-bar: "Explorer Filter Bar"
+    explorer-menu: "Explorer Contextual Menu"
+    query-view: "Query View"
+    related-elements-view: "Related Elements View"
+    representations-view: "Representations View"
+    validation-view: "Validation View"
+
+    diagram-contextual-palette: "Diagram Contextual Palette"

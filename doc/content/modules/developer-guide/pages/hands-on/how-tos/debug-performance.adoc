@@ -1,0 +1,21 @@
+= Debug performance issues
+
+{product} exposes several hooks to trace slow operations on the backend.
+
+== Backend logging
+
+Enable the dedicated performance log category to see the timings recorded by the runtime (including AQL expressions taking more than 200 ms):
+
+```
+logging.level.sirius.web.performance=DEBUG
+```
+
+== GraphQL tracing
+
+To break down the time spent in each data fetcher, enable GraphQL tracing:
+
+```
+sirius.web.graphql.tracing=true
+```
+
+The tracing output helps identify bottlenecks and complements the timing information recorded in the standard logs.

@@ -1,0 +1,24 @@
+// Reference all the files defined in the features folder
+* User Manual
+** Projects Management
+*** xref:user-manual:features/project-browser.adoc[]
+** Workbench
+*** xref:user-manual:features/workbench.adoc[]
+*** xref:user-manual:features/explorer-view.adoc[]
+*** xref:user-manual:features/details-view.adoc[]
+*** xref:user-manual:features/related-elements-view.adoc[]
+*** xref:user-manual:features/representations-view.adoc[]
+*** xref:user-manual:features/query-view.adoc[]
+*** xref:user-manual:features/validation-view.adoc[]
+*** xref:user-manual:features/keyboard-shortcuts.adoc[]
+*** xref:user-manual:features/collaboration.adoc[]
+** Representations Types
+*** xref:user-manual:features/deck.adoc[]
+*** xref:user-manual:features/diagram.adoc[]
+*** xref:user-manual:features/form.adoc[]
+*** xref:user-manual:features/gantt.adoc[]
+*** xref:user-manual:features/portal.adoc[]
+*** xref:user-manual:features/table.adoc[]
+*** xref:user-manual:features/tree.adoc[]
+** xref:user-manual:features/libraries.adoc[]
+** xref:user-manual:features/versioning.adoc[]

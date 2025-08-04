@@ -1,0 +1,33 @@
+= {product} Overview
+
+== Overview
+
+include::user-manual:partial$intro.adoc[]
+
+{product} is an open-source, low-code platform designed to simplify the creation and deployment of graphical modeling studios on the web.
+It enables organizations to define custom visual languages tailored to their specific domains, offering an intuitive and flexible way to represent complex information.
+Built with a modern web architecture, {product} ensures seamless collaboration, scalability, and integration with existing tools.
+
+== At a glance
+
+{product} provides an open-source low-code environment that enables the rapid development of graphical modeling tools with minimal coding effort.
+As a fully web-based solution, it runs entirely in a browser, eliminating the need for local installation.
+
+Its extensibility allows it to adapt to various domains by supporting customizable visual languages and model representations.
+{product} is already the foundation for projects such as https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web[Papyrus Web] and https://mbse-syson.org[SysON], demonstrating its flexibility and adoption across different industries.
+
+== Source code
+
+* License: Eclipse Public License v2 - xref:product-legal:index.adoc[EPL v2]
+* GitHub: {source-code-url}
+* Authors: https://www.obeosoft.com/en/[Obeo].
+Visit the https://projects.eclipse.org/projects/modeling.sirius/who[{product} project page] to discover the individuals who contribute to the {product} project.
+
+== Tracker
+
+* Issue tracker: {bug-url}
+
+== Communication
+
+* Website: {website-url}
+* Forum: {forum-url}

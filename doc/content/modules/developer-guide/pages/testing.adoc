@@ -1,0 +1,74 @@
+= Testing strategy
+
+This page explains which kinds of tests we maintain in {product}, when to rely on each category, and how to avoid brittle suites.
+
+[IMPORTANT]
+====
+TL;DR — default to backend integration tests unless you truly need to validate complex UI interactions.
+They let you bootstrap precise domains/views/services, exercise collaborative workflows end to end, and run quickly in CI.
+====
+
+== Test families
+
+We use the following types of tests:
+
+* Backend unit tests.
+* Backend integration tests.
+* Frontend unit tests.
+* End-to-end (E2E) tests with Cypress or Playwright.
+* Manual exploratory/non-regression tests.
+
+== Choosing the right kind of test
+
+=== Backend unit tests
+
+Use them sparingly to cover algorithms that live entirely inside a single method/service.
+Most of Sirius Web’s complexity is the integration between components, so it is often more productive to exercise the feature with an integration or collaborative test instead of mocking repositories or event processors.
+
+=== Frontend unit tests
+
+Reserve them for pure frontend logic that does not need server state (for example a custom hook manipulating complex DOM state).
+If a test requires mocking `useQuery`, `useMutation`, or large chunks of the DOM, consider a backend integration or E2E test instead—the mocks make the result hard to trust.
+
+=== Backend integration tests
+
+Default to these when the behaviour is mostly on the backend and the UI side is simple.
+They shine when you need to:
+
+* Seed complex domains/views/services quickly (using fixtures or dedicated Spring beans).
+* Exercise the full lifecycle of a representation (create → inspect → run tools → inspect again).
+* Mock specifier extensions through test-only services.
+* Keep suites fast and deterministic.
+
+=== End-to-end tests (Cypress / Playwright)
+
+Use an E2E framework when the frontend interactions are the main risk (diagram gestures, drag-and-drop in the Form Description Editor, etc.).
+Historically we relied on Cypress; new suites now use Playwright (see `integration-tests-playwright/`) because it is faster to run in CI, supports parallel workers out of the box, and gives us better selectors.
+Both frameworks coexist for now while the older Cypress suites are migrated.
+They give you full confidence that the UI behaves like the end user expects, but they come with steep costs:
+
+* Slow to author and maintain—every UI step must be scripted.
+* Hard to set up complex initial state because you only have access to the UI/API (no direct DB access).
+* Difficult to test invalid flows because the UI guards against most mistakes.
+* More brittle: it is easy to miss a `wait` and try to act before the server responded.
+
+Hence, only add E2E coverage when integration tests cannot exercise the behaviour.
+
+=== Manual tests
+
+Manual runs are still needed, but only for scenarios that cannot be automated yet (for example multi-user concurrency) or for free-form exploratory testing to uncover new bugs.
+They are inefficient for regression testing because:
+
+* Maintaining scripts is tedious and error-prone.
+* Humans are bad at noticing small regressions.
+* CI cannot run them.
+
+If a manual test can be automated, invest in the automated version and drop the manual script.
+
+== Decisions / guidelines
+
+* Prefer backend integration tests unless the UI behaviour is the core of the change.
+* When frontend code is substantial, use E2E or targeted frontend unit tests.
+* Remove manual regression tests once an automated equivalent exists.
+* Be frugal with E2E coverage (whether Cypress or Playwright): if a backend integration test can cover the scenario, add that instead.
+* Flaky E2E tests erode trust in CI. Delete them, track an issue, and either stabilise them or replace them with integration tests.

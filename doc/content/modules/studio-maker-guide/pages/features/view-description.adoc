@@ -1,0 +1,29 @@
+= View Description
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+Use this feature to configure diagrams, tables, or other representations without leaving your web browser.
+
+== Introduction
+
+View descriptions use the domain you modeled earlier to let you configure one or more representation descriptions.
+View description models live inside *Studio projects*, just like domains, and they can be edited live without restarting the application.
+Each view description is an EMF model under the hood, so advanced users can still version it, compare it, or extend it programmatically, but studio makers will only interact with it thanks to the web interface.
+
+View descriptions can be configured inside a **Studio** project by using both the xref:user-manual:features/explorer-view.adoc[] and the xref:user-manual:features/details-view.adoc[].
+In the {details-view}, all textfields with a yellow background should be used to enter AQL expressions.
+On the other hand, green textfields are used for the qualified name of an entity from your domain.
+
+== Live deployment model
+
+* Studio makers author, test, and validate their view descriptions in the same running instance as end users—no code generation or packaging loop is required during design time.
+* Once satisfied, export the studio project or package it into your {product} based application; the same view descriptions will be loaded at runtime.
+* Because view descriptions are stored as models, they can be processed by EMF tooling (compare, merge, document generation) if your team needs deeper governance.
+
+== Best practices
+
+* Keep representation descriptions focused: one view description per persona or task prevents cluttered palettes.
+* Reuse color/text palettes across representation descriptions to ensure consistent branding.
+* Combine the Query View or any scratch project to validate complex AQL expressions before you wire them into descriptions.
+
+For a step-by-step walkthrough, see xref:studio-maker-guide:hands-on/tutorials/view-description-tutorial.adoc[].

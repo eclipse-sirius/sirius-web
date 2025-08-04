@@ -1,0 +1,12 @@
+= Libraries
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+In {product}, users can create libraries by publishing the content of their xref:user-manual:concepts.adoc#project[project].
+Publishing libraries is the way to define dependencies between projects.
+After its publication, another project can add a dependency to the published library.
+
+Most of the time, publishing a library can be done by using a dedicated command from the omnibox.
+Studio makers have first to define a command to define which subpart of the project should be published as a library.
+
+After publication, the library is listed alongside xref:user-manual:concepts.adoc#library[the other published libraries].

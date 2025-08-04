@@ -1,0 +1,30 @@
+= Create your first domain
+
+This how-to walks you through the minimum steps required to define a domain before creating Views.
+
+A domain lets you define business concepts (entities, attributes, relations) directly inside {product}.
+Everything happens inside the browser—there is no code generation step, no external Eclipse install, and the resulting domain is immediately usable by the View editor and by end users who create instances.
+The domain targets tree-structured models (each element has at most one container), which map naturally to explorer trees, forms, and diagrams.
+
+== Steps
+
+. **Create a studio project**
+.. Navigate to the Project Browser on the homepage and create a new **Studio** project dedicated to your DSL.
+.. Give it a meaningful name.
+. **Add a Domain model**
+.. Create a new Domain model inside the studio project.
+.. Populate the domain with the main entities of your DSL (for example `Database`, `Table`, `Column`).
+.. Use the Explorer or the optional diagram view to add attributes and relations.
+. **Configure attributes**
+.. Pick a name for the attribute.
+.. Choose the base type (string, integer, boolean...).
+.. Indicate if the attribute is optional.
+. **Configure relations**
+.. Pick a name for the relation.
+.. Decide whether the relation is containment (the element becomes a child in the project tree) or a plain reference.
+.. Indicate the multiplicity of the relation (one or many)
+. **Iterate quickly**
+.. To test your changes, close any open instance projects and reopen them; {product} reloads the latest domain automatically.
+.. Create sample instances inside a test project to ensure the domain constrains data exactly as expected.
+
+For a detailed presentation of the Domain editor capabilities, see xref:studio-maker-guide:features/domain.adoc[].

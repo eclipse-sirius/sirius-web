@@ -1,0 +1,211 @@
+= Custom form widgets
+
+Need to render or edit data in a way the standard form widgets don’t provide? You can contribute your own widget type to the form representation by combining backend components (description, GraphQL, mutations, event handler) and frontend pieces (React component, GraphQL document transform, extension points).
+
+== Backend building blocks
+
+. **Description class**: create a subclass of `AbstractWidgetDescription` (and the associated `AbstractWidget`) that stores the configuration of your widget (for example min/max/current values for a slider).
+. **Component**: implement a Spring bean that extends `IComponent<GQLWidget, IProps>` so the generic form rendering pipeline can instantiate your widget from the description and the current `VariableManager`.
+. **Widget descriptor**: contribute an `IWidgetDescriptor` bean that wires your description, component, and GraphQL type together. Mark it with `@Component` so the registry discovers it.
+. **Mutations** (optional): if the widget edits data, add a GraphQL mutation (`*.graphqls` file declaring `type MyWidget` and an `editMyWidget` mutation), the corresponding `IFormInput`/`IPayload` types, and an `IFormEventHandler` (Spring `@Service`) that actually applies the change. Each mutation also needs a dedicated data fetcher implementing `IDataFetcherWithFieldCoordinates` and annotated with `@MutationDataFetcher`.
+. **Schema**: place the `.graphqls` file under `resources/schema/` so the GraphQL runtime loads it (make sure the GraphQL `type` name matches your Java widget class name).
+
+== Frontend building blocks
+
+. **GraphQL type**: declare the TypeScript interface for your widget, extending `GQLWidget` with the extra fields you exposed in the schema.
+. **React component**: implement a component that matches `PropertySectionComponentProps<GQLYourWidget>` and renders the widget (for Details or custom forms).
+. **Document transform**: extend the GraphQL documents to request the extra fields. Use an `Apollo` `DocumentTransform` to append an inline fragment for your widget type.
+. **Extension points**: register the widget in the global `ExtensionRegistry`:
+.. `widgetContributionExtensionPoint`: provides the icon, preview, and React component to use when a `GQLWidget` of your type is encountered. This also enables the widget in the Form Description Editor preview.
+.. `apolloClientOptionsConfigurersExtensionPoint`: adds your document transform so the frontend fetches the widget-specific fields.
+
+== View DSL integration
+
+Once the backend/frontend plumbing is in place, expose the new widget to studio makers:
+
+. Extend the View DSL metamodel (or contribute a custom DSL extension) with the new widget description element.
+. Register the widget in the authoring tooling so it appears in the Form Description Editor/context menus.
+. Provide documentation for the widget-specific attributes/operations so form authors know how to configure it.
+
+== Slider widget example
+
+The slider widget demonstrates how every building block fits together. It exposes and edits a numeric value within a range.
+
+=== Backend implementation
+
+* Create a concrete subclass of `AbstractWidget` (`Slider.java`) that stores the widget state (min, max, current value) and exposes the functions used for mutations.
+* Create the `SliderDescription` subclass of `AbstractWidgetDescription` so form authors can configure the widget.
+* Implement `SliderComponent` (plus its props) that renders a `SliderDescription` into a `Slider` instance based on the current `VariableManager`.
+* Register everything in a Spring `@Component` implementing `IWidgetDescriptor`.
+
+If the widget supports mutations:
+
+* Add the GraphQL schema under `resources/schema/`:
++
+[source,graphqls]
+----
+type Slider implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  minValue: Int!
+  maxValue: Int!
+  currentValue: Int!
+}
+
+extend type Mutation {
+  editSlider(input: EditSliderInput!): EditSliderPayload!
+}
+
+input EditSliderInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  sliderId: ID!
+  newValue: Int!
+}
+
+union EditSliderPayload = SuccessPayload | ErrorPayload
+----
+* Provide the DTOs (`EditSliderInput`, payloads, etc.) and an `IFormEventHandler` (`EditSliderValueEventHandler`) that applies the mutation.
+* Add the mutation data fetcher (`MutationEditSliderDataFetcher`) implementing `IDataFetcherWithFieldCoordinates` and annotated with `@MutationDataFetcher`.
+
+[IMPORTANT]
+====
+Ensure the GraphQL type name (`Slider`) matches the Java class name, otherwise the type resolver cannot select the right implementation.
+If your widget reuses field names found on other widgets with a different type, use aliases (for example `booleanValue: value`).
+====
+
+=== Frontend implementation
+
+1. Declare the widget interface:
++
+[source,typescript]
+----
+import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+
+export interface GQLSlider extends GQLWidget {
+  label: string;
+  minValue: number;
+  maxValue: number;
+  currentValue: number;
+}
+----
+2. Implement the React component that matches `PropertySectionComponentProps<GQLSlider>` (e.g., `SliderPropertySection`).
+3. Extend the GraphQL documents with the extra fields through a `DocumentTransform`:
++
+[source,typescript]
+----
+export const sliderWidgetDocumentTransform = new DocumentTransform((document) => {
+  if (shouldTransform(document)) {
+    return visit(document, {
+      FragmentDefinition(node) {
+        if (!isWidgetFragmentDefinition(node)) {
+          return undefined;
+        }
+        const sliderWidgetInlineFragment: InlineFragmentNode = {
+          kind: Kind.INLINE_FRAGMENT,
+          selectionSet: {
+            kind: Kind.SELECTION_SET,
+            selections: [labelField, iconURLField, minValueField, maxValueField, currentValueField],
+          },
+          typeCondition: {
+            kind: Kind.NAMED_TYPE,
+            name: { kind: Kind.NAME, value: 'SliderWidget' },
+          },
+        };
+
+        return {
+          ...node,
+          selectionSet: {
+            ...node.selectionSet,
+            selections: [...node.selectionSet.selections, sliderWidgetInlineFragment],
+          },
+        };
+      },
+    });
+  }
+  return document;
+});
+----
+4. Register the widget through the `ExtensionRegistry`:
++
+[source,typescript]
+----
+const isSliderWidget = (widget: GQLWidget): widget is GQLSlider => widget.__typename === 'SliderWidget';
+
+defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
+  identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}_sliderWidget`,
+  data: [
+    {
+      name: 'SliderWidget',
+      icon: <SliderIcon />,
+      previewComponent: SliderPreview,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+        if (isSliderWidget(widget)) {
+          propertySectionComponent = SliderPropertySection;
+        }
+        return propertySectionComponent;
+      },
+    },
+  ],
+});
+
+const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(sliderWidgetDocumentTransform)
+    : sliderWidgetDocumentTransform;
+  return { ...currentOptions, documentTransform: newDocumentTransform };
+};
+
+defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [widgetsApolloClientOptionsConfigurer],
+});
+----
+
+=== View DSL integration
+
+Expose the widget to studio makers by extending the View DSL metamodel with a `WidgetDescription` subtype (for example `SliderDescription`):
+
+image::slider-widget-description.png[Slider description in the View DSL]
+
+Enable the *Child Creation Extenders* flag in the GenModel so the View tooling can instantiate your new description.
+Then register the metamodel’s `EPackage`, `AdapterFactory`, and `ChildExtenderProvider`, for example with Spring beans:
+
+[source,java]
+----
+@Bean
+public EPackage sliderWidgetEPackage() {
+    return SliderWidgetPackage.eINSTANCE;
+}
+
+@Bean
+public AdapterFactory sliderWidgetAdapterFactory() {
+    return new SliderWidgetItemProviderAdapterFactory();
+}
+
+@Bean
+public ChildExtenderProvider sliderWidgetChildExtenderProvider() {
+    return new ChildExtenderProvider(ViewPackage.eNS_URI, SliderWidgetItemProviderAdapterFactory.ViewChildCreationExtender::new);
+}
+----
+
+Finally, provide an `IWidgetConverterProvider` that maps the modeled description to the runtime `AbstractWidgetDescription`:
+
+[source,java]
+----
+@Service
+public class SliderDescriptionConverterProvider implements IWidgetConverterProvider {
+    @Override
+    public Switch<AbstractWidgetDescription> getWidgetConverter(
+            AQLInterpreter interpreter,
+            IEditService editService,
+            IObjectService objectService) {
+        return new SliderDescriptionConverterSwitch(interpreter, editService);
+    }
+}
+----

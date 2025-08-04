@@ -1,0 +1,39 @@
+= Installation Architecture
+
+Before diving into the installation process, it's crucial to understand the underlying architecture of {product}.
+This section provides a detailed overview of the system's components, their interactions, and the overall design principles.
+
+{product} is a _web application_, meaning it runs centrally on a server, and users interact with it through web browsers from any computer on the same network.
+
+There is one primary method for installing {product}, following the classical client-server model:
+
+* The server computer runs the {product} Server,
+* N client computers run the {product} Clients.
+
+image::installation-architecture.drawio.svg[{product} Installation Architecture]
+
+== Web application runtime
+
+{product} ships as a regular Spring Boot executable jar.
+Starting this jar launches both the backend services and the static frontend resources so a single process provides the complete experience.
+Out of the box the platform exposes HTTP and WebSocket endpoints to manipulate representations and serves the React based UI assets over HTTP.
+Because it relies on Spring Boot, you can reuse the usual tooling available for any Spring application (monitoring, logging, devtools, etc.).
+
+=== Core dependencies
+
+The server requires a PostgreSQL database.
+It can be collocated on the same machine, hosted in a Docker container, or run on another server entirely.
+No other external services are mandatory which makes on-prem, air-gapped, or cloud deployments straightforward.
+Once the jar and the database are configured the application does not need internet access and can run on a private network.
+
+=== Deployment scenarios
+
+The default packaging makes it easy to deploy {product} as a self-contained service in a virtual machine, container, or managed cloud instance.
+Specifiers who need to add corporate branding or bundle additional representations can still rely on the same foundation while keeping control over the rest of their stack.
+End users simply point their browsers to the deployed endpoint, download the frontend once, and then interact with the backend over HTTP/WebSocket while they manipulate their diagrams, tables, and other representations.
+
+=== Where to go next
+
+Need to understand how to extend or embed the platform instead of using the stock jar?
+See xref:developer-guide:extend.adoc[] for the supported strategies (custom entry points, additional Spring Boot jars, or embedding Sirius Components inside another host application).
+For a deeper look at how the backend itself is structured, refer to xref:developer-guide:architecture.adoc[].

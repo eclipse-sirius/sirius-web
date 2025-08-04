@@ -1,0 +1,19 @@
+= View Builder API
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+This page explains how to create and register a representation description using the {product} View Builder API rather than the graphical view editor.
+Use it if you need to define representation descriptions programmatically.
+
+== Overview
+
+{product} exposes builders that mirror the elements of the various representation descriptions metamodel.
+In the backend, you declare Spring services implementing `IRepresentationDescriptionProvider`.
+At runtime, these beans are picked up automatically and their representation descriptions are registered and available for end users just like the low-code descriptions.
+For the layout rules and node box model used by those diagrams.
+
+== Minimal setup
+
+1. **Create a Spring service class** that implements `IRepresentationDescriptionProvider`.
+2. Inside the service, use the builders from `org.eclipse.sirius.components.view.builder.generated.view` (or the convenience DSLs) to describe the representation descriptions.
+3. Restart the application; the representation description becomes available to end users.

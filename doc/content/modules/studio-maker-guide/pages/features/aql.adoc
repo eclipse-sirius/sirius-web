@@ -1,0 +1,71 @@
+= AQL expressions
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+{product} uses the Acceleo Query Language (AQL) for labels, styles, filters, tools, and custom widgets.
+This page summarizes the language features that studio makers leverage inside the view editor.
+
+== Where AQL is used
+
+You will encounter AQL in every representation description type:
+
+* Labels, tooltips, and conditional styles for diagrams, tables, decks, and forms.
+* Semantic candidate expressions (`semanticCandidatesExpression`) on descriptions.
+* Palette tools and operations, where expressions compute targets, values, or selections.
+* Table columns, form widgets, or card descriptions that display derived values.
+
+== Evaluation context
+
+* `self` always refers to the current semantic element.
+* You can access attributes directly (`self.name`, `self.status`) and navigate references (`self.owner`, `self.children`).
+* When an expression is evaluated inside a table column, card widget, or form field, `self` is the semantic element bound to that column or widget.
+* Palette tools run in tool-specific contexts (for example, `self` is the selected element), so double-check the context before writing complex logic.
+
+Use the xref:user-manual:features/query-view.adoc[Query view] to inspect the current context and test expressions interactively.
+
+== Common syntax examples
+
+[cols="1,2",options="header"]
+|===
+|Pattern
+|Example
+
+|Attribute access
+|`aql:self.name` returns a string attribute.
+
+|Navigation
+|`aql:self.owner.name` follows references.
+
+|Filtering
+|`aql:self.children->select(c \| c.status = 'Open')`
+
+|Aggregation
+|`aql:self.children->size()`
+
+|String helpers
+|`aql:self.name.toUpper()` or `aql:self.name.concat(' (', self.status, ')')`
+
+|Conditional
+|`aql:self.priority = 'High' ? 'red' : 'green'`
+
+|Collections
+|`aql:self.components->exists(c \| c.isCritical)` or `aql:self.components->forAll(c \| c.weight > 0)`
+
+|Numeric
+|`aql:self.weight + self.payload`
+
+|Boolean
+|`aql:self.isActive and not self.isArchived`
+|===
+
+== Debugging tips
+
+* Evaluate new expressions in the Query view before using them in the editor.
+* Watch for type errors such as “unresolved feature” or “invalid type: Expecting String, found Boolean”.
+  They usually mean `self` was not what you expected or you forgot to call `toString`.
+* Break down long expressions into simpler ones; reuse helper expressions in descriptions or move them into Java services when needed.
+
+== Learning resources
+
+* Practice with the xref:studio-maker-guide:hands-on/tutorials/aql-tutorial.adoc[Navigate with AQL] tutorial.
+* Review the official https://eclipse.dev/acceleo/documentation/[AQL documentation] for advanced operators.
