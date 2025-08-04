@@ -1,0 +1,17 @@
+= APIs
+
+== REST APIs
+
+Refer to the xref:developer-guide:api-details.adoc[API Details Section] for more information about the supported APIs.
+
+== GraphQL APIs
+
+
+== APIs Cookbook
+
+For detailed examples, best practices, and guidance on using {product}’s REST APIs, consult the xref:developer-guide:api-cookbook.adoc[APIs Cookbook].
+The cookbook includes:
+
+* Step-by-step guides for common tasks.
+* Code snippets for API interactions.
+* Explanations of core API concepts.

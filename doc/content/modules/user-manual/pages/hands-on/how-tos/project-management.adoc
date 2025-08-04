@@ -17,7 +17,7 @@ User is redirected to the newly created project, which is initially empty.
 
 image::hands-on-new-project-result.png[New Project Result]
 
-Refer to the xref:features/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
+Refer to the xref:features/end-user/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
 
 [#create-template-project]
 == Create a project based on a template
@@ -52,7 +52,7 @@ image::hands-on-new-template_batmobile.png[Batmobile Template]
 The newly created project will have the same name as the template, so it's a good practice to xref:hands-on/how-tos/project-management.adoc#rename-project[rename] it to avoid confusion.
 ====
 
-Refer to the xref:features/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
+Refer to the xref:features/end-user/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
 
 [#upload-project]
 == Upload a Project
@@ -79,7 +79,7 @@ image::hands-on-upload-select-file.png[Select file to upload]
 +
 . The uploaded project is automatically created and opened.
 
-Refer to the xref:features/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
+Refer to the xref:features/end-user/editor.adoc[{editor} page] to understand how to use it for xref:hands-on/how-tos/model-management.adoc#create-model[creating your own models] and xref:hands-on/how-tos/representation-operations.adoc#create-representation[representations].
 
 [#delete-project]
 == Delete a project

@@ -1,7 +1,9 @@
 = Key features in {product}
 
-{product} encompasses a set of key features aimed at enhancing the modeling experience within the {sysmlv2} framework.
-The primary functionalities of {product} are centered around project management and model creation, aligning with the classical views recommended by the {sysmlv2} standard.
+This section highlights the key features available to end users in {product}, focusing on how they interact with and manipulate data through role-specific tools and representations defined by studio makers.
+
+{product} encompasses a set of key features aimed at enhancing the modeling experience.
+The primary functionalities of {product} are centered around project management and model creation.
 
 [NOTE]
 ====
@@ -21,38 +23,35 @@ This dual categorization allows users to select features based on their comfort 
 
 2+h|Projects Management
 
-|xref:features/homepage.adoc[Projects Browser]
+|xref:features/end-user/homepage.adoc[Projects Browser]
 a|✅
 
-|xref:features/editor.adoc[Project Editor]
+|xref:features/end-user/editor.adoc[Project Editor]
 a|✅
 
-2+h|{sysmlv2} Views
-|xref:user-manual:features/general-view.adoc[{gv}]
-a|✅ (Partial)
+2+h|Representations
+|xref:user-manual:features/end-user/deck.adoc[Deck]
+a|✅
 
-|xref:user-manual:features/interconnection-view.adoc[{iv}]
-a|✅ (Partial)
+|xref:user-manual:features/end-user/diagram.adoc[Diagram]
+a|✅
 
-|xref:user-manual:features/action-flow-view.adoc[{afv}]
-a|✅ (Partial)
+|xref:user-manual:features/end-user/table.adoc[Form]
+a|✅
 
-|xref:user-manual:features/state-transition-view.adoc[{stv}]
-a|✅ (Partial)
+|xref:user-manual:features/end-user/gantt.adoc[Gantt]
+a|✅
 
-|xref:user-manual:support.adoc[Sequence View]
+|xref:user-manual:features/end-user/portal.adoc[Sequence Diagram]
 a|❌
 
-|xref:user-manual:support.adoc[Geometry View]
-a|❌
+|xref:user-manual:features/end-user/table.adoc[Table]
+a|✅
 
-|xref:user-manual:support.adoc[Grid View]
-a|❌
+|xref:user-manual:features/end-user/table.adoc[Tree]
+a|✅
 
-|xref:user-manual:support.adoc[Browser View]
-a|❌
-
-|{kerml}/{sysml} Libraries
+|Libraries
 a|✅
 
 2+h|Diagram Management
@@ -65,31 +64,26 @@ a|❌
 
 2+h|Collaboration & Interoperability
 
-|xref:features/collaboration.adoc[Share Links (Projects, Diagrams...)]
+|xref:features/end-user/collaboration.adoc[Share Links (Projects, Diagrams...)]
 a|✅
 
-|xref:features/collaboration.adoc[Concurrent authoring]
+|xref:features/end-user/collaboration.adoc[Concurrent authoring]
 a|✅
 
 |xref:integration/interoperability.adoc[Download / Upload JSON]
 a|✅
 
-|xref:integration/interoperability.adoc[Download / Upload Standard {sysmlv2} JSON]
-a|❌
 
-|xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
-a|✅ (Partial)
-
-|xref:developer-guide:api.adoc[SysML v2 Standard API]
-a|✅ (Partial)
+|xref:developer-guide:api.adoc[API]
+a|✅
 |===
 
 A detailed list of all {product} features is available in the xref:features/features.adoc[Features] section.
 
 == Ongoing development
 
-{product} is xref:user-manual:cycle.adoc[continually evolving], with a commitment to expanding its repertoire of views in alignment with the {sysmlv2} standard.
-Future releases will introduce additional features, ensuring {product} remains a comprehensive and adaptable tool for system engineering.
+{product} is xref:user-manual:cycle.adoc[continually evolving], with a commitment to expanding its repertoire of representations.
+Future releases will introduce additional features, ensuring {product} remains a comprehensive and adaptable tool for building and deploying custom modeling environments across a wide range of domains.
 
 == Others
 

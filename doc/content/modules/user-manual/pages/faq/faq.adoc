@@ -93,13 +93,13 @@ See xref:installation-guide:requirements.adoc[Prerequisites] for more details.
 [%collapsible%open]
 ====
 {product} doesn't include built-in version control, allowing users to integrate their preferred solutions.
-For more details, see xref:user-manual:features/cm.adoc[Version control and change management].
+For more details, see xref:user-manual:features/end-user/cm.adoc[Version control and change management].
 ====
 
 .*Is there a limit to the number of projects or models I can create in {product}?*
 [%collapsible%open]
 ====
-Yes, see the xref:user-manual:features/scaling-limits.adoc[scaling limits] page for more details.
+Yes, see the xref:user-manual:features/end-user/scaling-limits.adoc[scaling limits] page for more details.
 ====
 
 .*How do I import and export models in {product}?*
@@ -111,7 +111,7 @@ Read the xref:user-manual:integration/interoperability.adoc#import-export[Import
 .*What collaboration features are available in {product}?*
 [%collapsible%open]
 ====
-Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] page of the documentation.
+Read the xref:user-manual:features/end-user/collaboration.adoc[Collaborative modeling] page of the documentation.
 ====
 
 == Integration with other tools
@@ -125,7 +125,7 @@ To import or export models, read the xref:user-manual:integration/interoperabili
 .*How do I collaborate with others on models?*
 [%collapsible%open]
 ====
-Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] section to learn more about how to work together by using {product}.
+Read the xref:user-manual:features/end-user/collaboration.adoc[Collaborative modeling] section to learn more about how to work together by using {product}.
 ====
 
 

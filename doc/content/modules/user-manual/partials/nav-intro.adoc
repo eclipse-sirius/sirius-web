@@ -1,2 +1,3 @@
 * xref:user-manual:what-is.adoc[]
-* xref:user-manual:key-features.adoc[]
+* xref:user-manual:sirius-approach.adoc[]
+* xref:user-manual:concepts.adoc[]

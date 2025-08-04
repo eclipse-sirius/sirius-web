@@ -2,7 +2,7 @@
 
 Uncover the capabilities of {product} through an exploration of its features and foundational concepts.
 
-[cols="3*^", %noheader, frame=none, grid=none]
+[cols="2*^", %noheader, frame=none, grid=none]
 |===
 a|image::overview.svg[xref=user-manual:features/features.adoc]
 
@@ -18,8 +18,6 @@ a|image::settings_heart.svg[xref=user-manual:concepts.adoc]
 
 Addressing pivotal inquiries and offering a comprehensive understanding of the platform's fundamentals
 
-xref:user-manual:integration/interoperability.adoc[Learn essentials]
-
-a| image::hub.svg[xref=user-manual:features/sirius-web-overview.adoc]
+xref:user-manual:concepts.adoc[Learn essentials]
 
 |===

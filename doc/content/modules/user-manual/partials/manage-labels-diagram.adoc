@@ -8,7 +8,7 @@ For example _Definition_ nodes will be prefixed with "part def" and _Usage_ node
 image::manage-labels-keywords.png[Label with keyword]
 
 After the keyword, the label can be the **simple name of the element, or more complex** in some specific cases.
-Indeed, For example, subset of the {sysmlv2} textual syntax is supported to describe some element.
+Indeed, for example in Eclipse SysON, subset of the SysML v2 textual syntax is supported to describe some element.
 For simple _Definition_ element, the label will display the keyword "part def" and its declared name.
 For elements using _specialization_, the label will display the kind of the _specilalization_.
 For example, if a _Batmobile_ is a subclassification of _Vehicle_, its label will display the key word "part def" and then "Batmobile :> Vehicle" to show its specalization toward _Vehicle_.

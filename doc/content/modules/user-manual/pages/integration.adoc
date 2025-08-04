@@ -1,6 +1,12 @@
-=  Integration with other tools
+=  Integration and Development
 
-Within {product}, the application of {sysmlv2} extends beyond the conventional boundaries of a modeling tool, assuming a pivotal role as a catalyst for effective {mbse} - `MBSE`.
-{product} emphasizes its commitment to being an open source tool, fostering an environment of interoperability that holds profound importance in the realm of `MBSE`.
+Modeling rarely happens in isolation.
+In real-world projects, models must interact with other tools used throughout the development lifecycle, whether for requirements management, code generation, simulation, documentation, or version control.
+
+This section explains how {product} can be integrated with external tools and platforms.
+It covers both built-in mechanisms and extension points that allow you to connect {product} to your existing toolchain.
+Common integration scenarios include linking to repositories, exchanging data with other modeling tools, automating workflows, or generating artifacts.
+
+By supporting open standards and offering extensibility at multiple levels, {product} helps you embed modeling into broader engineering environments without disrupting existing processes.
 
 include::user-manual:partial$nav-integration.adoc[]

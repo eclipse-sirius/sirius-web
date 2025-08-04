@@ -4,7 +4,7 @@ Get to know the basics of {product}.
 
 [cols="2*^", %noheader, frame=none, grid=none]
 |===
-a|image::icon_sirius_web_black.svg[xref=user-manual:what-is.adoc]
+a|image::123.svg[xref=user-manual:what-is.adoc]
 
 **What's {product}?**
 

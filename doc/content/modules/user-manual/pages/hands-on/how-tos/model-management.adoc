@@ -24,12 +24,7 @@ image::hands-on-new-model-result.png[New Model result]
 
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
-{product} is able to upload {sysmlv2} textual files and JSON files.
-
-[NOTE]
-====
-For {sysmlv2} textual files, only files with ".sysml" extension will be processed as {sysmlv2} textual files and uploaded successfully.
-====
+{product} is able to upload JSON files.
 
 [NOTE]
 ====
@@ -113,7 +108,6 @@ image::hands-on-download-model.png[Download model]
 ====
 The model is downloaded in JSON format.
 The JSON format used by {product} is specific to the tool.
-If you want the model to be exported as a {sysmlv2} textual file, you just have to suffix your model with ".sysml". (e.g. `myNewModel.sysml` instead of `myNewModel` in th example above.)
 ====
 
 [#create-element]
@@ -275,7 +269,7 @@ You can reset it by deleting the {product} data in cache of your browser.
 
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
-The {product} supports a subset of the {sysmlv2} textual syntax, which allows you to update several elements simultaneously.
+The {product} supports textual syntax, which allows you to update several elements simultaneously.
 This makes it more efficient to edit models.
 
 In general, you can edit the label of a shape in a diagram, and the diagram editor tries to interpret your input and update the corresponding element properties.
@@ -309,7 +303,7 @@ When using the direct edit tool to set the name of an `Element` be aware that th
 * ':>'
 * '::>'
 * ':>>'
-* '=' 
+* '='
 * ':='
 * '['
 * ' default'

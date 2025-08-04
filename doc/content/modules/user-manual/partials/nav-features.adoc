@@ -1,43 +1,39 @@
 // Reference all the files defined in the features folder
 * xref:user-manual:key-features.adoc[]
 
-* xref:user-manual:features/sysmlv2-overview.adoc[]
-
-* xref:user-manual:concepts.adoc[]
-
-* Diagramming Tools
+* End-User Guide
 ** Projects Management
-*** xref:user-manual:features/homepage.adoc[]
+*** xref:user-manual:features/end-user/homepage.adoc[]
 ** Editor
-*** xref:user-manual:features/editor.adoc[]
-*** xref:user-manual:features/details.adoc[]
-*** xref:user-manual:features/related-elements.adoc[]
-*** xref:user-manual:features/representations-view.adoc[]
-*** xref:user-manual:features/query-view.adoc[]
-*** xref:user-manual:features/validation.adoc[]
-*** xref:user-manual:features/keyboard-shortcuts.adoc[]
-** xref:user-manual:features/general-view.adoc[]
-** xref:user-manual:features/interconnection-view.adoc[]
-** xref:user-manual:features/action-flow-view.adoc[]
-** xref:user-manual:features/state-transition-view.adoc[]
-** xref:user-manual:features/other-views.adoc[]
+*** xref:user-manual:features/end-user/editor.adoc[]
+*** xref:user-manual:features/end-user/explorer.adoc[]
+*** xref:user-manual:features/end-user/details.adoc[]
+*** xref:user-manual:features/end-user/related-elements.adoc[]
+*** xref:user-manual:features/end-user/representations-view.adoc[]
+*** xref:user-manual:features/end-user/query-view.adoc[]
+*** xref:user-manual:features/end-user/validation.adoc[]
+*** xref:user-manual:features/end-user/keyboard-shortcuts.adoc[]
+** Representations Types
+*** xref:user-manual:features/end-user/deck.adoc[]
+*** xref:user-manual:features/end-user/diagram.adoc[]
+*** xref:user-manual:features/end-user/form.adoc[]
+*** xref:user-manual:features/end-user/gantt.adoc[]
+*** xref:user-manual:features/end-user/portal.adoc[]
+*** xref:user-manual:features/end-user/table.adoc[]
+*** xref:user-manual:features/end-user/tree.adoc[]
+** xref:user-manual:features/end-user/publication.adoc[]
+** xref:user-manual:features/end-user/cm.adoc[]
 
-* xref:user-manual:features/import-export-textual.adoc[]
-
-* xref:user-manual:features/publication.adoc[]
-
-* xref:user-manual:features/mbse-capability.adoc[]
-
-* xref:user-manual:features/requirement-management.adoc[]
-
-* xref:user-manual:features/parametric-modeling.adoc[]
-
-* xref:user-manual:features/simulation.adoc[]
-
-* xref:user-manual:features/cm.adoc[]
-
-* Advanced
-** xref:user-manual:features/scaling-limits.adoc[]
+* Advanced Guide
+** xref:user-manual:features/end-user/scaling-limits.adoc[]
 ** xref:developer-guide:extend.adoc[]
-** xref:user-manual:features/security.adoc[]
+** xref:user-manual:features/end-user/security.adoc[]
 
+* Studio Maker Guide
+** xref:user-manual:features/studio-maker/deck.adoc[]
+** xref:user-manual:features/studio-maker/diagram.adoc[]
+** xref:user-manual:features/studio-maker/form.adoc[]
+** xref:user-manual:features/studio-maker/gantt.adoc[]
+** xref:user-manual:features/studio-maker/portal.adoc[]
+** xref:user-manual:features/studio-maker/table.adoc[]
+** xref:user-manual:features/studio-maker/tree.adoc[]

@@ -69,11 +69,11 @@ Ensure the desired tree items are expanded to effectively use the filter and hig
 [#filter-explorer]
 === Filter from kind
 
-Three filters are available in the {explorer} to filter element by kind:
+Filters are available in the {explorer} to filter element by kind:
 
-* Hide Memberships,
-* Hide {kerml} Standard Libraries,
-* Hide SysML Standard Libraries.
+* Hide specific elements,
+* Hide Libraries
+* ...
 
 These filters allow to clear the {explorer} view.
 By hiding the technical elements, only the data directly exploited by the user are displayed, which make the model more readable in the {explorer} view.

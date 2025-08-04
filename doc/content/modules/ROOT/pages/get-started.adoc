@@ -20,12 +20,12 @@ Covers installation of {product}
 
 xref:installation-guide:index.adoc[Install {product}]
 
-a|image::sprint.svg[xref=user-manual:hands-on/tutorials/flow.adoc]
+a|image::sprint.svg[xref=user-manual:hands-on/tutorials/studio.adoc]
 
 *Follow a quick start guide for new users ?*
 
 Create your first studio in 5 minutes.
 
-xref:user-manual:hands-on/tutorials/flow.adoc[Ready to start]
+xref:user-manual:hands-on/tutorials/studio.adoc[Ready to start]
 
 |===

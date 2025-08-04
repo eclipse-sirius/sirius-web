@@ -1,0 +1,40 @@
+= Gantt
+
+The Gantt in {product} allows you to view and manage time-related aspects of your model using a familiar timeline layout.
+
+image::gantt.png[]
+
+This type of representation is especially useful for planning, scheduling, and tracking activities, tasks, or events over time.
+
+== What You Can Do
+
+* Visualize elements (such as tasks or phases) as horizontal bars along a timeline.
+* See start and end dates at a glance.
+* Move or resize bars directly to adjust scheduling.
+* Expand or collapse groups to focus on specific parts of the timeline.
+* Hover or click on elements to view additional details.
+
+== When to Use It
+
+Use the Gantt when:
+
+* You need to manage time-based or sequential information.
+* You want to understand dependencies and durations visually.
+* You’re planning activities, project phases, or system behaviors.
+* You want to track progress over time in a structured way.
+
+== Example
+
+In a systems engineering project, a Gantt view might show:
+
+* A breakdown of major development phases (e.g., Analysis, Design, Validation)
+* Tasks assigned to each phase
+* Time windows for each activity
+* Overlaps or gaps between tasks
+
+Changes made directly in the Gantt chart update the model and can be reflected in other views, such as diagrams or forms.
+
+[NOTE]
+====
+The available features and displayed information in the Gantt view depend on how the representation has been configured.
+====

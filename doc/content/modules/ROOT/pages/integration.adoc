@@ -2,7 +2,7 @@
 
 Explore integration possibilities and access APIs for seamless interaction with other systems.
 
-[cols="3*^", %noheader, frame=none, grid=none]
+[cols="2*^", %noheader, frame=none, grid=none]
 |===
 a|image::hub.svg[xref=user-manual:what-is.adoc]
 
@@ -19,7 +19,5 @@ a|image::tap_app.svg[xref=user-manual:key-features.adoc]
 Standard APIs support for seamless connections.
 
 xref:developer-guide:api.adoc[Delve into]
-
-a|image::globe.svg[xref=user-manual:what-is.adoc]
 
 |===
