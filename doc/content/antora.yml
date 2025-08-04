@@ -1,0 +1,20 @@
+name: sirius-web
+title: Sirius Web
+version: true
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    bug-url: "https://github.com/eclipse-sirius/sirius-web/issues"
+    changelog-url: "https://github.com/eclipse-sirius/sirius-web/blob/master/CHANGELOG.adoc"
+    forum-url: "https://github.com/eclipse-sirius/sirius-web/discussions"
+    milestones: "https://github.com/eclipse-sirius/sirius-web/milestones"
+    packages-url: "https://github.com/eclipse-sirius/sirius-web/packages/2069579/versions"
+    product: "Sirius Web"
+    product-jar: "sirius-web-application-YYYY.M.X.jar"
+    resources-url: "https://eclipse.dev/sirius/sirius-web.html"
+    source-code-url: "https://github.com/eclipse-sirius/sirius-web"
+    sirius: "Sirius"
+    sirius-web-tag: "v2025.6.10"
+    website-url: "https://eclipse.dev/sirius/sirius-web.html"
