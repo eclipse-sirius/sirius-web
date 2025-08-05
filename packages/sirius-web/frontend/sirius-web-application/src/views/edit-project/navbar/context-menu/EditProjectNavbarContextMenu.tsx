@@ -18,6 +18,7 @@ import { Navigate } from 'react-router-dom';
 import { useCurrentProject } from '../../useCurrentProject';
 import { DeleteProjectMenuItem } from './DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from './DownloadProjectMenuItem';
+import { DuplicateProjectMenuItem } from './DuplicateProjectMenuItem';
 import {
   EditProjectNavbarContextMenuProps,
   EditProjectNavbarContextMenuState,
@@ -48,6 +49,9 @@ export const EditProjectNavbarContextMenu = ({
   const { project } = useCurrentProject();
 
   const onProjectDeleted = () => setState((prevState) => ({ ...prevState, redirectUrl: '/projects' }));
+  const onProjectDuplicated = (id: string) => {
+    setState((prevState) => ({ ...prevState, redirectUrl: `/projects/${id}/edit/` }));
+  };
 
   if (state.redirectUrl) {
     return <Navigate to={state.redirectUrl} />;
@@ -60,6 +64,9 @@ export const EditProjectNavbarContextMenu = ({
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onClose} />
         ) : null}
         <ShareProjectMenuItem projectId={project.id} workbenchHandle={workbenchHandle} />
+        {project.capabilities.canDuplicate ? (
+          <DuplicateProjectMenuItem project={project.id} onProjectDuplicated={onProjectDuplicated} />
+        ) : null}
         {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />

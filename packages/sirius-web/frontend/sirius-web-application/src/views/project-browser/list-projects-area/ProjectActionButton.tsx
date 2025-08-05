@@ -17,8 +17,10 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DeleteProjectMenuItem } from '../../edit-project/navbar/context-menu/DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from '../../edit-project/navbar/context-menu/DownloadProjectMenuItem';
+import { DuplicateProjectMenuItem } from '../../edit-project/navbar/context-menu/DuplicateProjectMenuItem';
 import { RenameProjectMenuItem } from '../../edit-project/navbar/context-menu/RenameProjectMenuItem';
 import {
   ProjectActionButtonProps,
@@ -68,9 +70,17 @@ export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonPr
 const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectContextMenuProps) => {
   const { Component: ProjectContextMenuContainer } = useComponent(projectContextMenuContainerExtensionPoint);
 
+  const navigate = useNavigate();
+
+  const onChangeWithNavigation = (projectId: string) => {
+    onChange();
+    navigate(`/projects/${projectId}/edit`);
+  };
+
   const menuItemComponentExtensions: ComponentExtension<ProjectContextMenuEntryProps>[] = useComponents(
     projectContextMenuEntryExtensionPoint
   );
+
   return (
     <ProjectContextMenuContainer>
       <Menu
@@ -82,6 +92,9 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         onClose={onClose}>
         {project.capabilities.canRename ? (
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onChange} />
+        ) : null}
+        {project.capabilities.canDuplicate ? (
+          <DuplicateProjectMenuItem project={project.id} onProjectDuplicated={onChangeWithNavigation} />
         ) : null}
         {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (

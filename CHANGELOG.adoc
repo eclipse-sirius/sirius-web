@@ -176,9 +176,6 @@ Removing resizing anchors for border nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/4217[#4217] [sirius-web] Fix the project rename with invalid project name.
 Prevent the mutation to be send if the name is invalid.
 Fix how error messages are handled.
-- https://github.com/eclipse-sirius/sirius-web/issues/5248[#5248] [diagram] Fix an issue where the diagram was in an incorrect state after moving a node that was inside a list node
-- https://github.com/eclipse-sirius/sirius-web/issues/5267[#5267] [diagram] Fix an issue where the handle style is not updated correctly during reconnect
-- https://github.com/eclipse-sirius/sirius-web/issues/5275[#5275] [portal] Fix an issue where the portal representation was not working if a representation was removed from the editing context while present in the portal representation.
 
 
 === New Features
@@ -212,10 +209,6 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 ----
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5227[#5227] [sirius-web] Add support for capability check on create and delete project mutations.
-- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add an action, when editing a project, in the project contextual menu, to create a shareable URL.
-+ This URL includes the current workbench selection and the current workbench state.
-+ For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
-+ Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
 
 === Improvements
 

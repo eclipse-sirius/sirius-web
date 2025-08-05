@@ -24,6 +24,7 @@ const value: ProjectContextValue = {
       canRename: false,
       canDelete: false,
       canEdit: false,
+      canDuplicate: false,
       settings: {
         canView: false,
       },
