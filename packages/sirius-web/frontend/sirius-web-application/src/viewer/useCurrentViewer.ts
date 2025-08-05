@@ -13,11 +13,14 @@
 
 import { useContext } from 'react';
 import { UseCurrentViewerValue } from './useCurrentViewer.types';
+import { GQLViewer } from './useViewer.types';
 import { ViewerContext } from './ViewerContext';
 import { ViewerContextValue } from './ViewerContext.types';
 
-export const useCurrentViewer = (): UseCurrentViewerValue => {
-  const { viewer } = useContext<ViewerContextValue>(ViewerContext);
+export const useCurrentViewer = <T extends GQLViewer = GQLViewer>(): UseCurrentViewerValue<T> => {
+  const { viewer } = useContext<ViewerContextValue<T>>(
+    ViewerContext as unknown as React.Context<ViewerContextValue<T>>
+  );
 
   return { viewer };
 };

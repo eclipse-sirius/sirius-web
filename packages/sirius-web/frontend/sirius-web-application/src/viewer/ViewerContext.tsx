@@ -14,8 +14,9 @@
 import React from 'react';
 import { ViewerContextProviderProps, ViewerContextValue } from './ViewerContext.types';
 import { useViewer } from './useViewer';
+import { GQLViewer } from './useViewer.types';
 
-const defaultValue: ViewerContextValue = {
+const defaultValue: ViewerContextValue<GQLViewer> = {
   viewer: {
     capabilities: {
       projects: {
@@ -30,7 +31,7 @@ const defaultValue: ViewerContextValue = {
   },
 };
 
-export const ViewerContext = React.createContext<ViewerContextValue>(defaultValue);
+export const ViewerContext = React.createContext<ViewerContextValue<GQLViewer>>(defaultValue);
 
 export const ViewerContextProvider = ({ children }: ViewerContextProviderProps) => {
   const { data, loading } = useViewer();
