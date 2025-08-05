@@ -7,6 +7,7 @@
 
 === Architectural decision records
 
+- [ADR-203] Make React contexts extensible
 
 === Deprecation warning
 

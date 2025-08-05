@@ -13,8 +13,8 @@
 
 import { GQLViewer } from './useViewer.types';
 
-export interface ViewerContextValue {
-  viewer: GQLViewer;
+export interface ViewerContextValue<T extends GQLViewer> {
+  viewer: T;
 }
 
 export interface ViewerContextProviderProps {
