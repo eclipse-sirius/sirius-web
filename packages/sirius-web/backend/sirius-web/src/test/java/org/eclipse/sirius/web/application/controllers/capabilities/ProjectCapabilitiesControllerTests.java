@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.data.TestIdentifiers;
@@ -84,11 +85,11 @@ public class ProjectCapabilitiesControllerTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a query to retrieve capabilities the settings of a project is executed, then it returns the expected capabilities values")
     public void givenTheDemoProfileWhenAQueryToRetrieveTheSettingsOfAProjectIsExecutedThenItReturnsTheExpectedCapabilitiesValue() {
-        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of("images")));
+        var result = this.projectCapabilitiesQueryRunner.run(Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT, "tabIds", List.of(SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB)));
         List<Boolean> canViewProjectTabSettings = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.tabs[*].canView");
         List<String> tabIds = JsonPath.read(result, "$.data.viewer.project.capabilities.settings.tabs[*].tabId");
         assertThat(canViewProjectTabSettings).allMatch(Boolean.FALSE::equals);
-        assertThat(tabIds).contains("images");
+        assertThat(tabIds).contains(SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB);
     }
 
     @Test
