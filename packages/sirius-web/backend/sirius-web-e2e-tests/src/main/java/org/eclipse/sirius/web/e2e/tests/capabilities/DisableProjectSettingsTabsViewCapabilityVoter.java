@@ -38,7 +38,7 @@ public class DisableProjectSettingsTabsViewCapabilityVoter implements ICapabilit
 
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
-        if ("images".equals(type) && SiriusWebCapabilities.ProjectSettingsTab.VIEW.equals(capability) && identifier != null && !identifier.isBlank()) {
+        if (SiriusWebCapabilities.PROJECT_SETTINGS_IMAGE_TAB.equals(type) && SiriusWebCapabilities.ProjectSettingsTab.VIEW.equals(capability) && identifier != null && !identifier.isBlank()) {
             var optionalProject = this.projectApplicationService.findById(identifier);
             if (optionalProject.isPresent()) {
                 var project = optionalProject.get();

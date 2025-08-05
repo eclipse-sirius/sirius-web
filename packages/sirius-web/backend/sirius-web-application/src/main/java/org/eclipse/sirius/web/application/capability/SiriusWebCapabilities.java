@@ -132,4 +132,11 @@ public final class SiriusWebCapabilities {
         public static final String VIEW = "view";
     }
 
+    /**
+     * The identifier of the image settings tab.
+     *
+     * @since v2025.8.0
+     */
+    public static final String PROJECT_SETTINGS_IMAGE_TAB = "images";
+
 }
