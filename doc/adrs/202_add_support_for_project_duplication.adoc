@@ -68,6 +68,28 @@ A refactoring of `ProjectImportService` may be necessary to extract common behav
 
 We will also add a capability for project duplication, allowing to (de)activate it like the "rename" or "delete" feature.
 
+Here is the technical path that will be followed:
+
+=== Step 1
+
+Create a new service `IProjectDuplicateService` that will sequentially call the `IProjectImportService` and the `IProjectExportService`.
+This will offer a lightweight duplication feature that fully reuses the existing code.
+From there, some features are still missing, such as:
+
+* The settings are neither duplicated nor exported/imported (e.g., in Sirius Web, the `ProjectImage` setting).
+* A project can contain multiple editing contexts (e.g., branches). The current implementation neither exports all these editing contexts nor provides a way to choose which branch to export.
+
+=== Step 2
+
+Refactor the `ProjectImportService` to use the same architecture as the export service, based on `IProjectImportParticipant` (similar to `IProjectExportParticipant`).
+Each `IProjectImportParticipant` will be responsible for importing a part of the project content.
+In the current implementation, two `IProjectImportParticipant` components will be created to import the semantic part and the representation part of the model.
+This mechanism will then be used to import specific _settings_ (see Step 3).
+
+=== Step 3
+
+Contribute a new `IProjectImportParticipant` and a new `IProjectExportParticipant` to handle project images.
+
 == Rabbit holes
 
 None.
@@ -79,3 +101,4 @@ None.
 
 == Cutting backs
 
+* This implementation will not handle the problem of several editing contexts for a project, the same behavior will remain: only the "main" branch will be exported and imported.
