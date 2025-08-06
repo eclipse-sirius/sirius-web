@@ -17,15 +17,14 @@ import java.util.Objects;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.annotations.Builder;
-import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 
 /**
  * Parameters of the editing context event processor.
@@ -35,10 +34,9 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 public record EditingContextEventProcessorParameters(
         IEditingContext editingContext,
         IRepresentationEventProcessorRegistry representationEventProcessorRegistry,
-        IEditingContextPersistenceService editingContextPersistenceService,
         List<IEditingContextEventHandler> editingContextEventHandlers,
         IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-        IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
+        IChangeDescriptionListener changeDescriptionListener,
         IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
         List<IInputPreProcessor> inputPreProcessors,
         List<IInputPostProcessor> inputPostProcessors,
@@ -48,10 +46,9 @@ public record EditingContextEventProcessorParameters(
     public EditingContextEventProcessorParameters {
         Objects.requireNonNull(editingContext);
         Objects.requireNonNull(representationEventProcessorRegistry);
-        Objects.requireNonNull(editingContextPersistenceService);
         Objects.requireNonNull(editingContextEventHandlers);
         Objects.requireNonNull(representationEventProcessorComposedFactory);
-        Objects.requireNonNull(danglingRepresentationDeletionService);
+        Objects.requireNonNull(changeDescriptionListener);
         Objects.requireNonNull(executorServiceProvider);
         Objects.requireNonNull(inputPreProcessors);
         Objects.requireNonNull(inputPostProcessors);
@@ -75,13 +72,11 @@ public record EditingContextEventProcessorParameters(
 
         private IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
-        private IEditingContextPersistenceService editingContextPersistenceService;
-
         private List<IEditingContextEventHandler> editingContextEventHandlers;
 
         private IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
 
-        private IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
+        private IChangeDescriptionListener changeDescriptionListener;
 
         private IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
@@ -105,11 +100,6 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
-        public EditingContextEventProcessorParametersBuilder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
-            this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-            return this;
-        }
-
         public EditingContextEventProcessorParametersBuilder editingContextEventHandlers(List<IEditingContextEventHandler> editingContextEventHandlers) {
             this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
             return this;
@@ -120,8 +110,8 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
-        public EditingContextEventProcessorParametersBuilder danglingRepresentationDeletionService(IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
-            this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
+        public EditingContextEventProcessorParametersBuilder changeDescriptionListener(IChangeDescriptionListener changeDescriptionListener) {
+            this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
             return this;
         }
 
@@ -149,10 +139,9 @@ public record EditingContextEventProcessorParameters(
             return new EditingContextEventProcessorParameters(
                     this.editingContext,
                     this.representationEventProcessorRegistry,
-                    this.editingContextPersistenceService,
                     this.editingContextEventHandlers,
                     this.representationEventProcessorComposedFactory,
-                    this.danglingRepresentationDeletionService,
+                    this.changeDescriptionListener,
                     this.executorServiceProvider,
                     this.inputPreProcessors,
                     this.inputPostProcessors,

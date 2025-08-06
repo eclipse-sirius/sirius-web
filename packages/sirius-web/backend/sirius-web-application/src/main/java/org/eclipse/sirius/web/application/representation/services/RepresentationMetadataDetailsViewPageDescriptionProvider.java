@@ -24,9 +24,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -139,8 +139,8 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                     var result = this.representationMetadataUpdateService.updateLabel(input, representationMetadata.getId(), newValue);
                     if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                         Map<String, Object> parameters = new HashMap<>();
-                        parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationMetadata.getId().toString());
-                        parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newValue);
+                        parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationMetadata.getId().toString());
+                        parameters.put(ChangeDescriptionParameters.REPRESENTATION_LABEL, newValue);
                         return new Success(ChangeKind.REPRESENTATION_RENAMING, parameters);
                     }
                 }

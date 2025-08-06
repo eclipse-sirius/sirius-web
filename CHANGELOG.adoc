@@ -66,6 +66,8 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
 - https://github.com/eclipse-sirius/sirius-web/issues/5570[#5570] [tree] Tree items context menu entries now take an additional `selectTreeItems: (selectedTreeItemIds: string[]) => void` prop which must be used if the action's effect should modify the selection inside the tree (instead of or in staddition to the workbench selection).
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the parameters `EditingContextEventProcessor#REPRESENTATION_ID` and `EditingContextEventProcessor#REPRESENTATION_LABEL` which were supposed to be used as the key for some change description parameters in favor of a dedicated class holding those keys `ChangeDescriptionParameters`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the change kind `ChangeKind#FOCUS_CHANGE` since it has not been used in months.
 
 
 === Dependency update
@@ -219,6 +221,16 @@ The priority order to identify the graphical element to select in this case is: 
 When the user _explictly_ asks to synchronize the diagram's selection with the workbench (through the new diagram panel button) or from a another view (e.g. _Show in_ action from the Explorer), if a semantic element to select appears multiple times on a diagram, they are all selected unless their ancestors (direct or indirect parent/ancestor node) represents the same semantic element.
 In other words, all top-level nodes corresponding to a semantic element to select are selected, but not their sub-nodes which target the same semantic element.
 - https://github.com/eclipse-sirius/sirius-web/issues/5545[#5545] [diagram] Reduce the size and opacity of the Minimap
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Add a new interface named `IChangeDescriptionListener` used to react to change descriptions sent within the `EditingContextEventProcessor`.
+There should be only one instance of said interface in order to provide some orchestration for the various consumers of change descriptions.
+We cannot rely on Spring ApplicationEventPublisher here so we need to manually provide some lifecycle steps for consumers.
+As a result, another interface named `IChangeDescriptionConsumer` has been added for those who want to add some behavior once a change description is received by the editing context event processor.
+Those consumers can trigger some behavior during one of three steps `preAccept`, `accept` or `postAccept`.
+Default behaviors of Sirius Components and Sirius Web will be attached to those various steps.
+For example, the disposal or deletion of outdated objects such as the representation event processors of deleted representations will be done in the `preAccept` step.
+The refresh of all the representation event processors will be done in the `accept` phase.
+The persistence of the editing context will be done in the `postAccept` phase.
+This new low level API is quite new and may be changed heavily in the near future but it should provide a new way for downstream consumers of Sirius Web to hook their code in our lifecycle.
 
 
 

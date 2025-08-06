@@ -16,17 +16,16 @@ import java.util.List;
 import java.util.Objects;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,15 +36,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextEventProcessorFactory implements IEditingContextEventProcessorFactory {
 
-    private final IDanglingRepresentationDeletionService representationDeletionService;
-
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
-
-    private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
+
+    private final IChangeDescriptionListener changeDescriptionListener;
 
     private final IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
@@ -55,12 +52,11 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessorFactory(IDanglingRepresentationDeletionService representationDeletionService, IRepresentationEventProcessorRegistry representationEventProcessorRegistry, EditingContextEventProcessorFactoryParameters parameters) {
-        this.representationDeletionService = Objects.requireNonNull(representationDeletionService);
+    public EditingContextEventProcessorFactory(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, EditingContextEventProcessorFactoryParameters parameters, IChangeDescriptionListener changeDescriptionListener) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
-        this.editingContextPersistenceService = parameters.getEditingContextPersistenceService();
         this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.getRepresentationEventProcessorComposedFactory();
+        this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
         this.executorServiceProvider = parameters.getExecutorServiceProvider();
         this.inputPreProcessors = parameters.getInputPreProcessors();
         this.inputPostProcessors = parameters.getInputPostProcessors();
@@ -71,11 +67,10 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
         var parameters = EditingContextEventProcessorParameters.newEditingContextEventProcessorParameters()
                 .editingContext(editingContext)
-                .danglingRepresentationDeletionService(this.representationDeletionService)
                 .representationEventProcessorRegistry(this.representationEventProcessorRegistry)
-                .editingContextPersistenceService(this.editingContextPersistenceService)
                 .editingContextEventHandlers(this.editingContextEventHandlers)
                 .representationEventProcessorComposedFactory(this.representationEventProcessorComposedFactory)
+                .changeDescriptionListener(this.changeDescriptionListener)
                 .executorServiceProvider(this.executorServiceProvider)
                 .inputPreProcessors(this.inputPreProcessors)
                 .inputPostProcessors(this.inputPostProcessors)

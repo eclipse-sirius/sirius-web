@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -28,9 +28,9 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.springframework.stereotype.Service;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.springframework.stereotype.Service;
 
 /**
  * Handles representation renaming triggered via a tree item from the explorer.
@@ -66,8 +66,8 @@ public class RenameRepresentationTreeItemHandler implements IRenameTreeItemHandl
             var result = this.representationMetadataUpdateService.updateLabel(input, representationUUID, newLabel);
             if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                 Map<String, Object> parameters = new HashMap<>();
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, treeItem.getId());
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newLabel);
+                parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, treeItem.getId());
+                parameters.put(ChangeDescriptionParameters.REPRESENTATION_LABEL, newLabel);
                 return new Success(ChangeKind.REPRESENTATION_RENAMING, parameters);
             }
         }
