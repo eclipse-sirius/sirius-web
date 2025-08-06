@@ -31,9 +31,11 @@ import java.util.zip.ZipOutputStream;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
@@ -192,9 +194,27 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         var nodeLayoutData = diagram.getLayoutData().nodeLayoutData();
         assertThat(nodeLayoutData).hasSize(3);
 
+        this.checkImportedNodes(diagramNavigator, nodeLayoutData);
+
+        assertThat(diagram.getEdges().size()).isEqualTo(1);
+        assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
+        assertThat(diagram.getLayoutData().edgeLayoutData().get(diagram.getEdges().get(0).getId())).isNotNull();
+    }
+
+    private void checkImportedNodes(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
         var dataSourceNode = diagramNavigator.nodeWithLabel("DataSource1").getNode();
         assertThat(nodeLayoutData.get(dataSourceNode.getId())).isNotNull();
         assertThat(dataSourceNode).hasState(ViewModifier.Normal);
+
+        assertThat(dataSourceNode.getCustomizedStyleProperties()).hasSize(4);
+        assertThat(dataSourceNode.getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
+        assertThat(dataSourceNode.getStyle()).isInstanceOf(ImageNodeStyle.class);
+
+        ImageNodeStyle dataSourceStyle = (ImageNodeStyle) dataSourceNode.getStyle();
+        assertThat(dataSourceStyle.getBorderColor()).isEqualTo("red");
+        assertThat(dataSourceStyle.getBorderRadius()).isEqualTo(1);
+        assertThat(dataSourceStyle.getBorderSize()).isEqualTo(1);
+        assertThat(dataSourceStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
 
         var compositeProcessorNode = diagramNavigator.nodeWithLabel("CompositeProcessor1").getNode();
         assertThat(nodeLayoutData.get(compositeProcessorNode.getId())).isNotNull();
@@ -232,10 +252,6 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         var processorNode = diagramNavigator.nodeWithLabel("Processor1").getNode();
         assertThat(nodeLayoutData.get(processorNode.getId())).isNotNull();
         assertThat(processorNode).hasState(ViewModifier.Normal);
-
-        assertThat(diagram.getEdges().size()).isEqualTo(1);
-        assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
-        assertThat(diagram.getLayoutData().edgeLayoutData().get(diagram.getEdges().get(0).getId())).isNotNull();
     }
 
     private byte[] getZipTestFile() {
@@ -436,10 +452,10 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                     "style": {
                       "imageURL": "/flow-images/sensor.svg",
                       "scalingFactor": 1,
-                      "borderColor": "black",
-                      "borderSize": 0,
-                      "borderRadius": 3,
-                      "borderStyle": "Solid",
+                      "borderColor": "red",
+                      "borderSize": 1,
+                      "borderRadius": 1,
+                      "borderStyle": "Dash",
                       "positionDependentRotation": false
                     },
                     "childrenLayoutStrategy": { "kind": "FreeForm" },
@@ -448,7 +464,13 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                     "defaultWidth": 66,
                     "defaultHeight": 90,
                     "labelEditable": true,
-                    "pinned": false
+                    "pinned": false,
+                    "customizedStyleProperties": [
+                      "BORDER_COLOR",
+                      "BORDER_RADIUS",
+                      "BORDER_SIZE",
+                      "BORDER_STYLE"
+                    ]
                   },
                 """;
     }

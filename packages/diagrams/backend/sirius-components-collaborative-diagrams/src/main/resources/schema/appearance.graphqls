@@ -1,5 +1,6 @@
 extend type Mutation {
   editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  editImageNodeAppearance(input: EditImageNodeAppearanceInput!): EditImageNodeAppearancePayload!
   editLabelAppearance(input: EditLabelAppearanceInput!): EditLabelAppearancePayload!
   resetNodeAppearance(input: ResetNodeAppearanceInput!): ResetNodeAppearancePayload!
   resetLabelAppearance(input: ResetLabelAppearanceInput!): ResetLabelAppearancePayload!
@@ -22,6 +23,23 @@ input RectangularNodeAppearanceInput {
 }
 
 union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditImageNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: ImageNodeAppearanceInput!
+}
+
+input ImageNodeAppearanceInput {
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+}
+
+union EditImageNodeAppearancePayload = ErrorPayload | SuccessPayload
 
 input EditLabelAppearanceInput {
   id: ID!
