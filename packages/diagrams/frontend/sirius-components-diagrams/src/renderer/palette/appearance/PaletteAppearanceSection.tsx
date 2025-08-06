@@ -18,13 +18,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
 import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
 import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
+import { ImageNodeAppearanceSection } from './ImageNodeAppearanceSection';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
 const useStyle = makeStyles()((theme) => ({
@@ -53,6 +54,10 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const isFreeFormNode = (
+  element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
+): element is InternalNode<Node<NodeData>> => !!element && element.type === 'freeFormNode';
+
 export const PaletteAppearanceSection = ({
   diagramElementId,
   onBackToMainList,
@@ -60,8 +65,6 @@ export const PaletteAppearanceSection = ({
   const { classes } = useStyle();
   const { nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const diagramElement = nodeLookup.get(diagramElementId);
-
-  const nodeAppearanceData = diagramElement?.data.nodeAppearanceData;
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -88,10 +91,17 @@ export const PaletteAppearanceSection = ({
       );
   }
 
-  if (diagramElement && nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
-    paletteAppearanceSectionComponents.push(
-      <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data as NodeData} />
-    );
+  if (isFreeFormNode(diagramElement)) {
+    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
+      paletteAppearanceSectionComponents.push(
+        <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />
+      );
+    }
+    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
+      paletteAppearanceSectionComponents.push(
+        <ImageNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />
+      );
+    }
   }
 
   return (
