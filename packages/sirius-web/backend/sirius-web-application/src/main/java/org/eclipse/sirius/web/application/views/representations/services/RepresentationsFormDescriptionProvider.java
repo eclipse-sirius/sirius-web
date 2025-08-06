@@ -24,11 +24,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
@@ -285,7 +285,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
             var result = this.representationMetadataDeletionService.delete(input, representationUUID);
             if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                 Map<String, Object> parameters = new HashMap<>();
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationId);
+                parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationId);
                 return new Success(ChangeKind.REPRESENTATION_DELETION, parameters);
             }
         }

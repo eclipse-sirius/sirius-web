@@ -14,12 +14,14 @@ package org.eclipse.sirius.web.application.representation.services;
 
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -30,9 +32,6 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -78,8 +77,8 @@ public class RenameRepresentationEventHandler implements IEditingContextEventHan
                 if (result instanceof Success<Void>) {
                     payload = new SuccessPayload(renameRepresentationInput.id());
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), renameRepresentationInput);
-                    changeDescription.getParameters().put(EditingContextEventProcessor.REPRESENTATION_ID, renameRepresentationInput.representationId());
-                    changeDescription.getParameters().put(EditingContextEventProcessor.REPRESENTATION_LABEL, renameRepresentationInput.newLabel());
+                    changeDescription.getParameters().put(ChangeDescriptionParameters.REPRESENTATION_ID, renameRepresentationInput.representationId());
+                    changeDescription.getParameters().put(ChangeDescriptionParameters.REPRESENTATION_LABEL, renameRepresentationInput.newLabel());
                 }
             }
         }
