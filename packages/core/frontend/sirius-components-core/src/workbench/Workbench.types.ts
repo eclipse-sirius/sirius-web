@@ -84,6 +84,7 @@ export interface WorkbenchConfiguration {
 
 export interface WorkbenchSidePanelConfiguration {
   id: string;
+  isOpen: boolean;
   views: WorkbenchViewConfiguration[];
 }
 

@@ -95,11 +95,11 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
 
     const leftInitialState: PanelState = {
       selectedContributionIds: leftInitialActiveConfigurationIds,
-      isOpen: false,
+      isOpen: leftPanelConfiguration?.isOpen ?? true,
     };
     const rightInitialState: PanelState = {
       selectedContributionIds: rightInitialActiveConfigurationIds,
-      isOpen: false,
+      isOpen: rightPanelConfiguration?.isOpen ?? true,
     };
 
     const { classes } = usePanelStyles();
@@ -129,13 +129,20 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
               isActive: rightPanelState.selectedContributionIds.includes(contribution.id),
             }));
             return [
-              { id: 'left', views: leftViewConfigurations },
-              { id: 'right', views: rightViewConfigurations },
+              { id: 'left', isOpen: leftPanelState?.isOpen, views: leftViewConfigurations },
+              { id: 'right', isOpen: rightPanelState?.isOpen, views: rightViewConfigurations },
             ];
           },
         };
       },
-      [leftSelectedContributions, rightSelectedContributions]
+      [
+        leftContributions,
+        leftSelectedContributions,
+        leftPanelState,
+        rightContributions,
+        rightSelectedContributions,
+        rightPanelState,
+      ]
     );
 
     const handleLeftContributionClicked = (id: string) => {
@@ -198,13 +205,15 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
       });
     };
 
-    const toggleLeftPanelOpen = () => {
-      setLeftPanelState((prevState) => ({ ...prevState, isOpen: !prevState.isOpen }));
+    const toggleLeftPanel = (isOpen: boolean) => {
+      setLeftPanelState((prevState) => ({ ...prevState, isOpen }));
     };
 
-    const toggleRightPanelOpen = () => {
-      setRightPanelState((prevState) => ({ ...prevState, isOpen: !prevState.isOpen }));
+    const toggleRightPanel = (isOpen: boolean) => {
+      setRightPanelState((prevState) => ({ ...prevState, isOpen }));
     };
+
+    const collapsedSize: number = 0;
 
     return (
       <div style={{ display: 'flex' }}>
@@ -218,12 +227,12 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
           <Panel
             id="left"
             className={classes.panel}
-            defaultSize={leftPanelInitialSize}
+            defaultSize={leftPanelState.isOpen ? leftPanelInitialSize : collapsedSize}
             collapsible
-            collapsedSize={0}
+            collapsedSize={collapsedSize}
             minSize={10}
-            onExpand={toggleLeftPanelOpen}
-            onCollapse={toggleLeftPanelOpen}
+            onExpand={() => toggleLeftPanel(true)}
+            onCollapse={() => toggleLeftPanel(false)}
             ref={leftRef}>
             {leftPanelState.isOpen ? (
               <PanelGroup direction="vertical">
@@ -258,12 +267,12 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
           <Panel
             id="right"
             className={classes.panel}
-            defaultSize={rightPanelInitialSize}
+            defaultSize={rightPanelState.isOpen ? rightPanelInitialSize : collapsedSize}
             collapsible
-            collapsedSize={0}
+            collapsedSize={collapsedSize}
             minSize={10}
-            onExpand={toggleRightPanelOpen}
-            onCollapse={toggleRightPanelOpen}
+            onExpand={() => toggleRightPanel(true)}
+            onCollapse={() => toggleRightPanel(false)}
             ref={rightRef}>
             {rightPanelState.isOpen ? (
               <PanelGroup direction="vertical">
