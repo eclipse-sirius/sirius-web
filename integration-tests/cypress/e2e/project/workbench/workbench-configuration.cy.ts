@@ -38,12 +38,12 @@ describe('Workbench Configuration Resolution', () => {
         });
         workbench = new Workbench();
       });
-      it('Then, in the left side panel, select and expand the Explorer view', () => {
+      it('Then, in the left side panel, select and expand the "Explorer" view', () => {
         workbench.checkPanelContent('left', 'Explorer');
         workbench.isIconHighlighted('left', 'Explorer');
         workbench.checkPanelState('left', 'expanded');
       });
-      it('Then, in the right side panel, select and expand the Details view', () => {
+      it('Then, in the right side panel, select and expand the "Details" view', () => {
         workbench.checkPanelContent('right', 'Details');
         workbench.isIconHighlighted('right', 'Details');
         workbench.checkPanelState('right', 'expanded');
@@ -60,15 +60,13 @@ describe('Workbench Configuration Resolution', () => {
         });
         workbench = new Workbench();
       });
-      it('Then, in the left side panel, select and expand the Validation view', () => {
-        workbench.checkPanelContent('left', 'Validation');
+      it('Then, in the left side panel, select and collapse the "Validation" view', () => {
         workbench.isIconHighlighted('left', 'Validation');
-        workbench.checkPanelState('left', 'expanded');
+        workbench.checkPanelState('left', 'collapsed');
       });
-      it('Then, in the right side panel, select and expand the Related Elements view', () => {
-        workbench.checkPanelContent('right', 'Related Elements');
+      it('Then, in the right side panel, select and collapse the "Related Elements" view', () => {
         workbench.isIconHighlighted('right', 'Related Elements');
-        workbench.checkPanelState('right', 'expanded');
+        workbench.checkPanelState('right', 'collapsed');
       });
     });
   });
@@ -79,6 +77,7 @@ const workbenchConfigurationWithCustomValues: string = JSON.stringify({
   sidePanels: [
     {
       id: 'left',
+      isOpen: false,
       views: [
         { id: 'explorer', isActive: false },
         { id: 'validation', isActive: true },
@@ -86,6 +85,7 @@ const workbenchConfigurationWithCustomValues: string = JSON.stringify({
     },
     {
       id: 'right',
+      isOpen: false,
       views: [
         { id: 'details', isActive: false },
         { id: 'query', isActive: false },
