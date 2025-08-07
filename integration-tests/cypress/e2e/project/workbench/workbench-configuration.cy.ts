@@ -53,27 +53,58 @@ describe('Workbench Configuration Resolution', () => {
       });
     });
 
-    context('When opening the project with a custom workbench configuration', () => {
+    context('When opening the project with a workbench configuration where the side panels are collapsed', () => {
       let workbench: Workbench;
       beforeEach(() => {
         new Project().visit(projectId, {
           qs: {
-            workbenchConfiguration: workbenchConfigurationWithCustomValues,
+            workbenchConfiguration: workbenchConfigurationWithClosedPanels,
           },
         });
         workbench = new Workbench();
       });
-      it('Then, the left side panel is expanded, and the "Explorer" and "Validation" views are highlighted and active', () => {
+      it('Then, the left panel is collapsed and all views ("Explorer", "Validation") are not highlighted and not active', () => {
+        workbench.checkPanelState('left', 'collapsed');
+        workbench.isIconHighlighted('left', 'Explorer', false);
+        workbench.isIconHighlighted('left', 'Validation', false);
+        cy.getByTestId('site-left').should('not.exist');
+      });
+      it('Then, the right panel is collapsed and all views ("Details", "Query", "Representations", "Related Elements") are highlighted and active', () => {
+        workbench.checkPanelState('right', 'collapsed');
+        workbench.isIconHighlighted('right', 'Details');
+        workbench.isIconHighlighted('right', 'Query');
+        workbench.isIconHighlighted('right', 'Representations');
+        workbench.isIconHighlighted('right', 'Related Elements');
+        cy.getByTestId('site-right').should('not.exist');
+      });
+      it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
+        cy.url().should('not.include', 'workbenchConfiguration=');
+      });
+    });
+
+    context('When opening the project with a workbench configuration where the side panels are expanded', () => {
+      let workbench: Workbench;
+      beforeEach(() => {
+        new Project().visit(projectId, {
+          qs: {
+            workbenchConfiguration: workbenchConfigurationWithExpandedPanels,
+          },
+        });
+        workbench = new Workbench();
+      });
+      it('Then, the left panel is expanded and all views ("Explorer", "Validation") are highlighted and active', () => {
         workbench.checkPanelState('left', 'expanded');
         workbench.isIconHighlighted('left', 'Explorer');
         workbench.isIconHighlighted('left', 'Validation');
         workbench.checkPanelContent('left', ['Explorer', 'Validation']);
       });
-      it('Then, the right side panel is expanded, and the "Representations" and "Related Elements" views are highlighted and active', () => {
+      it('Then, the right panel is expanded and all views ("Details", "Query", "Representations", "Related Elements") are highlighted and active', () => {
         workbench.checkPanelState('right', 'expanded');
+        workbench.isIconHighlighted('right', 'Details');
+        workbench.isIconHighlighted('right', 'Query');
         workbench.isIconHighlighted('right', 'Representations');
         workbench.isIconHighlighted('right', 'Related Elements');
-        workbench.checkPanelContent('right', ['Representations', 'Related Elements']);
+        workbench.checkPanelContent('right', ['Details', 'Query', 'Representations', 'Related Elements']);
       });
       it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
         cy.url().should('not.include', 'workbenchConfiguration=');
@@ -83,10 +114,33 @@ describe('Workbench Configuration Resolution', () => {
 });
 
 const nullWorkbenchConfiguration: string = JSON.stringify(null);
-const workbenchConfigurationWithCustomValues: string = JSON.stringify({
+const workbenchConfigurationWithClosedPanels: string = JSON.stringify({
   sidePanels: [
     {
       id: 'left',
+      isOpen: false,
+      views: [
+        { id: 'explorer', isActive: false },
+        { id: 'validation', isActive: false },
+      ],
+    },
+    {
+      id: 'right',
+      isOpen: false,
+      views: [
+        { id: 'details', isActive: true },
+        { id: 'query', isActive: true },
+        { id: 'representations', isActive: true },
+        { id: 'related-elements', isActive: true },
+      ],
+    },
+  ],
+});
+const workbenchConfigurationWithExpandedPanels: string = JSON.stringify({
+  sidePanels: [
+    {
+      id: 'left',
+      isOpen: true,
       views: [
         { id: 'explorer', isActive: true },
         { id: 'validation', isActive: true },
@@ -94,9 +148,10 @@ const workbenchConfigurationWithCustomValues: string = JSON.stringify({
     },
     {
       id: 'right',
+      isOpen: true,
       views: [
-        { id: 'details', isActive: false },
-        { id: 'query', isActive: false },
+        { id: 'details', isActive: true },
+        { id: 'query', isActive: true },
         { id: 'representations', isActive: true },
         { id: 'related-elements', isActive: true },
       ],
