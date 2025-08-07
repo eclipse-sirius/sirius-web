@@ -231,6 +231,9 @@ For example, the disposal or deletion of outdated objects such as the representa
 The refresh of all the representation event processors will be done in the `accept` phase.
 The persistence of the editing context will be done in the `postAccept` phase.
 This new low level API is quite new and may be changed heavily in the near future but it should provide a new way for downstream consumers of Sirius Web to hook their code in our lifecycle.
+- https://github.com/eclipse-sirius/sirius-web/issues/5285[#5285] [core] Extract additional concerns from the `EditingContextEventProcessor` thanks to the introduction of new services.
+We have added the `IRepresentationEventProcessorProvider` in order to either retrieve an `IRepresentationEventProcessor` from the `IRepresentationEventProcessorRegistry` or create an initialize a new instance thanks to the `IRepresentationEventProcessorComposedFactory`.
+We have also added the `IInputDispatcher` which is in charge of dispatching an input to its proper handler.
 
 
 
