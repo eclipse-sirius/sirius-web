@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,13 +63,12 @@ public class RedoEventHandler implements IEditingContextEventHandler {
             var emfChangeDescription = siriusEditingContext.getInputId2change().get(redoInput.inputId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-                payload = new SuccessPayload(input.id());
             }
-
             representationEventProcessorChangeHandlers.stream()
                     .filter(changeHandler -> changeHandler.canHandle(redoInput.inputId(), siriusEditingContext))
                     .forEach(changeHandler -> changeHandler.redo(redoInput.inputId(), siriusEditingContext));
+            changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+            payload = new SuccessPayload(input.id());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
