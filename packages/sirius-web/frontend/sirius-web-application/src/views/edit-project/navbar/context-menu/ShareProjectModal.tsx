@@ -11,16 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  RepresentationPathContext,
-  RepresentationPathContextValue,
-  useSelection,
-} from '@eclipse-sirius/sirius-components-core';
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useContext } from 'react';
 import { generatePath } from 'react-router-dom';
 import { selectionToSearchParamsValue } from '../../SelectionSynchronizer';
 import { ShareProjectModalProps } from './ShareProjectModal.types';
@@ -44,20 +39,10 @@ export const ShareProjectModal = ({ projectId, workbenchConfiguration, onClose }
     selection: selectionToSearchParamsValue(selection),
   });
 
-  const representationId: string | null =
-    workbenchConfiguration.mainPanel?.representationEditors.find((configuration) => configuration.isActive)
-      ?.representationMetadata.id ?? null;
-
-  let path: string;
-  if (representationId) {
-    const { getRepresentationPath } = useContext<RepresentationPathContextValue>(RepresentationPathContext);
-    path = window.location.origin + getRepresentationPath(representationId) + '?' + searchParams.toString();
-  } else {
-    path =
-      generatePath(':origin/projects/:projectId/edit', { origin: window.location.origin, projectId: projectId }) +
-      '?' +
-      searchParams.toString();
-  }
+  const path =
+    generatePath(':origin/projects/:projectId/edit', { origin: window.location.origin, projectId: projectId }) +
+    '?' +
+    searchParams.toString();
 
   let title = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {
