@@ -13,13 +13,16 @@
 package org.eclipse.sirius.web.application.views.query.services.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.api.IInterpreter;
 
 /**
  * Used to receive a properly initialized instance of the AQL interpreter.
  *
  * @author sbegaudeau
  */
-public interface IAQLInterpreterProvider {
-    AQLInterpreter getInterpreter(IEditingContext editingContext);
+public interface IInterpreterProvider {
+
+    boolean canHandle(IEditingContext editingContext, String expression);
+
+    IInterpreter getInterpreter(IEditingContext editingContext);
 }
