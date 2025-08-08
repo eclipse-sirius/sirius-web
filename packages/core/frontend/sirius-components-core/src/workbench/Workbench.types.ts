@@ -78,13 +78,8 @@ export interface PanelsHandle {
   getSidePanelConfigurations: () => WorkbenchSidePanelConfiguration[];
 }
 
-export interface RepresentationNavigationHandle {
-  getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
-}
-
 export interface WorkbenchConfiguration {
   sidePanels: WorkbenchSidePanelConfiguration[];
-  mainPanel: WorkbenchMainPanelConfiguration | null;
 }
 
 export interface WorkbenchSidePanelConfiguration {
@@ -94,15 +89,5 @@ export interface WorkbenchSidePanelConfiguration {
 
 export interface WorkbenchViewConfiguration {
   id: string;
-  isActive: boolean;
-}
-
-export interface WorkbenchMainPanelConfiguration {
-  id: string;
-  representationEditors: WorkbenchRepresentationEditorConfiguration[];
-}
-
-export interface WorkbenchRepresentationEditorConfiguration {
-  representationMetadata: RepresentationMetadata;
   isActive: boolean;
 }

@@ -32,7 +32,6 @@ import {
   PanelsHandle,
   RepresentationComponentProps,
   RepresentationMetadata,
-  RepresentationNavigationHandle,
   WorkbenchHandle,
   WorkbenchProps,
   WorkbenchSidePanelConfiguration,
@@ -79,30 +78,18 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     refWorkbenchHandle: ForwardedRef<WorkbenchHandle | null>
   ) => {
     const { classes } = useWorkbenchStyles();
-
-    const initialRepresentationsFromConfiguration: RepresentationMetadata[] =
-      initialWorkbenchConfiguration?.mainPanel?.representationEditors?.flatMap((configuration) =>
-        configuration ? [configuration.representationMetadata] : []
-      ) ?? [];
-    const initialRepresentations: RepresentationMetadata[] =
-      initialRepresentationsFromConfiguration ?? (initialRepresentationSelected ? [initialRepresentationSelected] : []);
-
     const [state, setState] = useState<WorkbenchState>({
       id: crypto.randomUUID(),
       displayedRepresentationMetadata: initialRepresentationSelected,
-      representationsMetadata: initialRepresentations,
+      representationsMetadata: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     });
 
     const refPanelsHandle: RefObject<PanelsHandle | null> = useRef<PanelsHandle | null>(null);
-    const refRepresentationNavigationHandle: RefObject<RepresentationNavigationHandle | null> =
-      useRef<RepresentationNavigationHandle | null>(null);
-
     useImperativeHandle(refWorkbenchHandle, () => {
       return {
         getConfiguration: () => {
           return {
             sidePanels: refPanelsHandle.current?.getSidePanelConfigurations() ?? [],
-            mainPanel: refRepresentationNavigationHandle.current?.getMainPanelConfiguration() ?? null,
           };
         },
       };
@@ -259,7 +246,6 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
               displayedRepresentation={displayedRepresentationMetadata}
               onRepresentationClick={onRepresentationClick}
               onClose={onClose}
-              ref={refRepresentationNavigationHandle}
             />
             <RepresentationComponent key={`${editingContextId}#${displayedRepresentationMetadata.id}`} {...props} />
           </div>

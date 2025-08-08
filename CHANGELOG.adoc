@@ -214,7 +214,7 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 - https://github.com/eclipse-sirius/sirius-web/issues/5227[#5227] [sirius-web] Add support for capability check on create and delete project mutations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add an action, when editing a project, in the project contextual menu, to create a shareable URL.
 + This URL includes the current workbench selection and the current workbench state.
-+ For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
++ For now the only workbench state that is shareable is: the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
 
 === Improvements
