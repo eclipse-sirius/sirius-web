@@ -64,13 +64,12 @@ public class RedoEventHandler implements IEditingContextEventHandler {
             var emfChangeDescription = siriusEditingContext.getInputId2change().get(redoInput.mutationId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-                payload = new SuccessPayload(input.id());
             }
-
             representationEventProcessorChangeHandlers.stream()
                     .filter(changeHandler -> changeHandler.canHandle(redoInput.mutationId(), siriusEditingContext))
                     .forEach(changeHandler -> changeHandler.redo(redoInput.mutationId(), siriusEditingContext));
+            changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+            payload = new SuccessPayload(input.id());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);

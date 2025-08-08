@@ -217,6 +217,7 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 + For now the only workbench state that is shareable is: the opened representations, the active representation, and the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
 - https://github.com/eclipse-sirius/sirius-web/issues/5295[#5295] [core] Add an API to contribute undo redo handlers for graphical events (TODO Move)
+- https://github.com/eclipse-sirius/sirius-web/issues/5300[#5300] [diagram] Add support for undo redo node position changes 
 
 === Improvements
 
