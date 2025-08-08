@@ -31,11 +31,15 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.EditRectangularNodeA
 import org.eclipse.sirius.components.diagrams.tests.graphql.ResetNodeAppearanceMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.undo.dto.RedoInput;
+import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.undoredo.RedoMutationRunner;
+import org.eclipse.sirius.web.tests.undoredo.UndoMutationRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,6 +71,12 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
 
     @Autowired
     private ResetNodeAppearanceMutationRunner resetNodeAppearanceMutationRunner;
+
+    @Autowired
+    private UndoMutationRunner undoMutationRunner;
+
+    @Autowired
+    private RedoMutationRunner redoMutationRunner;
 
     @Autowired
     private ExpandCollapseDiagramDescriptionProvider diagramDescriptionProvider;
@@ -183,7 +193,6 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
 
-
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             assertThat(diagram.getNodes())
@@ -255,4 +264,83 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram, when we edit its appearance, undo and redo the change, then the diagram is properly updated")
+    public void givenDiagramWhenWeEditItsAppearanceAndUndoRedoChangesThenTheDiagramIsProperlyUpdated() {
+        var flux = this.givenDiagramSubscription();
+        var diagramId = new AtomicReference<String>();
+        var siriusWebApplicationNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> node.getStyle() instanceof RectangularNodeStyle)
+                    .extracting(node -> (RectangularNodeStyle) node.getStyle())
+                    .allMatch(rectangularNodeStyle -> "black".equals(rectangularNodeStyle.getBackground()))
+                    .allMatch(rectangularNodeStyle -> rectangularNodeStyle.getBorderRadius() == 3);
+
+            var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+            siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+        });
+
+        var mutationInputId = UUID.randomUUID();
+
+        Runnable setNodeCustomAppearance = () -> {
+            var appearanceInput = new RectangularNodeAppearanceInput("red", null, 5, null, null);
+
+            var input = new EditRectangularNodeAppearanceInput(
+                    mutationInputId,
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    siriusWebApplicationNodeId.get(),
+                    appearanceInput
+            );
+
+            this.editRectangularNodeAppearanceMutationRunner.run(input);
+        };
+
+        Consumer<Object> updatedAfterCustomAppearanceDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> node.getStyle() instanceof RectangularNodeStyle)
+                    .extracting(node -> (RectangularNodeStyle) node.getStyle())
+                    .allMatch(rectangularNodeStyle -> "red".equals(rectangularNodeStyle.getBackground()))
+                    .allMatch(rectangularNodeStyle -> rectangularNodeStyle.getBorderRadius() == 5);
+        });
+
+        Runnable undoChanges = () -> {
+            var input = new UndoInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    mutationInputId.toString()
+            );
+
+            this.undoMutationRunner.run(input);
+        };
+
+        Runnable redoChanges = () -> {
+            var input = new RedoInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    mutationInputId.toString()
+            );
+
+            this.redoMutationRunner.run(input);
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(setNodeCustomAppearance)
+                .consumeNextWith(updatedAfterCustomAppearanceDiagramContentConsumer)
+                .then(undoChanges)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(redoChanges)
+                .consumeNextWith(updatedAfterCustomAppearanceDiagramContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }
