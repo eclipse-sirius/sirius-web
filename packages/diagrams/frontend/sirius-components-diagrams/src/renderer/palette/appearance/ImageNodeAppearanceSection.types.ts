@@ -10,13 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { NodeData } from '../../DiagramRenderer.types';
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
-
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+export interface ImageNodeAppearanceSectionProps {
+  nodeId: string;
+  nodeData: NodeData;
 }

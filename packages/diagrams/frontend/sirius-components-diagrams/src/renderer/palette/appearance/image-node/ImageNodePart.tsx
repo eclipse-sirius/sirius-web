@@ -23,9 +23,9 @@ import { EditColorAppearanceSection } from '../property-component/EditColorAppea
 import { EditEnumSelectAppearanceSection } from '../property-component/EditEnumSelectAppearanceSection';
 import { EditNumberAppearanceSection } from '../property-component/EditNumberAppearanceSection';
 import { useResetNodeAppearance } from '../useResetNodeAppearance';
-import { RectangularNodePartProps } from './RectangularNodePart.types';
-import { useUpdateRectangularNodeAppearance } from './useUpdateRectangularNodeAppearance';
-import { GQLRectangularNodeAppearanceInput } from './useUpdateRectangularNodeAppearance.types';
+import { ImageNodePartProps } from './ImageNodePart.types';
+import { useUpdateImageNodeAppearance } from './useUpdateImageNodeAppearance';
+import { GQLImageNodeAppearanceInput } from './useUpdateImageNodeAppearance.types';
 
 const LINE_STYLE_OPTIONS = [
   { value: 'Solid', label: 'Solid' },
@@ -34,16 +34,16 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }: RectangularNodePartProps) => {
+export const ImageNodePart = ({ nodeId, style, customizedStyleProperties }: ImageNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { updateRectangularNodeAppearance } = useUpdateRectangularNodeAppearance();
+  const { updateImageNodeAppearance } = useUpdateImageNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
     resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
 
-  const handleEditProperty = (newValue: Partial<GQLRectangularNodeAppearanceInput>) =>
-    updateRectangularNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+  const handleEditProperty = (newValue: Partial<GQLImageNodeAppearanceInput>) =>
+    updateImageNodeAppearance(editingContextId, diagramId, nodeId, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 
@@ -51,13 +51,6 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
     <ListItem disablePadding sx={(theme) => ({ paddingX: theme.spacing(1), paddingBottom: theme.spacing(1) })}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="subtitle2">Style</Typography>
-
-        <EditColorAppearanceSection
-          label={'Background'}
-          initialValue={style.background}
-          isDisabled={isDisabled('BACKGROUND')}
-          onEdit={(newValue) => handleEditProperty({ background: newValue })}
-          onReset={() => handleResetProperty('BACKGROUND')}></EditColorAppearanceSection>
 
         <EditColorAppearanceSection
           label={'Border Color'}

@@ -10,13 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import org.eclipse.sirius.components.diagrams.LineStyle;
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+/**
+ * Input for the edition of an image node appearance.
+ *
+ * @author mcharfadi
+ */
+public record ImageNodeAppearanceInput(String borderColor, Integer borderRadius, Integer borderSize, LineStyle borderStyle) {
+
 }
