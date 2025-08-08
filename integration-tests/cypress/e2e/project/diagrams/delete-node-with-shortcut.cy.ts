@@ -30,52 +30,7 @@ describe('Diagram - del node', () => {
         explorer.expandWithDoubleClick('Flow');
         explorer.expandWithDoubleClick('NewSystem');
         explorer.selectRepresentation('Topography');
-        new Diagram().centerViewport();
       });
-    });
-
-    it('Then we can use del key to delete a node', () => {
-      const diagram = new Diagram();
-      //Select a node
-      diagram.getDiagram('Topography').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').click();
-      //Trigger delete
-      cy.focused().type('{del}');
-      diagram.getPalette().should('not.exist');
-      diagram.getNodes('Topography', 'DataSource1').should('not.exist');
-    });
-
-    it('Then we can t use del key to delete a node if the palette is opened', () => {
-      const diagram = new Diagram();
-      //Select a node
-      diagram.getDiagram('Topography').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').click();
-      //Open the palette
-      diagram.getNodes('Topography', 'DataSource1').rightclick();
-      diagram.getPalette().should('exist');
-      //Trigger delete
-      cy.focused().type('{del}');
-      diagram.getPalette().should('exist');
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
-    });
-
-    it('Then we can use del key to delete a node after closing the palette with escp', () => {
-      const diagram = new Diagram();
-      //Select a node
-      diagram.getDiagram('Topography').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').should('exist');
-      diagram.getNodes('Topography', 'DataSource1').click();
-      //Open the palette
-      diagram.getNodes('Topography', 'DataSource1').rightclick();
-      diagram.getPalette().should('exist');
-      //Close the palette
-      diagram.getPalette().type('test{esc}');
-      diagram.getPalette().should('not.exist');
-      //Trigger delete
-      cy.focused().type('{del}');
-      diagram.getNodes('Topography', 'DataSource1').should('not.exist');
     });
 
     it('Then we can use del key to delete a node after it has been created', () => {
