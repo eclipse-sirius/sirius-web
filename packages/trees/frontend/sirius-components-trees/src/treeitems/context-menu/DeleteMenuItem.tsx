@@ -26,7 +26,7 @@ import {
   GQLErrorPayload,
 } from './DeleteMenuItem.types';
 
-const deleteTreeItemMutation = gql`
+export const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
     deleteTreeItem(input: $input) {
       __typename
@@ -37,6 +37,19 @@ const deleteTreeItemMutation = gql`
   }
 `;
 
+export const handleDeleteItem = (editingContextId, treeId, item, deleteTreeItem, showDeletionConfirmation, onClick) => {
+  const input: GQLDeleteTreeItemInput = {
+    id: crypto.randomUUID(),
+    editingContextId,
+    representationId: treeId,
+    treeItemId: item.id,
+  };
+  showDeletionConfirmation(() => {
+    deleteTreeItem({ variables: { input } });
+    onClick();
+  });
+};
+
 const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
@@ -46,18 +59,8 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
   );
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const handleDelete = () => {
-    const input: GQLDeleteTreeItemInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: treeId,
-      treeItemId: item.id,
-    };
-    showDeletionConfirmation(() => {
-      deleteTreeItem({ variables: { input } });
-      onClick();
-    });
-  };
+  const handleDelete = () =>
+    handleDeleteItem(editingContextId, treeId, item, deleteTreeItem, showDeletionConfirmation, onClick);
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
