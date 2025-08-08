@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.handler;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -28,9 +31,6 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Handler used to undo mutations.
@@ -64,12 +64,12 @@ public class UndoEventHandler implements IEditingContextEventHandler {
             var emfChangeDescription = siriusEditingContext.getInputId2change().get(undoInput.inputId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-                payload = new SuccessPayload(input.id());
             }
             representationEventProcessorChangeHandlers.stream()
                     .filter(changeHandler -> changeHandler.canHandle(undoInput.inputId(), siriusEditingContext))
                     .forEach(changeHandler -> changeHandler.undo(undoInput.inputId(), siriusEditingContext));
+            changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+            payload = new SuccessPayload(input.id());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);

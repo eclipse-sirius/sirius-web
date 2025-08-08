@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,7 +157,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         return convertedNode;
       }
     });
-
     const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
       // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
@@ -214,6 +213,21 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         nodes,
         edges,
       };
+
+      // If we're refreshing the diagram because of an undo/redo operation we need to update the previous diagram with nodeLayoutData before performing the layout
+      previousDiagram.nodes = previousDiagram.nodes.map((previousNode) => {
+        const nodeLayoutData = diagramRefreshedEventPayload.diagram.layoutData.nodeLayoutData.find(
+          (layoutData) => layoutData.id === previousNode.id
+        );
+        if (nodeLayoutData) {
+          previousNode.position.x = nodeLayoutData.position.x;
+          previousNode.position.y = nodeLayoutData.position.y;
+          previousNode.width = nodeLayoutData.size.width;
+          previousNode.height = nodeLayoutData.size.height;
+        }
+        return previousNode;
+      });
+
       layout(
         previousDiagram,
         convertedDiagram,
