@@ -1,0 +1,19 @@
+= {Diagramming Tools}
+
+** Projects Management
+*** xref:user-manual:features/end-user/homepage.adoc[]
+** Editor
+*** xref:user-manual:features/end-user/editor.adoc[]
+*** xref:user-manual:features/end-user/details.adoc[]
+*** xref:user-manual:features/end-user/related-elements.adoc[]
+*** xref:user-manual:features/end-user/representations-view.adoc[]
+*** xref:user-manual:features/end-user/query-view.adoc[]
+*** xref:user-manual:features/end-user/validation.adoc[]
+*** xref:user-manual:features/end-user/keyboard-shortcuts.adoc[]
+
+* xref:user-manual:features/end-user/cm.adoc[]
+
+* Advanced
+** xref:user-manual:features/end-user/scaling-limits.adoc[]
+** xref:developer-guide:extend.adoc[]
+** xref:user-manual:features/end-user/security.adoc[]

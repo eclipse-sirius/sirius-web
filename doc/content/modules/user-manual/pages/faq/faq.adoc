@@ -1,0 +1,176 @@
+= Frequently Asked Questions
+
+Here are answers to questions we're often asked.
+If you have a question not addressed here, xref:ROOT:help.adoc[contact us].
+
+== General questions
+
+.*What's {product}?*
+[%collapsible%open]
+====
+To understand the intent of {product}, see the xref:user-manual:what-is.adoc[What's?] section in the user manual.
+====
+
+.*Why is the project named {product}?*
+[%collapsible%open]
+====
+Eclipse {sirius} is the result of a partnership launched in 2007 between https://www.thalesgroup.com[Thales] and https://www.obeosoft.com[Obeo].
+The initial goal was to provide a generic workbench for model-based architecture engineering that could be tailored to fit specific needs.
+
+In 2013, the project was released in open-source under the scope of the Eclipse Foundation.
+{sirius} is integrated into annual release train of the Eclipse platform.
+
+{product} is the web-based evolution of {sirius}.
+The name reflects its foundation in {sirius}, while emphasizing its transition to a fully web-based environment, enabling modern, collaborative, and browser-native modeling experiences.
+====
+
+.*What's the difference between {product} and other meta-modeling tools?*
+[%collapsible%open]
+====
+To understand the intent of {product}, see the xref:user-manual:what-is.adoc[What's?] section in the user manual.
+====
+
+.*What are the key features of {product}?*
+[%collapsible%open]
+====
+To discover the {product} features, see the xref:user-manual:key-features.adoc[Key features] section in the user manual.
+====
+
+.*What is your licensing model for your {product}?*
+[%collapsible%open]
+====
+{product} is a free and open source product xref:product-legal:index.adoc[licensed under the Eclipse Public License v2].
+====
+
+.*To what extent will your tool support collaborative modeling with configuration management?*
+[%collapsible%open]
+====
+As a web application, {product} is inherently collaborative.
+However, it doesn't include a built-in Configuration Management (CM) tool.
+We believe that organizations and users should have the freedom to choose their preferred CM tools, and {product} is designed to be flexible enough to integrate with them.
+For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to .
+====
+
+.*How do I create a new model?*
+[%collapsible%open]
+====
+To create a new model, read the xref:user-manual:hands-on/how-tos/model-management.adoc#create-model[Create a new model] section in the user manual.
+====
+
+.*Will you have a beta version for customers to try? If yes, when will it be available?*
+[%collapsible%open]
+====
+{product} is free and open source, it's already available to try, see xref:installation-guide:index.adoc[installation guide].
+====
+
+.*Do you have a commercial version available and what capabilities will it support?*
+[%collapsible%open]
+====
+{product} is an open source project, and as such, there is no planned commercial version directly from the project itself.
+The focus is on fostering an open and collaborative development environment.
+The project provides updates and fixes on a best-effort basis, specifically targeting the latest release.
+
+For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to obtain customized solutions and services that meet your specific needs.
+====
+
+.*How do I learn more about {product} and best practices?*
+[%collapsible%open]
+====
+Join the xref:user-manual:help.adoc[{product} online community], and consider attending webinars and industry conferences.
+For hands-on learning, check out the xref:user-manual:hands-on/hands-on.adoc[{product} tutorials] and for more detailed guidance, refer to xref:user-manual:support.adoc[professional support options].
+====
+
+== Features and capabilities
+
+.*Is there a mobile version of {product} available?*
+[%collapsible%open]
+====
+{product} is a web application that can be accessed from mobile devices; however, it's optimized for use with a minimum screen resolution of 1024 * 768 in a maximized browser window.
+See xref:installation-guide:requirements.adoc[Prerequisites] for more details.
+====
+
+.*How does version control work in {product}?*
+[%collapsible%open]
+====
+{product} doesn't include built-in version control, allowing users to integrate their preferred solutions.
+For more details, see xref:user-manual:features/end-user/cm.adoc[Version control and change management].
+====
+
+.*Is there a limit to the number of projects or models I can create in {product}?*
+[%collapsible%open]
+====
+Yes, see the xref:user-manual:features/end-user/scaling-limits.adoc[scaling limits] page for more details.
+====
+
+.*How do I import and export models in {product}?*
+[%collapsible%open]
+====
+Read the xref:user-manual:integration/interoperability.adoc#import-export[Import and Export] section of the documentation.
+====
+
+.*What collaboration features are available in {product}?*
+[%collapsible%open]
+====
+Read the xref:user-manual:features/end-user/collaboration.adoc[Collaborative modeling] page of the documentation.
+====
+
+== Integration with other tools
+
+.*How do I import and export models?*
+[%collapsible%open]
+====
+To import or export models, read the xref:user-manual:integration/interoperability.adoc[Interoperability] section in the user manual.
+====
+
+.*How do I collaborate with others on models?*
+[%collapsible%open]
+====
+Read the xref:user-manual:features/end-user/collaboration.adoc[Collaborative modeling] section to learn more about how to work together by using {product}.
+====
+
+
+== Troubleshooting
+
+.*How do I access professional support for {product}?*
+[%collapsible%open]
+====
+To access professional support for {product}, see the xref:user-manual:support.adoc[Professional support] page in the documentation, which provides comprehensive information about how to get help and the services available.
+====
+
+* xref:installation-guide:requirements.adoc[What are the recommended system requirements for {product}?]
+* xref:installation-guide:how-tos/https.adoc[Configuring HTTPS for local server deployment of {product} for testing purposes]
+* xref:user-manual:contribute.adoc#reporting-issues[How do I report bugs or submit feature requests?]
+
+== Extend {product}
+
+.*How do I customize the user interface of {product}?*
+[%collapsible%open]
+====
+{product} is an open source product, providing users with the flexibility to customize the user interface based on their specific needs.
+Users can directly change the source code by forking the project and following the instructions in the developer guide to build their customized version.
+For users seeking professional help or customization services, feel free to xref:user-manual:support.adoc[contact us] for personalized help with your customization requirements.
+====
+
+.*How do I extend {product} with custom add-ons or extensions?*
+[%collapsible%open]
+====
+You can extend {product} with custom add-ons or extensions by using its modular architecture.
+Refer to the developer documentation for guidelines on xref:developer-guide:extend.adoc[creating and integrating new modules].
+For further help, consult the xref:user-manual:forum.adoc[community forum] or consider the xref:user-manual:support.adoc[professional support] options.
+====
+
+
+.*Is it possible to generate documentation from {product} models?*
+[%collapsible%open]
+====
+Yes, {product} can integrate with model-to-text solutions such as https://www.m2doc.org/[M2Doc].
+Refer to the xref:developer-guide:extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
+====
+
+== Additional resources
+
+* xref:ROOT:index.adoc[{product} documentation]
+* xref:user-manual:help.adoc[Community forums and support channels]
+* xref:user-manual:hands-on/hands-on.adoc[Tutorials and training resources]
+* xref:user-manual:support.adoc[]
+* xref:installation-guide:how-tos/install.adoc[]
