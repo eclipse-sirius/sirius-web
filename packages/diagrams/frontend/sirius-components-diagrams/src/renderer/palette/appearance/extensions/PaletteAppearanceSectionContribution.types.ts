@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import { InternalNode, Node } from '@xyflow/react';
+import { NodeData } from '../../../DiagramRenderer.types';
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+export interface PaletteAppearanceSectionContributionProps {
+  canHandle: (element: Node<NodeData>) => boolean;
+  component: React.ComponentType<PaletteAppearanceSectionContributionComponentProps>;
+}
+
+export interface PaletteAppearanceSectionContributionComponentProps {
+  elementId: string;
+  element: InternalNode<Node<NodeData>>;
 }

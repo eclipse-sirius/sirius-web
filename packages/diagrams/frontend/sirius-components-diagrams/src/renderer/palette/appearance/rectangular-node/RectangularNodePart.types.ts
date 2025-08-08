@@ -18,11 +18,3 @@ export interface RectangularNodePartProps {
   style: GQLRectangularNodeStyle;
   customizedStyleProperties: string[];
 }
-
-export interface RectangularNodePartState {
-  background: string;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-}
