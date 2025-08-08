@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
@@ -149,7 +150,14 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         Diagram newDiagram = new DiagramRenderer().render(element);
 
+        List<DiagramNodeLayoutEvent> diagramNodeLayoutEvents = diagramEvents.stream()
+                .filter(DiagramNodeLayoutEvent.class::isInstance)
+                .map(DiagramNodeLayoutEvent.class::cast).toList();
+
         var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
+
+        diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent -> newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), nodeLayoutDataEvent.nodeLayoutData()));
+
         newDiagram = Diagram.newDiagram(newDiagram)
                 .layoutData(newLayoutData)
                 .build();
