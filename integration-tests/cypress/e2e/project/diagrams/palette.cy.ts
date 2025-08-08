@@ -59,8 +59,8 @@ describe('Diagram - Palette', () => {
         diagram.getDiagram('diagram').should('exist');
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
         // right click on the diagram background
-        // workaround: the first right-click doesn't seem catch by Cypress, the second one does
-        cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 100).rightclick(100, 100);
+        cy.getByTestId('rf__wrapper').should('exist');
+        cy.getByTestId('rf__wrapper').rightclick(100, 100);
         // the palette is opened
         diagram.getPalette().should('exist');
         // the diagram is selected in the Explorer
@@ -132,7 +132,8 @@ describe('Diagram - Palette', () => {
         diagram.getDiagram('diagram').get('div.react-flow__node.selected').should('not.exist');
         // right click on the edge between Wifi and DSP (with label '4')
         // workaround: the first right-click doesn't seem catch by Cypress, the second one does
-        cy.getByTestId('Label - 4').should('exist').rightclick({ force: true }).rightclick({ force: true });
+        cy.getByTestId('Label - 4').should('exist');
+        cy.getByTestId('Label - 4').rightclick({ force: true });
         // the palette is opened
         diagram.getPalette().should('exist');
         // the edge between Wifi and DSP element is selected in the diagram
@@ -170,8 +171,8 @@ describe('Diagram - Palette', () => {
         diagram.getNodes('diagram', 'Wifi').should('exist').click();
         diagram.getSelectedNodes('diagram', 'Wifi');
         // right click on the diagram background
-        // workaround: the first right-click doesn't seem catch by Cypress, the second one does
-        cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 100).rightclick(100, 100);
+        cy.getByTestId('rf__wrapper').should('exist');
+        cy.getByTestId('rf__wrapper').rightclick(100, 100);
         // the palette is closed
         diagram.getPalette().should('exist');
         // the diagram is selected in the Explorer
@@ -247,6 +248,90 @@ describe('Diagram - Palette', () => {
         // the Wifi element is selected in the Details
         details.getDetailsView().getByTestId('page-tab-GPU').should('exist');
       });
+    });
+    context('After creating a composite processor on the diagram', () => {
+      it('The diagram palette should remember the last tool invoked from it', () => {
+        const diagram = new Diagram();
+        diagram.getDiagram('diagram').should('exist');
+
+        // Open the diagram's palette
+        cy.getByTestId('rf__wrapper').should('exist');
+        cy.getByTestId('rf__wrapper').rightclick(100, 100);
+        diagram.getPalette().should('exist');
+
+        // The 'Composite Processor' tool (shortcut) is *not* intialy visible
+        diagram.getPalette().getByTestId('tool-Composite Processor').should('not.exist');
+        // We need to go into the Creation Tools section to find and invoke it
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').click();
+        diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
+        diagram.getPalette().getByTestId('tool-Composite Processor').click();
+
+        // The palette closes
+        diagram.getPalette().should('not.exist');
+        // And the newly created element appears and is selected (incl. in the Explorer)
+        diagram.getNodes('diagram', 'CompositeProcessor3').should('exist');
+        diagram.getSelectedNodes('diagram', 'CompositeProcessor3');
+        new Explorer().getSelectedTreeItems().contains('CompositeProcessor3');
+
+        // Now we re-open the diagram's palette
+        cy.getByTestId('rf__wrapper').should('exist');
+        cy.getByTestId('rf__wrapper').rightclick(100, 100);
+
+        // and expect the 'Composite Processor' tool' shortcut to be visible directly
+        diagram.getPalette().should('exist');
+        diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+
+        // Close the diagram palette
+        cy.getByTestId('rf__wrapper').click(50, 50);
+        diagram.getPalette().should('not.exist');
+
+        // Open the new composite processor's palette
+        diagram.getNodes('diagram', 'CompositeProcessor3').rightclick();
+        diagram.getPalette().should('exist');
+        // the "last tool" shortcut should *not* be visible in the other context
+        diagram.getPalette().getByTestId('tool-Composite Processor').should('not.exist');
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+      });
+      it.skip('After invoking a tool on the diagram, alt-click repeats the same tool', () => {
+        const diagram = new Diagram();
+        const explorer = new Explorer();
+        diagram.getDiagram('diagram').should('exist');
+
+        // Open the diagram's palette
+        cy.getByTestId('rf__wrapper').should('exist');
+        cy.getByTestId('rf__wrapper').rightclick(100, 100);
+        diagram.getPalette().should('exist');
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+        diagram.getPalette().getByTestId('toolSection-Creation Tools').click();
+        diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
+        diagram.getPalette().getByTestId('tool-Composite Processor').click();
+        diagram.getPalette().should('not.exist');
+
+        diagram.getNodes('diagram', 'CompositeProcessor3').should('exist');
+        diagram.getSelectedNodes('diagram', 'CompositeProcessor3');
+        explorer.getSelectedTreeItems().contains('CompositeProcessor3');
+
+        // Close the diagram palette
+        cy.getByTestId('rf__wrapper').click(50, 50);
+        diagram.getPalette().should('not.exist');
+
+        cy.getByTestId('rf__wrapper').focus();
+        cy.getByTestId('rf__wrapper').trigger('click', 100, 100, {
+          force: true,
+          altKey: true,
+        });
+
+        // The palette closes
+        diagram.getPalette().should('not.exist');
+        // And the newly created element appears and is selected (incl. in the Explorer)
+        diagram.getNodes('diagram', 'CompositeProcessor4').should('exist');
+        diagram.getSelectedNodes('diagram', 'CompositeProcessor4');
+        new Explorer().getSelectedTreeItems().contains('CompositeProcessor4');
+      });
+      it.skip('Then opening the palette on the composite processor does not show the last tool shortcut', () => {});
+      it.skip('Then alt-click on the diagram creates a second composite processor', () => {});
     });
   });
 });
