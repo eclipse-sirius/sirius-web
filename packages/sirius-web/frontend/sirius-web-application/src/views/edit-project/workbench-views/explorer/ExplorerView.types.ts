@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { WorkbenchViewConfiguration, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
 import { GQLTree, GQLTreeItem, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ExplorerViewState {
@@ -23,4 +24,13 @@ export interface ExplorerViewState {
   maxDepth: { [key: string]: number };
   tree: GQLTree | null;
   singleTreeItemSelected: GQLTreeItem | null;
+}
+
+export interface ExplorerViewHandle extends WorkbenchViewHandle {
+  getWorkbenchViewConfiguration: () => ExplorerViewConfiguration | null;
+}
+
+export interface ExplorerViewConfiguration extends WorkbenchViewConfiguration {
+  activeTreeDescriptionId: string | null;
+  activeTreeFilters: TreeFilter[];
 }
