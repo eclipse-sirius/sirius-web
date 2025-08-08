@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -38,7 +39,7 @@ public class RelationBasedSemanticElementsProvider implements Function<VariableM
 
     @Override
     public List<?> apply(VariableManager variableManager) {
-        List<Object> objects = new ArrayList<>();
+        Set<Object> objects = new LinkedHashSet<>();
 
         var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
         if (optionalCache.isEmpty()) {
@@ -56,7 +57,7 @@ public class RelationBasedSemanticElementsProvider implements Function<VariableM
             }
         }
 
-        return objects;
+        return objects.stream().toList();
     }
 
 }

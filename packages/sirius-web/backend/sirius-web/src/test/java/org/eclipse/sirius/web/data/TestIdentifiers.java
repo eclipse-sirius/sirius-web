@@ -23,6 +23,7 @@ public final class TestIdentifiers {
 
     public static final String INVALID_PROJECT = "a2bed581-9661-41bf-9217-2870a9dce67c";
     public static final String UML_SAMPLE_PROJECT = "7ba7bda7-13b9-422a-838b-e45a3597e952";
+    public static final String SYSML_SAMPLE_EDITING_CONTEXT_ID = "86fa5d90-a602-4083-b3c1-65912b93b673";
     public static final String SYSML_SAMPLE_PROJECT = "4164c661-e0cb-4071-b25d-8516440bb8e8";
     public static final UUID SYSML_IMAGE = UUID.fromString("ff37f0eb-effb-4c57-b17f-76bc7ea64f5b");
     public static final String ECORE_SAMPLE_EDITING_CONTEXT_ID = "cb133bf0-d7aa-4a83-a277-0972919dd46a";
