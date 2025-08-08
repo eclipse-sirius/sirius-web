@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorGetter;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventRecorder;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -58,12 +59,15 @@ public class EditingContextEventProcessorHandler implements IEditingContextEvent
 
     private final IRepresentationEventProcessorGetter representationEventProcessorGetter;
 
-    public EditingContextEventProcessorHandler(List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IRepresentationEventProcessorGetter representationEventProcessorGetter) {
+    private final List<IRepresentationEventRecorder> representationEventProcessorChangeRecorder;
+
+    public EditingContextEventProcessorHandler(List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors, List<IEditingContextEventHandler> editingContextEventHandlers, IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IRepresentationEventProcessorGetter representationEventProcessorGetter, List<IRepresentationEventRecorder> representationEventProcessorChangeRecorder) {
         this.inputPreProcessors = Objects.requireNonNull(inputPreProcessors);
         this.inputPostProcessors = Objects.requireNonNull(inputPostProcessors);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.representationEventProcessorGetter = Objects.requireNonNull(representationEventProcessorGetter);
+        this.representationEventProcessorChangeRecorder = Objects.requireNonNull(representationEventProcessorChangeRecorder);
     }
 
     @Override
@@ -114,7 +118,11 @@ public class EditingContextEventProcessorHandler implements IEditingContextEvent
 
         if (optionalRepresentationEventProcessor.isPresent()) {
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
+            var oldRepresentation = representationEventProcessor.getRepresentation();
             representationEventProcessor.handle(payloadSink, changeDescriptionSink, representationInput);
+            var newRepresentation = representationEventProcessor.getRepresentation();
+            this.representationEventProcessorChangeRecorder.forEach(changeRecorder -> changeRecorder.recordChange(editingContext, oldRepresentation, newRepresentation, representationInput));
+
         } else {
             this.logger.warn("No representation event processor found for event: {}", representationInput);
         }

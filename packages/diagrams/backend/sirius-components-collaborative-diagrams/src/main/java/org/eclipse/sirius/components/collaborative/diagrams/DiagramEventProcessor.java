@@ -268,4 +268,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramEventFlux.dispose();
     }
 
+    public IDiagramContext getDiagramContext() {
+        return this.diagramContext;
+    }
 }
