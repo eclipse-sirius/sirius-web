@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -152,27 +152,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
-        return changeDescription -> {
-            boolean shouldRefresh = false;
-
-            switch (changeDescription.getKind()) {
-                case ChangeKind.SEMANTIC_CHANGE:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_CREATION:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_DELETION:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_RENAMING:
-                    shouldRefresh = true;
-                    break;
-                default:
-                    shouldRefresh = false;
-            }
-
-            return shouldRefresh;
+        return changeDescription -> switch (changeDescription.getKind()) {
+            case ChangeKind.SEMANTIC_CHANGE, ChangeKind.UNDO_REDO_CHANGE, ChangeKind.REPRESENTATION_CREATION, ChangeKind.REPRESENTATION_DELETION, ChangeKind.REPRESENTATION_RENAMING -> true;
+            default -> false;
         };
     }
 
@@ -187,12 +169,10 @@ public class TreeEventProcessor implements ITreeEventProcessor {
         var initialRefresh = Mono.fromCallable(() -> new TreeRefreshedEventPayload(input.id(), this.currentTree.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
-        // @formatter:off
         return Flux.merge(
             refreshEventFlux,
             this.subscriptionManager.getFlux(input)
         );
-        // @formatter:on
     }
 
     @Override
