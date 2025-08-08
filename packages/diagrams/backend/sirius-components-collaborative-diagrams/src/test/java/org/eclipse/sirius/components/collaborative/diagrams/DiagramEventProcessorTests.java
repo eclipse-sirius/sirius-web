@@ -148,6 +148,7 @@ public class DiagramEventProcessorTests {
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationSearchService(new IRepresentationSearchService.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .diagramEventConsumers(List.of())
                 .diagramInputReferencePositionProviders(List.of())
                 .build();
         return new DiagramEventProcessor(parameters);

@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -85,12 +86,13 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final DiagramEventFlux diagramEventFlux;
 
+    private final List<IDiagramEventConsumer> diagramEventConsumers;
+
     private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
 
     private UUID currentRevisionId = UUID.randomUUID();
 
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
-
 
     public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
         this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().diagram().getId());
@@ -105,6 +107,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.representationSearchService = parameters.representationSearchService();
         this.diagramCreationService = parameters.diagramCreationService();
         this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
+        this.diagramEventConsumers = parameters.diagramEventConsumers();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
@@ -189,6 +192,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
+            this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), changeDescription));
+
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
@@ -273,4 +278,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramEventFlux.dispose();
     }
 
+    public DiagramContext getDiagramContext() {
+        return this.diagramContext;
+    }
 }

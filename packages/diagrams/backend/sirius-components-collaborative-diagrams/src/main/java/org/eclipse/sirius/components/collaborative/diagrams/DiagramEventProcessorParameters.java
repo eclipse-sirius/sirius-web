@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -40,7 +41,8 @@ public record DiagramEventProcessorParameters(
         IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
         IRepresentationPersistenceService representationPersistenceService,
         IRepresentationSearchService representationSearchService,
-        List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders
+        List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders,
+        List<IDiagramEventConsumer> diagramEventConsumers
 ) {
 
     public DiagramEventProcessorParameters {
@@ -54,6 +56,7 @@ public record DiagramEventProcessorParameters(
         Objects.requireNonNull(representationPersistenceService);
         Objects.requireNonNull(representationSearchService);
         Objects.requireNonNull(diagramInputReferencePositionProviders);
+        Objects.requireNonNull(diagramEventConsumers);
     }
 
     public static Builder newDiagramEventProcessorParameters() {
@@ -88,6 +91,8 @@ public record DiagramEventProcessorParameters(
         private IRepresentationSearchService representationSearchService;
 
         private List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
+
+        private List<IDiagramEventConsumer> diagramEventConsumers;
 
         private Builder() {
             // Prevent instantiation
@@ -143,6 +148,11 @@ public record DiagramEventProcessorParameters(
             return this;
         }
 
+        public Builder diagramEventConsumers(List<IDiagramEventConsumer> diagramEventConsumers) {
+            this.diagramEventConsumers = Objects.requireNonNull(diagramEventConsumers);
+            return this;
+        }
+
         public DiagramEventProcessorParameters build() {
             return new DiagramEventProcessorParameters(
                     this.editingContext,
@@ -154,7 +164,8 @@ public record DiagramEventProcessorParameters(
                     this.representationRefreshPolicyRegistry,
                     this.representationPersistenceService,
                     this.representationSearchService,
-                    this.diagramInputReferencePositionProviders
+                    this.diagramInputReferencePositionProviders,
+                    this.diagramEventConsumers
             );
         }
     }

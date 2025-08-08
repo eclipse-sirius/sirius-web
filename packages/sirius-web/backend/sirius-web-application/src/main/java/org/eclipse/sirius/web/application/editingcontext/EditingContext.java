@@ -20,6 +20,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -40,6 +41,8 @@ public class EditingContext implements IEMFEditingContext {
     private final List<View> views;
 
     private final Map<String, ChangeDescription> inputId2change = new HashMap<>();
+
+    private final Map<String, IRepresentationChange> inputId2RepresentationChange = new HashMap<>();
 
     private final ChangeRecorder changeRecorder;
 
@@ -68,19 +71,22 @@ public class EditingContext implements IEMFEditingContext {
     public List<View> getViews() {
         return this.views;
     }
-
-    @Override
-    public void dispose() {
-        this.changeRecorder.dispose();
-        IEMFEditingContext.super.dispose();
-    }
-
     public ChangeRecorder getChangeRecorder() {
         return this.changeRecorder;
     }
 
     public Map<String, ChangeDescription> getInputId2change() {
         return this.inputId2change;
+    }
+
+    public Map<String, IRepresentationChange> getInputId2RepresentationChange() {
+        return this.inputId2RepresentationChange;
+    }
+
+    @Override
+    public void dispose() {
+        this.changeRecorder.dispose();
+        IEMFEditingContext.super.dispose();
     }
 
 }
