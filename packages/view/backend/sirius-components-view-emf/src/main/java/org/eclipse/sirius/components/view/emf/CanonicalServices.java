@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.emf.services.api.IDefaultLabelFeatureProvider;
 
 /**
@@ -131,4 +134,19 @@ public class CanonicalServices {
         });
     }
 
+    public boolean isAncestorOf(org.eclipse.sirius.components.representations.Element parentNodeElement, org.eclipse.sirius.components.representations.Element childNodeElement,
+            DiagramRenderingCache cache) {
+        boolean result = false;
+        if (parentNodeElement.getProps() instanceof NodeElementProps parentNodeProps
+                && childNodeElement.getProps() instanceof NodeElementProps childNodeProps) {
+            List<String> ancestorIds = cache.getAncestors(childNodeProps.getId()).stream()
+                    .map(org.eclipse.sirius.components.representations.Element::getProps)
+                    .filter(NodeElementProps.class::isInstance)
+                    .map(NodeElementProps.class::cast)
+                    .map(NodeElementProps::getId)
+                    .toList();
+            result = ancestorIds.contains(parentNodeProps.getId());
+        }
+        return result;
+    }
 }
