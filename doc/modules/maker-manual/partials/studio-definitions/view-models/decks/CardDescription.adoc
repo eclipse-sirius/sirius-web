@@ -1,0 +1,11 @@
+= Card Description
+
+A `CardDescription` is a `xref:maker-manual:studio-definitions/view-models/decks.adoc#_deck_element_description[DeckElementDescription]` that describes, in a `Deck` representation, the `Cards` of a `Lane`.
+
+#TODO: Add snapshot of a Deck representation, and highlight Cards in red.#
+
+== Name
+
+== Domain Type
+
+== Description Expression
