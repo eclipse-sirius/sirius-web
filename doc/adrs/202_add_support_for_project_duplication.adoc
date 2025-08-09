@@ -41,7 +41,7 @@ union DuplicateProjectPayload = ErrorPayload | DuplicateProjectSuccessPayload
 
 type DuplicateProjectSuccessPayload {
   id: ID!
-  project: Project!
+  newProject: Project!
 }
 ----
 

@@ -25,6 +25,7 @@ export const ProjectAndRepresentationFragment = gql`
       canRename
       canDelete
       canEdit
+      canDuplicate
       settings {
         canView
       }
