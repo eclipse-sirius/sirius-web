@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,27 +10,28 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface NewProjectViewState {
-  name: string;
-  projectId: string;
+export interface UploadProjectViewState {
+  file: File | null;
+  loading: boolean;
+  newProjectId: string | null;
 }
 
-export interface GQLCreateProjectMutationData {
-  createProject: GQLCreateProjectPayload;
+export interface GQLUploadProjectMutationData {
+  uploadProject: GQLUploadProjectPayload;
 }
 
-export interface GQLCreateProjectPayload {
+export interface GQLUploadProjectPayload {
   __typename: string;
 }
 
-export interface GQLCreateProjectSuccessPayload extends GQLCreateProjectPayload {
+export interface GQLErrorPayload extends GQLUploadProjectPayload {
+  message: string;
+}
+
+export interface GQLUploadProjectSuccessPayload extends GQLUploadProjectPayload {
   project: GQLProject;
 }
 
 export interface GQLProject {
   id: string;
-}
-
-export interface GQLErrorPayload extends GQLCreateProjectPayload {
-  message: string;
 }
