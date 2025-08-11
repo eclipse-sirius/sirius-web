@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.interpreter;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 
 import java.time.Duration;
 import java.util.LinkedHashMap;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -168,7 +167,7 @@ public class AQLInterpreter {
     private void initExpressionsCache() {
         IQueryBuilderEngine builder = QueryParsing.newBuilder();
         int maxCacheSize = 500;
-        this.parsedExpressions = CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(CacheLoader.from(builder::build));
+        this.parsedExpressions = Caffeine.newBuilder().maximumSize(maxCacheSize).build(builder::build);
     }
 
     public Result evaluateExpression(Map<String, Object> variables, String expressionBody) {
@@ -177,37 +176,32 @@ public class AQLInterpreter {
             expression = expression.substring(AQL_PREFIX.length());
         }
 
-        try {
-            long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
-            AstResult build = this.parsedExpressions.get(expression);
-            IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(this.queryEnvironment);
-            EvaluationResult evalResult = evaluationEngine.eval(build, variables);
+        AstResult build = this.parsedExpressions.get(expression);
+        IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(this.queryEnvironment);
+        EvaluationResult evalResult = evaluationEngine.eval(build, variables);
 
-            BasicDiagnostic diagnostic = new BasicDiagnostic();
-            if (Diagnostic.OK != build.getDiagnostic().getSeverity()) {
-                diagnostic.merge(build.getDiagnostic());
-            }
-            if (Diagnostic.OK != evalResult.getDiagnostic().getSeverity()) {
-                diagnostic.merge(evalResult.getDiagnostic());
-            }
-
-            this.log(expressionBody, diagnostic);
-
-            long end = System.currentTimeMillis();
-            if (end - start > 200) {
-                this.logger.atDebug()
-                        .setMessage("{}ms to execute the expression {}")
-                        .addArgument(end - start)
-                        .addArgument(expressionBody)
-                        .log();
-            }
-
-            return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
-        } catch (ExecutionException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+        BasicDiagnostic diagnostic = new BasicDiagnostic();
+        if (Diagnostic.OK != build.getDiagnostic().getSeverity()) {
+            diagnostic.merge(build.getDiagnostic());
         }
-        return new Result(Optional.empty(), Status.ERROR);
+        if (Diagnostic.OK != evalResult.getDiagnostic().getSeverity()) {
+            diagnostic.merge(evalResult.getDiagnostic());
+        }
+
+        this.log(expressionBody, diagnostic);
+
+        long end = System.currentTimeMillis();
+        if (end - start > 200) {
+            this.logger.atDebug()
+                    .setMessage("{}ms to execute the expression {}")
+                    .addArgument(end - start)
+                    .addArgument(expressionBody)
+                    .log();
+        }
+
+        return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
     }
 
     private void log(String expression, Diagnostic diagnostic) {
