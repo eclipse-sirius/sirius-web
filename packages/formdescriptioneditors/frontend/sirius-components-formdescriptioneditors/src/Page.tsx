@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,8 @@
 import { useMutation } from '@apollo/client';
 import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddGroupInput,
@@ -203,15 +203,17 @@ export const Page = ({ page }: PageProps) => {
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a group here'}</Typography>
       </div>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {message ? (
+        <Toast
+          open
+          message={message}
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, message: null };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

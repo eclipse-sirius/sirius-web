@@ -49,16 +49,16 @@ const useStyles = makeStyles<ButtonStyleProps>()(
       lineHeight: 1.25,
       backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
       color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       '&:hover': {
         backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
         color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
     },
@@ -67,16 +67,16 @@ const useStyles = makeStyles<ButtonStyleProps>()(
       lineHeight: 1.25,
       backgroundColor: theme.palette.secondary.light,
       color: 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       '&:hover': {
         backgroundColor: theme.palette.secondary.main,
         color: 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
     },
@@ -148,7 +148,7 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
   };
 
   useEffect(() => {
-    let newURL: string = null;
+    let newURL: string | null = null;
     let validURL: boolean = true;
     if (!toolbarAction.imageURL) {
       validURL = false;
@@ -158,12 +158,12 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
       newURL = httpOrigin + toolbarAction.imageURL;
     }
 
-    const buttonLabel: string = toolbarAction.buttonLabel;
+    const buttonLabel: string | null = toolbarAction.buttonLabel;
     const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
-    let newButtonLabel: string = null;
+    let newButtonLabel: string | null = null;
     if (validURL && isButtonLabelBlank) {
       newButtonLabel = null;
-    } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {
+    } else if (!isButtonLabelBlank && !buttonLabel?.startsWith('aql:')) {
       newButtonLabel = buttonLabel;
     } else {
       newButtonLabel = 'Lorem';
@@ -389,18 +389,20 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
           {state.buttonLabel}
         </Button>
       </div>
-      <Toast
-        message={state.message}
-        open={!!state.message}
-        onClose={() =>
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: null,
-            };
-          })
-        }
-      />
+      {state.message ? (
+        <Toast
+          open
+          message={state.message}
+          onClose={() =>
+            setState((prevState) => {
+              return {
+                ...prevState,
+                message: null,
+              };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

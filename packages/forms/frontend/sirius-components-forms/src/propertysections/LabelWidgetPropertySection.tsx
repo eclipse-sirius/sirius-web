@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,10 +22,10 @@ import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 const useStyle = makeStyles<LabelStyleProps>()(
   (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
     style: {
-      color: color ? getCSSColor(color, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      color: color ? getCSSColor(color, theme) : undefined,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       verticalAlign: 'baseline',
       alignItems: 'center',

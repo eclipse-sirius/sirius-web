@@ -46,7 +46,7 @@ const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()((theme, { flexD
     margin: borderStyle ? theme.spacing(0.5) : 0,
     padding: borderStyle ? theme.spacing(0.5) : 0,
     borderWidth: borderStyle?.size || 1,
-    borderColor: getCSSColor(borderStyle?.color, theme) || 'gray',
+    borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'gray',
     borderStyle: borderStyle?.lineStyle || 'solid',
     borderRadius: borderStyle?.radius || 0,
   },
@@ -252,15 +252,17 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
       </div>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {message ? (
+        <Toast
+          open
+          message={message}
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, message: null };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

@@ -210,7 +210,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
     nodes = [
       {
         id: 'none',
-        parentId: null,
+        parentId: '',
         label: 'None',
         kind: 'siriusComponents://unknown',
         iconURL: [],

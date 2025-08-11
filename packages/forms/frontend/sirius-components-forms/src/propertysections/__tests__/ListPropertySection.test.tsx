@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
 import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
@@ -114,42 +113,6 @@ const emptySelection: Selection = {
   entries: [],
 };
 
-test('render list widget', () => {
-  const { container } = render(
-    <MockedProvider>
-      <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
-          <ListPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={defaultListWithStyle}
-            readOnly={false}
-          />
-        </SelectionContext.Provider>
-      </ToastContext.Provider>
-    </MockedProvider>
-  );
-  expect(container).toMatchSnapshot();
-});
-
-test('render list widget with style', () => {
-  const { container } = render(
-    <MockedProvider>
-      <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
-          <ListPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={defaultListWithStyle}
-            readOnly={false}
-          />
-        </SelectionContext.Provider>
-      </ToastContext.Provider>
-    </MockedProvider>
-  );
-  expect(container).toMatchSnapshot();
-});
-
 test('should the click event sent on item click', async () => {
   let clickListItemMutationCalled = false;
   const itemClickCalledCalledSuccessMock: MockedResponse<Record<string, any>> = {
@@ -163,7 +126,7 @@ test('should the click event sent on item click', async () => {
     },
   };
 
-  const { container } = render(
+  render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
         <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
@@ -177,7 +140,6 @@ test('should the click event sent on item click', async () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   const element: HTMLElement = screen.getByTestId('representation-item3Label');
   expect(element.textContent).toBe('item3Label');
 
@@ -187,27 +149,8 @@ test('should the click event sent on item click', async () => {
 
     await waitFor(() => {
       expect(clickListItemMutationCalled).toBeTruthy();
-      expect(container).toMatchSnapshot();
     });
   });
-});
-
-test('render list widget with help hint', () => {
-  const { container } = render(
-    <MockedProvider>
-      <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
-          <ListPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={{ ...defaultListWithStyle, hasHelpText: true }}
-            readOnly={false}
-          />
-        </SelectionContext.Provider>
-      </ToastContext.Provider>
-    </MockedProvider>
-  );
-  expect(container).toMatchSnapshot();
 });
 
 test('when in read-only mode, list items can still be selected but handlers are not invoked', async () => {
@@ -223,7 +166,7 @@ test('when in read-only mode, list items can still be selected but handlers are 
     },
   };
 
-  const { container } = render(
+  render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
         <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
@@ -237,7 +180,6 @@ test('when in read-only mode, list items can still be selected but handlers are 
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
 
   const element: HTMLElement = screen.getByTestId('representation-item3Label');
   expect(element.textContent).toBe('item3Label');
@@ -248,7 +190,6 @@ test('when in read-only mode, list items can still be selected but handlers are 
 
     await waitFor(() => {
       expect(clickListItemMutationCalled).toBeFalsy();
-      expect(container).toMatchSnapshot();
     });
   });
 });

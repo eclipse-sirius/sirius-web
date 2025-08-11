@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,8 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddToolbarActionInput,
@@ -193,7 +193,7 @@ export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsPr
           </IconButton>
         </Tooltip>
       </div>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
+      {message ? <Toast open message={message} onClose={() => setMessage(null)} /> : null}
     </div>
   );
 };

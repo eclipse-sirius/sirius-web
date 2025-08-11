@@ -44,18 +44,18 @@ const useStyle = makeStyles<ButtonStyleProps>()(
     style: {
       backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
       color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       paddingTop: theme.spacing(0.5),
       paddingBottom: theme.spacing(0.5),
       '&:hover': {
         backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
         color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
       '&.Mui-disabled': {
@@ -167,15 +167,17 @@ export const SplitButtonPropertySection = ({
   }, [error, data]);
 
   const handleClick = () => {
-    const button: GQLButton = widget.actions[state.selectedIndex];
-    const input: GQLPushButtonInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      buttonId: button.id,
-    };
-    const variables: GQLPushButtonMutationVariables = { input };
-    pushButton({ variables });
+    const button: GQLButton | null = widget.actions[state.selectedIndex] ?? null;
+    if (button) {
+      const input: GQLPushButtonInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        buttonId: button.id,
+      };
+      const variables: GQLPushButtonMutationVariables = { input };
+      pushButton({ variables });
+    }
   };
 
   const handleMenuItemClick = (_event, index) => {
@@ -207,16 +209,16 @@ export const SplitButtonPropertySection = ({
           variant="contained"
           color="primary"
           onClick={handleClick}
-          disabled={readOnly || widget.readOnly || widget.actions[state.selectedIndex].readOnly}
-          classes={{ root: classes[state.selectedIndex].style }}>
-          {widget.actions[state.selectedIndex].imageURL?.length > 0 ? (
+          disabled={readOnly || widget.readOnly || widget.actions[state.selectedIndex]?.readOnly}
+          classes={{ root: classes[state.selectedIndex]?.style }}>
+          {widget.actions[state.selectedIndex]?.imageURL?.length ?? 0 > 0 ? (
             <img
-              className={classes[state.selectedIndex].icon}
-              alt={widget.actions[state.selectedIndex].label}
-              src={httpOrigin + widget.actions[state.selectedIndex].imageURL}
+              className={classes[state.selectedIndex]?.icon}
+              alt={widget.actions[state.selectedIndex]?.label}
+              src={httpOrigin + widget.actions[state.selectedIndex]?.imageURL}
             />
           ) : null}
-          {widget.actions[state.selectedIndex].buttonLabel}
+          {widget.actions[state.selectedIndex]?.buttonLabel}
         </Button>
         <Button
           color="primary"
@@ -228,7 +230,7 @@ export const SplitButtonPropertySection = ({
           role={'show-actions'}
           disabled={readOnly || widget.readOnly}
           onClick={handleToggle}
-          classes={{ root: classes[state.selectedIndex].style }}>
+          classes={{ root: classes[state.selectedIndex]?.style }}>
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
@@ -248,10 +250,10 @@ export const SplitButtonPropertySection = ({
                       key={index}
                       selected={index === state.selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
-                      classes={{ root: classes[index].style }}
-                      disabled={readOnly || widget.readOnly || widget.actions[index].readOnly}>
-                      {option.imageURL?.length > 0 ? (
-                        <img className={classes[index].icon} alt={option.label} src={httpOrigin + option.imageURL} />
+                      classes={{ root: classes[index]?.style }}
+                      disabled={readOnly || widget.readOnly || widget.actions[index]?.readOnly}>
+                      {option.imageURL?.length ?? 0 > 0 ? (
+                        <img className={classes[index]?.icon} alt={option.label} src={httpOrigin + option.imageURL} />
                       ) : null}
                       {option.buttonLabel}
                     </MenuItem>
