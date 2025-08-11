@@ -42,10 +42,10 @@ const useStyle = makeStyles<DateTimeStyleProps>()(
     };
     return {
       inputStyle: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
       },
       propertySectionLabel: {
         marginTop: theme.spacing(0.5),

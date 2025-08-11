@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,11 +35,11 @@ const useStyles = makeStyles<SelectStyleProps>()(
     };
     return {
       style: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
       selected: {
@@ -86,12 +86,14 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    let cleanup = undefined;
+    let cleanup = () => {};
 
-    if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {
+    if (selection.entries.find((entry) => entry.id === widget.id)) {
       const timeoutId = setTimeout(function () {
-        // added a timeout to compensate for a problem with MaterialUI's SelectInput component on focus while the element is not yet rendered
-        ref.current.focus();
+        if (ref.current) {
+          // added a timeout to compensate for a problem with MaterialUI's SelectInput component on focus while the element is not yet rendered
+          ref.current.focus();
+        }
       }, 50);
 
       setSelected(true);

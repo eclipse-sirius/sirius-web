@@ -125,7 +125,7 @@ const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
 }));
 
 const isFormDescriptionEditorRefreshedEventPayload = (
-  payload: GQLFormDescriptionEditorEventPayload | null
+  payload: GQLFormDescriptionEditorEventPayload
 ): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
   payload && payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
 
@@ -148,7 +148,10 @@ export const FormDescriptionEditorRepresentation = ({
   } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
 
   useEffect(() => {
-    if (isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)) {
+    if (
+      formDescriptionEditorEventPayload &&
+      isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)
+    ) {
       setState((prevState) => ({
         ...prevState,
         formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
@@ -272,14 +275,16 @@ export const FormDescriptionEditorRepresentation = ({
     );
   }
 
+  if (!state.formDescriptionEditor || loading) {
+    return (
+      <div className={classes.formDescriptionEditor}>
+        <RepresentationLoadingIndicator />
+      </div>
+    );
+  }
+
   return (
     <Box>
-      {!state.formDescriptionEditor || loading ? (
-        <div className={classes.formDescriptionEditor}>
-          <RepresentationLoadingIndicator />
-        </div>
-      ) : null}
-
       <FormDescriptionEditorContextProvider
         editingContextId={editingContextId}
         representationId={representationId}

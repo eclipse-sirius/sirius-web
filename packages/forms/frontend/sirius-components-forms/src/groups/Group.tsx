@@ -28,7 +28,7 @@ const useGroupStyles = makeStyles<GroupStyleProps>()((theme, { borderStyle }) =>
     margin: borderStyle ? theme.spacing(0.5) : 0,
     padding: borderStyle ? theme.spacing(0.5) : 0,
     borderWidth: borderStyle?.size || 0,
-    borderColor: getCSSColor(borderStyle?.color, theme) || 'transparent',
+    borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'transparent',
     borderStyle: borderStyle?.lineStyle || 'solid',
     borderRadius: borderStyle?.radius || 0,
   },
@@ -85,7 +85,7 @@ export const Group = ({ editingContextId, formId, group, readOnly }: GroupProps)
     setVisibleWidgetIds(group.widgets.map((widget) => widget.id));
   }, [group]);
 
-  let widgetSelector = undefined;
+  let widgetSelector: JSX.Element | null = null;
   if (group.displayMode === 'TOGGLEABLE_AREAS') {
     widgetSelector = (
       <ToggleButtonGroup value={visibleWidgetIds} onChange={(_, newVisibleIds) => setVisibleWidgetIds(newVisibleIds)}>
@@ -105,7 +105,7 @@ export const Group = ({ editingContextId, formId, group, readOnly }: GroupProps)
     );
   }
 
-  let toolbar = null;
+  let toolbar: JSX.Element | null = null;
   if (group.toolbarActions?.length > 0) {
     toolbar = (
       <div className={classes.toolbar}>

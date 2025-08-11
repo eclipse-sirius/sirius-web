@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,12 @@
  *******************************************************************************/
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { FormProps, FormState } from './Form.types';
+import { GQLPage } from './FormEventFragments.types';
 
 const useFormStyles = makeStyles()((theme) => ({
   form: {
@@ -75,27 +76,27 @@ export const Form = ({ editingContextId, form, readOnly }: FormProps) => {
   const { classes } = useFormStyles();
   const { id, pages } = form;
 
-  const [state, setState] = useState<FormState>({ selectedPage: pages[0], pages });
+  const [state, setState] = useState<FormState>({ selectedPage: pages[0] ?? null, pages });
 
   useEffect(() => {
     setState(() => {
-      const selectedPage = pages.find((page) => page.id === state.selectedPage?.id);
+      const selectedPage: GQLPage | null = pages.find((page) => page.id === state.selectedPage?.id) ?? null;
       if (selectedPage) {
         return { selectedPage, pages };
       }
-      return { selectedPage: pages[0], pages };
+      return { selectedPage: pages[0] ?? null, pages };
     });
-  }, [pages, state.selectedPage.id]);
+  }, [pages, state.selectedPage?.id]);
 
   const onChangeTab = (_: React.ChangeEvent<{}>, value: string) => {
-    const selectedPage = pages.find((page) => page.id === value);
+    const selectedPage: GQLPage | null = pages.find((page) => page.id === value) ?? null;
     setState((prevState) => {
       return { ...prevState, selectedPage };
     });
   };
 
   let selectedPageToolbar: JSX.Element | null = null;
-  if (state.selectedPage?.toolbarActions?.length > 0) {
+  if (state.selectedPage && state.selectedPage.toolbarActions?.length > 0) {
     selectedPageToolbar = (
       <div className={classes.toolbar}>
         {state.selectedPage.toolbarActions.map((toolbarAction) => (
@@ -118,7 +119,7 @@ export const Form = ({ editingContextId, form, readOnly }: FormProps) => {
       <div className={classes.pagesListAndToolbar}>
         <Tabs
           classes={{ root: classes.tabsRoot }}
-          value={state.selectedPage.id}
+          value={state.selectedPage?.id}
           onChange={onChangeTab}
           variant={variant}
           scrollButtons

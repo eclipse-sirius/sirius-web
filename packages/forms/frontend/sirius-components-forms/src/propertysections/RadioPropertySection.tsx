@@ -61,10 +61,10 @@ const useRadioPropertySectionStyles = makeStyles<RadioStyleProps>()(
       flexDirection: 'row',
     },
     style: {
-      color: color ? getCSSColor(color, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      color: color ? getCSSColor(color, theme) : undefined,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
     },
     radio: {
