@@ -24,21 +24,21 @@ import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVot
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for the field LibrariesCapabilities#canView.
+ * Data fetcher for the field LibrariesCapabilities#canList.
  *
  * @author gcoutable
  */
-@QueryDataFetcher(type = "LibrariesCapabilities", field = "canView")
-public class LibrariesCapabilitiesCanViewDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
+@QueryDataFetcher(type = "LibrariesCapabilities", field = "canList")
+public class LibrariesCapabilitiesCanListDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
 
     private final List<ICapabilityVoter> capabilityVoters;
 
-    public LibrariesCapabilitiesCanViewDataFetcher(List<ICapabilityVoter> capabilityVoters) {
+    public LibrariesCapabilitiesCanListDataFetcher(List<ICapabilityVoter> capabilityVoters) {
         this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
     }
 
     @Override
     public Boolean get(DataFetchingEnvironment environment) throws Exception {
-        return this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.LIBRARY, null, SiriusWebCapabilities.Library.VIEW) == CapabilityVote.GRANTED);
+        return this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.LIBRARY, null, SiriusWebCapabilities.Library.LIST) == CapabilityVote.GRANTED);
     }
 }
