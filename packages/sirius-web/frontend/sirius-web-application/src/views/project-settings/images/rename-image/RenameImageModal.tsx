@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,35 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
-import { StateMachine } from 'xstate';
+import React, { useEffect, useState } from 'react';
 import {
   GQLErrorPayload,
   GQLRenameImageMutationData,
   GQLRenameImageMutationVariables,
   GQLRenameImagePayload,
   RenameImageModalProps,
+  RenameImageModalState,
 } from './RenameImageModal.types';
-import {
-  ChangeNameEvent,
-  HandleResponseEvent,
-  HideToastEvent,
-  RenameImageModalContext,
-  RenameImageModalEvent,
-  RenameImageModalStateSchema,
-  RequestImageRenamingEvent,
-  SchemaValue,
-  ShowToastEvent,
-  renameImageModalMachine,
-} from './RenameImageModalMachine';
 
 const renameImageMutation = gql`
   mutation renameImage($input: RenameImageInput!) {
@@ -52,72 +39,58 @@ const renameImageMutation = gql`
   }
 `;
 
+const isNameInvalid = (name: string) => name.trim().length < 3;
+
 const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
-  const [{ value, context }, dispatch] = useMachine<
-    StateMachine<RenameImageModalContext, RenameImageModalStateSchema, RenameImageModalEvent>
-  >(renameImageModalMachine, {
-    context: {
-      name: initialImageName,
-      initialName: initialImageName,
-    },
+  const { addErrorMessage } = useMultiToast();
+  const [state, setState] = useState<RenameImageModalState>({
+    name: initialImageName,
   });
-  const { toast, renameImageModal } = value as SchemaValue;
-  const { name, nameIsInvalid, nameMessage, message } = context;
 
   const onNewName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
-    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name };
-    dispatch(changeNameEvent);
+    setState((prevState) => ({
+      ...prevState,
+      name: name,
+    }));
   };
 
   const [renameImage, { loading, data, error }] = useMutation<GQLRenameImageMutationData>(renameImageMutation);
   useEffect(() => {
     if (!loading) {
       if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: error.message,
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(error.message);
       }
       if (data) {
-        const event: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(event);
-
         const { renameImage } = data;
         if (isErrorPayload(renameImage)) {
           const { message } = renameImage;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addErrorMessage(message);
+          onClose();
+        } else {
+          onImageRenamed();
         }
       }
     }
-  }, [loading, data, error, dispatch]);
+  }, [loading, data, error]);
 
   const onRenameImage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const requestImageRenamingEvent: RequestImageRenamingEvent = { type: 'REQUEST_IMAGE_RENAMING' };
-    dispatch(requestImageRenamingEvent);
-
     event.preventDefault();
     const variables: GQLRenameImageMutationVariables = {
       input: {
         id: crypto.randomUUID(),
         imageId,
-        newLabel: name,
+        newLabel: state.name,
       },
     };
     renameImage({ variables });
   };
 
-  useEffect(() => {
-    if (renameImageModal === 'success') {
-      onImageRenamed();
-    }
-  }, [renameImageModal, onImageRenamed]);
-
+  const isError = isNameInvalid(state.name);
+  const isInvalid = isError || state.name === initialImageName;
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
@@ -125,10 +98,10 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
         <DialogContent>
           <TextField
             variant="standard"
-            value={name}
+            value={state.name}
+            error={isError}
+            helperText="The name must contain at least 3 characters"
             onChange={onNewName}
-            error={nameIsInvalid}
-            helperText={nameMessage}
             label="Name"
             placeholder="Enter the new image name"
             data-testid="name"
@@ -139,19 +112,14 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
         <DialogActions>
           <Button
             variant="contained"
-            disabled={renameImageModal !== 'valid'}
             onClick={onRenameImage}
             color="primary"
-            data-testid="rename-image">
+            data-testid="rename-image"
+            disabled={isInvalid}>
             Rename
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };
