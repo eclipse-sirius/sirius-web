@@ -46,10 +46,10 @@ public class ViewerCapabilitiesControllerTests extends AbstractIntegrationTests 
         var result = this.viewerCapabilitiesQueryRunner.run(Map.of());
         boolean canCreateProjects = JsonPath.read(result, "$.data.viewer.capabilities.projects.canCreate");
         boolean canUploadProjects = JsonPath.read(result, "$.data.viewer.capabilities.projects.canUpload");
-        boolean canViewLibraries = JsonPath.read(result, "$.data.viewer.capabilities.libraries.canView");
+        boolean canListLibraries = JsonPath.read(result, "$.data.viewer.capabilities.libraries.canList");
         assertThat(canCreateProjects).isTrue();
         assertThat(canUploadProjects).isFalse();
-        assertThat(canViewLibraries).isTrue();
+        assertThat(canListLibraries).isTrue();
     }
 
 }

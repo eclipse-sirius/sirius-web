@@ -36,5 +36,5 @@ export interface GQLProjectsCapabilities {
 }
 
 export interface GQLLibrariesCapabilities {
-  canView: boolean;
+  canList: boolean;
 }

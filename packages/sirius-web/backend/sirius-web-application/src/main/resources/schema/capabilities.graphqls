@@ -13,7 +13,7 @@ type ProjectsCapabilities {
 }
 
 type LibrariesCapabilities {
-  canView: Boolean!
+  canList: Boolean!
 }
 
 extend type Project {

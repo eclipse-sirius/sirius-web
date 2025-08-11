@@ -21,7 +21,7 @@ export const ViewerFragment = gql`
         canUpload
       }
       libraries {
-        canView
+        canList
       }
     }
   }
