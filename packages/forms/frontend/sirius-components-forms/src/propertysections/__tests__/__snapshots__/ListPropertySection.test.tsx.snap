@@ -12,7 +12,7 @@ exports[`render list widget 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -29,10 +29,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -62,10 +62,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -95,10 +95,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -145,7 +145,7 @@ exports[`render list widget with help hint 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -180,10 +180,10 @@ exports[`render list widget with help hint 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -213,10 +213,10 @@ exports[`render list widget with help hint 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -246,10 +246,10 @@ exports[`render list widget with help hint 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -296,7 +296,7 @@ exports[`render list widget with style 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -313,10 +313,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -346,10 +346,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -379,10 +379,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -429,7 +429,7 @@ exports[`should the click event sent on item click 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -446,10 +446,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -479,10 +479,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -512,10 +512,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -562,7 +562,7 @@ exports[`should the click event sent on item click 2`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -579,10 +579,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -612,10 +612,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -645,10 +645,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -695,7 +695,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -712,10 +712,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -746,10 +746,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -780,10 +780,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
@@ -831,7 +831,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
         >
           myList
         </h6>
@@ -848,10 +848,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -882,10 +882,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -916,10 +916,10 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1syp4v4-MuiTableCell-root-cell"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-13enoe3-MuiTypography-root-canBeSelectedItem-style"
               data-testid="representation-item3Label"
             >
               item3Label
