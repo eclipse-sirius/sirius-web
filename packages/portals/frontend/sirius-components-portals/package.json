@@ -39,8 +39,6 @@
     "react-dom": "18.3.1",
     "react-grid-layout": "1.4.4",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1",
-    "@xstate/react": "3.0.0",
     "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
@@ -54,8 +52,6 @@
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "5.0.0",
     "@vitest/coverage-v8": "3.2.4",
-    "xstate": "4.32.1",
-    "@xstate/react": "3.0.0",
     "react-resizable-panels": "3.0.2",
     "jsdom": "16.7.0",
     "graphql": "16.8.1",
