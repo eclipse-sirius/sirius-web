@@ -20,7 +20,8 @@
 - [releng] Switch to vite 7.1.1 and @vitejs/plugin-react 5.0.0
 - [releng] Switch to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
 - [releng] Switch to @types/node 22.16.0 to match the version of node that we are using
-
+- [releng] Removed the dependency to Google Guava, which was only used in a single location in `sirius-components-interpreter`.
+The code in question now use `com.github.ben-manes.caffeine` instead, the alternative https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/cache/CacheBuilder.html[recommended by Guava themselves].
 
 === Bug fixes
 
@@ -34,7 +35,7 @@
 Improve how the palette is closed and how it is placed on the viewport after resizing the window.
 - https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [core] Improve the initial fix.
 Stop the propagation on the dialog instead of the input.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4865[#4865] [releng] Remove the use of Google Guava.
 
 == v2025.8.0
 
