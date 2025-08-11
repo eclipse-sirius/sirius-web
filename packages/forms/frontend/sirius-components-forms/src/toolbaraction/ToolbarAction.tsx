@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,16 +37,16 @@ const useStyle = makeStyles<ToolbarActionStyleProps>()(
       lineHeight: 1.25,
       backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
       color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       '&:hover': {
         backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
         color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
     },
@@ -133,10 +133,14 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
   };
 
   const getImageURL = (widget: GQLButton) => {
-    if (widget.imageURL.startsWith('http://') || widget.imageURL.startsWith('https://')) {
-      return widget.imageURL;
+    let imageURL: string = '';
+    if (widget.imageURL) {
+      if (widget.imageURL.startsWith('http://') || widget.imageURL.startsWith('https://')) {
+        imageURL = widget.imageURL;
+      }
+      imageURL = httpOrigin + widget.imageURL;
     }
-    return httpOrigin + widget.imageURL;
+    return imageURL;
   };
 
   return (
@@ -150,7 +154,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
           onClick={onClick}
           disabled={readOnly || widget.readOnly}
           classes={{ root: classes.style }}>
-          {widget.imageURL?.length > 0 ? (
+          {widget.imageURL?.length ?? 0 > 0 ? (
             <img className={classes.icon} width="16" height="16" alt={widget.label} src={getImageURL(widget)} />
           ) : null}
           {widget.buttonLabel}

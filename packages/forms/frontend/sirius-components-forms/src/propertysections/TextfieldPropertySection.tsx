@@ -65,11 +65,11 @@ const useStyle = makeStyles<TextfieldStyleProps>()(
     };
     return {
       style: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
       input: {
@@ -299,20 +299,22 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     }
     if (widget.supportsCompletion && controlDown && event.key === ' ') {
       const cursorPosition = (event.target as HTMLInputElement).selectionStart;
-      const variables: GQLCompletionProposalsQueryVariables = {
-        editingContextId,
-        formId,
-        widgetId: widget.id,
-        currentText: value,
-        cursorPosition,
-      };
-      getCompletionProposals({ variables });
-      const requestCompletionEvent: RequestCompletionEvent = {
-        type: 'COMPLETION_REQUESTED',
-        currentText: value,
-        cursorPosition,
-      };
-      dispatch(requestCompletionEvent);
+      if (cursorPosition) {
+        const variables: GQLCompletionProposalsQueryVariables = {
+          editingContextId,
+          formId,
+          widgetId: widget.id,
+          currentText: value,
+          cursorPosition,
+        };
+        getCompletionProposals({ variables });
+        const requestCompletionEvent: RequestCompletionEvent = {
+          type: 'COMPLETION_REQUESTED',
+          currentText: value,
+          cursorPosition,
+        };
+        dispatch(requestCompletionEvent);
+      }
     }
   };
   const onKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
@@ -330,8 +332,8 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     }
   }, [caretPos, inputElt.current]);
 
-  let proposalsList = null;
-  if (proposals) {
+  let proposalsList: JSX.Element | null = null;
+  if (proposals && inputElt.current && completionRequest) {
     const dismissProposals = () => {
       const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
       dispatch(dismissCompletionEvent);

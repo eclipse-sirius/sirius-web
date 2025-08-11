@@ -47,11 +47,11 @@ const useStyle = makeStyles<SelectStyleProps>()(
     };
     return {
       style: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
       iconRoot: {

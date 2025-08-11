@@ -355,7 +355,7 @@ export interface GQLFlexboxContainer extends GQLContainer {
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   flexGrow: number;
-  borderStyle?: GQLContainerBorderStyle;
+  borderStyle: GQLContainerBorderStyle | null;
 }
 
 export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';

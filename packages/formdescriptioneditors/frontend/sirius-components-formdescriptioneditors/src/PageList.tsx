@@ -113,7 +113,7 @@ export const PageList = () => {
 
   const { pages } = formDescriptionEditor;
 
-  const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0], pages });
+  const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0] ?? null, pages });
   const { message } = state;
 
   const { selection, setSelection } = useSelection();
@@ -124,25 +124,26 @@ export const PageList = () => {
     if (!entry) {
       return;
     }
-    let pageToSelect: GQLPage;
-    pageToSelect = state.pages.find((page) => entry.id === page.id);
+    let pageToSelect: GQLPage | null = state.pages.find((page) => entry.id === page.id) ?? null;
     if (!pageToSelect) {
-      pageToSelect = state.pages.find((page) => page.groups.some((group) => entry.id === group.id));
+      pageToSelect = state.pages.find((page) => page.groups.some((group) => entry.id === group.id)) ?? null;
     }
     if (!pageToSelect) {
-      pageToSelect = state.pages.find((page) =>
-        page.groups.some((group) => group.toolbarActions.some((toolbar) => entry.id === toolbar.id))
-      );
+      pageToSelect =
+        state.pages.find((page) =>
+          page.groups.some((group) => group.toolbarActions.some((toolbar) => entry.id === toolbar.id))
+        ) ?? null;
     }
     if (!pageToSelect) {
-      pageToSelect = state.pages.find((page) => page.toolbarActions.some((toolbar) => entry.id === toolbar.id));
+      pageToSelect = state.pages.find((page) => page.toolbarActions.some((toolbar) => entry.id === toolbar.id)) ?? null;
     }
     if (!pageToSelect) {
-      pageToSelect = state.pages.find((page) =>
-        page.groups.some((group) => group.widgets.some((widget) => recursiveWidgetSearch(widget, entry.id)))
-      );
+      pageToSelect =
+        state.pages.find((page) =>
+          page.groups.some((group) => group.widgets.some((widget) => recursiveWidgetSearch(widget, entry.id)))
+        ) ?? null;
     }
-    if (pageToSelect && pageToSelect.id !== state.selectedPage.id) {
+    if (pageToSelect && pageToSelect.id !== state.selectedPage?.id) {
       setState((prevState) => {
         return { ...prevState, selectedPage: pageToSelect };
       });
@@ -151,16 +152,16 @@ export const PageList = () => {
 
   useEffect(() => {
     setState((prevState) => {
-      const selectedPage = pages.find((page) => page.id === state.selectedPage.id);
+      const selectedPage = pages.find((page) => page.id === state.selectedPage?.id) ?? null;
       if (selectedPage) {
         return { ...prevState, selectedPage, pages };
       }
-      return { ...prevState, selectedPage: pages[0], pages };
+      return { ...prevState, selectedPage: pages[0] ?? null, pages };
     });
-  }, [pages, state.selectedPage.id]);
+  }, [pages, state.selectedPage]);
 
   const onChangeTab = (_: React.ChangeEvent<{}>, value: string) => {
-    const selectedPage = pages.find((page) => page.id === value);
+    const selectedPage = pages.find((page) => page.id === value) ?? null;
     setState((prevState) => {
       return { ...prevState, selectedPage };
     });
@@ -252,7 +253,7 @@ export const PageList = () => {
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    if (event.key === 'Delete') {
+    if (event.key === 'Delete' && state.selectedPage) {
       const deletePageInput: GQLDeletePageInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -361,20 +362,20 @@ export const PageList = () => {
     }
   };
 
-  const selectedPageToolbar = (
+  const selectedPageToolbar: JSX.Element | null = state.selectedPage ? (
     <ToolbarActions
       data-testid={`Page-ToolbarActions-${state.selectedPage.id}`}
       toolbarActions={state.selectedPage.toolbarActions}
       containerId={state.selectedPage.id}
     />
-  );
+  ) : null;
 
   return (
     <div>
       <div className={classes.pagesListDropAreaAndToolbar}>
         <Tabs
           classes={{ root: classes.tabsRoot }}
-          value={state.selectedPage.id}
+          value={state.selectedPage?.id}
           onChange={readOnly ? noop : onChangeTab}
           variant="scrollable"
           scrollButtons
@@ -417,16 +418,18 @@ export const PageList = () => {
         </div>
         {selectedPageToolbar}
       </div>
-      <Page page={state.selectedPage} />
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {state.selectedPage ? <Page page={state.selectedPage} /> : null}
+      {message ? (
+        <Toast
+          open
+          message={message}
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, message: null };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

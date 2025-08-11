@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { FormContext } from '../contexts/FormContext';
 import { Form } from '../form/Form';
-import { GQLFormEventPayload } from '../form/FormEventFragments.types';
+import { GQLFormEventPayload, GQLPage } from '../form/FormEventFragments.types';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { FormRepresentationState } from './FormRepresentation.types';
@@ -63,7 +63,7 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
 
   const { payload, complete } = useFormSubscription(editingContextId, representationId);
   useEffect(() => {
-    if (isFormRefreshedEventPayload(payload)) {
+    if (payload && isFormRefreshedEventPayload(payload)) {
       setState((prevState) => ({ ...prevState, form: payload.form }));
     }
   }, [payload]);
@@ -72,37 +72,37 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
 
   let content: JSX.Element | null = null;
   if (state.form) {
+    const { id } = state.form;
     if (state.form.pages.length > 1) {
       content = <Form editingContextId={editingContextId} form={state.form} readOnly={readOnly} />;
     } else if (state.form.pages.length === 1) {
-      let selectedPageToolbar = null;
-      if (state.form.pages[0].toolbarActions?.length > 0) {
-        selectedPageToolbar = (
-          <div className={classes.toolbar}>
-            {state.form.pages[0].toolbarActions.map((toolbarAction) => (
-              <div className={classes.toolbarAction} key={toolbarAction.id}>
-                <ToolbarAction
-                  editingContextId={editingContextId}
-                  formId={state.form.id}
-                  readOnly={readOnly}
-                  widget={toolbarAction}
-                />
-              </div>
-            ))}
+      const page: GQLPage | null = state.form.pages[0] ?? null;
+
+      if (page) {
+        let selectedPageToolbar: JSX.Element | null = null;
+        if (page.toolbarActions?.length ?? 0 > 0) {
+          selectedPageToolbar = (
+            <div className={classes.toolbar}>
+              {page.toolbarActions.map((toolbarAction) => (
+                <div className={classes.toolbarAction} key={toolbarAction.id}>
+                  <ToolbarAction
+                    editingContextId={editingContextId}
+                    formId={id}
+                    readOnly={readOnly}
+                    widget={toolbarAction}
+                  />
+                </div>
+              ))}
+            </div>
+          );
+        }
+        content = (
+          <div data-testid="page" className={classes.page}>
+            {selectedPageToolbar}
+            <Page editingContextId={editingContextId} formId={id} page={page} readOnly={readOnly} />
           </div>
         );
       }
-      content = (
-        <div data-testid="page" className={classes.page}>
-          {selectedPageToolbar}
-          <Page
-            editingContextId={editingContextId}
-            formId={state.form.id}
-            page={state.form.pages[0]}
-            readOnly={readOnly}
-          />
-        </div>
-      );
     }
   }
 

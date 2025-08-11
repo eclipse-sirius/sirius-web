@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
   const { classes } = useStyles();
   const { chart } = widget;
 
-  let chartComponent: JSX.Element | null;
+  let chartComponent: JSX.Element | null = null;
   if (isBarChart(chart)) {
     chartComponent = (
       <div className={classes.chart}>
@@ -44,16 +44,12 @@ export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget
     chartComponent = <PieChart width={300} height={300} chart={chart} />;
   }
 
-  let content: JSX.Element | null;
-  if (chartComponent) {
-    content = (
-      <>
-        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-        {chartComponent}
-      </>
-    );
-  }
-  return <div>{content}</div>;
+  return (
+    <div>
+      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      {chartComponent}
+    </div>
+  );
 };
 
 const isBarChart = (chart: GQLChart): chart is GQLBarChart => {

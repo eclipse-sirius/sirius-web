@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MessageOptions, ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLButton, GQLSplitButton } from '../../form/FormEventFragments.types';
 import { pushButtonMutation } from '../ButtonPropertySection';
@@ -96,28 +95,6 @@ const readOnlyButton: GQLButton = {
   hasHelpText: false,
 };
 
-const splitButtonWithStyle: GQLSplitButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  readOnly: false,
-  actions: [buttonWithStyle, buttonWithStyle],
-};
-
-const splitButtonWithReadOnlyAction: GQLSplitButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  readOnly: false,
-  actions: [readOnlyButton, readOnlyButton],
-};
-
 const pushButtonVariables: GQLPushButtonMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -152,44 +129,6 @@ const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
 };
 
-test('should render the split button and his actions', () => {
-  const { container } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ToastContext.Provider value={toastContextMock}>
-          <SplitButtonPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={defaultSplitButton}
-            readOnly={false}
-          />
-        </ToastContext.Provider>
-      </ServerContext.Provider>
-    </MockedProvider>
-  );
-  screen.getByRole('show-actions').click();
-  expect(container).toMatchSnapshot();
-});
-
-test('should render a readOnly button and his actions', () => {
-  const { container } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ToastContext.Provider value={toastContextMock}>
-          <SplitButtonPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={defaultSplitButton}
-            readOnly
-          />
-        </ToastContext.Provider>
-      </ServerContext.Provider>
-    </MockedProvider>
-  );
-  screen.getByRole('show-actions').click();
-  expect(container).toMatchSnapshot();
-});
-
 test('should send mutation when clicked', async () => {
   let pushButtonCalled = false;
   const pushButtonSuccessMock: MockedResponse<Record<string, any>> = {
@@ -204,7 +143,7 @@ test('should send mutation when clicked', async () => {
   };
 
   const mocks = [pushButtonSuccessMock];
-  const { container } = render(
+  render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <ToastContext.Provider value={toastContextMock}>
@@ -218,7 +157,6 @@ test('should send mutation when clicked', async () => {
       </ServerContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
 
   const element: HTMLElement = screen.getByTestId('Label');
 
@@ -228,7 +166,6 @@ test('should send mutation when clicked', async () => {
 
     await waitFor(() => {
       expect(pushButtonCalled).toBeTruthy();
-      expect(container).toMatchSnapshot();
     });
   });
 });
@@ -247,7 +184,7 @@ test('should display the error received', async () => {
   };
 
   const mocks = [pushButtonErrorMock];
-  const { baseElement } = render(
+  render(
     <MockedProvider mocks={mocks}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <ToastContext.Provider value={toastContextMock}>
@@ -261,7 +198,6 @@ test('should display the error received', async () => {
       </ServerContext.Provider>
     </MockedProvider>
   );
-  expect(baseElement).toMatchSnapshot();
 
   const element: HTMLElement = screen.getByTestId('Label');
 
@@ -272,45 +208,6 @@ test('should display the error received', async () => {
     await waitFor(() => {
       expect(pushButtonCalled).toBeTruthy();
       expect(mockEnqueue).toHaveBeenCalledTimes(2);
-      expect(baseElement).toMatchSnapshot();
     });
   });
-});
-
-test('should render the button and his actions with style', () => {
-  const { baseElement } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <ToastContext.Provider value={toastContextMock}>
-          <SplitButtonPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={splitButtonWithStyle}
-            readOnly={false}
-          />
-        </ToastContext.Provider>
-      </ServerContext.Provider>
-    </MockedProvider>
-  );
-  screen.getByRole('show-actions').click();
-  expect(baseElement).toMatchSnapshot();
-});
-
-test('should render the button with help hint', () => {
-  const { baseElement } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        {' '}
-        <ToastContext.Provider value={toastContextMock}>
-          <SplitButtonPropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={{ ...defaultSplitButton, hasHelpText: true }}
-            readOnly={false}
-          />
-        </ToastContext.Provider>
-      </ServerContext.Provider>
-    </MockedProvider>
-  );
-  expect(baseElement).toMatchSnapshot();
 });

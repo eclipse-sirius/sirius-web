@@ -277,7 +277,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       return;
     }
 
-    let children: GQLWidget[] = null;
+    let children: GQLWidget[] = [];
     if (isGroup(container)) {
       children = (container as GQLGroup).widgets;
     } else if (isFlexboxContainer(container)) {
@@ -367,6 +367,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       flexDirection: 'column',
       flexWrap: 'nowrap',
       flexGrow: 1,
+      borderStyle: null,
       children: (widget as GQLContainer).children,
     };
     widgetElement = (
@@ -378,6 +379,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       flexDirection: 'column',
       flexWrap: 'nowrap',
       flexGrow: 1,
+      borderStyle: null,
       children: (widget as GQLContainer).children,
     };
     widgetElement = (
@@ -517,7 +519,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
           {widgetElement}
         </div>
       </WidgetTooltip>
-      <Toast message={message} open={!!message} onClose={() => setState({ message: null })} />
+      {message ? <Toast open message={message} onClose={() => setState({ message: null })} /> : null}
     </div>
   );
 };
