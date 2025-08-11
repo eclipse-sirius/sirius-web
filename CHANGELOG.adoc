@@ -16,6 +16,8 @@
 
 === Dependency update
 
+- [releng] Remove xstate and @xstate/react dependencies
+
 
 === Bug fixes
 
