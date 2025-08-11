@@ -27,7 +27,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5220[#5220] [diagram] The palette now has a maximum size but not a minimum one.
 Improve how the palette is closed and how it is placed on the viewport after resizing the window.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [core] Improve the initial fix.
+Stop the propagation on the dialog instead of the input.
 
 
 == v2025.8.0
