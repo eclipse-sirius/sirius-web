@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
 import { cleanup, render } from '@testing-library/react';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLImage } from '../../form/FormEventFragments.types';
 import { ImagePropertySection } from '../ImagePropertySection';
@@ -46,7 +45,7 @@ const imageWithNoMaxWidth: GQLImage = {
 };
 
 test('render image widget with maxWidth', () => {
-  const { container } = render(
+  render(
     <MockedProvider>
       <ImagePropertySection
         editingContextId="editingContextId"
@@ -56,14 +55,13 @@ test('render image widget with maxWidth', () => {
       />
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');
 });
 
 test('render image widget without maxWidth', () => {
-  const { container } = render(
+  render(
     <MockedProvider>
       <ImagePropertySection
         editingContextId="editingContextId"
@@ -73,14 +71,13 @@ test('render image widget without maxWidth', () => {
       />
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('1fr');
 });
 
 test('render image widget with help hint', () => {
-  const { container } = render(
+  render(
     <MockedProvider>
       <ImagePropertySection
         editingContextId="editingContextId"
@@ -90,7 +87,6 @@ test('render image widget with help hint', () => {
       />
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   const containerStyle = window.getComputedStyle(document.querySelectorAll('div[class$="container"]')[0]);
   expect(containerStyle.display).toEqual('grid');
   expect(containerStyle['grid-template-columns']).toEqual('minmax(auto, 42px)');

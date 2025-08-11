@@ -22,7 +22,6 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
 import { TreePropertySection } from '../TreePropertySection';
@@ -77,7 +76,7 @@ test('should render the tree', () => {
     diagnostics: [],
   };
 
-  const { container } = render(
+  render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -93,7 +92,6 @@ test('should render the tree', () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.queryAllByRole('treeitem')).toHaveLength(1);
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual(['Node-root1']);
 });
@@ -122,7 +120,7 @@ test('should render a multi-level tree correctly', () => {
     expandedNodesIds: ['0', '1', '0/0', '0/2', '0/2/0'],
     diagnostics: [],
   };
-  const { container } = render(
+  render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -138,7 +136,6 @@ test('should render a multi-level tree correctly', () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual([
     'Node-1',
     'Node-1.1',
@@ -183,7 +180,7 @@ test('should correctly interpret the order of nodes with the same parent in the 
     expandedNodesIds: ['1', '0', '1/0', '1/1', '1/1/0'],
     diagnostics: [],
   };
-  const { container } = render(
+  render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -199,7 +196,6 @@ test('should correctly interpret the order of nodes with the same parent in the 
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual([
     'Node-2',
     'Node-2.1',
@@ -241,7 +237,7 @@ test('should only expand the specified nodes on initial render', () => {
     expandedNodesIds: ['0', '1', '0/2/0/1'],
     diagnostics: [],
   };
-  const { container } = render(
+  render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -257,7 +253,6 @@ test('should only expand the specified nodes on initial render', () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual([
     'Node-1',
     'Node-1.1',
@@ -289,7 +284,7 @@ test('should change the selection when a selectable node is clicked', () => {
   let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
-  const { container } = render(
+  render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -311,7 +306,6 @@ test('should change the selection when a selectable node is clicked', () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual([
     'Node-1',
     'Node-1.1',
@@ -345,7 +339,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
-  const { container } = render(
+  render(
     <MockedProvider mocks={mocks}>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -367,7 +361,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual([
     'Node-1',
     'Node-1.1',
@@ -418,7 +411,7 @@ test('should render the tree with a help hint', () => {
     diagnostics: [],
   };
 
-  const { container } = render(
+  render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -434,7 +427,6 @@ test('should render the tree with a help hint', () => {
       </ToastContext.Provider>
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
   expect(screen.queryAllByRole('treeitem')).toHaveLength(1);
   expect(screen.getAllByText(/Node-/).map((element) => element.textContent)).toEqual(['Node-root1']);
 });

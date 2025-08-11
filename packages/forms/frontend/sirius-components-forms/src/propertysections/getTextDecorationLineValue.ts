@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export const getTextDecorationLineValue = (underline: boolean | null, strikeThrough: boolean | null): string => {
-  let value: string | undefined = null;
+  let value: string | null = null;
   if (underline) {
     if (strikeThrough) {
       value = 'underline line-through';
@@ -25,5 +25,5 @@ export const getTextDecorationLineValue = (underline: boolean | null, strikeThro
       value = 'line-through';
     }
   }
-  return value;
+  return value ?? 'none';
 };

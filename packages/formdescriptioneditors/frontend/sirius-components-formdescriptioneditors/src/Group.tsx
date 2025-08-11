@@ -70,7 +70,7 @@ const useGroupEntryStyles = makeStyles<GroupStyleProps, 'verticalSections' | 'ad
       flexDirection: 'column',
       flexGrow: 1,
       borderWidth: borderStyle ? borderStyle.size : 1,
-      borderColor: borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray',
+      borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) || 'transparent' : 'gray',
       borderStyle: borderStyle?.lineStyle || 'solid',
       borderRadius: borderStyle ? borderStyle.radius : 10,
       paddingTop: '1px',
@@ -433,7 +433,7 @@ export const Group = ({ page, group }: GroupProps) => {
     setVisibleWidgetIds(group.widgets.map((widget: GQLWidget) => widget.id));
   }, [group]);
 
-  let widgetSelector = undefined;
+  let widgetSelector: JSX.Element | null = null;
   if (group.displayMode === 'TOGGLEABLE_AREAS') {
     widgetSelector = (
       <ToggleButtonGroup
@@ -523,15 +523,17 @@ export const Group = ({ page, group }: GroupProps) => {
           </div>
         </div>
       </GroupTooltip>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {message ? (
+        <Toast
+          open
+          message={message}
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, message: null };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };
