@@ -21,6 +21,7 @@
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.6[Spring Boot 3.5.6]
+- [releng] Remove the dependency to xstate
 
 
 === Bug fixes

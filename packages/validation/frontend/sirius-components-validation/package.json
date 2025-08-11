@@ -38,8 +38,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
-    "@xstate/react": "3.0.0",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
@@ -54,8 +52,6 @@
     "prettier": "2.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "@xstate/react": "3.0.0",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "tss-react": "4.9.16",

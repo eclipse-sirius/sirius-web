@@ -37,7 +37,6 @@
     "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",
     "react-draggable": "4.4.6",
-    "@xstate/react": "3.0.0",
     "elkjs": "0.8.2",
     "html-to-image": "1.11.11",
     "pathfinding": "0.4.18",
@@ -47,7 +46,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
@@ -61,7 +59,6 @@
     "react-draggable": "4.4.6",
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "5.0.0",
-    "@xstate/react": "3.0.0",
     "elkjs": "0.8.2",
     "html-to-image": "1.11.11",
     "pathfinding": "0.4.18",
@@ -72,7 +69,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
