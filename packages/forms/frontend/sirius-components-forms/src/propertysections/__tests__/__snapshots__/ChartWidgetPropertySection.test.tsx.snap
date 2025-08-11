@@ -7,7 +7,7 @@ exports[`render pie-chart widget 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myPieChart
       </h6>
@@ -150,7 +150,7 @@ exports[`render pie-chart widget with empty style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myPieChart
       </h6>
@@ -293,7 +293,7 @@ exports[`render pie-chart widget with help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myPieChart
       </h6>
@@ -454,7 +454,7 @@ exports[`render pie-chart widget with style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myPieChart
       </h6>
@@ -597,7 +597,7 @@ exports[`render the bar-chart widget 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myBarChart
       </h6>
@@ -882,7 +882,7 @@ exports[`render the bar-chart widget with empty style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myBarChart
       </h6>
@@ -1167,7 +1167,7 @@ exports[`render the bar-chart widget with help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myBarChart
       </h6>
@@ -1470,7 +1470,7 @@ exports[`render the bar-chart widget with style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myBarChart
       </h6>

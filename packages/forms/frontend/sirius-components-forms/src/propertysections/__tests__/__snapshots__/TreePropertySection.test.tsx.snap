@@ -7,7 +7,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Tree
       </h6>
@@ -183,7 +183,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Tree
       </h6>
@@ -345,7 +345,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Deep Tree
       </h6>
@@ -812,7 +812,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Deep Tree
       </h6>
@@ -1084,7 +1084,7 @@ exports[`should render a multi-level tree correctly 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Deep Tree
       </h6>
@@ -1551,7 +1551,7 @@ exports[`should render the tree 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Default Tree
       </h6>
@@ -1603,7 +1603,7 @@ exports[`should render the tree with a help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         Default Tree
       </h6>

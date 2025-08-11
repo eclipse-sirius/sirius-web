@@ -10,7 +10,7 @@ exports[`should render the flexbox container with border style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         label
       </h6>
@@ -32,7 +32,7 @@ exports[`should render the flexbox container without style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         label
       </h6>
