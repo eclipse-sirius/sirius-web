@@ -20,37 +20,38 @@ import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to get the viewer capabilities from the GraphQL API.
+ * Used to get the library from the GraphQL API.
  *
  * @author gcoutable
  */
 @Service
-public class ViewerCapabilitiesQueryRunner implements IQueryRunner {
+public class LibraryQueryRunner implements IQueryRunner {
 
-    private static final String GET_VIEWER_CAPABILITIES = """
-            query getProjectsCapabilities {
-              viewer {
-                capabilities {
-                  projects {
-                    canCreate
-                    canUpload
-                  }
-                  libraries {
-                    canList
+    private static final String LIBRARY_QUERY = """
+            query getLibrary($namespace: String!, $name: String!, $version: String!) {
+                viewer {
+                  library(namespace: $namespace, name: $name, version: $version) {
+                    namespace
+                    name
+                    version
+                    description
+                    createdOn
+                    currentEditingContext {
+                      id
+                    }
                   }
                 }
               }
-            }
             """;
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ViewerCapabilitiesQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public LibraryQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
     public String run(Map<String, Object> variables) {
-        return this.graphQLRequestor.execute(GET_VIEWER_CAPABILITIES, variables);
+        return this.graphQLRequestor.execute(LIBRARY_QUERY, variables);
     }
 }

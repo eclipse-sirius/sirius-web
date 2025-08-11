@@ -34,7 +34,14 @@ This document will reference the frontend capabilities that can be enabled or di
 * type: `Library`
 * identifier: *should* be `null`
 * capability:
-** canView: Whether the view displaying libraries can be displayed or not.
+** canList: Whether the libraries can be listed or not.
+
+=== Library
+
+* type: `Library`
+* identifier: *will* be `{namespace}:{name}:{version}`
+* capability:
+** canView: Whether the library can be retrieved or not.
 
 === Project Settings
 

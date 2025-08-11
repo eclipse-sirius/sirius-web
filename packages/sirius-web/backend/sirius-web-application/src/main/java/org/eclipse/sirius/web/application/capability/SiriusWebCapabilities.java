@@ -91,9 +91,16 @@ public final class SiriusWebCapabilities {
     public static final class Library {
 
         /**
-         * Used to check if the library can be viewed.
+         * Used to check if libraries can be listed.
          *
          * @since v2025.8.0
+         */
+        public static final String LIST = "list";
+
+        /**
+         * Used to check if a library can be retrieved.
+         *
+         * @since v2025.10.0
          */
         public static final String VIEW = "view";
     }
