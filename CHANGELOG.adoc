@@ -13,6 +13,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Fix the capability name to list librairies to `Library:list`.
+The capability name `view` should be used when one element is requested.
 
 === Dependency update
 
@@ -29,6 +31,8 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 
 
 === New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Add support for library capability check in controllers
 
 
 === Improvements

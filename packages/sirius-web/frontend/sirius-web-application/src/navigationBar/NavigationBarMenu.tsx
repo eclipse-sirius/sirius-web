@@ -37,7 +37,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
   const {
     viewer: {
       capabilities: {
-        libraries: { canView: canViewLibrary },
+        libraries: { canList: canListLibrary },
       },
     },
   } = useCurrentViewer();
@@ -62,7 +62,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
         open={Boolean(state.menuAnchor)}
         anchorEl={state.menuAnchor}
         onClose={handleClose}>
-        {canViewLibrary ? (
+        {canListLibrary ? (
           <MenuItem component={RouterLink} to="/libraries" data-testid="libraries-link">
             <ListItemIcon>
               <FileCopyIcon />

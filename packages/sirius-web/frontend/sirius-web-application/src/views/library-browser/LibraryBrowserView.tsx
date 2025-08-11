@@ -53,12 +53,12 @@ export const LibraryBrowserView = () => {
   const {
     viewer: {
       capabilities: {
-        libraries: { canView },
+        libraries: { canList },
       },
     },
   } = useCurrentViewer();
 
-  if (!canView) {
+  if (!canList) {
     return <Navigate to="/errors/404" />;
   }
 
