@@ -113,8 +113,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
 
                 if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
                     IPaletteProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    palette = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
-                            diagramDescription, editingContext);
+                    palette = toolSectionsProvider.handle(editingContext, diagramContext, diagramDescription, optionalDiagramElementDescription.get(), optionalDiagramElement.orElse(null), optionalTargetElement.get());
                 }
             }
         }

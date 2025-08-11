@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
@@ -111,10 +112,13 @@ public class ViewPaletteProvider implements IPaletteProvider {
     }
 
     @Override
-    public Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription, IEditingContext editingContext) {
+    public Palette handle(IEditingContext editingContext, IDiagramContext diagramContext, DiagramDescription diagramDescription, Object diagramElementDescription, Object diagramElement, Object targetElement) {
         Palette palette = null;
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetElement);
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
