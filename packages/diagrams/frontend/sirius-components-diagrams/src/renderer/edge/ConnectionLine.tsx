@@ -28,6 +28,7 @@ import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { ConnectionLineState } from './ConnectionLine.types';
 import {
   getEdgeParameters,
   getNearestPointInPath,
@@ -61,7 +62,9 @@ export const ConnectionLine = memo(
     const { diagramDescription } = useDiagramDescription();
     const { setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
-    const [previousToNodeId, setPreviousToNodeId] = useState<String>(toNode?.id || '');
+    const [state, setState] = useState<ConnectionLineState>({
+      previousToNodeId: toNode?.id ?? null,
+    });
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
     const targetHandle = getEdges().find((e) => e.id === edgeId)?.targetHandle;
@@ -73,17 +76,19 @@ export const ConnectionLine = memo(
 
     useEffect(() => {
       // When reconnection to a node
-      if (previousToNodeId != toNode?.id) {
-        setPreviousToNodeId(toNode?.id || '');
+      if (state.previousToNodeId != toNode?.id) {
+        setState({
+          previousToNodeId: toNode?.id ?? null,
+        });
       }
-    });
+    }, [toNode?.id]);
 
     // When reconnecting an edge
     if (edgeId) {
       const edge = getEdge(edgeId);
       if (edge) {
         const edgeBase = getEdge(edge.target);
-        // Snap the ConnectionLine to the border of the targetted edge
+        // Snap the ConnectionLine to the border of the targeted edge
         if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
           const { position, handlePosition } = getNearestPointInPath(
             updatedToX,
@@ -100,7 +105,7 @@ export const ConnectionLine = memo(
 
     if (handleToUpdate) {
       if (edgeId && toNode && toNode.width && toNode.height) {
-        // Snap the ConnectionLine to the border of the targetted node
+        // Snap the ConnectionLine to the border of the targeted node
         const pointToSnap = getNearestPointInPerimeter(
           toNode.internals.positionAbsolute.x,
           toNode.internals.positionAbsolute.y,
@@ -225,7 +230,11 @@ export const ConnectionLine = memo(
 
       setNodes((previousNodes) =>
         previousNodes.map((previousNode) => {
-          if (previousToNodeId && previousToNodeId !== toNode?.id && previousToNodeId === previousNode.id) {
+          if (
+            state.previousToNodeId &&
+            state.previousToNodeId !== toNode?.id &&
+            state.previousToNodeId === previousNode.id
+          ) {
             return {
               ...previousNode,
               data: {

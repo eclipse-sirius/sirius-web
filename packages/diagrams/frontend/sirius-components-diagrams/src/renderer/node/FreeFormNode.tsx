@@ -124,7 +124,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
 
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-    const { style: connectionLineActiveNodeStlye } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
     const nodeStyle = useMemo(
       () => freeFormNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, !!selected, data.isHovered, data.faded]
@@ -163,7 +163,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...nodeStyle,
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
-            ...connectionLineActiveNodeStlye,
+            ...connectionLineActiveNodeStyle,
           }}
           data-svg="rect"
           onDragOver={onDragOver}
