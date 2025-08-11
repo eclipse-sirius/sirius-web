@@ -35,12 +35,10 @@
     "@ObeoNetwork/react-trello": "2.4.11",
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
-    "@xstate/react": "3.0.0",
     "graphql": "16.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
@@ -52,7 +50,6 @@
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "5.0.0",
     "@ObeoNetwork/react-trello": "2.4.11",
-    "@xstate/react": "3.0.0",
     "graphql": "16.8.1",
     "prettier": "2.7.1",
     "react": "18.3.1",
@@ -62,7 +59,6 @@
     "typescript": "5.4.5",
     "vite": "7.1.1",
     "vitest": "3.2.4",
-    "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
   }
 }
