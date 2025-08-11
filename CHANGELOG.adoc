@@ -16,6 +16,8 @@
 
 === Dependency update
 
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.4[Spring Boot 3.5.4].
+
 
 === Bug fixes
 
