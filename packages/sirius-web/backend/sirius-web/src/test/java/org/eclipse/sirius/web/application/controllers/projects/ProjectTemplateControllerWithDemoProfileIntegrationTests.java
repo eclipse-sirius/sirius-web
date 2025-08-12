@@ -16,12 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +38,21 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gcoutbale
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*" })
 @ActiveProfiles("demo")
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*" })
 public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer
@@ -86,5 +98,31 @@ public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends Ab
 
         int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isZero();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a set of project templates with the demo profile, when a query asking default templates is performed, then the result does not contain the default templates")
+    public void givenSetOfProjectTemplatesWithDemoProfileWhenQueryAskingDefaultTemplatesIsPerformedThenTheResultDoesNotContainTheDefaultTemplates() {
+        Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
+        var result = this.projectTemplatesQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        assertThat(startCursor).isBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        assertThat(endCursor).isBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        assertThat(count).isZero();
+
+        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
+        assertThat(projectTemplateIds).doesNotContain("create-project", "upload-project", "browse-all-project-templates");
     }
 }

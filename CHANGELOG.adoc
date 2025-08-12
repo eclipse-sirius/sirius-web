@@ -53,6 +53,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5338[#5338] [sirius-web] Add support for capability check prior to retrieve project templates.
 To retrieve project templates, you will need the `Project:create` capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5341[#5341] [sirius-web] Add support for `Project:list` and `Project:view` project capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5325[#5325] [sirius-web] Add support for capability check on GraphQL and controllers.
 
 
 === Improvements
