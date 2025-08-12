@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.query.services;
+package org.eclipse.sirius.web.services.query;
 
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.query.EditingContextServices;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.api.IInterpreter;
 import org.eclipse.sirius.web.application.views.query.services.api.IInterpreterJavaServiceProvider;
 import org.eclipse.sirius.web.application.views.query.services.api.IInterpreterProvider;
@@ -31,47 +28,33 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide the AQL interpreter.
+ * Used to provide the service interpreter.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
 @Service
-public class AQLInterpreterProvider implements IInterpreterProvider {
+public class ServiceInterpreterProvider implements IInterpreterProvider {
 
     private final List<IInterpreterJavaServiceProvider> interpreterJavaServiceProviders;
 
     private final ApplicationContext applicationContext;
 
-    private final Logger logger = LoggerFactory.getLogger(AQLInterpreterProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(ServiceInterpreterProvider.class);
 
-    public AQLInterpreterProvider(List<IInterpreterJavaServiceProvider> interpreterJavaServiceProviders, ApplicationContext applicationContext) {
+    public ServiceInterpreterProvider(List<IInterpreterJavaServiceProvider> interpreterJavaServiceProviders, ApplicationContext applicationContext) {
         this.interpreterJavaServiceProviders = Objects.requireNonNull(interpreterJavaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String expression) {
-        return expression != null && (expression.startsWith("aql:")
-                || expression.startsWith("var:")
-                || expression.startsWith("feature"));
+        return expression != null && expression.startsWith("service:");
     }
 
     @Override
     public IInterpreter getInterpreter(IEditingContext editingContext) {
-        var ePackages = this.getEPackages(editingContext);
         var services = this.getServices(editingContext);
-        return new AQLInterpreter(List.of(EditingContextServices.class), services, ePackages);
-    }
-
-    private List<EPackage> getEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-            EPackage.Registry packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
-            return packageRegistry.values().stream()
-                    .filter(EPackage.class::isInstance)
-                    .map(EPackage.class::cast)
-                    .toList();
-        }
-        return List.of();
+        return new ServiceInterpreter(List.of(EditingContextServices.class), services);
     }
 
     private List<Object> getServices(IEditingContext editingContext) {
@@ -90,4 +73,5 @@ public class AQLInterpreterProvider implements IInterpreterProvider {
                 .map(Object.class::cast)
                 .toList();
     }
+
 }

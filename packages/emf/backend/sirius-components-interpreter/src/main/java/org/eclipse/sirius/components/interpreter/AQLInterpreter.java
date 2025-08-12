@@ -44,6 +44,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.eclipse.sirius.components.interpreter.api.IInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +53,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sbegaudeau
  */
-public class AQLInterpreter {
+public class AQLInterpreter implements IInterpreter {
 
     /**
      * The prefix used by AQL expressions.
@@ -170,6 +171,7 @@ public class AQLInterpreter {
         this.parsedExpressions = Caffeine.newBuilder().maximumSize(maxCacheSize).build(builder::build);
     }
 
+    @Override
     public Result evaluateExpression(Map<String, Object> variables, String expressionBody) {
         String expression = new ExpressionConverter().convertExpression(expressionBody);
         if (expression.startsWith(AQL_PREFIX)) {

@@ -271,4 +271,22 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
         assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
     }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when we execute an expression with the service prefix returning a string, then the result is returned")
+    public void givenProjectWhenWeExecuteAnExpressionWithTheServicePrefixThenTheResultIsReturned() {
+        var expression = "service:self.toString()";
+        var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, selectedObjectIds));
+
+        String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        String resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(StringExpressionResult.class.getSimpleName());
+
+        String stringResult = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
+        assertThat(stringResult).contains("sirius-web-domain");
+    }
 }
