@@ -30,6 +30,10 @@ import org.springframework.stereotype.Service;
 /**
  * Used to delete projects.
  *
+ * @technical-debt This service needs to fire manually some event to give the opportunity to other services to be
+ * synchronized with the deletion of a project. This is done thanks to a small hack relying on the application event
+ * publisher that will need to be deleted in the future. Do not rely on this.
+ *
  * @author sbegaudeau
  */
 @Service

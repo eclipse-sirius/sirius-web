@@ -23,6 +23,18 @@ import jakarta.validation.constraints.NotNull;
 /**
  * Event fired when the deletion of the project is requested.
  *
+ * @technical-debt This event only exists to compensate the fact that we have not implemented fully the separation of
+ * our bounded contexts. Since there are some foreign keys between concepts of our bounded contexts in the database,
+ * some events and thus some listeners are missing. As a result some synchronization capabilities are not available,
+ * which is why this event has been introduced.
+ *
+ * It represents a small hack used for one specific use case. If additional use cases started to appear with the need to
+ * either use this event or introduce similar events, we would then have to introduce the proper fix with the relevant
+ * events and listeners. This would require more code to keep our bounded contexts synchronized.
+ *
+ * In the end, you either don't need to use this event or if you do, it needs to be removed in favor of a more robust
+ * solution.
+ *
  * @author sbegaudeau
  */
 public record ProjectDeletionRequestedEvent(
