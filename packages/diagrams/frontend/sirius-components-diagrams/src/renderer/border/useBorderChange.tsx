@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types
 import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 import { getPositionAbsoluteFromNodeChange } from '../layout/layoutNode';
 import { borderNodeOffset } from '../layout/layoutParams';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseBorderChangeValue } from './useBorderChange.types';
 
 const isNewPositionInsideIsParent = (
@@ -73,51 +72,51 @@ export const useBorderChange = (): UseBorderChangeValue => {
           const movedNode = nodeLookup.get(change.id || '');
           if (movedNode && movedNode.data.isBorderNode && movedNodePositionAbsolute) {
             const parentNode = nodeLookup.get(movedNode.parentId || '');
-
-            const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-              nodeLayoutHandler.canHandle(parentNode as Node<NodeData, DiagramNodeType>)
-            );
-            if (
-              parentNode &&
-              isNewPositionInsideIsParent(movedNodePositionAbsolute, movedNode, parentNode) &&
-              !parentLayoutHandler?.calculateCustomNodeBorderNodePosition
-            ) {
-              const nearestBorder = findNearestBorderPosition(movedNodePositionAbsolute, parentNode);
-              switch (nearestBorder) {
-                case BorderNodePosition.NORTH:
-                  change.position.y = borderNodeOffset - (movedNode.height ?? 0);
-                  break;
-                case BorderNodePosition.SOUTH:
-                  change.position.y = (parentNode.height ?? 0) - borderNodeOffset;
-                  break;
-                case BorderNodePosition.WEST:
-                  change.position.x = borderNodeOffset - (movedNode.width ?? 0);
-                  break;
-                case BorderNodePosition.EAST:
-                  change.position.x = (parentNode.width ?? 0) - borderNodeOffset;
-                  break;
-                default: //Invalid position, reset to the initial one
-                  change.position = movedNode.position;
-              }
-            }
-
-            const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
-            const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
-            if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
-              oldMovedNode.data.borderNodePosition = newPosition;
-            }
-
-            if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {
-              change.position = parentLayoutHandler.calculateCustomNodeBorderNodePosition(
-                parentNode,
-                {
-                  x: change.position.x,
-                  y: change.position.y,
-                  width: movedNode.width ?? 0,
-                  height: movedNode.height ?? 0,
-                },
-                true
+            if (parentNode) {
+              const parentLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+                nodeLayoutHandler.canHandle(parentNode)
               );
+
+              if (
+                isNewPositionInsideIsParent(movedNodePositionAbsolute, movedNode, parentNode) &&
+                !parentLayoutHandler?.calculateCustomNodeBorderNodePosition
+              ) {
+                const nearestBorder = findNearestBorderPosition(movedNodePositionAbsolute, parentNode);
+                switch (nearestBorder) {
+                  case BorderNodePosition.NORTH:
+                    change.position.y = borderNodeOffset - (movedNode.height ?? 0);
+                    break;
+                  case BorderNodePosition.SOUTH:
+                    change.position.y = (parentNode.height ?? 0) - borderNodeOffset;
+                    break;
+                  case BorderNodePosition.WEST:
+                    change.position.x = borderNodeOffset - (movedNode.width ?? 0);
+                    break;
+                  case BorderNodePosition.EAST:
+                    change.position.x = (parentNode.width ?? 0) - borderNodeOffset;
+                    break;
+                  default: //Invalid position, reset to the initial one
+                    change.position = movedNode.position;
+                }
+              }
+              const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
+              const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
+              if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
+                oldMovedNode.data.borderNodePosition = newPosition;
+              }
+
+              if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {
+                change.position = parentLayoutHandler.calculateCustomNodeBorderNodePosition(
+                  parentNode,
+                  {
+                    x: change.position.x,
+                    y: change.position.y,
+                    width: movedNode.width ?? 0,
+                    height: movedNode.height ?? 0,
+                  },
+                  true
+                );
+              }
             }
           }
         }

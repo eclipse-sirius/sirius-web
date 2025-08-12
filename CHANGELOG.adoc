@@ -13,6 +13,8 @@
 
 === Breaking changes
 
+- [releng] Since the bump to `@xyflow/react 12.8.2`, all functions that previously took `Node<NodeData, DiagramNodeType>` as a `parameter` now take `Node<NodeData>`, this should be noticeable on downstream project using custom INodeLayoutHandler.
+
 
 === Dependency update
 
@@ -20,6 +22,7 @@
 - [releng] Switch to vite 7.1.1 and @vitejs/plugin-react 5.0.0
 - [releng] Switch to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
 - [releng] Switch to @types/node 22.16.0 to match the version of node that we are using
+- [releng] Switch to to @xyflow/react 12.8.2
 
 
 === Bug fixes

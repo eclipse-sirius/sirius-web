@@ -12,13 +12,9 @@
  *******************************************************************************/
 import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export interface UseHandleResizedChangeValue {
-  applyResizeHandleChange: (
-    changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ) => Node<NodeData, DiagramNodeType>[];
+  applyResizeHandleChange: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => Node<NodeData>[];
 }
 
 export type UseHandleResizedChangeState = {

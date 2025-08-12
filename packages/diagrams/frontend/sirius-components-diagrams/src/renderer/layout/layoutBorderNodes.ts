@@ -13,7 +13,6 @@
 import { CoordinateExtent, Node, XYPosition } from '@xyflow/react';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
@@ -46,7 +45,7 @@ export const getBorderNodeExtent = (
   return coordinateExtent;
 };
 
-export const computeBorderNodeExtents = (nodes: Node<NodeData, DiagramNodeType>[]): void => {
+export const computeBorderNodeExtents = (nodes: Node<NodeData>[]): void => {
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
@@ -57,7 +56,7 @@ export const computeBorderNodeExtents = (nodes: Node<NodeData, DiagramNodeType>[
     });
 };
 
-export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType>[]): void => {
+export const computeBorderNodePositions = (nodes: Node<NodeData>[]): void => {
   nodes
     .filter((node) => node.data.isBorderNode)
     .forEach((borderNode) => {
@@ -92,8 +91,8 @@ export const findBorderNodePosition = (
 };
 
 export const getNewlyAddedBorderNodePosition = (
-  newlyAddedNode: Node<NodeData, DiagramNodeType>,
-  parentNode: Node<NodeData, string> | undefined,
+  newlyAddedNode: Node<NodeData>,
+  parentNode: Node<NodeData> | undefined,
   referencePosition: GQLReferencePosition
 ): void => {
   if (parentNode) {

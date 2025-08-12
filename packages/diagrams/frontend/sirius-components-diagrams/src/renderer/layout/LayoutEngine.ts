@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 import { Dimensions, Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';
 import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
@@ -29,9 +28,9 @@ export class LayoutEngine implements ILayoutEngine {
 
   public layoutNodes(
     previousDiagram: RawDiagram | null,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    nodesToLayout: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    nodesToLayout: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: Dimensions
   ) {
     nodesToLayout.forEach((node) => {

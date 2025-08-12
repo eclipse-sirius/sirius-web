@@ -34,7 +34,6 @@ import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { EdgeAnchorNodeData } from '../renderer/node/EdgeAnchorNode.types';
-import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { IconLabelNodeConverter } from './IconLabelNodeConverter';
@@ -126,7 +125,7 @@ export const convertDiagram = (
   edgeType: DiagramEdgeType,
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>
 ): Diagram => {
-  const nodes: Node<NodeData, DiagramNodeType>[] = [];
+  const nodes: Node<NodeData>[] = [];
   const convertEngine: IConvertEngine = {
     convertNodes(
       gqlDiagram: GQLDiagram,

@@ -251,7 +251,7 @@ const getRightMostSibling = (
 };
 
 export const setBorderNodesPosition = (
-  borderNodes: Node<NodeData, string>[],
+  borderNodes: Node<NodeData>[],
   nodeToLayout: Node<NodeData>,
   previousDiagram: RawDiagram | null,
   calculateCustomNodeBorderNodePosition?:

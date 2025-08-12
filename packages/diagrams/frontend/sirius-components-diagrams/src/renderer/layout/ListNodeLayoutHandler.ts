@@ -14,7 +14,6 @@
 import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
 import { ForcedDimensions, RawDiagram } from './layout.types';
@@ -26,8 +25,8 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getInsideLabelWidthConstraint,
   getHeaderHeightFootprint,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -35,7 +34,7 @@ import {
 } from './layoutNode';
 
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
-  public canHandle(node: Node<NodeData, DiagramNodeType>) {
+  public canHandle(node: Node<NodeData>) {
     return node.type === 'listNode';
   }
 
@@ -43,9 +42,9 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -74,7 +73,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   handleLeafNode(
     previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    visibleNodes: Node<NodeData>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
@@ -118,9 +117,9 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
@@ -135,7 +134,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
 
-    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+    const previousNode: Node<NodeData> | undefined = (previousDiagram?.nodes ?? []).find(
       (previouseNode) => previouseNode.id === node.id
     );
 
