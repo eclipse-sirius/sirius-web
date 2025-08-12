@@ -14,7 +14,6 @@
 import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { FreeFormNodeData } from '../node/FreeFormNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
 import { ForcedDimensions, RawDiagram } from './layout.types';
@@ -37,7 +36,7 @@ import {
 import { rectangularNodePadding } from './layoutParams';
 
 export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNodeData> {
-  public canHandle(node: Node<NodeData, DiagramNodeType>) {
+  public canHandle(node: Node<NodeData>) {
     return node.type === 'freeFormNode';
   }
 
@@ -45,9 +44,9 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -74,9 +73,9 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
@@ -192,7 +191,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    visibleNodes: Node<NodeData>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
