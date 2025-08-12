@@ -19,7 +19,6 @@ import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { ListNodeData } from '../node/ListNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
 export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
@@ -68,8 +67,8 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
 
   const updateNodeResizeByUserState = (
     changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ): Node<NodeData, DiagramNodeType>[] => {
+    nodes: Node<NodeData>[]
+  ): Node<NodeData>[] => {
     return nodes.map((node) => {
       const parentNode = nodes.find((n) => n.id === node.parentId);
       if (
@@ -97,7 +96,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
   };
 
   const layoutOnBoundsChange = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): void => {
       const change = isBoundsChangeFinished(changes, getNodes());
       if (change) {
         const updatedNodes = updateNodeResizeByUserState(changes, nodes);

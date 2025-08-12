@@ -25,7 +25,6 @@ import { memo, useContext, useMemo } from 'react';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
@@ -102,12 +101,8 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeDa
     return null;
   }
 
-  const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-    nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
-  );
-  const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-    nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
-  );
+  const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(sourceNode));
+  const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(targetNode));
 
   let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
     sourceNode,

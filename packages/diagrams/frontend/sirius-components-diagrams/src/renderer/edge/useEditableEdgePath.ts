@@ -16,7 +16,6 @@ import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseEditableEdgePathValue } from './useEditableEdgePath.types';
 
 export const useEditableEdgePath = (): UseEditableEdgePathValue => {
@@ -42,7 +41,7 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
         edge.data.bendingPoints = null;
       }
       setEdges(edges);
-      synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+      synchronizeEdgeLayoutData(edges, [...getNodes()]);
     },
     [setEdges, getEdges]
   );

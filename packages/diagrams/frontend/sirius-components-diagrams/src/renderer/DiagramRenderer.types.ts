@@ -18,14 +18,13 @@ import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
-import { DiagramNodeType } from './node/NodeTypes.types';
 
 export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
 }
 
 export interface Diagram {
-  nodes: Node<NodeData, DiagramNodeType>[];
+  nodes: Node<NodeData>[];
   edges: Edge<MultiLabelEdgeData>[];
 }
 

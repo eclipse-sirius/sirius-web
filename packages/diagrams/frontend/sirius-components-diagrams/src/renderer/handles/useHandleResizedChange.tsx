@@ -23,7 +23,6 @@ import {
 import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DEFAULT_HANDLE_SIZE } from '../edge/EdgeLayout';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseHandleResizedChangeState, UseHandleResizedChangeValue } from './useHandleResizedChange.types';
 
 const getHandlePosition = (
@@ -76,10 +75,7 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
     finalHeight: null,
   });
   const applyResizeHandleChange = useCallback(
-    (
-      changes: NodeChange<Node<NodeData>>[],
-      nodes: Node<NodeData, DiagramNodeType>[]
-    ): Node<NodeData, DiagramNodeType>[] => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
       if (changes.length === 1 && changes[0] && changes[0].type === 'dimensions') {
         const change: NodeDimensionChange = changes[0];
         const resizedNode = nodeLookup.get(change.id);
