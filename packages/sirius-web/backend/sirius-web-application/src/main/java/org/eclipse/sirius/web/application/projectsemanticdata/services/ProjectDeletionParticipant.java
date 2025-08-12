@@ -25,6 +25,10 @@ import org.springframework.stereotype.Service;
 /**
  * Used to delete the semantic data of a project.
  *
+ * @technical-debt This event listener is not connected to the lifecycle of the application using the regular approach,
+ * for this reason, it should not be considered as a good example. It will need to be updated when the small hack used
+ * during the deletion of a project will be deleted.
+ *
  * @author sbegaudeau
  */
 @Service
