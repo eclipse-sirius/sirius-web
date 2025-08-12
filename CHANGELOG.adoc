@@ -20,6 +20,7 @@
 - [releng] Switch to vite 7.1.1 and @vitejs/plugin-react 5.0.0
 - [releng] Switch to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
 - [releng] Switch to @types/node 22.16.0 to match the version of node that we are using
+- [releng] Remove @rollup/plugin-image
 
 
 === Bug fixes
