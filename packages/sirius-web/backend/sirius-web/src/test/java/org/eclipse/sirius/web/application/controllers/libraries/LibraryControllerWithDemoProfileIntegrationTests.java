@@ -23,6 +23,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibra
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.LibraryQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +38,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gcoutable
  */
 @Transactional
+@ActiveProfiles("demo")
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("demo")
 public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIntegrationTests {
+
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
     private LibrariesQueryRunner librariesQueryRunner;
@@ -49,6 +54,11 @@ public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIn
 
     @Autowired
     private LibraryQueryRunner libraryQueryRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer

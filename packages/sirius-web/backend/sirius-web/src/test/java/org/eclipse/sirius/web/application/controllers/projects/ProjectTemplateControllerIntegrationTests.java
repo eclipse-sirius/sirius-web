@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -35,6 +33,7 @@ import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvi
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +53,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
 
     @Autowired
@@ -65,14 +67,9 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Autowired
     private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
-
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test
@@ -123,10 +120,10 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isGreaterThan(6);
 
-        // We are looking only for the last two since the upload-project feature is disabled in tests. see DisableProjectsUploadCapabilityVoter
-        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-2:].node.id");
+        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
         assertThat(projectTemplateIds.get(0)).isEqualTo("create-project");
-        assertThat(projectTemplateIds.get(1)).isEqualTo("browse-all-project-templates");
+        assertThat(projectTemplateIds.get(1)).isEqualTo("upload-project");
+        assertThat(projectTemplateIds.get(2)).isEqualTo("browse-all-project-templates");
     }
 
     @Test

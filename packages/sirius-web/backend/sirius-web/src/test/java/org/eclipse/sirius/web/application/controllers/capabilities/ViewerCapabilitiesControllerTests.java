@@ -25,6 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles(value = "demo")
 public class ViewerCapabilitiesControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -47,9 +49,9 @@ public class ViewerCapabilitiesControllerTests extends AbstractIntegrationTests 
         boolean canCreateProjects = JsonPath.read(result, "$.data.viewer.capabilities.projects.canCreate");
         boolean canUploadProjects = JsonPath.read(result, "$.data.viewer.capabilities.projects.canUpload");
         boolean canListLibraries = JsonPath.read(result, "$.data.viewer.capabilities.libraries.canList");
-        assertThat(canCreateProjects).isTrue();
+        assertThat(canCreateProjects).isFalse();
         assertThat(canUploadProjects).isFalse();
-        assertThat(canListLibraries).isTrue();
+        assertThat(canListLibraries).isFalse();
     }
 
 }
