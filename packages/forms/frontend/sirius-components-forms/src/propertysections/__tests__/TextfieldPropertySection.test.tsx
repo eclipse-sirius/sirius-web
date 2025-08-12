@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTextfield } from '../../form/FormEventFragments.types';
 import {
@@ -52,6 +51,7 @@ const defaultTextField: GQLTextfield = {
     bold: false,
     underline: false,
     strikeThrough: false,
+    widgetGridLayout: null,
   },
 };
 
@@ -73,6 +73,7 @@ const textFieldWithStyle: GQLTextfield = {
     bold: false,
     underline: false,
     strikeThrough: false,
+    widgetGridLayout: null,
   },
 };
 
@@ -94,6 +95,7 @@ const textFieldWithEmptyStyle: GQLTextfield = {
     bold: false,
     underline: false,
     strikeThrough: false,
+    widgetGridLayout: null,
   },
 };
 
@@ -114,6 +116,7 @@ const readOnlyTextField: GQLTextfield = {
     bold: false,
     underline: false,
     strikeThrough: false,
+    widgetGridLayout: null,
   },
   readOnly: true,
 };
@@ -289,6 +292,7 @@ test('should support completion if configured', async () => {
       bold: false,
       underline: false,
       strikeThrough: false,
+      widgetGridLayout: null,
     },
   };
 
@@ -402,6 +406,7 @@ test('should not trigger completion request if not configured', async () => {
       bold: false,
       underline: false,
       strikeThrough: false,
+      widgetGridLayout: null,
     },
   };
 
