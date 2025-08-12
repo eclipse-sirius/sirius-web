@@ -33,6 +33,7 @@ const useStyle = makeStyles()((theme) => ({
     gridTemplateRows: `repeat(2,min-content) 1fr`,
     overflowY: 'auto',
     overflowX: 'hidden',
+    maxHeight: 220,
   },
   toolListContainer: {
     display: 'grid',
@@ -82,12 +83,13 @@ export const PaletteToolList = ({
   onToolClick,
   onBackToMainList,
   diagramElementId,
+  elementDescriptionId,
   children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
-  const lastToolInvoked = getLastToolInvoked(palette.id);
+  const lastToolInvoked = getLastToolInvoked(elementDescriptionId);
 
   const { classes } = useStyle();
 

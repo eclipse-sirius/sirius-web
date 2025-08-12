@@ -4,7 +4,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
+      class="MuiFormControl-root css-1w4f2vw-MuiFormControl-root-propertySection"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -13,7 +13,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
           >
             SelectLabel
           </h6>
@@ -30,7 +30,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
             aria-disabled="true"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard Mui-disabled MuiInputBase-input MuiInput-input Mui-disabled css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard Mui-disabled MuiInputBase-input MuiInput-input Mui-disabled css-185jq8h-MuiSelect-select-MuiInputBase-input-MuiInput-input-style"
             role="combobox"
           >
             <em>
@@ -70,7 +70,7 @@ exports[`should render the select with empty style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
+      class="MuiFormControl-root css-1w4f2vw-MuiFormControl-root-propertySection"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -79,7 +79,7 @@ exports[`should render the select with empty style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
           >
             SelectLabel
           </h6>
@@ -95,7 +95,7 @@ exports[`should render the select with empty style 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-185jq8h-MuiSelect-select-MuiInputBase-input-MuiInput-input-style"
             role="combobox"
             tabindex="0"
           >
@@ -135,7 +135,7 @@ exports[`should render the select with help hint 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
+      class="MuiFormControl-root css-1w4f2vw-MuiFormControl-root-propertySection"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -144,7 +144,7 @@ exports[`should render the select with help hint 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
           >
             SelectLabel
           </h6>
@@ -178,7 +178,7 @@ exports[`should render the select with help hint 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-185jq8h-MuiSelect-select-MuiInputBase-input-MuiInput-input-style"
             role="combobox"
             tabindex="0"
           >
@@ -218,7 +218,7 @@ exports[`should render the select with style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
+      class="MuiFormControl-root css-1w4f2vw-MuiFormControl-root-propertySection"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -227,7 +227,7 @@ exports[`should render the select with style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
           >
             SelectLabel
           </h6>
@@ -243,7 +243,7 @@ exports[`should render the select with style 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ijey5v-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-1rlvxc-MuiSelect-select-MuiInputBase-input-MuiInput-input-style"
             role="combobox"
             tabindex="0"
           >
@@ -283,7 +283,7 @@ exports[`should render the select without style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
+      class="MuiFormControl-root css-1w4f2vw-MuiFormControl-root-propertySection"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -292,7 +292,7 @@ exports[`should render the select without style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
           >
             SelectLabel
           </h6>
@@ -308,7 +308,7 @@ exports[`should render the select without style 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-185jq8h-MuiSelect-select-MuiInputBase-input-MuiInput-input-style"
             role="combobox"
             tabindex="0"
           >

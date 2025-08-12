@@ -31,7 +31,6 @@ import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
 import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
-import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
@@ -59,7 +58,6 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
   const theme = useTheme();
 
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
   const { diagramDescription } = useDiagramDescription();
 
   const { setEdges, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -107,13 +105,12 @@ export const useConnector = (): UseConnectorValue => {
 
   const onConnectStart: OnConnectStart = useCallback(
     (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
-      hideDiagramElementPalette();
       resetConnection();
       if (params.nodeId) {
         updateNodeInternals(params.nodeId);
       }
     },
-    [hideDiagramElementPalette]
+    []
   );
 
   const onConnectorContextualMenuClose = () => resetConnection();

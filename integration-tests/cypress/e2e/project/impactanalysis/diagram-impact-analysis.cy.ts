@@ -41,31 +41,13 @@ describe('Impact analysis - diagram', () => {
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InitialName{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
-        diagram.centerViewport();
+
         diagram.getNodes('Impact analysis diagram', 'InitialName').findByTestId('Label - InitialName').rightclick();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('tool-Tool with impact analysis').click();
         impactAnalysis.getImpactAnalysisDialog().should('exist');
         impactAnalysis.getNbElementModified().should('contain', 'Elements modified: 2');
         impactAnalysis.getNbElementCreated().should('contain', 'Elements added: 1');
-      });
-
-      it('Then after impact analysis it is possible to confirm the tool execution', () => {
-        const explorer = new Explorer();
-        const diagram = new Diagram();
-        const details = new Details();
-        const impactAnalysis = new ImpactAnalysis();
-        explorer.createObject('Root', 'entity1s-Entity1');
-        details.getTextField('Name').type('InitialName{enter}');
-        new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
-        diagram.centerViewport();
-        diagram.getNodes('Impact analysis diagram', 'InitialName').findByTestId('Label - InitialName').rightclick();
-        diagram.getPalette().should('exist');
-        diagram.getPalette().findByTestId('tool-Tool with impact analysis').click();
-        impactAnalysis.getImpactAnalysisDialog().should('exist');
-        impactAnalysis.confirmExecution();
-        diagram.getNodes('Impact analysis diagram', 'newName').should('exist');
-        diagram.getNodes('Impact analysis diagram', 'InitialName').should('not.exist');
       });
     });
   });

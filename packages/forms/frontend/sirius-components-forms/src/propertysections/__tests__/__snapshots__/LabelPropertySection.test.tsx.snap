@@ -9,13 +9,13 @@ exports[`render label widget 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myLabel
       </h6>
     </div>
     <p
-      class="MuiTypography-root MuiTypography-body1 css-18r0vyq-style css-rizt0-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-body1 css-19ws9ob-MuiTypography-root-style"
     >
       theLabelValue
     </p>
@@ -32,7 +32,7 @@ exports[`render label widget with help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myLabel
       </h6>
@@ -56,7 +56,7 @@ exports[`render label widget with help hint 1`] = `
       </div>
     </div>
     <p
-      class="MuiTypography-root MuiTypography-body1 css-18r0vyq-style css-rizt0-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-body1 css-19ws9ob-MuiTypography-root-style"
     >
       theLabelValue
     </p>
@@ -73,13 +73,13 @@ exports[`render label widget with style 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-1rf0rca-MuiTypography-root-typography"
       >
         myLabel
       </h6>
     </div>
     <p
-      class="MuiTypography-root MuiTypography-body1 css-4wo1qn-style css-rizt0-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-body1 css-nq31q-MuiTypography-root-style"
     >
       theLabelValue
     </p>

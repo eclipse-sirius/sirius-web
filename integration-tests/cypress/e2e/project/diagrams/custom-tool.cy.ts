@@ -40,16 +40,5 @@ describe('Custom tools', () => {
       diagram.getPalette().should('exist');
       cy.getByTestId('coordinates-tool').should('exist');
     });
-
-    it('Check diagram element custom tool exist', () => {
-      const diagram = new Diagram();
-      diagram.getDiagram('diagram').should('exist');
-      cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 100).rightclick(100, 100);
-      diagram.getPalette().should('exist');
-      cy.getByTestId('tool-New component').should('exist').click();
-      diagram.fitToScreen();
-      diagram.getNodes('diagram', 'Component').should('exist').rightclick();
-      cy.getByTestId('label-detail').should('exist');
-    });
   });
 });

@@ -18,9 +18,10 @@ const xyFlowDomBoundsSelector = (state: ReactFlowState): DOMRect | undefined => 
 // Using this hook will make the component rerender when the value of the xyFlowDomBoundsSelector changes
 export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue => {
   const xyFlowDomBounds = useStore(xyFlowDomBoundsSelector);
+
   const getUpdatedModalPosition = (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => {
     let position: XYPosition = { ...initialPosition };
-    if (modalRef && modalRef.current && xyFlowDomBounds) {
+    if (modalRef.current && xyFlowDomBounds) {
       const modalBounds: DOMRect = modalRef.current.getBoundingClientRect();
       if (modalBounds) {
         if (initialPosition.x + modalBounds.width > xyFlowDomBounds.width) {
@@ -35,5 +36,23 @@ export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue =>
     return position;
   };
 
-  return { getUpdatedModalPosition };
+  const getUpdatedBounds = (modalRef: React.RefObject<HTMLDivElement>) => {
+    let draggableBounds = {
+      left: 0,
+      top: 0,
+      bottom: xyFlowDomBounds?.height ?? 0,
+      right: xyFlowDomBounds?.width ?? 0,
+    };
+
+    if (modalRef && modalRef.current && xyFlowDomBounds) {
+      const modalBounds: DOMRect = modalRef.current.getBoundingClientRect();
+      if (modalBounds) {
+        draggableBounds.right = xyFlowDomBounds.width - modalBounds.width;
+        draggableBounds.bottom = xyFlowDomBounds.height - modalBounds.height;
+      }
+    }
+    return draggableBounds;
+  };
+
+  return { getUpdatedModalPosition, getUpdatedBounds };
 };

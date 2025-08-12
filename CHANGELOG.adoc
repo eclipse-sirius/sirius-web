@@ -1,6 +1,42 @@
 = Changelog
 
-== v2025.8.0 (work in progress)
+== 2025.10.0 (work in progress)
+
+=== Shapes
+
+
+=== Architectural decision records
+
+
+=== Deprecation warning
+
+
+=== Breaking changes
+
+
+=== Dependency update
+
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.4[Spring Boot 3.5.4]
+- [releng] Switch to vite 7.1.1 and @vitejs/plugin-react 5.0.0
+- [releng] Switch to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
+- [releng] Switch to @types/node 22.16.0 to match the version of node that we are using
+
+
+=== Bug fixes
+
+
+=== New Features
+
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5220[#5220] [diagram] The palette now has a maximum size but not a minimum one.
+Improve how the palette is closed and how it is placed on the viewport after resizing the window.
+- https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [core] Improve the initial fix.
+Stop the propagation on the dialog instead of the input.
+
+
+== v2025.8.0
 
 === Shapes
 
@@ -256,6 +292,8 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
+
+
 
 == v2025.6.0
 
@@ -700,6 +738,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
+- https://github.com/eclipse-sirius/sirius-web/issues/4590[#4590] [diagram] It is now possible to repeat the last tool invoked in a particular context on a diagram with a single _Alt-left click_.
 
 
 

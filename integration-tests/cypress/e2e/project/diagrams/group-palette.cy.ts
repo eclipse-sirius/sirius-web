@@ -28,7 +28,6 @@ describe('Diagram - group palette', () => {
       const explorer = new Explorer();
       explorer.expandWithDoubleClick('robot');
       explorer.createRepresentation('System', 'Topography', 'diagram');
-      new Diagram().centerViewport();
     });
 
     afterEach(() => cy.deleteProject(projectId));

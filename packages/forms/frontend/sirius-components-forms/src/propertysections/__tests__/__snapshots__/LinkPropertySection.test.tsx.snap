@@ -6,7 +6,7 @@ exports[`render label widget 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1orsvah-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-18y9m9o-MuiTypography-root-MuiLink-root-style"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
@@ -24,7 +24,7 @@ exports[`render label widget with help hint 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1orsvah-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-18y9m9o-MuiTypography-root-MuiLink-root-style"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
@@ -56,7 +56,7 @@ exports[`render label widget with style 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1mwjg0n-style css-1orsvah-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1eq2ro5-MuiTypography-root-MuiLink-root-style"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
