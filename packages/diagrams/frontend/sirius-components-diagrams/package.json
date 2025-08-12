@@ -56,7 +56,6 @@
     "@xstate/react": "3.0.0",
     "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",
-    "@rollup/plugin-image": "2.1.1",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react": "5.0.0",
