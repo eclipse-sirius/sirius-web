@@ -1,6 +1,6 @@
 {
   "name": "diagram-image-server",
-  "version": "2025.6.12",
+  "version": "2025.8.0",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "main": "index.mjs",
