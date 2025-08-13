@@ -160,49 +160,57 @@ export const DiagramPanel = memo(
             )}
             {helperLines ? (
               <Tooltip title="Hide helper lines">
-                <IconButton
-                  size="small"
-                  aria-label="hide helper lines"
-                  onClick={() => onHelperLines(false)}
-                  data-testid="hide-helper-lines"
-                  disabled={readOnly}>
-                  <HelperLinesIconOff />
-                </IconButton>
+                <span>
+                  <IconButton
+                    size="small"
+                    aria-label="hide helper lines"
+                    onClick={() => onHelperLines(false)}
+                    data-testid="hide-helper-lines"
+                    disabled={readOnly}>
+                    <HelperLinesIconOff />
+                  </IconButton>
+                </span>
               </Tooltip>
             ) : (
               <Tooltip title="Show helper lines">
-                <IconButton
-                  size="small"
-                  aria-label="show helper lines"
-                  onClick={() => onHelperLines(true)}
-                  data-testid="show-helper-lines"
-                  disabled={readOnly}>
-                  <HelperLinesIcon />
-                </IconButton>
+                <span>
+                  <IconButton
+                    size="small"
+                    aria-label="show helper lines"
+                    onClick={() => onHelperLines(true)}
+                    data-testid="show-helper-lines"
+                    disabled={readOnly}>
+                    <HelperLinesIcon />
+                  </IconButton>
+                </span>
               </Tooltip>
             )}
             <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
             {edgeType === 'smoothStepEdge' ? (
               <Tooltip title="Smart Step Edge">
-                <IconButton
-                  size="small"
-                  aria-label="smart step edge"
-                  onClick={() => onEdgeType('smartStepEdge')}
-                  data-testid="smart-step-edge"
-                  disabled={readOnly}>
-                  <SmoothStepEdgeIcon />
-                </IconButton>
+                <span>
+                  <IconButton
+                    size="small"
+                    aria-label="smart step edge"
+                    onClick={() => onEdgeType('smartStepEdge')}
+                    data-testid="smart-step-edge"
+                    disabled={readOnly}>
+                    <SmoothStepEdgeIcon />
+                  </IconButton>
+                </span>
               </Tooltip>
             ) : (
               <Tooltip title="Smooth Step Edge">
-                <IconButton
-                  size="small"
-                  aria-label="smooth step edge"
-                  onClick={() => onEdgeType('smoothStepEdge')}
-                  data-testid="smooth-step-edge"
-                  disabled={readOnly}>
-                  <SmartEdgeIcon />
-                </IconButton>
+                <span>
+                  <IconButton
+                    size="small"
+                    aria-label="smooth step edge"
+                    onClick={() => onEdgeType('smoothStepEdge')}
+                    data-testid="smooth-step-edge"
+                    disabled={readOnly}>
+                    <SmartEdgeIcon />
+                  </IconButton>
+                </span>
               </Tooltip>
             )}
             <Tooltip title="Reveal hidden elements">
