@@ -78,7 +78,6 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for IsEnabledExpression.
      *

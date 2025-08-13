@@ -62,7 +62,6 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }
-
     /**
      * Setter for ChildrenLayoutStrategy.
      *

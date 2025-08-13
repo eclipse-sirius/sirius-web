@@ -53,7 +53,6 @@ public abstract class WidgetDescriptionBuilder {
         this.getWidgetDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for DiagnosticsExpression.
      *

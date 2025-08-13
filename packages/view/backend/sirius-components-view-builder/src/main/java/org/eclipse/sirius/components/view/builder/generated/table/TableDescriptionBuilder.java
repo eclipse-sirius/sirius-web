@@ -138,7 +138,6 @@ public class TableDescriptionBuilder {
         this.getTableDescription().setEnableSubRows(value);
         return this;
     }
-
     /**
      * Setter for RowFilters.
      *
@@ -160,7 +159,6 @@ public class TableDescriptionBuilder {
         this.getTableDescription().setPageSizeOptionsExpression(value);
         return this;
     }
-
     /**
      * Setter for DefaultPageSizeIndexExpression.
      *
@@ -170,7 +168,6 @@ public class TableDescriptionBuilder {
         this.getTableDescription().setDefaultPageSizeIndexExpression(value);
         return this;
     }
-
 
 }
 

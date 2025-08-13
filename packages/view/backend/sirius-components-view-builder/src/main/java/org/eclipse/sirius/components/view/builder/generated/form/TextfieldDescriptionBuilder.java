@@ -78,7 +78,6 @@ public class TextfieldDescriptionBuilder {
         this.getTextfieldDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
