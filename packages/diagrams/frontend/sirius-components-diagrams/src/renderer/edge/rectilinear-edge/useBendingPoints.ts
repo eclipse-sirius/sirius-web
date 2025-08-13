@@ -11,12 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, XYPosition } from '@xyflow/react';
+import { XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
-import { NodeData } from '../../DiagramRenderer.types';
-import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
   cleanBendPoint,
@@ -74,7 +72,7 @@ export const useBendingPoints = (
       }
       setEdges(edges);
       if (cleanedBendPoint.length > originalBendingPoints.length) {
-        synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+        synchronizeEdgeLayoutData(edges, [...getNodes()]);
       }
     }
   };

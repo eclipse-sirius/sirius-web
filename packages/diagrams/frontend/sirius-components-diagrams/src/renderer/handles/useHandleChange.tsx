@@ -21,7 +21,6 @@ import {
   getUpdatedConnectionHandles,
 } from '../edge/EdgeLayout';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
 
@@ -54,10 +53,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
   const applyHandleChange = useCallback(
-    (
-      changes: NodeChange<Node<NodeData>>[],
-      nodes: Node<NodeData, DiagramNodeType>[]
-    ): Node<NodeData, DiagramNodeType>[] => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id && !node.data.pinned);

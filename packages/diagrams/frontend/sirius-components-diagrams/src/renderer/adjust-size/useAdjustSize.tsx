@@ -15,7 +15,6 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
@@ -24,9 +23,9 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeId: string): void => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const targetedNode: Node<NodeData, string> | undefined = nodes.find((node) => node.id === nodeId);
-    const childNodes: Node<NodeData, string>[] | [] = nodes
+    const nodes: Node<NodeData>[] = [...getNodes()];
+    const targetedNode: Node<NodeData> | undefined = nodes.find((node) => node.id === nodeId);
+    const childNodes: Node<NodeData>[] | [] = nodes
       .filter((node) => node.parentId === nodeId)
       .map((node) => {
         node.data.resizedByUser = true;

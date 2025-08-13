@@ -26,7 +26,6 @@ import { FreeFormNode } from '../node/FreeFormNode';
 import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
@@ -247,7 +246,7 @@ const layoutDiagram = (
     layoutEngine.registerNodeLayoutHandlerContribution(nodeLayoutHandler)
   );
 
-  let newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined = undefined;
+  let newlyAddedNode: Node<NodeData> | undefined = undefined;
   if (referencePosition) {
     newlyAddedNode = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
