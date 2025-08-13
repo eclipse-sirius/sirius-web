@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
 import org.springframework.data.domain.Page;
@@ -46,14 +50,22 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
 
     private static final String CONTEXT = "context";
 
+    private final List<ICapabilityVoter> capabilityVoters;
+
     private final IProjectTemplateApplicationService projectTemplateApplicationService;
 
-    public ViewerProjectTemplatesDataFetcher(IProjectTemplateApplicationService projectTemplateApplicationService) {
+    public ViewerProjectTemplatesDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectTemplateApplicationService projectTemplateApplicationService) {
+        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.projectTemplateApplicationService = Objects.requireNonNull(projectTemplateApplicationService);
     }
 
     @Override
     public Connection<ProjectTemplateDTO> get(DataFetchingEnvironment environment) throws Exception {
+        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE) == CapabilityVote.GRANTED);
+        if (!hasCapability) {
+            return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
+        }
+
         int page = Optional.<Integer> ofNullable(environment.getArgument(PAGE_ARGUMENT))
                 .filter(pageArgument -> pageArgument > 0)
                 .orElse(0);
