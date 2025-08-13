@@ -18,7 +18,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-tables-parent</artifactId>
-	<version>2025.6.12</version>
+	<version>2025.8.0</version>
 
 	<name>sirius-components-tables-parent</name>
 	<description>Sirius Components Tables Parent</description>
