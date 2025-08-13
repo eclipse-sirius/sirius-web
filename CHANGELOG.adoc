@@ -47,6 +47,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Fix an issue where the project natures were not returned with its owning project using `IProjectSearchService#findAll(Before|After)`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5356[#5356] [diagram] Fix React error on non-unique keys for palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5240[#5240] [sirius-web] Ensure that the editing context does not contain proxies after a library update
+- https://github.com/eclipse-sirius/sirius-web/issues/5352[#5352] [diagram] Fix tooltips for disabled buttons
 
 
 === New Features
