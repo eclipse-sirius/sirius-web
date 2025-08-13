@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setGridTemplateColumns(value);
         return this;
     }
-
     /**
      * Setter for GridTemplateRows.
      *
@@ -61,7 +60,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setGridTemplateRows(value);
         return this;
     }
-
     /**
      * Setter for LabelGridRow.
      *
@@ -71,7 +69,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setLabelGridRow(value);
         return this;
     }
-
     /**
      * Setter for LabelGridColumn.
      *
@@ -81,7 +78,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setLabelGridColumn(value);
         return this;
     }
-
     /**
      * Setter for WidgetGridRow.
      *
@@ -91,7 +87,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setWidgetGridRow(value);
         return this;
     }
-
     /**
      * Setter for WidgetGridColumn.
      *
@@ -101,7 +96,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setWidgetGridColumn(value);
         return this;
     }
-
     /**
      * Setter for Gap.
      *
@@ -111,7 +105,6 @@ public class CheckboxDescriptionStyleBuilder {
         this.getCheckboxDescriptionStyle().setGap(value);
         return this;
     }
-
     /**
      * Setter for Color.
      *

@@ -78,7 +78,6 @@ public class LinkDescriptionBuilder {
         this.getLinkDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

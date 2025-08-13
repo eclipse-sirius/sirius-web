@@ -78,7 +78,6 @@ public class CheckboxDescriptionBuilder {
         this.getCheckboxDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

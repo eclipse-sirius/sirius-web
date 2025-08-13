@@ -78,7 +78,6 @@ public class SplitButtonDescriptionBuilder {
         this.getSplitButtonDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for Actions.
      *

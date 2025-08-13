@@ -21,16 +21,13 @@ package org.eclipse.sirius.components.view.builder.generated.tablewidget;
 public class TableWidgetDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.widget.tablewidget.TableWidgetDescription.
-     *
+     * Create instance org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription tableWidgetDescription =
-            org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetFactory.eINSTANCE.createTableWidgetDescription();
+    private org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription tableWidgetDescription = org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetFactory.eINSTANCE.createTableWidgetDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.widget.tablewidget.TableWidgetDescription.
-     *
+     * Return instance org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription.
      * @generated
      */
     protected org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription getTableWidgetDescription() {
@@ -38,8 +35,7 @@ public class TableWidgetDescriptionBuilder {
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.widget.tablewidget.TableWidgetDescription.
-     *
+     * Return instance org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription.
      * @generated
      */
     public org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription build() {
@@ -55,7 +51,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setName(value);
         return this;
     }
-
     /**
      * Setter for LabelExpression.
      *
@@ -65,7 +60,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for HelpExpression.
      *
@@ -75,7 +69,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for DiagnosticsExpression.
      *
@@ -85,7 +78,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ColumnDescriptions.
      *
@@ -107,7 +99,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setRowDescription(value);
         return this;
     }
-
     /**
      * Setter for CellDescriptions.
      *
@@ -129,7 +120,6 @@ public class TableWidgetDescriptionBuilder {
         this.getTableWidgetDescription().setUseStripedRowsExpression(value);
         return this;
     }
-
     /**
      * Setter for IsEnabledExpression.
      *

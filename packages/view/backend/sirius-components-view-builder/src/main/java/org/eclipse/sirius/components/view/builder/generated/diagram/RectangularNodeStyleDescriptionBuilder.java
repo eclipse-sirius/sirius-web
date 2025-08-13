@@ -87,7 +87,6 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
-
     /**
      * Setter for Background.
      *
