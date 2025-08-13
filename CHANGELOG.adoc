@@ -15,6 +15,21 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Fix the capability name to list librairies to `Library:list`.
 The capability name `view` should be used when one element is requested.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] The main Sirius Web JAR no longer includes EMF CodeGen dependencies,
+including:
+* `ecj-3.42.0.jar`
+* `org.eclipse.core.commands-3.12.300.jar`
+* `org.eclipse.core.variables-3.6.500.jar`
+* `org.eclipse.debug.core-3.23.0.jar`
+* `org.eclipse.emf.codegen-2.24.0.jar`
+* `org.eclipse.emf.codegen.ecore-2.39.0.jar`
+* `org.eclipse.jdt.core-3.42.0.jar`
+* `org.eclipse.jdt.debug-3.23.0.jar`
+* `org.eclipse.jdt.launching-3.23.300.jar`
+* `org.eclipse.jdt.launching.macosx-3.6.300.jar`
+* `org.eclipse.text-3.14.300.jar`
++
+Downstream applications which had implicit dependencies to some of these may need to add new explicit dependencies.
 
 === Dependency update
 
@@ -45,6 +60,9 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] Split the View builder generator and its dependencies in a separate module.
+This means the main Sirius Web JAR no longer includes EMF CodeGen dependencies (including the Eclipse Java compiler).
+The resulting JAR is smaller and has a reduced attack surface.
 
 == v2025.8.0
 
