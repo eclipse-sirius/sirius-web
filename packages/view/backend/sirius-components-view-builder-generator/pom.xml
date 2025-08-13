@@ -16,17 +16,30 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.eclipse.sirius</groupId>
-		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.2</version>
-		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.4</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-components-view-builder</artifactId>
-	<version>2025.8.2</version>
-	<name>sirius-components-view-builder</name>
-	<description>Sirius View Builder</description>
+	<artifactId>sirius-components-view-builder-generator</artifactId>
+	<version>2025.6.10</version>
+	<name>sirius-components-view-builder-generator</name>
+	<description>Sirius View Builder Generator</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -39,68 +52,72 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.codegen</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>2.37.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+			<version>2.39.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-customcells</artifactId>
-			<version>2025.8.2</version>
+			<version>2025.6.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.8.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder-generator</artifactId>
 			<version>2025.6.10</version>
 			<scope>test</scope>
 		</dependency>
@@ -138,6 +155,31 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>generate builders classes</id>
+						<phase>package</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<mainClass>org.eclipse.sirius.components.view.builder.generator.BuilderGenerator</mainClass>
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
+					<arguments>
+						<argument>${project.basedir}/../sirius-components-view-builder/src/main/resources/emf-merge.xml</argument>
+						<argument>${project.basedir}/../sirius-components-view-builder</argument>
+						<argument>${project.basedir}/../sirius-components-view-builder/src/main/java/org/eclipse/sirius/components/view/builder/generated</argument>
+						<argument>org.eclipse.sirius.components.view.builder.generated</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
