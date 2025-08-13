@@ -78,15 +78,19 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         };
     }
 
-    private Page<ProjectTemplateDTO> handleProjectBrowser(Pageable pageable) {
-        var projectTemplates = this.projectTemplateProviders.stream()
+    private List<ProjectTemplate> getProjectTemplatesSortedByName() {
+        return this.projectTemplateProviders.stream()
                 .map(IProjectTemplateProvider::getProjectTemplates)
                 .flatMap(List::stream)
                 .sorted(Comparator.comparing(ProjectTemplate::label))
                 .toList();
+    }
+
+    private Page<ProjectTemplateDTO> handleProjectBrowser(Pageable pageable) {
+        var projectTemplates = this.getProjectTemplatesSortedByName();
 
         List<ProjectTemplate> siriusWebProjectTemplate = new ArrayList<>();
-        this.getCreateProject().ifPresent(siriusWebProjectTemplate::add);
+        siriusWebProjectTemplate.add(new ProjectTemplate("create-project", "", "", List.of()));
         this.getUploadProject().ifPresent(siriusWebProjectTemplate::add);
         this.getBrowseAllProjectTemplates().ifPresent(siriusWebProjectTemplate::add);
 
@@ -100,11 +104,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
     }
 
     private Page<ProjectTemplateDTO> handleProjectTemplateModal(Pageable pageable) {
-        var projectTemplates = this.projectTemplateProviders.stream()
-                .map(IProjectTemplateProvider::getProjectTemplates)
-                .flatMap(List::stream)
-                .sorted(Comparator.comparing(ProjectTemplate::label))
-                .toList();
+        var projectTemplates = this.getProjectTemplatesSortedByName();
 
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size());
@@ -113,16 +113,6 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
-    }
-
-
-    private Optional<ProjectTemplate> getCreateProject() {
-        Optional<ProjectTemplate> result = Optional.empty();
-        var canCreate = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE) == CapabilityVote.GRANTED);
-        if (canCreate) {
-            result = Optional.of(new ProjectTemplate("create-project", "", "", List.of()));
-        }
-        return  result;
     }
 
     private Optional<ProjectTemplate> getUploadProject() {
@@ -137,8 +127,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
     private Optional<ProjectTemplate> getBrowseAllProjectTemplates() {
         Optional<ProjectTemplate> result = Optional.empty();
         var aTemplateExists = this.projectTemplateProviders.stream().mapToLong(providers -> providers.getProjectTemplates().size()).sum() > 0;
-        var canCreate = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE) == CapabilityVote.GRANTED);
-        if (canCreate && aTemplateExists) {
+        if (aTemplateExists) {
             result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
         }
         return  result;
