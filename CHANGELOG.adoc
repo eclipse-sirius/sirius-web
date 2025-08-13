@@ -25,6 +25,21 @@ The record `DiagramContext` is still implementing `IDiagramContext` for the mome
 - https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] The capability for the project settings images tab has change from `images` to `ProjectSettings#images`.
 The GraphQL API still only require the ID of the contribution to the `projectSettingsTabExtensionPoint` extension point, but the data fetcher will add `ProjectSettings#` has prefix for the capability type.
 Thus, any tab contributed by a downstream project will have as capability type `ProjectSettings#${tabId}`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] The main Sirius Web JAR no longer includes EMF CodeGen dependencies,
+including:
+* `ecj-3.42.0.jar`
+* `org.eclipse.core.commands-3.12.300.jar`
+* `org.eclipse.core.variables-3.6.500.jar`
+* `org.eclipse.debug.core-3.23.0.jar`
+* `org.eclipse.emf.codegen-2.24.0.jar`
+* `org.eclipse.emf.codegen.ecore-2.39.0.jar`
+* `org.eclipse.jdt.core-3.42.0.jar`
+* `org.eclipse.jdt.debug-3.23.0.jar`
+* `org.eclipse.jdt.launching-3.23.300.jar`
+* `org.eclipse.jdt.launching.macosx-3.6.300.jar`
+* `org.eclipse.text-3.14.300.jar`
++
+Downstream applications which had implicit dependencies to some of these may need to add new explicit dependencies.
 
 
 === Dependency update
@@ -75,6 +90,10 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] Add impact analysis before performing a library update.
 The impact analysis report displays the following information:
 * References that will be broken by the update (new proxies that won't be resolved and will be deleted after the update)
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] Split the View builder generator and its dependencies in a separate module.
+This means the main Sirius Web JAR no longer includes EMF CodeGen dependencies (including the Eclipse Java compiler).
+The resulting JAR is smaller and has a reduced attack surface.
+
 
 
 == v2025.8.0

@@ -21,12 +21,25 @@
 		<version>2025.8.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
-
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-components-view-builder</artifactId>
+	<artifactId>sirius-components-view-builder-generator</artifactId>
 	<version>2025.8.2</version>
-	<name>sirius-components-view-builder</name>
-	<description>Sirius View Builder</description>
+	<name>sirius-components-view-builder-generator</name>
+	<description>Sirius View Builder Generator</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -39,8 +52,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.codegen</artifactId>
+			<version>2.24.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
 			<version>2.37.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+			<version>2.39.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -98,12 +121,6 @@
 			<version>2025.8.2</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder-generator</artifactId>
-			<version>2025.8.2</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -138,6 +155,31 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>generate builders classes</id>
+						<phase>package</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<mainClass>org.eclipse.sirius.components.view.builder.generator.BuilderGenerator</mainClass>
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
+					<arguments>
+						<argument>${project.basedir}/../sirius-components-view-builder/src/main/resources/emf-merge.xml</argument>
+						<argument>${project.basedir}/../sirius-components-view-builder</argument>
+						<argument>${project.basedir}/../sirius-components-view-builder/src/main/java/org/eclipse/sirius/components/view/builder/generated</argument>
+						<argument>org.eclipse.sirius.components.view.builder.generated</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
