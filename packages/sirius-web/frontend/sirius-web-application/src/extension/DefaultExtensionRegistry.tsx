@@ -572,11 +572,19 @@ export const siriusWebRouterContributions: PathRouteProps[] = [
   },
   {
     path: '/projects/:projectId/edit/:representationId?/*',
-    element: <EditProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <EditProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/projects/:projectId/settings/:tabId?',
-    element: <ProjectSettingsView />,
+    element: (
+      <ViewerContextProvider>
+        <ProjectSettingsView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/libraries',
