@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Used to retrieve projects.
@@ -46,6 +46,11 @@ public class ProjectSearchService implements IProjectSearchService {
     @Override
     public Optional<Project> findById(String projectId) {
         return this.projectRepository.findById(projectId);
+    }
+
+    @Override
+    public List<Project> findAllByIds(List<String> projectIds) {
+        return this.projectRepository.findAllById(projectIds);
     }
 
     @Override
