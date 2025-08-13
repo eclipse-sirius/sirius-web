@@ -24,6 +24,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5335[#5335] [sirius-web] Fix the missing libraries menu in the navigation bar menu
+
 
 === New Features
 
