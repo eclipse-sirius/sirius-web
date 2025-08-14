@@ -17,8 +17,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationMetadataMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -39,10 +41,14 @@ public class RepresentationApplicationService implements IRepresentationApplicat
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
+
     private final IRepresentationMetadataMapper representationMetadataMapper;
 
-    public RepresentationApplicationService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataMapper representationMetadataMapper) {
+    public RepresentationApplicationService(IRepresentationMetadataSearchService representationMetadataSearchService, List<IRepresentationMetadataProvider> representationMetadataProviders,
+            IRepresentationMetadataMapper representationMetadataMapper) {
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
         this.representationMetadataMapper = Objects.requireNonNull(representationMetadataMapper);
     }
 
@@ -71,8 +77,24 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     @Override
     @Transactional(readOnly = true)
     public Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId) {
-        return new UUIDParser().parse(representationMetadataId)
+        var result = new UUIDParser().parse(representationMetadataId)
                 .flatMap(this.representationMetadataSearchService::findMetadataById)
                 .map(this.representationMetadataMapper::toDTO);
+        if (result.isEmpty()) {
+            // If not found through IRepresentationMetadataSearchService, then ask the IRepresentationMetadataProvider
+            result = this.representationMetadataProviders.stream()
+                .flatMap(provider -> provider.getMetadata(representationMetadataId).stream())
+                .map(this::toDTO)
+                .findFirst();
+        }
+        return result;
+    }
+
+    private RepresentationMetadataDTO toDTO(RepresentationMetadata representationMetadata) {
+        return new RepresentationMetadataDTO(representationMetadata.id(),
+                                             representationMetadata.label(),
+                                             representationMetadata.kind(),
+                                             representationMetadata.descriptionId(),
+                                             representationMetadata.iconURLs());
     }
 }
