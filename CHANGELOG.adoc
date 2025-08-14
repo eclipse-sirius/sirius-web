@@ -44,9 +44,7 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/4865[#4865] [releng] Remove the use of Google Guava.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
-
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
 
 == v2025.8.0
 
