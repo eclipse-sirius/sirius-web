@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.representations;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
@@ -32,8 +33,10 @@ import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQueryRunner;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -49,6 +52,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -179,6 +183,44 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
                 .allSatisfy(iconURLs -> assertThat(iconURLs)
                         .isNotEmpty()
                         .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/api/images/portal-images/portal.svg")));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an editing context, when the representation metadata for the Explorer view is requested, then it is returned")
+    public void givenEditingContextWhenTheExplorerRepresentationMetadataIsRequestedThenItIsReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
+                "representationIds", List.of(ExplorerDescriptionProvider.PREFIX)
+        );
+        var result = this.representationsMetadataQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.count");
+        assertThat(count).isEqualTo(1);
+
+        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
+        assertThat(representationIds).containsExactly(ExplorerDescriptionProvider.PREFIX);
+
+        String label = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.label");
+        assertThat(label).isEqualTo(ExplorerDescriptionProvider.REPRESENTATION_NAME);
+
+        String kind = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.kind");
+        assertThat(kind).isEqualTo(Tree.KIND);
+
+        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.iconURLs");
+        assertThat(iconURLs).containsExactly("/api/images/explorer/explorer.svg");
     }
 
     @Test
