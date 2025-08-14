@@ -270,6 +270,11 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 + This URL includes the current workbench selection and the current workbench state.
 + For now the only workbench state that is shareable is: the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
+- https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point, `PaletteAppearanceSectionContribution`, an exemple is available on ellipse node.
+* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance 
+* `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
+* `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
+* A GraphQL mutation is also added `editEllipseNodeAppearance`.
 
 === Improvements
 
@@ -310,6 +315,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
+- https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export `EditColorAppearanceSection`, `EditEnumSelectAppearanceSection` and `EditNumberAppearanceSection` to use in custom node appearance
 
 
 
