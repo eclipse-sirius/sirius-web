@@ -13,6 +13,7 @@
 
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { ListProjectsAreaProps, ListProjectsAreaState } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
@@ -46,6 +47,8 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize, {
     name: { contains: state.globalFilter },
   });
+
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
 
   const onPreviousPage = () => {
     setState((prevState) => ({
@@ -87,7 +90,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
-        <Typography variant="h4">Existing Projects</Typography>
+        <Typography variant="h4">{t('existingProjects')}</Typography>
       </div>
       <div>
         <ProjectsTable

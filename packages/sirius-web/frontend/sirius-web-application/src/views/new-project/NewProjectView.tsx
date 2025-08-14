@@ -19,6 +19,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -98,10 +99,12 @@ const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPa
 
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const [{ value, context }, dispatch] =
     useMachine<StateMachine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>>(newProjectViewMachine);
   const { newProjectView, toast } = value as SchemaValue;
-  const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
+  const { name, nameIsInvalid, message, newProjectId } = context;
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
   const { Component: Footer } = useComponent(footerExtensionPoint);
   const {
@@ -137,7 +140,7 @@ export const NewProjectView = () => {
       if (error) {
         const showToastEvent: ShowToastEvent = {
           type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
+          message: coreT('errors.unexpected'),
         };
         dispatch(showToastEvent);
       }
@@ -153,7 +156,7 @@ export const NewProjectView = () => {
         }
       }
     }
-  }, [loading, data, error]);
+  }, [loading, coreT, data, error]);
 
   if (!canCreate) {
     return <Navigate to={'/errors/404'} />;
@@ -172,10 +175,10 @@ export const NewProjectView = () => {
             <div className={classes.newProjectViewContainer}>
               <div className={classes.titleContainer}>
                 <Typography variant="h2" align="center" gutterBottom>
-                  Create a new project
+                  {t('title')}
                 </Typography>
                 <Typography variant="h4" align="center" gutterBottom>
-                  Get started by creating a new project
+                  {t('description')}
                 </Typography>
               </div>
               <Paper>
@@ -183,11 +186,11 @@ export const NewProjectView = () => {
                   <TextField
                     variant="standard"
                     error={nameIsInvalid}
-                    helperText={nameMessage}
-                    label="Name"
+                    helperText={t('name.helperText')}
+                    label={t('name.label')}
                     name="name"
                     value={name}
-                    placeholder="Enter the project name"
+                    placeholder={t('name.placeholder')}
                     inputProps={{ 'data-testid': 'name' }}
                     autoFocus={true}
                     onChange={onNameChange}
@@ -199,7 +202,7 @@ export const NewProjectView = () => {
                       disabled={newProjectView !== 'valid'}
                       data-testid="create-project"
                       color="primary">
-                      Create
+                      {t('submit')}
                     </Button>
                   </div>
                 </form>
