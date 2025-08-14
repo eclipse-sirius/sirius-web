@@ -68,7 +68,12 @@ export const DiagramElementPalette = memo(
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
       if (isNode) {
         sectionComponents.push(
-          <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
+          <PaletteExtensionSection
+            key="appearance"
+            component={PaletteAppearanceSection}
+            title="Appearance"
+            id="appearance"
+          />
         );
       }
       return sectionComponents;

@@ -191,6 +191,7 @@ export const PaletteToolList = ({
           const SectionComponent = extensionSection.props.component;
           return (
             <Slide
+              key={'extension_' + extensionSectionId}
               direction={'left'}
               in={state.extensionSection === extensionSectionId}
               container={containerRef.current}
