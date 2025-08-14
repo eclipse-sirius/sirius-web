@@ -27,6 +27,9 @@ import org.springframework.stereotype.Service;
 public class DemoCapabilityVoter implements ICapabilityVoter {
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
+        if (SiriusWebCapabilities.PROJECT.equals(type) && (SiriusWebCapabilities.Project.LIST.equals(capability) || SiriusWebCapabilities.Project.VIEW.equals(capability))) {
+            return CapabilityVote.GRANTED;
+        }
         return CapabilityVote.DENIED;
     }
 }

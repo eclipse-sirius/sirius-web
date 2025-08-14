@@ -72,17 +72,13 @@ import {
 } from '@eclipse-sirius/sirius-components-widget-table';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Filter from '@mui/icons-material/Filter';
-import FolderIcon from '@mui/icons-material/Folder';
 import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import { Navigate, PathRouteProps, Link as RouterLink, useMatch } from 'react-router-dom';
+import { Navigate, PathRouteProps, useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
@@ -91,8 +87,6 @@ import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCrea
 import { PublishStudioLibraryCommand } from '../libraries/PublishStudioLibraryCommand';
 import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
 import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
-import { NavigationBarMenuItemProps } from '../navigationBar/NavigationBarMenu.types';
-import { navigationBarMenuEntryExtensionPoint } from '../navigationBar/NavigationBarMenuExtensionPoints';
 import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { routerExtensionPoint } from '../router/RouterExtensionPoints';
@@ -245,30 +239,6 @@ export const OmniboxButtonContribution = ({}: NavigationBarRightContributionProp
 defaultExtensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
   identifier: `siriusweb_${navigationBarRightContributionExtensionPoint.identifier}_omnibox`,
   Component: OmniboxButtonContribution,
-});
-
-/*******************************************************************************
- *
- * NavigationBar menu contributions
- *
- * Used to register actions in the navigation bar menu
- *
- *******************************************************************************/
-
-export const ProjectsButtonContribution = ({}: NavigationBarMenuItemProps) => {
-  return (
-    <MenuItem component={RouterLink} to="/projects">
-      <ListItemIcon>
-        <FolderIcon />
-      </ListItemIcon>
-      <ListItemText primary="Projects" />
-    </MenuItem>
-  );
-};
-
-defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_projects`,
-  Component: ProjectsButtonContribution,
 });
 
 /*******************************************************************************

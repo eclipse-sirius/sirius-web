@@ -13,6 +13,7 @@
 
 import { ComponentExtension, useComponent, useComponents, useData } from '@eclipse-sirius/sirius-components-core';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import FolderIcon from '@mui/icons-material/Folder';
 import HelpIcon from '@mui/icons-material/Help';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -38,6 +39,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
     viewer: {
       capabilities: {
         libraries: { canList: canListLibrary },
+        projects: { canList: canListProject },
       },
     },
   } = useCurrentViewer();
@@ -68,6 +70,14 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
               <FileCopyIcon />
             </ListItemIcon>
             <ListItemText primary="Libraries" />
+          </MenuItem>
+        ) : null}
+        {canListProject ? (
+          <MenuItem component={RouterLink} to="/projects" data-testid="projects-link">
+            <ListItemIcon>
+              <FolderIcon />
+            </ListItemIcon>
+            <ListItemText primary="Projects" />
           </MenuItem>
         ) : null}
         {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (

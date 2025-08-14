@@ -22,6 +22,9 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
@@ -57,17 +60,25 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private static final String FILTER_ARGUMENT = "filter";
 
+    private final List<ICapabilityVoter> capabilityVoters;
+
     private final IProjectApplicationService projectApplicationService;
 
     private final ILimitProvider limitProvider;
 
-    public ViewerProjectsDataFetcher(IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
+    public ViewerProjectsDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
+        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.limitProvider = Objects.requireNonNull(limitProvider);
     }
 
     @Override
     public Connection<DataFetcherResult<ProjectDTO>> get(DataFetchingEnvironment environment) throws Exception {
+        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.LIST) == CapabilityVote.GRANTED);
+        if (!hasCapability) {
+            return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
+        }
+
         Optional<Integer> first = Optional.ofNullable(environment.getArgument(FIRST_ARGUMENT));
         Optional<Integer> last = Optional.ofNullable(environment.getArgument(LAST_ARGUMENT));
         Optional<String> after = Optional.ofNullable(environment.getArgument(AFTER_ARGUMENT));

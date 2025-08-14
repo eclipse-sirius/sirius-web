@@ -13,6 +13,7 @@
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -43,10 +44,14 @@ export const ProjectBrowserView = () => {
   const {
     viewer: {
       capabilities: {
-        projects: { canCreate },
+        projects: { canCreate, canList },
       },
     },
   } = useCurrentViewer();
+
+  if (!canList) {
+    return <Navigate to="/errors/404" replace />;
+  }
 
   return (
     <div className={classes.projectsView}>
