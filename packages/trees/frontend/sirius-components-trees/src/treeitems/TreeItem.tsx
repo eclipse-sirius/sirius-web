@@ -117,7 +117,7 @@ const getTooltipText = (item: GQLTreeItem) => {
 };
 
 // The list of characters that will enable the direct edit mechanism.
-const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
+const directEditActivationValidCharacters = /[\p{L}\p{N}\p{P}]/u;
 
 /**
  * Renders a *single* tree item (excluding its sub-items).
