@@ -10,6 +10,7 @@
 
 - [ADR-204] Make object duplication behavior customizable
 - [ADR-205] Add support for exporting query result
+- [ADR-206] Add support for importing documents with read-only permissions
 
 === Deprecation warning
 
