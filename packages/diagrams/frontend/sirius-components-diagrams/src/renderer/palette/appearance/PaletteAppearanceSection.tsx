@@ -17,11 +17,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
+import { ImageNodeAppearanceSection } from './ImageNodeAppearanceSection';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
 const useStyle = makeStyles()((theme) => ({
@@ -50,6 +51,10 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const isRectangularNode = (
+  element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
+): element is InternalNode<Node<NodeData>> => !!element && element.type === 'freeFormNode';
+
 export const PaletteAppearanceSection = ({
   diagramElementId,
   onBackToMainList,
@@ -58,12 +63,20 @@ export const PaletteAppearanceSection = ({
   const { nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const diagramElement = nodeLookup.get(diagramElementId);
 
-  const nodeAppearanceData = diagramElement?.data.nodeAppearanceData;
-
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
     onBackToMainList();
   };
+
+  const sections: JSX.Element[] = [];
+  if (isRectangularNode(diagramElement)) {
+    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
+      sections.push(<RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />);
+    }
+    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
+      sections.push(<ImageNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />);
+    }
+  }
 
   return (
     <List className={classes.toolList} component="nav">
@@ -77,13 +90,12 @@ export const PaletteAppearanceSection = ({
           <ListItemText className={classes.sectionTitleListItemText} primary="Appearance" />
         </ListItemButton>
       </Tooltip>
-      {diagramElement && nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle' ? (
-        <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data as NodeData} />
-      ) : (
+      {sections.length === 0 ? (
         <ListItem>
           <Typography>No appearance editor available for this style of element</Typography>
         </ListItem>
-      )}
+      ) : null}
+      {sections}
     </List>
   );
 };
