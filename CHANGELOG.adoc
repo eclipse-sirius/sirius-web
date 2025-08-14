@@ -45,6 +45,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/4921[#4921] [releng] Fix the license and URL of our maven modules in the SBOM
 - https://github.com/eclipse-sirius/sirius-web/issues/4924[#4924] [tree] Fix graphical glitch in Chrome with tree items background not being properly reset during drag'n'drop.
 - https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Fix an issue where the project natures were not returned with its owning project using `IProjectSearchService#findAll(Before|After)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5356[#5356] [diagram] Fix React error on non-unique keys for palette
 
 
 === New Features
