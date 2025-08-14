@@ -53,18 +53,20 @@ export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButto
 
   return (
     <Tooltip title="Arrange all elements">
-      <IconButton
-        size="small"
-        aria-label="arrange all elements"
-        onClick={handleClick}
-        data-testid={'arrange-all'}
-        disabled={disabled}>
-        {state.arrangeAllInProgress ? (
-          <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
-        ) : (
-          <AccountTreeIcon />
-        )}
-      </IconButton>
+      <span>
+        <IconButton
+          size="small"
+          aria-label="arrange all elements"
+          onClick={handleClick}
+          data-testid={'arrange-all'}
+          disabled={disabled}>
+          {state.arrangeAllInProgress ? (
+            <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
+          ) : (
+            <AccountTreeIcon />
+          )}
+        </IconButton>
+      </span>
     </Tooltip>
   );
 };
