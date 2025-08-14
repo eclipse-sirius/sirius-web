@@ -4,9 +4,11 @@
 
 === Shapes
 
+- Add support for exporting query result
 
 === Architectural decision records
 
+- [ADR-204] Add support for exporting query result
 
 === Deprecation warning
 
