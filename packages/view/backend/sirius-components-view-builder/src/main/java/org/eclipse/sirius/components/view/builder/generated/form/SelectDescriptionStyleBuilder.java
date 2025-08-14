@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setGridTemplateColumns(value);
         return this;
     }
-
     /**
      * Setter for GridTemplateRows.
      *
@@ -106,7 +105,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setGridTemplateRows(value);
         return this;
     }
-
     /**
      * Setter for LabelGridRow.
      *
@@ -116,7 +114,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setLabelGridRow(value);
         return this;
     }
-
     /**
      * Setter for LabelGridColumn.
      *
@@ -126,7 +123,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setLabelGridColumn(value);
         return this;
     }
-
     /**
      * Setter for WidgetGridRow.
      *
@@ -136,7 +132,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setWidgetGridRow(value);
         return this;
     }
-
     /**
      * Setter for WidgetGridColumn.
      *
@@ -146,7 +141,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setWidgetGridColumn(value);
         return this;
     }
-
     /**
      * Setter for Gap.
      *
@@ -156,7 +150,6 @@ public class SelectDescriptionStyleBuilder {
         this.getSelectDescriptionStyle().setGap(value);
         return this;
     }
-
     /**
      * Setter for BackgroundColor.
      *

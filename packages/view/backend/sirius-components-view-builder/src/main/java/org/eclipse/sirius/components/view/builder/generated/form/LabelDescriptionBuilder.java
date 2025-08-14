@@ -78,7 +78,6 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setIconExpression(value);
         return this;
     }
-
     /**
      * Setter for KindExpression.
      *
@@ -106,7 +105,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setTreeItemIconExpression(value);
         return this;
     }
-
     /**
      * Setter for TreeItemIdExpression.
      *
@@ -188,7 +186,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setDeletableExpression(value);
         return this;
     }
-
     /**
      * Setter for TreeItemLabelDescriptions.
      *
@@ -212,6 +209,7 @@ public class TreeDescriptionBuilder {
         }
         return this;
     }
+
 
 }
 

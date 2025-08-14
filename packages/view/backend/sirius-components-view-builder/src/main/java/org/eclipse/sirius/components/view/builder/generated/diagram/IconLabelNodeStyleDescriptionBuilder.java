@@ -87,7 +87,6 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
-
     /**
      * Setter for Background.
      *

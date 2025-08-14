@@ -69,7 +69,6 @@ public class CustomTreeItemContextMenuEntryBuilder {
         this.getCustomTreeItemContextMenuEntry().setContributionId(value);
         return this;
     }
-
     /**
      * Setter for WithImpactAnalysis.
      *
