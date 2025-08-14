@@ -19,6 +19,7 @@ const defaultValue: ViewerContextValue = {
   viewer: {
     capabilities: {
       projects: {
+        canList: false,
         canCreate: false,
         canUpload: false,
       },

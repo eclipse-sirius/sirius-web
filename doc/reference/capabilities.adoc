@@ -16,6 +16,7 @@ This document will reference the frontend capabilities that can be enabled or di
 * type: `Project`
 * identifier: *should* be `null`
 * capability:
+** canList: Whether projects can be listed or not.
 ** canCreate: Whether a project can be created or not.
 ** canUpload: Whether a project can be uploaded or not.
 
@@ -28,6 +29,7 @@ This document will reference the frontend capabilities that can be enabled or di
 ** canRename: Whether the project can be renamed or not.
 ** canDelete: Whether the project can be deleted or not.
 ** canEdit: Whether the project is readonly or not.
+** canView: Whether the project can be viewed or not.
 
 === Libraries
 

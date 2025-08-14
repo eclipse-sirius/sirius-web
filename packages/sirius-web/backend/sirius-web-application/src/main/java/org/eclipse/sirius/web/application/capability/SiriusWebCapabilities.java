@@ -32,6 +32,20 @@ public final class SiriusWebCapabilities {
     public static final class Project {
 
         /**
+         * Used to check if projects can be listed.
+         *
+         * @since v2025.10.0
+         */
+        public static final String LIST = "list";
+
+        /**
+         * Used to check if a project can be viewed.
+         *
+         * @since v2025.10.0
+         */
+        public static final String VIEW = "view";
+
+        /**
          * Used to check if projects can be created.
          *
          * @since v2025.8.0

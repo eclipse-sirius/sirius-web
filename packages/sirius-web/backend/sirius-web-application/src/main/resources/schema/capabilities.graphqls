@@ -8,6 +8,7 @@ type ViewerCapabilities {
 }
 
 type ProjectsCapabilities {
+  canList: Boolean!
   canCreate: Boolean!
   canUpload: Boolean!
 }

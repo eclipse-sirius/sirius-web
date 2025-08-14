@@ -17,6 +17,7 @@ export const ViewerFragment = gql`
   fragment ViewerFragment on Viewer {
     capabilities {
       projects {
+        canList
         canCreate
         canUpload
       }
