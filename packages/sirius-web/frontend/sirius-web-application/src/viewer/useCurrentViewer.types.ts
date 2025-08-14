@@ -13,6 +13,6 @@
 
 import { GQLViewer } from './useViewer.types';
 
-export interface UseCurrentViewerValue {
-  viewer: GQLViewer;
+export interface UseCurrentViewerValue<T extends GQLViewer> {
+  viewer: T;
 }
