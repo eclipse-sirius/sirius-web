@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,10 @@ public final class EdgeStyle {
         return new Builder();
     }
 
+    public static Builder newEdgeStyle(EdgeStyle sourceEdgeStyle) {
+        return new Builder(sourceEdgeStyle);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'size: {1}, lineStyle: {2}, sourceArrow: {3}, targetArrow: {4}, color: {5}'}'";
@@ -87,6 +91,14 @@ public final class EdgeStyle {
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(EdgeStyle sourceEdgeStyle) {
+            this.size = sourceEdgeStyle.getSize();
+            this.lineStyle = sourceEdgeStyle.getLineStyle();
+            this.sourceArrow = sourceEdgeStyle.getSourceArrow();
+            this.targetArrow = sourceEdgeStyle.getTargetArrow();
+            this.color = sourceEdgeStyle.getColor();
         }
 
         public Builder size(int size) {

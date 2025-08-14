@@ -64,15 +64,14 @@ export const DiagramElementPalette = memo(
     };
 
     const extensionSections = useMemo(() => {
-      const isNode = !!store.getState().nodeLookup.get(diagramElementId);
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
-      if (isNode) {
-        sectionComponents.push(
-          <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
-        );
-      }
+
+      sectionComponents.push(
+        <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
+      );
+
       return sectionComponents;
-    }, [diagramElementId]);
+    }, []);
 
     if (readOnly) {
       return null;

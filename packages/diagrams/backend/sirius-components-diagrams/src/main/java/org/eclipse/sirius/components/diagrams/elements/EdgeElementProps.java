@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,8 @@ public final class EdgeElementProps implements IProps {
 
     private List<Element> children;
 
+    private Set<String> customizedStyleProperties;
+
     private EdgeElementProps() {
         // Prevent instantiation
     }
@@ -116,6 +118,10 @@ public final class EdgeElementProps implements IProps {
         return this.centerLabelEditable;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
+    }
+
     @Override
     public List<Element> getChildren() {
         return this.children;
@@ -160,6 +166,8 @@ public final class EdgeElementProps implements IProps {
         private boolean centerLabelEditable;
 
         private List<Element> children = new ArrayList<>();
+
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -225,6 +233,11 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public EdgeElementProps build() {
             EdgeElementProps edgeElementProps = new EdgeElementProps();
             edgeElementProps.id = Objects.requireNonNull(this.id);
@@ -240,6 +253,7 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.style = Objects.requireNonNull(this.style);
             edgeElementProps.centerLabelEditable = this.centerLabelEditable;
             edgeElementProps.children = this.children;
+            edgeElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return edgeElementProps;
         }
     }
