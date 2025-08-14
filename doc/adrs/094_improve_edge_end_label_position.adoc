@@ -1,0 +1,79 @@
+:imagesdir: images/094
+= ADR-093 - Improve the edge head and edge tail position
+
+== Context
+
+The incremental layout is able to position only the edge center label. We want the incremental layout to also support the position of the head and tail edge labels.
+
+== Decision
+
+=== Edge direction and sense
+
+The direction and sense of the edge will be used to position the head and the tail labels of an edge.
+
+image:094-trigonometric-circle.png[Represents the trigonometric circle with O the origin, two points P(10, 5) and P'(-10, -5) and, the angle α between the abscissa axis and the vector O.P]
+
+The trigonometric circle _O_ represents the edge anchor where we are positioning the label. _P_ or _P'_ are the other edge end or, the first or last edge routing point.
+
+We will determine the angle α (in green) using `arctan(Py/Px)` and compare α with specific trigonometric values, such as: 0, 2π, π/4, π/2, 3π/4, π, 5π/4, 3π/2 and 7π/4.
+We will position the edge end label on specific position regarding the area the edge is.
+
+NOTE: Since our use of `arctan` will produce value between `-π/2` and `π/2`, α will be adapted regarding the position of _P_.
+
+=== Label position
+
+Once α will have been calculated, we will be able to position the edge end label with a padding that may be different regarding α.
+
+[cols="1,1,1,1"]
+[frame=ends, grid=rows]
+|===
+2+| Area 2+| Label Position
+
+| 0 &lt; α &lt;= π/4
+| image:094-trigonometric-circle-0.png[]
+| Offset (5, 5)
+| image:094-node-label-position-0.png[]
+
+| π/4 &lt; α &lt;= π/2
+| image:094-trigonometric-circle-1.png[]
+| Offset (10, -10 - label.height)
+| image:094-node-label-position-1.png[]
+
+| π/2 &lt; α &lt;= 3π/4
+| image:094-trigonometric-circle-2.png[]
+| Offset (-10 - label.width, -10 - label.height)
+| image:094-node-label-position-2.png[]
+
+| 3π/4 &lt; α &lt;= π
+| image:094-trigonometric-circle-3.png[]
+| Offset (-10 - label.width, -10 - label.height)
+| image:094-node-label-position-3.png[]
+
+| π &lt; α &lt;= 5π/4
+| image:094-trigonometric-circle-4.png[]
+| Offset (-10 - label.width, 5)
+| image:094-node-label-position-4.png[]
+
+| 5π/4 &lt; α &lt;= 3π/2
+| image:094-trigonometric-circle-5.png[]
+| Offset (-5 - label.width, 5)
+| image:094-node-label-position-5.png[]
+
+| 3π/2 &lt; α &lt;= 7π/4
+| image:094-trigonometric-circle-6.png[]
+| TODO: Offset (5, 5)
+| image:094-node-label-position-6.png[]
+
+| 7π/4 &lt; α &lt;= 2π
+| image:094-trigonometric-circle-7.png[]
+| Offset (5, 10)
+| image:094-node-label-position-7.png[]
+
+|===
+
+TODO: Revoir la position du label en fonction de la position de l'ancre sur le noeud va dépendre si l'ancre est au-dessus, à gauche, en dessous, à droite pour les angles (0 &lt; α &lt;= π/4), (3π/4 &lt; α &lt;= π), (π &lt; α &lt;= 5π/4) et (7π/4 &lt; α &lt;= 2π).
+
+
+== Status
+
+WIP
