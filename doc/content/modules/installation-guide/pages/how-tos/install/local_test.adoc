@@ -1,0 +1,95 @@
+= Local installation of {product} for single-user testing purposes
+
+Follow these instructions to install a local version of the application, intended for testing purposes.
+This setup is configured for use by the local user only and doesn't include any security configurations.
+
+== Get {product}
+
+[CAUTION]
+.Stable versions
+====
+Only `YEAR.MONTH.0` versions are stable and suitable for production deployments.
+Other versions, such as intermediate releases, are intended solely for testing purposes.
+They're not recommended for production use due to their potential for further changes and instability.
+Always use the stable `.0` releases for any production environments to ensure reliability and support.
+For more details see xref:user-manual:cycle.adoc[].
+====
+
+[#docker-install]
+== Deploy {product} with Docker
+
+The easiest way to deploy {product} is by running it alongside a PostgreSQL database in Docker.
+
+[NOTE]
+====
+Before you proceed with the installation, confirm you have the following xref:requirements.adoc[Hardware prerequisites]:
+
+* https://www.docker.com/[Docker] installed and running.
+Docker is required for running the PostgreSQL container.
+Download it from Docker’s official site.
+Alternatively, if you already have PostgreSQL 15 or later installed, you can use it instead of Docker.
+* https://adoptium.net/temurin/releases/[Java 17] installed and running.
+You can download it from the Adoptium website.
+====
+
+=== Step 1: Start PostgreSQL Using Docker
+
+Run the following command to start a PostgreSQL container locally:
+
+[source,bash]
+----
+docker run -p 5433:5432 --name sirius-web-postgres \
+       -e POSTGRES_USER=dbuser \
+       -e POSTGRES_PASSWORD=dbpwd \
+       -e POSTGRES_DB=sirius-web-db \
+       -d postgres:15
+----
+
+This command:
+
+- Creates a database named `sirius-web-db`
+- With user `dbuser` and password `dbpwd`
+- Maps container port `5432` to host port `5433`
+
+You may customize these values as needed.
+
+TIP: Add `--rm` to the command if you want the container to be automatically removed when stopped (useful for test environments).
+
+=== Step 2: Run the Sirius Web Application
+
+Once the database is running, start the Sirius Web application using:
+
+[source,bash]
+----
+java -jar sirius-web-sample-application.jar \
+     --spring.datasource.url=jdbc:postgresql://localhost:5433/sirius-web-db \
+     --spring.datasource.username=dbuser \
+     --spring.datasource.password=dbpwd
+----
+
+[NOTE]
+====
+*Sirius Web fat JAR*:
+The `sirius-web-sample-application.jar` is a self-contained executable archive (also known as a "fat JAR") that includes all dependencies required to run the application.
+
+You can download the latest stable release (e.g., `sirius-web-YYYY.MM.0`) from the official https://github.com/eclipse-sirius/sirius-web/packages/2069582/versions[GitHub Packages page]
+====
+
+This command starts the application and connects it to the PostgreSQL database you previously set up.
+
+Make sure the database is running on the specified port, and that the credentials (`dbuser`, `dbpwd`) match those passed to Docker.
+
+Once your Docker up, go directly to the <<openwebbrowser>> section.
+
+[#openwebbrowser]
+== Open your web browser
+
+Navigate to `http://localhost:8080` to experience {product}.
+
+[CAUTION]
+====
+To end your local testing session, confirm you stop the running PostgreSQL and {product} Docker container and by using the command `docker compose down`.
+Note that this erases all the data you have generated during testing.
+====
+
+If you meet any issues during the installation process, see the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
