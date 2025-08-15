@@ -1,0 +1,7 @@
+= For Studio Makers 
+
+== Studio Definition
+
+#TODO: add best practices here. This should probably mention naming conventions, etc.#
+
+== Miscellaneous

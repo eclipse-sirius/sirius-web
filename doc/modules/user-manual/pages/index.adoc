@@ -1,0 +1,13 @@
+= User Manual
+
+This manual is intended for _{stdusrs}_, who *use* customs studios made with {sw}.
+
+Its goal is to introduce the core concepts of {sw} and its user interface.
+
+NOTE: Custom advanced applications made with {sw} may remove, add, or override some of the elements described in this manual. In that case, refer to the documentation of your application.
+
+* xref:user-manual:interface-tour.adoc[]
+* xref:user-manual:core-concepts.adoc[]
+* xref:user-manual:workbench-ui.adoc[]
+* xref:user-manual:studio-runtime.adoc[]
+* xref:user-manual:tutorials.adoc[]
