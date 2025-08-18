@@ -10,118 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { MessageOptions, ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
-import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
-import { GQLButton, GQLSplitButton } from '../../form/FormEventFragments.types';
-import { pushButtonMutation } from '../ButtonPropertySection';
-import {
-  GQLErrorPayload,
-  GQLPushButtonMutationData,
-  GQLPushButtonMutationVariables,
-  GQLSuccessPayload,
-} from '../ButtonPropertySection.types';
 import { SplitButtonPropertySection } from '../SplitButtonPropertySection';
+import { pushButtonErrorMock, pushButtonSuccessMock, splitButton } from './SplitButtonPropertySection.data';
 
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
-
-afterEach(() => cleanup());
-
-const defaultButton: GQLButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  buttonLabel: 'ButtonLabel',
-  imageURL: null,
-  style: {
-    backgroundColor: null,
-    foregroundColor: null,
-    fontSize: null,
-    italic: null,
-    bold: null,
-    underline: null,
-    strikeThrough: null,
-  },
-  readOnly: false,
-};
-
-const defaultSplitButton: GQLSplitButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  hasHelpText: false,
-  diagnostics: [],
-  readOnly: false,
-  actions: [defaultButton, defaultButton],
-};
-
-const buttonWithStyle: GQLButton = {
-  ...defaultButton,
-  style: {
-    backgroundColor: '#de1000',
-    foregroundColor: '#fbb800',
-    fontSize: 14,
-    italic: false,
-    bold: false,
-    underline: false,
-    strikeThrough: false,
-  },
-};
-
-const readOnlyButton: GQLButton = {
-  __typename: 'Button',
-  id: 'buttonId',
-  label: 'Label',
-  iconURL: [],
-  diagnostics: [],
-  buttonLabel: 'ButtonLabel',
-  imageURL: null,
-  style: {
-    backgroundColor: null,
-    foregroundColor: null,
-    fontSize: null,
-    italic: null,
-    bold: null,
-    underline: null,
-    strikeThrough: null,
-  },
-  readOnly: true,
-  hasHelpText: false,
-};
-
-const pushButtonVariables: GQLPushButtonMutationVariables = {
-  input: {
-    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
-    editingContextId: 'editingContextId',
-    representationId: 'formId',
-    buttonId: 'buttonId',
-  },
-};
-const successPayload: GQLSuccessPayload = { __typename: 'SuccessPayload', messages: [] };
-const pushButtonSuccessData: GQLPushButtonMutationData = { pushButton: successPayload };
-
-const pushButtonErrorPayload: GQLErrorPayload = {
-  __typename: 'ErrorPayload',
-  messages: [
-    {
-      body: 'An error has occurred, please refresh the page',
-      level: 'ERROR',
-    },
-    {
-      body: 'FeedbackMessage',
-      level: 'INFO',
-    },
-  ],
-};
-const pushButtonErrorData: GQLPushButtonMutationData = {
-  pushButton: pushButtonErrorPayload,
-};
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
@@ -130,27 +30,14 @@ const toastContextMock: ToastContextValue = {
 };
 
 test('should send mutation when clicked', async () => {
-  let pushButtonCalled = false;
-  const pushButtonSuccessMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: pushButtonMutation,
-      variables: pushButtonVariables,
-    },
-    result: () => {
-      pushButtonCalled = true;
-      return { data: pushButtonSuccessData };
-    },
-  };
-
-  const mocks = [pushButtonSuccessMock];
   render(
-    <MockedProvider mocks={mocks}>
+    <MockedProvider mocks={[pushButtonSuccessMock]}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <ToastContext.Provider value={toastContextMock}>
           <SplitButtonPropertySection
             editingContextId="editingContextId"
             formId="formId"
-            widget={defaultSplitButton}
+            widget={splitButton}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -160,38 +47,21 @@ test('should send mutation when clicked', async () => {
 
   const element: HTMLElement = screen.getByTestId('Label');
 
-  await act(async () => {
-    userEvent.click(element);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    await waitFor(() => {
-      expect(pushButtonCalled).toBeTruthy();
-    });
+  await userEvent.click(element);
+  await waitFor(() => {
+    expect(pushButtonSuccessMock.result).toHaveBeenCalledTimes(1);
   });
 });
 
 test('should display the error received', async () => {
-  let pushButtonCalled = false;
-  const pushButtonErrorMock: MockedResponse<Record<string, any>> = {
-    request: {
-      query: pushButtonMutation,
-      variables: pushButtonVariables,
-    },
-    result: () => {
-      pushButtonCalled = true;
-      return { data: pushButtonErrorData };
-    },
-  };
-
-  const mocks = [pushButtonErrorMock];
   render(
-    <MockedProvider mocks={mocks}>
+    <MockedProvider mocks={[pushButtonErrorMock]}>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
         <ToastContext.Provider value={toastContextMock}>
           <SplitButtonPropertySection
             editingContextId="editingContextId"
             formId="formId"
-            widget={defaultSplitButton}
+            widget={splitButton}
             readOnly={false}
           />
         </ToastContext.Provider>
@@ -201,13 +71,9 @@ test('should display the error received', async () => {
 
   const element: HTMLElement = screen.getByTestId('Label');
 
-  await act(async () => {
-    userEvent.click(element);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    await waitFor(() => {
-      expect(pushButtonCalled).toBeTruthy();
-      expect(mockEnqueue).toHaveBeenCalledTimes(2);
-    });
+  await userEvent.click(element);
+  await waitFor(() => {
+    expect(pushButtonErrorMock.result).toHaveBeenCalledTimes(1);
+    expect(mockEnqueue).toHaveBeenCalledTimes(2);
   });
 });

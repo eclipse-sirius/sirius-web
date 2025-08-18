@@ -20,42 +20,29 @@ import {
   ToastContext,
   ToastContextValue,
 } from '@eclipse-sirius/sirius-components-core';
-import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
-import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
 import { TreePropertySection } from '../TreePropertySection';
+import {
+  tree,
+  treeWithMultiLevelNodes,
+  treeWithMultiLevelNodesExpanded,
+  treeWithMultiLevelNodesUnordered,
+  treeWithSelectableNodes,
+  treeWithTwoLevelNodes,
+} from './TreePropertySection.data';
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
 };
-
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
-
-// Helper to make fixtures more readable
-function createNode(
-  id: string,
-  parentId: string,
-  selectable: boolean = false,
-  checkable: boolean = false,
-  value: boolean = false
-): GQLTreeNode {
-  return {
-    id,
-    parentId,
-    label: `Node-${id}`,
-    kind: 'siriusComponents://testNode',
-    iconURL: [],
-    endIconsURL: [[]],
-    selectable,
-    checkable,
-    value,
-  };
-}
 
 const emptySelection: Selection = {
   entries: [],
@@ -64,29 +51,12 @@ const emptySelection: Selection = {
 const emptySetSelection = () => {};
 
 test('should render the tree', () => {
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Default Tree',
-    iconURL: [],
-    hasHelpText: false,
-    readOnly: false,
-    nodes: [createNode('root1', '')],
-    expandedNodesIds: [],
-    diagnostics: [],
-  };
-
   render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
           <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-            <TreePropertySection
-              editingContextId="editingContextId"
-              formId="formId"
-              widget={treeWidget}
-              readOnly={false}
-            />
+            <TreePropertySection editingContextId="editingContextId" formId="formId" widget={tree} readOnly={false} />
           </SelectionContext.Provider>
         </ServerContext.Provider>
       </ToastContext.Provider>
@@ -97,29 +67,6 @@ test('should render the tree', () => {
 });
 
 test('should render a multi-level tree correctly', () => {
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Deep Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: false,
-    nodes: [
-      createNode('1', ''),
-      createNode('2', ''),
-      createNode('1.1', '1'),
-      createNode('1.1.1', '1.1'),
-      createNode('1.1.2', '1.1'),
-      createNode('1.2', '1'),
-      createNode('1.3', '1'),
-      createNode('1.3.1', '1.3'),
-      createNode('1.3.1.1', '1.3.1'),
-      createNode('1.3.1.2', '1.3.1'),
-      createNode('2.1', '2'),
-    ],
-    expandedNodesIds: ['0', '1', '0/0', '0/2', '0/2/0'],
-    diagnostics: [],
-  };
   render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
@@ -128,7 +75,7 @@ test('should render a multi-level tree correctly', () => {
             <TreePropertySection
               editingContextId="editingContextId"
               formId="formId"
-              widget={treeWidget}
+              widget={treeWithMultiLevelNodes}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -152,34 +99,6 @@ test('should render a multi-level tree correctly', () => {
 });
 
 test('should correctly interpret the order of nodes with the same parent in the flat nodes list', () => {
-  // The fixture contains the same nodes as the previous one, but with some ordering changes between siblings
-  // - the root '2' is moved before '1'
-  // - '1.3' moved between '1.1' and '1.2'
-  // - some deep nodes appear before their parent in the list (but with the same relative order) => should not have any impact
-  // - '1.1.2' moved before '1.1.1"
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Deep Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: false,
-    nodes: [
-      createNode('2', ''),
-      createNode('1', ''),
-      createNode('1.3.1.1', '1.3.1'),
-      createNode('1.3.1.2', '1.3.1'),
-      createNode('1.1', '1'),
-      createNode('1.1.2', '1.1'),
-      createNode('1.1.1', '1.1'),
-      createNode('1.3', '1'),
-      createNode('1.2', '1'),
-      createNode('1.3.1', '1.3'),
-      createNode('2.1', '2'),
-    ],
-    expandedNodesIds: ['1', '0', '1/0', '1/1', '1/1/0'],
-    diagnostics: [],
-  };
   render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
@@ -188,7 +107,7 @@ test('should correctly interpret the order of nodes with the same parent in the 
             <TreePropertySection
               editingContextId="editingContextId"
               formId="formId"
-              widget={treeWidget}
+              widget={treeWithMultiLevelNodesUnordered}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -212,31 +131,6 @@ test('should correctly interpret the order of nodes with the same parent in the 
 });
 
 test('should only expand the specified nodes on initial render', () => {
-  // Still the same fixture (in the original order), but with only the two root elements expanded
-  // (and one of the leave nodes, but its parent is not expanded so this should have no effect)
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Deep Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: false,
-    nodes: [
-      createNode('1', ''),
-      createNode('2', ''),
-      createNode('1.1', '1'),
-      createNode('1.1.1', '1.1'),
-      createNode('1.1.2', '1.1'),
-      createNode('1.2', '1'),
-      createNode('1.3', '1'),
-      createNode('1.3.1', '1.3'),
-      createNode('1.3.1.1', '1.3.1'),
-      createNode('1.3.1.2', '1.3.1'),
-      createNode('2.1', '2'),
-    ],
-    expandedNodesIds: ['0', '1', '0/2/0/1'],
-    diagnostics: [],
-  };
   render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
@@ -245,7 +139,7 @@ test('should only expand the specified nodes on initial render', () => {
             <TreePropertySection
               editingContextId="editingContextId"
               formId="formId"
-              widget={treeWidget}
+              widget={treeWithMultiLevelNodesExpanded}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -269,18 +163,6 @@ test('should only expand the specified nodes on initial render', () => {
 });
 
 test('should change the selection when a selectable node is clicked', () => {
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: false,
-    nodes: [createNode('1', ''), createNode('2', ''), createNode('1.1', '1', true), createNode('1.2', '1', false)],
-    expandedNodesIds: ['0', '1'],
-    diagnostics: [],
-  };
-
   let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
@@ -298,7 +180,7 @@ test('should change the selection when a selectable node is clicked', () => {
             <TreePropertySection
               editingContextId="editingContextId"
               formId="formId"
-              widget={treeWidget}
+              widget={treeWithSelectableNodes}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -325,17 +207,6 @@ test('should change the selection when a selectable node is clicked', () => {
 });
 
 test('should collapse/expand a non-selectable node when clicked', async () => {
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: false,
-    nodes: [createNode('1', ''), createNode('1.1', '1'), createNode('1.1.1', '1.1')],
-    expandedNodesIds: ['0', '0/0'],
-    diagnostics: [],
-  };
   let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
@@ -353,7 +224,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
             <TreePropertySection
               editingContextId="editingContextId"
               formId="formId"
-              widget={treeWidget}
+              widget={treeWithTwoLevelNodes}
               readOnly={false}
             />
           </SelectionContext.Provider>
@@ -372,56 +243,33 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   expect(screen.getByText('Node-1.1.1')).toBeDefined();
 
   // Single-click on non-selectable Node-1.1 should make its child disappear
-  await act(async () => {
-    userEvent.click(screen.getByText('Node-1.1'));
-    await new Promise((resolve) => setTimeout(resolve, 0));
+  await userEvent.click(screen.getByText('Node-1.1'));
 
-    await waitFor(() => {
-      expect(selection).toEqual({
-        id: 'undefined',
-      });
-      expect(screen.queryByText('Node-1.1.1')).toBeNull();
+  await waitFor(() => {
+    expect(selection).toEqual({
+      id: 'undefined',
     });
+    expect(screen.queryByText('Node-1.1.1')).toBeNull();
   });
 
   // Another single-click should bring the child back
-  await act(async () => {
-    userEvent.click(screen.getByText('Node-1.1'));
-    await new Promise((resolve) => setTimeout(resolve, 0));
+  await userEvent.click(screen.getByText('Node-1.1'));
 
-    await waitFor(() => {
-      expect(selection).toEqual({
-        id: 'undefined',
-      });
-      expect(screen.getByText('Node-1.1.1')).toBeDefined();
+  await waitFor(() => {
+    expect(selection).toEqual({
+      id: 'undefined',
     });
+    expect(screen.getByText('Node-1.1.1')).toBeDefined();
   });
 });
 
 test('should render the tree with a help hint', () => {
-  const treeWidget: GQLTree = {
-    __typename: 'TreeWidget',
-    id: 'treeId',
-    label: 'Default Tree',
-    iconURL: [],
-    readOnly: false,
-    hasHelpText: true,
-    nodes: [createNode('root1', '')],
-    expandedNodesIds: [],
-    diagnostics: [],
-  };
-
   render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
         <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
           <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-            <TreePropertySection
-              editingContextId="editingContextId"
-              formId="formId"
-              widget={treeWidget}
-              readOnly={false}
-            />
+            <TreePropertySection editingContextId="editingContextId" formId="formId" widget={tree} readOnly={false} />
           </SelectionContext.Provider>
         </ServerContext.Provider>
       </ToastContext.Provider>
