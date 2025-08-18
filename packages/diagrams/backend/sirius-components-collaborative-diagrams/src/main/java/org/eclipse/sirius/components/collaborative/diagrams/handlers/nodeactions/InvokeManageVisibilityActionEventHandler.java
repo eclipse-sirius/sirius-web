@@ -15,10 +15,12 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers.nodeaction
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -33,9 +35,6 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -71,7 +70,7 @@ public class InvokeManageVisibilityActionEventHandler implements IDiagramEventHa
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeManageVisibilityActionInput.class.getSimpleName());
@@ -93,9 +92,9 @@ public class InvokeManageVisibilityActionEventHandler implements IDiagramEventHa
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeAction(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, String actionId) {
+    private IStatus executeAction(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, String actionId) {
         IStatus result = new Failure(this.messageService.nodeNotFound(diagramElementId));
-        var diagram = diagramContext.getDiagram();
+        var diagram = diagramContext.diagram();
         var optionalNode = this.diagramQueryService.findNodeById(diagram, diagramElementId);
         if (optionalNode.isPresent()) {
             var node = optionalNode.get();

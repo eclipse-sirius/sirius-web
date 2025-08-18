@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -40,9 +42,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.ResetLabel
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -73,7 +72,7 @@ public class ResetLabelAppearanceEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ResetNodeAppearanceInput.class.getSimpleName());
@@ -82,16 +81,16 @@ public class ResetLabelAppearanceEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof ResetLabelAppearanceInput resetAppearanceInput) {
             String diagramElementId = resetAppearanceInput.diagramElementId();
-            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), diagramElementId);
+            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), diagramElementId);
             Optional<Node> optionalNode = Optional.empty();
             if (optionalEdge.isEmpty()) {
-                optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElementId);
+                optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElementId);
             }
             if (optionalEdge.isPresent() || optionalNode.isPresent()) {
                 String labelId = resetAppearanceInput.labelId();
                 List<IAppearanceChange> resetChanges = new ArrayList<>();
                 resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetLabelAppearanceChange(labelId, propertyToReset)));
-                diagramContext.getDiagramEvents().add(new EditAppearanceEvent(resetChanges));
+                diagramContext.diagramEvents().add(new EditAppearanceEvent(resetChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             } else {

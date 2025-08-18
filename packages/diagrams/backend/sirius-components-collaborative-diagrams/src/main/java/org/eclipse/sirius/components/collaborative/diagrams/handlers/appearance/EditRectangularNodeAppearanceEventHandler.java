@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -40,9 +42,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderRadius
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderSizeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderStyleAppearanceChange;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -73,7 +72,7 @@ public class EditRectangularNodeAppearanceEventHandler implements IDiagramEventH
     }
 
     @Override
-    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditRectangularNodeAppearanceInput.class.getSimpleName());
@@ -82,7 +81,7 @@ public class EditRectangularNodeAppearanceEventHandler implements IDiagramEventH
 
         if (diagramInput instanceof EditRectangularNodeAppearanceInput editAppearanceInput) {
             String nodeId = editAppearanceInput.nodeId();
-            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), nodeId);
+            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), nodeId);
             if (optionalNode.isPresent()) {
                 List<IAppearanceChange> appearanceChanges = new ArrayList<>();
 
@@ -92,7 +91,7 @@ public class EditRectangularNodeAppearanceEventHandler implements IDiagramEventH
                 Optional.ofNullable(editAppearanceInput.appearance().borderSize()).ifPresent(borderSize -> appearanceChanges.add(new NodeBorderSizeAppearanceChange(nodeId, borderSize)));
                 Optional.ofNullable(editAppearanceInput.appearance().borderStyle()).ifPresent(borderStyle -> appearanceChanges.add(new NodeBorderStyleAppearanceChange(nodeId, borderStyle)));
 
-                diagramContext.getDiagramEvents().add(new EditAppearanceEvent(appearanceChanges));
+                diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             } else {

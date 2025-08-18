@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -39,9 +41,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -88,7 +87,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetPaletteInput.class.getSimpleName());
@@ -100,7 +99,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof GetPaletteInput toolSectionsInput) {
             String diagramElementId = toolSectionsInput.diagramElementId();
 
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);

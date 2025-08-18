@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -35,7 +34,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -59,13 +57,6 @@ public class DiagramEventProcessorTests {
             .build();
 
     private final IDiagramCreationService diagramCreationService = new MockDiagramCreationService(INITIAL_TEST_DIAGRAM);
-
-    private final IDiagramContext diagramContext = new IDiagramContext.NoOp() {
-        @Override
-        public Diagram getDiagram() {
-            return INITIAL_TEST_DIAGRAM;
-        }
-    };
 
     private static Node getInitialTestNode() {
         var initNode = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
@@ -149,7 +140,7 @@ public class DiagramEventProcessorTests {
     private DiagramEventProcessor createDiagramEventProcessor() {
         var parameters = DiagramEventProcessorParameters.newDiagramEventProcessorParameters()
                 .editingContext(new IEditingContext.NoOp())
-                .diagramContext(this.diagramContext)
+                .diagramContext(new DiagramContext(INITIAL_TEST_DIAGRAM))
                 .diagramEventHandlers(List.of())
                 .subscriptionManager(new SubscriptionManager())
                 .diagramCreationService(this.diagramCreationService)

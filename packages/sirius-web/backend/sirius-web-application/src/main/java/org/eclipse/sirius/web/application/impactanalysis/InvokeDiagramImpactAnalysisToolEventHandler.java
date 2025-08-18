@@ -16,11 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolInput;
@@ -39,9 +41,6 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceL
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -77,7 +76,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeDiagramImpactAnalysisToolInput.class.getSimpleName());
@@ -91,7 +90,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
                 changeRecorder.beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
 
-                IStatus toolExecutionResult = this.toolDiagramExecutor.execute(editingContext, diagramContext.getDiagram(), invokeImpactAnalysisToolInput.toolId(),
+                IStatus toolExecutionResult = this.toolDiagramExecutor.execute(editingContext, diagramContext.diagram(), invokeImpactAnalysisToolInput.toolId(),
                         invokeImpactAnalysisToolInput.diagramElementId(), invokeImpactAnalysisToolInput.variables());
 
                 var diff = siriusEditingContext.getChangeRecorder().summarize();

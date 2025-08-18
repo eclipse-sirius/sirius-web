@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
@@ -42,8 +42,6 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -112,7 +110,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -136,7 +134,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -145,8 +143,8 @@ public class DeleteFromDiagramEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(DeleteFromDiagramSuccessPayload.class);
 
-        assertThat(diagramContext.getDiagramEvents()).hasSize(1);
-        IDiagramEvent diagramEvent = diagramContext.getDiagramEvents().get(0);
+        assertThat(diagramContext.diagramEvents()).hasSize(1);
+        IDiagramEvent diagramEvent = diagramContext.diagramEvents().get(0);
         assertThat(diagramEvent).isInstanceOf(RemoveEdgeEvent.class);
         RemoveEdgeEvent removeEdgeEvent = (RemoveEdgeEvent) diagramEvent;
         assertThat(removeEdgeEvent.getEdgeIds()).contains(EDGE_ID);

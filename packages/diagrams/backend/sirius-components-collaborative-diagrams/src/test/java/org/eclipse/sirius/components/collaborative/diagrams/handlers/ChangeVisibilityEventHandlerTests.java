@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.HideDiagramElementInput;
@@ -34,8 +34,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -78,7 +76,7 @@ public class ChangeVisibilityEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -99,7 +97,7 @@ public class ChangeVisibilityEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -120,7 +118,7 @@ public class ChangeVisibilityEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -141,7 +139,7 @@ public class ChangeVisibilityEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

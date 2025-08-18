@@ -17,12 +17,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -50,9 +52,6 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -100,7 +99,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), InvokeSingleClickOnTwoDiagramElementsToolInput.class.getSimpleName());
@@ -108,7 +107,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
             var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
                     .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                     .map(SingleClickOnTwoDiagramElementsTool.class::cast)
@@ -133,11 +132,11 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, InvokeSingleClickOnTwoDiagramElementsToolInput input, SingleClickOnTwoDiagramElementsTool tool) {
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, InvokeSingleClickOnTwoDiagramElementsToolInput input, SingleClickOnTwoDiagramElementsTool tool) {
         String sourceNodeId = input.diagramSourceElementId();
         String targetNodeId = input.diagramTargetElementId();
         IStatus result = new Failure("");
-        Diagram diagram = diagramContext.getDiagram();
+        Diagram diagram = diagramContext.diagram();
 
         var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceNodeId);
         var targetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, targetNodeId);
@@ -161,7 +160,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
             if (source.isPresent() && target.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));

@@ -18,11 +18,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -50,9 +52,6 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -100,7 +99,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof ReconnectEdgeInput) {
@@ -112,19 +111,18 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         }
     }
 
-    private void handleReconnect(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
+    private void handleReconnect(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext,
                                  ReconnectEdgeInput reconnectEdgeInput) {
         String message = this.messageService.edgeNotFound(String.valueOf(reconnectEdgeInput.edgeId()));
         IPayload payload = new ErrorPayload(reconnectEdgeInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, reconnectEdgeInput.representationId(), reconnectEdgeInput);
 
-        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), reconnectEdgeInput.edgeId());
+        Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), reconnectEdgeInput.edgeId());
 
         if (optionalEdge.isPresent()) {
             IStatus status = this.invokeReconnectEdgeTool(optionalEdge.get(), editingContext, diagramContext, reconnectEdgeInput);
             if (status instanceof Success) {
-                diagramContext.getDiagramEvents().add(
-                        new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId()));
+                diagramContext.diagramEvents().add(new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId()));
                 payload = new SuccessPayload(reconnectEdgeInput.id(), this.feedbackMessageService.getFeedbackMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
@@ -139,10 +137,10 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus invokeReconnectEdgeTool(Edge edge, IEditingContext editingContext, IDiagramContext diagramContext, ReconnectEdgeInput reconnectEdgeInput) {
+    private IStatus invokeReconnectEdgeTool(Edge edge, IEditingContext editingContext, DiagramContext diagramContext, ReconnectEdgeInput reconnectEdgeInput) {
         IStatus status = new Failure("");
 
-        var diagram = diagramContext.getDiagram();
+        var diagram = diagramContext.diagram();
 
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)

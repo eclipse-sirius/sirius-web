@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetNodeDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetNodeDescriptionsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -33,8 +34,6 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -100,19 +99,15 @@ public class GetNodeDescriptionsEventHandlerTests {
         Sinks.One<IPayload> payloadSink = Sinks.one();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        IDiagramContext.NoOp diagramContext = new IDiagramContext.NoOp() {
-            @Override
-            public Diagram getDiagram() {
-                return Diagram.newDiagram(UUID.randomUUID().toString())
-                        .descriptionId(DIAGRAM_DESCRIPTION_ID)
-                        .edges(List.of())
-                        .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
-                        .nodes(List.of())
-                        .targetObjectId("")
-                        .build();
-            }
-        };
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
+        var diagram = Diagram.newDiagram(UUID.randomUUID().toString())
+                .descriptionId(DIAGRAM_DESCRIPTION_ID)
+                .edges(List.of())
+                .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
+                .nodes(List.of())
+                .targetObjectId("")
+                .build();
+
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, new DiagramContext(diagram), input);
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(GetNodeDescriptionsSuccessPayload.class);

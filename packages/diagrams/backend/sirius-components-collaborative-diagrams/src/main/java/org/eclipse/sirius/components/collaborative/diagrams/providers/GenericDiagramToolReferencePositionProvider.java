@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.providers;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
@@ -38,7 +38,7 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
     }
 
     @Override
-    public ReferencePosition getReferencePosition(IInput diagramInput, IDiagramContext diagramContext) {
+    public ReferencePosition getReferencePosition(IInput diagramInput, DiagramContext diagramContext) {
         ReferencePosition referencePosition = null;
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             String parentId = this.getParentId(diagramContext, input.diagramElementId());
@@ -54,9 +54,9 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
         return referencePosition;
     }
 
-    private String getParentId(IDiagramContext diagramContext, String targetId) {
+    private String getParentId(DiagramContext diagramContext, String targetId) {
         String parentId = null;
-        if (!diagramContext.getDiagram().getId().equals(targetId)) {
+        if (!diagramContext.diagram().getId().equals(targetId)) {
             parentId = targetId;
         }
         return parentId;

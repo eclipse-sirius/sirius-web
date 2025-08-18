@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions.IManageVisibilityMenuActionHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -42,16 +42,16 @@ public class ManageVisibilityRevealAllActionHandler implements IManageVisibility
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
         return actionId.equals(ManageVisibilityRevealAllAction.ACTION_ID);
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElement.getId());
+    public IStatus handle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElement.getId());
         if (optionalNode.isPresent()) {
             var childrenIds = optionalNode.get().getChildNodes().stream().map(Node::getId).collect(Collectors.toSet());
-            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIds, false));
+            diagramContext.diagramEvents().add(new HideDiagramElementEvent(childrenIds, false));
         }
         return new Success();
     }

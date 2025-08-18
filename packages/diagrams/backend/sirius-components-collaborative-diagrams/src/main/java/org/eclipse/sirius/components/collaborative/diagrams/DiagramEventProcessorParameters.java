@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
@@ -33,7 +32,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
  */
 public record DiagramEventProcessorParameters(
         IEditingContext editingContext,
-        IDiagramContext diagramContext,
+        DiagramContext diagramContext,
         List<IDiagramEventHandler> diagramEventHandlers,
         ISubscriptionManager subscriptionManager,
         IDiagramCreationService diagramCreationService,
@@ -72,7 +71,7 @@ public record DiagramEventProcessorParameters(
 
         private IEditingContext editingContext;
 
-        private IDiagramContext diagramContext;
+        private DiagramContext diagramContext;
 
         private List<IDiagramEventHandler> diagramEventHandlers;
 
@@ -99,7 +98,7 @@ public record DiagramEventProcessorParameters(
             return this;
         }
 
-        public Builder diagramContext(IDiagramContext diagramContext) {
+        public Builder diagramContext(DiagramContext diagramContext) {
             this.diagramContext = Objects.requireNonNull(diagramContext);
             return this;
         }

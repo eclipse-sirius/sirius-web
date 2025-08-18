@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 public interface IManageVisibilityMenuActionHandler {
 
-    boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+    boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
 
-    IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+    IStatus handle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
 }

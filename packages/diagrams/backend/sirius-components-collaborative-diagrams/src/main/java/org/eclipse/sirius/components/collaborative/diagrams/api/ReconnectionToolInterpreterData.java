@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 @Immutable
 public final class ReconnectionToolInterpreterData {
 
-    private IDiagramContext diagramContext;
+    private DiagramContext diagramContext;
 
     private Object semanticReconnectionSource;
 
@@ -49,7 +50,7 @@ public final class ReconnectionToolInterpreterData {
         // Prevent instantiation
     }
 
-    public IDiagramContext getDiagramContext() {
+    public DiagramContext getDiagramContext() {
         return this.diagramContext;
     }
 
@@ -100,7 +101,7 @@ public final class ReconnectionToolInterpreterData {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private IDiagramContext diagramContext;
+        private DiagramContext diagramContext;
 
         private Object semanticReconnectionSource;
 
@@ -120,7 +121,7 @@ public final class ReconnectionToolInterpreterData {
 
         private Object semanticOtherEdgeEnd;
 
-        public Builder diagramContext(IDiagramContext diagramContext) {
+        public Builder diagramContext(DiagramContext diagramContext) {
             this.diagramContext = Objects.requireNonNull(diagramContext);
             return this;
         }

@@ -17,14 +17,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionsProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetActionsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetActionsSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -32,12 +35,8 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -71,7 +70,7 @@ public class GetActionsEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         List<Action> actions = new ArrayList<>();
@@ -81,7 +80,7 @@ public class GetActionsEventHandler implements IDiagramEventHandler {
         if (diagramInput instanceof GetActionsInput actionsInput) {
             String diagramElementId = actionsInput.diagramElementId();
 
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
