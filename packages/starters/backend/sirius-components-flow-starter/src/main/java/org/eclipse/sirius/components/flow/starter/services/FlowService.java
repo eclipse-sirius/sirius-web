@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.services;
 
-import fr.obeo.dsl.designer.sample.flow.DataSource;
-import fr.obeo.dsl.designer.sample.flow.FlowPackage;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import fr.obeo.dsl.designer.sample.flow.DataSource;
+import fr.obeo.dsl.designer.sample.flow.FlowPackage;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -40,11 +39,11 @@ public class FlowService {
         this.identityService = Objects.requireNonNull(identityService);
     }
 
-    public EObject drop(EObject self, Node selectedNode, IDiagramContext diagramContext,
+    public EObject drop(EObject self, Node selectedNode, DiagramContext diagramContext,
             Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
         var parentElementId = Optional.ofNullable(selectedNode)
                 .map(Node::getId)
-                .orElse(diagramContext.getDiagram().getId());
+                .orElse(diagramContext.diagram().getId());
 
         var targetObjectId = this.identityService.getId(self);
 
@@ -68,7 +67,7 @@ public class FlowService {
                     .descriptionId(descriptionId)
                     .containmentKind(NodeContainmentKind.CHILD_NODE)
                     .build();
-            diagramContext.getViewCreationRequests().add(viewCreationRequest);
+            diagramContext.viewCreationRequests().add(viewCreationRequest);
         }
 
         return self;

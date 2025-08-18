@@ -16,9 +16,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionHandler;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
@@ -74,8 +74,8 @@ public class ViewActionHandler implements IActionHandler {
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
-        var diagramDescriptionId = diagramContext.getDiagram().getDescriptionId();
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+        var diagramDescriptionId = diagramContext.diagram().getDescriptionId();
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramDescriptionId);
         if (optionalDiagramDescription.isPresent()) {
             var diagramDescription = optionalDiagramDescription.get();
@@ -85,9 +85,9 @@ public class ViewActionHandler implements IActionHandler {
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+    public IStatus handle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
         IStatus result = new Failure("");
-        var diagram = diagramContext.getDiagram();
+        var diagram = diagramContext.diagram();
         var diagramDescriptionId = diagram.getDescriptionId();
 
         var optionalViewDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescriptionId)
@@ -147,9 +147,9 @@ public class ViewActionHandler implements IActionHandler {
         return optionalAction;
     }
 
-    private VariableManager populateVariableManager(IEditingContext editingContext, IDiagramContext diagramContext, Node node, Object self) {
+    private VariableManager populateVariableManager(IEditingContext editingContext, DiagramContext diagramContext, Node node, Object self) {
         var variableManager = new VariableManager();
-        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));

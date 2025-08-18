@@ -20,10 +20,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
@@ -52,8 +53,6 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -182,13 +181,6 @@ public class GetConnectorToolsEventHandlerTests {
 
         ICollaborativeMessageService messageService = new ICollaborativeMessageService.NoOp();
 
-        IDiagramContext diagramContext = new IDiagramContext.NoOp() {
-            @Override
-            public Diagram getDiagram() {
-                return diagram;
-            }
-        };
-
         IConnectorToolsProvider connectorToolsProvider = new IConnectorToolsProvider() {
 
             @Override
@@ -215,7 +207,7 @@ public class GetConnectorToolsEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, new DiagramContext(diagram), input);
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);

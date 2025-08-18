@@ -146,8 +146,8 @@ public class ReconnectEdgeEventHandlerTests {
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(SuccessPayload.class);
 
-        assertThat(diagramContext.getDiagramEvents()).hasSize(1);
-        assertThat(diagramContext.getDiagramEvents().get(0)).isInstanceOf(ReconnectEdgeEvent.class);
+        assertThat(diagramContext.diagramEvents()).hasSize(1);
+        assertThat(diagramContext.diagramEvents().get(0)).isInstanceOf(ReconnectEdgeEvent.class);
     }
 
 }

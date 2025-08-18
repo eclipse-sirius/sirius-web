@@ -171,7 +171,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         var revealViewModifier = new HideDiagramElementEvent(elementToReveal, false);
         var fadeViewModifier = new FadeDiagramElementEvent(elementToFade, true);
         var diagramContext = new DiagramContext(diagram);
-        diagramContext.getDiagramEvents().addAll(List.of(hideViewModifier, revealViewModifier, fadeViewModifier));
+        diagramContext.diagramEvents().addAll(List.of(hideViewModifier, revealViewModifier, fadeViewModifier));
 
         return this.diagramCreationService.refresh(editingContext, diagramContext);
     }
@@ -220,7 +220,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                     .descriptionId(oldNode.getDescriptionId())
                     .containmentKind(containmentKind)
                     .build();
-            diagramContext.getViewCreationRequests().add(viewCreationRequest);
+            diagramContext.viewCreationRequests().add(viewCreationRequest);
         }
 
         var oldNodeId = oldNode.getId();
@@ -228,7 +228,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         nodeElementOldNewIds.put(oldNodeId, newNodeId);
         elementIdToViewModifier.put(newNodeId, oldNode.getState());
 
-        diagramContext.getDiagramEvents().addAll(this.getNodeAppearanceEvents(oldNode, newNodeId));
+        diagramContext.diagramEvents().addAll(this.getNodeAppearanceEvents(oldNode, newNodeId));
 
         oldNode.getChildNodes().forEach(childNode ->
                 this.handleNode(diagramDescription, childNode, newNodeId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));

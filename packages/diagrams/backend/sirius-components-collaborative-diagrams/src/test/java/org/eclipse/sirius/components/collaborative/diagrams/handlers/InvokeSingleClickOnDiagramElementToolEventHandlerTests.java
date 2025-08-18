@@ -22,10 +22,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
@@ -67,8 +67,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -145,7 +143,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -197,7 +195,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -267,7 +265,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -323,7 +321,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -390,7 +388,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -449,7 +447,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();

@@ -12,10 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers.nodeactions;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -31,14 +38,6 @@ import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Handler used to get the manage visibility actions.
@@ -69,7 +68,7 @@ public class GetManageVisibilityActionsEventHandler implements IDiagramEventHand
     }
 
     @Override
-    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
 
         this.counter.increment();
 
@@ -80,7 +79,7 @@ public class GetManageVisibilityActionsEventHandler implements IDiagramEventHand
         if (diagramInput instanceof GetManageVisibilityActionsInput actionsInput) {
             String diagramElementId = actionsInput.diagramElementId();
 
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);

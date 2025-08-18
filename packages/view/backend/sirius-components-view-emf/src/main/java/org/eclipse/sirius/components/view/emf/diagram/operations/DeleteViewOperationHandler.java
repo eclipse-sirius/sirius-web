@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram.operations;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
@@ -42,7 +42,7 @@ public class DeleteViewOperationHandler implements IOperationHandler {
 
     @Override
     public OperationEvaluationResult handle(AQLInterpreter interpreter, VariableManager variableManager, Operation operation) {
-        var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class);
+        var optionalDiagramContext = variableManager.get(DiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
         if (operation instanceof DeleteView deleteViewOperation && optionalDiagramContext.isPresent()) {
             var diagramContext = optionalDiagramContext.get();
 
@@ -58,7 +58,7 @@ public class DeleteViewOperationHandler implements IOperationHandler {
                 }
                 if (elementId != null) {
                     ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
-                    diagramContext.getViewDeletionRequests().add(viewDeletionRequest);
+                    diagramContext.viewDeletionRequests().add(viewDeletionRequest);
                 }
             }
 

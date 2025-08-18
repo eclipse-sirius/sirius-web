@@ -15,6 +15,11 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Fix the capability name to list librairies to `Library:list`.
 The capability name `view` should be used when one element is requested.
+- https://github.com/eclipse-sirius/sirius-web/issues/5344[#5344] [diagram] The data structure `DiagramContext` is now immutable.
+As a result, the methods `IDiagramContext#reset()` and `IDiagramContext#update(...)` have been removed.
+The interface `IDiagramContext` is now deprecated and it will be removed soon.
+All usage of `IDiagramContext` within Sirius Web have been replaced by `DiagramContext` for example in `IDiagramEventHandler#handle`.
+The record `DiagramContext` is still implementing `IDiagramContext` for the moment and it still provides methods like `getDiagram()` or `getDiagramEvents()` but consumers of Sirius Web should switch to the new methods like `diagram()` or `diagramEvents()` as soon as possible.
 
 
 === Dependency update

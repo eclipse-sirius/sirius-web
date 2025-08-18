@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,9 +46,9 @@ public class DiagramServicesTests {
         var nodesToCollapse = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.collapse(diagramServicesContext, nodesToCollapse);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents()).hasSize(1);
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents().get(0)).isInstanceOf(UpdateCollapsingStateEvent.class);
-        var updateCollapsingStateEvent = (UpdateCollapsingStateEvent) diagramServicesContext.getDiagramContext().getDiagramEvents().get(0);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents()).hasSize(1);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents().get(0)).isInstanceOf(UpdateCollapsingStateEvent.class);
+        var updateCollapsingStateEvent = (UpdateCollapsingStateEvent) diagramServicesContext.getDiagramContext().diagramEvents().get(0);
         assertThat(updateCollapsingStateEvent.collapsingState()).isEqualTo(CollapsingState.COLLAPSED);
         assertThat(updateCollapsingStateEvent.diagramElementId()).isEqualTo(nodeId);
     }
@@ -61,9 +61,9 @@ public class DiagramServicesTests {
         var nodesToCollapse = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.expand(diagramServicesContext, nodesToCollapse);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents()).hasSize(1);
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents().get(0)).isInstanceOf(UpdateCollapsingStateEvent.class);
-        var updateCollapsingStateEvent = (UpdateCollapsingStateEvent) diagramServicesContext.getDiagramContext().getDiagramEvents().get(0);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents()).hasSize(1);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents().get(0)).isInstanceOf(UpdateCollapsingStateEvent.class);
+        var updateCollapsingStateEvent = (UpdateCollapsingStateEvent) diagramServicesContext.getDiagramContext().diagramEvents().get(0);
         assertThat(updateCollapsingStateEvent.collapsingState()).isEqualTo(CollapsingState.EXPANDED);
         assertThat(updateCollapsingStateEvent.diagramElementId()).isEqualTo(nodeId);
     }
@@ -76,9 +76,9 @@ public class DiagramServicesTests {
         var nodesToHide = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.hide(diagramServicesContext, nodesToHide);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents()).hasSize(1);
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents().get(0)).isInstanceOf(HideDiagramElementEvent.class);
-        var hideDiagramElementEvent = (HideDiagramElementEvent) diagramServicesContext.getDiagramContext().getDiagramEvents().get(0);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents()).hasSize(1);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents().get(0)).isInstanceOf(HideDiagramElementEvent.class);
+        var hideDiagramElementEvent = (HideDiagramElementEvent) diagramServicesContext.getDiagramContext().diagramEvents().get(0);
         assertThat(hideDiagramElementEvent.hideElement()).isTrue();
         assertThat(hideDiagramElementEvent.getElementIds()).hasSameElementsAs(List.of(nodeId));
     }
@@ -91,9 +91,9 @@ public class DiagramServicesTests {
         var nodesToReveal = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.reveal(diagramServicesContext, nodesToReveal);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents()).hasSize(1);
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents().get(0)).isInstanceOf(HideDiagramElementEvent.class);
-        var hideDiagramElementEvent = (HideDiagramElementEvent) diagramServicesContext.getDiagramContext().getDiagramEvents().get(0);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents()).hasSize(1);
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents().get(0)).isInstanceOf(HideDiagramElementEvent.class);
+        var hideDiagramElementEvent = (HideDiagramElementEvent) diagramServicesContext.getDiagramContext().diagramEvents().get(0);
         assertThat(hideDiagramElementEvent.hideElement()).isFalse();
         assertThat(hideDiagramElementEvent.getElementIds()).hasSameElementsAs(List.of(nodeId));
     }
@@ -106,7 +106,7 @@ public class DiagramServicesTests {
         var nodesToFade = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.fade(diagramServicesContext, nodesToFade);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents())
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
             .hasSize(1)
             .first()
             .asInstanceOf(type(FadeDiagramElementEvent.class))
@@ -123,7 +123,7 @@ public class DiagramServicesTests {
         var nodesToUnfade = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.unfade(diagramServicesContext, nodesToUnfade);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents())
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
             .hasSize(1)
             .first()
             .asInstanceOf(type(FadeDiagramElementEvent.class))
@@ -140,7 +140,7 @@ public class DiagramServicesTests {
         var nodesToReset = List.of(new TestDiagramBuilder().getNode(nodeId, false));
         diagramServices.resetViewModifiers(diagramServicesContext, nodesToReset);
 
-        assertThat(diagramServicesContext.getDiagramContext().getDiagramEvents())
+        assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
             .hasSize(1)
             .first()
             .asInstanceOf(type(ResetViewModifiersEvent.class))

@@ -18,8 +18,8 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -42,7 +42,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -79,14 +78,14 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DropOnDiagramInput.class.getSimpleName());
 
         var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         if (diagramInput instanceof DropOnDiagramInput input) {
             List<Object> objects = input.objectIds().stream().map(objectId -> this.objectSearchService.getObject(editingContext, objectId)).flatMap(Optional::stream).toList();
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
 
             payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidDrop());
             if (!objects.isEmpty()) {
@@ -104,9 +103,9 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, List<Object> objects, String diagramElementId, double startingPositionX, double startingPositionY) {
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, List<Object> objects, String diagramElementId, double startingPositionX, double startingPositionY) {
         IStatus result = new Failure("");
-        Diagram diagram = diagramContext.getDiagram();
+        Diagram diagram = diagramContext.diagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
 
         var optionalDropHandler = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
@@ -122,7 +121,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(Node.SELECTED_NODE, node.orElse(null));
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
                 variableManager.put(VariableManager.SELF, self);

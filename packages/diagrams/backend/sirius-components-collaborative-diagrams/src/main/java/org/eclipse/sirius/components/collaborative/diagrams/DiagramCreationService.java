@@ -18,8 +18,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
@@ -43,9 +44,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 
 /**
  * Service used to create diagrams.
@@ -91,8 +89,8 @@ public class DiagramCreationService implements IDiagramCreationService {
     }
 
     @Override
-    public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
-        Diagram previousDiagram = diagramContext.getDiagram();
+    public Optional<Diagram> refresh(IEditingContext editingContext, DiagramContext diagramContext) {
+        Diagram previousDiagram = diagramContext.diagram();
 
         var optionalObject = this.objectSearchService.getObject(editingContext, previousDiagram.getTargetObjectId());
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
@@ -115,20 +113,20 @@ public class DiagramCreationService implements IDiagramCreationService {
         return Optional.empty();
     }
 
-    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<DiagramContext> optionalDiagramContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(optionalDiagramContext.orElse(null)));
 
-        List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(IDiagramContext::getDiagramEvents).orElse(List.of());
-        Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
-        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
-        List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
+        List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(DiagramContext::diagramEvents).orElse(List.of());
+        Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(DiagramContext::diagram);
+        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(DiagramContext::viewCreationRequests).orElse(List.of());
+        List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(DiagramContext::viewDeletionRequests).orElse(List.of());
 
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)

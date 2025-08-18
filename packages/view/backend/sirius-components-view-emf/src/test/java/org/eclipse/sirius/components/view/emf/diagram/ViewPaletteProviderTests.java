@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
@@ -143,7 +143,7 @@ public class ViewPaletteProviderTests {
         DiagramDescription diagramDescription = this.createDiagramDescription();
 
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new IDiagramContext.NoOp(), diagramDescription, diagramDescription, diagram, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), diagramDescription, diagramDescription, diagram, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://diagramPalette?diagramId=sourceElementId");
@@ -164,8 +164,9 @@ public class ViewPaletteProviderTests {
     public void getNodePaletteTest() {
         ViewPaletteProvider viewPaletteProvider = this.createViewPaletteProvider();
 
+        var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new IDiagramContext.NoOp(), this.createDiagramDescription(), this.createNodeDescription(), node, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), this.createNodeDescription(), node, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
@@ -200,8 +201,9 @@ public class ViewPaletteProviderTests {
                         .targetObjectLabelProvider(vm -> "")
                         .build();
 
+        var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var edge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new IDiagramContext.NoOp(), this.createDiagramDescription(), edgeDescription, edge, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), edgeDescription, edge, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");

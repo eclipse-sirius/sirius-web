@@ -20,10 +20,10 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
@@ -45,8 +45,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -81,7 +79,7 @@ public class DropNodeEventHandlerTests {
         assertThat(variableManager.getVariables()).hasSize(8);
         assertThat(variableManager.getVariables()).containsKey(Environment.ENVIRONMENT);
         assertThat(variableManager.getVariables()).containsKey(IEditingContext.EDITING_CONTEXT);
-        assertThat(variableManager.getVariables()).containsKey(IDiagramContext.DIAGRAM_CONTEXT);
+        assertThat(variableManager.getVariables()).containsKey(DiagramContext.DIAGRAM_CONTEXT);
         assertThat(variableManager.getVariables()).containsKey(IDiagramService.DIAGRAM_SERVICES);
         assertThat(variableManager.getVariables()).containsKey("droppedNode");
         assertThat(variableManager.getVariables()).containsKey("droppedElement");
@@ -120,7 +118,7 @@ public class DropNodeEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -144,7 +142,7 @@ public class DropNodeEventHandlerTests {
 
         assertThat(handler.canHandle(input)).isTrue();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
