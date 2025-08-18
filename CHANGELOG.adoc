@@ -22,6 +22,9 @@ The interface `IDiagramContext` is now deprecated and it will be removed soon.
 All usage of `IDiagramContext` within Sirius Web have been replaced by `DiagramContext` for example in `IDiagramEventHandler#handle`.
 The record `DiagramContext` is still implementing `IDiagramContext` for the moment and it still provides methods like `getDiagram()` or `getDiagramEvents()` but consumers of Sirius Web should switch to the new methods like `diagram()` or `diagramEvents()` as soon as possible.
 - https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Update the `ProjectSearchRepositoryDelegate` to include natures along with the returned projects for `#findAll(Before|After)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] The capability for the project settings images tab has change from `images` to `ProjectSettings#images`.
+The GraphQL API still only require the ID of the contribution to the `projectSettingsTabExtensionPoint` extension point, but the data fetcher will add `ProjectSettings#` has prefix for the capability type.
+Thus, any tab contributed by a downstream project will have as capability type `ProjectSettings#${tabId}`.
 
 
 === Dependency update
@@ -62,6 +65,7 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] Add context to the images project settings tab capability.
 
 
 

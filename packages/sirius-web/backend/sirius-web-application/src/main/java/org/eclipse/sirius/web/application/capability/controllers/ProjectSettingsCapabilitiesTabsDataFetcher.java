@@ -62,8 +62,9 @@ public class ProjectSettingsCapabilitiesTabsDataFetcher implements IDataFetcherW
     }
 
     private ProjectSettingsTabCapabilities toTabCapabilities(String tabId, String projectId) {
+        String type = SiriusWebCapabilities.PROJECT_SETTINGS + '#' + tabId;
         boolean canViewTab = this.capabilityVoters.stream().allMatch(voter -> voter.vote(
-                tabId, projectId, SiriusWebCapabilities.ProjectSettingsTab.VIEW) == CapabilityVote.GRANTED);
+                type, projectId, SiriusWebCapabilities.ProjectSettingsTab.VIEW) == CapabilityVote.GRANTED);
         return new ProjectSettingsTabCapabilities(tabId, canViewTab);
     }
 }
