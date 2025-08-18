@@ -18,7 +18,10 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { ButtonPropertySection } from '../ButtonPropertySection';
 import { button, buttonReadOnly, pushButtonErrorMock, pushButtonSuccessMock } from './ButtonPropertySection.data';
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
@@ -85,7 +88,7 @@ test('should display the error received', async () => {
 
   await userEvent.click(screen.getByRole('button'));
   await waitFor(() => {
-    expect(pushButtonSuccessMock.result).toHaveBeenCalledTimes(1);
+    expect(pushButtonErrorMock.result).toHaveBeenCalledTimes(1);
     expect(mockEnqueue).toHaveBeenCalledTimes(1);
   });
 });

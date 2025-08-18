@@ -23,7 +23,10 @@ import {
   textfieldReadOnly,
 } from './TextfieldPropertySection.data';
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 

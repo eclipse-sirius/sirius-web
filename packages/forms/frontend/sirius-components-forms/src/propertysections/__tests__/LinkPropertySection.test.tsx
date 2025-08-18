@@ -12,11 +12,14 @@
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { LinkPropertySection } from '../LinkPropertySection';
 import { link } from './LinkPropertySection.data';
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 test('should render the link', () => {
   render(
