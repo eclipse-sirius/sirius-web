@@ -31,3 +31,7 @@ export interface ExpressionResultViewerProps {
   height: number | null;
   width: number | null;
 }
+
+export interface ExportResultButtonProps {
+  objectIds: string[];
+}
