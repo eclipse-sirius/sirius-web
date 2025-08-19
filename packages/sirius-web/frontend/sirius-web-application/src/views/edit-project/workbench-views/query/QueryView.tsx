@@ -10,9 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  IconOverlay,
+  ServerContext,
+  ServerContextValue,
+  WorkbenchViewComponentProps,
+} from '@eclipse-sirius/sirius-components-core';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,9 +29,15 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType } from 'react';
+import { ComponentType, useContext } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { ExpressionAreaProps, ExpressionResultViewerProps, ResultAreaProps } from './QueryView.types';
+import { useCurrentProject } from '../../useCurrentProject';
+import {
+  ExportResultButtonProps,
+  ExpressionAreaProps,
+  ExpressionResultViewerProps,
+  ResultAreaProps,
+} from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
@@ -137,14 +149,19 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
       <Typography variant="body2" gutterBottom>
         One object has been returned
       </Typography>
-      <List dense>
-        <ListItem sx={listItemStyle}>
-          <ListItemIcon sx={listItemIconStyle}>
-            <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
-          </ListItemIcon>
-          <ListItemText primary={objectValue.label} />
-        </ListItem>
-      </List>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+        <List dense>
+          <ListItem sx={listItemStyle}>
+            <ListItemIcon sx={listItemIconStyle}>
+              <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
+            </ListItemIcon>
+            <ListItemText primary={objectValue.label} />
+          </ListItem>
+        </List>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <ExportResultButton objectIds={[objectValue.id]} />
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -178,6 +195,7 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
 
   const listStyle: SxProps<Theme> = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
+    marginBottom: '1px',
   });
 
   return (
@@ -185,16 +203,21 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
       <Typography variant="body2" gutterBottom>
         A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
       </Typography>
-      <List dense disablePadding sx={listStyle}>
-        <FixedSizeList
-          height={height}
-          width={width}
-          itemData={objectsValue}
-          itemCount={objectsValue.length}
-          itemSize={34}>
-          {ObjectRow}
-        </FixedSizeList>
-      </List>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+        <List dense disablePadding sx={listStyle}>
+          <FixedSizeList
+            height={height}
+            width={width}
+            itemData={objectsValue}
+            itemCount={objectsValue.length}
+            itemSize={34}>
+            {ObjectRow}
+          </FixedSizeList>
+        </List>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <ExportResultButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -387,5 +410,26 @@ const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
 
       {content}
     </div>
+  );
+};
+
+const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { project } = useCurrentProject();
+
+  return (
+    <Button
+      data-testid="export-csv-button"
+      variant="contained"
+      color="primary"
+      component="a"
+      href={encodeURI(
+        `${httpOrigin}/api/editingcontexts/${
+          project.currentEditingContext.id
+        }/objects?contentType=text/csv&objectIds=${objectIds.join(',')}`
+      )}
+      type="application/octet-stream">
+      Export as CSV
+    </Button>
   );
 };
