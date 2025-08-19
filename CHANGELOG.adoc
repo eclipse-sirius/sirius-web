@@ -84,6 +84,8 @@ To retrieve project templates, you will need the `Project:create` capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] Add support for capability check for the editing context whether it is a project or a library.
 Queries and subscriptions rely on `Project:view` or `Library:view` whether the editing context is a project or a library.
 Mutations rely on `Project:edit` since we forbid to change the content of a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/5008[#5008] [sirius-web] Add support for exporting query results as CSV
+A new button is displayed to export the results when a query returns one or multiple objects.
 
 
 === Improvements
