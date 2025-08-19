@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import { SelectionContext } from './SelectionContext';
 import { UseSelectionValue } from './useSelection.types';
 
 export const useSelection = (): UseSelectionValue => {
-  const { selection, setSelection } = useContext<UseSelectionValue>(SelectionContext);
+  const { selection, setSelection, toggleSelected } = useContext<UseSelectionValue>(SelectionContext);
 
-  return { selection, setSelection };
+  return { selection, setSelection, toggleSelected };
 };

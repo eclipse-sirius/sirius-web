@@ -27,7 +27,7 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { EditProjectViewParams, EditProjectViewState, TreeToolBarProviderProps } from './EditProjectView.types';
@@ -93,12 +93,12 @@ export const EditProjectView = () => {
     }
   }, [data]);
 
-  const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
+  const onRepresentationSelected = useCallback((representationMetadata: RepresentationMetadata) => {
     setState((prevState) => ({
       ...prevState,
       representation: representationMetadata,
     }));
-  };
+  }, []);
 
   const refWorkbenchHandle: RefObject<WorkbenchHandle | null> = useRef<WorkbenchHandle | null>(null);
 
@@ -159,10 +159,12 @@ export const EditProjectView = () => {
 };
 
 const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {
-  const treeToolBarContributions: TreeToolBarContextValue = [
-    <TreeToolBarContribution component={NewDocumentModalContribution} />,
-    <TreeToolBarContribution component={UploadDocumentModalContribution} />,
-  ];
-
+  const treeToolBarContributions: TreeToolBarContextValue = useMemo(
+    () => [
+      <TreeToolBarContribution component={NewDocumentModalContribution} />,
+      <TreeToolBarContribution component={UploadDocumentModalContribution} />,
+    ],
+    []
+  );
   return <TreeToolBarContext.Provider value={treeToolBarContributions}>{children}</TreeToolBarContext.Provider>;
 };

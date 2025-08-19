@@ -10,22 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useEffect, useState } from 'react';
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { DuplicateObjectModal } from './DuplicateObjectModal';
+import { useEffect, useState } from 'react';
 import { KeyboardShortcutProps } from './DuplicateObjectKeyboardShortcut.types';
+import { DuplicateObjectModal } from './DuplicateObjectModal';
 
 export const DuplicateObjectKeyboardShortcut = ({
   editingContextId,
   readOnly,
-  selectedTreeItem,
+  selectedTreeItemId,
+  selectedTreeItemKind,
   children,
 }: KeyboardShortcutProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const { setSelection } = useSelection();
 
   const duplicateObjectModalOpen = () => {
-    if (selectedTreeItem && selectedTreeItem.kind.startsWith('siriusComponents://semantic')) {
+    if (selectedTreeItemKind?.startsWith('siriusComponents://semantic')) {
       setOpen(true);
     }
   };
@@ -42,7 +43,7 @@ export const DuplicateObjectKeyboardShortcut = ({
       window.addEventListener('keydown', duplicateObjectKeyPressHandler);
     }
     return () => window.removeEventListener('keydown', duplicateObjectKeyPressHandler);
-  }, [selectedTreeItem, readOnly]);
+  }, [selectedTreeItemId, selectedTreeItemKind, readOnly]);
 
   const onObjectCreated = (selection: Selection) => {
     setSelection(selection);
@@ -56,11 +57,11 @@ export const DuplicateObjectKeyboardShortcut = ({
   return (
     <>
       {children}
-      {open && selectedTreeItem ? (
+      {open && selectedTreeItemId && selectedTreeItemKind ? (
         <DuplicateObjectModal
           editingContextId={editingContextId}
-          objectToDuplicateId={selectedTreeItem.id}
-          objectToDuplicateKind={selectedTreeItem.kind}
+          objectToDuplicateId={selectedTreeItemId}
+          objectToDuplicateKind={selectedTreeItemKind}
           onObjectDuplicated={onObjectCreated}
           onClose={onClose}
         />

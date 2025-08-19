@@ -28,6 +28,8 @@ const useBrowserModalStyles = makeStyles()((_) => ({
   },
 }));
 
+const NO_MARKED_ITEMS = [];
+
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const { classes: styles } = useBrowserModalStyles();
   const [selectedTreeItemIds, setSelectedTreeItemIds] = useState<string[]>(
@@ -66,7 +68,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
           ownerId={widget.ownerId}
           descriptionId={widget.descriptionId}
           isContainment={widget.reference.containment}
-          markedItemIds={[]}
+          markedItemIds={NO_MARKED_ITEMS}
           title={'Choices'}
           leafType={'reference'}
           ownerKind={widget.reference.ownerKind}

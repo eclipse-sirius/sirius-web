@@ -50,31 +50,29 @@ export const TreeToolBar = ({
     ? 'Disable synchronization with representation'
     : 'Enable synchronization with representation';
   return (
-    <>
-      <div className={classes.toolbar}>
-        {treeToolBarContributionComponents.map((component, index) => {
-          const props: TreeToolBarContributionComponentProps = {
-            editingContextId: editingContextId,
-            disabled: readOnly,
-            key: index.toString(),
-          };
-          const element = React.createElement(component, props);
-          return element;
-        })}
-        {treeFilters.length > 0 ? (
-          <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />
-        ) : null}
-        {children}
-        <IconButton
-          color="inherit"
-          size="small"
-          aria-label={preferenceButtonSynchronizeTitle}
-          title={preferenceButtonSynchronizeTitle}
-          onClick={onSynchronizedClick}
-          data-testid="tree-synchronize">
-          <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
-        </IconButton>
-      </div>
-    </>
+    <div className={classes.toolbar}>
+      {treeToolBarContributionComponents.map((component, index) => {
+        const props: TreeToolBarContributionComponentProps = {
+          editingContextId: editingContextId,
+          disabled: readOnly,
+          key: index.toString(),
+        };
+        const element = React.createElement(component, props);
+        return element;
+      })}
+      {treeFilters.length > 0 ? (
+        <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />
+      ) : null}
+      {children}
+      <IconButton
+        color="inherit"
+        size="small"
+        aria-label={preferenceButtonSynchronizeTitle}
+        title={preferenceButtonSynchronizeTitle}
+        onClick={onSynchronizedClick}
+        data-testid="tree-synchronize">
+        <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
+      </IconButton>
+    </div>
   );
 };
