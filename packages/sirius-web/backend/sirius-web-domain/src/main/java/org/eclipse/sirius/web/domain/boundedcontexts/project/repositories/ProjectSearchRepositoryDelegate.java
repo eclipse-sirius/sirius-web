@@ -12,12 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
-import org.springframework.data.jdbc.core.JdbcAggregateOperations;
-import org.springframework.data.relational.core.query.Query;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Service;
+import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +21,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
+import org.springframework.data.jdbc.core.JdbcAggregateOperations;
+import org.springframework.data.jdbc.core.convert.EntityRowMapper;
+import org.springframework.data.jdbc.core.convert.JdbcConverter;
+import org.springframework.data.relational.core.mapping.RelationalMappingContext;
+import org.springframework.data.relational.core.mapping.RelationalPersistentEntity;
+import org.springframework.data.relational.core.query.Query;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Service;
 
 /**
  * Used to execute the queries for the project search repository.
@@ -89,7 +93,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                     0
                 ) as row_number
             )
-            SELECT p.id, p.name, p.created_on, p.last_modified_on
+            SELECT p.*
             FROM filtered_projects p, cursor_index c
             WHERE
             CASE WHEN :cursorProjectId <> '' THEN
@@ -103,9 +107,15 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
 
     private final JdbcClient jdbcClient;
 
-    public ProjectSearchRepositoryDelegate(JdbcAggregateOperations jdbcAggregateOperations, JdbcClient jdbcClient) {
+    private final RelationalMappingContext context;
+
+    private final JdbcConverter converter;
+
+    public ProjectSearchRepositoryDelegate(JdbcAggregateOperations jdbcAggregateOperations, JdbcClient jdbcClient, RelationalMappingContext context, JdbcConverter converter) {
         this.jdbcAggregateOperations = Objects.requireNonNull(jdbcAggregateOperations);
         this.jdbcClient = Objects.requireNonNull(jdbcClient);
+        this.context = Objects.requireNonNull(context);
+        this.converter = Objects.requireNonNull(converter);
     }
 
     @Override
@@ -145,9 +155,10 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     }
 
     private List<Project> getAllProjectsQuery(String sqlQuery, Map<String, ?>  parameters) {
+        var entityRowMapper = this.getEntityRowMapper(Project.class);
         return this.jdbcClient.sql(sqlQuery)
                 .params(parameters)
-                .query(Project.class)
+                .query(entityRowMapper)
                 .list();
     }
 
@@ -163,5 +174,13 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
             }
         }
         queryParameters.put(attributeName, value);
+    }
+
+    private <T> EntityRowMapper<T> getEntityRowMapper(Class<T> domainType) {
+        return new EntityRowMapper<>(this.getRequiredPersistentEntity(domainType), this.converter);
+    }
+
+    private <S> RelationalPersistentEntity<S> getRequiredPersistentEntity(Class<S> domainType) {
+        return (RelationalPersistentEntity<S>) this.context.getRequiredPersistentEntity(domainType);
     }
 }

@@ -12,8 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.jayway.jsonpath.JsonPath;
-import graphql.relay.Relay;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -50,14 +57,9 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.relay.Relay;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests of the project controllers.
@@ -157,6 +159,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(2);
     }
 
     @Test
@@ -183,6 +188,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(2);
     }
 
     @Test
@@ -256,6 +264,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures.size()).isGreaterThan(0);
     }
 
     @Test
@@ -283,6 +294,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures.size()).isGreaterThan(0);
     }
 
     @Test
@@ -309,6 +323,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isEqualTo(1);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(1);
     }
 
     @Test
