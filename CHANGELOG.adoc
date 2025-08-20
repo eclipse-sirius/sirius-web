@@ -21,6 +21,7 @@ As a result, the methods `IDiagramContext#reset()` and `IDiagramContext#update(.
 The interface `IDiagramContext` is now deprecated and it will be removed soon.
 All usage of `IDiagramContext` within Sirius Web have been replaced by `DiagramContext` for example in `IDiagramEventHandler#handle`.
 The record `DiagramContext` is still implementing `IDiagramContext` for the moment and it still provides methods like `getDiagram()` or `getDiagramEvents()` but consumers of Sirius Web should switch to the new methods like `diagram()` or `diagramEvents()` as soon as possible.
+- https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Update the `ProjectSearchRepositoryDelegate` to include natures along with the returned projects for `#findAll(Before|After)`.
 
 
 === Dependency update
@@ -40,6 +41,8 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5312[#5312] [diagram] Fix an issue where a relation-based edge could be displayed twice in the diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/4921[#4921] [releng] Fix the license and URL of our maven modules in the SBOM
 - https://github.com/eclipse-sirius/sirius-web/issues/4924[#4924] [tree] Fix graphical glitch in Chrome with tree items background not being properly reset during drag'n'drop.
+- https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Fix an issue where the project natures were not returned with its owning project using `IProjectSearchService#findAll(Before|After)`.
+
 
 === New Features
 

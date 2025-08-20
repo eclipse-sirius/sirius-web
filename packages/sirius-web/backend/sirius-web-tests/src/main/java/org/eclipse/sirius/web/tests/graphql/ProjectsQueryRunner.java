@@ -35,6 +35,9 @@ public class ProjectsQueryRunner implements IQueryRunner {
                     node {
                       id
                       name
+                      natures {
+                        name
+                      }
                     }
                     cursor
                   }
