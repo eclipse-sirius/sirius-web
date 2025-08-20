@@ -78,6 +78,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5351[#5351] [diagram] Fix an issue where the border color of a list node was not set correctly
 - https://github.com/eclipse-sirius/sirius-web/issues/5392[#5392] [releng] Fix an issue caused by two maven modules using the same artifactId
 - https://github.com/eclipse-sirius/sirius-web/issues/5402[#5402] [sirius-web] Add missing line breaks on library impact analysis report
+- https://github.com/eclipse-sirius/sirius-web/issues/5310[#5310] [diagram] Prevent edge center label to blink during node moves
 
 
 === New Features
@@ -427,7 +428,7 @@ Of particular note: projects which create View-based, in-memory, representation 
 [source,java]
 ----
 Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
-JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
