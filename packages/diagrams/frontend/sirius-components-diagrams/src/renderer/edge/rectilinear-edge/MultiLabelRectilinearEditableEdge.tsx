@@ -23,6 +23,7 @@ import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
+import { getMiddlePoint } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
 
@@ -140,16 +141,19 @@ export const MultiLabelRectilinearEditableEdge = memo(
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
-    const edgeCenter: XYPosition = useMemo(() => {
-      let pointsSource = localBendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
-      if (isMultipleOfTwo(localBendingPoints.length)) {
-        pointsSource = middleBendingPoints;
+    const edgeCenter: XYPosition | undefined = useMemo(() => {
+      let pointsSource = bendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
+      if (isMultipleOfTwo(pointsSource.length)) {
+        //if there is an even number of bend points, this means that there is an odd number of segments
+        const prevPoint: XYPosition | undefined =
+          pointsSource.length === 0 ? source : pointsSource[Math.floor(pointsSource.length / 2) - 1];
+        const middlePoint: XYPosition | undefined =
+          pointsSource.length === 0 ? target : pointsSource[Math.floor(pointsSource.length / 2)];
+        return prevPoint && middlePoint ? getMiddlePoint(prevPoint, middlePoint) : undefined; //Place in the center of the middle segment
+      } else {
+        return pointsSource[Math.floor(pointsSource.length / 2)]; //Place on the middle point
       }
-      return pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 };
-    }, [
-      middleBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
-      localBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
-    ]);
+    }, [source, target, bendingPoints.map((point) => `${point.x}:${point.y}`).join()]);
 
     const edgePath: string = useMemo(() => {
       let edgePath = `M ${source.x} ${source.y}`;
@@ -236,7 +240,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
               <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
             </div>
           )}
-          {label && (
+          {label && edgeCenter && (
             <div style={labelContainerStyle(`translate(${edgeCenter.x}px,${edgeCenter.y}px)`)}>
               <Label diagramElementId={id} label={label} faded={!!faded} />
             </div>
