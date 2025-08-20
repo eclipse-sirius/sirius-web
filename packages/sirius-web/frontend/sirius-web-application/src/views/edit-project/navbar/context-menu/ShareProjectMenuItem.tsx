@@ -26,7 +26,7 @@ export const ShareProjectMenuItem = ({ projectId, workbenchHandle }: ShareProjec
 
   return (
     <>
-      <MenuItem onClick={() => setState((prevState) => ({ ...prevState, isOpen: true }))}>
+      <MenuItem onClick={() => setState((prevState) => ({ ...prevState, isOpen: true }))} data-testid="share">
         <ListItemIcon>
           <ShareIcon />
         </ListItemIcon>
