@@ -1,0 +1,83 @@
+= ADR-204 - Make object duplication behavior customizable
+
+== Context
+
+Issue #3740 added support for object duplication.
+It is available through a _Duplicate object_ menu entry in the _Explorer_.
+
+While the action itself supports some parameterization options (e.g. whether to copy the content and update the outgoing/incoming references), most of the actual behavior is hard-coded in the backend in `DuplicateObjectEventHandler`.
+
+In some contexts, notably SysON, this default beahvior is not adapted.
+In particular, it assumes that the newly copied element(s) can be placed "as is" inside the target reference, but in SysON, adding an element inside another one may require creating intermediate objects (usually hidden to end-users, but present in the model).
+
+This limitation forced SysON to completely disable the _Duplicate object_ action in its own frontend.
+
+== Decision
+
+We will add new backend APIs to allow for downstream applications to customize the behavior of the `DuplicateObjectEventHandler`.
+
+=== Frontend
+
+No change needed on the Sirius Web frontend, but SysON will need to update it's own `SysONObjectTreeItemContextMenuContribution` to re-enable the _Duplicate object_ menu entry.
+
+=== GraphQL schema
+
+No change on the GraphQL schema.
+
+=== Backend
+
+We will introduce a new interface `IObjectDuplicator` along with a `DuplicationSettings`:
+
+[source,java]
+----
+record DuplicationSettings(boolean duplicateContent, boolean copyOutgoingReferences, boolean updateIncomingReferences) {}
+----
+
+[source,java]
+----
+public interface IObjectDuplicator {
+
+    boolean canHandle(IEditingContext editingContext, EObject objectToDuplicate, EObject containerEObject, String containmentFeature, DuplicationSettings settings);
+    IStatus duplicateObject(IEditingContext editingContext, EObject objectToDuplicate, EObject containerEObject, String containmentFeature, DuplicationSettings settings);
+}
+----
+
+The implementation currently hard-coded into `DuplicateObjectEventHandler` will be moved into new class `DefaultObjectDuplicator`.
+
+`DuplicateObjectEventHandler` will then first look all available `IObjectDuplicator`, use the first one which `canHandle` a specific duplication request, and fallback to `DefaultObjectDuplicator` if no more specific duplicator is found:
+
+[source,java]
+----
+// In DuplicateObjectEventHandler.duplicateObject(IEditingContext, String, String, String, DuplicationSettings):
+var duplicator = this.objectDuplicators.stream()
+        .filter(candidate -> candidate.canHandle(editingContext, objectToDuplicateOpt.get(), containerEObjectOpt.get(), containmentFeature, settings))
+        .findFirst()
+        .orElseGet(() -> new DefaultObjectDuplicator(this.messageService));
+result = duplicator.duplicateObject(editingContext, objectToDuplicateOpt.get(), containerEObjectOpt.get(), containmentFeature, settings);
+----
+
+This way, SysON will be able to contribute its own `SysONObjectDuplicator` to handle object duplication inside SysML models (and only there), and provide any custom behavior required.
+
+== Rabbit holes
+
+None.
+
+== Consequences
+
+* SysON will need to implement its own `IObjectDuplicator`.
+* SysON will need to update it's own `SysONObjectTreeItemContextMenuContribution` to re-enable the _Duplicate object_ menu entry.
+
+== Cutting backs
+
+Expose parts of the `DefaultObjectDuplicator` internal methods in a reusable API that could make it easier to provide customized implementations without copy/pasting most of the `DefaultObjectDuplicator` code.
+Note that in the case of SysON, if the only requirement is to perform some preparation work (adding any required intermediate objects), somehting like this could be enough (untested):
+
+[source,java]
+----
+@Override
+public IStatus duplicateObject(IEditingContext editingContext, EObject objectToDuplicate, EObject containerEObject, String containmentFeature, DuplicationSettings settings) {
+  EObject actualTargetContainer = createIntermediateElementsIfNeeded(objectToDuplicate, containerEObject, containmentFeature);
+  String actualContainmentFeature = getActualContainmentFeature(objectToDuplicate, containerEObject, containmentFeature);
+  return new DefaultObjectDuplicator(this.messageService).duplicateObject(editingContext, objectToDuplicate, actualTargetContainer, actualContainmentFeature, settings);
+}
+----
