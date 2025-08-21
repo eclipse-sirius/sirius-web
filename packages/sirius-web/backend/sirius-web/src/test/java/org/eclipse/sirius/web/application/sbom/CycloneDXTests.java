@@ -41,7 +41,7 @@ public class CycloneDXTests {
     @Test
     @DisplayName("Given the Sirius Web server, when the SBOM is created, then all values are properly configured")
     public void givenSiriusWebServerWhenTheSBOMIsCreatedThenAllValuesAreProperlyConfigured() {
-        assumeThat(System.getenv("CI") != null);
+        assumeThat(System.getenv("CI")).isNotNull();
         try {
             var path = Paths.get(this.getClass().getResource("/META-INF/sbom/application.cdx.json").toURI());
             var content = Files.readString(path, Charset.defaultCharset());
