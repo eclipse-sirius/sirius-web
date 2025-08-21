@@ -15,11 +15,7 @@ import { makeStyles } from 'tss-react/mui';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
 import { ImpactAnalysisDialogContextProvider } from '../modals/impact-analysis/ImpactAnalysisDialogContext';
-import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
-import {
-  GQLRepresentationMetadata,
-  GQLRepresentationMetadataQueryData,
-} from '../representationmetadata/useRepresentationMetadata.types';
+import { GQLRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata.types';
 import { useSelection } from '../selection/useSelection';
 import { Panels } from './Panels';
 import { RepresentationNavigation } from './RepresentationNavigation';
@@ -28,10 +24,13 @@ import {
   GQLEditingContextEventPayload,
   GQLRepresentationRenamedEventPayload,
 } from './useEditingContextEventSubscription.types';
+import { useSynchronizeRepresentationWithSelection } from './useSynchronizeRepresentationWithSelection';
+import { useSynchronizeRepresentationWithWorkbenchConfiguration } from './useSynchronizeRepresentationWithWorkbenchConfiguration';
 import {
   PanelsHandle,
   RepresentationComponentProps,
   RepresentationMetadata,
+  RepresentationNavigationHandle,
   WorkbenchHandle,
   WorkbenchProps,
   WorkbenchSidePanelConfiguration,
@@ -64,9 +63,6 @@ const isRepresentationRenamedEventPayload = (
 ): payload is GQLRepresentationRenamedEventPayload =>
   !!payload && payload.__typename === 'RepresentationRenamedEventPayload';
 
-const getRepresentationMetadata = (data: GQLRepresentationMetadataQueryData | null): GQLRepresentationMetadata[] =>
-  data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [];
-
 export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
   (
     {
@@ -85,22 +81,74 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       representationsMetadata: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     });
 
+    const { representationMetadata: selectedRepresentationMetadata } =
+      useSynchronizeRepresentationWithSelection(editingContextId);
+    useEffect(() => {
+      if (selectedRepresentationMetadata && selectedRepresentationMetadata[0]) {
+        const displayedRepresentationMetadata = selectedRepresentationMetadata[0];
+
+        const representationsMetadata = [...state.representationsMetadata];
+        const newRepresentationsMetadata = selectedRepresentationMetadata.filter(
+          (selectedRepresentation) =>
+            !representationsMetadata.find((representation) => selectedRepresentation.id === representation.id)
+        );
+
+        const newSelectedRepresentations = [...representationsMetadata, ...newRepresentationsMetadata];
+
+        setState((prevState) => ({
+          ...prevState,
+          displayedRepresentationMetadata: displayedRepresentationMetadata,
+          representationsMetadata: newSelectedRepresentations,
+        }));
+      }
+    }, [(selectedRepresentationMetadata ?? []).map((metadata) => metadata.id).join(', ')]);
+
+    const { representationMetadata: workbenchConfigurationRepresentationMetadata } =
+      useSynchronizeRepresentationWithWorkbenchConfiguration(editingContextId, initialWorkbenchConfiguration);
+
+    useEffect(() => {
+      if (workbenchConfigurationRepresentationMetadata) {
+        const representationsMetadata = [...state.representationsMetadata];
+        const newRepresentationsMetadata = workbenchConfigurationRepresentationMetadata.filter(
+          (selectedRepresentation) =>
+            !representationsMetadata.find((representation) => selectedRepresentation.id === representation.id)
+        );
+
+        const newSelectedRepresentations = [...representationsMetadata, ...newRepresentationsMetadata];
+
+        const activeRepresentationId: string | null =
+          (initialWorkbenchConfiguration?.mainPanel?.representationEditors ?? []).find((editor) => editor.isActive)
+            ?.representationId ?? null;
+        let displayedRepresentationMetadata: GQLRepresentationMetadata | null = null;
+        if (activeRepresentationId) {
+          displayedRepresentationMetadata =
+            workbenchConfigurationRepresentationMetadata.find((metadata) => metadata.id === activeRepresentationId) ??
+            null;
+        }
+
+        setState((prevState) => ({
+          ...prevState,
+          displayedRepresentationMetadata,
+          representationsMetadata: newSelectedRepresentations,
+        }));
+      }
+    }, [(workbenchConfigurationRepresentationMetadata ?? []).map((metadata) => metadata.id).join(', ')]);
+
+    const refRepresentationNavigationHandle: RefObject<RepresentationNavigationHandle | null> =
+      useRef<RepresentationNavigationHandle | null>(null);
     const refPanelsHandle: RefObject<PanelsHandle | null> = useRef<PanelsHandle | null>(null);
     useImperativeHandle(refWorkbenchHandle, () => {
       return {
         getConfiguration: () => {
           return {
+            mainPanel: refRepresentationNavigationHandle.current?.getMainPanelConfiguration() ?? null,
             sidePanels: refPanelsHandle.current?.getSidePanelConfigurations() ?? [],
           };
         },
       };
     });
 
-    const { selection, setSelection } = useSelection();
-    const { data: representationMetadataQueryData } = useRepresentationMetadata(editingContextId, selection);
     const { payload: editingContextEventPayload } = useEditingContextEventSubscription(editingContextId);
-
-    const { data: representationFactories } = useData(representationFactoryExtensionPoint);
     useEffect(() => {
       if (isRepresentationRenamedEventPayload(editingContextEventPayload)) {
         const { representationId, newLabel } = editingContextEventPayload;
@@ -118,31 +166,6 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
         }));
       }
     }, [editingContextEventPayload]);
-
-    // When opening a representation
-    useEffect(() => {
-      const selectedElementRepresentationMetadata = getRepresentationMetadata(representationMetadataQueryData);
-      if (
-        selectedElementRepresentationMetadata.length > 0 &&
-        selectedElementRepresentationMetadata[0]?.id !== state.displayedRepresentationMetadata?.id
-      ) {
-        const displayedRepresentationMetadata = selectedElementRepresentationMetadata[0];
-
-        const representationsMetadata = [...state.representationsMetadata];
-        const newRepresentationsMetadata = selectedElementRepresentationMetadata.filter(
-          (selectedRepresentation) =>
-            !representationsMetadata.find((representation) => selectedRepresentation.id === representation.id)
-        );
-
-        const newSelectedRepresentations = [...representationsMetadata, ...newRepresentationsMetadata];
-
-        setState((prevState) => ({
-          ...prevState,
-          displayedRepresentationMetadata: displayedRepresentationMetadata ? displayedRepresentationMetadata : null,
-          representationsMetadata: newSelectedRepresentations,
-        }));
-      }
-    }, [representationMetadataQueryData, selection]);
 
     const onClose = (representationToHide: RepresentationMetadata) => {
       const previousIndex = state.representationsMetadata.findIndex(
@@ -215,20 +238,23 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     }
 
     const leftPanelConfiguration: WorkbenchSidePanelConfiguration | null =
-      initialWorkbenchConfiguration?.sidePanels.find((configuration) => configuration && configuration.id === 'left') ??
-      null;
+      (initialWorkbenchConfiguration?.sidePanels ?? []).find(
+        (configuration) => configuration && configuration.id === 'left'
+      ) ?? null;
     const rightPanelConfiguration: WorkbenchSidePanelConfiguration | null =
-      initialWorkbenchConfiguration?.sidePanels.find(
+      (initialWorkbenchConfiguration?.sidePanels ?? []).find(
         (configuration) => configuration && configuration.id === 'right'
       ) ?? null;
 
     const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
     let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
 
+    const { setSelection } = useSelection();
     const onRepresentationClick = (representation: RepresentationMetadata) => {
       setSelection({ entries: [{ id: representation.id }] });
     };
 
+    const { data: representationFactories } = useData(representationFactoryExtensionPoint);
     if (state.displayedRepresentationMetadata) {
       const displayedRepresentationMetadata = state.displayedRepresentationMetadata;
       const RepresentationComponent = representationFactories
@@ -247,6 +273,7 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
               displayedRepresentation={displayedRepresentationMetadata}
               onRepresentationClick={onRepresentationClick}
               onClose={onClose}
+              ref={refRepresentationNavigationHandle}
             />
             <RepresentationComponent key={`${editingContextId}#${displayedRepresentationMetadata.id}`} {...props} />
           </div>

@@ -39,10 +39,20 @@ export const ShareProjectModal = ({ projectId, workbenchConfiguration, onClose }
     selection: selectionToSearchParamsValue(selection),
   });
 
-  const path =
-    generatePath(':origin/projects/:projectId/edit', { origin: window.location.origin, projectId: projectId }) +
-    '?' +
-    searchParams.toString();
+  const representationId: string | null =
+    workbenchConfiguration.mainPanel?.representationEditors.find((configuration) => configuration.isActive)
+      ?.representationId ?? null;
+
+  let path: string;
+  const origin = window.location.origin;
+  if (representationId) {
+    path =
+      generatePath(':origin/projects/:projectId/edit/:representationId', { origin, projectId, representationId }) +
+      '?' +
+      searchParams.toString();
+  } else {
+    path = generatePath(':origin/projects/:projectId/edit', { origin, projectId }) + '?' + searchParams.toString();
+  }
 
   let title = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {
