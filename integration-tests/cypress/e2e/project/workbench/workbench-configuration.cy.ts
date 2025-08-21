@@ -13,16 +13,29 @@
 
 import { Project } from '../../../pages/Project';
 import { Flow } from '../../../usecases/Flow';
+import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 import { Workbench } from '../../../workbench/Workbench';
 
 const projectName = 'Cypress - Workbench Configuration Resolution';
 
 describe('Workbench Configuration Resolution', () => {
   context('Given a flow project with a robot document', () => {
-    let projectId: string = '';
+    let projectId: string;
+    let topography1Id: string;
+    let topography2Id: string;
     before(() =>
       new Flow().createRobotProject(projectName).then((createdProjectData) => {
         projectId = createdProjectData.projectId;
+        new Project().visit(projectId);
+        const explorer: Explorer = new Explorer();
+        explorer.expandWithDoubleClick('robot');
+        explorer.createRepresentation('System', 'Topography', 'Topography1').then((createdRepresentationData) => {
+          topography1Id = createdRepresentationData.representationId;
+        });
+        explorer.createRepresentation('System', 'Topography', 'Topography2').then((createdRepresentationData) => {
+          topography2Id = createdRepresentationData.representationId;
+        });
       })
     );
 
@@ -31,7 +44,7 @@ describe('Workbench Configuration Resolution', () => {
     context('When opening the project with a "null" workbench configuration', () => {
       let workbench: Workbench;
       beforeEach(() => {
-        new Project().visit(projectId, {
+        new Project().visit(projectId, undefined, {
           qs: {
             workbenchConfiguration: nullWorkbenchConfiguration,
           },
@@ -51,12 +64,15 @@ describe('Workbench Configuration Resolution', () => {
       it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
         cy.url().should('not.include', 'workbenchConfiguration=');
       });
+      it('Then, in the main area, no representation editor is opened', () => {
+        workbench.checkRepresentationEditorTabs([]);
+      });
     });
 
     context('When opening the project with a workbench configuration where the side panels are collapsed', () => {
       let workbench: Workbench;
       beforeEach(() => {
-        new Project().visit(projectId, {
+        new Project().visit(projectId, undefined, {
           qs: {
             workbenchConfiguration: workbenchConfigurationWithClosedPanels,
           },
@@ -80,12 +96,15 @@ describe('Workbench Configuration Resolution', () => {
       it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
         cy.url().should('not.include', 'workbenchConfiguration=');
       });
+      it('Then, in the main area, no representation editor is opened', () => {
+        workbench.checkRepresentationEditorTabs([]);
+      });
     });
 
     context('When opening the project with a workbench configuration where the side panels are expanded', () => {
       let workbench: Workbench;
       beforeEach(() => {
-        new Project().visit(projectId, {
+        new Project().visit(projectId, undefined, {
           qs: {
             workbenchConfiguration: workbenchConfigurationWithExpandedPanels,
           },
@@ -109,7 +128,50 @@ describe('Workbench Configuration Resolution', () => {
       it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
         cy.url().should('not.include', 'workbenchConfiguration=');
       });
+      it('Then, in the main area, no representation editor is opened', () => {
+        workbench.checkRepresentationEditorTabs([]);
+      });
     });
+
+    context(
+      'When opening the project with a workbench configuration where representation editors are specified',
+      () => {
+        let workbench: Workbench;
+        beforeEach(() => {
+          new Project().visit(projectId, topography2Id, {
+            qs: {
+              workbenchConfiguration: createWorkbenchConfigurationWithRepresentationEditors([
+                {
+                  representationId: topography1Id,
+                  isActive: false,
+                },
+                {
+                  representationId: topography2Id,
+                  isActive: true,
+                },
+              ]),
+            },
+          });
+          workbench = new Workbench();
+        });
+        it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
+          cy.url().should('not.include', 'workbenchConfiguration=');
+        });
+        it('Then, in the main area, the specified representation editors are opened', () => {
+          workbench.checkRepresentationEditorTabs([
+            {
+              representationLabel: 'Topography1',
+            },
+            {
+              representationLabel: 'Topography2',
+            },
+          ]);
+          const diagram: Diagram = new Diagram();
+          diagram.getDiagram('Topography2').should('not.exist');
+          diagram.getDiagram('Topography2').should('exist');
+        });
+      }
+    );
   });
 });
 
@@ -158,3 +220,19 @@ const workbenchConfigurationWithExpandedPanels: string = JSON.stringify({
     },
   ],
 });
+
+const createWorkbenchConfigurationWithRepresentationEditors: (
+  representationEditorConfigurations: RepresentationEditorConfiguration[]
+) => string = (representationEditorConfigurations) => {
+  return JSON.stringify({
+    mainPanel: {
+      id: 'main',
+      representationEditors: representationEditorConfigurations,
+    },
+  });
+};
+
+type RepresentationEditorConfiguration = {
+  representationId: string;
+  isActive: boolean;
+};

@@ -14,8 +14,12 @@
 import { RenameProjectDialog } from './RenameProject';
 
 export class Project {
-  public visit(projectId: string, options?: Partial<Cypress.VisitOptions>): Cypress.Chainable<Cypress.AUTWindow> {
-    return cy.visit(`/projects/${projectId}/edit`, {
+  public visit(
+    projectId: string,
+    representationId?: string,
+    options?: Partial<Cypress.VisitOptions>
+  ): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit(`/projects/${projectId}/edit${representationId ? '/' + representationId : ''}`, {
       ...options,
       onBeforeLoad(win) {
         cy.spy(win.console, 'debug').as('consoleDebug');
