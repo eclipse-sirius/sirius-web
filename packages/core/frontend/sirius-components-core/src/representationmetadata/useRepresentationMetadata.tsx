@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { Selection } from '../selection/SelectionContext.types';
 import { useMultiToast } from '../toast/MultiToast';
 import {
   GQLRepresentationMetadataQueryData,
@@ -20,7 +19,7 @@ import {
   UseRepresentationMetadataValue,
 } from './useRepresentationMetadata.types';
 
-const getRepresentationMetadata = gql`
+const getRepresentationMetadataQuery = gql`
   query getRepresentationMetadata($editingContextId: ID!, $representationIds: [ID!]!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
@@ -42,20 +41,13 @@ const getRepresentationMetadata = gql`
   }
 `;
 
-export const useRepresentationMetadata = (
-  editingContextId: string,
-  selection: Selection
-): UseRepresentationMetadataValue => {
+export const useRepresentationMetadata = (): UseRepresentationMetadataValue => {
   const { addErrorMessage } = useMultiToast();
-  const representationIds: string[] = selection.entries.map((entry) => entry.id);
-  const variables: GQLRepresentationMetadataQueryVariables = {
-    editingContextId,
-    representationIds,
-  };
-  const { data, error } = useQuery<GQLRepresentationMetadataQueryData, GQLRepresentationMetadataQueryVariables>(
-    getRepresentationMetadata,
-    { variables }
-  );
+
+  const [retrieveRepresentationMetadata, { data, error }] = useLazyQuery<
+    GQLRepresentationMetadataQueryData,
+    GQLRepresentationMetadataQueryVariables
+  >(getRepresentationMetadataQuery);
 
   useEffect(() => {
     if (error) {
@@ -63,5 +55,16 @@ export const useRepresentationMetadata = (
     }
   }, [error]);
 
-  return { data: data ?? null };
+  const getRepresentationMetadata = (editingContextId: string, representationIds: string[]) => {
+    if (representationIds.length > 0) {
+      retrieveRepresentationMetadata({
+        variables: {
+          editingContextId,
+          representationIds,
+        },
+      });
+    }
+  };
+
+  return { data: data ?? null, getRepresentationMetadata };
 };

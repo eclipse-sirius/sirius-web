@@ -13,6 +13,7 @@
 
 export interface UseRepresentationMetadataValue {
   data: GQLRepresentationMetadataQueryData | null;
+  getRepresentationMetadata: (editingContextId: string, representationIds: string[]) => void;
 }
 
 export interface GQLRepresentationMetadataQueryData {

@@ -10,6 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export interface CreatedRepresentationData {
+  representationId: string;
+}
 
 export class Explorer {
   public getExplorerView(): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -89,7 +92,7 @@ export class Explorer {
     treeItemLabel: string,
     representationDescriptionName: string,
     representationLabel: string
-  ): void {
+  ): Cypress.Chainable<CreatedRepresentationData> {
     this.openTreeItemAction(treeItemLabel).getNewRepresentationButton().click();
 
     cy.get('[aria-labelledby="dialog-title"]').then((modal) => {
@@ -104,6 +107,18 @@ export class Explorer {
     // Wait for the modal to be closed and the representation actually opened
     cy.get('[aria-labelledby="dialog-title"]').should('not.exist');
     cy.getByTestId(`representation-tab-${representationLabel}`).should('be.visible');
+
+    return cy
+      .getByTestId(`representation-tab-${representationLabel}`)
+      .should('exist')
+      .invoke('attr', 'data-representationid')
+      .then((representationId) => {
+        if (representationId) {
+          return cy.wrap({ representationId });
+        } else {
+          throw new Error(`Cannot find opened representation tab with label "${representationLabel}"`);
+        }
+      });
   }
 
   public rename(treeItemLabel: string, newName: string): void {

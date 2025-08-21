@@ -13,6 +13,9 @@
 
 type WorkbenchSide = 'left' | 'right';
 type PanelState = 'expanded' | 'collapsed';
+type RepresentationEditor = {
+  representationLabel: string;
+};
 
 export class Workbench {
   public openRepresentation(representationLabel: string): void {
@@ -74,6 +77,18 @@ export class Workbench {
       });
     } else {
       cy.get(`#${side}`).should('have.attr', 'data-panel-size', '0.0');
+    }
+  }
+
+  public checkRepresentationEditorTabs(expectedRepresentationEditors: RepresentationEditor[]) {
+    if (expectedRepresentationEditors.length == 0) {
+      cy.getByTestId(`onboard-area`).should('exist');
+    } else {
+      cy.getByTestId(`onboard-area`).should('not.exist');
+
+      expectedRepresentationEditors.forEach((expectedRepresentationEditor) => {
+        cy.getByTestId(`representation-tab-${expectedRepresentationEditor.representationLabel}`).should('exist');
+      });
     }
   }
 }
