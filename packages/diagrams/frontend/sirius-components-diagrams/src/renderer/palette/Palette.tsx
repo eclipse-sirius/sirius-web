@@ -176,7 +176,7 @@ export const Palette = ({
           width: paletteWidth,
         }}>
         <ClickAwayListener mouseEvent="onPointerDown" onClickAway={onClose}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', maxHeight: 280 }}>
             <Box
               id="tool-palette-header"
               sx={{
