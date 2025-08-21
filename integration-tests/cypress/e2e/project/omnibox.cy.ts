@@ -31,7 +31,7 @@ describe('Project - Omnibox', () => {
 
     it('Then the omnibox can be display and used to select an element in the workbench', () => {
       const explorer = new Explorer();
-      const omnibox = new Omnibox(projectName);
+      const omnibox = new Omnibox();
       omnibox.display();
       omnibox.sendQuery('').findByTestId('Search').click();
       omnibox.sendQuery('').findByTestId('DSP').click();

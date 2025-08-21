@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @ActiveProfiles("demo")
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=studio" })
 public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired

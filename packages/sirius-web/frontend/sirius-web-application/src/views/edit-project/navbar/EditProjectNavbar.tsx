@@ -87,7 +87,7 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
       <NavigationBar>
         <div className={classes.center}>
           <div className={classes.title}>
-            <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-${state.projectName}`}>
+            <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-title`}>
               {state.projectName}
             </Typography>
             <IconButton

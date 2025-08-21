@@ -40,7 +40,7 @@ describe('Project deletion', () => {
       beforeEach(() => new Project().visit(projectId));
 
       it('Then the delete button should be not exist', () => {
-        new Project().getProjectNavigationBar(projectName).getDeleteButton().should('not.exist');
+        new Project().getProjectNavigationBar().getDeleteButton().should('not.exist');
       });
     });
   });

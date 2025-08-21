@@ -110,9 +110,13 @@ describe('Explorer', () => {
     const projectName = 'Cypress - Disabled Edit Project';
     let projectId: string = '';
     beforeEach(() =>
-      new Flow().createRobotProject(projectName).then((createdProjectData) => {
+      new Flow().createFlowProject().then((createdProjectData) => {
         projectId = createdProjectData.projectId;
-        new Project().visit(projectId);
+        const project = new Project();
+        project.visit(projectId);
+        project.rename(projectName);
+        // The second `visit` is needed to ensure the whole project has reloaded in read-only mode
+        project.visit(projectId);
       })
     );
 
@@ -121,9 +125,9 @@ describe('Explorer', () => {
     context('When we display actions of a tree item', () => {
       it('Then they are all disabled', () => {
         const explorer = new Explorer();
-        explorer.expandWithDoubleClick('robot');
-        explorer.getTreeItemByLabel('System').should('exist');
-        const actions = explorer.openTreeItemAction('System');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.getTreeItemByLabel('NewSystem').should('exist');
+        const actions = explorer.openTreeItemAction('NewSystem');
 
         actions.getNewObjectButton().should('have.class', 'Mui-disabled');
         actions.getNewRepresentationButton().should('have.class', 'Mui-disabled');
