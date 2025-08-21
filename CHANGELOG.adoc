@@ -62,7 +62,7 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [test] Add Cypress tests for the 'Share' action of a project, and for the resolution of a URL with search parameter `workbenchConfiguration`.
 
 
 == v2025.8.0
@@ -322,6 +322,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] The shareable URL now includes the open/closed state of the left and right panels.
 
 
 
