@@ -25,7 +25,6 @@ import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -55,12 +54,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     return null;
   }
 
-  const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-    nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
-  );
-  const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
-    nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
-  );
+  const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(sourceNode));
+  const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) => nodeLayoutHandler.canHandle(targetNode));
 
   let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
     sourceNode,

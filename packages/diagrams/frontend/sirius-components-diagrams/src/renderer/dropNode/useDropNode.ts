@@ -171,15 +171,13 @@ export const useDropNode = (): UseDropNodeValue => {
       const computedNode = getDraggableNode(node);
 
       const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
-        (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
+        (entry) => entry.droppedNodeDescriptionId === computedNode.data.descriptionId
       );
       const compatibleNodes = getNodes()
         .filter(
           (candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
         )
-        .filter((candidate) =>
-          dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
-        )
+        .filter((candidate) => dropDataEntry?.droppableOnNodeTypes.includes(candidate.data.descriptionId))
         .map((candidate) => candidate.id);
 
       initializeDrop({

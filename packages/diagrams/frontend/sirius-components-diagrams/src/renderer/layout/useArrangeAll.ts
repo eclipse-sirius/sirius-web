@@ -17,7 +17,6 @@ import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
 import { RawDiagram } from './layout.types';
 import { labelHorizontalPadding, labelVerticalPadding } from './layoutParams';
@@ -32,8 +31,8 @@ function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
   return new Map<K, V>(reversedNodes);
 }
 
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
+const getSubNodes = (nodes: Node<NodeData>[]): Map<string, Node<NodeData>[]> => {
+  const subNodes: Map<string, Node<NodeData>[]> = new Map<string, Node<NodeData>[]>();
   for (const node of nodes.filter((n) => !n.hidden)) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
@@ -166,10 +165,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[]
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutedAllNodes: Node<NodeData, string>[] = [];
+    subNodes: Map<string, Node<NodeData>[]>,
+    allNodes: Node<NodeData>[]
+  ): Promise<Node<NodeData>[]> => {
+    let layoutedAllNodes: Node<NodeData>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     const edges: Edge<EdgeData>[] = getEdges();
     for (const [parentNodeId, nodes] of subNodes) {
@@ -229,10 +228,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const arrangeAll = async (): Promise<void> => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string>[]) => {
-      const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
+    const nodes: Node<NodeData>[] = [...getNodes()];
+    const subNodes: Map<string, Node<NodeData>[]> = reverseOrdreMap(getSubNodes(nodes));
+    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData>[]) => {
+      const laidOutNodesWithElk: Node<NodeData>[] = nodes.reverse();
       laidOutNodesWithElk.filter((laidOutNode) => {
         const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
         return !parentNode || !isListData(parentNode);
@@ -244,7 +243,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
       const edges = getEdges();
       edges
         .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
-        .forEach((edge: Edge<EdgeData, string>) => {
+        .forEach((edge: Edge<EdgeData>) => {
           if (edge.data?.bendingPoints) {
             edge.data.bendingPoints = null;
           }
@@ -256,10 +255,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
       };
       const layoutPromise = new Promise<void>((resolve) => {
         layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+          const overlapFreeLaidOutNodes: Node<NodeData>[] = resolveNodeOverlap(
             laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
             'horizontal'
-          ) as Node<NodeData, DiagramNodeType>[];
+          );
           laidOutNodesWithElk.map((node) => {
             const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
             if (existingNode) {

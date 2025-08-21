@@ -12,11 +12,9 @@
  *******************************************************************************/
 import { Edge, Node } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { EdgeAnchorNodeData } from '../node/EdgeAnchorNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export interface RawDiagram {
-  nodes: Node<NodeData | EdgeAnchorNodeData, DiagramNodeType>[];
+  nodes: Node<NodeData>[];
   edges: Edge<EdgeData>[];
 }
 

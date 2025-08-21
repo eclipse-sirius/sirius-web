@@ -14,7 +14,6 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, XYPosition, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
 import { RawDiagram } from './layout.types';
 import { UseDistributeElementsValue } from './useDistributeElements.types';
@@ -72,14 +71,14 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
       const updatedNodes: Node<NodeData>[] = layoutFn(selectedNodes, refNode);
       const overlapFreeNodes: Node<NodeData>[] = resolveNodeOverlap(updatedNodes, direction);
       const diagramToLayout: RawDiagram = {
-        nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
+        nodes: [...overlapFreeNodes],
         edges: getEdges(),
       };
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
         const overlapFreeNodesAfterLayout: Node<NodeData>[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
         setNodes(overlapFreeNodesAfterLayout);
         const finalDiagram: RawDiagram = {
-          nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
+          nodes: overlapFreeNodesAfterLayout,
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
@@ -143,9 +142,9 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
               },
             };
           });
-          const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
+          const overlapFreeNodes: Node<NodeData>[] = resolveNodeOverlap(updatedNodes, direction);
           const diagramToLayout: RawDiagram = {
-            nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
+            nodes: [...overlapFreeNodes],
             edges: getEdges(),
           };
           layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {

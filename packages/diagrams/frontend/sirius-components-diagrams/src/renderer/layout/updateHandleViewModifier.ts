@@ -13,10 +13,9 @@
 import { Edge, Node, ReactFlowState } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export const updateHandleViewModifier = (
-  nodes: Node<NodeData, DiagramNodeType>[],
+  nodes: Node<NodeData>[],
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>
 ) => {
   nodes.forEach((node) => {
