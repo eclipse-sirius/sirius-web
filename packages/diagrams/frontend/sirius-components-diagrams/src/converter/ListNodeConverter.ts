@@ -74,10 +74,7 @@ const toListNode = (
     descriptionId,
     style: {
       background: style.background,
-      borderTopColor: style.borderColor,
-      borderBottomColor: style.borderColor,
-      borderLeftColor: style.borderColor,
-      borderRightColor: style.borderColor,
+      borderColor: style.borderColor,
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
