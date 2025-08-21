@@ -45,10 +45,7 @@ const listNodeStyle = (
     opacity: faded ? '0.4' : '',
     ...style,
     background: getCSSColor(String(style.background), theme),
-    borderTopColor: getCSSColor(String(style.borderTopColor), theme),
-    borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
-    borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
-    borderRightColor: getCSSColor(String(style.borderRightColor), theme),
+    borderColor: getCSSColor(String(style.borderColor), theme),
   };
   if (selected || hovered) {
     listNodeStyle.outline = `${theme.palette.selected} solid 1px`;
@@ -76,7 +73,8 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-    const { style: connectionLineActiveNodeStlye } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
+
     const nodeStyle = useMemo(
       () => listNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, selected, data.isHovered, data.faded]
@@ -101,7 +99,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             ...nodeStyle,
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
-            ...connectionLineActiveNodeStlye,
+            ...connectionLineActiveNodeStyle,
           }}
           data-svg="rect"
           onDragOver={onDragOver}
