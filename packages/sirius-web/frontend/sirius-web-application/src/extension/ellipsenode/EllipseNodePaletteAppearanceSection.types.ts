@@ -10,13 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLNodeStyle } from '@eclipse-sirius/sirius-components-diagrams';
+export interface GQLEllipseNodeStyle extends GQLNodeStyle {
+  background: string;
+  borderColor: string;
+  borderRadius: number;
+  borderStyle: string;
+  borderSize: number;
+}
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
-
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+export interface EllipseNodePaletteAppearanceSectionState {
+  background: string;
+  borderColor: string;
+  borderSize: number;
+  borderStyle: string;
 }

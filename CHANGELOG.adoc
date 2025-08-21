@@ -50,6 +50,11 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5338[#5338] [sirius-web] Add support for capability check prior to retrieve project templates.
 To retrieve project templates, you will need the `Project:create` capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5341[#5341] [sirius-web] Add support for `Project:list` and `Project:view` project capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point, `PaletteAppearanceSectionContribution`, an exemple is available on ellipse node.
+* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance
+* `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
+* `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
+* A GraphQL mutation is also added `editEllipseNodeAppearance`.
 
 
 === Improvements
@@ -62,6 +67,7 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export `EditColorAppearanceSection`, `EditEnumSelectAppearanceSection` and `EditNumberAppearanceSection` to use in custom node appearance
 
 
 
@@ -360,7 +366,7 @@ Of particular note: projects which create View-based, in-memory, representation 
 [source,java]
 ----
 Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
-JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
