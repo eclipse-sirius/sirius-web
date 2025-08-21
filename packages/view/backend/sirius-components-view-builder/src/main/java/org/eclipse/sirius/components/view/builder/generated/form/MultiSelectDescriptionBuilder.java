@@ -78,7 +78,6 @@ public class MultiSelectDescriptionBuilder {
         this.getMultiSelectDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

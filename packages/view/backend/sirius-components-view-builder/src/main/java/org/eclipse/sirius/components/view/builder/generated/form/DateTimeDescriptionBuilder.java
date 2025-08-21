@@ -78,7 +78,6 @@ public class DateTimeDescriptionBuilder {
         this.getDateTimeDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for StringValueExpression.
      *

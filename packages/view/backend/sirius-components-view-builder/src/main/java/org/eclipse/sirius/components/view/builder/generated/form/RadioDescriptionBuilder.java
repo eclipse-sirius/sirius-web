@@ -78,7 +78,6 @@ public class RadioDescriptionBuilder {
         this.getRadioDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
