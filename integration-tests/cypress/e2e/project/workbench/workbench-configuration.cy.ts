@@ -82,15 +82,13 @@ describe('Workbench Configuration Resolution', () => {
         });
         workbench = new Workbench();
       });
-      it('should, in the left side panel, select and expand the Validation view', () => {
-        workbench.checkPanelContent('left', 'Validation');
+      it('should, in the left side panel, select and collapse the Validation view', () => {
         workbench.isIconHighlighted('left', 'Validation');
-        workbench.checkPanelState('left', 'expanded');
+        workbench.checkPanelState('left', 'collapsed');
       });
-      it('should, in the right side panel, select and expand the Related Elements view', () => {
-        workbench.checkPanelContent('right', 'Related Elements');
+      it('should, in the right side panel, select and collapse the Related Elements view', () => {
         workbench.isIconHighlighted('right', 'Related Elements');
-        workbench.checkPanelState('right', 'expanded');
+        workbench.checkPanelState('right', 'collapsed');
       });
     });
   });
@@ -101,6 +99,7 @@ const workbenchConfigurationWithDefaultValues: string = JSON.stringify({
   sidePanels: [
     {
       id: 'left',
+      isOpen: true,
       views: [
         { id: 'explorer', isActive: true },
         { id: 'validation', isActive: false },
@@ -108,6 +107,7 @@ const workbenchConfigurationWithDefaultValues: string = JSON.stringify({
     },
     {
       id: 'right',
+      isOpen: true,
       views: [
         { id: 'details', isActive: true },
         { id: 'query', isActive: false },
@@ -121,6 +121,7 @@ const workbenchConfigurationWithCustomValues: string = JSON.stringify({
   sidePanels: [
     {
       id: 'left',
+      isOpen: false,
       views: [
         { id: 'explorer', isActive: false },
         { id: 'validation', isActive: true },
@@ -128,6 +129,7 @@ const workbenchConfigurationWithCustomValues: string = JSON.stringify({
     },
     {
       id: 'right',
+      isOpen: false,
       views: [
         { id: 'details', isActive: false },
         { id: 'query', isActive: false },
