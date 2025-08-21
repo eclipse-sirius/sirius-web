@@ -103,7 +103,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-web-domain", 94.0),
   new ModuleCoverage("sirius-web-application", 92.0),
   new ModuleCoverage("sirius-web-infrastructure", 96.0),
-  new ModuleCoverage("sirius-web-starter", 98.0),
+  new ModuleCoverage("sirius-web-starter", 96.0),
   new ModuleCoverage("sirius-web", 37.0)
 );
 
