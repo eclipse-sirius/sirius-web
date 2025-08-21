@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,12 @@
  *******************************************************************************/
 
 export class Omnibox {
-  constructor(readonly projectName: string) {}
-
   private getOmnibox(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('omnibox');
   }
 
   public display(): Cypress.Chainable<JQuery<HTMLElement>> {
-    cy.getByTestId(`navbar-${this.projectName}`).should('exist');
+    cy.getByTestId(`navbar-title`).should('exist');
     cy.get('body').type('{ctrl+k}');
     cy.getByTestId('omnibox').should('exist');
     return this.getOmnibox();

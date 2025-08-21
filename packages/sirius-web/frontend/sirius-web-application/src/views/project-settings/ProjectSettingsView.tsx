@@ -151,7 +151,7 @@ export const ProjectSettingsView = () => {
               to={`/projects/${id}/edit`}
               noWrap
               className={classes.titleLabel}
-              data-testid={`navbar-${name}`}>
+              data-testid={`navbar-title`}>
               {name}
             </Link>
           </div>

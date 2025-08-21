@@ -32,9 +32,18 @@ export class Project {
     });
   }
 
-  public getProjectNavigationBar(projectName: string): ProjectNavigationBar {
+  public rename(newProjectName: string): void {
     this.isLoaded();
-    cy.getByTestId(`navbar-${projectName}`).should('be.visible');
+    const renameDialog = this.getProjectNavigationBar().getRenameDialog();
+    renameDialog.clearValue();
+    renameDialog.getRenameTextField().type(newProjectName);
+    renameDialog.validate(true);
+    renameDialog.getRenameButton().click();
+  }
+
+  public getProjectNavigationBar(): ProjectNavigationBar {
+    this.isLoaded();
+    cy.getByTestId(`navbar-title`).should('be.visible');
     cy.getByTestId('navigation-bar').findByTestId('more').click();
     return new ProjectNavigationBar();
   }

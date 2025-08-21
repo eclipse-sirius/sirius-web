@@ -34,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gcoutable
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "demo")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ViewerCapabilitiesControllerTests extends AbstractIntegrationTests {
 
     @Autowired

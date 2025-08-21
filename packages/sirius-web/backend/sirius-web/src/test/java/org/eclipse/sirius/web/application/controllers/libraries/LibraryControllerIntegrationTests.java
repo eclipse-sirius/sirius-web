@@ -164,7 +164,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(sharedComponentsLibrary, description, List.of());
 
         Optional<Library> optionalBuckLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "buck", version);
-        assertThat(optionalBuckLibrary.isPresent());
+        assertThat(optionalBuckLibrary).isPresent();
 
         var buckLibrary = optionalBuckLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(buckLibrary, description, List.of());

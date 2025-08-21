@@ -44,7 +44,7 @@ describe('Diagram - Fork Representation', () => {
       cy.getByTestId(`fork-action-open`).click();
 
       // Once redirected to the new studio, change the color of the System node
-      cy.getByTestId(`navbar-Forked Topography`).should('exist');
+      cy.getByTestId(`navbar-title`).should('exist');
       explorer.expandWithDoubleClick('FlowView');
       explorer.expandWithDoubleClick('View');
       explorer.expandWithDoubleClick('Topography');
@@ -68,7 +68,7 @@ describe('Diagram - Fork Representation', () => {
       cy.wait(6000);
       const project = new Project();
       project.visit(projectId);
-      cy.getByTestId(`navbar-Flow`).should('exist');
+      cy.getByTestId(`navbar-title`).should('exist');
       explorer.expandWithDoubleClick('Flow');
       explorer.expandWithDoubleClick('NewSystem');
       explorer.selectRepresentation('Topography');

@@ -40,7 +40,7 @@ describe('Project rename', () => {
       beforeEach(() => new Project().visit(projectId));
 
       it('Then the rename button should not exist', () => {
-        new Project().getProjectNavigationBar(projectName).getRenameButton().should('not.exist');
+        new Project().getProjectNavigationBar().getRenameButton().should('not.exist');
       });
     });
   });

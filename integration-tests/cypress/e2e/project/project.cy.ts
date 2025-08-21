@@ -29,7 +29,7 @@ describe('Project - Rename', () => {
 
     context('When we try to rename with an invalid project name', () => {
       it('Then the rename button from the rename modal should be disabled', () => {
-        const renameDialog = new Project().getProjectNavigationBar(projectName).getRenameDialog();
+        const renameDialog = new Project().getProjectNavigationBar().getRenameDialog();
         renameDialog.clearValue();
         renameDialog.validate(false);
       });
