@@ -17,7 +17,7 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 
-export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) => {
+export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop }: BendPointProps) => {
   const { zoom } = useViewport();
   const nodeRef = useRef<SVGCircleElement>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -30,11 +30,11 @@ export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) =
     <Draggable
       position={{ x: x, y: y }}
       scale={zoom}
-      onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index)}
+      onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
       <g ref={nodeRef} data-testid={`bend-point-${index}`}>
-        <circle style={{ pointerEvents: 'all' }} r={10} fill={'transparent'} />
+        <circle style={{ pointerEvents: 'all' }} r={20} fill={'transparent'} />
         <circle style={{ pointerEvents: 'none' }} r={3} fill={'black'} />
       </g>
     </Draggable>
@@ -62,6 +62,10 @@ export const TemporaryMovingLine = ({
 
   const width = direction === 'x' ? segmentLengthWithoutBoundaries : 4;
   const height = direction === 'y' ? segmentLengthWithoutBoundaries : 4;
+
+  if (width < 0 || height < 0) {
+    return null;
+  }
 
   const offsetX = direction === 'x' ? -width / 2 : -2;
   const offsetY = direction === 'y' ? -height / 2 : -2;

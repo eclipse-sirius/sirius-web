@@ -75,6 +75,8 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] Add impact analysis before performing a library update.
 The impact analysis report displays the following information:
 * References that will be broken by the update (new proxies that won't be resolved and will be deleted after the update)
+- https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bend point only when source or target segment exceeds the limits of its node borders.
+
 
 
 == v2025.8.0
@@ -372,7 +374,7 @@ Of particular note: projects which create View-based, in-memory, representation 
 [source,java]
 ----
 Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
-JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
