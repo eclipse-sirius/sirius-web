@@ -20,10 +20,8 @@ import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
   cleanBendPoint,
   determineSegmentAxis,
-  generateNewBendPointOnSourceSegment,
-  generateNewBendPointOnTargetSegment,
-  generateNewSourcePoint,
-  generateNewTargetPoint,
+  generateNewBendPointOnSegment,
+  generateNewHandlePoint,
   getHandlePositionFromXYPosition,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
@@ -121,14 +119,15 @@ export const useBendingPoints = (
       bendingPointDragged.y = eventData.y;
       if (index === 0) {
         if (isOutOfLines(eventData.x, eventData.y, direction, sourceNode)) {
-          const newPoint = generateNewBendPointOnSourceSegment(
+          const newPoint = generateNewBendPointOnSegment(
             eventData.x,
             eventData.y,
             direction,
             sourceNode.internals.positionAbsolute,
             sourcePosition,
             sourceNode.height ?? 0,
-            sourceNode.width ?? 0
+            sourceNode.width ?? 0,
+            0
           );
           if (newPoint) {
             const nextPoint = newPoints[index + 1];
@@ -144,18 +143,23 @@ export const useBendingPoints = (
               }
             }
           }
-          const newSource: XYPosition = generateNewSourcePoint(source, eventData.x, eventData.y, direction, sourceNode);
+          const newSource: XYPosition = generateNewHandlePoint(source, eventData.x, eventData.y, direction, sourceNode);
           setSource(newSource);
         } else {
           const newSource: XYPosition = { ...source };
           const nextPoint = newPoints[index + 1];
           if (direction === 'x') {
             newSource.y = eventData.y;
+            newSource.x =
+              sourceNode.internals.positionAbsolute.x + (sourcePosition === Position.Right ? sourceNode.width ?? 0 : 0);
             if (nextPoint) {
               nextPoint.x = eventData.x;
             }
           } else if (direction === 'y') {
             newSource.x = eventData.x;
+            newSource.y =
+              sourceNode.internals.positionAbsolute.y +
+              (sourcePosition === Position.Bottom ? sourceNode.height ?? 0 : 0);
             if (nextPoint) {
               nextPoint.y = eventData.y;
             }
@@ -167,15 +171,15 @@ export const useBendingPoints = (
       if (index === originalBendingPoints.length - 1) {
         const lastSegmentDirection = direction === 'x' ? 'y' : 'x';
         if (isOutOfLines(eventData.x, eventData.y, lastSegmentDirection, targetNode)) {
-          const newPoint = generateNewBendPointOnTargetSegment(
+          const newPoint = generateNewBendPointOnSegment(
             eventData.x,
             eventData.y,
             lastSegmentDirection,
             targetNode.internals.positionAbsolute,
-            index,
             targetPosition,
             targetNode.height ?? 0,
-            targetNode.width ?? 0
+            targetNode.width ?? 0,
+            index + 1
           );
           if (newPoint) {
             newPoints.push(newPoint);
@@ -188,7 +192,7 @@ export const useBendingPoints = (
               }
             }
           }
-          const newTarget: XYPosition = generateNewTargetPoint(
+          const newTarget: XYPosition = generateNewHandlePoint(
             target,
             eventData.x,
             eventData.y,
@@ -201,11 +205,16 @@ export const useBendingPoints = (
           const prevPoint = newPoints[index - 1];
           if (direction === 'y') {
             newTarget.y = eventData.y;
+            newTarget.x =
+              targetNode.internals.positionAbsolute.x + (targetPosition === Position.Right ? targetNode.width ?? 0 : 0);
             if (prevPoint) {
               prevPoint.x = eventData.x;
             }
           } else if (direction === 'x') {
             newTarget.x = eventData.x;
+            newTarget.y =
+              targetNode.internals.positionAbsolute.y +
+              (targetPosition === Position.Bottom ? targetNode.height ?? 0 : 0);
             if (prevPoint) {
               prevPoint.y = eventData.y;
             }
