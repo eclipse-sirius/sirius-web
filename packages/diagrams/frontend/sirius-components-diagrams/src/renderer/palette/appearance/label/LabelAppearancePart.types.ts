@@ -20,13 +20,3 @@ export interface LabelAppearancePartProps {
   style: GQLLabelStyle;
   customizedStyleProperties: string[];
 }
-
-export interface LabelPartState {
-  fontSize: number;
-  borderColor: string;
-  borderRadius: number;
-  borderSize: number;
-  borderStyle: string;
-  color: string;
-  background: string;
-}

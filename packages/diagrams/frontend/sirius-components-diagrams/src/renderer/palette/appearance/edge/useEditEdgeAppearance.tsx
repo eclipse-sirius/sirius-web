@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLResetNodeApparenceData,
-  GQLResetNodeApparenceVariables,
-  UseResetNodeAppearanceValue,
-} from './useResetNodeAppearance.types';
+  GQLEdgeAppearanceInput,
+  GQLEditEdgeAppearanceData,
+  GQLEditEdgeAppearanceVariables,
+  UseEditEdgeAppearanceValue,
+} from './useEditEdgeAppearance.types';
 
-export const GQLResetNodeAppearanceMutation = gql`
-  mutation resetNodeAppearance($input: ResetNodeAppearanceInput!) {
-    resetNodeAppearance(input: $input) {
+export const editEdgeAppearanceMutation = gql`
+  mutation editEdgeAppearance($input: EditEdgeAppearanceInput!) {
+    editEdgeAppearance(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -39,33 +39,34 @@ export const GQLResetNodeAppearanceMutation = gql`
   }
 `;
 
-export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
-  const [resetNodeApparence, resetNodeApparenceResult] = useMutation<
-    GQLResetNodeApparenceData,
-    GQLResetNodeApparenceVariables
-  >(GQLResetNodeAppearanceMutation);
+export const useEditEdgeAppearance = (): UseEditEdgeAppearanceValue => {
+  const [editEdgeAppearance, editEdgeAppearanceResult] = useMutation<
+    GQLEditEdgeAppearanceData,
+    GQLEditEdgeAppearanceVariables
+  >(editEdgeAppearanceMutation);
 
-  useReporting(resetNodeApparenceResult, (data: GQLResetNodeApparenceData) => data.resetNodeAppearance);
+  useReporting(editEdgeAppearanceResult, (data: GQLEditEdgeAppearanceData) => data.editEdgeAppearance);
 
-  const resetNodeStyleProperties = (
+  const updateEdgeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
-    propertiesToReset: string[]
-  ) =>
-    resetNodeApparence({
+    edgeId: string,
+    appearance: Partial<GQLEdgeAppearanceInput>
+  ) => {
+    editEdgeAppearance({
       variables: {
         input: {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
-          propertiesToReset,
+          edgeId,
+          appearance,
         },
       },
     });
+  };
 
   return {
-    resetNodeStyleProperties,
+    updateEdgeAppearance,
   };
 };

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -147,6 +148,7 @@ public class TestDiagramBuilder {
                 .style(style)
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(new HashSet<>())
                 .build();
     }
 

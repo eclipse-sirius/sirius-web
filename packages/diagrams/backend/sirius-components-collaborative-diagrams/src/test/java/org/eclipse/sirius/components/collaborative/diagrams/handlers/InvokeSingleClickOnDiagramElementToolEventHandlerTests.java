@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -593,6 +594,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectLabel("")
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(new HashSet<>())
                 .build();
     }
 

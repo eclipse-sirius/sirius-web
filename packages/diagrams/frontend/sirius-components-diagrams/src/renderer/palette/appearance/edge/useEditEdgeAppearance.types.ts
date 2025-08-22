@@ -10,32 +10,39 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseResetNodeAppearanceValue {
-  resetNodeStyleProperties: (
+export interface UseEditEdgeAppearanceValue {
+  updateEdgeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
-    propertiesToReset: string[]
+    edgeId: string,
+    appearance: Partial<GQLEdgeAppearanceInput>
   ) => void;
 }
 
-export interface GQLResetNodeApparenceData {
-  resetNodeAppearance: GQLResetNodeApparencePayload;
+export interface GQLEditEdgeAppearanceData {
+  editEdgeAppearance: GQLEditEdgeAppearancePayload;
 }
 
-export type GQLResetNodeApparencePayload = GQLErrorPayload | GQLSuccessPayload;
+export type GQLEditEdgeAppearancePayload = GQLErrorPayload | GQLSuccessPayload;
 
-export interface GQLResetNodeAppearanceInput {
+export interface GQLEditEdgeAppearanceVariables {
+  input: GQLEditEdgeAppearanceInput;
+}
+
+export interface GQLEditEdgeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
-  propertiesToReset: string[];
+  edgeId: string;
+  appearance: Partial<GQLEdgeAppearanceInput>;
 }
 
-export interface GQLResetNodeApparenceVariables {
-  input: GQLResetNodeAppearanceInput;
+export interface GQLEdgeAppearanceInput {
+  size: number;
+  color: string;
+  lineStyle: string;
+  sourceArrowStyle: string;
+  targetArrowStyle: string;
 }
