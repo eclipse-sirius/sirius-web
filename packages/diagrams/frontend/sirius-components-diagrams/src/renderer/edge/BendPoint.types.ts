@@ -16,7 +16,8 @@ export interface BendPointProps {
   x: number;
   y: number;
   index: number;
-  onDrag: (eventData: DraggableData, index: number) => void;
+  direction: 'x' | 'y';
+  onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
 }
 

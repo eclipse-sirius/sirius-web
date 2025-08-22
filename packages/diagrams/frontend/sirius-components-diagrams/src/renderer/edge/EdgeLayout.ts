@@ -99,7 +99,7 @@ export const getNodesUpdatedWithHandles = (
   XYPosition: XYPosition,
   position: Position
 ): Node<NodeData>[] => {
-  const updatedHanlde = getUpdatedHandleForNode(node, edgeId, handleId, XYPosition, position);
+  const updatedHandle = getUpdatedHandleForNode(node, edgeId, handleId, XYPosition, position);
 
   const nodeId = node.id;
   return nodes.map((node) => {
@@ -108,7 +108,7 @@ export const getNodesUpdatedWithHandles = (
         ...node,
         data: {
           ...node.data,
-          connectionHandles: updatedHanlde,
+          connectionHandles: updatedHandle,
         },
       };
     }
