@@ -61,7 +61,7 @@ public class UploadFileLoader implements IUploadFileLoader {
     }
 
     @Override
-    public IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
+    public IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean readOnly) {
         var fileName = file.getName();
         var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
         var optionalSanitizedContent = this.getSanitizedContent(resourceSet, file, applyMigrationParticipants);
@@ -69,7 +69,7 @@ public class UploadFileLoader implements IUploadFileLoader {
             String id = UUID.randomUUID().toString();
             SanitizedResult sanitizedContent = optionalSanitizedContent.get();
             ResourceSet targetResourceSet = emfEditingContext.getDomain().getResourceSet();
-            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, false);
+            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, readOnly);
             if (optionalRessource.isPresent()) {
                 return new Success<>(new UploadedResource(optionalRessource.get(), sanitizedContent.idMapping()));
             }

@@ -166,7 +166,7 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
         this.givenCommittedTransaction.commit();
 
         var file = new UploadFile("test_upload", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, false);
         var result = this.uploadDocumentMutationRunner.run(input);
 
         TestTransaction.flagForCommit();

@@ -181,7 +181,7 @@ public class ProjectImporter {
         for (Entry<String, UploadFile> entry : this.documents.entrySet()) {
             String oldDocumentId = entry.getKey();
             UploadFile uploadFile = entry.getValue();
-            UploadDocumentInput input = new UploadDocumentInput(inputId, this.editingContextEventProcessor.getEditingContextId(), uploadFile);
+            UploadDocumentInput input = new UploadDocumentInput(inputId, this.editingContextEventProcessor.getEditingContextId(), uploadFile, false);
 
             var optionalSuccess = this.editingContextEventProcessor.handle(input)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
