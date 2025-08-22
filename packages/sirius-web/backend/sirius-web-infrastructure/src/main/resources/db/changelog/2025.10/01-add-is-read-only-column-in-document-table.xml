@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-add-is-read-only-column-in-document-table.xml" author="gdaniel">
+        <addColumn tableName="document">
+            <column name="is_read_only" type="BOOLEAN">
+            </column>
+        </addColumn>
+        <sql>
+			UPDATE document
+			SET is_read_only = TRUE
+			FROM library
+			WHERE document.semantic_data_id = library.semantic_data_id
+		</sql>
+		<sql>
+			UPDATE document
+			SET is_read_only = FALSE
+			FROM project_semantic_data projectSemanticData
+			WHERE document.semantic_data_id = projectSemanticData.semantic_data_id
+		</sql>
+        <addNotNullConstraint tableName="document" columnName="is_read_only" />
+    </changeSet>
+
+
+</databaseChangeLog>

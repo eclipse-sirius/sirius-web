@@ -58,7 +58,7 @@ public class EditingContextDependencyLoader implements IEditingContextDependency
                         .filter(document -> !this.isAlreadyLoaded(emfEditingContext, document))
                         .forEach(document -> {
                             var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()));
-                            this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipants).ifPresent(resource -> {
+                            this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipants, true).ifPresent(resource -> {
                                 if (optionalLibrary.isPresent()) {
                                     var library = optionalLibrary.get();
                                     resource.eAdapters().add(new LibraryMetadataAdapter(library.getNamespace(), library.getName(), library.getVersion()));

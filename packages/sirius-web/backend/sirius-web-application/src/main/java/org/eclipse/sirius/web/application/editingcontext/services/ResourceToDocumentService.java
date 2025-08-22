@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,13 +73,19 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
                 this.logger.warn(error.getMessage());
             }
 
-            var name = resource.eAdapters().stream()
+            Optional<ResourceMetadataAdapter> optionalResourceMetadataAdapter = resource.eAdapters().stream()
                     .filter(ResourceMetadataAdapter.class::isInstance)
                     .map(ResourceMetadataAdapter.class::cast)
-                    .findFirst()
+                    .findFirst();
+
+            var name = optionalResourceMetadataAdapter
                     .map(ResourceMetadataAdapter::getName)
                     .orElse("");
             var content = outputStream.toString();
+
+            var isReadOnly = optionalResourceMetadataAdapter
+                    .map(ResourceMetadataAdapter::isReadOnly)
+                    .orElse(false);
 
             var resourceId = resource.getURI().path().substring(1);
             var documentId = new UUIDParser().parse(resourceId).orElse(UUID.randomUUID());
@@ -87,6 +93,7 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
             var document = Document.newDocument(documentId)
                     .name(name)
                     .content(content)
+                    .isReadOnly(isReadOnly)
                     .build();
             var documentData = new DocumentData(document, serializationListener.getePackageEntries());
             optionalDocumentData = Optional.of(documentData);

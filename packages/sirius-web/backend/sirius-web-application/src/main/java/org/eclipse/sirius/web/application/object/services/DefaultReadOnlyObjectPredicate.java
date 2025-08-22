@@ -16,8 +16,8 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.components.core.api.IDefaultReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,10 +33,19 @@ public class DefaultReadOnlyObjectPredicate implements IDefaultReadOnlyObjectPre
         boolean result = false;
         if (object instanceof EObject eObject) {
             result = Optional.ofNullable(eObject.eResource())
-                    .map(resource -> resource.eAdapters().stream().anyMatch(LibraryMetadataAdapter.class::isInstance))
+                    .flatMap(resource -> resource.eAdapters().stream()
+                            .filter(ResourceMetadataAdapter.class::isInstance)
+                            .map(ResourceMetadataAdapter.class::cast)
+                            .findFirst())
+                    .map(ResourceMetadataAdapter::isReadOnly)
                     .orElse(false);
         } else if (object instanceof Resource resource) {
-            result = resource.eAdapters().stream().anyMatch(LibraryMetadataAdapter.class::isInstance);
+            result = resource.eAdapters().stream()
+                    .filter(ResourceMetadataAdapter.class::isInstance)
+                    .map(ResourceMetadataAdapter.class::cast)
+                    .map(ResourceMetadataAdapter::isReadOnly)
+                    .findFirst()
+                    .orElse(false);
         }
         return result;
     }

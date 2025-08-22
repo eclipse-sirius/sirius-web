@@ -59,6 +59,8 @@ public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_LIBRARY_JAVA_PACKAGE_ID = UUID.fromString("a463e723-5748-4817-92d8-12d7e6ef967d");
 
+    public static final UUID PAPAYA_GRAPHQL_CLASS_OBJECT = UUID.fromString("30619f1e-e212-4a9c-a1a2-dd391cfa5ac6");
+
     private PapayaIdentifiers() {
         // Prevent instantiation
     }

@@ -159,6 +159,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -192,6 +193,7 @@ INSERT INTO document (
       }
     ]
   }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
