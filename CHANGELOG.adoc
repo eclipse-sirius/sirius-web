@@ -62,6 +62,7 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] Add support for alternative interpreters in the query view.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection in favor of useState
 
 
 
