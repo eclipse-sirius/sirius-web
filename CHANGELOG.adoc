@@ -47,6 +47,9 @@ Downstream applications which had implicit dependencies to some of these may nee
 - https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] An implementation of `IEditingContextDispatcher` and `IEventProcessorSubscriptionProvider` are now provided by default.
 Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] The _data-testid_ value for the project and library navigation bars have been renamed to `navbar-title`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* `ResourceLoader#toResource` now requires an additional parameter `isReadOnly` specifying whether the loaded resource should be read-only
+* `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
 
 
 === Dependency update
@@ -107,7 +110,11 @@ The impact analysis report displays the following information:
 This means the main Sirius Web JAR no longer includes EMF CodeGen dependencies (including the Eclipse Java compiler).
 The resulting JAR is smaller and has a reduced attack surface.
 - https://github.com/eclipse-sirius/sirius-web/issues/5398[#5398] [core] Add the ability to retrieve data from the workbench
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* The document table contains a new `is_read_only` column storing whether a document is read-only.
+* Existing documents will be migrated as follow: `is_read_only = TRUE` for library documents, `is_read_only = FALSE` for all the other documents.
+* This information can be retrieved via `ResourceMetadataAdapter#isReadOnly()`.
+* Read-only resources are only persisted the first time we see them, they are not persisted later on to ensure they are actually read-only, and potential modifications on them aren't stored.
 
 
 == v2025.8.0

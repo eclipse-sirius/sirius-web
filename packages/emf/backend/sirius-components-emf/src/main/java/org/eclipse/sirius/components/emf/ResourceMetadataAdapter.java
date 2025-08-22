@@ -36,12 +36,19 @@ import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 public class ResourceMetadataAdapter implements Adapter {
     private String name;
 
+    private boolean isReadOnly;
+
     private List<MigrationData> migrationData = new ArrayList<>();
 
     private Notifier notifier;
 
     public ResourceMetadataAdapter(String name) {
+        this(name, false);
+    }
+
+    public ResourceMetadataAdapter(String name, boolean isReadOnly) {
         this.name = Objects.requireNonNull(name);
+        this.isReadOnly = isReadOnly;
     }
 
     public String getName() {
@@ -50,6 +57,14 @@ public class ResourceMetadataAdapter implements Adapter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isReadOnly() {
+        return this.isReadOnly;
+    }
+
+    public void setIsReadOnly(boolean isReadOnly) {
+        this.isReadOnly = isReadOnly;
     }
 
     public List<MigrationData> getAllMigrationData() {

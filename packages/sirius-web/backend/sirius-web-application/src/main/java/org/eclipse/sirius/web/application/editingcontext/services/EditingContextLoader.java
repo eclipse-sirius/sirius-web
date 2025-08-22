@@ -96,7 +96,7 @@ public class EditingContextLoader implements IEditingContextLoader {
 
         var applyMigrationParticipant = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()));
         semanticData.getDocuments().forEach(document -> {
-            this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipant).ifPresent(resource -> {
+            this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipant, document.isReadOnly()).ifPresent(resource -> {
                 if (optionalLibrary.isPresent()) {
                     var library = optionalLibrary.get();
                     resource.eAdapters().add(new LibraryMetadataAdapter(library.getNamespace(), library.getName(), library.getVersion()));

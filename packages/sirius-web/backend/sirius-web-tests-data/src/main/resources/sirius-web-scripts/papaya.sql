@@ -62,6 +62,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -179,6 +180,7 @@ INSERT INTO document (
        }
      ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -188,6 +190,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -273,6 +276,7 @@ INSERT INTO document (
      }
     ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -282,6 +286,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -437,9 +442,67 @@ INSERT INTO document (
        }
      ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on
+) VALUES (
+  '56a66774-cbff-499f-a9fa-6b6600c86064',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'GraphQL',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": { "papaya": "https://www.eclipse.org/sirius-web/papaya" },
+    "content": [
+      {
+        "id": "d2296138-d96d-4b25-8eb7-70324a7ffa6d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "GraphQL Java",
+          "elements": [
+            {
+              "id": "d67005a5-226b-4b2d-8555-68a44ca468eb",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "graphql-java",
+                "packages": [
+                  {
+                    "id": "16e0d726-c0b3-4275-8ea9-c0bb68713c79",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "graphql",
+                      "types": [
+                        {
+                          "id": "30619f1e-e212-4a9c-a1a2-dd391cfa5ac6",
+                          "eClass": "papaya:Class",
+                          "data": { "name": "GraphQL" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  true,
+  '2025-08-22 9:42:0.000',
+  '2025-08-22 9:42:0.000'
+);
+
+
 INSERT INTO representation_metadata (
     id,
     semantic_data_id,

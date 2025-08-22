@@ -21,6 +21,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -214,6 +215,7 @@ INSERT INTO document (
       }
     ]
   }',
+  true,
   '2025-02-12 10:25:11.265977+01',
   '2025-02-12 10:25:11.265977+01'
 );
@@ -271,6 +273,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -360,6 +363,7 @@ INSERT INTO document (
       }
     ]
   }',
+  true,
   '2025-02-12 10:25:11.265977+01',
   '2025-02-12 10:25:11.265977+01'
 );
@@ -407,6 +411,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -455,6 +460,7 @@ INSERT INTO document (
       }
     ]
   }',
+  true,
   '2025-03-14 10:58:52.703625+00', 
   '2025-03-14 10:59:22.361539+00'
 );
@@ -502,6 +508,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -550,6 +557,7 @@ INSERT INTO document (
       }
     ]
   }',
+  true,
   '2025-03-14 12:58:52.703625+00', 
   '2025-03-14 12:59:22.361539+00'
 );
@@ -597,6 +605,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -638,6 +647,7 @@ INSERT INTO document (
       }
     ]
   }',
+  true,
   '2025-03-14 12:58:52.703625+00', 
   '2025-03-14 12:59:22.361539+00'
 );

@@ -77,7 +77,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         List<String> labels = JsonPath.read(result, "$.data.evaluateExpression.result.objectsValue[*].label");
         assertThat(labels)
                 .isNotEmpty()
-                .containsExactly("sirius-web-tests-data", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
+                .containsExactlyInAnyOrder("sirius-web-tests-data", "graphql-java", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
     }
 
     @Test
@@ -111,7 +111,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         assertThat(resultTypename).isEqualTo(IntExpressionResult.class.getSimpleName());
 
         int size = JsonPath.read(result, "$.data.evaluateExpression.result.intValue");
-        assertThat(size).isEqualTo(6);
+        assertThat(size).isEqualTo(7);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         List<String> values = JsonPath.read(result, "$.data.evaluateExpression.result.stringsValue[*]");
         assertThat(values)
                 .isNotEmpty()
-                .containsExactly("sirius-web-tests-data", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
+                .containsExactlyInAnyOrder("sirius-web-tests-data", "graphql-java", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
     }
 
     @Test

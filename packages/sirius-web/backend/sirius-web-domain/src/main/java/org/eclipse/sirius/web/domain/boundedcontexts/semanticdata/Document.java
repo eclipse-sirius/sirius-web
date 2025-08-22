@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@ public class Document {
 
     private String content;
 
+    private boolean isReadOnly;
+
     private Instant createdOn;
 
     private Instant lastModifiedOn;
@@ -46,6 +48,10 @@ public class Document {
 
     public String getContent() {
         return this.content;
+    }
+
+    public boolean isReadOnly() {
+        return this.isReadOnly;
     }
 
     public Instant getCreatedOn() {
@@ -74,6 +80,8 @@ public class Document {
 
         private String content;
 
+        private boolean isReadOnly;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -88,11 +96,17 @@ public class Document {
             return this;
         }
 
+        public Builder isReadOnly(boolean isReadOnly) {
+            this.isReadOnly = isReadOnly;
+            return this;
+        }
+
         public Document build() {
             var document = new Document();
             document.id = Objects.requireNonNull(this.id);
             document.name = Objects.requireNonNull(this.name);
             document.content = Objects.requireNonNull(this.content);
+            document.isReadOnly = this.isReadOnly;
 
             var now = Instant.now();
             document.createdOn = now;

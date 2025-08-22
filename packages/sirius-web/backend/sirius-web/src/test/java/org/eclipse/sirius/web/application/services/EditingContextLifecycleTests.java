@@ -18,8 +18,10 @@ import static org.assertj.core.api.Assertions.fail;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.papaya.Class;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
@@ -47,6 +49,9 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
 
     @Autowired
     private IEditingContextPersistenceService editingContextPersistenceService;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @Test
     @GivenSiriusWebServer
@@ -117,6 +122,47 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
             EPackage ePackage = (EPackage) rootEObject;
             assertThat(ePackage.getName()).isEqualTo("Sample Updated");
         }
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an editing context properly loaded, when a read-only resource is modified and persisted, then the changes are not reloaded")
+    public void givenEditingContextWithReadOnlyResourcesWhenAReadOnlyResourceIsModifiedAndPersistedThenTheChangesAreNotReloaded() {
+        var optionalEditingContext = this.editingContextSearchService.findById(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var editingContext = optionalEditingContext.get();
+        var optionalGraphQL = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_GRAPHQL_CLASS_OBJECT.toString());
+        assertThat(optionalGraphQL).isPresent()
+            .get()
+            .isInstanceOf(Class.class);
+        Class graphQL = (Class) optionalGraphQL.get();
+        String initialGraphQLName = graphQL.getName();
+        graphQL.setName("New name");
+
+        TestTransaction.start();
+        this.editingContextPersistenceService.persist(new ICause.NoOp(), editingContext);
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        TestTransaction.start();
+        optionalEditingContext = this.editingContextSearchService.findById(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        editingContext = optionalEditingContext.get();
+
+        optionalGraphQL = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_GRAPHQL_CLASS_OBJECT.toString());
+        assertThat(optionalGraphQL).isPresent()
+            .get()
+            .isInstanceOf(Class.class);
+        graphQL = (Class) optionalGraphQL.get();
+        assertThat(graphQL.getName()).isEqualTo(initialGraphQLName);
     }
 
     @Test

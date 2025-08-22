@@ -162,28 +162,34 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
         var sharedComponentsLibrary = optionalSharedComponentsLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(sharedComponentsLibrary, description, List.of());
+        this.assertThatLibraryDocumentsAreReadOnly(sharedComponentsLibrary);
 
         Optional<Library> optionalBuckLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "buck", version);
         assertThat(optionalBuckLibrary).isPresent();
 
         var buckLibrary = optionalBuckLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(buckLibrary, description, List.of());
+        this.assertThatLibraryDocumentsAreReadOnly(buckLibrary);
 
         Optional<Library> humanFormLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Human Form", version);
         assertThat(humanFormLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(humanFormLibrary.get(), description, List.of(buckLibrary));
+        this.assertThatLibraryDocumentsAreReadOnly(humanFormLibrary.get());
 
         Optional<Library> newTableDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "New Table Description", version);
         assertThat(newTableDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(newTableDescriptionLibrary.get(), description, List.of(buckLibrary));
+        this.assertThatLibraryDocumentsAreReadOnly(newTableDescriptionLibrary.get());
 
         Optional<Library> rootDiagramDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram0", version);
         assertThat(rootDiagramDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagramDescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
+        this.assertThatLibraryDocumentsAreReadOnly(rootDiagramDescriptionLibrary.get());
 
         Optional<Library> rootDiagram1DescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram1", version);
         assertThat(rootDiagram1DescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagram1DescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
+        this.assertThatLibraryDocumentsAreReadOnly(rootDiagram1DescriptionLibrary.get());
     }
 
     @Test
@@ -359,6 +365,13 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId).toList();
         assertThat(expectedDependencyIds).containsExactlyInAnyOrderElementsOf(dependencyIds);
+    }
+
+    private void assertThatLibraryDocumentsAreReadOnly(Library library) {
+        var optionalLibrarySemanticData = this.semanticDataSearchService.findById(library.getSemanticData().getId());
+        assertThat(optionalLibrarySemanticData.isPresent());
+        var librarySemanticData = optionalLibrarySemanticData.get();
+        assertThat(librarySemanticData.getDocuments()).allMatch(document -> document.isReadOnly());
     }
 
     private boolean hasResourceName(Resource resource, String name) {
