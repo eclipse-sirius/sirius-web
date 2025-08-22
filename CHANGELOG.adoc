@@ -50,6 +50,8 @@ Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
 * `ResourceLoader#toResource` now requires an additional parameter `isReadOnly` specifying whether the loaded resource should be read-only
 * `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+`UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
 
 
 === Dependency update
@@ -118,6 +120,8 @@ The resulting JAR is smaller and has a reduced attack surface.
 - https://github.com/eclipse-sirius/sirius-web/issues/5400[#5400] [sirius-web] Ensure that updating a library doesn't look for proxies in non-persisted resources.
 This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection in favor of useState
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+* The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
 
 
 == v2025.8.0

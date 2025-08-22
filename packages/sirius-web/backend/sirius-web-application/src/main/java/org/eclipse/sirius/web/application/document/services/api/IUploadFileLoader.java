@@ -24,6 +24,6 @@ import org.eclipse.sirius.web.domain.services.IResult;
  */
 public interface IUploadFileLoader {
 
-    IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file);
+    IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean readOnly);
 
 }
