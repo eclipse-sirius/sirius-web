@@ -83,7 +83,7 @@ const toListNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -133,12 +133,11 @@ const toListNode = (
     node.parentId = gqlParentNode.id;
   }
 
-  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
-  if (nodeLayoutData) {
+  if (gqlNodeLayoutData) {
     const {
       position,
       size: { height, width },
-    } = nodeLayoutData;
+    } = gqlNodeLayoutData;
     node.position = position;
     node.height = height;
     node.width = width;
