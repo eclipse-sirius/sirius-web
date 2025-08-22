@@ -23,7 +23,7 @@ import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
-import { getMiddlePoint } from './RectilinearEdgeCalculation';
+import { determineSegmentAxis, getMiddlePoint } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
 
@@ -111,10 +111,16 @@ export const MultiLabelRectilinearEditableEdge = memo(
     const { localBendingPoints, setLocalBendingPoints, onBendingPointDragStop, onBendingPointDrag } = useBendingPoints(
       id,
       bendingPoints,
-      source.x,
-      source.y,
-      target.x,
-      target.y,
+      source,
+      setSource,
+      sourceNode,
+      sourceHandleId ?? '',
+      sourcePosition,
+      target,
+      setTarget,
+      targetNode,
+      targetHandleId ?? '',
+      targetPosition,
       customEdge
     );
 
@@ -210,16 +216,22 @@ export const MultiLabelRectilinearEditableEdge = memo(
         ) : null}
         {selected &&
           localBendingPoints &&
-          localBendingPoints.map((point, index) => (
-            <BendPoint
-              key={index}
-              x={point.x}
-              y={point.y}
-              index={index}
-              onDrag={onBendingPointDrag}
-              onDragStop={onBendingPointDragStop}
-            />
-          ))}
+          localBendingPoints.map((point, index) => {
+            const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
+            const prevPoint = reorderBendPoint[point.pathOrder - 1];
+            const direction = prevPoint ? determineSegmentAxis(prevPoint, point) : determineSegmentAxis(source, point);
+            return (
+              <BendPoint
+                key={index}
+                x={point.x}
+                y={point.y}
+                index={index}
+                direction={direction}
+                onDrag={onBendingPointDrag}
+                onDragStop={onBendingPointDragStop}
+              />
+            );
+          })}
         {selected &&
           middleBendingPoints &&
           middleBendingPoints.map((point, index) => (
