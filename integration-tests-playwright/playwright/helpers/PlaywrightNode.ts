@@ -25,10 +25,6 @@ export class PlaywrightNode {
     await this.nodeLocator.click({ position: { x: 10, y: 10 } });
   }
 
-  async openPalette() {
-    await this.nodeLocator.click({ button: 'right', position: { x: 10, y: 10 } });
-  }
-
   async resetNodeLabelPosition() {
     this.openPalette();
     await this.page.locator(`[data-testid="reset-label-position"]`).first().click();
@@ -40,6 +36,10 @@ export class PlaywrightNode {
       x: box.x,
       y: box.y,
     };
+  }
+
+  async getDOMBoundingBox() {
+    return (await this.nodeLocator.boundingBox())!;
   }
 
   async getReactFlowXYPosition() {
