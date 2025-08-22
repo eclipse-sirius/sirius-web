@@ -11,146 +11,276 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, XYPosition, Position, InternalNode } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
 import { NodeData } from '../../DiagramRenderer.types';
-import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
   cleanBendPoint,
   determineSegmentAxis,
-  generateNewBendPointToPreserveRectilinearSegment,
-  getMiddlePoint,
+  generateNewBendPointOnSourceSegment,
+  generateNewBendPointOnTargetSegment,
+  generateNewSourcePoint,
+  generateNewTargetPoint,
+  getHandlePositionFromXYPosition,
+  isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { BendPointData, UseBendingPointsValue } from './useBendingPoints.types';
+import { BendPointData, UseBendingPointsValue, BendingPointsState } from './useBendingPoints.types';
+import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
+import { getNodesUpdatedWithHandles } from '../EdgeLayout';
 
 export const useBendingPoints = (
   edgeId: string,
   originalBendingPoints: XYPosition[],
-  sourceX: number,
-  sourceY: number,
-  targetX: number,
-  targetY: number,
+  source: XYPosition,
+  setSource: XYPositionSetter,
+  sourceNode: InternalNode<Node<NodeData>>,
+  sourceHandleId: string,
+  sourcePosition: Position,
+  target: XYPosition,
+  setTarget: XYPositionSetter,
+  targetNode: InternalNode<Node<NodeData>>,
+  targetHandleId: string,
+  targetPosition: Position,
   customEdge: boolean
 ): UseBendingPointsValue => {
-  const { getEdges, getNodes, setEdges } = useStore();
+  const { getEdges, getNodes } = useStore();
   const { synchronizeEdgeLayoutData } = useEditableEdgePath();
 
   const [localBendingPoints, setLocalBendingPoints] = useState<BendPointData[]>(
     originalBendingPoints.map((bendingPoint: XYPosition, index: number) => ({ ...bendingPoint, pathOrder: index }))
   );
+  const [state, setState] = useState<BendingPointsState>({
+    isSourceSegment: false,
+    isTargetSegment: false,
+    dragInProgress: false,
+  });
 
   useEffect(() => {
     setLocalBendingPoints(originalBendingPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
   }, [originalBendingPoints.map((point) => point.x + point.y).join()]);
 
-  const onBendingPointDragStop = (eventData: DraggableData, index: number) => {
-    const bendingPointDragged = originalBendingPoints[index];
-    if (bendingPointDragged) {
-      const edges = getEdges();
-      const edge = edges.find((edge) => edge.id === edgeId);
-      const prevMiddle = getMiddlePoint(
-        originalBendingPoints[index - 1] ?? { x: sourceX, y: sourceY },
-        bendingPointDragged
-      );
-      const nextMiddle = getMiddlePoint(
-        bendingPointDragged,
-        originalBendingPoints[index + 1] ?? { x: targetX, y: targetY }
-      );
+  const onBendingPointDragStop = (_eventData: DraggableData) => {
+    const edges = getEdges();
+    let nodes = getNodes();
+    const edge = edges.find((edge) => edge.id === edgeId);
 
-      const newPoints = generateNewBendPointToPreserveRectilinearSegment(
-        originalBendingPoints,
-        index,
-        eventData.x,
-        eventData.y,
-        prevMiddle,
-        nextMiddle
-      );
-      const cleanedBendPoint = cleanBendPoint(newPoints.sort((a, b) => a.pathOrder - b.pathOrder));
-      if (edge?.data) {
-        edge.data.bendingPoints = cleanedBendPoint;
+    const newBendingPoint = cleanBendPoint(localBendingPoints.sort((a, b) => a.pathOrder - b.pathOrder));
+    if (edge?.data) {
+      edge.data.bendingPoints = newBendingPoint;
+      if (state.isSourceSegment) {
+        let newPosition: Position | null = null;
+        if (newBendingPoint[0]) {
+          newPosition = getHandlePositionFromXYPosition(
+            sourceNode,
+            source,
+            determineSegmentAxis(source, newBendingPoint[0])
+          );
+        }
+        nodes = getNodesUpdatedWithHandles(
+          nodes,
+          sourceNode,
+          edge.id,
+          sourceHandleId,
+          source,
+          newPosition ?? sourcePosition
+        );
+        setState((prevState) => ({ ...prevState, isSourceSegment: false }));
       }
-      setEdges(edges);
-      if (cleanedBendPoint.length > originalBendingPoints.length) {
-        synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+      if (state.isTargetSegment) {
+        let newPosition: Position | null = null;
+        const lastBendingPoint = newBendingPoint[newBendingPoint.length - 1];
+        if (lastBendingPoint) {
+          newPosition = getHandlePositionFromXYPosition(
+            targetNode,
+            target,
+            determineSegmentAxis(target, lastBendingPoint)
+          );
+        }
+        nodes = getNodesUpdatedWithHandles(
+          nodes,
+          targetNode,
+          edge.id,
+          targetHandleId,
+          target,
+          newPosition ?? targetPosition
+        );
       }
+      setState((prevState) => ({ ...prevState, dragInProgress: false }));
+      synchronizeEdgeLayoutData(edges, nodes);
     }
   };
 
-  const onBendingPointDrag = (eventData: DraggableData, index: number) => {
-    const bendingPointDragged = originalBendingPoints[index];
+  const onBendingPointDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
+    let newPoints = [...originalBendingPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
+    const bendingPointDragged = newPoints[index];
     if (bendingPointDragged) {
-      const prevMiddle = getMiddlePoint(
-        originalBendingPoints[index - 1] ?? { x: sourceX, y: sourceY },
-        bendingPointDragged
-      );
-      const nextMiddle = getMiddlePoint(
-        bendingPointDragged,
-        originalBendingPoints[index + 1] ?? { x: targetX, y: targetY }
-      );
+      bendingPointDragged.x = eventData.x;
+      bendingPointDragged.y = eventData.y;
+      if (index === 0) {
+        if (isOutOfLines(eventData.x, eventData.y, direction, sourceNode)) {
+          const newPoint = generateNewBendPointOnSourceSegment(
+            eventData.x,
+            eventData.y,
+            direction,
+            sourceNode.internals.positionAbsolute,
+            sourcePosition,
+            sourceNode.height ?? 0,
+            sourceNode.width ?? 0
+          );
+          if (newPoint) {
+            const nextPoint = newPoints[index + 1];
+            newPoints.forEach((point) => {
+              point.pathOrder += 1;
+            });
+            newPoints.push(newPoint);
+            if (nextPoint) {
+              if (direction === 'y') {
+                nextPoint.y = eventData.y;
+              } else if (direction === 'x') {
+                nextPoint.x = eventData.x;
+              }
+            }
+          }
+          const newSource: XYPosition = generateNewSourcePoint(source, eventData.x, eventData.y, direction, sourceNode);
+          setSource(newSource);
+        } else {
+          const newSource: XYPosition = { ...source };
+          const nextPoint = newPoints[index + 1];
+          if (direction === 'x') {
+            newSource.y = eventData.y;
+            if (nextPoint) {
+              nextPoint.x = eventData.x;
+            }
+          } else if (direction === 'y') {
+            newSource.x = eventData.x;
+            if (nextPoint) {
+              nextPoint.y = eventData.y;
+            }
+          }
+          setSource(newSource);
+          setState((prevState) => ({ ...prevState, isSourceSegment: true }));
+        }
+      }
+      if (index === originalBendingPoints.length - 1) {
+        const lastSegmentDirection = direction === 'x' ? 'y' : 'x';
+        if (isOutOfLines(eventData.x, eventData.y, lastSegmentDirection, targetNode)) {
+          const newPoint = generateNewBendPointOnTargetSegment(
+            eventData.x,
+            eventData.y,
+            lastSegmentDirection,
+            targetNode.internals.positionAbsolute,
+            index,
+            targetPosition,
+            targetNode.height ?? 0,
+            targetNode.width ?? 0
+          );
+          if (newPoint) {
+            newPoints.push(newPoint);
+            const prevPoint = newPoints[index - 1];
+            if (prevPoint) {
+              if (direction === 'x') {
+                prevPoint.y = eventData.y;
+              } else if (direction === 'y') {
+                prevPoint.x = eventData.x;
+              }
+            }
+          }
+          const newTarget: XYPosition = generateNewTargetPoint(
+            target,
+            eventData.x,
+            eventData.y,
+            lastSegmentDirection,
+            targetNode
+          );
+          setTarget(newTarget);
+        } else {
+          const newTarget: XYPosition = { ...target };
+          const prevPoint = newPoints[index - 1];
+          if (direction === 'y') {
+            newTarget.y = eventData.y;
+            if (prevPoint) {
+              prevPoint.x = eventData.x;
+            }
+          } else if (direction === 'x') {
+            newTarget.x = eventData.x;
+            if (prevPoint) {
+              prevPoint.y = eventData.y;
+            }
+          }
+          setTarget(newTarget);
+          setState((prevState) => ({ ...prevState, isTargetSegment: true }));
+        }
+      }
+      if (index > 0 && index < originalBendingPoints.length) {
+        const nextPoint = newPoints[index + 1];
+        const prevPoint = newPoints[index - 1];
 
-      const newPoints = generateNewBendPointToPreserveRectilinearSegment(
-        originalBendingPoints,
-        index,
-        eventData.x,
-        eventData.y,
-        prevMiddle,
-        nextMiddle
-      );
+        if (prevPoint && nextPoint) {
+          if (direction === 'x') {
+            nextPoint.x = eventData.x;
+            prevPoint.y = eventData.y;
+          } else if (direction === 'y') {
+            prevPoint.x = eventData.x;
+            nextPoint.y = eventData.y;
+          }
+        }
+      }
 
+      setState((prevState) => ({ ...prevState, dragInProgress: true }));
       setLocalBendingPoints(newPoints);
     }
   };
 
   useEffect(() => {
-    if (customEdge) {
+    if (customEdge && !state.dragInProgress) {
       const newPoints = [...originalBendingPoints];
       const firstPoint = newPoints[0];
       const secondPoint = newPoints[1];
       if (firstPoint && secondPoint) {
         if (determineSegmentAxis(firstPoint, secondPoint) === 'x') {
-          firstPoint.x = sourceX;
+          firstPoint.x = source.x;
         } else {
-          firstPoint.y = sourceY;
+          firstPoint.y = source.y;
         }
       } else {
         if (firstPoint) {
-          if (determineSegmentAxis(firstPoint, { x: sourceX, y: sourceY }) === 'x') {
-            firstPoint.y = sourceY;
+          if (determineSegmentAxis(firstPoint, source) === 'x') {
+            firstPoint.y = source.y;
           } else {
-            firstPoint.x = sourceX;
+            firstPoint.x = source.x;
           }
         }
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
-  }, [sourceX, sourceY, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
+  }, [source.x, source.y, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
 
   useEffect(() => {
-    if (customEdge) {
+    if (customEdge && !state.dragInProgress) {
       const newPoints = [...originalBendingPoints];
       const lastPoint = newPoints[newPoints.length - 1];
       const penultimatePoint = newPoints[newPoints.length - 2];
       if (lastPoint && penultimatePoint) {
         if (determineSegmentAxis(penultimatePoint, lastPoint) === 'x') {
-          lastPoint.x = targetX;
+          lastPoint.x = target.x;
         } else {
-          lastPoint.y = targetY;
+          lastPoint.y = target.y;
         }
       } else {
         if (lastPoint) {
-          if (determineSegmentAxis({ x: targetX, y: targetY }, lastPoint) === 'x') {
-            lastPoint.y = targetY;
+          if (determineSegmentAxis(target, lastPoint) === 'x') {
+            lastPoint.y = target.y;
           } else {
-            lastPoint.x = targetX;
+            lastPoint.x = target.x;
           }
         }
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
-  }, [targetX, targetY, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
+  }, [target.x, target.y, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
 
   return {
     localBendingPoints,
