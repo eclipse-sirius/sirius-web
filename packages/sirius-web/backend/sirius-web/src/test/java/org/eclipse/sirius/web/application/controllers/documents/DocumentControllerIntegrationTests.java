@@ -125,8 +125,8 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a studio, when the upload of a new domain document is performed, then the domain is created")
-    public void givenStudioWhenTheUploadOfDomainDocumentIsPerformedThenTheDomainIsCreated() {
+    @DisplayName("Given a studio, when the upload of a new domain document with read-write permission is performed, then the domain is created")
+    public void givenStudioWhenTheUploadOfDomainDocumentWithReadWritePermissionIsPerformedThenTheDomainIsCreated() {
         var content = """
                 {
                   "json": {
@@ -151,13 +151,13 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                   ]
                 }
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content, this::isExpectedDomain);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test-json-read-write", content, false, resource -> this.isExpectedDomain(resource) && !this.isReadOnly(resource));
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a studio, when the upload of a new domain XMI document is performed, then the domain is created")
-    public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedThenTheDomainIsCreated() {
+    @DisplayName("Given a studio, when the upload of a new domain XMI document with read-write permission is performed, then the domain is created")
+    public void givenStudioWhenTheUploadOfDomainXMIDocumentWithReadWritePermissionIsPerformedThenTheDomainIsCreated() {
         var content = """
                 <?xml version="1.0" encoding="utf-8"?>
                 <domain:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:domain="http://www.eclipse.org/sirius-web/domain" name="test">
@@ -165,7 +165,21 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                   <types name="NewEntity2" superTypes="//@types.0"/>
                 </domain:Domain>
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content, this::isExpectedDomain);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test-xmi-read-write", content, false, resource -> this.isExpectedDomain(resource) && !this.isReadOnly(resource));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a studio, when the upload of a new domain XMI document with read-only permission is performed, then the domain is created")
+    public void givenStudioWhenTheUploadOfDomainXMIDocumentWithReadOnlyPermissionIsPerformedThenTheDomainIsCreated() {
+        var content = """
+                <?xml version="1.0" encoding="utf-8"?>
+                <domain:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:domain="http://www.eclipse.org/sirius-web/domain" name="test">
+                  <types name="NewEntity1"/>
+                  <types name="NewEntity2" superTypes="//@types.0"/>
+                </domain:Domain>
+                """;
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test-xmi-read-only", content, true, resource -> this.isExpectedDomain(resource) && this.isReadOnly(resource));
     }
 
     private boolean isExpectedDomain(Resource resource) {
@@ -177,6 +191,15 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         } else {
             return false;
         }
+    }
+
+    private boolean isReadOnly(Resource resource) {
+        return resource.eAdapters().stream()
+            .filter(ResourceMetadataAdapter.class::isInstance)
+            .map(ResourceMetadataAdapter.class::cast)
+            .findFirst()
+            .map(ResourceMetadataAdapter::isReadOnly)
+            .orElse(false);
     }
 
     private void createDocument(String editingContextId, String stereotypeId, String name) {
@@ -196,7 +219,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                     .filter(IEMFEditingContext.class::isInstance)
                     .map(IEMFEditingContext.class::cast)
                     .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                            .anyMatch(resource -> this.isDocumentNamed(resource, name)))
+                            .anyMatch(resource -> this.isDocumentNamed(resource, name) && !this.isReadOnly(resource)))
                     .orElse(false);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
         };
@@ -244,11 +267,11 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
-    private void uploadDocument(String editingContextId, String name, String content, Predicate<Resource> check) {
+    private void uploadDocument(String editingContextId, String name, String content, boolean readOnly, Predicate<Resource> check) {
         this.givenCommittedTransaction.commit();
 
         var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, readOnly);
         var result = this.uploadDocumentMutationRunner.run(input);
 
         TestTransaction.flagForCommit();

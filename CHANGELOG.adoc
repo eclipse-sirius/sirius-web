@@ -28,6 +28,8 @@ Thus, any tab contributed by a downstream project will have as capability type `
 - https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
 * `ResourceLoader#toResource` now requires an additional parameter `isReadOnly` specifying whether the loaded resource should be read-only
 * `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+`UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
 
 
 === Dependency update
@@ -79,6 +81,8 @@ Stop the propagation on the dialog instead of the input.
 * Existing documents will be migrated as follow: `is_read_only = TRUE` for library documents, `is_read_only = FALSE` for all the other documents.
 * This information can be retrieved via `ResourceMetadataAdapter#isReadOnly()`.
 * Read-only resources are only persisted the first time we see them, they are not persisted later on to ensure they are actually read-only, and potential modifications on them aren't stored.
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+* The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
 
 
 

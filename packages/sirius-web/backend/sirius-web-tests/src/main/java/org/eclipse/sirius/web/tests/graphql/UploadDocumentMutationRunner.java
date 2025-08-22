@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,8 @@ public class UploadDocumentMutationRunner implements IMutationRunner<UploadDocum
         Map<String, Object> inputMap = Map.of(
                 "id", input.id(),
                 "editingContextId", input.editingContextId(),
-                "file", input.file()
+                "file", input.file(),
+                "readOnly", input.readOnly()
         );
         Map<String, Object> variables = Map.of("input", inputMap);
         return this.graphQLRequestor.execute(UPLOAD_DOCUMENT, variables);
