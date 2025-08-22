@@ -106,7 +106,7 @@ public class CopyLibraryImportHandler implements IEditingContextEventHandler {
                 semanticDataToCopy.stream()
                     .flatMap(semanticData -> semanticData.getDocuments().stream())
                     .forEach(document -> this.resourceLoader.toResource(siriusWebEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(),
-                                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()))));
+                                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId())), false));
 
                 payload = new SuccessPayload(input.id(), List.of(new Message("Libraries imported", MessageLevel.SUCCESS)));
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), importLibrariesInput);

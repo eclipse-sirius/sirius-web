@@ -22,7 +22,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'ad5f432f-e16f-338a-8755-91861b827953',
   '5b7cb887-b38a-4424-9508-ea7aa869ba6f',
@@ -215,7 +216,8 @@ INSERT INTO document (
     ]
   }',
   '2025-02-12 10:25:11.265977+01',
-  '2025-02-12 10:25:11.265977+01'
+  '2025-02-12 10:25:11.265977+01',
+  true
 );
 
 INSERT INTO library (
@@ -272,7 +274,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '1700060e-4b20-481b-8301-217c40aaacbd',
   '7a273947-7b34-48dc-982d-4fac14a259d5',
@@ -361,7 +364,8 @@ INSERT INTO document (
     ]
   }',
   '2025-02-12 10:25:11.265977+01',
-  '2025-02-12 10:25:11.265977+01'
+  '2025-02-12 10:25:11.265977+01',
+  true
 );
 
 INSERT INTO library (
@@ -408,7 +412,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '27d8bea1-c595-4616-9208-a97218ad2316', 
   '6f24a044-1605-484d-96c3-553ff6bc184d', 
@@ -456,7 +461,8 @@ INSERT INTO document (
     ]
   }',
   '2025-03-14 10:58:52.703625+00', 
-  '2025-03-14 10:59:22.361539+00'
+  '2025-03-14 10:59:22.361539+00',
+  true
 );
 
 INSERT INTO library (
@@ -503,7 +509,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '27d8bea1-c595-4616-9208-a97218ad2316', 
   '1c981f51-cb6b-4470-b2fb-c3d474aff651', 
@@ -551,7 +558,8 @@ INSERT INTO document (
     ]
   }',
   '2025-03-14 12:58:52.703625+00', 
-  '2025-03-14 12:59:22.361539+00'
+  '2025-03-14 12:59:22.361539+00',
+  true
 );
 
 INSERT INTO library (
@@ -598,7 +606,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '27d8bea1-c595-4616-9208-a97218ad2316', 
   '194ba253-70ee-4c09-928f-3541e8a0e906', 
@@ -639,7 +648,8 @@ INSERT INTO document (
     ]
   }',
   '2025-03-14 12:58:52.703625+00', 
-  '2025-03-14 12:59:22.361539+00'
+  '2025-03-14 12:59:22.361539+00',
+  true
 );
 
 INSERT INTO library (

@@ -25,6 +25,9 @@ The record `DiagramContext` is still implementing `IDiagramContext` for the mome
 - https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] The capability for the project settings images tab has change from `images` to `ProjectSettings#images`.
 The GraphQL API still only require the ID of the contribution to the `projectSettingsTabExtensionPoint` extension point, but the data fetcher will add `ProjectSettings#` has prefix for the capability type.
 Thus, any tab contributed by a downstream project will have as capability type `ProjectSettings#${tabId}`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* `ResourceLoader#toResource` now requires an additional parameter `isReadOnly` specifying whether the loaded resource should be read-only
+* `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
 
 
 === Dependency update
@@ -71,7 +74,11 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] Add context to the images project settings tab capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5354[#5354] [diagram][tree] Add unicode support for direct edit input
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* The document table contains a new `is_read_only` column storing whether a document is read-only.
+* Existing documents will be migrated as follow: `is_read_only = TRUE` for library documents, `is_read_only = FALSE` for all the other documents.
+* This information can be retrieved via `ResourceMetadataAdapter#isReadOnly()`.
+* Read-only resources are only persisted the first time we see them, they are not persisted later on to ensure they are actually read-only, and potential modifications on them aren't stored.
 
 
 

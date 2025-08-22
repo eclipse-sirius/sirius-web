@@ -16,6 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final ISemanticDataUpdateService semanticDataUpdateService;
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
     private final IResourceToDocumentService resourceToDocumentService;
 
     private final List<IEditingContextPersistenceFilter> persistenceFilters;
@@ -62,8 +66,11 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
-    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, ISemanticDataSearchService semanticDataSearchService,
+            IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters,
+            List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
@@ -91,11 +98,26 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
 
+                        Set<Document> alreadyPersistedDocuments = this.semanticDataSearchService.findById(semanticDataUUID)
+                                .map(SemanticData::getDocuments)
+                                .orElseGet(Set::of);
+
                         var documents = new LinkedHashSet<Document>();
                         var domainUris = new LinkedHashSet<String>();
 
                         documentData.forEach(data -> {
-                            documents.add(data.document());
+                            if (data.document().isReadOnly()) {
+                                // Do not persist a document if it is read-only and another version of it has already
+                                // been persisted (instead persist the existing version).
+                                // This ensures that read-only documents are effectively read-only.
+                                alreadyPersistedDocuments.stream()
+                                        .filter(alreadyPersistedDocument -> Objects.equals(alreadyPersistedDocument.getId(), data.document().getId())
+                                                && alreadyPersistedDocument.isReadOnly())
+                                        .findFirst()
+                                        .ifPresentOrElse(documents::add, () -> documents.add(data.document()));
+                            } else {
+                                documents.add(data.document());
+                            }
                             domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
                         });
 

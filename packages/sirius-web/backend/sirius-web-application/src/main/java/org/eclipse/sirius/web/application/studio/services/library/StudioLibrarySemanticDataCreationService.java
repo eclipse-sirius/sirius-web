@@ -139,7 +139,7 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
         Resource resource = resourceSet.getResource(resourceURI, false);
         if (resource == null) {
             resource = resourceSet.createResource(resourceURI);
-            resource.eAdapters().add(new ResourceMetadataAdapter(libraryName));
+            resource.eAdapters().add(new ResourceMetadataAdapter(libraryName, true));
         }
         return resource;
     }

@@ -107,7 +107,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 
@@ -140,7 +140,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 
@@ -179,7 +179,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 

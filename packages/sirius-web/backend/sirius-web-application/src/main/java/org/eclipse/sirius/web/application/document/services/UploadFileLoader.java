@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
-import org.eclipse.sirius.web.application.document.services.api.SanitizedResult;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
+import org.eclipse.sirius.web.application.document.services.api.SanitizedResult;
 import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
@@ -69,7 +69,7 @@ public class UploadFileLoader implements IUploadFileLoader {
             String id = UUID.randomUUID().toString();
             SanitizedResult sanitizedContent = optionalSanitizedContent.get();
             ResourceSet targetResourceSet = emfEditingContext.getDomain().getResourceSet();
-            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants);
+            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, false);
             if (optionalRessource.isPresent()) {
                 return new Success<>(new UploadedResource(optionalRessource.get(), sanitizedContent.idMapping()));
             }
