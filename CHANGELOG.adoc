@@ -89,7 +89,7 @@ Queries and subscriptions rely on `Project:view` or `Library:view` whether the e
 Mutations rely on `Project:edit` since we forbid to change the content of a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5008[#5008] [sirius-web] Add support for exporting query results as CSV
 A new button is displayed to export the results when a query returns one or multiple objects.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicator` API.
 
 === Improvements
 
