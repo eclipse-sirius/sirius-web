@@ -33,7 +33,6 @@ const useStyle = makeStyles()((theme) => ({
     gridTemplateRows: `repeat(2,min-content) 1fr`,
     overflowY: 'auto',
     overflowX: 'hidden',
-    maxHeight: 220,
   },
   toolListContainer: {
     display: 'grid',
