@@ -119,7 +119,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'f0e490c1-79f1-49a0-b1f2-3637f2958148',
   'e344d967-a639-4f6c-9c00-a466d51063c6',
@@ -233,7 +234,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 INSERT INTO document (
   id,
@@ -241,7 +243,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'ed2a5355-991d-458f-87f1-ea3a18b1f104',
   'e344d967-a639-4f6c-9c00-a466d51063c6',
@@ -438,7 +441,8 @@ INSERT INTO document (
    ]
   }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 INSERT INTO document (
@@ -447,7 +451,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'fc1d7b23-2818-4874-bb30-8831ea287a44',
   'e344d967-a639-4f6c-9c00-a466d51063c6',
@@ -576,7 +581,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 
@@ -586,7 +592,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '356e45e8-7d70-439e-b2dd-d0313cd65174',
   'e344d967-a639-4f6c-9c00-a466d51063c6',
@@ -676,7 +683,8 @@ INSERT INTO document (
      ]
    }',
   '2024-05-07 9:45:0.000',
-  '2024-05-07 9:45:0.000'
+  '2024-05-07 9:45:0.000',
+  false
 );
 
 INSERT INTO project_image (
@@ -746,7 +754,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '5b7291aa-0686-4d4f-aa7b-aab416dde82e',
   '63f4353f-0c71-4122-93be-2d359fc0fa16',
@@ -786,5 +795,6 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );

@@ -63,7 +63,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'a4495c9c-d00c-4f0e-a591-1176d102a4a1',
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
@@ -180,7 +181,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 INSERT INTO document (
@@ -189,7 +191,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '8139fdb7-bb71-4bca-b50b-9170870bbc0d',
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
@@ -274,7 +277,8 @@ INSERT INTO document (
     ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 INSERT INTO document (
@@ -283,7 +287,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'a0473b31-912f-4d99-8b41-3d44a8a1b238',
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
@@ -438,8 +443,67 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on,
+  is_read_only
+) VALUES (
+  '56a66774-cbff-499f-a9fa-6b6600c86064',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'GraphQL',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": { "papaya": "https://www.eclipse.org/sirius-web/papaya" },
+    "content": [
+      {
+        "id": "d2296138-d96d-4b25-8eb7-70324a7ffa6d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "GraphQL Java",
+          "elements": [
+            {
+              "id": "d67005a5-226b-4b2d-8555-68a44ca468eb",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "graphql-java",
+                "packages": [
+                  {
+                    "id": "16e0d726-c0b3-4275-8ea9-c0bb68713c79",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "graphql",
+                      "types": [
+                        {
+                          "id": "30619f1e-e212-4a9c-a1a2-dd391cfa5ac6",
+                          "eClass": "papaya:Class",
+                          "data": { "name": "GraphQL" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2025-08-22 9:42:0.000',
+  '2025-08-22 9:42:0.000',
+  true
+);
+
+
+
 INSERT INTO representation_metadata (
     id,
     semantic_data_id,

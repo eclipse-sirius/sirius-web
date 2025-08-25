@@ -121,6 +121,6 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private void toResource(String editingContextId, ResourceSet resourceSet, Document document) {
         boolean useMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContextId));
-        this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(), useMigrationParticipants);
+        this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(), useMigrationParticipants, true);
     }
 }
