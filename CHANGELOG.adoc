@@ -58,7 +58,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 To retrieve project templates, you will need the `Project:create` capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5341[#5341] [sirius-web] Add support for `Project:list` and `Project:view` project capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/5325[#5325] [sirius-web] Add support for capability check on GraphQL and controllers.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicator` API.
 
 === Improvements
 
