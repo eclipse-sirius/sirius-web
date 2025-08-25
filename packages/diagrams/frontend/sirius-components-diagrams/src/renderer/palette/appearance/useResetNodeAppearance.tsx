@@ -14,8 +14,8 @@
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLResetNodeApparenceData,
-  GQLResetNodeApparenceVariables,
+  GQLResetNodeAppearanceData,
+  GQLResetNodeAppearanceVariables,
   UseResetNodeAppearanceValue,
 } from './useResetNodeAppearance.types';
 
@@ -40,12 +40,12 @@ export const GQLResetNodeAppearanceMutation = gql`
 `;
 
 export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
-  const [resetNodeApparence, resetNodeApparenceResult] = useMutation<
-    GQLResetNodeApparenceData,
-    GQLResetNodeApparenceVariables
+  const [resetNodeAppearance, resetNodeAppearanceResult] = useMutation<
+    GQLResetNodeAppearanceData,
+    GQLResetNodeAppearanceVariables
   >(GQLResetNodeAppearanceMutation);
 
-  useReporting(resetNodeApparenceResult, (data: GQLResetNodeApparenceData) => data.resetNodeAppearance);
+  useReporting(resetNodeAppearanceResult, (data: GQLResetNodeAppearanceData) => data.resetNodeAppearance);
 
   const resetNodeStyleProperties = (
     editingContextId: string,
@@ -53,7 +53,7 @@ export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
     nodeId: string,
     propertiesToReset: string[]
   ) =>
-    resetNodeApparence({
+    resetNodeAppearance({
       variables: {
         input: {
           id: crypto.randomUUID(),
