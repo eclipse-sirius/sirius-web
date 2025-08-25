@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  IconOverlay,
+  ServerContext,
+  ServerContextValue,
+  WorkbenchViewComponentProps,
+} from '@eclipse-sirius/sirius-components-core';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -23,9 +28,15 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType } from 'react';
+import Button from '@mui/material/Button';
+import { ComponentType, useContext } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { ExpressionAreaProps, ExpressionResultViewerProps, ResultAreaProps } from './QueryView.types';
+import {
+  ExportResultButtonProps,
+  ExpressionAreaProps,
+  ExpressionResultViewerProps,
+  ResultAreaProps,
+} from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
@@ -37,6 +48,7 @@ import {
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useResultAreaSize } from './useResultAreaSize';
+import { useCurrentProject } from '../../useCurrentProject';
 
 export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const queryViewStyle: SxProps<Theme> = (theme) => ({
@@ -145,6 +157,7 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
           <ListItemText primary={objectValue.label} />
         </ListItem>
       </List>
+      <ExportResultButton objectIds={[objectValue.id]} />
     </Box>
   );
 };
@@ -178,6 +191,7 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
 
   const listStyle: SxProps<Theme> = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
+    marginBottom: '1px',
   });
 
   return (
@@ -195,6 +209,7 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
           {ObjectRow}
         </FixedSizeList>
       </List>
+      <ExportResultButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
     </Box>
   );
 };
@@ -387,5 +402,26 @@ const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
 
       {content}
     </div>
+  );
+};
+
+const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { project } = useCurrentProject();
+
+  return (
+    <Button
+      data-testid="export-csv-button"
+      variant="contained"
+      color="primary"
+      component="a"
+      href={encodeURI(
+        `${httpOrigin}/api/editingcontexts/${
+          project.currentEditingContext.id
+        }/objects?contentType=text/csv&objectIds=${objectIds.join(',')}`
+      )}
+      type="application/octet-stream">
+      Export as CSV
+    </Button>
   );
 };
