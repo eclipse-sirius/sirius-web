@@ -117,12 +117,13 @@ export const generateNewBendPointOnSourceSegment = (
   adjacentPointIndex: number,
   sourcePosition: Position,
   sourceNodeHeight: number,
-  sourceNodeWidth: number
+  sourceNodeWidth: number,
+  point: boolean = false
 ): BendPointData[] => {
   const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
   const adjacentPoint = newPoints[adjacentPointIndex];
   newPoints.forEach((point) => {
-    point.pathOrder += 2;
+    point.pathOrder += 1;
   });
   if (sourcePosition === Position.Top) {
     newPoints.push({
@@ -152,10 +153,24 @@ export const generateNewBendPointOnSourceSegment = (
   if (direction === 'x') {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
+      if (point) {
+        const nextPoint = newPoints[adjacentPointIndex + 1];
+        if (nextPoint) {
+          nextPoint.x = newX;
+          adjacentPoint.x = newX;
+        }
+      }
     }
   } else if (direction === 'y') {
     if (adjacentPoint) {
       adjacentPoint.x = newX;
+      if (point) {
+        const nextPoint = newPoints[adjacentPointIndex + 1];
+        if (nextPoint) {
+          nextPoint.y = newY;
+          adjacentPoint.y = newY;
+        }
+      }
     }
   }
 
@@ -171,7 +186,8 @@ export const generateNewBendPointOnTargetSegment = (
   adjacentPointIndex: number,
   targetPosition: Position,
   targetNodeHeight: number,
-  targetNodeWidth: number
+  targetNodeWidth: number,
+  point: boolean = false
 ): BendPointData[] => {
   const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
   const adjacentPoint = newPoints[adjacentPointIndex - 1];
@@ -204,10 +220,24 @@ export const generateNewBendPointOnTargetSegment = (
   if (direction === 'x') {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
+      if (point) {
+        const prevPoint = newPoints[adjacentPointIndex - 2];
+        if (prevPoint) {
+          prevPoint.x = newX;
+          adjacentPoint.x = newX;
+        }
+      }
     }
   } else if (direction === 'y') {
     if (adjacentPoint) {
       adjacentPoint.x = newX;
+      if (point) {
+        const prevPoint = newPoints[adjacentPointIndex - 2];
+        if (prevPoint) {
+          prevPoint.y = newY;
+          adjacentPoint.y = newY;
+        }
+      }
     }
   }
 
