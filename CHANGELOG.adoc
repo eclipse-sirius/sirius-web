@@ -72,8 +72,9 @@ Stop the propagation on the dialog instead of the input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] Add context to the images project settings tab capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5354[#5354] [diagram][tree] Add unicode support for direct edit input
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] Add impact analysis before performing a library update.
+The impact analysis report displays the following information:
+* References that will be broken by the update (new proxies that won't be resolved and will be deleted after the update)
 
 
 == v2025.8.0

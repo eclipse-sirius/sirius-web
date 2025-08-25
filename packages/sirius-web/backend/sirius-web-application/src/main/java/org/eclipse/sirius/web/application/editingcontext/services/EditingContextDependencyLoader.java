@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextDependencyLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
@@ -37,27 +36,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextDependencyLoader implements IEditingContextDependencyLoader {
 
-    private final ISemanticDataSearchService semanticDataSearchService;
-
     private final IResourceLoader resourceLoader;
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
     private final ILibrarySearchService librarySearchService;
 
-    public EditingContextDependencyLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService) {
-        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+    public EditingContextDependencyLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader,
+            List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService) {
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
     }
 
     @Override
-    public void loadDependencies(IEditingContext editingContext) {
+    public void loadDependencies(IEditingContext editingContext, List<SemanticData> dependenciesSemanticData) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-            var dependenciesSemanticData = new UUIDParser().parse(emfEditingContext.getId())
-                    .map(this.semanticDataSearchService::findAllDependenciesRecursivelyById)
-                    .orElse(List.of());
             for (SemanticData semanticData : dependenciesSemanticData) {
                 var optionalLibrary = this.librarySearchService.findBySemanticData(AggregateReference.to(semanticData.getId()));
                 semanticData.getDocuments().stream()
@@ -76,13 +70,16 @@ public class EditingContextDependencyLoader implements IEditingContextDependency
     }
 
     /**
-     * Uses to ensure that we are not loading twice a resource with the same identity.
+     * Used to ensure that we are not loading twice a resource with the same identity.
+     * <p>
+     * This could easily happen while trying to load two dependencies that both share a dependency to another one. We
+     * don't want to load the common dependency twice.
+     * </p>
      *
-     * This could easily happen while trying to load two dependencies that both share a dependency to another one.
-     * We don't want to load the common dependency twice.
-     *
-     * @param editingContext The editing context
-     * @param document The document being loaded
+     * @param editingContext
+     *            The editing context
+     * @param document
+     *            The document being loaded
      * @return true if the document is matching an existing resource of the resource set, false otherwise
      */
     private boolean isAlreadyLoaded(IEMFEditingContext editingContext, Document document) {

@@ -10,20 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
+package org.eclipse.sirius.web.application.library.dto;
 
-import java.util.List;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Loads dependencies into the editing context.
+ * The input for the update library "impact analysis" query.
  *
  * @author gdaniel
  */
-public interface IEditingContextDependencyLoader {
-
-    void loadDependencies(IEditingContext editingContext, List<SemanticData> dependenciesSemanticData);
+public record InvokeUpdateLibraryImpactAnalysisInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UUID libraryId) implements IInput {
 
 }
