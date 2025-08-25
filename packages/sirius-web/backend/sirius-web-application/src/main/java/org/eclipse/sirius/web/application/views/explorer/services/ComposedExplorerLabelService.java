@@ -41,7 +41,8 @@ public class ComposedExplorerLabelService implements IExplorerLabelService {
     public boolean isEditable(Object self) {
         return this.explorerLabelServiceDelegates.stream()
                 .filter(delegate -> delegate.canHandle(self))
-                .findFirst().map(delegate -> delegate.isEditable(self))
+                .findFirst()
+                .map(delegate -> delegate.isEditable(self))
                 .orElseGet(() -> this.defaultExplorerLabelService.isEditable(self));
     }
 
