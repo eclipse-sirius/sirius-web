@@ -45,6 +45,7 @@ input UploadDocumentInput {
   editingContextId: ID!
   file: Upload!
   id: ID!
+  readOnly: Boolean!
 }
 
 union UploadDocumentPayload = ErrorPayload | UploadDocumentSuccessPayload

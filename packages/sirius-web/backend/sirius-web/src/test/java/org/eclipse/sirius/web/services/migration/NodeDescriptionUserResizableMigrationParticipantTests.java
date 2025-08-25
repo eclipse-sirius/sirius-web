@@ -163,7 +163,7 @@ public class NodeDescriptionUserResizableMigrationParticipantTests extends Abstr
         this.givenCommittedTransaction.commit();
 
         var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, false);
         var result = this.uploadDocumentMutationRunner.run(input);
 
         TestTransaction.flagForCommit();

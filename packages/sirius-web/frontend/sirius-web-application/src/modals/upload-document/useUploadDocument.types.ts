@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export interface UseUploadDocumentValue {
-  uploadDocument: (editingContextId: string, file: File) => void;
+  uploadDocument: (editingContextId: string, file: File, readOnly: boolean) => void;
   loading: boolean;
   uploadedDocument: GQLUploadDocumentSuccessPayload | null;
 }
@@ -29,6 +29,7 @@ export interface GQLUploadDocumentInput {
   id: string;
   editingContextId: string;
   file: File | null;
+  readOnly: boolean;
 }
 
 export interface GQLUploadDocumentMutationData {

@@ -160,7 +160,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '48dc942a-6b76-4133-bca5-5b29ebee133d',
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
@@ -193,7 +194,8 @@ INSERT INTO document (
     ]
   }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 INSERT INTO representation_metadata (
   id,

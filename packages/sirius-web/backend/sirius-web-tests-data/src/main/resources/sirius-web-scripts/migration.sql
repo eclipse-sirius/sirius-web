@@ -61,7 +61,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '1d8aac3e-5fe7-4787-b0fc-1f8eb491cd5e',
   '89d67892-0cc9-4ca4-b30e-28688470c0d4',
@@ -150,7 +151,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 INSERT INTO project (
@@ -215,7 +217,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '42a2e4fd-1119-4d38-93bf-a036345e0f5d',
   'ab42d745-3bae-45ee-9839-12aff3d431cf',
@@ -286,7 +289,8 @@ INSERT INTO document (
      ]
    }',
   '2024-05-06 15:00:0.000',
-  '2024-05-06 15:00:0.000'
+  '2024-05-06 15:00:0.000',
+  false
 );
 
 INSERT INTO representation_metadata (
@@ -403,7 +407,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'a884a1a2-f7cc-4e61-8a0d-5ef96e76734d',
   'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
@@ -492,7 +497,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 INSERT INTO representation_metadata (
@@ -769,7 +775,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'fa110225-6b86-4bc1-b707-54c7c995cebf',
   '65edc1f2-989c-4001-971b-29981179ebfa',
@@ -898,7 +905,8 @@ INSERT INTO document (
      ]
    }',
   '2024-07-01 15:00:0.000',
-  '2024-07-01 15:00:0.000'
+  '2024-07-01 15:00:0.000',
+  false
 );
 
 INSERT INTO project (
@@ -963,7 +971,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '261b8eb9-7af9-47c8-9a8d-030dbffabcb0',
   '6d89dded-c843-475f-91b4-e2c91b9a883a',
@@ -1055,7 +1064,8 @@ INSERT INTO document (
       ]
    }',
   '2024-07-18 15:00:0.000',
-  '2024-07-18 15:00:0.000'
+  '2024-07-18 15:00:0.000',
+  false
 );
 
 
@@ -1121,7 +1131,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '8652ae06-6754-4c46-aa4c-2c8db2c3b602',
   '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
@@ -1173,7 +1184,8 @@ INSERT INTO document (
   ]
 }',
   '2024-07-18 15:00:0.000',
-  '2024-07-18 15:00:0.000'
+  '2024-07-18 15:00:0.000',
+  false
 );
 
 INSERT INTO project (
@@ -1238,7 +1250,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '6ab70d4b-f771-483f-aae6-566c6eb23b10',
   'dc9643f8-b1ce-4c93-a176-379063d42b32',
@@ -1356,7 +1369,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 
 
@@ -1422,7 +1436,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '4ee1ea69-c79b-4635-937c-2f8de13421ba',
   '21d28dd9-1675-4873-a39a-678b19b23ed6',
@@ -1593,7 +1608,8 @@ INSERT INTO document (
      ]
    }',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-02 9:42:0.000',
+  false
 );
 -- Test project for TreeDescriptionIconURLExpressionMigrationParticipantTests 
 INSERT INTO project (
@@ -1658,7 +1674,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   'd92b61ec-46a3-4c69-9e08-c5f625a9ac6d',
   '340026b5-1363-4c93-8c2b-7f11188cca8b',
@@ -1764,7 +1781,8 @@ INSERT INTO document (
      ]
    }',
   '2024-04-12 9:42:0.000',
-  '2024-04-12 9:42:0.000'
+  '2024-04-12 9:42:0.000',
+  false
 );
 
 -- Test project for NodePaletteDeleteFromDiagramMigrationParticipantTests
@@ -1830,7 +1848,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '02fddab4-1ae2-4d58-aa91-41552d5a2395',
   'c81968f1-73c8-3973-bdae-7a2997132706',
@@ -2039,7 +2058,8 @@ INSERT INTO document (
   ]
 }',
   '2025-05-26 10:00:0.000',
-  '2025-05-26 10:00:0.000'
+  '2025-05-26 10:00:0.000',
+  false
 );
 
 INSERT INTO project (
@@ -2104,7 +2124,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '3d6b34cb-4090-4f27-8c3b-e073fd79ed2d',
   '402f51c9-96df-46f2-b39b-35ebd506ff31',
@@ -2204,7 +2225,8 @@ INSERT INTO document (
       ]
     }',
   '2025-05-14 12:00:0.000',
-  '2025-05-14 12:00:0.000'
+  '2025-05-14 12:00:0.000',
+  false
 );
 INSERT INTO document (
   id,
@@ -2212,7 +2234,8 @@ INSERT INTO document (
   name,
   content,
   created_on,
-  last_modified_on
+  last_modified_on,
+  is_read_only
 ) VALUES (
   '2de9aba3-31e3-4334-8c9c-e6d73af7efc4',
   '402f51c9-96df-46f2-b39b-35ebd506ff31',
@@ -2272,5 +2295,6 @@ INSERT INTO document (
       ]
     }',
   '2025-05-14 12:00:0.000',
-  '2025-05-14 12:00:0.000'
+  '2025-05-14 12:00:0.000',
+  false
 );
