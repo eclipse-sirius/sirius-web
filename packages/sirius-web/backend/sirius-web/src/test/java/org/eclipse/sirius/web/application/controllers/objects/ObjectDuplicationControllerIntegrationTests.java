@@ -25,12 +25,12 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateObjectInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateObjectSuccessPayload;
 import org.eclipse.sirius.web.application.views.query.dto.EvaluateExpressionInput;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ContainmentFeatureNamesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.DuplicateObjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.EvaluateExpressionMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,9 +51,6 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private ContainmentFeatureNamesQueryRunner containmentFeatureNamesQueryRunner;
@@ -226,6 +223,34 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
         assertThat(errorMessage).isEqualTo("The object with id \"unknown_object_id\" does not exist");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an Papapya NamedElement, when this object is duplicated, then the copy is given a distinct name")
+    public void givenPapayaNamedElementWhenDuplicatedThenTheCopyHasModifiedName() {
+        var input = new DuplicateObjectInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                "elements",
+                false,
+                false,
+                false
+        );
+        var result = this.duplicateObjectMutationRunner.run(input);
+
+        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
+
+        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        assertThat(objectId).isNotBlank();
+
+        String objectLabel = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        assertThat(objectLabel).isNotBlank();
+        assertThat(objectLabel).isEqualTo("sirius-web-domain (copy)");
+
     }
 
 }
