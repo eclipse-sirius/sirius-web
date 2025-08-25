@@ -13,10 +13,8 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
-import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
@@ -33,22 +31,10 @@ import {
   GQLEditTextfieldMutationVariables,
   GQLEditTextfieldPayload,
   GQLErrorPayload,
+  TextFieldPropertySectionState,
   TextFieldState,
   TextfieldStyleProps,
 } from './TextfieldPropertySection.types';
-import {
-  ChangeValueEvent,
-  CompletionDismissedEvent,
-  CompletionReceivedEvent,
-  InitializeEvent,
-  NewValueSentEvent,
-  RequestCompletionEvent,
-  SchemaValue,
-  TextfieldPropertySectionContext,
-  TextfieldPropertySectionEvent,
-  textfieldPropertySectionMachine,
-  TextfieldPropertySectionStateSchema,
-} from './TextfieldPropertySectionMachine';
 
 const useStyle = makeStyles<TextfieldStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
@@ -178,185 +164,169 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     strikeThrough: widget.style?.strikeThrough ?? null,
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
+
   const { classes } = useStyle(props);
 
-  const [{ value: schemaValue, context }, dispatch] = useMachine<
-    StateMachine<TextfieldPropertySectionContext, TextfieldPropertySectionStateSchema, TextfieldPropertySectionEvent>
-  >(textfieldPropertySectionMachine);
-  const { textfieldPropertySection } = schemaValue as SchemaValue;
-  const { value, completionRequest, proposals } = context;
-
-  useEffect(() => {
-    const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
-    dispatch(initializeEvent);
-  }, [dispatch, widget.stringValue]);
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    const changeValueEvent: ChangeValueEvent = { type: 'CHANGE_VALUE', value };
-    dispatch(changeValueEvent);
-  };
+  const { addErrorMessage, addMessages } = useMultiToast();
+  const [state, setState] = useState<TextFieldPropertySectionState>({
+    value: widget.stringValue,
+    completionRequest: null,
+    proposals: null,
+    caretPos: 0,
+  });
 
   const [editTextfield, { loading: updateTextfieldLoading, data: updateTextfieldData, error: updateTextfieldError }] =
     useMutation<GQLEditTextfieldMutationData, GQLEditTextfieldMutationVariables>(editTextfieldMutation);
+
+  useEffect(() => {
+    if (widget.stringValue != state.value && document.activeElement !== inputElt.current) {
+      setState((prevState) => ({
+        ...prevState,
+        value: widget.stringValue,
+      }));
+    }
+  }, [widget]);
+
   const sendEditedValue = () => {
-    if (textfieldPropertySection === 'edited') {
+    if (widget.stringValue != state.value) {
       const input: GQLEditTextfieldInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: formId,
         textfieldId: widget.id,
-        newValue: value,
+        newValue: state.value,
       };
       const variables: GQLEditTextfieldMutationVariables = { input };
       editTextfield({ variables });
     }
   };
 
-  const { addErrorMessage, addMessages } = useMultiToast();
-
-  useEffect(() => {
-    if (!updateTextfieldLoading) {
-      let hasError = false;
-      if (updateTextfieldError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-
-        hasError = true;
-      }
-      if (updateTextfieldData) {
-        const { editTextfield } = updateTextfieldData;
-        if (isErrorPayload(editTextfield)) {
-          addMessages(editTextfield.messages);
-          hasError = true;
-        }
-        if (isSuccessPayload(editTextfield)) {
-          addMessages(editTextfield.messages);
-        }
-      }
-
-      if (hasError) {
-        const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
-        dispatch(initializeEvent);
-      } else {
-        const event: NewValueSentEvent = { type: 'NEW_VALUE_SENT' };
-        dispatch(event);
-      }
-    }
-  }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError, dispatch]);
-
-  useEffect(() => {
-    if (textfieldPropertySection === 'sent') {
-      const initializeEvent: InitializeEvent = { type: 'INITIALIZE', value: widget.stringValue };
-      dispatch(initializeEvent);
-    }
-  }, [widget.stringValue, textfieldPropertySection]);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setState((prevState) => ({
+      ...prevState,
+      value: value,
+    }));
+  };
 
   const onBlur = () => {
     sendEditedValue();
   };
-
-  const [getCompletionProposals, { loading: proposalsLoading, data: proposalsData, error: proposalsError }] =
-    useLazyQuery<GQLCompletionProposalsQueryData, GQLCompletionProposalsQueryVariables>(getCompletionProposalsQuery);
-  useEffect(() => {
-    if (!proposalsLoading) {
-      if (proposalsError) {
-        addErrorMessage(proposalsError.message);
-      }
-      if (proposalsData) {
-        const proposalsReceivedEvent: CompletionReceivedEvent = {
-          type: 'COMPLETION_RECEIVED',
-          proposals: proposalsData.viewer.editingContext.representation.description.completionProposals,
-        };
-        dispatch(proposalsReceivedEvent);
-      }
-    }
-  }, [proposalsLoading, proposalsData, proposalsError, dispatch]);
 
   const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if ('Enter' === event.key && !event.shiftKey) {
       event.preventDefault();
       sendEditedValue();
     }
-    const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
-    dispatch(dismissCompletionEvent);
+    setState((prevState) => ({
+      ...prevState,
+      completionRequest: null,
+      proposals: null,
+    }));
   };
 
-  // Reacting to Ctrl-Space to trigger completion can not be done with onKeyPress.
-  // We need a stateful combination of onKeyDown/onKeyUp for that.
-  const [controlDown, setControlDown] = useState<boolean>(false);
+  useEffect(() => {
+    if (!updateTextfieldLoading) {
+      if (updateTextfieldError) {
+        addErrorMessage(updateTextfieldError.message);
+      }
+      if (updateTextfieldData) {
+        const { editTextfield } = updateTextfieldData;
+        if (isErrorPayload(editTextfield)) {
+          addMessages(editTextfield.messages);
+          setState((prevState) => ({
+            ...prevState,
+            completionRequest: null,
+            proposals: null,
+            value: widget.stringValue,
+          }));
+        }
+        if (isSuccessPayload(editTextfield)) {
+          addMessages(editTextfield.messages);
+        }
+      }
+    }
+  }, [updateTextfieldLoading, updateTextfieldData, updateTextfieldError]);
+
+  const [getCompletionProposals, { loading: proposalsLoading, data: proposalsData, error: proposalsError }] =
+    useLazyQuery<GQLCompletionProposalsQueryData, GQLCompletionProposalsQueryVariables>(getCompletionProposalsQuery);
+
+  useEffect(() => {
+    if (!proposalsLoading) {
+      if (proposalsError) {
+        addErrorMessage(proposalsError.message);
+      }
+      if (proposalsData) {
+        const proposals = proposalsData.viewer.editingContext.representation.description.completionProposals;
+        setState((prevState) => ({
+          ...prevState,
+          proposals: proposals.length > 0 ? proposals : null,
+        }));
+      }
+    }
+  }, [proposalsLoading, proposalsData, proposalsError]);
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      const proposalsMenu = document.getElementById('completion-proposals');
-      if (proposalsMenu && proposalsMenu.firstChild) {
-        (proposalsMenu.firstChild as HTMLElement).focus();
-      }
-    } else if ('Control' === event.key) {
-      setControlDown(true);
-    } else if ('Escape' === event.key) {
-      const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
-      dispatch(dismissCompletionEvent);
-    }
-    if (widget.supportsCompletion && controlDown && event.key === ' ') {
-      const cursorPosition = (event.target as HTMLInputElement).selectionStart;
-      if (cursorPosition) {
-        const variables: GQLCompletionProposalsQueryVariables = {
-          editingContextId,
-          formId,
-          widgetId: widget.id,
-          currentText: value,
-          cursorPosition,
-        };
-        getCompletionProposals({ variables });
-        const requestCompletionEvent: RequestCompletionEvent = {
-          type: 'COMPLETION_REQUESTED',
-          currentText: value,
-          cursorPosition,
-        };
-        dispatch(requestCompletionEvent);
-      }
-    }
-  };
-  const onKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if ('Control' === event.key) {
-      setControlDown(false);
+    if ('Escape' === event.key) {
+      setState((prevState) => ({
+        ...prevState,
+        completionRequest: null,
+        proposals: null,
+      }));
+    } else if (widget.supportsCompletion && event.ctrlKey && event.key === ' ') {
+      const cursorPosition = (event.target as HTMLInputElement).selectionStart ?? 0;
+
+      const variables: GQLCompletionProposalsQueryVariables = {
+        editingContextId,
+        formId,
+        widgetId: widget.id,
+        currentText: state.value,
+        cursorPosition,
+      };
+      getCompletionProposals({ variables });
+      setState((prevState) => ({
+        ...prevState,
+        completionRequest: { currentText: state.value, cursorPosition },
+      }));
     }
   };
 
-  const [caretPos, setCaretPos] = useState<number | null>(null);
   useEffect(() => {
-    if (caretPos && inputElt.current) {
-      inputElt.current.setSelectionRange(caretPos, caretPos);
+    if (state.caretPos && inputElt.current) {
+      inputElt.current.setSelectionRange(state.caretPos, state.caretPos);
       inputElt.current.focus();
-      setCaretPos(null);
+      setState((prevState) => ({
+        ...prevState,
+        caretPos: null,
+      }));
     }
-  }, [caretPos, inputElt.current]);
+  }, [state.caretPos, inputElt.current]);
 
-  let proposalsList: JSX.Element | null = null;
-  if (proposals && inputElt.current && completionRequest) {
-    const dismissProposals = () => {
-      const dismissCompletionEvent: CompletionDismissedEvent = { type: 'COMPLETION_DISMISSED' };
-      dispatch(dismissCompletionEvent);
-    };
-    const applyProposal = (proposal: GQLCompletionProposal) => {
+  const dismissProposals = () => {
+    setState((prevState) => ({
+      ...prevState,
+      completionRequest: null,
+      proposals: null,
+    }));
+  };
+
+  const onProposalSelected = (proposal: GQLCompletionProposal) => {
+    if (state.completionRequest) {
       const result = applyCompletionProposal(
-        { textValue: value, cursorPosition: completionRequest.cursorPosition },
+        { textValue: state.value, cursorPosition: state.completionRequest.cursorPosition },
         proposal
       );
-      const changeValueEvent: ChangeValueEvent = { type: 'CHANGE_VALUE', value: result.textValue };
-      dispatch(changeValueEvent);
-      setCaretPos(result.cursorPosition);
-      dismissProposals();
-    };
-    proposalsList = (
-      <ProposalsList
-        anchorEl={inputElt.current}
-        proposals={proposals}
-        onProposalSelected={applyProposal}
-        onClose={dismissProposals}
-      />
-    );
-  }
+
+      setState((prevState) => ({
+        ...prevState,
+        completionRequest: null,
+        proposals: null,
+        value: result.textValue,
+        caretPos: result.cursorPosition,
+      }));
+    }
+  };
+
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
@@ -374,14 +344,13 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
           name={widget.label}
           placeholder={widget.label}
           variant="standard"
-          value={value}
+          value={state.value}
           spellCheck={false}
           margin="dense"
           multiline={isTextarea(widget)}
           maxRows={isTextarea(widget) ? 4 : 1}
           fullWidth
           onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
           onChange={onChange}
           onKeyPress={onKeyPress}
           data-testid={widget.label}
@@ -402,7 +371,14 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
             className: classes.input,
           }}
         />
-        {proposalsList}
+        {state.proposals && inputElt.current ? (
+          <ProposalsList
+            anchorEl={inputElt.current}
+            proposals={state.proposals}
+            onProposalSelected={onProposalSelected}
+            onClose={dismissProposals}
+          />
+        ) : null}
       </div>
     </div>
   );
