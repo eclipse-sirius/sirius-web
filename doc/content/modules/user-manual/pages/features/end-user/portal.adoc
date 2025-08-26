@@ -1,0 +1,45 @@
+= Portal
+
+The *Portal* in {product} acts as a customizable landing page or entry point into your project.
+It provides a structured, high-level overview of the model and can serve as a dashboard to guide users toward important areas or actions.
+
+image:portal.png[]
+
+Each portal is designed by studio makers to present a custom view composed of multiple existing representations, such as diagrams, forms, Gantt, and more.
+
+== What You Can Do
+
+In a portal representation, you can:
+
+* View high-level summaries of your project or system
+* Access important elements or representations directly
+* Navigate to frequently used forms, diagrams, tables, or trees
+
+The portal is read-only in most cases, but interactive elements are available based on the configuration.
+
+== When to Use It
+
+Use the portal representation when:
+
+* You want a guided entry point into the model
+* You need quick access to key representations or data
+* You’re unfamiliar with the structure and want to orient yourself
+* The project defines a custom workflow and you want to follow the suggested steps
+
+Portals are ideal for simplifying onboarding, standardizing modeling processes, or surfacing key actions for users in complex projects.
+
+== Example
+
+In a project context, a portal might display:
+
+* The project name and description
+* The system diagram
+* A form to create a new subsystem
+* A summary of key metrics or project status
+
+This gives users a structured, user-friendly overview to help them get started quickly and navigate the model with confidence.
+
+[NOTE]
+====
+The layout and available actions in the portal are defined by studio makers and may vary between projects or domains.
+====

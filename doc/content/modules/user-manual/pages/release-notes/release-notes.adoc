@@ -1,0 +1,5 @@
+= Release notes
+
+:sectnums!:
+
+include::user-manual:release-notes/2025.4.0.adoc[leveloffset=+1]

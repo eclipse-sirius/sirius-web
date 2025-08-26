@@ -1,0 +1,22 @@
+= Introduction
+
+Get to know the basics of {product}.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+a|image::123.svg[xref=user-manual:what-is.adoc]
+
+**What's {product}?**
+
+{product}'s mission is to simplify the creation and deployment of custom graphical studios on the web.
+
+xref:user-manual:what-is.adoc[Meet {product}]
+
+a|image::key-features.svg[xref=user-manual:key-features.adoc]
+
+**Key features in {product}**
+
+Explore {product} key features and benefits.
+
+xref:user-manual:key-features.adoc[Discover more]
+|===
