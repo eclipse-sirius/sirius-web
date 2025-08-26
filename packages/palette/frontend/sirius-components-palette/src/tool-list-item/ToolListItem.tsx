@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
+
 const useStyle = makeStyles()((theme) => ({
   toolListContainer: {
     display: 'grid',
