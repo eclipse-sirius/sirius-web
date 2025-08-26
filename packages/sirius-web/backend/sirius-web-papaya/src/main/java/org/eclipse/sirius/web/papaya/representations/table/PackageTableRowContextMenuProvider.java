@@ -43,6 +43,6 @@ public class PackageTableRowContextMenuProvider implements IRowContextMenuEntryP
 
     @Override
     public List<RowContextMenuEntry> getRowContextMenuEntries(IEditingContext editingContext, TableDescription tableDescription, Table table, Line row) {
-        return List.of(new RowContextMenuEntry(DELETE_ID, DELETE_LABEL, List.of("/icons/papaya/full/obj16/row-delete.svg")));
+        return List.of(new RowContextMenuEntry(DELETE_ID, DELETE_LABEL, List.of("/icons/papaya/row-delete.svg")));
     }
 }
