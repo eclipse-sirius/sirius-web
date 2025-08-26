@@ -23,6 +23,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
 import { HTMLAttributes, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
 import {
@@ -108,6 +109,8 @@ export const ValuedReferenceAutocomplete = ({
   };
   const { classes } = useStyles(props);
   const theme = useTheme();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'view' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<ValuedReferenceAutocompleteState>({ open: false, options: null });
@@ -127,7 +130,7 @@ export const ValuedReferenceAutocomplete = ({
   useEffect(() => {
     if (!childReferenceValueOptionsLoading) {
       if (childReferenceValueOptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childReferenceValueOptionsData) {
         const representationDescription: GQLRepresentationDescription =
@@ -142,7 +145,7 @@ export const ValuedReferenceAutocomplete = ({
         }
       }
     }
-  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError]);
+  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError, coreT]);
 
   useEffect(() => {
     if (loading) {
@@ -200,9 +203,9 @@ export const ValuedReferenceAutocomplete = ({
 
   let placeholder: string;
   if (widget.reference.manyValued) {
-    placeholder = 'Values';
+    placeholder = t('values');
   } else {
-    placeholder = widget.referenceValues.length > 0 ? '' : 'Value';
+    placeholder = widget.referenceValues.length > 0 ? '' : t('value');
   }
   return (
     <Autocomplete
@@ -243,6 +246,8 @@ export const ValuedReferenceAutocomplete = ({
         </li>
       )}
       disableClearable
+      openText={t('open')}
+      closeText={t('close')}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => {
           const { key, onDelete, ...tagProps } = getTagProps({ index });
@@ -283,7 +288,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="edit"
                     size="small"
-                    title="Edit"
+                    title={t('edit')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-more`}
                     onClick={onMoreClick}>
@@ -292,7 +297,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="add"
                     size="small"
-                    title="Create an object"
+                    title={t('createObject')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-add`}
                     onClick={onCreateClick}>
@@ -301,7 +306,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="clear"
                     size="small"
-                    title="Clear"
+                    title={t('clear')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-clear`}
                     onClick={clearReference}>
