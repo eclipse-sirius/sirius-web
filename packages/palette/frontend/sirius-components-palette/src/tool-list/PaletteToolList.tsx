@@ -23,7 +23,6 @@ import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
-import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 
 const useStyle = makeStyles()((theme) => ({
@@ -82,12 +81,10 @@ export const PaletteToolList = ({
   onToolClick,
   onBackToMainList,
   diagramElementId,
+  lastToolInvoked,
   children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
-
-  const { getLastToolInvoked } = useDiagramPalette();
-  const lastToolInvoked = getLastToolInvoked(palette.id);
 
   const { classes } = useStyle();
 
