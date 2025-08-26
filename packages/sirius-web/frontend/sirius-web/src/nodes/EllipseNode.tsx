@@ -111,6 +111,7 @@ export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
           {!!selected ? (
             <DiagramElementPalette
               diagramElementId={id}
+              elementDescriptionId={data.descriptionId}
               targetObjectId={data.targetObjectId}
               labelId={data.insideLabel ? data.insideLabel.id : null}
             />
