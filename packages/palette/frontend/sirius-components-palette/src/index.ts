@@ -19,4 +19,5 @@ export type {
 export { PaletteSearchField } from './search/PaletteSearchField';
 export { PaletteSearchResult } from './search/PaletteSearchResult';
 export { ToolListItem } from './tool-list-item/ToolListItem';
+export { PaletteToolList } from './tool-list/PaletteToolList';
 export { PaletteToolSectionList } from './tool-list/PaletteToolSectionList';
