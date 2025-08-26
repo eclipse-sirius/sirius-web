@@ -113,6 +113,7 @@ public class ViewRowContextMenuEntryProvider implements IRowContextMenuEntryProv
         return objects.stream()
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
+                .filter(str -> str != null && !str.isBlank())
                 .toList();
     }
 
