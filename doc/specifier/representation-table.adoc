@@ -31,6 +31,9 @@ Here are the properties of the `TableDescription`:
 ** `self` variable is the semantic element associated with the `Table`.
 ** `editingContext` variable is the global context of the project
 * `Enable Sub Rows`: When the table contains row elements hierarchically structured
+* `Page Size Options Expression`: should return a list of page sizes (int); if not specified, the available page sizes are [5, 10, 20, 50].
+* `Default Page Size Index Expression`: should return a valid index (zero-based) in the list returned by the previous expression, indicating the default page size.
+Defaults to 0, which corresponds to a page size of 5 if using the default page options.
 
 == Row description
 
