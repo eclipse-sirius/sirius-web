@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { PaletteExtensionSectionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,7 +22,6 @@ import { Edge, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
 const useStyle = makeStyles()((theme) => ({

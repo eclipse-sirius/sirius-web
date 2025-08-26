@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
-import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 
 export interface PaletteToolListProps {
   onToolClick: (tool: GQLTool) => void;

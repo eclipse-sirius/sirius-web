@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { PaletteSearchField, PaletteSearchResult } from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -38,8 +39,6 @@ import {
   PaletteState,
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
-import { PaletteSearchField } from './search/PaletteSearchField';
-import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
