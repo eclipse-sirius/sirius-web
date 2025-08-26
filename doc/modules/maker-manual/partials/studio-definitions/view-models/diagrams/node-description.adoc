@@ -1,0 +1,181 @@
+:NodeDescription: image:NodeDescription.svg["Node Description Icon"] Node Description
+
+= Node Description
+
+A *`{NodeDescription}`* defines a mapping between semantic elements from the data model, and graphical nodes in the resulting diagram.
+
+A `Diagram Description` may contain several `Node Description`.
+
+.Properties of a Sample `Node Description`
+image::Node-Description-Properties.png["Sample Node Description Properties"]
+
+== Name
+
+* Technical name: `name`
+* Type: `String`
+* Semantics: The name for this `Node Description`. This name is only visible to the {stdmkr}.
+* Example: `My Node Description Name`
+
+== Domain Type
+
+* Technical name: `domainType`
+* Type: `Type Literal`
+* Context & Variables: all the _Data Models_ registered in the platform.
+* Semantics: The type of semantic elements for which this `Node Description` applies.
+* Example: `domain::Entity`
+
+== Semantic Candidates Expression
+
+* Technical name: `semanticCandidatesExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The parent semantic element
+|===
+* Semantics: Returns all the semantic elements that the {stdrt} should consider for applying this `Node Description`. #TODO: note that we maybe want to do a generalized section for all Mappings to explain domainType/semanticCandidatesExpression/preconditionExpression.#
+* Example: `aql:self.eAllContents()`
+
+== Precondition Expression
+
+* Technical name: `preconditionExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The candidate semantic element
+|===
+* Semantics: Returns a `Boolean` value indicating whether the {stdrt} should apply this `NodeDescription` to the candidate semantic element.
+* Example: `aql:self.isXXX()`
+
+== Synchronization Policy
+
+* Technical name: `synchronizationPolicy`
+* Type: `SynchronizationPolicy`
+* Context & Variables: `SYNCHRONIZED` | `UNSYNCHRONIZED`
+* Semantics: Specifies the synchronization policy for nodes stemming from this `Node Description`:
+** `SYNCHRONIZED`: after every refresh of the diagram, all valid semantic candidates are represented in the diagram by exactly one node stemming from this `Node Description`. This is useful when diagrams need to always be consistent with the underlying semantic model.
+** `UNSYNCHRONIZED`: graphical nodes are handled manually by the user (through the UI or through other programmatic calls). This is useful when the underlying semantic model is large and may result in large hard-to-read diagrams. Users can manually create partial representations of their semantic models.
+
+== Label Expression
+
+* Technical name: `labelExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns a `String` value that will be used as the label of the semantic element in the representation.
+* Example: `aql:self.name`
+
+== Collapsible
+
+* Technical name: `collapsible`
+* Type: `Boolean`
+* Semantics: Specifies whether nodes stemming from this `Node Description` may be collapsed or not.
+
+== Reused Child Node Descriptions
+
+* Technical name: `reusedChildNodeDescriptions`
+* Type: `NodeDescription`
+* Context & Variables: all `View Models` accessible from the scope of the current project.
+* Semantics: Specifies the `Node Descriptions` to reuse as children of this `Node Description`. This is usually used to implement recursive `Node Descriptions`.
+
+== Reused Border Node Descriptions
+
+* Technical name: `reusedBorderNodeDescriptions`
+* Type: `NodeDescription`
+* Context & Variables: all `View Models` accessible from the scope of the current project.
+* Semantics: Specifies the `Border Node Descriptions` to reuse as children of this `Node Description`.
+
+== User Resizable
+
+* Technical name: `userResizable`
+* Type: `Boolean`
+* Semantics: Specifies whether nodes stemming from this `Node Description` may be resized by end users or not.
+
+== Default Width Expression
+
+* Technical name: `defaultWidthExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns an `Integer` value that is used as the default width (#in ???#) for nodes of the diagram stemming from this `Node Description`.
+* Example: `aql:self.name.size() * 2`
+
+== Default Height Expression
+
+* Technical name: `defaultHeightExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns an `Integer` value that is used as the default height (#in ???#) for nodes of the diagram stemming from this `Node Description`.
+* Example: `aql:4`
+
+== Keep Aspect Ratio
+
+* Technical name: `keepAspectRatio`
+* Type: `Boolean`
+* Semantics: Specifies whether the size ratio of nodes stemming from this `Node Description` is maintained upon resizing.
+
+== Is Collapsed By Default Expression
+
+* Technical name: `isCollapsedByDefaultExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns a `Boolean` value indicating whether nodes stemming from this `Node Description` are collapsed by default.
+
+#TODO: add link to user manual Diagram Editor 'collapse' functionality#
+
+== Is Hidden By Default Expression
+
+* Technical name: `isHiddenByDefaultExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns a `Boolean` value indicating whether nodes stemming from this `Node Description` are hidden by default.
+
+#TODO: add link to user manual Diagram Editor 'hide' functionality#
+
+== Is Faded By Default Expression
+
+* Technical name: `isFadedByDefaultExpression`
+* Type: `String` ({mkr-query})
+* Context & Variables:
+[cols="1,2"]
+|===
+| _Name_ | _Semantics_
+| `self`
+| The semantic element
+|===
+* Semantics: Returns a `Boolean` value indicating whether nodes stemming from this `Node Description` are faded by default.
+
+#TODO: add link to user manual Diagram Editor 'fade' functionality#

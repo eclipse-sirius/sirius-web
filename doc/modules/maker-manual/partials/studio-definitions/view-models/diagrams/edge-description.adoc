@@ -1,0 +1,65 @@
+= Edge Description
+
+A `Diagram Description` may contain several `Edge Description`.
+
+An `Edge Description` defines a mapping between semantic elements from the data model, and graphical edges in the resulting diagram.
+
+#TODO: fill this in#
+
+* Name
+* Domain Type
+* Semantic Candidates Expression
+* Precondition Expression
+* Synchronization Policy
+* Label Expression
+* Begin Label Expression
+* End Label Expression
+* Is Domain Based Edge
+* Source Node Descriptions
+* Target Node Descriptions
+* Source Nodes Expression
+* Target Nodes Expression
+
+== Edge Palette
+
+#TODO#
+
+== Edge Style
+
+#TODO#
+
+== Conditional Edge Style
+
+#TODO#
+
+== Delete Tool
+
+#TODO#
+
+== Center Label Edit Tool Label Edit Tool
+
+#TODO#
+
+== Begin Label Edit Tool Label Edit Tool
+
+#TODO#
+
+== End Label Edit Tool Label Edit Tool
+
+#TODO#
+
+== Node Tool
+
+#TODO#
+
+== Source Edge End Reconnection Tool
+
+#TODO#
+
+== Target Edge End Reconnection Tool
+
+#TODO#
+
+== Edge Tool Section
+
+#TODO#

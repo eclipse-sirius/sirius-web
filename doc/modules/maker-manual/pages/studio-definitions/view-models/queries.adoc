@@ -1,0 +1,21 @@
+= Queries
+
+In {sw}, when specifying a _{mkr-view-model}_, we often need to express *Queries*, either as a way to navigate across semantic or graphical elements, or to return values such as `String` or `Boolean`.
+
+{sw} provides 3 ways to express simple queries:
+
+* xref:maker-manual:studio-definitions/view-models/queries.adoc#_query_by_variable_name[Query by variable name]
+* xref:maker-manual:studio-definitions/view-models/queries.adoc#_query_by_feature_name[Query by feature name]
+* xref:maker-manual:studio-definitions/view-models/queries.adoc#_query_by_service_name[Query by service name]
+
+These usually suffice for straightforward queries such as referencing an existing variable from the environment, or relying on an attribute of an element.
+
+For more complex navigation and computation, {sw} embeds a full-on expression language called the xref:maker-manual:studio-definitions/view-models/queries.adoc#_acceleo_query_language_aql[Acceleo Query Language (AQL)]. It provides the expressivity required for rich navigation over complex and/or large data models. It also provides a standard library of types and operators to express computations. This expressivity comes at the cost of additional complexity for the {stdmkr}.
+
+include::partial$studio-definitions/view-models/queries/var.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/queries/feature.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/queries/service.adoc[leveloffset=+1]
+
+include::partial$studio-definitions/view-models/queries/aql.adoc[leveloffset=+1]
