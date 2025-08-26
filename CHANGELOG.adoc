@@ -25,6 +25,8 @@ The record `DiagramContext` is still implementing `IDiagramContext` for the mome
 - https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] The capability for the project settings images tab has change from `images` to `ProjectSettings#images`.
 The GraphQL API still only require the ID of the contribution to the `projectSettingsTabExtensionPoint` extension point, but the data fetcher will add `ProjectSettings#` has prefix for the capability type.
 Thus, any tab contributed by a downstream project will have as capability type `ProjectSettings#${tabId}`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] An implementation of `IEditingContextDispatcher` and `IEventProcessorSubscriptionProvider` are now provided by default.
+Downstream projects should stop provide their own implementations.
 
 
 === Dependency update
@@ -58,6 +60,9 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 To retrieve project templates, you will need the `Project:create` capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/5341[#5341] [sirius-web] Add support for `Project:list` and `Project:view` project capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/5325[#5325] [sirius-web] Add support for capability check on GraphQL and controllers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] Add support for capability check for the editing context whether it is a project or a library.
+Queries and subscriptions rely on `Project:view` or `Library:view` whether the editing context is a project or a library.
+Mutations rely on `Project:view` since we forbid to change the content of a library.
 
 
 === Improvements

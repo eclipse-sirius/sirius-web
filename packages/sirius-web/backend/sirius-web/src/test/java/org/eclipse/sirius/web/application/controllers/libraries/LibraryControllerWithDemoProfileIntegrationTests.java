@@ -38,9 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gcoutable
  */
 @Transactional
-@ActiveProfiles("demo")
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=studio" })
+@ActiveProfiles("demo")
 public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
