@@ -19,12 +19,13 @@ import {
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Popper from '@mui/material/Popper';
+import { useTranslation } from 'react-i18next';
+import { TreeItemPalette } from '../palette/TreeItemPalette';
 import { DefaultMenuItem } from './DefaultMenuItem';
 import { DeleteMenuItem } from './DeleteMenuItem';
 import { RenameMenuItem } from './RenameMenuItem';
-
-import MenuItem from '@mui/material/MenuItem';
-import { useTranslation } from 'react-i18next';
 import { TreeItemContextMenuProps } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
 import {
@@ -43,6 +44,7 @@ export const TreeItemContextMenu = ({
   expanded,
   maxDepth,
   selectedTreeItemIds,
+  useTreePalette,
   selectTreeItems,
   onExpandedElementChange,
   enterEditingMode,
@@ -68,6 +70,26 @@ export const TreeItemContextMenu = ({
 
   if (loading) {
     return null;
+  }
+
+  if (useTreePalette) {
+    return (
+      <Popper open={!!menuAnchor} anchorEl={menuAnchor} placement="right-end">
+        <TreeItemPalette
+          editingContextId={editingContextId}
+          treeId={treeId}
+          treeItem={item}
+          expanded={expanded}
+          readOnly={readOnly}
+          selectedTreeItems={selectedTreeItemIds}
+          onExpandedElementChange={onExpandedElementChange}
+          selectTreeItems={selectTreeItems}
+          onDirectEditClick={enterEditingMode}
+          onClose={onClose}
+          expandItem={expandItem}
+        />
+      </Popper>
+    );
   }
 
   return (
@@ -111,6 +133,7 @@ export const TreeItemContextMenu = ({
               item={item}
               entry={entry}
               readOnly={readOnly}
+              selectedTreeItemIds={selectedTreeItemIds}
               selectTreeItems={selectTreeItems}
               onClose={onClose}
               onExpandedElementChange={onExpandedElementChange}
@@ -119,7 +142,6 @@ export const TreeItemContextMenu = ({
               treeId={treeId}
               expanded={expanded}
               maxDepth={maxDepth}
-              selectedTreeItemIds={selectedTreeItemIds}
             />
           ));
         } else {

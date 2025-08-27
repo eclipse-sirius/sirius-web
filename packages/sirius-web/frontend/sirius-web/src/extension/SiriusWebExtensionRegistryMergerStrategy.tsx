@@ -19,6 +19,10 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { diagramNodeActionOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  paletteToolExtensionPoint,
+  paletteToolOverrideExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import { queryViewResultButtonExtensionPoint } from '@eclipse-sirius/sirius-web-application';
 
 export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistryMergeStrategy {
@@ -54,6 +58,16 @@ export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistr
       return {
         identifier: `siriusweb_${queryViewResultButtonExtensionPoint.identifier}`,
         data: [...existingValue.data, newValue.data],
+      };
+    } else if (identifier === paletteToolOverrideExtensionPoint.identifier) {
+      return {
+        identifier: `siriusweb_${paletteToolOverrideExtensionPoint.identifier}`,
+        data: [...existingValue.data, ...newValue.data],
+      };
+    } else if (identifier === paletteToolExtensionPoint.identifier) {
+      return {
+        identifier: `siriusweb_${paletteToolExtensionPoint.identifier}`,
+        data: [...existingValue.data, ...newValue.data],
       };
     }
     console.debug(

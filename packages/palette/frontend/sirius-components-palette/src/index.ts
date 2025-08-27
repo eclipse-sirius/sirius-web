@@ -35,6 +35,7 @@ export type {
   GQLTool,
   GQLToolSection,
   GQLToolVariable,
+  GQLTreeItemContextMenuEntry,
   PaletteProps,
 } from './Palette.types';
 export { PaletteExtensionSection } from './PaletteExtensionSection';

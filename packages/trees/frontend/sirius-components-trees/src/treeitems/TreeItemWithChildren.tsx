@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ export const TreeItemWithChildren = ({
   onTreeItemClick,
   selectTreeItems,
   selectedTreeItemIds,
+  useTreePalette,
 }: TreeItemWithChildrenProps) => {
   const { classes } = useTreeItemWithChildrenStyle();
   if (item.expanded && item.children) {
@@ -61,6 +62,7 @@ export const TreeItemWithChildren = ({
                 onTreeItemClick={onTreeItemClick}
                 selectTreeItems={selectTreeItems}
                 selectedTreeItemIds={selectedTreeItemIds}
+                useTreePalette={useTreePalette}
               />
               <TreeItemWithChildren
                 editingContextId={editingContextId}
@@ -79,6 +81,7 @@ export const TreeItemWithChildren = ({
                 onTreeItemClick={onTreeItemClick}
                 selectTreeItems={selectTreeItems}
                 selectedTreeItemIds={selectedTreeItemIds}
+                useTreePalette={useTreePalette}
               />
             </li>
           );
