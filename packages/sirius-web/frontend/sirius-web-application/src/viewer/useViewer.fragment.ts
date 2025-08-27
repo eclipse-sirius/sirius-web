@@ -20,6 +20,7 @@ export const ViewerFragment = gql`
         canList
         canCreate
         canUpload
+        useExplorerPalette
       }
       libraries {
         canList

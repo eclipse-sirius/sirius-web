@@ -11,6 +11,7 @@ type ProjectsCapabilities {
   canList: Boolean!
   canCreate: Boolean!
   canUpload: Boolean!
+  useExplorerPalette: Boolean!
 }
 
 type LibrariesCapabilities {
@@ -26,6 +27,7 @@ type ProjectCapabilities {
   canRename: Boolean!
   canDelete: Boolean!
   canEdit: Boolean!
+  useExplorerPalette: Boolean!
   settings: ProjectSettingsCapabilities!
 }
 

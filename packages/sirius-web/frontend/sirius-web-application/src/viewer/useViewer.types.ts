@@ -34,6 +34,7 @@ export interface GQLProjectsCapabilities {
   canList: boolean;
   canCreate: boolean;
   canUpload: boolean;
+  useExplorerPalette: boolean;
 }
 
 export interface GQLLibrariesCapabilities {

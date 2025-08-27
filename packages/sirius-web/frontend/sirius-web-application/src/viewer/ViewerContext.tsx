@@ -22,6 +22,7 @@ const defaultValue: ViewerContextValue = {
         canList: false,
         canCreate: false,
         canUpload: false,
+        useExplorerPalette: false,
       },
       libraries: {
         canList: false,
