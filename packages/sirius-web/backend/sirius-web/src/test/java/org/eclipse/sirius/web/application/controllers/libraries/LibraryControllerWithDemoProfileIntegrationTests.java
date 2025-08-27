@@ -89,7 +89,7 @@ public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIn
     public void givenDemoProfileWhenQueryToRetrieveALibraryIsPerformedThenItReturnsNull() {
         var namespace = "papaya";
         var name = "java";
-        var version = "0.0.1";
+        var version = "1.0.0";
 
         var itExists = this.librarySearchService.existsByNamespaceAndNameAndVersion(namespace, name, version);
         assertThat(itExists).isTrue();
