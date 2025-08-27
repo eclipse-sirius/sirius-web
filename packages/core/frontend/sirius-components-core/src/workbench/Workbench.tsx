@@ -38,6 +38,7 @@ import {
   WorkbenchState,
   WorkbenchViewContribution,
 } from './Workbench.types';
+import { WorkbenchContext } from './WorkbenchContext';
 import {
   representationFactoryExtensionPoint,
   workbenchMainAreaExtensionPoint,
@@ -254,20 +255,22 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     }
 
     return (
-      <ImpactAnalysisDialogContextProvider>
-        <Panels
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          leftContributions={workbenchViewLeftSideContributions}
-          leftPanelConfiguration={leftPanelConfiguration}
-          leftPanelInitialSize={25}
-          rightContributions={workbenchViewRightSideContributions}
-          rightPanelConfiguration={rightPanelConfiguration}
-          rightPanelInitialSize={25}
-          mainArea={main}
-          ref={refPanelsHandle}
-        />
-      </ImpactAnalysisDialogContextProvider>
+      <WorkbenchContext.Provider value={{ displayedRepresentationMetadata: state.displayedRepresentationMetadata }}>
+        <ImpactAnalysisDialogContextProvider>
+          <Panels
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            leftContributions={workbenchViewLeftSideContributions}
+            leftPanelConfiguration={leftPanelConfiguration}
+            leftPanelInitialSize={25}
+            rightContributions={workbenchViewRightSideContributions}
+            rightPanelConfiguration={rightPanelConfiguration}
+            rightPanelInitialSize={25}
+            mainArea={main}
+            ref={refPanelsHandle}
+          />
+        </ImpactAnalysisDialogContextProvider>
+      </WorkbenchContext.Provider>
     );
   }
 );

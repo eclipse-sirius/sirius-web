@@ -95,6 +95,7 @@ The impact analysis report displays the following information:
 - https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] Split the View builder generator and its dependencies in a separate module.
 This means the main Sirius Web JAR no longer includes EMF CodeGen dependencies (including the Eclipse Java compiler).
 The resulting JAR is smaller and has a reduced attack surface.
+- https://github.com/eclipse-sirius/sirius-web/issues/5398[#5398] [core] Add the ability to retrieve data from the workbench
 
 
 
