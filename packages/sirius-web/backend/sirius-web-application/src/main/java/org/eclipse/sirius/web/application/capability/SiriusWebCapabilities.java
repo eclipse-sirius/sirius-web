@@ -174,4 +174,21 @@ public final class SiriusWebCapabilities {
      */
     public static final String PROJECT_SETTINGS_GENERAL_TAB = PROJECT_SETTINGS + '#' + "general";
 
+    public static final String TREE = "Tree";
+
+    /**
+     * The list of tree-specific capabilities.
+     *
+     * @author mcharfadi
+     * @since v2026.7.0
+     */
+    public static final class Tree {
+
+        /**
+         * Used to check if a tree would use a palette.
+         *
+         * @since v2026.7.0
+         */
+        public static final String USE_EXPLORER_PALETTE = "useExplorerPalette";
+    }
 }

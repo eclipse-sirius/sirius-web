@@ -140,6 +140,7 @@ export const ModelBrowserTreeView = ({
               selectTreeItems={() => {}}
               selectedTreeItemIds={selectedTreeItemIds}
               data-testid={treeId}
+              useExplorerPalette={true}
             />
           ) : null}
         </div>

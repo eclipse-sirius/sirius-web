@@ -54,6 +54,7 @@ export const TreeView = ({
         treeItemActionRender={treeItemActionRender}
         onTreeItemClick={onTreeItemClick}
         selectedTreeItemIds={selectedTreeItemIds}
+        useExplorerPalette={true}
       />
     </div>
   );

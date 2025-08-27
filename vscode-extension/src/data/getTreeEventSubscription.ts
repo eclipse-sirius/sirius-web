@@ -24,6 +24,9 @@ subscription ${eventType}($input: ${eventInputType}!) {
         children {
           ${treeChildren}
         }
+        capabilities {
+          useExplorerPalette
+        }
       }
     }
   }

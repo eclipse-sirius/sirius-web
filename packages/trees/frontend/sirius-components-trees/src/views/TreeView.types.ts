@@ -29,6 +29,7 @@ export interface TreeViewProps {
   selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
   'data-testid'?: string;
+  useExplorerPalette: boolean;
 }
 
 export interface TreeConverter {
@@ -38,6 +39,11 @@ export interface TreeConverter {
 export interface GQLTree {
   id: string;
   children: GQLTreeItem[];
+  capabilities: GQLTreeCapabilities;
+}
+
+export interface GQLTreeCapabilities {
+  useExplorerPalette: boolean;
 }
 
 export interface GQLTreeItem {

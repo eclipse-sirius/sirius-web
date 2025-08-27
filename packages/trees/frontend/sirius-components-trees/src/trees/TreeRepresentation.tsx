@@ -98,6 +98,7 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
             expanded={state.expanded}
             maxDepth={state.maxDepth}
             data-testid={representationId}
+            useExplorerPalette={true}
           />
         </div>
       );

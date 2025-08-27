@@ -28,4 +28,5 @@ export interface TreeProps {
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => void;
   selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
+  useExplorerPalette: boolean;
 }

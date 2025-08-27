@@ -1,0 +1,7 @@
+extend type Tree {
+  capabilities: TreeCapabilities!
+}
+
+type TreeCapabilities {
+  useExplorerPalette: Boolean!
+}

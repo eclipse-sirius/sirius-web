@@ -284,6 +284,7 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
               }
               selectedTreeItemIds={state.selectedTreeItemIds}
               data-testid="viewsexplorer://"
+              useExplorerPalette={false}
             />
           </div>
         )}

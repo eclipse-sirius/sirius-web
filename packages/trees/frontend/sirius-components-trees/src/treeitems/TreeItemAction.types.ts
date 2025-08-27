@@ -20,6 +20,7 @@ export interface TreeItemActionProps {
   expanded: string[];
   selectedTreeItemIds: string[];
   maxDepth: number;
+  useExplorerPalette: boolean;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onEnterEditingMode: () => void;
   selectTreeItems: (selectedTreeItemIds: string[]) => void;

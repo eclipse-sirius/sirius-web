@@ -114,6 +114,7 @@ export const SelectionDialogTreeView = ({
             selectTreeItems={() => {}}
             selectedTreeItemIds={selectedTreeItemIds}
             data-testid={treeId}
+            useExplorerPalette={true}
           />
         ) : null}
       </Box>

@@ -38,6 +38,7 @@ export const Tree = ({
   onTreeItemClick,
   selectTreeItems,
   selectedTreeItemIds,
+  useExplorerPalette,
 }: TreeProps) => {
   const { classes } = useTreeStyle();
 
@@ -129,6 +130,7 @@ export const Tree = ({
               onTreeItemClick={(event, item) => onTreeItemClick(event, tree, item)}
               selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
+              useExplorerPalette={useExplorerPalette}
             />
             <TreeItemWithChildren
               editingContextId={editingContextId}
@@ -147,6 +149,7 @@ export const Tree = ({
               onTreeItemClick={(event, item) => onTreeItemClick(event, tree, item)}
               selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
+              useExplorerPalette={useExplorerPalette}
             />
           </li>
         ))}

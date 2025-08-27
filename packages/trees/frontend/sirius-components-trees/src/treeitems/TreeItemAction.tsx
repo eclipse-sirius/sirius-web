@@ -37,6 +37,7 @@ export const TreeItemAction = ({
   depth,
   expanded,
   maxDepth,
+  useExplorerPalette,
   selectTreeItems,
   onExpandedElementChange,
   onEnterEditingMode,
@@ -92,6 +93,7 @@ export const TreeItemAction = ({
         enterEditingMode={enterEditingMode}
         onClose={closeContextMenu}
         selectedTreeItemIds={selectedTreeItemIds}
+        useExplorerPalette={useExplorerPalette}
       />
     );
   }

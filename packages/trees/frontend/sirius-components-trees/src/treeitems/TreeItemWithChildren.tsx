@@ -36,6 +36,7 @@ export const TreeItemWithChildren = ({
   onTreeItemClick,
   selectTreeItems,
   selectedTreeItemIds,
+  useExplorerPalette,
 }: TreeItemWithChildrenProps) => {
   const { classes } = useTreeItemWithChildrenStyle();
   if (item.expanded && item.children) {
@@ -61,6 +62,7 @@ export const TreeItemWithChildren = ({
                 onTreeItemClick={onTreeItemClick}
                 selectTreeItems={selectTreeItems}
                 selectedTreeItemIds={selectedTreeItemIds}
+                useExplorerPalette={useExplorerPalette}
               />
               <TreeItemWithChildren
                 editingContextId={editingContextId}
@@ -79,6 +81,7 @@ export const TreeItemWithChildren = ({
                 onTreeItemClick={onTreeItemClick}
                 selectTreeItems={selectTreeItems}
                 selectedTreeItemIds={selectedTreeItemIds}
+                useExplorerPalette={useExplorerPalette}
               />
             </li>
           );
