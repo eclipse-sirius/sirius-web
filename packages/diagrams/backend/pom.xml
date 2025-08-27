@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2022 Obeo.
+ Copyright (c) 2022, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -16,11 +16,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-components-diagrams-parent</artifactId>
+	<artifactId>sirius-components-diagrams-root</artifactId>
 	<version>2025.8.2</version>
 
-	<name>sirius-components-diagrams-parent</name>
-	<description>Sirius Components Diagrams Parent</description>
+	<name>sirius-components-diagrams-root</name>
+	<description>Sirius Components Diagrams Root</description>
 	<packaging>pom</packaging>
 
 	<distributionManagement>

@@ -65,6 +65,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5240[#5240] [sirius-web] Ensure that the editing context does not contain proxies after a library update
 - https://github.com/eclipse-sirius/sirius-web/issues/5352[#5352] [diagram] Fix tooltips for disabled buttons
 - https://github.com/eclipse-sirius/sirius-web/issues/5351[#5351] [diagram] Fix an issue where the border color of a list node was not set correctly
+- https://github.com/eclipse-sirius/sirius-web/issues/5392[#5392] [releng] Fix an issue caused by two maven modules using the same artifactId
 
 
 === New Features
