@@ -76,6 +76,7 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
           expanded={state.expanded}
           maxDepth={state.maxDepth}
+          useExplorerPalette={tree.capabilities.useExplorerPalette}
         />
       </div>
     );

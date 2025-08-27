@@ -100,6 +100,7 @@ A new button is displayed to export the results when a query returns one or mult
 * `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
 * A GraphQL mutation is also added `editEllipseNodeAppearance`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicatorDelegate` API.
+- https://github.com/eclipse-sirius/sirius-web/issues/5418[#5418] [tree] Add the `ProjectsCapabilities` capability `useExplorerPalette` to replace the tree item contextual menu with a basic palette (this palette has very limited functionality for now)
 
 
 === Improvements

@@ -92,6 +92,7 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String EDIT = "edit";
+
     }
 
     public static final String LIBRARY = "Library";
@@ -160,4 +161,21 @@ public final class SiriusWebCapabilities {
      */
     public static final String PROJECT_SETTINGS_IMAGE_TAB = PROJECT_SETTINGS + '#' + "images";
 
+    public static final String TREE = "Tree";
+
+    /**
+     * The list of tree-specific capabilities.
+     *
+     * @author mcharfadi
+     * @since v2025.10.0
+     */
+    public static final class Tree {
+
+        /**
+         * Used to check if a tree would use a palette.
+         *
+         * @since v2025.10.0
+         */
+        public static final String USE_EXPLORER_PALETTE = "useExplorerPalette";
+    }
 }

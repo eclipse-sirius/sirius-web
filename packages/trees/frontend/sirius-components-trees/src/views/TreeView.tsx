@@ -29,6 +29,7 @@ export const TreeView = ({
   maxDepth,
   onTreeItemClick,
   selectedTreeItemIds,
+  useExplorerPalette,
 }: TreeViewProps) => {
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
 
@@ -52,6 +53,7 @@ export const TreeView = ({
         treeItemActionRender={treeItemActionRender}
         onTreeItemClick={onTreeItemClick}
         selectedTreeItemIds={selectedTreeItemIds}
+        useExplorerPalette={useExplorerPalette}
       />
     </div>
   );

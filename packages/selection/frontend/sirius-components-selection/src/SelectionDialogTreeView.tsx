@@ -20,7 +20,7 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
@@ -78,6 +78,7 @@ export const SelectionDialogTreeView = ({
           maxDepth={state.maxDepth}
           onTreeItemClick={onTreeItemClick}
           selectedTreeItemIds={selectedTreeItemIds}
+          useExplorerPalette={false}
         />
       ) : null}
     </div>

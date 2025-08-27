@@ -325,6 +325,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
               maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
               onTreeItemClick={onTreeItemClick}
               selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+              useExplorerPalette={state.tree.capabilities.useExplorerPalette}
             />
           ) : null}
         </div>

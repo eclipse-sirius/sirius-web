@@ -37,6 +37,7 @@ export const TreeItemAction = ({
   depth,
   expanded,
   maxDepth,
+  useExplorerPalette,
   onExpandedElementChange,
   onEnterEditingMode,
 }: TreeItemActionProps) => {
@@ -88,6 +89,7 @@ export const TreeItemAction = ({
         onExpandedElementChange={onExpandedElementChange}
         enterEditingMode={enterEditingMode}
         onClose={closeContextMenu}
+        useExplorerPalette={useExplorerPalette}
       />
     );
   }

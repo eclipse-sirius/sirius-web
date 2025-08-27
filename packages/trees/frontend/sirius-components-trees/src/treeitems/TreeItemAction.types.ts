@@ -19,6 +19,7 @@ export interface TreeItemActionProps {
   depth: number;
   expanded: string[];
   maxDepth: number;
+  useExplorerPalette: boolean;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onEnterEditingMode: () => void;
   readOnly: boolean;
