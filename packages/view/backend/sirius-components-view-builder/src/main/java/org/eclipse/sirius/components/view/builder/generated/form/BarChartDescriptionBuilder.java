@@ -78,7 +78,6 @@ public class BarChartDescriptionBuilder {
         this.getBarChartDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValuesExpression.
      *

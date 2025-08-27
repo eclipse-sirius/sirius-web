@@ -87,7 +87,6 @@ public class EllipseNodeStyleDescriptionBuilder {
         this.getEllipseNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
-
     /**
      * Setter for Background.
      *

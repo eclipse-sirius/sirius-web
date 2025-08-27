@@ -78,7 +78,6 @@ public class RichTextDescriptionBuilder {
         this.getRichTextDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

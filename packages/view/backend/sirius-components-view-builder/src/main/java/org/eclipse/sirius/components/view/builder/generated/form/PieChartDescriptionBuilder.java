@@ -78,7 +78,6 @@ public class PieChartDescriptionBuilder {
         this.getPieChartDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValuesExpression.
      *

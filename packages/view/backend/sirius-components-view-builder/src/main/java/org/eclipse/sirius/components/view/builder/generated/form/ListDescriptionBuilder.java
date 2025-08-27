@@ -78,7 +78,6 @@ public class ListDescriptionBuilder {
         this.getListDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

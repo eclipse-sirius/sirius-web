@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,6 @@ public class TreeItemLabelFragmentDescriptionBuilder {
         this.getTreeItemLabelFragmentDescription().setLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for Style.
      *
@@ -61,8 +60,6 @@ public class TreeItemLabelFragmentDescriptionBuilder {
         this.getTreeItemLabelFragmentDescription().setStyle(value);
         return this;
     }
-
-
 
 }
 

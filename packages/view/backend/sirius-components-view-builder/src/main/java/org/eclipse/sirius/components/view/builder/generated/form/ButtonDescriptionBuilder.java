@@ -78,7 +78,6 @@ public class ButtonDescriptionBuilder {
         this.getButtonDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ButtonLabelExpression.
      *

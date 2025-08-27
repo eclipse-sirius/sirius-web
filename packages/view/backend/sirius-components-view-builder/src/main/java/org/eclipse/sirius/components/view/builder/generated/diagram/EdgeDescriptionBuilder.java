@@ -165,7 +165,6 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setSourceExpression(value);
         return this;
     }
-
     /**
      * Setter for TargetExpression.
      *
@@ -175,7 +174,6 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setTargetExpression(value);
         return this;
     }
-
     /**
      * Setter for Style.
      *

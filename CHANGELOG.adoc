@@ -40,6 +40,7 @@ including:
 * `org.eclipse.text-3.14.300.jar`
 +
 Downstream applications which had implicit dependencies to some of these may need to add new explicit dependencies.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [diagram] The class `SelectionDialogTreeDescriptionBuilder;` was available in two different locations with exactly the same code, the version located in `org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder` has been removed and only `org.eclipse.sirius.components.view.builder.generated.diagram.SelectionDialogTreeDescriptionBuilder` should be used.
 
 
 === Dependency update

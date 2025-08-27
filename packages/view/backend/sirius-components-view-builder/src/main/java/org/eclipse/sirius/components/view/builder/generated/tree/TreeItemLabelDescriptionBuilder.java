@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated.tree;
 
 /**
- * Builder for org.eclipse.sirius.components.view.tree.TreeItemLabelDescription.
+ * Builder for TreeItemLabelDescriptionBuilder.
  *
  * @author BuilderGenerator
  * @generated
@@ -27,7 +27,7 @@ public class TreeItemLabelDescriptionBuilder {
     private org.eclipse.sirius.components.view.tree.TreeItemLabelDescription treeItemLabelDescription = org.eclipse.sirius.components.view.tree.TreeFactory.eINSTANCE.createTreeItemLabelDescription();
 
     /**
-     * Builder for org.eclipse.sirius.components.view.tree.TreeItemLabelDescription.
+     * Return instance org.eclipse.sirius.components.view.tree.TreeItemLabelDescription.
      * @generated
      */
     protected org.eclipse.sirius.components.view.tree.TreeItemLabelDescription getTreeItemLabelDescription() {
@@ -51,7 +51,6 @@ public class TreeItemLabelDescriptionBuilder {
         this.getTreeItemLabelDescription().setName(value);
         return this;
     }
-
     /**
      * Setter for PreconditionExpression.
      *
@@ -61,7 +60,6 @@ public class TreeItemLabelDescriptionBuilder {
         this.getTreeItemLabelDescription().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for Children.
      *

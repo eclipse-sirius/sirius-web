@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.SelectionDialogTreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
