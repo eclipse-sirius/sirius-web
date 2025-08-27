@@ -18,14 +18,12 @@ import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
   cleanBendPoint,
-  getMiddlePoint,
   determineSegmentAxis,
-  generateNewBendPointOnSourceSegment,
-  generateNewBendPointOnTargetSegment,
+  generateNewBendPointOnSegment,
+  generateNewHandlePoint,
   getHandlePositionFromXYPosition,
-  generateNewSourcePoint,
+  getMiddlePoint,
   isOutOfLines,
-  generateNewTargetPoint,
 } from './RectilinearEdgeCalculation';
 import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
@@ -122,14 +120,15 @@ export const useTemporaryLines = (
         }
       }
       if (isOutOfLines(eventData.x, eventData.y, direction, sourceNode)) {
-        const newPoint = generateNewBendPointOnSourceSegment(
+        const newPoint = generateNewBendPointOnSegment(
           eventData.x,
           eventData.y,
           direction,
           sourceNode.internals.positionAbsolute,
           sourcePosition,
           sourceNode.height ?? 0,
-          sourceNode.width ?? 0
+          sourceNode.width ?? 0,
+          0
         );
         if (newPoint) {
           newPoints.forEach((point) => {
@@ -137,14 +136,18 @@ export const useTemporaryLines = (
           });
           newPoints.push(newPoint);
         }
-        const newSource: XYPosition = generateNewSourcePoint(source, eventData.x, eventData.y, direction, sourceNode);
+        const newSource: XYPosition = generateNewHandlePoint(source, eventData.x, eventData.y, direction, sourceNode);
         setSource(newSource);
       } else {
         const newSource: XYPosition = { ...source };
         if (direction === 'x') {
           newSource.y = eventData.y;
+          newSource.x =
+            sourceNode.internals.positionAbsolute.x + (sourcePosition === Position.Right ? sourceNode.width ?? 0 : 0);
         } else if (direction === 'y') {
           newSource.x = eventData.x;
+          newSource.y =
+            sourceNode.internals.positionAbsolute.y + (sourcePosition === Position.Bottom ? sourceNode.height ?? 0 : 0);
         }
         setSource(newSource);
         setIsSourceSegment(true);
@@ -160,27 +163,31 @@ export const useTemporaryLines = (
         }
       }
       if (isOutOfLines(eventData.x, eventData.y, direction, targetNode)) {
-        const newPoint = generateNewBendPointOnTargetSegment(
+        const newPoint = generateNewBendPointOnSegment(
           eventData.x,
           eventData.y,
           direction,
           targetNode.internals.positionAbsolute,
-          index,
           targetPosition,
           targetNode.height ?? 0,
-          targetNode.width ?? 0
+          targetNode.width ?? 0,
+          index + 1
         );
         if (newPoint) {
           newPoints.push(newPoint);
         }
-        const newTarget = generateNewTargetPoint(target, eventData.x, eventData.y, direction, targetNode);
+        const newTarget = generateNewHandlePoint(target, eventData.x, eventData.y, direction, targetNode);
         setTarget(newTarget);
       } else {
         const newTarget: XYPosition = { ...target };
         if (direction === 'x') {
           newTarget.y = eventData.y;
+          newTarget.x =
+            targetNode.internals.positionAbsolute.x + (targetPosition === Position.Right ? targetNode.width ?? 0 : 0);
         } else if (direction === 'y') {
           newTarget.x = eventData.x;
+          newTarget.y =
+            targetNode.internals.positionAbsolute.y + (targetPosition === Position.Bottom ? targetNode.height ?? 0 : 0);
         }
         setTarget(newTarget);
         setIsTargetSegment(true);

@@ -76,7 +76,7 @@ Stop the propagation on the dialog instead of the input.
 The impact analysis report displays the following information:
 * References that will be broken by the update (new proxies that won't be resolved and will be deleted after the update)
 - https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bend point only when source or target segment exceeds the limits of its node borders.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5394[#5394] [diagram] Position new bend points in the middle rather than on a side
 
 
 == v2025.8.0
