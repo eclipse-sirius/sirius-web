@@ -87,7 +87,6 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
-
     /**
      * Setter for Shape.
      *

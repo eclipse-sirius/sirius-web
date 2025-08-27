@@ -78,7 +78,6 @@ public class SliderDescriptionBuilder {
         this.getSliderDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for MinValueExpression.
      *

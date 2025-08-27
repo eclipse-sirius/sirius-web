@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated.customcells;
 
-import org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription;
-import org.eclipse.sirius.components.view.table.customcells.CustomcellsFactory;
-
 /**
  * Builder for CellCheckboxWidgetDescriptionBuilder.
  *
@@ -24,15 +21,13 @@ import org.eclipse.sirius.components.view.table.customcells.CustomcellsFactory;
 public class CellCheckboxWidgetDescriptionBuilder {
 
     /**
-     * Create instance CellCheckboxWidgetDescription.
-     *
+     * Create instance org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription.
      * @generated
      */
     private org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription cellCheckboxWidgetDescription = org.eclipse.sirius.components.view.table.customcells.CustomcellsFactory.eINSTANCE.createCellCheckboxWidgetDescription();
 
     /**
-     * Return instance CellCheckboxWidgetDescription.
-     *
+     * Return instance org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription.
      * @generated
      */
     protected org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription getCellCheckboxWidgetDescription() {
@@ -40,8 +35,7 @@ public class CellCheckboxWidgetDescriptionBuilder {
     }
 
     /**
-     * Return instance CellCheckboxWidgetDescription.
-     *
+     * Return instance org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription.
      * @generated
      */
     public org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription build() {

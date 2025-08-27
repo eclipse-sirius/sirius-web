@@ -52,6 +52,27 @@ public class SingleClickTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder preconditionExpression(java.lang.String value) {
+        this.getSingleClickTreeItemContextMenuEntry().setPreconditionExpression(value);
+        return this;
+    }
+    /**
+     * Setter for Body.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
+        for (org.eclipse.sirius.components.view.Operation value : values) {
+            this.getSingleClickTreeItemContextMenuEntry().getBody().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for LabelExpression.
      *
      * @generated
@@ -78,28 +99,6 @@ public class SingleClickTreeItemContextMenuEntryBuilder {
         this.getSingleClickTreeItemContextMenuEntry().setWithImpactAnalysis(value);
         return this;
     }
-
-    /**
-     * Setter for PreconditionExpression.
-     *
-     * @generated
-     */
-    public SingleClickTreeItemContextMenuEntryBuilder preconditionExpression(java.lang.String value) {
-        this.getSingleClickTreeItemContextMenuEntry().setPreconditionExpression(value);
-        return this;
-    }
-    /**
-     * Setter for Body.
-     *
-     * @generated
-     */
-    public SingleClickTreeItemContextMenuEntryBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
-        for (org.eclipse.sirius.components.view.Operation value : values) {
-            this.getSingleClickTreeItemContextMenuEntry().getBody().add(value);
-        }
-        return this;
-    }
-
 
 }
 

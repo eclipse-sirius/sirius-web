@@ -78,7 +78,6 @@ public class ImageDescriptionBuilder {
         this.getImageDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for UrlExpression.
      *

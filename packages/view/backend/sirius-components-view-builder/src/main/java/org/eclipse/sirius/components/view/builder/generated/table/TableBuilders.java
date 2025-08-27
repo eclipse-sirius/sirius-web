@@ -80,6 +80,16 @@ public class TableBuilders {
     }
 
     /**
+     * Instantiate a RowContextMenuEntryBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public RowContextMenuEntryBuilder newRowContextMenuEntry() {
+        return new RowContextMenuEntryBuilder();
+    }
+
+    /**
      * Instantiate a CellTextareaWidgetDescriptionBuilder .
      *
      * @author BuilderGenerator
@@ -97,16 +107,6 @@ public class TableBuilders {
      */
     public RowFilterDescriptionBuilder newRowFilterDescription() {
         return new RowFilterDescriptionBuilder();
-    }
-
-    /**
-     * Instantiate a RowContextMenuEntryBuilder .
-     *
-     * @author BuilderGenerator
-     * @generated
-     */
-    public RowContextMenuEntryBuilder newRowContextMenuEntry() {
-        return new RowContextMenuEntryBuilder();
     }
 
 

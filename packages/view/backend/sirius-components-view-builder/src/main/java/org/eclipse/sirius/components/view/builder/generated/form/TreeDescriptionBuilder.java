@@ -78,7 +78,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ChildrenExpression.
      *
