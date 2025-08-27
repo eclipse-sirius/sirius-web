@@ -34,6 +34,7 @@
   "peerDependencies": {
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-palette": "*",
     "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",
     "@xstate/react": "3.0.0",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-palette": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",

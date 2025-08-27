@@ -92,6 +92,13 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String EDIT = "edit";
+
+        /**
+         * Used to check is a project will use a palette for the explorer instead of a context menu.
+         *
+         * @since v2025.10.0
+         */
+        public static final String USE_EXPLORER_PALETTE = "useExplorerPalette";
     }
 
     public static final String LIBRARY = "Library";
@@ -160,4 +167,21 @@ public final class SiriusWebCapabilities {
      */
     public static final String PROJECT_SETTINGS_IMAGE_TAB = PROJECT_SETTINGS + '#' + "images";
 
+    public static final String TREE = "Tree";
+
+    /**
+     * The list of tree-specific capabilities.
+     *
+     * @author mcharfadi
+     * @since v2025.10.0
+     */
+    public static final class Tree {
+
+        /**
+         * Used to check if libraries can be listed.
+         *
+         * @since v2025.10.0
+         */
+        public static final String USE_PALETTE = "usePalette";
+    }
 }
