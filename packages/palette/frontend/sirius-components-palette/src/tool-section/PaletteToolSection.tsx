@@ -21,7 +21,7 @@ import { PaletteToolContributionProps } from '../extensions/PaletteToolContribut
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { PaletteToolOverriddenContributionProps } from '../extensions/PaletteToolOverrideContribution.types';
 import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOverrideExtensionPoints';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
+import { isPaletteDivider, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { usePalette } from '../usePalette';
@@ -202,7 +202,7 @@ export const PaletteToolSection = ({
   const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
-      {isSingleClickOnDiagramElementTool(lastToolInvoked) ? (
+      {isTool(lastToolInvoked) ? (
         renderSingleClickToolItem(lastToolInvoked)
       ) : (
         <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />

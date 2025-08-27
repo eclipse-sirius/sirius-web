@@ -50,6 +50,13 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  GQLTool,
+  PaletteToolContributionProps,
+  PaletteToolOverriddenContributionProps,
+  paletteToolExtensionPoint,
+  paletteToolOverrideExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import {
@@ -60,6 +67,7 @@ import {
 } from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
+  TREE_REPRESENTATION_KIND,
   TreeItemContextMenuOverrideContribution,
   TreeRepresentation,
   treeItemContextMenuEntryOverrideExtensionPoint,
@@ -104,13 +112,23 @@ import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
+import { DeleteToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/delete/DeleteToolContribution';
+import { DownloadDocumentToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/download-document/DownloadDocumentToolContribution';
 import { DownloadDocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/download-document/DownloadDocumentTreeItemContextMenuContribution';
+import { DuplicateObjectToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-object/DuplicateObjectToolContribution';
 import { DuplicateObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-object/DuplicateObjectTreeItemContextMenuContribution';
+import { DuplicateRepresentationToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-representation/DuplicateRepresentationToolContribution';
 import { DuplicateRepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-representation/DuplicateRepresentationTreeItemContextMenuContribution';
+import { DirectEditToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/edit/DirectEditToolContribution';
+import { ExpandAllToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllToolContribution';
 import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllTreeItemContextMenuContribution';
+import { NewObjectToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectToolContribution';
 import { NewObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectTreeItemContextMenuContribution';
+import { NewRepresentationToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-representation/NewRepresentationToolContribution';
 import { NewRepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-representation/NewRepresentationTreeItemContextMenuContribution';
+import { NewRootObjectToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectToolContribution';
 import { NewRootObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectTreeItemContextMenuContribution';
+import { UpdateLibraryToolContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryToolContribution';
 import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryTreeItemContextMenuContribution';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
 import { ExportAsCsvButton } from '../views/edit-project/workbench-views/query/ExportAsCsvButton';
@@ -120,6 +138,7 @@ import { QueryResultButtonContribution } from '../views/edit-project/workbench-v
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RelatedViewsView } from '../views/edit-project/workbench-views/related-views/RelatedViewsView';
 import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
+import { ViewsExplorerView } from '../views/edit-project/workbench-views/views-explorer/ViewsExplorerView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
@@ -134,7 +153,6 @@ import { ellipseNodeStyleDocumentTransform } from './ellipsenode/EllipseNodeDocu
 import { EllipseNodeAppearanceSection } from './ellipsenode/EllipseNodePaletteAppearanceSection';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
-import { ViewsExplorerView } from '../views/edit-project/workbench-views/views-explorer/ViewsExplorerView';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -367,6 +385,99 @@ defaultExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
     data: treeItemContextMenuOverrideContributions,
   }
 );
+/*******************************************************************************
+ *
+ * Explorer palette menu overrides
+ *
+ * Used to register components in the tree palette that override
+ * the default rendering of backend tools.
+ *
+ *******************************************************************************/
+const treePaletteOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'new-root-object',
+    component: NewRootObjectToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'download-document',
+    component: DownloadDocumentToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'new-object',
+    component: NewObjectToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'new-representation',
+    component: NewRepresentationToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'duplicate-object',
+    component: DuplicateObjectToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'duplicate-representation',
+    component: DuplicateRepresentationToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'update-library',
+    component: UpdateLibraryToolContribution,
+  },
+  {
+    canHandle: (representationDescriptionId: string, tool: GQLTool) =>
+      representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'expand-all',
+    component: ExpandAllToolContribution,
+  },
+];
+
+defaultExtensionRegistry.putData<PaletteToolOverriddenContributionProps[]>(paletteToolOverrideExtensionPoint, {
+  identifier: `siriusweb_${paletteToolOverrideExtensionPoint.identifier}`,
+  data: treePaletteOverriddenContributions,
+});
+
+defaultExtensionRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
+  identifier: `siriusweb_${paletteToolExtensionPoint.identifier}`,
+  data: [
+    {
+      id: 'direct-edit',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === TREE_REPRESENTATION_KIND,
+      component: DirectEditToolContribution,
+    },
+    {
+      id: 'semantic-delete',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === TREE_REPRESENTATION_KIND,
+      component: DeleteToolContribution,
+    },
+  ],
+});
+/*******************************************************************************
+ *
+ * Explorer palette contributions
+ *
+ * Used to register components in the tree palette
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
+  identifier: `siriusweb_${paletteToolExtensionPoint.identifier}`,
+  data: [
+    {
+      id: 'direct-edit',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === TREE_REPRESENTATION_KIND,
+      component: DirectEditToolContribution,
+    },
+    {
+      id: 'semantic-delete',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === TREE_REPRESENTATION_KIND,
+      component: DeleteToolContribution,
+    },
+  ],
+});
 
 /*******************************************************************************
  *

@@ -23,6 +23,9 @@
   "treeItemContextMenu": {
     "showInTarget": "Show in {{target}}"
   },
+  "treePalette": {
+    "showIn": "Show in"
+  },
   "filterButton": {
     "filter": "Filter"
   }

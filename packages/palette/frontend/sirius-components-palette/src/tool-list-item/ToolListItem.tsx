@@ -22,18 +22,6 @@ import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
 
 const useStyle = makeStyles()((theme) => ({
-  toolListContainer: {
-    display: 'grid',
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    gridTemplateColumns: '100%',
-  },
-  toolList: {
-    gridRowStart: 1,
-    gridColumnStart: 1,
-    width: '100%',
-    padding: 0,
-  },
   listItemText: {
     '& .MuiListItemText-primary': {
       whiteSpace: 'nowrap',

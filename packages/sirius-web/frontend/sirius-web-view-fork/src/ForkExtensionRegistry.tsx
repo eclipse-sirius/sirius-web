@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
  *******************************************************************************/
 
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { PaletteToolContributionProps, paletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-palette';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import { ForkToolContribution } from './contributions/ForkToolContribution';
 import { ForkTreeItemContextMenuContribution } from './contributions/ForkTreeItemContextMenuContribution';
 const forkRegistry = new ExtensionRegistry();
 
@@ -21,4 +23,14 @@ forkRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   Component: ForkTreeItemContextMenuContribution,
 });
 
+forkRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
+  identifier: `siriusweb_${paletteToolExtensionPoint.identifier}`,
+  data: [
+    {
+      id: 'fork-representation',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === 'explorer_',
+      component: ForkToolContribution,
+    },
+  ],
+});
 export { forkRegistry };

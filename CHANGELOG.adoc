@@ -85,6 +85,10 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/825[#825] [doc] Add a first version of the Sirius Web documentation.
 The documentation can be built using `./doc/generate-local.bash`
 - https://github.com/eclipse-sirius/sirius-web/issues/6632[#6632] [diagram] The width of the palette has been increased from 200px to 250px.
+- https://github.com/eclipse-sirius/sirius-web/issues/6544[#6544] [tree] Leverage the Palette used by the diagram on the explorer.
+Use the configuration property `sirius.web.tree.new-palette.enabled` to temporary switch back to the old context menu.
+This configuration property will be removed soon once the migration to the palette will be completed.
+
 
 === Improvements
 

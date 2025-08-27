@@ -122,6 +122,7 @@ export const TreeItem = ({
   onTreeItemClick,
   selectTreeItems,
   selectedTreeItemIds,
+  useTreePalette,
 }: TreeItemProps) => {
   const [state, setState] = useState<TreeItemState>({
     editingMode: false,
@@ -380,6 +381,7 @@ export const TreeItem = ({
                     selectTreeItems,
                     isHovered: state.partHovered === 'item',
                     selectedTreeItemIds: selectedTreeItemIds,
+                    useTreePalette: useTreePalette,
                   })
                 ) : (
                   <TreeItemAction
@@ -395,6 +397,7 @@ export const TreeItem = ({
                     onEnterEditingMode={enterEditingMode}
                     isHovered={state.partHovered === 'item'}
                     selectedTreeItemIds={selectedTreeItemIds}
+                    useTreePalette={useTreePalette}
                   />
                 )}
               </div>

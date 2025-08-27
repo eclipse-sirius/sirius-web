@@ -401,6 +401,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                     }
                     selectedTreeItemIds={state.selectedTreeItemIds}
                     data-testid="explorer://"
+                    useTreePalette={state.tree.capabilities.useTreePalette}
                   />
                 </div>
               </DuplicateObjectKeyboardShortcut>

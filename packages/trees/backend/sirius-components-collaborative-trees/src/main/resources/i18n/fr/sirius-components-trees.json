@@ -20,6 +20,9 @@
     "tooltipWithMoreLabels": "Sélectionner {{labels}} (et {{count}} de plus)",
     "tooltipWithLabels": "Sélectionner {{labels}}"
   },
+  "treePalette": {
+    "showIn": "Afficher dans"
+  },
   "treeItemContextMenu": {
     "showInTarget": "Afficher dans {{target}}"
   },

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ export interface TreeViewProps {
   selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
   'data-testid'?: string;
+  useTreePalette: boolean;
 }
 
 export interface TreeConverter {
@@ -38,6 +39,11 @@ export interface TreeConverter {
 export interface GQLTree {
   id: string;
   children: GQLTreeItem[];
+  capabilities: GQLTreeCapabilities;
+}
+
+export interface GQLTreeCapabilities {
+  useTreePalette: boolean;
 }
 
 export interface GQLTreeItem {

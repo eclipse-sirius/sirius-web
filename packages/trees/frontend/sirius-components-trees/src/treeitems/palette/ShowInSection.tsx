@@ -1,0 +1,112 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+import { useSelectionTargets } from '@eclipse-sirius/sirius-components-core';
+import { PaletteExtensionSectionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from 'tss-react/mui';
+import { TreePaletteContext } from './/contexts/TreePaletteContext';
+import { TreePaletteContextValue } from './/contexts/TreePaletteContext.types';
+
+const useStyle = makeStyles()((theme) => ({
+  toolListItemButton: {
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  toolList: {
+    width: '100%',
+    padding: 0,
+  },
+  listItemText: {
+    '& .MuiListItemText-primary': {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+  },
+  listItemIcon: {
+    minWidth: 0,
+    marginRight: theme.spacing(2),
+  },
+  sectionTitleListItemText: {
+    '& .MuiListItemText-primary': {
+      fontWeight: theme.typography.fontWeightBold,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+  },
+}));
+
+export const ShowInSection = ({ onBackToMainList }: PaletteExtensionSectionComponentProps) => {
+  const { classes } = useStyle();
+  const { selectionTargets } = useSelectionTargets();
+  const { selectedTreeItems, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'showInSection' });
+
+  const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+    event.stopPropagation();
+    onBackToMainList();
+  };
+
+  const showInItems: JSX.Element[] = selectionTargets
+    .filter((target) => target.id !== 'explorer')
+    .map((target) => (
+      <Tooltip
+        title={t('showInTarget', { target: target.label })}
+        placement="right"
+        key={`push-diagram-selection-to-${target.id}`}>
+        <ListItemButton
+          className={classes.toolListItemButton}
+          data-testid={`push-diagram-selection-to-${target.id}`}
+          onClick={() => {
+            const localSelection = { entries: selectedTreeItems.map((id) => ({ id })) };
+            target.applySelection(localSelection);
+            onClose();
+          }}>
+          <ListItemIcon className={classes.listItemIcon}>{target.icon}</ListItemIcon>
+          <ListItemText primary={target.label} className={classes.listItemText} />
+        </ListItemButton>
+      </Tooltip>
+    ));
+
+  return (
+    <List className={classes.toolList} component="nav">
+      <Tooltip title={t('showIn')} key="tooltip_show_in" placement="right">
+        <ListItemButton
+          className={classes.toolListItemButton}
+          onClick={handleBackToMainListClick}
+          data-testid={`back-show_in`}
+          autoFocus={true}>
+          <NavigateBeforeIcon />
+          <ListItemText className={classes.sectionTitleListItemText} primary={t('showIn')} />
+        </ListItemButton>
+      </Tooltip>
+      {showInItems.length > 0 ? (
+        showInItems
+      ) : (
+        <ListItem>
+          <Typography>{t('noAvailableTargets')}</Typography>
+        </ListItem>
+      )}
+    </List>
+  );
+};
