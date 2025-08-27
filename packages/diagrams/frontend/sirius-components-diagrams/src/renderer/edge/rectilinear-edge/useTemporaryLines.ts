@@ -18,11 +18,12 @@ import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
   cleanBendPoint,
-  getMiddlePoint,
   determineSegmentAxis,
-  generateNewBendPointOnSourceSegment,
-  generateNewBendPointOnTargetSegment,
+  generateNewBendPointOnSegment,
+  generateNewHandlePoint,
   getHandlePositionFromXYPosition,
+  getMiddlePoint,
+  isOutOfLines,
 } from './RectilinearEdgeCalculation';
 import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
@@ -107,123 +108,101 @@ export const useTemporaryLines = (
     }
   };
 
-  const onTemporaryLineDrag = (eventData: DraggableData, temporaryPointIndex: number, direction: 'x' | 'y') => {
+  const onTemporaryLineDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
     let newPoints = [...originalBendingPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
-    if (temporaryPointIndex === 0) {
-      if (
-        (direction === 'x' && sourceNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x) ||
-        (direction === 'x' && sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y) ||
-        (direction === 'y' && sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x)
-      ) {
-        newPoints = generateNewBendPointOnSourceSegment(
-          originalBendingPoints,
+    const currentPoint = newPoints[index];
+    if (index === 0) {
+      if (currentPoint) {
+        if (direction === 'x') {
+          currentPoint.y = eventData.y;
+        } else if (direction === 'y') {
+          currentPoint.x = eventData.x;
+        }
+      }
+      if (isOutOfLines(eventData.x, eventData.y, direction, sourceNode)) {
+        const newPoint = generateNewBendPointOnSegment(
           eventData.x,
           eventData.y,
           direction,
           sourceNode.internals.positionAbsolute,
-          temporaryPointIndex,
           sourcePosition,
           sourceNode.height ?? 0,
-          sourceNode.width ?? 0
+          sourceNode.width ?? 0,
+          0
         );
-        const newSource: XYPosition = { ...source };
-        if (direction === 'x' && sourceNode.internals.positionAbsolute.y > eventData.y) {
-          newSource.y = sourceNode.internals.positionAbsolute.y;
-        } else if (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x) {
-          newSource.x = sourceNode.internals.positionAbsolute.x;
-        } else if (
-          direction === 'x' &&
-          sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y
-        ) {
-          newSource.y = sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0);
-        } else if (
-          direction === 'y' &&
-          sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x
-        ) {
-          newSource.x = sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0);
+        if (newPoint) {
+          newPoints.forEach((point) => {
+            point.pathOrder += 1;
+          });
+          newPoints.push(newPoint);
         }
+        const newSource: XYPosition = generateNewHandlePoint(source, eventData.x, eventData.y, direction, sourceNode);
         setSource(newSource);
       } else {
-        const currentPoint = newPoints[temporaryPointIndex];
         const newSource: XYPosition = { ...source };
         if (direction === 'x') {
           newSource.y = eventData.y;
-          if (currentPoint) {
-            currentPoint.y = eventData.y;
-          }
+          newSource.x =
+            sourceNode.internals.positionAbsolute.x + (sourcePosition === Position.Right ? sourceNode.width ?? 0 : 0);
         } else if (direction === 'y') {
           newSource.x = eventData.x;
-          if (currentPoint) {
-            currentPoint.x = eventData.x;
-          }
+          newSource.y =
+            sourceNode.internals.positionAbsolute.y + (sourcePosition === Position.Bottom ? sourceNode.height ?? 0 : 0);
         }
         setSource(newSource);
         setIsSourceSegment(true);
       }
     }
-    if (temporaryPointIndex === originalBendingPoints.length) {
-      if (
-        (direction === 'x' && targetNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x) ||
-        (direction === 'x' && targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y) ||
-        (direction === 'y' && targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x)
-      ) {
-        newPoints = generateNewBendPointOnTargetSegment(
-          originalBendingPoints,
+    if (index === originalBendingPoints.length) {
+      const prevPoint = newPoints[index - 1];
+      if (prevPoint) {
+        if (direction === 'x') {
+          prevPoint.y = eventData.y;
+        } else if (direction === 'y') {
+          prevPoint.x = eventData.x;
+        }
+      }
+      if (isOutOfLines(eventData.x, eventData.y, direction, targetNode)) {
+        const newPoint = generateNewBendPointOnSegment(
           eventData.x,
           eventData.y,
           direction,
           targetNode.internals.positionAbsolute,
-          temporaryPointIndex,
           targetPosition,
           targetNode.height ?? 0,
-          targetNode.width ?? 0
+          targetNode.width ?? 0,
+          index + 1
         );
-        const newTarget: XYPosition = { ...target };
-        if (direction === 'x' && targetNode.internals.positionAbsolute.y > eventData.y) {
-          newTarget.y = targetNode.internals.positionAbsolute.y;
-        } else if (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x) {
-          newTarget.x = targetNode.internals.positionAbsolute.x;
-        } else if (
-          direction === 'x' &&
-          targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y
-        ) {
-          newTarget.y = targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0);
-        } else if (
-          direction === 'y' &&
-          targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x
-        ) {
-          newTarget.x = targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0);
+        if (newPoint) {
+          newPoints.push(newPoint);
         }
+        const newTarget = generateNewHandlePoint(target, eventData.x, eventData.y, direction, targetNode);
         setTarget(newTarget);
       } else {
-        const prevPoint = newPoints[temporaryPointIndex - 1];
         const newTarget: XYPosition = { ...target };
         if (direction === 'x') {
-          if (prevPoint) {
-            prevPoint.y = eventData.y;
-          }
           newTarget.y = eventData.y;
+          newTarget.x =
+            targetNode.internals.positionAbsolute.x + (targetPosition === Position.Right ? targetNode.width ?? 0 : 0);
         } else if (direction === 'y') {
-          if (prevPoint) {
-            prevPoint.x = eventData.x;
-          }
           newTarget.x = eventData.x;
+          newTarget.y =
+            targetNode.internals.positionAbsolute.y + (targetPosition === Position.Bottom ? targetNode.height ?? 0 : 0);
         }
         setTarget(newTarget);
         setIsTargetSegment(true);
       }
     }
-    if (temporaryPointIndex > 0 && temporaryPointIndex < originalBendingPoints.length) {
-      const prevPoint = newPoints[temporaryPointIndex - 1];
-      const currentPoint = newPoints[temporaryPointIndex];
-      if (direction === 'x' && prevPoint && currentPoint) {
-        prevPoint.y = eventData.y;
-        currentPoint.y = eventData.y;
-      } else if (direction === 'y' && prevPoint && currentPoint) {
-        prevPoint.x = eventData.x;
-        currentPoint.x = eventData.x;
+    if (index > 0 && index < originalBendingPoints.length) {
+      if (currentPoint) {
+        const prevPoint = newPoints[index - 1];
+        if (direction === 'x' && prevPoint) {
+          currentPoint.y = eventData.y;
+          prevPoint.y = eventData.y;
+        } else if (direction === 'y' && prevPoint) {
+          currentPoint.x = eventData.x;
+          prevPoint.x = eventData.x;
+        }
       }
     }
     setLocalBendingPoints(newPoints);
