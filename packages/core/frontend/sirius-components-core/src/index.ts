@@ -58,6 +58,8 @@ export * from './toast/MultiToast';
 export * from './toast/Toast';
 export * from './toast/useReporting';
 export * from './workbench/Panels';
+export { useWorkbench } from './workbench/useWorkbench';
+export { type UseWorkbenchValue } from './workbench/useWorkbench.types';
 export * from './workbench/Workbench';
 export type * from './workbench/Workbench.types';
 export * from './workbench/WorkbenchExtensionPoints';
