@@ -48,6 +48,9 @@ describe('Workbench Configuration Resolution', () => {
         workbench.isIconHighlighted('right', 'Details');
         workbench.checkPanelContent('right', ['Details']);
       });
+      it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
+        cy.url().should('not.include', 'workbenchConfiguration=');
+      });
     });
 
     context('When opening the project with a custom workbench configuration', () => {
@@ -71,6 +74,9 @@ describe('Workbench Configuration Resolution', () => {
         workbench.isIconHighlighted('right', 'Representations');
         workbench.isIconHighlighted('right', 'Related Elements');
         workbench.checkPanelContent('right', ['Representations', 'Related Elements']);
+      });
+      it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
+        cy.url().should('not.include', 'workbenchConfiguration=');
       });
     });
   });

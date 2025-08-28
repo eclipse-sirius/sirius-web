@@ -55,12 +55,7 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 export const EditProjectView = () => {
   const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
-
-  const [state, setState] = useState<EditProjectViewState>({
-    project: null,
-    representation: null,
-  });
-  const [urlSearchParams] = useSearchParams();
+  const [urlSearchParams, setSearchParams] = useSearchParams();
 
   const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
@@ -69,6 +64,19 @@ export const EditProjectView = () => {
   const workbenchConfiguration: WorkbenchConfiguration | null = urlSearchParams.has('workbenchConfiguration')
     ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
     : null;
+
+  const [state, setState] = useState<EditProjectViewState>({
+    project: null,
+    representation: null,
+    workbenchConfiguration,
+  });
+
+  useEffect(() => {
+    if (urlSearchParams.has('workbenchConfiguration')) {
+      urlSearchParams.delete('workbenchConfiguration');
+      setSearchParams(urlSearchParams);
+    }
+  }, [urlSearchParams]);
 
   const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
   useEffect(() => {
@@ -142,7 +150,7 @@ export const EditProjectView = () => {
                       initialRepresentationSelected={state.representation}
                       onRepresentationSelected={onRepresentationSelected}
                       readOnly={!state.project.capabilities.canEdit}
-                      initialWorkbenchConfiguration={workbenchConfiguration}
+                      initialWorkbenchConfiguration={state.workbenchConfiguration}
                       ref={refWorkbenchHandle}
                     />
                   </TreeToolBarProvider>
