@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -98,7 +99,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             tableId.set(table.getId());
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getCells()).hasSize(3);
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
@@ -115,7 +116,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("newName");
         });
 
@@ -139,7 +140,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             tableId.set(table.getId());
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getCells()).hasSize(3);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(CheckboxCell.class);
             assertThat(((CheckboxCell) table.getLines().get(0).getCells().get(2)).isValue()).isEqualTo(false);
@@ -156,7 +157,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(((CheckboxCell) table.getLines().get(0).getCells().get(2)).isValue()).isEqualTo(true);
         });
 

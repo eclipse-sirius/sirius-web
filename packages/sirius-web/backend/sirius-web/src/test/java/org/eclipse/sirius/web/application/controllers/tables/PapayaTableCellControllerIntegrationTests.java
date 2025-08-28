@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -88,7 +89,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("");
@@ -113,7 +114,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("new description");

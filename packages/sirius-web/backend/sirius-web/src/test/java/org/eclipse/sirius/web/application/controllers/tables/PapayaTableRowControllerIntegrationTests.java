@@ -53,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -124,7 +125,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             tableId.set(table.getId());
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             rowRef.set(table.getLines().get(0));
             assertThat(table.getLines().get(0).getHeight()).isEqualTo(53);
         });
@@ -143,7 +144,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getHeight()).isEqualTo(100);
         });
 
@@ -173,7 +174,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             tableId.set(table.getId());
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(1).getHeight()).isEqualTo(100);
         });
 
@@ -190,7 +191,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(1).getHeight()).isEqualTo(53);
         });
 
@@ -220,7 +221,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
         });
@@ -310,7 +311,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
         });
@@ -332,7 +333,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(3);
         });
 
         StepVerifier.create(flux)
@@ -353,7 +354,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(6);
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
             tableId.set(table.getId());
@@ -374,11 +375,12 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> expandedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
             assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(4).getDepthLevel()).isEqualTo(0);
         });
 
         StepVerifier.create(expandedFlux)
