@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -130,7 +131,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(table.getColumns().get(2).getHeaderLabel()).isEqualTo("Abstract");
             assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("2");
 
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
@@ -158,7 +159,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var rowLabel = new AtomicReference<String>();
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
             rowLabel.set(table.getLines().get(0).getHeaderLabel());
@@ -218,7 +219,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectId()).isEqualTo(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString());
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectKind()).isEqualTo("siriusComponents://semantic?domain=papaya&entity=Package");
         });
@@ -238,12 +239,13 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.isEnableSubRows()).isTrue();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
             assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
             assertThat(table.getLines().get(4).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(5).getDepthLevel()).isEqualTo(0);
         });
 
         StepVerifier.create(flux)
@@ -261,7 +263,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         AtomicReference<String> tableId = new AtomicReference<>();
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             tableId.set(table.getId());
         });
 
@@ -303,13 +305,14 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(3);
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
 
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
             assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("Failure");
             assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
             assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("fooParameter");
             assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
+            assertThat(((TextfieldCell) table.getLines().get(5).getCells().get(0)).getValue()).isEqualTo("IntegrationTest");
             tableId.set(table.getId());
             columnNameId.set(table.getColumns().get(0).getId().toString());
         });
@@ -330,10 +333,11 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         Consumer<Object> sortedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
-            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("fooParameter");
-            assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
-            assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("Failure");
-            assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("IntegrationTest");
+            assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooParameter");
+            assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("fooOperation");
+            assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("Failure");
+            assertThat(((TextfieldCell) table.getLines().get(5).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
         });
 
         StepVerifier.create(expandedFlux)
@@ -393,7 +397,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat((table.getLines().get(0).getCells().get(0)).getTooltipValue()).isEqualTo("SuccessTooltip");
             assertThat(table.getLines().get(0).getCells().get(1).getTooltipValue()).isEqualTo("");
         });

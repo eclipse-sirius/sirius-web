@@ -119,8 +119,8 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
             .forEach(entry -> {
                 EObject proxyObject = entry.getKey();
                 Collection<Setting> settings = entry.getValue();
-                StringBuilder brokenProxiesBuilder = new StringBuilder();
                 for (Setting setting : settings) {
+                    StringBuilder brokenProxiesBuilder = new StringBuilder();
                     brokenProxiesBuilder
                         .append("[BROKEN] ")
                         .append(this.getResourceAndEObjectLabel(setting.getEObject()))
@@ -129,8 +129,6 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
                         .append(" (previously set to ")
                         .append(this.labelService.getStyledLabel(proxyObject))
                         .append(")");
-                }
-                if (!brokenProxiesBuilder.isEmpty()) {
                     report.add(brokenProxiesBuilder.toString());
                 }
             });
