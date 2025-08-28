@@ -115,6 +115,9 @@ The resulting JAR is smaller and has a reduced attack surface.
 * Existing documents will be migrated as follow: `is_read_only = TRUE` for library documents, `is_read_only = FALSE` for all the other documents.
 * This information can be retrieved via `ResourceMetadataAdapter#isReadOnly()`.
 * Read-only resources are only persisted the first time we see them, they are not persisted later on to ensure they are actually read-only, and potential modifications on them aren't stored.
+- https://github.com/eclipse-sirius/sirius-web/issues/5400[#5400] [sirius-web] Ensure that updating a library doesn't look for proxies in non-persisted resources.
+This includes any resource that is not persisted, not only the libraries.
+
 
 
 == v2025.8.0

@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextDependencyLoader;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
@@ -73,12 +74,15 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
 
     private final IEditingContextDependencyLoader editingContextDependencyLoader;
 
+    private final List<IEditingContextPersistenceFilter> editingContextPersistenceFilters;
+
     public UpdateLibraryExecutor(ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService, ISemanticDataUpdateService semanticDataUpdateService,
-            IEditingContextDependencyLoader editingContextDependencyLoader) {
+            IEditingContextDependencyLoader editingContextDependencyLoader, List<IEditingContextPersistenceFilter> editingContextPersistenceFilters) {
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.editingContextDependencyLoader = Objects.requireNonNull(editingContextDependencyLoader);
+        this.editingContextPersistenceFilters = Objects.requireNonNull(editingContextPersistenceFilters);
     }
 
     @Override
@@ -196,7 +200,7 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
     }
 
     /**
-     * Removes proxies from non-library resources in the provided {@code resourceSet}.
+     * Removes proxies from persisted resources in the provided {@code resourceSet}.
      *
      * @param resourceSet
      *            the resource set
@@ -205,8 +209,7 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
      */
     private Map<EObject, Collection<Setting>> removeUnresolvedProxies(ResourceSet resourceSet) {
         List<Resource> nonLibraryResources = resourceSet.getResources().stream()
-                .filter(resource -> resource.eAdapters().stream()
-                        .noneMatch(LibraryMetadataAdapter.class::isInstance))
+                .filter(resource -> this.editingContextPersistenceFilters.stream().allMatch(editingContextPersistenceFilter -> editingContextPersistenceFilter.shouldPersist(resource)))
                 .toList();
         // Only look for proxies in Resources that are persisted in the project's semantic data
         Map<EObject, Collection<Setting>> unresolvedProxies = UnresolvedProxyCrossReferencer.find(nonLibraryResources);
