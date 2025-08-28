@@ -56,6 +56,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -230,8 +231,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
             var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
 
             assertThat(tableWidget.getTable().getColumns()).hasSize(1);
-            assertThat(tableWidget.getTable().getLines()).hasSize(3);
-            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(3);
+            assertThat(tableWidget.getTable().getLines()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
 
             Line line = tableWidget.getTable().getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);
@@ -268,8 +269,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
             var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
 
             assertThat(tableWidget.getTable().getColumns()).hasSize(1);
-            assertThat(tableWidget.getTable().getLines()).hasSize(3);
-            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(3);
+            assertThat(tableWidget.getTable().getLines()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
 
             Line line = tableWidget.getTable().getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);
