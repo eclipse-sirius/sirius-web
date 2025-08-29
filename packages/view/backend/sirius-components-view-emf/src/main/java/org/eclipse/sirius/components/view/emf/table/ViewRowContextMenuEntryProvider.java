@@ -97,7 +97,9 @@ public class ViewRowContextMenuEntryProvider implements IRowContextMenuEntryProv
             AQLInterpreter interpreter) {
         var id = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewTreeItemContextAction).toString().getBytes()).toString();
         var label = this.evaluateString(variableManager, interpreter, viewTreeItemContextAction.getLabelExpression());
-        var iconURL = this.evaluateStringList(variableManager, interpreter, viewTreeItemContextAction.getIconURLExpression());
+        var iconURL = this.evaluateStringList(variableManager, interpreter, viewTreeItemContextAction.getIconURLExpression()).stream()
+                .filter(url -> url != null && !url.isBlank())
+                .toList();
 
         return new RowContextMenuEntry(id, label, iconURL);
     }
