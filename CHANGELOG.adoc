@@ -123,6 +123,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection in favor of useState
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 * The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
+- https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bending points are now added only when the source or target handle would change position (top, left, ...).
 
 
 == v2025.8.0
@@ -420,7 +421,7 @@ Of particular note: projects which create View-based, in-memory, representation 
 [source,java]
 ----
 Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
-JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
