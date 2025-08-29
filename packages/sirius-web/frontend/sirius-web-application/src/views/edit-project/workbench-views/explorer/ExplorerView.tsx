@@ -62,7 +62,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   const { classes: styles } = useStyles();
 
   const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
     filterBar: false,
     filterBarText: '',
     filterBarTreeFiltering: false,
@@ -151,13 +150,15 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
 
   const { getTreePath, data: treePathData } = useTreePath();
 
+  const synchronizedWithSelection = false; // Disabled from now on
+
   // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
   const selectionKey: string = selection?.entries
     .map((entry) => entry.id)
     .sort()
     .join(':');
   useEffect(() => {
-    if (state.synchronizedWithSelection && state.tree) {
+    if (synchronizedWithSelection && state.tree) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: state.tree.id,
@@ -165,7 +166,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       };
       getTreePath({ variables });
     }
-  }, [editingContextId, selectionKey, state.synchronizedWithSelection, state.tree, getTreePath]);
+  }, [editingContextId, selectionKey, state.tree, getTreePath]);
 
   useEffect(() => {
     if (treePathData && treePathData.viewer?.editingContext?.treePath) {
@@ -291,12 +292,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       <TreeToolBar
         editingContextId={editingContextId}
         readOnly={readOnly}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
         treeFilters={state.treeFilters}
         onTreeFilterMenuItemClick={(treeFilters) =>
           setState((prevState) => {
