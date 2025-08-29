@@ -47,6 +47,8 @@ export * from './modals/impact-analysis/useImpactAnalysisDialog';
 export type * from './modals/impact-analysis/useImpactAnalysisDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
+export * from './objectslabels/useObjectsLabels';
+export type * from './objectslabels/useObjectsLabels.types';
 export * from './progress/RepresentationLoadingIndicator';
 export * from './representationmetadata/useRepresentationMetadata';
 export * from './selection/SelectionContext';

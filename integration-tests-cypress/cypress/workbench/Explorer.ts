@@ -35,6 +35,10 @@ export class Explorer {
     return this.getExplorerView().find('[data-treeitemid][data-testid="selected"]');
   }
 
+  public revealGlobalSelectionInExplorer(): void {
+    cy.getByTestId('reveal-selection-button').click();
+  }
+
   public expandWithDoubleClick(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-expanded', 'false');
     this.getTreeItemByLabel(treeItemLabel).dblclick();

@@ -11,11 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import IconButton from '@mui/material/IconButton';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
+import { RevealSelectionButton } from './RevealSelectionButton';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
@@ -36,9 +35,8 @@ const useTreeToolbarStyles = makeStyles()((theme) => ({
 
 export const TreeToolBar = ({
   editingContextId,
-  onSynchronizedClick,
-  synchronized,
   treeFilters,
+  onRevealSelection,
   onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
   readOnly,
@@ -46,9 +44,6 @@ export const TreeToolBar = ({
 }: TreeToolBarProps) => {
   const { classes } = useTreeToolbarStyles();
 
-  const preferenceButtonSynchronizeTitle = synchronized
-    ? 'Disable synchronization with representation'
-    : 'Enable synchronization with representation';
   return (
     <>
       <div className={classes.toolbar}>
@@ -65,15 +60,7 @@ export const TreeToolBar = ({
           <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />
         ) : null}
         {children}
-        <IconButton
-          color="inherit"
-          size="small"
-          aria-label={preferenceButtonSynchronizeTitle}
-          title={preferenceButtonSynchronizeTitle}
-          onClick={onSynchronizedClick}
-          data-testid="tree-synchronize">
-          <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
-        </IconButton>
+        <RevealSelectionButton editingContextId={editingContextId} onClick={onRevealSelection} />
       </div>
     </>
   );

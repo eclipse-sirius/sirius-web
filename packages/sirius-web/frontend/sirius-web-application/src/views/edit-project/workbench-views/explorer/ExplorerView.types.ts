@@ -13,7 +13,6 @@
 import { GQLTree, GQLTreeItem, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ExplorerViewState {
-  synchronizedWithSelection: boolean;
   filterBar: boolean;
   filterBarText: string | null;
   filterBarTreeFiltering: boolean;
@@ -22,5 +21,6 @@ export interface ExplorerViewState {
   expanded: { [key: string]: string[] };
   maxDepth: { [key: string]: number };
   tree: GQLTree | null;
+  selectedTreeItemIds: string[];
   singleTreeItemSelected: GQLTreeItem | null;
 }

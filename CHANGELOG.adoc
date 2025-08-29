@@ -137,6 +137,10 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] Add support for the management of the appearance of edge labels
 - https://github.com/eclipse-sirius/sirius-web/issues/5447[#5447] [diagram] Removed some unncessary animations on the diagram, which no longer zooms/pans on newly created or selected node if they are already fully visible.
 - https://github.com/eclipse-sirius/sirius-web/issues/4374[#4374] [diagram] Add support for border node initial position
+- https://github.com/eclipse-sirius/sirius-web/issues/4214[#4214] [sirius-web] The Explorer's local selection is not updated automatically on workbench selection change anymore.
+In the _Explorer_ view, replace "Synchronize with representation" mode with an explicit "Reveal selection" action button.
+We will display the labels of the elements about to be selected in the tooltip of the button.
+
 
 === Improvements
 
