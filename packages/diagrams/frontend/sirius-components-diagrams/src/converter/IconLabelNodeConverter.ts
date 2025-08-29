@@ -94,6 +94,8 @@ const toIconLabelNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    minComputedWidth: null,
+    minComputedHeight: null,
   };
 
   data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');

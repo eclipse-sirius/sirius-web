@@ -50,6 +50,7 @@ type NodeLayoutData {
   resizedByUser: Boolean!
   movedByUser: Boolean!
   handleLayoutData: [HandleLayoutData!]!
+  minComputedSize: Size!
 }
 
 type HandleLayoutData {
@@ -719,6 +720,7 @@ input NodeLayoutDataInput {
   resizedByUser: Boolean!
   movedByUser: Boolean!
   handleLayoutData: [HandleLayoutDataInput!]!
+  minComputedSize: SizeInput!
 }
 
 input HandleLayoutDataInput {

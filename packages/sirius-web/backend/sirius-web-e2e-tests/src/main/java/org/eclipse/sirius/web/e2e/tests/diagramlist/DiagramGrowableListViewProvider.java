@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -170,7 +171,20 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .insideLabel(this.getInsideLabelDescription("List 1", colorProvider))
                 .childrenDescriptions(subList1Description, subList2Description)
+                .palette(this.getPaletteWithHideTool())
                 .build();
+    }
+
+    private NodePalette getPaletteWithHideTool() {
+        return new DiagramBuilders().newNodePalette()
+                .nodeTools(new DiagramBuilders().newNodeTool()
+                        .name("Hide")
+                        .body(new ViewBuilders().newChangeContext()
+                                .expression("aql:diagramServices.hide(Sequence{selectedNode})")
+                                .build())
+                        .build())
+                .build();
+
     }
 
     private NodeDescription getList2Description(IColorProvider colorProvider) {
@@ -195,6 +209,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .insideLabel(this.getInsideLabelDescription("List 2", colorProvider))
                 .childrenDescriptions()
+                .palette(this.getPaletteWithHideTool())
                 .build();
     }
 
@@ -220,6 +235,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .insideLabel(this.getInsideLabelDescription("List 3", colorProvider))
                 .childrenDescriptions()
+                .palette(this.getPaletteWithHideTool())
                 .build();
     }
 
@@ -245,6 +261,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .insideLabel(this.getInsideLabelDescription("SubList A", colorProvider))
                 .childrenDescriptions()
+                .palette(this.getPaletteWithHideTool())
                 .build();
     }
 
@@ -270,6 +287,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .insideLabel(this.getInsideLabelDescription("SubList B", colorProvider))
                 .childrenDescriptions()
+                .palette(this.getPaletteWithHideTool())
                 .build();
     }
 

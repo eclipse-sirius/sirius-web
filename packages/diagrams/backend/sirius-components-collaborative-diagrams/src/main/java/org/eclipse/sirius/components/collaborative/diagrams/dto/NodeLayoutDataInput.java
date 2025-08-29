@@ -23,6 +23,5 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Size;
  *
  * @author sbegaudeau
  */
-public record NodeLayoutDataInput(String id, Position position, Size size, boolean resizedByUser, boolean movedByUser, List<HandleLayoutData> handleLayoutData) {
-
+public record NodeLayoutDataInput(String id, Position position, Size size, boolean resizedByUser, boolean movedByUser, List<HandleLayoutData> handleLayoutData, Size minComputedSize) {
 }

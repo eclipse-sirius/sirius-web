@@ -40,23 +40,37 @@ const applyResizeToListContain = (
   const newChanges: NodeChange<Node<NodeData>>[] = [];
   if (isListData(resizedNode) && change.dimensions) {
     const borderWidth: number = getBorderWidth(resizedNode);
-    const growableChildNodeId = nodes
-      .filter(
-        (node) =>
-          !node.data.isBorderNode &&
-          node.parentId === resizedNode.id &&
-          resizedNode.data.growableNodeIds.includes(node.data.descriptionId)
-      )
+    const growableChildNodes = nodes.filter(
+      (node) =>
+        !node.data.isBorderNode &&
+        !node.hidden &&
+        node.parentId === resizedNode.id &&
+        resizedNode.data.growableNodeIds.includes(node.data.descriptionId)
+    );
+    const heightDimensionChange = change.dimensions.height - (resizedNode.height ?? 0);
+    const growableChildNodeId = growableChildNodes
+      .filter((node) => {
+        if (heightDimensionChange > 0) {
+          return (node.height ?? 0) >= (node.data.minComputedHeight ?? 0);
+        }
+        return (node.height ?? 0) > (node.data.minComputedHeight ?? 0);
+      })
       .map((node) => node.id);
     const heightToAddToEachGrowableNode =
-      growableChildNodeId.length > 0
-        ? (change.dimensions.height - (resizedNode.height ?? 0)) / growableChildNodeId.length
-        : 0;
-    let growableNodeIndex = 0;
+      growableChildNodeId.length > 0 ? heightDimensionChange / growableChildNodeId.length : 0;
+    let offsetYPosition = 0;
     nodes
-      .filter((node) => !node.data.isBorderNode)
+      .filter((node) => !node.data.isBorderNode && !node.hidden)
       .forEach((node) => {
         if (node.parentId === resizedNode.id && change.dimensions?.width) {
+          let heightToAdd = 0;
+          if (growableChildNodeId.includes(node.id)) {
+            if ((node.height ?? 0) + heightToAddToEachGrowableNode < (node.data.minComputedHeight ?? 0)) {
+              heightToAdd = node.data.minComputedHeight! - node.height!;
+            } else {
+              heightToAdd = heightToAddToEachGrowableNode;
+            }
+          }
           const newDimensionChange: NodeChange<Node<NodeData>> = {
             id: node.id,
             type: 'dimensions',
@@ -64,25 +78,19 @@ const applyResizeToListContain = (
             setAttributes: true,
             dimensions: {
               width: change.dimensions.width - borderWidth * 2,
-              height: growableChildNodeId.includes(node.id)
-                ? (node.height ?? 0) + heightToAddToEachGrowableNode
-                : node.height ?? 0,
+              height: (node.height ?? 0) + heightToAdd,
             },
           };
           newChanges.push(newDimensionChange);
-          if (growableNodeIndex > 0) {
-            newChanges.push({
-              id: node.id,
-              type: 'position',
-              position: {
-                x: node.position.x,
-                y: node.position.y + growableNodeIndex * heightToAddToEachGrowableNode,
-              },
-            });
-          }
-          if (growableChildNodeId.includes(node.id)) {
-            growableNodeIndex++;
-          }
+          newChanges.push({
+            id: node.id,
+            type: 'position',
+            position: {
+              x: node.position.x,
+              y: node.position.y + offsetYPosition,
+            },
+          });
+          offsetYPosition += heightToAdd;
           newChanges.push(...applyResizeToListContain(node, nodes, newDimensionChange));
         }
       });
@@ -179,7 +187,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
         }
         return change;
       });
-      return [...newChanges, ...updatedChanges];
+      return [...updatedChanges, ...newChanges];
     },
     [getNodes]
   );

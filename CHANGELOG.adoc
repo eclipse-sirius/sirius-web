@@ -106,6 +106,9 @@ The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, 
 An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Any locales contributed by downstream projects should take account the renamed keys
 - https://github.com/eclipse-sirius/sirius-web/issues/5763[#5763] [diagram] `LabelLayoutData` record now has a Size parameter `record LabelLayoutData(String id, Position position, Size size)`, a migration participant has been added to migrate existing diagrams.
+- https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Custom node layout handlers must now set `minComputedWidth` and  `minComputedHeight` values to limit the resizer to a minimum size.
+An example can be found with `EllipseNodeLayoutHandler.ts` and `EllipseNodeConverter.ts`.
+If you want to use this limit on your custom nodes, you must either use the `SiriusWeb` `Resizer` component or add `minWidth={data.minComputedWidth ?? undefined}` and ` minHeight={data.minComputedHeight ?? undefined}` to the `ReactFlow` `NodeResize`
 
 
 === Dependency update
@@ -221,6 +224,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5763[#5763] [diagram] Improve center label positioning on edges
 - https://github.com/eclipse-sirius/sirius-web/issues/5831[#5831] Add French translation into the backend to align with the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/5811[#5811] [diagram] Introduce CrossFade Tunnels to automatically create blank underpasses when edges cross and defer crossing detection while nodes are being dragged to keep interactions smooth.
+- https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Limit node resizing with minimum node size constraints
 
 
 == 2025.10.0

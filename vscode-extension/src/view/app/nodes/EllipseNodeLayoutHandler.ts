@@ -168,6 +168,9 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
+
+    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
   }
 
   calculateCustomNodeEdgeHandlePosition(
