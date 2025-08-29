@@ -30,7 +30,7 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
@@ -62,7 +62,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   const { classes: styles } = useStyles();
 
   const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
     filterBar: false,
     filterBarText: '',
     filterBarTreeFiltering: false,
@@ -156,8 +155,9 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     .map((entry) => entry.id)
     .sort()
     .join(':');
-  useEffect(() => {
-    if (state.synchronizedWithSelection && state.tree) {
+
+  const revealSelection = useCallback(() => {
+    if (state.tree && selection.entries.length > 0) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: state.tree.id,
@@ -165,7 +165,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       };
       getTreePath({ variables });
     }
-  }, [editingContextId, selectionKey, state.synchronizedWithSelection, state.tree, getTreePath]);
+  }, [editingContextId, selectionKey, state.tree, getTreePath]);
 
   useEffect(() => {
     if (treePathData && treePathData.viewer?.editingContext?.treePath) {
@@ -291,13 +291,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       <TreeToolBar
         editingContextId={editingContextId}
         readOnly={readOnly}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
         treeFilters={state.treeFilters}
+        onRevealSelection={revealSelection}
         onTreeFilterMenuItemClick={(treeFilters) =>
           setState((prevState) => {
             return { ...prevState, treeFilters };
