@@ -30,7 +30,7 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
@@ -150,15 +150,14 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
 
   const { getTreePath, data: treePathData } = useTreePath();
 
-  const synchronizedWithSelection = false; // Disabled from now on
-
   // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
   const selectionKey: string = selection?.entries
     .map((entry) => entry.id)
     .sort()
     .join(':');
-  useEffect(() => {
-    if (synchronizedWithSelection && state.tree) {
+
+  const revealSelection = useCallback(() => {
+    if (state.tree && selection.entries.length > 0) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: state.tree.id,
@@ -293,6 +292,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         editingContextId={editingContextId}
         readOnly={readOnly}
         treeFilters={state.treeFilters}
+        onRevealSelection={revealSelection}
         onTreeFilterMenuItemClick={(treeFilters) =>
           setState((prevState) => {
             return { ...prevState, treeFilters };

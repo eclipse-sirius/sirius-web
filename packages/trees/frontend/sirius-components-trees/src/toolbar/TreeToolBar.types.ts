@@ -16,6 +16,7 @@ import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution
 export interface TreeToolBarProps {
   editingContextId: string;
   treeFilters: TreeFilter[];
+  onRevealSelection: () => void;
   onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
   treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
   readOnly: boolean;
