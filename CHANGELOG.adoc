@@ -91,6 +91,7 @@ Queries and subscriptions rely on `Project:view` or `Library:view` whether the e
 Mutations rely on `Project:edit` since we forbid to change the content of a library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5008[#5008] [sirius-web] Add support for exporting query results as CSV
 A new button is displayed to export the results when a query returns one or multiple objects.
+- https://github.com/eclipse-sirius/sirius-web/issues/5406[#5406] [core] Add the ability to view multiple workbench views at once
 
 
 === Improvements

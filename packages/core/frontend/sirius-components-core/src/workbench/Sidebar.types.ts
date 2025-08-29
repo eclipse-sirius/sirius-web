@@ -10,14 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RefObject } from 'react';
-import { ImperativePanelHandle } from 'react-resizable-panels';
 import { WorkbenchViewContribution, WorkbenchViewSide } from './Workbench.types';
 
 export interface SidebarProps {
   side: WorkbenchViewSide;
-  panelRef: RefObject<ImperativePanelHandle>;
   contributions: WorkbenchViewContribution[];
-  selectedContributionIndex: number;
-  onContributionSelected: (index) => void;
+  selectedContributionIds: string[];
+  onContributionClick: (id: string) => void;
 }
