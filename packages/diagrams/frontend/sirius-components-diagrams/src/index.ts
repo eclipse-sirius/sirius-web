@@ -66,6 +66,9 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
+export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
+export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
 export type {
