@@ -112,6 +112,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     } else {
       node.height = nodeHeight;
     }
+    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
   }
 
   private handleParentNode(
@@ -146,7 +148,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         .reduce<number>((height, node) => height + (node.height ?? 0), 0) ?? 0;
 
     let previousChildrenContentBoxWidthToConsider: number = getDefaultOrMinWidth(0, node) - borderWidth * 2;
-    let previousChildrenContentBoxHeightToConsider: number = getDefaultOrMinHeight(0, node) - borderWidth * 2;
+    let previousChildrenContentBoxHeightToConsider: number =
+      getDefaultOrMinHeight(0, node) - borderWidth * 2 - headerHeightFootprint;
     if (node.data.resizedByUser) {
       previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? node.width ?? 0) - borderWidth * 2;
       previousChildrenContentBoxHeightToConsider =
@@ -206,14 +209,13 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const directChildrenAwareNodeHeight =
       childrenContentBox.y + childrenContentBox.height + borderWidth + node.data.bottomGap;
-
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-
     const nodeMinComputeHeight = Math.max(
       directChildrenAwareNodeHeight,
       eastBorderNodeFootprintHeight,
-      westBorderNodeFootprintHeight
+      westBorderNodeFootprintHeight,
+      headerHeightFootprint
     );
 
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
@@ -234,7 +236,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
-        node.height = getDefaultOrMinHeight(previousDimensions.height - heightLostSincePrevDiagram, node);
+        node.height = previousDimensions.height - heightLostSincePrevDiagram;
       }
     } else {
       node.height = nodeHeight;
@@ -248,5 +250,19 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
+
+    // The min size is different from the actual one since children list elements could be resized manually
+    const minComputeChildrenWidth = directNodesChildren
+      .map((node) => node.data.minComputedWidth ?? 0)
+      .reduce((max, width) => Math.max(max, width), 0);
+    node.data.minComputedWidth = Math.max(minComputeChildrenWidth, labelOnlyWidth) + borderWidth * 2;
+    const minComputeChildrenHeight = directNodesChildren
+      .map((node) => (node.data.resizedByUser ? node.height ?? 0 : node.data.minComputedHeight ?? 0))
+      .reduce((sum, height) => sum + height, 0);
+    node.data.minComputedHeight = Math.max(
+      childrenContentBox.y + minComputeChildrenHeight + borderWidth + node.data.bottomGap,
+      eastBorderNodeFootprintHeight,
+      westBorderNodeFootprintHeight
+    );
   }
 }

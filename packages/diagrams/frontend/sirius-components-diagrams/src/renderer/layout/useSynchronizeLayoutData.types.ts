@@ -32,6 +32,7 @@ export interface GQLNodeLayoutData {
   resizedByUser: boolean;
   movedByUser: boolean;
   handleLayoutData: GQLHandleLayoutData[];
+  minComputedSize: GQLSize;
 }
 
 export interface GQLHandleLayoutData {

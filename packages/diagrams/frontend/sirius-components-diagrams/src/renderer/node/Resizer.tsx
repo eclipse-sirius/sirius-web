@@ -48,8 +48,8 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
       <NodeResizeControl
         variant={ResizeControlVariant.Line}
         position={'bottom'}
-        shouldResize={() => !data.isBorderNode}
         style={{ ...resizeControlLineStyle(theme) }}
+        minHeight={data.minComputedHeight ?? undefined}
       />
     );
   } else if (data.nodeDescription?.userResizable === 'BOTH') {
@@ -59,8 +59,9 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
         lineStyle={{ ...resizeLineStyle(theme) }}
         color={theme.palette.selected}
         isVisible={selected}
-        shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        minWidth={data.minComputedWidth ?? undefined}
+        minHeight={data.minComputedHeight ?? undefined}
       />
     );
   } else if (data.nodeDescription?.userResizable === 'HORIZONTAL' && selected) {
@@ -69,14 +70,12 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
         <NodeResizeControl
           variant={ResizeControlVariant.Line}
           position={'left'}
-          shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
         <NodeResizeControl
           variant={ResizeControlVariant.Line}
           position={'right'}
-          shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
@@ -88,14 +87,12 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
         <NodeResizeControl
           variant={ResizeControlVariant.Line}
           position={'top'}
-          shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
         <NodeResizeControl
           variant={ResizeControlVariant.Line}
           position={'bottom'}
-          shouldResize={() => !data.isBorderNode}
           style={{ ...resizeControlLineStyle(theme) }}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />

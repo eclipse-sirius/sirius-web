@@ -25,6 +25,7 @@ public record NodeLayoutData(
         Size size,
         boolean resizedByUser,
         boolean movedByUser,
-        List<HandleLayoutData> handleLayoutData) {
+        List<HandleLayoutData> handleLayoutData,
+        Size minComputedSize) {
 
 }
