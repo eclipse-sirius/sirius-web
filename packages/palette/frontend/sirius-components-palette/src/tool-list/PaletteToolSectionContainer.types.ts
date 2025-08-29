@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,18 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool } from '../Palette.types';
-import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
-
-export interface PaletteToolListProps {
-  onToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette;
+export interface PaletteToolSectionContainerProps {
+  children: React.ReactElement;
   onBackToMainList: () => void;
-  diagramElementId: string;
-  lastToolInvoked: GQLTool | null;
-  paletteExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
-}
-
-export interface PaletteToolListStateValue {
-  currentOpenedSectionId: string | null;
+  id: string;
+  title: string;
 }

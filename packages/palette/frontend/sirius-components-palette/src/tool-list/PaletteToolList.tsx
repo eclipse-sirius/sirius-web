@@ -22,8 +22,9 @@ import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
-import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPalette, GQLPaletteEntry, GQLTool } from '../Palette.types';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
+import { PaletteToolSectionContainer } from './PaletteToolSectionContainer';
 
 const useStyle = makeStyles()((theme) => ({
   container: {
@@ -63,8 +64,7 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 const defaultStateValue: PaletteToolListStateValue = {
-  toolSection: null,
-  extensionSection: null,
+  currentOpenedSectionId: null,
 };
 
 const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
@@ -88,25 +88,17 @@ export const PaletteToolList = ({
 
   const { classes } = useStyle();
 
-  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
+  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSectionId: string) => {
     event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection, extensionSection: null }));
-  };
-
-  const handleExtensionSectionClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    extensionSectionId: string
-  ) => {
-    event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: extensionSectionId }));
+    setState((prevState) => ({ ...prevState, currentOpenedSectionId: toolSectionId }));
   };
 
   const handleBackToMainList = () => {
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
+    setState((prevState) => ({ ...prevState, currentOpenedSectionId: null }));
     onBackToMainList();
   };
 
-  const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
+  let listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
       return (
         <ToolListItem
@@ -122,7 +114,7 @@ export const PaletteToolList = ({
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
           <ListItemButton
             className={classes.listItemButton}
-            onClick={(event) => handleToolSectionClick(event, paletteEntry)}
+            onClick={(event) => handleToolSectionClick(event, paletteEntry.id)}
             data-testid={`toolSection-${paletteEntry.label}`}>
             <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
             <NavigateNextIcon />
@@ -142,7 +134,7 @@ export const PaletteToolList = ({
       <Tooltip key={`tooltip_${extensionSectionId}`} title={extensionSectionTitle} placement="right">
         <ListItemButton
           className={classes.listItemButton}
-          onClick={(event) => handleExtensionSectionClick(event, extensionSectionId)}
+          onClick={(event) => handleToolSectionClick(event, extensionSectionId)}
           data-testid={`toolSection-${extensionSectionTitle}`}>
           <ListItemText primary={extensionSectionTitle} className={classes.listItemText} />
           <NavigateNextIcon />
@@ -168,33 +160,41 @@ export const PaletteToolList = ({
           <Slide
             key={'slide_' + entry.id}
             direction={'left'}
-            in={state.toolSection?.id === entry.id}
+            in={state.currentOpenedSectionId === entry.id}
             container={containerRef.current}
             unmountOnExit
             mountOnEnter>
             <div className={classes.toolList}>
-              <PaletteToolSectionList
-                toolSection={entry}
-                onToolClick={onToolClick}
-                onBackToMainList={handleBackToMainList}
-              />
+              <PaletteToolSectionContainer onBackToMainList={handleBackToMainList} id={entry.id} title={entry.label}>
+                <PaletteToolSectionList
+                  toolSection={entry}
+                  onToolClick={onToolClick}
+                  onBackToMainList={handleBackToMainList}
+                />
+              </PaletteToolSectionContainer>
             </div>
           </Slide>
         ))}
 
-        {paletteExtensions.map((extensionSection) => {
+        {paletteExtensions.map((extensionSection: React.ReactElement) => {
           const extensionSectionId = extensionSection.props.id;
-          const SectionComponent = extensionSection.props.component;
+          const extensionSectionTitle = extensionSection.props.title;
+          const ToolSectionComponent = extensionSection.props.component;
           return (
             <Slide
               key={'extension_' + extensionSectionId}
               direction={'left'}
-              in={state.extensionSection === extensionSectionId}
+              in={state.currentOpenedSectionId === extensionSectionId}
               container={containerRef.current}
               unmountOnExit
               mountOnEnter>
               <div className={classes.toolList}>
-                <SectionComponent onBackToMainList={handleBackToMainList} diagramElementId={diagramElementId} />
+                <PaletteToolSectionContainer
+                  onBackToMainList={handleBackToMainList}
+                  id={extensionSectionId}
+                  title={extensionSectionTitle}>
+                  <ToolSectionComponent onBackToMainList={handleBackToMainList} diagramElementId={diagramElementId} />
+                </PaletteToolSectionContainer>
               </div>
             </Slide>
           );
@@ -202,7 +202,7 @@ export const PaletteToolList = ({
 
         <Slide
           direction={'right'}
-          in={state.toolSection === null && state.extensionSection === null}
+          in={state.currentOpenedSectionId === null}
           container={containerRef.current}
           appear={false}
           unmountOnExit
