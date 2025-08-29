@@ -31,7 +31,16 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { ForwardedRef, forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import {
+  ForwardedRef,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewState } from './ExplorerView.types';
@@ -64,7 +73,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const { classes: styles } = useStyles();
 
     const [state, setState] = useState<ExplorerViewState>({
-      synchronizedWithSelection: true,
       filterBar: false,
       filterBarText: '',
       filterBarTreeFiltering: false,
@@ -73,6 +81,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       expanded: {},
       maxDepth: {},
       tree: null,
+      selectedTreeItemIds: [],
       singleTreeItemSelected: null,
     });
 
@@ -94,8 +103,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     );
     const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
-    const { selection, setSelection } = useSelection();
-
     const { payload } = useExplorerSubscription(
       editingContextId,
       state.activeTreeDescriptionId,
@@ -109,8 +116,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         setState((prevState) => ({ ...prevState, tree: payload.tree }));
       }
     }, [payload]);
-
-    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
 
     const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
 
@@ -131,6 +136,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         }));
       }
     }, [explorerDescriptions]);
+
+    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
 
     useEffect(() => {
       if (!loading) {
@@ -168,15 +175,18 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       return null;
     }, [treeElement]);
 
+    const { selection, setSelection } = useSelection();
+
+    // If we are requested to reveal the global selection, we need to compute the tree path to expand
     const { getTreePath, data: treePathData } = useTreePath();
 
-    // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)
       .sort()
       .join(':');
-    useEffect(() => {
-      if (state.synchronizedWithSelection && state.tree) {
+
+    const revealSelection = useCallback(() => {
+      if (state.tree && selection.entries.length > 0) {
         const variables: GQLGetTreePathVariables = {
           editingContextId,
           treeId: state.tree.id,
@@ -184,7 +194,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         };
         getTreePath({ variables });
       }
-    }, [editingContextId, selectionKey, state.synchronizedWithSelection, state.tree, getTreePath]);
+    }, [editingContextId, selectionKey, state.tree, getTreePath]);
 
     useEffect(() => {
       if (treePathData && treePathData.viewer?.editingContext?.treePath) {
@@ -200,6 +210,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           });
           return {
             ...prevState,
+            selectedTreeItemIds: selection.entries.map((entry) => entry.id),
             expanded: {
               ...prevState.expanded,
               [prevState.activeTreeDescriptionId]: newExpanded,
@@ -265,6 +276,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const onTreeItemClick = (event, item: GQLTreeItem) => {
       if (event.ctrlKey || event.metaKey) {
         event.stopPropagation();
+        // Update the global selection
         const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
         if (isItemInSelection) {
           const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
@@ -275,11 +287,21 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           const newSelection: Selection = { entries: [...selection.entries, newEntry] };
           setSelection(newSelection);
         }
+        // Update the local selection
+        const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
+        if (isItemInLocalSelection) {
+          const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
+          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+        } else {
+          const { id } = item;
+          const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
+          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+        }
         setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
       } else {
         const { id } = item;
+        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [id], singleTreeItemSelected: item }));
         setSelection({ entries: [{ id }] });
-        setState((prevState) => ({ ...prevState, singleTreeItemSelected: item }));
       }
     };
 
@@ -310,13 +332,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         <TreeToolBar
           editingContextId={editingContextId}
           readOnly={readOnly}
-          onSynchronizedClick={() =>
-            setState((prevState) => {
-              return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-            })
-          }
-          synchronized={state.synchronizedWithSelection}
           treeFilters={state.treeFilters}
+          onRevealSelection={revealSelection}
           onTreeFilterMenuItemClick={(treeFilters) =>
             setState((prevState) => {
               return { ...prevState, treeFilters };
@@ -343,7 +360,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                 expanded={state.expanded[state.activeTreeDescriptionId]}
                 maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
                 onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+                selectedTreeItemIds={state.selectedTreeItemIds}
               />
             ) : null}
           </div>
