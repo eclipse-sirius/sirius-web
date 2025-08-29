@@ -22,16 +22,11 @@ import Paper from '@mui/material/Paper';
 import { Theme, useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
+import { usePalette } from './context/usePalette';
 import { DEFAULT_TOOL_LIST_ITEMS } from './toolListItems/DefaultToolListItems';
 import { GQLPalette, GQLTool, PaletteProps, PaletteState } from './TreeItemPalette.types';
 import { useInvokePaletteTool } from './useInvokePaletteTool';
 const paletteWidth = 200;
-
-const palette: GQLPalette = {
-  id: '',
-  quickAccessTools: [],
-  paletteEntries: DEFAULT_TOOL_LIST_ITEMS,
-};
 
 export const TreeItemPalette = ({
   editingContextId,
@@ -41,6 +36,11 @@ export const TreeItemPalette = ({
   onClose,
   children,
 }: PaletteProps) => {
+  const palette: GQLPalette = {
+    id: treeItem.id,
+    quickAccessTools: [],
+    paletteEntries: DEFAULT_TOOL_LIST_ITEMS,
+  };
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const theme: Theme = useTheme();
 
@@ -49,7 +49,8 @@ export const TreeItemPalette = ({
   });
 
   const { invokeTool } = useInvokePaletteTool();
-  const lastToolInvoked = null;
+  const { setLastToolInvoked, getLastToolInvoked } = usePalette();
+  const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
 
   const onSearchFieldValueChanged = (newValue: string): void => {
     setState((prevState) => ({ ...prevState, searchToolValue: newValue }));
@@ -63,6 +64,7 @@ export const TreeItemPalette = ({
 
   const handleToolClick = (tool: GQLTool) => {
     invokeTool(editingContextId, treeId, treeItem, onDirectEditClick, tool);
+    setLastToolInvoked(palette.id, tool);
   };
 
   return (

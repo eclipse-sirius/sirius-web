@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export const DEFAULT_TOOL_LIST_ITEMS = [
-  {
-    id: 'semantic-delete',
-    label: 'Delete',
-    iconURL: ['/api/images/diagram-images/semanticDelete.svg'],
-    __typename: 'SingleClickOnDiagramElementTool',
-  },
-  {
-    id: 'edit',
-    label: 'Rename',
-    iconURL: ['/api/images/diagram-images/edit.svg'],
-    __typename: 'SingleClickOnDiagramElementTool',
-  },
-];
+
+import { GQLTool } from '../TreeItemPalette.types';
+
+export interface UsePaletteValue {
+  getLastToolInvoked: (paletteId: string) => GQLTool | null;
+  setLastToolInvoked: (paletteId: string, tool: GQLTool) => void;
+}

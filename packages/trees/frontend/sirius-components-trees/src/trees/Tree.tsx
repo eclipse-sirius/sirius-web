@@ -13,6 +13,7 @@
 import { makeStyles } from 'tss-react/mui';
 
 import { useEffect, useRef } from 'react';
+import { PaletteContextProvider } from '../treeitems/palette/context/PaletteContext';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeItemWithChildren } from '../treeitems/TreeItemWithChildren';
 import { TreeProps } from './Tree.types';
@@ -113,47 +114,49 @@ export const Tree = ({
   }, [treeElement, onExpandedElementChange]);
 
   return (
-    <div ref={treeElement}>
-      <ul className={classes.ul} data-testid="tree-root-elements">
-        {tree.children.map((childItem, index) => (
-          <li key={childItem.id}>
-            <TreeItem
-              editingContextId={editingContextId}
-              treeId={tree.id}
-              item={childItem}
-              itemIndex={index}
-              depth={1}
-              expanded={expanded}
-              maxDepth={maxDepth}
-              onExpandedElementChange={onExpandedElementChange}
-              readOnly={readOnly}
-              textToHighlight={textToHighlight}
-              textToFilter={textToFilter}
-              markedItemIds={markedItemIds}
-              treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selectedTreeItemIds}
-            />
-            <TreeItemWithChildren
-              editingContextId={editingContextId}
-              treeId={tree.id}
-              item={childItem}
-              itemIndex={index}
-              depth={2}
-              expanded={expanded}
-              maxDepth={maxDepth}
-              onExpandedElementChange={onExpandedElementChange}
-              readOnly={readOnly}
-              textToHighlight={textToHighlight}
-              textToFilter={textToFilter}
-              markedItemIds={markedItemIds}
-              treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selectedTreeItemIds}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <PaletteContextProvider>
+      <div ref={treeElement}>
+        <ul className={classes.ul} data-testid="tree-root-elements">
+          {tree.children.map((childItem, index) => (
+            <li key={childItem.id}>
+              <TreeItem
+                editingContextId={editingContextId}
+                treeId={tree.id}
+                item={childItem}
+                itemIndex={index}
+                depth={1}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
+                readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
+                treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
+              />
+              <TreeItemWithChildren
+                editingContextId={editingContextId}
+                treeId={tree.id}
+                item={childItem}
+                itemIndex={index}
+                depth={2}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
+                readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
+                treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </PaletteContextProvider>
   );
 };
