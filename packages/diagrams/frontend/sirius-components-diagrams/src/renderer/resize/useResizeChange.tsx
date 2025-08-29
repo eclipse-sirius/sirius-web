@@ -47,6 +47,7 @@ const applyResizeToListContain = (
           node.parentId === resizedNode.id &&
           resizedNode.data.growableNodeIds.includes(node.data.descriptionId)
       )
+      .filter((node) => node.height ?? 0 > (node.data.minComputedHeight ?? 0))
       .map((node) => node.id);
     const heightToAddToEachGrowableNode =
       growableChildNodeId.length > 0

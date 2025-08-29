@@ -48,6 +48,7 @@ type NodeLayoutData {
   size: Size!
   resizedByUser: Boolean!
   handleLayoutData: [HandleLayoutData!]!
+  minComputedSize: Size!
 }
 
 type HandleLayoutData {
@@ -674,6 +675,7 @@ input NodeLayoutDataInput {
   size: SizeInput!
   resizedByUser: Boolean!
   handleLayoutData: [HandleLayoutDataInput!]!
+  minComputedSize: SizeInput!
 }
 
 input HandleLayoutDataInput {

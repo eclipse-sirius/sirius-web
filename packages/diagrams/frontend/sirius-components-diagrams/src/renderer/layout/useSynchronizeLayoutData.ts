@@ -94,7 +94,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         width,
         position: { x, y },
       } = node;
-      const { resizedByUser } = node.data;
+      const { resizedByUser, minComputedHeight, minComputedWidth } = node.data;
       if (height && width) {
         const handleLayoutDatas: GQLHandleLayoutData[] = [];
         node.data.connectionHandles.forEach((handle) => {
@@ -120,6 +120,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
           },
           resizedByUser,
           handleLayoutData: handleLayoutDatas,
+          minComputedSize: {
+            height: minComputedHeight ?? 0,
+            width: minComputedWidth ?? 0,
+          },
         });
       }
     });

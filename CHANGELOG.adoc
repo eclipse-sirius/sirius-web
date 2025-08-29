@@ -52,7 +52,8 @@ Downstream projects should stop provide their own implementations.
 * `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 `UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Custom node layout handlers must now set `minComputedWidth` and  `minComputedHeight` values to limit the resizer to a minimum size.
+An example can be found with `EllipseNodeLayoutHandler.ts` and `EllipseNodeConverter.ts`.
 
 === Dependency update
 
@@ -93,7 +94,7 @@ Mutations rely on `Project:edit` since we forbid to change the content of a libr
 A new button is displayed to export the results when a query returns one or multiple objects.
 - https://github.com/eclipse-sirius/sirius-web/issues/5406[#5406] [core] Add the ability to view multiple workbench views at once
 - https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point, `PaletteAppearanceSectionContribution`, an exemple is available on ellipse node.
-* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance 
+* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance
 * `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
 * `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
 * A GraphQL mutation is also added `editEllipseNodeAppearance`.
@@ -129,6 +130,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 * The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
 - https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export these stateful components `AppearanceColorPicker`, `AppearanceNumberTextfield ` and `AppearanceSelect` to use in custom node appearance section
+- link:++https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071]++[#5071] [diagram] Limit node resizing with minimum node size constraints
 
 
 == v2025.8.0
@@ -426,7 +428,7 @@ Of particular note: projects which create View-based, in-memory, representation 
 [source,java]
 ----
 Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
-JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.

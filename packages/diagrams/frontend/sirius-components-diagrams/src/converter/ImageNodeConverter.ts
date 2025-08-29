@@ -97,6 +97,8 @@ const toImageNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    minComputedWidth: null,
+    minComputedHeight: null,
   };
 
   data.insideLabel = convertInsideLabel(
