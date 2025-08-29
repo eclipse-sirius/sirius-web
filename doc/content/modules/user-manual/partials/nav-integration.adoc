@@ -1,0 +1,3 @@
+* xref:developer-guide:index.adoc[]
+* xref:developer-guide:extend.adoc[]
+* xref:developer-guide:api.adoc[]
