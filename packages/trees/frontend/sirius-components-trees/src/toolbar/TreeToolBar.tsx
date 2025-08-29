@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import MyLocationOutlinedIcon from '@mui/icons-material/MyLocationOutlined';
+import IconButton from '@mui/material/IconButton';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
@@ -35,6 +37,7 @@ const useTreeToolbarStyles = makeStyles()((theme) => ({
 export const TreeToolBar = ({
   editingContextId,
   treeFilters,
+  onRevealSelection,
   onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
   readOnly,
@@ -58,6 +61,15 @@ export const TreeToolBar = ({
           <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />
         ) : null}
         {children}
+        <IconButton
+          color="inherit"
+          size="small"
+          data-testid="reveal-selection-button"
+          aria-label="Reveal selected elements"
+          title="Reveal selected elements"
+          onClick={onRevealSelection}>
+          <MyLocationOutlinedIcon color="inherit" />
+        </IconButton>
       </div>
     </>
   );
