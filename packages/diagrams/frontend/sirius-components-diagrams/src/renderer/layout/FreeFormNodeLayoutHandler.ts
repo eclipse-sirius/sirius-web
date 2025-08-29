@@ -187,6 +187,9 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
+
+    node.data.minComputedWidth = nodeMinComputeWidth;
+    node.data.minComputedHeight = nodeMinComputeHeight;
   }
 
   private handleLeafNode(
@@ -236,5 +239,8 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
+
+    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
   }
 }

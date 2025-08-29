@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,12 +37,13 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    node.width =
-      forceDimensions?.width ??
-      rectangularNodePadding +
-        getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) +
-        rectangularNodePadding;
+    const insideLabelWidthConstraint = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
+
+    node.width = forceDimensions?.width ?? insideLabelWidthConstraint + rectangularNodePadding * 2;
     node.height = labelElement?.getBoundingClientRect().height;
+
+    node.data.minComputedWidth = insideLabelWidthConstraint + rectangularNodePadding * 2;
+    node.data.minComputedHeight = node.height ?? 0;
   }
 
   private findNodeIndex(nodes: Node<NodeData>[], nodeId: string): number {

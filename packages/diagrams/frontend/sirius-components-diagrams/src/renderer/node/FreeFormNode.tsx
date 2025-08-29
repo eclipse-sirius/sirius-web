@@ -170,7 +170,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
-          data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
+          data-testid={`FreeForm - ${data?.insideLabel?.text}`}>
           <div data-svg="image" style={{ ...backgroundStyle }} />
           <div className={classes.labelAndAction}>
             <div className={classes.label}>

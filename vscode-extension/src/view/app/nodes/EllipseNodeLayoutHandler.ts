@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  setBorderNodesPosition,
+  setBorderNodesPosition
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeHandle } from '@xyflow/system';
@@ -168,6 +168,9 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram, this.calculateCustomNodeBorderNodePosition);
+
+    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
   }
 
   calculateCustomNodeEdgeHandlePosition(
