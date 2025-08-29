@@ -134,7 +134,7 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                             });
 
                     List<List<String>> rowIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].headerIconURLs");
-                    assertThat(rowIconURLs).hasSize(3);
+                    assertThat(rowIconURLs).hasSize(4);
                     assertThat(rowIconURLs.get(0)).hasSize(2);
                     assertThat(rowIconURLs.get(1)).hasSize(2);
                     assertThat(rowIconURLs)
@@ -177,7 +177,7 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
 
                     List<List<String>> iconLabelCellIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].cells[*].iconURLs");
                     List<List<String>> filteredIconLavelCellIconURLs = iconLabelCellIconURLs.stream().filter(iconURL -> !iconURL.isEmpty()).toList();
-                    assertThat(filteredIconLavelCellIconURLs).hasSize(3);
+                    assertThat(filteredIconLavelCellIconURLs).hasSize(4);
                     assertThat(filteredIconLavelCellIconURLs.get(0)).hasSize(2);
                     assertThat(filteredIconLavelCellIconURLs.get(1)).hasSize(2);
                     assertThat(filteredIconLavelCellIconURLs)

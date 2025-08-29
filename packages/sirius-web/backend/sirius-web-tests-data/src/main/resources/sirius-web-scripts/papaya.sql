@@ -137,6 +137,16 @@ INSERT INTO document (
                               "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@elements.0/@packages.0/@types.0"
                             ]
                           }
+                        },
+                        {
+                          "id": "632a0820-0187-4c0f-aa04-4b7385f65aca",
+                          "eClass": "papaya:Interface",
+                          "data": {
+                            "name": "IntegrationTest",
+                            "annotations":[
+                              "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@elements.0/@packages.0/@types.0"
+                            ]
+                          }
                         }
                        ]
                      }

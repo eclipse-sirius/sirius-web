@@ -94,8 +94,9 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
         int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
         assertThat(nbElementCreated).isEqualTo(0);
         List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.additionalReports[*]");
-        assertThat(additionalReports).hasSize(1);
+        assertThat(additionalReports).hasSize(2);
         assertThat(additionalReports.get(0)).isEqualTo("[BROKEN] Sirius Web Architecture - AbstractTest.annotations (previously set to GivenSiriusWebServer)");
+        assertThat(additionalReports.get(1)).isEqualTo("[BROKEN] Sirius Web Architecture - IntegrationTest.annotations (previously set to GivenSiriusWebServer)");
     }
 
     @Test

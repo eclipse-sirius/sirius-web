@@ -59,6 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -125,7 +126,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(6);
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
         });
 
         StepVerifier.create(flux)
@@ -145,7 +146,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(6);
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
 
             tableId.set(table.getId());
         });
