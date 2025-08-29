@@ -40,7 +40,7 @@ export interface PaletteProps {
   targetObjectId: string;
   onDirectEditClick: () => void;
   onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  paletteExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteState {

@@ -72,7 +72,7 @@ export const Palette = ({
   targetObjectId,
   onDirectEditClick,
   onClose,
-  children,
+  paletteExtensions,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
@@ -221,9 +221,8 @@ export const Palette = ({
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 lastToolInvoked={lastToolInvoked}
-                diagramElementId={diagramElementId}>
-                {children}
-              </PaletteToolList>
+                diagramElementId={diagramElementId}
+                paletteExtensions={paletteExtensions}></PaletteToolList>
             )}
           </Box>
         </ClickAwayListener>

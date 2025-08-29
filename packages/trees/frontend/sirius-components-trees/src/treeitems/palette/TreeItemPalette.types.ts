@@ -39,7 +39,7 @@ export interface PaletteProps {
   treeItem: GQLTreeItem;
   onDirectEditClick: () => void;
   onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  paletteExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteState {

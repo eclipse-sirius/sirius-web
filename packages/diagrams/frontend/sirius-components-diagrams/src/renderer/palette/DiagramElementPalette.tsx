@@ -62,7 +62,7 @@ export const DiagramElementPalette = memo(
       }
     };
 
-    const extensionSections = useMemo(() => {
+    const paletteExtensions = useMemo(() => {
       const isNode = !!store.getState().nodeLookup.get(diagramElementId);
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
       if (isNode) {
@@ -91,9 +91,8 @@ export const DiagramElementPalette = memo(
             diagramElementId={diagramElementId}
             targetObjectId={targetObjectId}
             onDirectEditClick={handleDirectEditClick}
-            onClose={onClose}>
-            {extensionSections}
-          </Palette>
+            onClose={onClose}
+            paletteExtensions={paletteExtensions}></Palette>
         </div>
       </PalettePortal>
     ) : null;

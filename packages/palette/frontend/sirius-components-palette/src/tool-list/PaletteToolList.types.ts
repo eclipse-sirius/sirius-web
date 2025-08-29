@@ -20,7 +20,7 @@ export interface PaletteToolListProps {
   onBackToMainList: () => void;
   diagramElementId: string;
   lastToolInvoked: GQLTool | null;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  paletteExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteToolListStateValue {

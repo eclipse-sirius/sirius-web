@@ -82,7 +82,7 @@ export const PaletteToolList = ({
   onBackToMainList,
   diagramElementId,
   lastToolInvoked,
-  children,
+  paletteExtensions,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
@@ -135,7 +135,7 @@ export const PaletteToolList = ({
     return [];
   });
 
-  children.forEach((extensionSection) => {
+  paletteExtensions.forEach((extensionSection) => {
     const extensionSectionId = extensionSection.props.id;
     const extensionSectionTitle = extensionSection.props.title;
     listItemsRendered.push(
@@ -182,7 +182,7 @@ export const PaletteToolList = ({
           </Slide>
         ))}
 
-        {children.map((extensionSection) => {
+        {paletteExtensions.map((extensionSection) => {
           const extensionSectionId = extensionSection.props.id;
           const SectionComponent = extensionSection.props.component;
           return (

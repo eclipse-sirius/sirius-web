@@ -144,7 +144,7 @@ export const TreeItemContextMenu = ({
           treeItem={item}
           onDirectEditClick={enterEditingMode}
           onClose={onClose}
-          children={[]}></TreeItemPalette>
+          paletteExtensions={[]}></TreeItemPalette>
       </Popper>
     );
   }

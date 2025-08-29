@@ -34,7 +34,7 @@ export const TreeItemPalette = ({
   treeItem,
   onDirectEditClick,
   onClose,
-  children,
+  paletteExtensions,
 }: PaletteProps) => {
   const palette: GQLPalette = {
     id: treeItem.id,
@@ -115,9 +115,8 @@ export const TreeItemPalette = ({
               onToolClick={handleToolClick}
               onBackToMainList={handleBackToMainList}
               lastToolInvoked={lastToolInvoked}
-              diagramElementId={treeId}>
-              {children}
-            </PaletteToolList>
+              diagramElementId={treeId}
+              paletteExtensions={paletteExtensions}></PaletteToolList>
           )}
         </Box>
       </ClickAwayListener>

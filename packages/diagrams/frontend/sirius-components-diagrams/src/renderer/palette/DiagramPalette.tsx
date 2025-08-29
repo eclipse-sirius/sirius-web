@@ -48,7 +48,7 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
           targetObjectId={targetObjectId}
           onDirectEditClick={() => {}}
           onClose={hideDiagramPalette}
-          children={[]}
+          paletteExtensions={[]}
         />
       </div>
     </PalettePortal>
