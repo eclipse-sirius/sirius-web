@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLResetNodeApparenceData,
-  GQLResetNodeApparenceVariables,
-  UseResetNodeAppearanceValue,
-} from './useResetNodeAppearance.types';
+  GQLEditEllipseNodeAppearanceData,
+  GQLEditEllipseNodeAppearanceVariables,
+  GQLEllipseNodeAppearanceInput,
+  UseUpdateEllipseNodeAppearanceValue,
+} from './useUpdateEllipseNodeAppearance.types';
 
-export const GQLResetNodeAppearanceMutation = gql`
-  mutation resetNodeAppearance($input: ResetNodeAppearanceInput!) {
-    resetNodeAppearance(input: $input) {
+export const editEllipseNodeAppearanceMutation = gql`
+  mutation editEllipseNodeAppearance($input: EditEllipseNodeAppearanceInput!) {
+    editEllipseNodeAppearance(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -39,33 +39,36 @@ export const GQLResetNodeAppearanceMutation = gql`
   }
 `;
 
-export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
-  const [resetNodeApparence, resetNodeApparenceResult] = useMutation<
-    GQLResetNodeApparenceData,
-    GQLResetNodeApparenceVariables
-  >(GQLResetNodeAppearanceMutation);
+export const useUpdateEllipseNodeAppearance = (): UseUpdateEllipseNodeAppearanceValue => {
+  const [editEllipseNodeAppearance, editEllipseNodeAppearanceResult] = useMutation<
+    GQLEditEllipseNodeAppearanceData,
+    GQLEditEllipseNodeAppearanceVariables
+  >(editEllipseNodeAppearanceMutation);
 
-  useReporting(resetNodeApparenceResult, (data: GQLResetNodeApparenceData) => data.resetNodeAppearance);
+  useReporting(
+    editEllipseNodeAppearanceResult,
+    (data: GQLEditEllipseNodeAppearanceData) => data.editEllipseNodeAppearance
+  );
 
-  const resetNodeStyleProperties = (
+  const updateEllipseNodeAppearance = (
     editingContextId: string,
     representationId: string,
     nodeId: string,
-    propertiesToReset: string[]
+    appearance: Partial<GQLEllipseNodeAppearanceInput>
   ) =>
-    resetNodeApparence({
+    editEllipseNodeAppearance({
       variables: {
         input: {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
           nodeId,
-          propertiesToReset,
+          appearance,
         },
       },
     });
 
   return {
-    resetNodeStyleProperties,
+    updateEllipseNodeAppearance,
   };
 };

@@ -10,32 +10,39 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseResetNodeAppearanceValue {
-  resetNodeStyleProperties: (
+export interface UseUpdateEllipseNodeAppearanceValue {
+  updateEllipseNodeAppearance: (
     editingContextId: string,
     representationId: string,
     nodeId: string,
-    propertiesToReset: string[]
+    appearance: Partial<GQLEllipseNodeAppearanceInput>
   ) => void;
 }
 
-export interface GQLResetNodeApparenceData {
-  resetNodeAppearance: GQLResetNodeApparencePayload;
+export interface GQLEditEllipseNodeAppearanceData {
+  editEllipseNodeAppearance: GQLEditEllipseNodeAppearancePayload;
 }
 
-export type GQLResetNodeApparencePayload = GQLErrorPayload | GQLSuccessPayload;
+export type GQLEditEllipseNodeAppearancePayload = GQLErrorPayload | GQLSuccessPayload;
 
-export interface GQLResetNodeAppearanceInput {
+export interface GQLEditEllipseNodeAppearanceVariables {
+  input: GQLEditEllipseNodeAppearanceInput;
+}
+
+export interface GQLEditEllipseNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
   nodeId: string;
-  propertiesToReset: string[];
+  appearance: Partial<GQLEllipseNodeAppearanceInput>;
 }
 
-export interface GQLResetNodeApparenceVariables {
-  input: GQLResetNodeAppearanceInput;
+export interface GQLEllipseNodeAppearanceInput {
+  background: string;
+  borderColor: string;
+  borderRadius: number;
+  borderSize: number;
+  borderStyle: string;
 }

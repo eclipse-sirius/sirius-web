@@ -10,22 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Crop32Icon from '@mui/icons-material/Crop32';
+
+import {
+  AppearanceColorPicker,
+  AppearanceNumberTextfield,
+  AppearanceSelect,
+  DiagramContext,
+  DiagramContextValue,
+  useResetNodeAppearance,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import LineStyleIcon from '@mui/icons-material/LineStyle';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
-import { DiagramContext } from '../../../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
-import { useResetNodeAppearance } from '../useResetNodeAppearance';
-import { AppearanceColorPicker } from '../widget/AppearanceColorPicker';
-import { AppearanceNumberTextfield } from '../widget/AppearanceNumberTextfield ';
-import { AppearanceSelect } from '../widget/AppearanceSelect';
-import { RectangularNodePartProps } from './RectangularNodePart.types';
-import { useUpdateRectangularNodeAppearance } from './useUpdateRectangularNodeAppearance';
-import { GQLRectangularNodeAppearanceInput } from './useUpdateRectangularNodeAppearance.types';
+import { EllipseNodePartProps, GQLEllipseNodeStyle } from './EllipseNodePart.types';
+import { useUpdateEllipseNodeAppearance } from './useUpdateEllipseNodeAppearance';
+import { GQLEllipseNodeAppearanceInput } from './useUpdateEllipseNodeAppearance.types';
 
 const LINE_STYLE_OPTIONS = [
   { value: 'Solid', label: 'Solid' },
@@ -34,16 +36,19 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }: RectangularNodePartProps) => {
+export const EllipseNodePart = ({ element }: EllipseNodePartProps) => {
+  const style = element.data.nodeAppearanceData.gqlStyle as GQLEllipseNodeStyle;
+  const customizedStyleProperties = element.data.nodeAppearanceData.customizedStyleProperties;
+
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { updateRectangularNodeAppearance } = useUpdateRectangularNodeAppearance();
+  const { updateEllipseNodeAppearance } = useUpdateEllipseNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, element.id, [customizedStyleProperty]);
 
-  const handleEditProperty = (newValue: Partial<GQLRectangularNodeAppearanceInput>) =>
-    updateRectangularNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+  const handleEditProperty = (newValue: Partial<GQLEllipseNodeAppearanceInput>) =>
+    updateEllipseNodeAppearance(editingContextId, diagramId, element.id, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 
@@ -65,14 +70,6 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
           isDisabled={isDisabled('BORDER_COLOR')}
           onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
           onReset={() => handleResetProperty('BORDER_COLOR')}></AppearanceColorPicker>
-
-        <AppearanceNumberTextfield
-          icon={<Crop32Icon />}
-          label={'Border Radius'}
-          initialValue={style.borderRadius}
-          isDisabled={isDisabled('BORDER_RADIUS')}
-          onEdit={(newValue) => handleEditProperty({ borderRadius: newValue })}
-          onReset={() => handleResetProperty('BORDER_RADIUS')}></AppearanceNumberTextfield>
 
         <AppearanceNumberTextfield
           icon={<LineWeightIcon />}

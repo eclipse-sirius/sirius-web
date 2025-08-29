@@ -11,12 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+export interface AppearanceSelectProps {
+  icon: JSX.Element;
+  label: string;
+  options: { value: string; label: string }[];
+  initialValue: string;
+  isDisabled: boolean;
+  onEdit: (value: string) => void;
+  onReset: () => void;
+}
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+export interface AppearanceSelectState {
+  value: string;
 }

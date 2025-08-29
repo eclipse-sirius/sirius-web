@@ -10,13 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.diagram.dto;
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import org.eclipse.sirius.components.diagrams.LineStyle;
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
-  customizedStyleProperties: string[];
+/**
+ * Input for the edition of an ellipse node's appearance.
+ *
+ * @author mcharfadi
+ */
+public record EllipseNodeAppearanceInput(String background, String borderColor, Integer borderSize, LineStyle borderStyle) {
+
 }
