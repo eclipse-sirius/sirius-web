@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramgrowablelist:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramgrowablelist="domain://diagramGrowableList">
+  <entity1s name="Growable"/>
+</diagramgrowablelist:Root>
