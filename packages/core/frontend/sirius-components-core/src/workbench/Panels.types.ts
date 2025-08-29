@@ -26,6 +26,6 @@ export interface PanelsProps {
 }
 
 export type PanelState = {
-  selectedContributionIndex: number;
+  selectedContributionIds: string[];
   isOpen: boolean;
 };

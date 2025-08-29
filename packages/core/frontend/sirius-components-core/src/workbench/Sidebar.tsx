@@ -56,34 +56,18 @@ const useSidebarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Sidebar = ({
-  side,
-  panelRef,
-  contributions,
-  onContributionSelected,
-  selectedContributionIndex,
-}: SidebarProps) => {
+export const Sidebar = ({ side, contributions, onContributionClick, selectedContributionIds }: SidebarProps) => {
   const { classes } = useSidebarStyles();
-
-  const toggleExpansion = () => {
-    if (panelRef.current) {
-      if (panelRef.current.isExpanded()) {
-        panelRef.current.collapse();
-      } else {
-        panelRef.current.expand();
-      }
-    }
-  };
 
   return (
     <div
       className={side === 'left' ? classes.viewSelectorLeft : classes.viewSelectorRight}
       data-testid={`sidebar-${side}`}>
-      {contributions.map((contribution, index) => {
-        const { title, icon } = contribution;
+      {contributions.map((contribution) => {
+        const { id, title, icon } = contribution;
 
         let iconClassName = side === 'left' ? classes.viewSelectorIconLeft : classes.viewSelectorIconRight;
-        if (index === selectedContributionIndex) {
+        if (selectedContributionIds.includes(id)) {
           iconClassName =
             side === 'left' ? classes.viewSelectorIconSelectedLeft : classes.viewSelectorIconSelectedRight;
         }
@@ -92,22 +76,13 @@ export const Sidebar = ({
             enterDelay={250}
             title={title}
             placement={side === 'left' ? 'right' : 'left'}
-            key={index}
+            key={id}
             className={classes.viewIcon}>
             <IconButton
               className={iconClassName}
               aria-label={title}
               data-testid={`viewselector-${title}`}
-              onClick={() => {
-                if (index === selectedContributionIndex) {
-                  toggleExpansion();
-                } else {
-                  if (panelRef.current?.isCollapsed()) {
-                    panelRef.current?.expand();
-                  }
-                  onContributionSelected(index);
-                }
-              }}>
+              onClick={() => onContributionClick(id)}>
               {icon}
             </IconButton>
           </Tooltip>

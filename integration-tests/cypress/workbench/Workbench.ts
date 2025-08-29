@@ -38,8 +38,10 @@ export class Workbench {
     cy.getByTestId(`close-representation-tab-${label}`).click();
   }
 
-  public checkPanelContent(side: WorkbenchSide, viewTitle: string) {
-    cy.getByTestId(`site-${side}`).children().eq(1).should('have.attr', 'data-testid', `view-${viewTitle}`);
+  public checkPanelContent(side: WorkbenchSide, viewTitles: string[]) {
+    viewTitles.forEach((viewTitle) => {
+      cy.getByTestId(`site-${side}`).findByTestId(`view-${viewTitle}`);
+    });
   }
 
   public selectPanelView(side: WorkbenchSide, viewTitle: string) {

@@ -31,37 +31,37 @@ describe('Explorer', () => {
 
     it('should initially display the first view in side panels', () => {
       const workbench = new Workbench();
-      workbench.checkPanelContent('left', 'Explorer');
-      workbench.checkPanelContent('right', 'Details');
+      workbench.checkPanelContent('left', ['Explorer']);
+      workbench.checkPanelContent('right', ['Details']);
     });
 
     it('should display a specific view when selected from its icon', () => {
       const workbench = new Workbench();
       // left
       workbench.selectPanelView('left', 'Validation');
-      workbench.checkPanelContent('left', 'Validation');
+      workbench.checkPanelContent('left', ['Explorer', 'Validation']);
       workbench.isIconHighlighted('left', 'Validation');
-      workbench.isIconHighlighted('left', 'Explorer', false);
+      workbench.isIconHighlighted('left', 'Explorer');
       // right
       workbench.selectPanelView('right', 'Query');
-      workbench.checkPanelContent('right', 'Query');
-      workbench.isIconHighlighted('right', 'Details', false);
+      workbench.checkPanelContent('right', ['Details', 'Query']);
+      workbench.isIconHighlighted('right', 'Details');
       workbench.isIconHighlighted('right', 'Query');
       workbench.isIconHighlighted('right', 'Representations', false);
       workbench.isIconHighlighted('right', 'Related Elements', false);
 
       workbench.selectPanelView('right', 'Representations');
-      workbench.checkPanelContent('right', 'Representations');
-      workbench.isIconHighlighted('right', 'Details', false);
-      workbench.isIconHighlighted('right', 'Query', false);
+      workbench.checkPanelContent('right', ['Details', 'Query', 'Representations']);
+      workbench.isIconHighlighted('right', 'Details');
+      workbench.isIconHighlighted('right', 'Query');
       workbench.isIconHighlighted('right', 'Representations');
       workbench.isIconHighlighted('right', 'Related Elements', false);
 
       workbench.selectPanelView('right', 'Related Elements');
-      workbench.checkPanelContent('right', 'Related Elements');
-      workbench.isIconHighlighted('right', 'Details', false);
-      workbench.isIconHighlighted('right', 'Query', false);
-      workbench.isIconHighlighted('right', 'Representations', false);
+      workbench.checkPanelContent('right', ['Details', 'Query', 'Representations', 'Related Elements']);
+      workbench.isIconHighlighted('right', 'Details');
+      workbench.isIconHighlighted('right', 'Query');
+      workbench.isIconHighlighted('right', 'Representations');
       workbench.isIconHighlighted('right', 'Related Elements');
     });
 
