@@ -11,12 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
+import { GQLImageNodeStyle } from '../../../../graphql/subscription/nodeFragment.types';
 
-export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
-  position: string;
-  style: GQLLabelStyle;
+export interface ImageNodePartProps {
+  nodeId: string;
+  style: GQLImageNodeStyle;
   customizedStyleProperties: string[];
 }

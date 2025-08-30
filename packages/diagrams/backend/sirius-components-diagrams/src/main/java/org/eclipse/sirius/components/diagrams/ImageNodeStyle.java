@@ -46,6 +46,10 @@ public final class ImageNodeStyle implements INodeStyle {
         // Prevent instantiation
     }
 
+    public static ImageNodeStyle.Builder newImageNodeStyle(ImageNodeStyle sourceImageNodeStyle) {
+        return new ImageNodeStyle.Builder(sourceImageNodeStyle);
+    }
+
     public static Builder newImageNodeStyle() {
         return new Builder();
     }
@@ -115,6 +119,16 @@ public final class ImageNodeStyle implements INodeStyle {
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(ImageNodeStyle sourceImageNodeStyle) {
+            this.borderColor = sourceImageNodeStyle.getBorderColor();
+            this.borderSize = sourceImageNodeStyle.getBorderSize();
+            this.borderRadius = sourceImageNodeStyle.getBorderRadius();
+            this.borderStyle = sourceImageNodeStyle.getBorderStyle();
+            this.scalingFactor = sourceImageNodeStyle.getScalingFactor();
+            this.imageURL = sourceImageNodeStyle.getImageURL();
+            this.childrenLayoutStrategy = sourceImageNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder imageURL(String imageURL) {
