@@ -1,0 +1,3 @@
+// Note: Cannot include an open block here.
+* xref:maker-manual:setup/requirements.adoc[]
+* xref:maker-manual:setup/instructions.adoc[]

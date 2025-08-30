@@ -1,0 +1,132 @@
+= {projects}
+
+== Purpose
+
+In the {sw} workbench, *_{projects}_* are the base organizational unit for the user data. They serve as top-level containers for the _{usr-models}_, which in turn contain the _{usr-objects}_ and _{usr-representations}_.
+
+A _{project}_ always has a name that consists of between 3 and 1024 characters.
+
+== {natures}
+
+A *_{nature}_* is a _{project}_ metadata used to tailor the user experience to the usage intended for the _{project}_. _{projects}_ may be tagged with one or several _{natures}_. 
+
+_{natures}_ are created by the _{stddevs}_ and usually contributed alongside the _{usr-data-models}_.
+
+The _{natures}_ of a _{project}_ are not visible to _{stdusrs}_ and _{stdmkrs}_. Only _{stddevs}_ may see them.
+
+By default, {sw} provides the following _{natures}_:
+
+[cols="1,1,3"]
+|===
+|*{nature}*
+|*ID*
+|*Purpose*
+
+|[[project-nature-studio]]Studio
+|`siriusComponents://nature?kind=studio`
+|Identifies the _{mkr-studio-projects}_, which are the _{projects}_ used by _{stdmkrs}_ and _{stddevs}_ to define the contributed custom _{usr-data-models}_ and _{usr-view-models}_.
+
+A _{project}_ with this {nature} can reference *all* _{data-models}_ of the platform, and in particular the ones used as part of _{stddefs}_: _{usr-domain}_ and _{usr-view}_.
+|===
+
+Custom applications based on {sw} may provide their own sets of _{natures}_ to further categorize _{projects}_ and possibly enrich the user experience.
+
+
+== {templates}
+
+A *_{template}_* is a pre-made _{project}_ that can be easily created by a _{stdusr}_. Its goal is to facilitate the creation of a particular _{project}_, usually in order to quickly get started on a particular use case of a domain, or to showcase the depth and breadth of possibilities offered by a custom studio. _{projects}_ created through _{templates}_ usually contain representative samples of _{usr-models}_ and _{usr-representations}_.
+
+_{templates}_ are created by the _{stddevs}_ and usually contributed alongside the _{usr-data-models}_.
+
+In the _{usr-ui-workbench}_, _{templates}_ are by default listed at the top of the _{usr-ui-homepage}_. With a single click, a new project populated with its domain-specific data and representations is created.
+
+By default, {sw} provides the following _{templates}_:
+
+[cols="1,1,3"]
+|===
+|*{template}*
+|*ID*
+|*Purpose*
+
+^a|[[project-template-studio-blank]]Blank Studio
+image:Project-Template_BlankStudio.png["Snapshot of the `Blank Studio` {template}"]
+|`blank-studio-template`
+|Used by _{stdmkrs}_ to create a new and empty {mkr-studio-project}.
+
+^a|[[project-template-studio]]Studio
+image:Project-Template_Studio.png["Snapshot of the `Studio` {template}"]
+|`studio-template`
+|Used by _{stdmkrs}_ to create a new {mkr-studio-project} with a simple example of _{usr-data-model}_ and _{usr-view-model}_.
+|===
+
+Although most of the time, _{templates}_ focus on a particular {data-model} and as such are provided alongside it, custom applications based on {sw} may provide their own sets of _{templates}_, for their own {data-models} or for existing ones.
+
+
+== {stereotypes}
+
+A *_{stereotype}_* is a bit like a _{template}_, but for _{usr-models}_. It is a pre-made _{model}_ that can be easily created into an existing _{project}_. Its goal is usually to allow _{stdusrs}_ to quickly get started with a _{model}_ that has a particular structure, or to showcase the depth and breadth of possibilities offered by a custom _{usr-data-model}_.
+
+_{stereotypes}_ are created by _{stddevs}_ and usually contributed alongside the _{usr-data-models}_.
+
+In the _{usr-ui-workbench}_, _{stereotypes}_ are by default available through xref:user-manual:workbench-ui/project-homepage/project-editor.adoc#_create_a_new_model[the left pane of the {ui-view-project-editor}].
+
+[cols="1,1,3"]
+|===
+|*{stereotype}*
+|*Condition*
+|*Purpose*
+
+|Domain
+|Contextual _{project}_ has the _xref:user-manual:core-concepts.adoc#project-nature-studio[Studio]_ _{nature}_
+|Creates a new _{model}_ with an empty `Domain` (from _{usr-domain}_).
+
+|View
+|Context _{project}_ has the _xref:user-manual:core-concepts.adoc#project-nature-studio[Studio]_ _{nature}_
+|Creates a new _{model} with an empty `View` (from _{usr-view}_).
+|===
+
+Like _{templates}_, _{stereotypes}_ usually focus on a particular {data-model} and as such are provided alongside it. Still, custom applications based on {sw} may provide their own sets of _{stereotypes}_, for their own {data-models} or for existing ones.
+
+
+== Lifecycle
+
+_{projects}_ are most often managed directly by _{stdusrs}_ through the _{usr-ui-workbench}_.
+They can also be managed programmatically by _{stddevs}_.
+
+=== Creation
+
+_{projects}_ can be created in the workbench by either:
+
+* xref:user-manual:workbench-ui/workbench-homepage.adoc#project-create[Creating] a new empty _{project}_.
+* Using one of the _{usr-project-templates}_ made available by the platform.
+* xref:user-manual:workbench-ui/workbench-homepage.adoc#project-upload[Uploading] an existing _{project}_. The uploaded file must conform to one of the xref:user-manual:core-concepts/projects.adoc#_export[supported import/export formats].
+
+=== Edition
+
+_{projects}_ can be edited by opening them from the {usr-ui-workbench}.
+
+Inside a _{project}_, the {usr-ui-project-editor} is used to edit its contents.
+
+All _{projects}_ can be edited by all _{stdusrs}_.
+
+=== Deletion
+
+_{projects}_ can be deleted by either:
+
+* Using the xref:user-manual:workbench-ui/workbench-homepage.adoc#project-list[_{project}_ contextual menu action from the {ui-view-homepage}].
+* Using the xref:user-manual:workbench-ui/project-homepage/project-toolbar.adoc#project-delete[_{project}_ contextual menu action from the {ui-view-project-toolbar}].
+
+All _{projects}_ can be deleted from the workbench by all _{stdusrs}_.
+
+=== Export
+
+_{projects}_ can be exported by either:
+
+* Using the xref:user-manual:workbench-ui/workbench-homepage.adoc#project-list[_{project}_ contextual menu action from the {ui-view-homepage}].
+* Using the xref:user-manual:workbench-ui/project-homepage/project-toolbar.adoc#project-delete[_{project}_ contextual menu action from the {ui-view-project-toolbar}].
+
+All _{projects}_ can be exported and downloaded by all _{stdusrs}_.
+
+#TODO: I think at some point we need to make explicit the serialization format used by the exporter.#
+
+#TODO: Explain limitations of the "Download Project" feature, in particular for de-synchronized diagrams.#

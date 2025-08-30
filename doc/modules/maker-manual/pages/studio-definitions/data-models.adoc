@@ -1,0 +1,54 @@
+= {data-models}
+
+*_{data-models}_* specify the structure of the domain-specific data (the _{usr-objects}_) that a _{stddef}_ is designed to handle.
+
+TIP: If you are familiar with the concepts of _Grammar_, _Abstract Syntax_, or _Metamodel_, then you can consider the notion of _{data-model}_ to be conceptually similar.
+
+
+== Creation with the Domain {data-model}
+
+By default, {sw} provides a low-code approach to defining the {data-model} of a _{stddef}_ in the form of a modeling studio to create _{stddefs}_.
+
+NOTE: One could consider {sw} to be https://en.wikipedia.org/wiki/Bootstrapping[bootstrapped]: in order to create a custom modeling studio, we can use the studio provided by {sw} that is defined as a _{stddef}_ itself.
+
+The `Domain` {data-model} draws inspiration from https://en.wikipedia.org/wiki/Object-oriented_programming[Object-Oriented Programming]. It relies on only 5 simple concepts.
+
+#TODO: Add diagram / grammar schema here.#
+
+=== Domain
+
+*`Domain`* is the root element for this {data-model}. 
+
+A `Domain` has a name and contains a list of `Entity`.
+
+=== Entity
+
+*`Entity`* defines the elements belonging to a `Domain`.
+
+An `Entity` has a name, and contains a list of `Feature`.
+It can have _super types_, that is, other `Entity` (from any _{data-model}_), from which it inherits any _super types_ and _features_.
+It can also be _abstract_ that is, it is meant to be the _super type_ of another `Entity`.
+
+=== Feature
+
+*`Feature`* is an abstract concept that defines the properties of an `Entity`.
+
+A `Feature` has a name, may be _optional_ (`true` by default), and may be _many_-value (`false` by default).
+
+=== Attribute
+
+*`Attribute`* is a sub-type of `Feature` typed by either `String`, `Boolean`or `Number`.
+
+=== Relation
+
+*`Relation`* is a sub-type of `Feature` typed by an `Entity`.
+
+It can be specified as a _containment_ (`false` by default), in which case the values for the `Relation` are contained by the `object` itself.
+
+== Reuse
+
+It is not mandatory to create an entirely new _{data-model}_ for each _{stddef}_. A _{stddef}_ can rely, totally or partially, on an already-existing _{data-model}_.
+
+To partially reuse an existing _{data-model}_, simply create your own _{data-model}_ in which you extend or reference domain-specific concepts from other _{data-models}_.
+
+To totally reuse an existing _{data-model}_, simply define your _{mkr-view-model}_ to rely on an existing _{data-model}_.

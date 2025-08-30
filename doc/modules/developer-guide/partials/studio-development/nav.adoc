@@ -1,0 +1,4 @@
+// Note: Cannot include an open block here.
+* xref:developer-guide:studio-development/api-datamodel.adoc[]
+* xref:developer-guide:studio-development/api-viewmodel.adoc[]
+* xref:developer-guide:studio-development/api-workbench.adoc[]
