@@ -49,6 +49,7 @@ describe('Diagram - Palette', () => {
         // the edge between Wifi and DSP element is selected in the diagram
         diagram.getSelectedEdge('diagram', '4').should('exist');
         // the standard element is selected in the Explorer
+        explorer.revealGlobalSelectionInExplorer();
         explorer.getSelectedTreeItems().contains('standard');
         // the standard element is selected in the Details
         details.getDetailsView().getByTestId('page-tab-standard').should('exist');
