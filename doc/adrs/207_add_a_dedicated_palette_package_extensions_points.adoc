@@ -1,0 +1,162 @@
+= ADR-205 - Add a dedicated palette package : extensions points
+
+== Context
+
+We want to reuse the palette component on other representations notably the explorer.
+
+We currently have several extensions point to contribute tools in the palette :
+
+- `paletteAppearanceSectionExtensionPoint`  can be use to contribute tool sections (only used internally in the diagram package and is not yet exported)
+- `diagramPaletteToolExtensionPoint`        can be use to contribute quick tools
+
+We have these to contribute action to the contextual menu of the explorer :
+
+- `treeItemContextMenuEntryOverrideExtensionPoint`  can be use to contribute new menu item
+- `treeItemContextMenuEntryExtensionPoint`  can be use to override existing menu item
+
+== Decision
+
+=== A new extension point : `paletteToolsExtensionPoint`
+
+==== Context 
+
+In order for the `lastToolUsed` to work, we need to set an `unique id` value when executing the tool.
+So a contributed tool needs a unique id.
+
+In order for the `search` to work, we need to know what's the `name` of the tool displayed.
+So a contributed tool needs a name.
+
+So in order for the contribution to expose all the necessary data we will add a property `props` that will hold the unique id and the label of a tool.
+
+[source, typescript]
+----
+export const paletteToolsExtensionPoint: DataExtensionPoint<Array<PaletteToolContribution>> = {
+  identifier: 'palette#tool',
+  fallback: [],
+};
+
+export interface PaletteToolContribution {
+  canHandle: (editingContextId: string, representationId: string, representationElementId: string) => boolean;
+  component: React.ComponentType<PaletteToolComponentProps>;
+  props: PaletteToolProps;
+}
+
+export type PaletteToolComponentProps = {
+  representationElementId: string;
+  onClose: () => void;
+};
+
+export type PaletteToolProps = {
+  id: string;
+  label: string;
+};
+----
+
+==== Last tool used 
+
+We can let the contributed component the responsibility to set the last tool used with this existing hook
+
+`const { setLastToolInvoked } = useDiagramPalette();`
+
+==== Search list
+
+We still need the id and the label in order to know what contributed component will be revealed in `searchListResult` when searching for a tool.
+
+==== Accessing more information needed by the contributed tool
+
+When we're contributing a tool on the diagram palette we have access at many hooks (like `useStore`) in order to get the the information needed to render or to execute some behavior.
+
+We don't have as much information when contributing for a tree palette.
+
+We will need to create a context to hold some values that would surely be required by contributed tree palette tools.
+
+A custom hook used in the contributed tools could then be used.
+
+[source, typescript]
+----
+export const usePaletteTreeItem = (): UsePaletteTreeItemValue => {
+  const { expandItem, readOnly, treeItem } = useContext<PaletteTreeItemContextContextValue>(PaletteTreeItemContext);
+
+  return {
+    expandItem,
+    readOnly,
+    treeItem,
+  };
+};
+----
+
+Also for a diagram tool, we will need to have a hook in order to retrieve `x and y position` from the contributed tool.
+
+`const { toolClickXYPosition } = usePalette();`
+
+
+
+==== Quick tools
+
+At first the quicktools will not be available for the explorer palette.
+
+The existing diagram palette extensions `diagramPaletteToolExtensionPoint` will be removed and instead we will add a `toolType` attribute to `PaletteToolProps`
+
+[source, typescript]
+----
+export type PaletteToolProps = {
+  id: string;
+  label: string;
+  toolType : ToolType;
+};
+
+type ToolType = 'quickTool' | 'sectionTool';
+----
+
+This is because the current contribution's props of `diagramPaletteToolExtensionPoint` are not compatible with the explorer.
+
+[source, typescript]
+----
+export interface DiagramPaletteToolContributionProps {
+  canHandle: (element: Node<NodeData> | Edge<EdgeData> | null) => boolean;
+  component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
+}
+
+export interface DiagramPaletteToolContributionComponentProps {
+  x: number;
+  y: number;
+  diagramElementId: string;
+  key: string;
+}
+----
+
+==== Override existing tool
+
+When rendering the available tools, if a contributed tool has the `same id` as a default one then the contributed tool will replace the former (in order to have the same functionality as `treeItemContextMenuEntryOverrideExtensionPoint`)
+
+==== Tool sections
+
+Right now `paletteAppearanceSectionExtensionPoint` is used only internally.
+
+We could make these modification to support tools section
+
+[source, typescript]
+----
+type ToolType = 'quickTool' | 'sectionTool' | 'section'; 
+
+export type PaletteToolProps = {
+  id: string;
+  toolSectionId: string;
+  label: string;
+  toolType : ToolType;
+};
+----
+
+Then a contribution could be a `toolSection` and a sectionTool could be rendered into the toolSection that has the `same id as toolSectionId`.`
+
+If no id is set or the tool section does not exist the `sectionTool could be rendered on the `"main menu"`
+
+== Status
+
+draft
+
+== Consequences
+
+This will change currently used API that will need to be documented.
+
+== References
