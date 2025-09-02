@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-formdescriptioneditors-root</artifactId>
-	<version>2025.8.3</version>
+	<version>2025.8.4</version>
 
 	<name>sirius-components-formdescriptioneditors-root</name>
 	<description>Sirius Components FormDescription Editors Root</description>

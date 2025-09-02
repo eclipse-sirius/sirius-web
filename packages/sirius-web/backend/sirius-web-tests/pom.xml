@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.3</version>
+		<version>2025.8.4</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-tests</artifactId>
-	<version>2025.8.3</version>
+	<version>2025.8.4</version>
 	<name>sirius-web-tests</name>
 	<description>Sirius Web Tests</description>
 
@@ -32,57 +32,57 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-tests</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-deck</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables-tests</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-gantt</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-tests</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-view-fork</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 	</dependencies>
 
