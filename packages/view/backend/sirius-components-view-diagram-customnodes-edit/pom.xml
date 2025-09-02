@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.3</version>
+		<version>2025.8.4</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-diagram-customnodes-edit</artifactId>
-	<version>2025.8.3</version>
+	<version>2025.8.4</version>
 	<name>sirius-components-view-diagram-customnodes-edit</name>
 	<description>Support for additional custom nodes - edit support</description>
 
@@ -47,12 +47,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>2025.8.3</version>
+			<version>2025.8.4</version>
 		</dependency>
 	</dependencies>
 
