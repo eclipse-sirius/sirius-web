@@ -1,0 +1,127 @@
+= ADR-218 - Improve palette extension points
+
+== Context
+
+We want to improve current diagram representation palette extensions points to allow more flexibility and reduced coupling with specific diagram representation types.
+
+These would allow us to reuse the palette component on other representations, notably the explorer with the same extension points as the one used for diagram representations.
+
+We currently have these extensions point to contribute tools in the palette :
+
+- `paletteAppearanceSectionExtensionPoint`  can be used to contribute appearance tool sections 
+- `diagramPaletteToolExtensionPoint`        can be used to contribute quick tools
+
+
+== Decision
+
+We will now have 3 palette extensions point for : tool, quicktools and toolsections
+
+The tool and quicktool extension point will allow the contributions of React component since a contributed tool may want to adopt its own layout or render a modal.
+
+Contributions will have access to parameters used to make the getPalette query.
+
+Contributions can use the `usePalette` hook in order to retrieve specific states of the representation or the palette (like the position where it was opened or the closePalette() function).
+
+The existing diagram palette extensions `diagramPaletteToolExtensionPoint` will be removed and `paletteQuickToolExtensionPoint` will offer the same behavior.
+
+=== Last tool used feature
+
+The contributions will have to set the id of the last tool when executing it in order for the `Palette` to know what tool to render in the last tool section.
+
+`const { setLastToolInvokedId } = usePalette();`
+
+
+=== Search list feature
+
+We need the id and the label of a contribution in order to know what contributed component will be revealed in `searchListResult` when searching for a tool.
+
+A contribution may opt out of this feature (if the tool UI is too large to be rendered in the search result for example) by setting the prop `disableSearch`(available on tool extension point).
+
+
+=== Tool extension point
+
+[source, typescript]
+----
+export const paletteToolExtensionPoints: DataExtensionPoint<Array<PaletteToolContributionProps>> = {
+  identifier: 'diagramPalette#tool',
+  fallback: [],
+};
+
+export interface PaletteToolContributionProps {
+  canHandle: (representationElementIds: string[]) => boolean;
+  component: React.ComponentType<PaletteToolContributionComponentProps>;
+  id: string;
+  toolSectionId: string | null;
+  label: string;
+  isSearchable: boolean;
+}
+
+export interface PaletteToolContributionComponentProps {
+  representationElementIds: string[];
+  onToolClick: (tool: GQLTool) => void;
+}
+----
+
+As such the current AppearanceSection content could be contributed by contribution of a single tool (in order to keep its custom layout) or several tools (in order to have each appearance property searchable and be available on the lastToolUsed section).
+
+Contribution of a toolSection would be needed.
+
+=== Quick tool extension point
+
+[source, typescript]
+----
+export const paletteQuickToolExtensionPoints: DataExtensionPoint<Array<PaletteQuickToolContributionProps>> = {
+  identifier: 'diagramPalette#quickTool',
+  fallback: [],
+};
+
+export interface PaletteQuickToolContributionProps {
+  canHandle: (representationElementIds: string[]) => boolean;
+  component: React.ComponentType<PaletteQuickToolContributionComponentProps>;
+}
+
+export interface PaletteQuickToolContributionComponentProps {
+  representationElementIds: string[];
+  onToolClick: (tool: GQLTool) => void;
+}
+----
+
+=== Tool section extension point
+
+[source, typescript]
+----
+export const paletteToolSectionExtensionPoints: DataExtensionPoint<Array<PaletteToolSectionContributionProps>> = {
+  identifier: 'diagramPalette#toolSection',
+  fallback: [],
+};
+
+export interface PaletteToolSectionContributionProps {
+  canHandle: (representationElementIds: string[]) => boolean;
+  id: string;
+  label: string;
+}
+
+export interface PaletteToolSectionContributionComponentProps {
+  representationElementIds: string[];
+}
+----
+
+note that we should consider the rendering of a tool section inside another tool section.
+
+==== Override existing tool
+
+When rendering a palette, if a tool, toolSection, or quicktool has the same id as the default one we will replace it, if several have the same id, one of them will be rendered.
+
+note that for disabling a specific tool, toolSection or quicktool we could either add a disabled prop to contributions that would cause for every element with the same id to not render or add another ExtensionPoint, this is not a priority.
+
+== Status
+
+draft
+
+== Consequences
+
+This will break all existing frontend API related to the palette.
+
+== References
+
+[ADR-216] Lower the coupling between Palette and DiagramDescription
