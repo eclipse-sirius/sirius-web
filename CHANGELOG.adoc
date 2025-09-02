@@ -99,7 +99,7 @@ A new button is displayed to export the results when a query returns one or mult
 * `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
 * `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
 * A GraphQL mutation is also added `editEllipseNodeAppearance`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4214[#4214] [sirius-web] In the _Explorer_ view, replace "Synchronize with representation" mode with an explicit "Reveal selection" action button
 
 === Improvements
 
