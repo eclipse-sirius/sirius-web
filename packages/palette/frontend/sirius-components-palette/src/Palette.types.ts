@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { XYPosition } from '@xyflow/react';
+import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;

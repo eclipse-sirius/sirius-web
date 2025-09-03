@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { PaletteExtensionSectionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -24,7 +25,6 @@ import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
 import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
-import { PaletteExtensionSectionComponentProps } from '../PaletteExtensionSection.types';
 import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
 const useStyle = makeStyles()((theme) => ({
