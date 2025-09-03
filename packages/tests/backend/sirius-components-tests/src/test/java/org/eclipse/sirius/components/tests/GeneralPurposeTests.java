@@ -46,7 +46,9 @@ public class GeneralPurposeTests {
 
     private static final String FRONTEND_SRC_FOLDER_PATH = "packages";
 
-    private static final String INTEGRATION_TESTS_SRC_FOLDER_PATH = "integration-tests/cypress";
+    private static final String INTEGRATION_TESTS_CYPRESS_SRC_FOLDER_PATH = "integration-tests-cypress/cypress";
+
+    private static final String INTEGRATION_TESTS_PLAYWRIGHT_SRC_FOLDER_PATH = "integration-tests-playwright/playwright";
 
     private static final String TYPESCRIPT_FILE_EXTENSION = ".ts";
 
@@ -323,11 +325,14 @@ public class GeneralPurposeTests {
     @Test
     public void checkIntegrationTestsCode() {
         File rootFolder = this.getRootFolder();
-        Path integrationTestsPath = Paths.get(rootFolder.getAbsolutePath(), INTEGRATION_TESTS_SRC_FOLDER_PATH);
-        List<Path> integrationTestTypescriptFilePaths = this.findFilePaths(integrationTestsPath, TYPESCRIPT_FILE_EXTENSION, true);
+        Path integrationTestsCypressPath = Paths.get(rootFolder.getAbsolutePath(), INTEGRATION_TESTS_CYPRESS_SRC_FOLDER_PATH);
+        List<Path> integrationTestCypressTypescriptFilePaths = this.findFilePaths(integrationTestsCypressPath, TYPESCRIPT_FILE_EXTENSION, true);
+        Path integrationTestsPlaywrightPath = Paths.get(rootFolder.getAbsolutePath(), INTEGRATION_TESTS_PLAYWRIGHT_SRC_FOLDER_PATH);
+        List<Path> integrationTestPlaywrightTypescriptFilePaths = this.findFilePaths(integrationTestsPlaywrightPath, TYPESCRIPT_FILE_EXTENSION, true);
 
         List<Path> filePaths = new ArrayList<>();
-        filePaths.addAll(integrationTestTypescriptFilePaths);
+        filePaths.addAll(integrationTestCypressTypescriptFilePaths);
+        filePaths.addAll(integrationTestPlaywrightTypescriptFilePaths);
 
         for (Path javascriptFilePath : filePaths) {
             try {
