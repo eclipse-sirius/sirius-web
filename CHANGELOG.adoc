@@ -111,6 +111,7 @@ Downstream projects can provide their own scheduler providing an implementation 
 Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible contribution of a header of the navigation bar menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] Add ICustomNodeStyleDeserializer API to correctly deserialize custom node style
+- https://github.com/eclipse-sirius/sirius-web/issues/5283[#5283] [diagram] Add support for the management of the appearance of outside labels
 
 
 === Improvements

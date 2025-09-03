@@ -53,6 +53,7 @@ export interface GQLOutsideLabel {
   style: GQLLabelStyle;
   overflowStrategy: GQLLabelOverflowStrategy;
   textAlign: GQLLabelTextAlign;
+  customizedStyleProperties: string[];
 }
 
 export type GQLOutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';

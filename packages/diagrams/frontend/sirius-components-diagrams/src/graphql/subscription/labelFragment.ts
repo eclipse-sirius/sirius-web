@@ -82,6 +82,7 @@ fragment outsideLabelFragment on OutsideLabel {
     borderRadius
     maxWidth
   }
-  overflowStrategy
+  overflowStrategy,
+  customizedStyleProperties
 }
 `;

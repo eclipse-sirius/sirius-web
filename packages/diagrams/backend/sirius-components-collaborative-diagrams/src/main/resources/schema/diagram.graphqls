@@ -201,6 +201,7 @@ type OutsideLabel {
   style: LabelStyle!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
+  customizedStyleProperties: [LabelStyleProperty!]!
 }
 
 enum OutsideLabelLocation {

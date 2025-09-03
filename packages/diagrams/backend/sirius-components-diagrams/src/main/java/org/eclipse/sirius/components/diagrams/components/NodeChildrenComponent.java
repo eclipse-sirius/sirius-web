@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -72,9 +73,9 @@ public class NodeChildrenComponent implements IComponent {
     }
 
     private List<Element> getOutsideLabel(String nodeId) {
-
+        List<OutsideLabel> optionalPreviousLabels = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getOutsideLabels).orElse(new ArrayList<>());
         return this.props.getNodeComponentProps().getNodeDescription().getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId);
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps().getDiagramEvents());
             return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
         }).toList();
 

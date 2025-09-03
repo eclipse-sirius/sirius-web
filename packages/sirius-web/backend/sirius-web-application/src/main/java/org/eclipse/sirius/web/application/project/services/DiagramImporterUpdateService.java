@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.LabelIdProvider;
@@ -228,7 +229,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         nodeElementOldNewIds.put(oldNodeId, newNodeId);
         elementIdToViewModifier.put(newNodeId, oldNode.getState());
 
-        diagramContext.diagramEvents().addAll(this.getNodeAppearanceEvents(oldNode, newNodeId));
+        diagramContext.diagramEvents().addAll(this.getNodeAppearanceEvents(oldNode, newNodeId, parentId));
 
         oldNode.getChildNodes().forEach(childNode ->
                 this.handleNode(diagramDescription, childNode, newNodeId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
@@ -240,7 +241,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription, containmentKind, targetObjectId);
     }
 
-    private List<IDiagramEvent> getNodeAppearanceEvents(Node oldNode, String newNodeId) {
+    private List<IDiagramEvent> getNodeAppearanceEvents(Node oldNode, String newNodeId, String parentId) {
         List<IDiagramEvent> diagramEvents = new ArrayList<>();
 
         if (oldNode.getCustomizedStyleProperties() != null && !oldNode.getCustomizedStyleProperties().isEmpty()) {
@@ -258,7 +259,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         }
 
         if (oldNode.getInsideLabel() != null && oldNode.getInsideLabel().getCustomizedStyleProperties() != null && !oldNode.getInsideLabel().getCustomizedStyleProperties().isEmpty()) {
-            var newInsideLabelNodeId = this.computeInsideLabelNodeId(newNodeId);
+            var newInsideLabelNodeId = this.computeInsideLabelId(newNodeId);
             oldNode.getInsideLabel().getCustomizedStyleProperties().forEach(customizedStyleProperty -> {
                 switch (customizedStyleProperty) {
                     case LabelAppearanceHandler.BOLD ->
@@ -288,6 +289,41 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                     }
                 }
             });
+        }
+
+        for (OutsideLabel outsideLabel : oldNode.getOutsideLabels()) {
+            if (outsideLabel.customizedStyleProperties() != null && !outsideLabel.customizedStyleProperties().isEmpty()) {
+                var newOutsideLabelId = this.computeOutsideLabelId(newNodeId, outsideLabel.outsideLabelLocation().name());
+                outsideLabel.customizedStyleProperties().forEach(customizedStyleProperty -> {
+                    switch (customizedStyleProperty) {
+                        case LabelAppearanceHandler.BOLD ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(newOutsideLabelId, outsideLabel.style().isBold()))));
+                        case LabelAppearanceHandler.ITALIC ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(newOutsideLabelId, outsideLabel.style().isItalic()))));
+                        case LabelAppearanceHandler.UNDERLINE ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(newOutsideLabelId, outsideLabel.style().isUnderline()))));
+                        case LabelAppearanceHandler.STRIKE_THROUGH ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(newOutsideLabelId, outsideLabel.style().isStrikeThrough()))));
+                        case LabelAppearanceHandler.COLOR ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(newOutsideLabelId, outsideLabel.style().getColor()))));
+                        case LabelAppearanceHandler.FONT_SIZE ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(newOutsideLabelId, outsideLabel.style().getFontSize()))));
+                        case LabelAppearanceHandler.BACKGROUND ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(newOutsideLabelId, outsideLabel.style().getBackground()))));
+                        case LabelAppearanceHandler.BORDER_COLOR ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderColor()))));
+                        case LabelAppearanceHandler.BORDER_SIZE ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderSize()))));
+                        case LabelAppearanceHandler.BORDER_RADIUS ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderRadius()))));
+                        case LabelAppearanceHandler.BORDER_STYLE ->
+                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderStyle()))));
+                        default -> {
+                            //We do nothing, the style property is not supported
+                        }
+                    }
+                });
+            }
         }
 
         return diagramEvents;
@@ -330,7 +366,11 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
-    private String computeInsideLabelNodeId(String parentElementId) {
+    private String computeInsideLabelId(String parentElementId) {
         return new LabelIdProvider().getInsideLabelId(parentElementId);
+    }
+
+    private String computeOutsideLabelId(String parentElementId, String position) {
+        return new LabelIdProvider().getOutsideLabelId(parentElementId, position);
     }
 }
