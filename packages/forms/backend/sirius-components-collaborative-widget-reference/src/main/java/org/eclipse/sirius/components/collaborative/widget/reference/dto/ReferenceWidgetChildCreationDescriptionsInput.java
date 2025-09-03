@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,6 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author frouene
  */
-public record ReferenceWidgetChildCreationDescriptionsInput(UUID id, String editingContextId, String kind, String referenceKind, String descriptionId) implements IInput {
+public record ReferenceWidgetChildCreationDescriptionsInput(UUID id, String editingContextId, String containerId, String referenceKind, String descriptionId) implements IInput {
 
 }
