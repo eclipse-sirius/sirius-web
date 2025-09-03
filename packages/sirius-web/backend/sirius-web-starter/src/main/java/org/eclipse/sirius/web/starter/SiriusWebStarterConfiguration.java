@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
+import org.eclipse.sirius.components.collaborative.representations.api.IEventProcessorSubscriptionSchedulerProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
@@ -28,6 +29,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import reactor.core.scheduler.Schedulers;
 
 /**
  * AutoConfiguration of the Sirius Web application.
@@ -79,6 +82,19 @@ public class SiriusWebStarterConfiguration {
                 return thread;
             });
             return new DelegatingRequestContextExecutorService(executorService);
+        };
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IEventProcessorSubscriptionSchedulerProvider.class)
+    public IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider() {
+        return (editingContextId) -> {
+            var executorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
+                Thread thread = Executors.defaultThreadFactory().newThread(runnable);
+                thread.setName("Editing context " + editingContextId);
+                return thread;
+            });
+            return Schedulers.fromExecutorService(new DelegatingRequestContextExecutorService(executorService));
         };
     }
 

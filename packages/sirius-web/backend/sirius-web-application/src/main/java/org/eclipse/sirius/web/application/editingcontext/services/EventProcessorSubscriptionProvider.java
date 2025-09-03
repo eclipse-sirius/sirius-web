@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFluxCustomizer;
+import org.eclipse.sirius.components.collaborative.representations.api.IEventProcessorSubscriptionSchedulerProvider;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -31,7 +32,6 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Used to provide the subscription of a representation in an editing context.
@@ -51,16 +51,18 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     private final List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers;
 
+    private final IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider;
+
     private final IMessageService messageService;
 
-    public EventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService,
-            ILibraryEditingContextService libraryEditingContextService, List<ICapabilityVoter> capabilityVoters,
-            List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers, IMessageService messageService) {
+    public EventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService, ILibraryEditingContextService libraryEditingContextService, List<ICapabilityVoter> capabilityVoters,
+                                              List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers, IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider, IMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.libraryEditingContextService = Objects.requireNonNull(libraryEditingContextService);
         this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.representationEventProcessorFluxCustomizers = Objects.requireNonNull(representationEventProcessorFluxCustomizers);
+        this.eventProcessorSubscriptionSchedulerProvider = Objects.requireNonNull(eventProcessorSubscriptionSchedulerProvider);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -85,7 +87,7 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
                 .map(representationEventProcessor -> this.customizeFlux(editingContextId, representationId, input, representationEventProcessor))
                 .orElse(Flux.empty())
-                .publishOn(Schedulers.single());
+                .publishOn(this.eventProcessorSubscriptionSchedulerProvider.getScheduler(editingContextId));
     }
 
     private Flux<IPayload> customizeFlux(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor) {

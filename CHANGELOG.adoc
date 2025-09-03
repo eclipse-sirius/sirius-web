@@ -101,6 +101,8 @@ A new button is displayed to export the results when a query returns one or mult
 * `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
 * A GraphQL mutation is also added `editEllipseNodeAppearance`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicatorDelegate` API.
+- https://github.com/eclipse-sirius/sirius-web/issues/5420[#5420] [sirius-web] The scheduler for `IEventProcessorSubscriptionProvider` can now be customized.
+Downstream projects can provide their own scheduler providing an implementation of `IEventProcessorSubscriptionSchedulerProvider`.
 
 
 === Improvements
@@ -136,7 +138,6 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bending points only when the source or target handle would change position (top, left, ...).
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [test] Add Cypress tests for the 'Share' action of a project, and for the resolution of a URL with search parameter `workbenchConfiguration`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5091[#5091] [sirius-web] Remove state machine from used to manage project images
-
 
 == v2025.8.0
 
