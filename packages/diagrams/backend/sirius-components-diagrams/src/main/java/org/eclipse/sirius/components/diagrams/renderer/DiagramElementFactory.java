@@ -205,7 +205,7 @@ public class DiagramElementFactory implements IElementFactory {
     private OutsideLabel instantiateOutsideLabel(IProps props) {
         if (props instanceof OutsideLabelElementProps outsideLabelElementProps) {
             return new OutsideLabel(outsideLabelElementProps.getId(), outsideLabelElementProps.getText(), outsideLabelElementProps.getOutsideLabelLocation(), outsideLabelElementProps.getStyle(),
-                    outsideLabelElementProps.getOverflowStrategy(), outsideLabelElementProps.getTextAlign());
+                    outsideLabelElementProps.getOverflowStrategy(), outsideLabelElementProps.getTextAlign(), outsideLabelElementProps.getCustomizedStyleProperties());
         }
         return null;
     }

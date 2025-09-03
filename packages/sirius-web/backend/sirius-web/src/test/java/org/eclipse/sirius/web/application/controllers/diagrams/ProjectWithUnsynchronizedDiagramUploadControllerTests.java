@@ -194,28 +194,15 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         var nodeLayoutData = diagram.getLayoutData().nodeLayoutData();
         assertThat(nodeLayoutData).hasSize(3);
 
-        this.checkImportedNodes(diagramNavigator, nodeLayoutData);
+        this.checkImageNode(diagramNavigator, nodeLayoutData);
+        this.checkRectangularNode(diagramNavigator, nodeLayoutData);
 
         assertThat(diagram.getEdges().size()).isEqualTo(1);
         assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
         assertThat(diagram.getLayoutData().edgeLayoutData().get(diagram.getEdges().get(0).getId())).isNotNull();
     }
 
-    private void checkImportedNodes(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
-        var dataSourceNode = diagramNavigator.nodeWithLabel("DataSource1").getNode();
-        assertThat(nodeLayoutData.get(dataSourceNode.getId())).isNotNull();
-        assertThat(dataSourceNode).hasState(ViewModifier.Normal);
-
-        assertThat(dataSourceNode.getCustomizedStyleProperties()).hasSize(4);
-        assertThat(dataSourceNode.getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
-        assertThat(dataSourceNode.getStyle()).isInstanceOf(ImageNodeStyle.class);
-
-        ImageNodeStyle dataSourceStyle = (ImageNodeStyle) dataSourceNode.getStyle();
-        assertThat(dataSourceStyle.getBorderColor()).isEqualTo("red");
-        assertThat(dataSourceStyle.getBorderRadius()).isEqualTo(1);
-        assertThat(dataSourceStyle.getBorderSize()).isEqualTo(1);
-        assertThat(dataSourceStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
-
+    private void checkRectangularNode(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
         var compositeProcessorNode = diagramNavigator.nodeWithLabel("CompositeProcessor1").getNode();
         assertThat(nodeLayoutData.get(compositeProcessorNode.getId())).isNotNull();
         assertThat(compositeProcessorNode).hasState(ViewModifier.Faded);
@@ -252,6 +239,39 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         var processorNode = diagramNavigator.nodeWithLabel("Processor1").getNode();
         assertThat(nodeLayoutData.get(processorNode.getId())).isNotNull();
         assertThat(processorNode).hasState(ViewModifier.Normal);
+    }
+
+    private void checkImageNode(DiagramNavigator diagramNavigator, Map<String, NodeLayoutData> nodeLayoutData) {
+        var dataSourceNode = diagramNavigator.nodeWithLabel("DataSource1").getNode();
+        assertThat(nodeLayoutData.get(dataSourceNode.getId())).isNotNull();
+        assertThat(dataSourceNode).hasState(ViewModifier.Normal);
+
+        assertThat(dataSourceNode.getCustomizedStyleProperties()).hasSize(4);
+        assertThat(dataSourceNode.getCustomizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
+        assertThat(dataSourceNode.getStyle()).isInstanceOf(ImageNodeStyle.class);
+
+        ImageNodeStyle dataSourceStyle = (ImageNodeStyle) dataSourceNode.getStyle();
+        assertThat(dataSourceStyle.getBorderColor()).isEqualTo("red");
+        assertThat(dataSourceStyle.getBorderRadius()).isEqualTo(1);
+        assertThat(dataSourceStyle.getBorderSize()).isEqualTo(1);
+        assertThat(dataSourceStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
+        assertThat(dataSourceNode.getOutsideLabels()).hasSize(1);
+        var outsideLabel = dataSourceNode.getOutsideLabels().get(0);
+        assertThat(outsideLabel.customizedStyleProperties()).hasSize(11);
+        assertThat(outsideLabel.customizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BOLD", "ITALIC", "UNDERLINE", "STRIKE_THROUGH", "COLOR",
+                "FONT_SIZE", "BACKGROUND", "BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
+        var outsideLabelStyle = outsideLabel.style();
+        assertThat(outsideLabelStyle.isBold()).isFalse();
+        assertThat(outsideLabelStyle.getColor()).isEqualTo("#002B40");
+        assertThat(outsideLabelStyle.getFontSize()).isEqualTo(15);
+        assertThat(outsideLabelStyle.isItalic()).isTrue();
+        assertThat(outsideLabelStyle.isUnderline()).isTrue();
+        assertThat(outsideLabelStyle.isStrikeThrough()).isTrue();
+        assertThat(outsideLabelStyle.getBackground()).isEqualTo("red");
+        assertThat(outsideLabelStyle.getBorderColor()).isEqualTo("green");
+        assertThat(outsideLabelStyle.getBorderSize()).isEqualTo(1);
+        assertThat(outsideLabelStyle.getBorderRadius()).isEqualTo(0);
+        assertThat(outsideLabelStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
     }
 
     private byte[] getZipTestFile() {
@@ -431,20 +451,33 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                         "text": "DataSource1",
                         "outsideLabelLocation": "BOTTOM_MIDDLE",
                         "style": {
-                          "color": "#002B3C",
-                          "fontSize": 14,
-                          "bold": false,
-                          "italic": false,
-                          "underline": false,
-                          "strikeThrough": false,
-                          "iconURL": [],
-                          "background": "transparent",
-                          "borderColor": "black",
-                          "borderSize": 0,
-                          "borderRadius": 3,
-                          "borderStyle": "Solid",
-                          "maxWidth": null
+                            "color": "#002B40",
+                            "fontSize": 15,
+                            "bold": false,
+                            "italic": true,
+                            "underline": true,
+                            "strikeThrough": true,
+                            "iconURL": [],
+                            "background": "red",
+                            "borderColor": "green",
+                            "borderSize": 1,
+                            "borderRadius": 0,
+                            "borderStyle": "Dash",
+                            "maxWidth": null
                         },
+                        "customizedStyleProperties": [
+                            "BOLD",
+                            "ITALIC",
+                            "UNDERLINE",
+                            "STRIKE_THROUGH",
+                            "COLOR",
+                            "FONT_SIZE",
+                            "BACKGROUND",
+                            "BORDER_COLOR",
+                            "BORDER_SIZE",
+                            "BORDER_RADIUS",
+                            "BORDER_STYLE"
+                        ],
                         "overflowStrategy": "NONE",
                         "textAlign": "LEFT"
                       }

@@ -12,14 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
-import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.elements.OutsideLabelElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -46,35 +50,14 @@ public class OutsideLabelComponent implements IComponent {
 
         LabelStyleDescription labelStyleDescription = outsideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
 
-        String color = labelStyleDescription.getColorProvider().apply(variableManager);
-        Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = labelStyleDescription.getBoldProvider().apply(variableManager);
-        Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
-        Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
-        Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
-        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
-        String background = labelStyleDescription.getBackgroundProvider().apply(variableManager);
-        String borderColor = labelStyleDescription.getBorderColorProvider().apply(variableManager);
-        Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
-        Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
-        LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
-        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
+        List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
+        Optional<OutsideLabel> optionalPreviousLabel = this.props.getPreviousOutsideLabels().stream().filter(label -> label.id().equals(id)).findFirst();
+        Optional<LabelStyle> optionalPreviousLabelStyle = optionalPreviousLabel.map(OutsideLabel::style);
+        Set<String> previousCustomizedStyleProperties = optionalPreviousLabel.map(OutsideLabel::customizedStyleProperties).orElse(new LinkedHashSet<>());
 
-        var labelStyle = LabelStyle.newLabelStyle()
-                .color(color)
-                .fontSize(fontSize)
-                .bold(bold)
-                .italic(italic)
-                .strikeThrough(strikeThrough)
-                .underline(underline)
-                .iconURL(iconURL)
-                .background(background)
-                .borderColor(borderColor)
-                .borderRadius(borderRadius)
-                .borderSize(borderSize)
-                .borderStyle(borderLineStyle)
-                .maxWidth(maxWidth)
-                .build();
+        Set<String> newCustomizedStyleProperties = new LinkedHashSet<>();
+
+        var labelStyle = new LabelStyleComponentProvider().getLabelStyle(id, diagramEvents, previousCustomizedStyleProperties, optionalPreviousLabelStyle, labelStyleDescription, variableManager, newCustomizedStyleProperties);
 
         OutsideLabelElementProps outsideLabelElementProps = OutsideLabelElementProps.newOutsideLabelElementProps(id)
                 .text(text)
@@ -82,7 +65,9 @@ public class OutsideLabelComponent implements IComponent {
                 .style(labelStyle)
                 .overflowStrategy(outsideLabelDescription.getOverflowStrategy())
                 .textAlign(outsideLabelDescription.getTextAlign())
+                .customizedStyleProperties(newCustomizedStyleProperties)
                 .build();
         return new Element(OutsideLabelElementProps.TYPE, outsideLabelElementProps);
     }
+
 }
