@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,12 +23,10 @@ import java.util.UUID;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -45,13 +42,13 @@ import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.ISuggestedRootObjectTypesProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,6 +66,8 @@ public class DefaultEditService implements IDefaultEditService {
 
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
+    private final IObjectSearchService objectSearchService;
+
     private final ILabelService labelService;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -76,10 +75,11 @@ public class DefaultEditService implements IDefaultEditService {
     private final IEMFMessageService messageService;
 
     public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider,
-                              ILabelService labelService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
+            IObjectSearchService objectSearchService, ILabelService labelService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = optionalSuggestedRootObjectsProvider.orElse(null);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -105,19 +105,16 @@ public class DefaultEditService implements IDefaultEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
         this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
 
             AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
-            ResourceSet resourceSet = editingDomain.getResourceSet();
-            resourceSet.setPackageRegistry(ePackageRegistry);
-            Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of());
-            resourceSet.getResources().add(resource);
 
-            var optionalEClass = this.getEClass(ePackageRegistry, kind)
-                    .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
+            var optionalContainer = this.objectSearchService.getObject(editingContext, containerId)
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast);
 
             Optional<EClass> optionalEClassReference;
             if (referenceKind != null) {
@@ -127,10 +124,8 @@ public class DefaultEditService implements IDefaultEditService {
             }
 
 
-            if (optionalEClass.isPresent()) {
-                EClass eClass = optionalEClass.get();
-                EObject eObject = EcoreUtil.create(eClass);
-                resource.getContents().add(eObject);
+            if (optionalContainer.isPresent()) {
+                EObject eObject = optionalContainer.get();
 
                 Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
 

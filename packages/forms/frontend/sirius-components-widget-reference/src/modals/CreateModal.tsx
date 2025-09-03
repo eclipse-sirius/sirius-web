@@ -84,14 +84,14 @@ const createElementInReferenceMutation = gql`
 const getChildCreationDescriptionsQuery = gql`
   query getChildCreationDescriptions(
     $editingContextId: ID!
-    $kind: ID!
+    $containerId: ID!
     $referenceKind: String
     $descriptionId: String!
   ) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         referenceWidgetChildCreationDescriptions(
-          kind: $kind
+          containerId: $containerId
           referenceKind: $referenceKind
           descriptionId: $descriptionId
         ) {
@@ -326,17 +326,17 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           descriptionId: widget.descriptionId,
         },
       });
-    } else if (state.containerKind !== 'siriusWeb://document' && state.containerKind) {
+    } else if (state.containerKind !== 'siriusWeb://document' && state.containerId) {
       getChildCreationDescription({
         variables: {
           editingContextId,
-          kind: state.containerKind,
+          containerId: state.containerId,
           referenceKind: widget.reference.referenceKind,
           descriptionId: widget.descriptionId,
         },
       });
     }
-  }, [state.selectedDomainId, state.containerKind]);
+  }, [state.selectedDomainId, state.containerId, state.containerKind]);
 
   const onTreeItemClick = (_event, item: GQLTreeItem) => {
     setState((prevState) => ({

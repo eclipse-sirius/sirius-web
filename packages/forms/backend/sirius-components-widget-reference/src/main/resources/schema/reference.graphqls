@@ -4,7 +4,7 @@ extend type FormDescription {
 
 extend type EditingContext {
   referenceWidgetRootCreationDescriptions(domainId: ID!, referenceKind: String, descriptionId: String!): [ChildCreationDescription!]!
-  referenceWidgetChildCreationDescriptions(kind: ID!, referenceKind: String, descriptionId: String!): [ChildCreationDescription!]!
+  referenceWidgetChildCreationDescriptions(containerId: ID!, referenceKind: String, descriptionId: String!): [ChildCreationDescription!]!
 }
 
 type ReferenceWidget implements Widget {
