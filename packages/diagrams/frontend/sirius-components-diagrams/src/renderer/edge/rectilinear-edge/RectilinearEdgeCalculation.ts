@@ -81,121 +81,66 @@ export const isOutOfLines = (
   );
 };
 
-export const generateNewSourcePoint = (
-  source: XYPosition,
+export const generateNewHandlePoint = (
+  handleXYPosition: XYPosition,
   newX: number,
   newY: number,
   direction: 'x' | 'y',
-  sourceNode: InternalNode<Node<NodeData>>
+  node: InternalNode<Node<NodeData>>
 ): XYPosition => {
-  const newSource: XYPosition = { ...source };
-  if (direction === 'x' && sourceNode.internals.positionAbsolute.y > newY) {
-    newSource.y = sourceNode.internals.positionAbsolute.y;
-  } else if (direction === 'y' && sourceNode.internals.positionAbsolute.x > newX) {
-    newSource.x = sourceNode.internals.positionAbsolute.x;
-  } else if (direction === 'x' && sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < newY) {
-    newSource.y = sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0);
-  } else if (direction === 'y' && sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < newX) {
-    newSource.x = sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0);
+  const newHandlePosition: XYPosition = { ...handleXYPosition };
+  if (direction === 'x' && node.internals.positionAbsolute.y > newY) {
+    newHandlePosition.y = node.internals.positionAbsolute.y;
+    newHandlePosition.x = node.internals.positionAbsolute.x + (node.width ?? 0) / 2;
+  } else if (direction === 'y' && node.internals.positionAbsolute.x > newX) {
+    newHandlePosition.x = node.internals.positionAbsolute.x;
+    newHandlePosition.y = node.internals.positionAbsolute.y + (node.height ?? 0) / 2;
+  } else if (direction === 'x' && node.internals.positionAbsolute.y + (node.height ?? 0) < newY) {
+    newHandlePosition.y = node.internals.positionAbsolute.y + (node.height ?? 0);
+    newHandlePosition.x = node.internals.positionAbsolute.x + (node.width ?? 0) / 2;
+  } else if (direction === 'y' && node.internals.positionAbsolute.x + (node.width ?? 0) < newX) {
+    newHandlePosition.x = node.internals.positionAbsolute.x + (node.width ?? 0);
+    newHandlePosition.y = node.internals.positionAbsolute.y + (node.height ?? 0) / 2;
   }
-  return newSource;
+  return newHandlePosition;
 };
 
-export const generateNewTargetPoint = (
-  target: XYPosition,
+export const generateNewBendPointOnSegment = (
   newX: number,
   newY: number,
   direction: 'x' | 'y',
-  targetNode: InternalNode<Node<NodeData>>
-): XYPosition => {
-  const newTarget: XYPosition = { ...target };
-  if (direction === 'x' && targetNode.internals.positionAbsolute.y > newY) {
-    newTarget.y = targetNode.internals.positionAbsolute.y;
-  } else if (direction === 'y' && targetNode.internals.positionAbsolute.x > newX) {
-    newTarget.x = targetNode.internals.positionAbsolute.x;
-  } else if (direction === 'x' && targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < newY) {
-    newTarget.y = targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0);
-  } else if (direction === 'y' && targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < newX) {
-    newTarget.x = targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0);
-  }
-  return newTarget;
-};
-
-export const generateNewBendPointOnSourceSegment = (
-  newX: number,
-  newY: number,
-  direction: 'x' | 'y',
-  sourceNodeRelativePosition: XYPosition,
-  sourcePosition: Position,
-  sourceNodeHeight: number,
-  sourceNodeWidth: number
+  nodeXYPosition: XYPosition,
+  position: Position,
+  nodeHeight: number,
+  nodeWidth: number,
+  newPointPathOrder: number
 ): BendPointData | null => {
   let newPoint: BendPointData | null = null;
-  if (sourcePosition === Position.Top) {
+  if (position === Position.Top) {
     newPoint = {
-      x: direction === 'x' ? sourceNodeRelativePosition.x : newX,
-      y: direction === 'y' ? sourceNodeRelativePosition.y : newY,
-      pathOrder: 0,
+      x: direction === 'x' ? nodeXYPosition.x : newX,
+      y: direction === 'y' ? nodeXYPosition.y + nodeHeight / 2 : newY,
+      pathOrder: newPointPathOrder,
     };
-  } else if (sourcePosition === Position.Bottom) {
+  } else if (position === Position.Bottom) {
     newPoint = {
-      x: direction === 'x' ? sourceNodeRelativePosition.x + sourceNodeHeight : newX,
-      y: direction === 'y' ? sourceNodeRelativePosition.y + sourceNodeHeight : newY,
-      pathOrder: 0,
+      x: direction === 'x' ? nodeXYPosition.x + nodeHeight : newX,
+      y: direction === 'y' ? nodeXYPosition.y + nodeHeight / 2 : newY,
+      pathOrder: newPointPathOrder,
     };
-  } else if (sourcePosition === Position.Left) {
+  } else if (position === Position.Left) {
     newPoint = {
-      x: direction === 'x' ? sourceNodeRelativePosition.x : newX,
-      y: direction === 'y' ? sourceNodeRelativePosition.y : newY,
-      pathOrder: 0,
+      x: direction === 'x' ? nodeXYPosition.x + nodeWidth / 2 : newX,
+      y: direction === 'y' ? nodeXYPosition.y : newY,
+      pathOrder: newPointPathOrder,
     };
-  } else if (sourcePosition === Position.Right) {
+  } else if (position === Position.Right) {
     newPoint = {
-      x: direction === 'x' ? sourceNodeRelativePosition.x + sourceNodeWidth : newX,
-      y: direction === 'y' ? sourceNodeRelativePosition.y + sourceNodeWidth : newY,
-      pathOrder: 0,
-    };
-  }
-  return newPoint;
-};
-
-export const generateNewBendPointOnTargetSegment = (
-  newX: number,
-  newY: number,
-  direction: 'x' | 'y',
-  targetNodeRelativePosition: XYPosition,
-  adjacentPointIndex: number,
-  targetPosition: Position,
-  targetNodeHeight: number,
-  targetNodeWidth: number
-): BendPointData | null => {
-  let newPoint: BendPointData | null = null;
-  if (targetPosition === Position.Top) {
-    newPoint = {
-      x: direction === 'x' ? targetNodeRelativePosition.x : newX,
-      y: direction === 'y' ? targetNodeRelativePosition.y : newY,
-      pathOrder: adjacentPointIndex + 1,
-    };
-  } else if (targetPosition === Position.Bottom) {
-    newPoint = {
-      x: direction === 'x' ? targetNodeRelativePosition.x + targetNodeHeight : newX,
-      y: direction === 'y' ? targetNodeRelativePosition.y + targetNodeHeight : newY,
-      pathOrder: adjacentPointIndex + 1,
-    };
-  } else if (targetPosition === Position.Left) {
-    newPoint = {
-      x: direction === 'x' ? targetNodeRelativePosition.x : newX,
-      y: direction === 'y' ? targetNodeRelativePosition.y : newY,
-      pathOrder: adjacentPointIndex + 1,
-    };
-  } else if (targetPosition === Position.Right) {
-    newPoint = {
-      x: direction === 'x' ? targetNodeRelativePosition.x + targetNodeWidth : newX,
-      y: direction === 'y' ? targetNodeRelativePosition.y + targetNodeWidth : newY,
-      pathOrder: adjacentPointIndex + 1,
+      x: direction === 'x' ? nodeXYPosition.x + nodeWidth / 2 : newX,
+      y: direction === 'y' ? nodeXYPosition.y + nodeWidth : newY,
+      pathOrder: newPointPathOrder,
     };
   }
-
   return newPoint;
 };
 
