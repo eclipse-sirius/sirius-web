@@ -213,13 +213,44 @@ jobs:
           tags: ${{ steps.extract-metadata.outputs.tags }}
           labels: ${{ steps.extract-metadata.outputs.labels }}
 
-      - name: Check the integration test code
+      - name: Check the Playwright integration test code
         run: |
           npm ci
           npm run eslint
-        working-directory: integration-tests
+        working-directory: integration-tests-playwright
 
-      - name: Run end to end tests against the sirius-web application
+      - name: Install Playwright Browsers
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests against the sirius-web application
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: |
+          docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
+          docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+          npx wait-on -t 180000 http://localhost:8080
+          npx playwright test
+        working-directory: integration-tests-playwright
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: eclipsesirius/sirius-web:${{ steps.extract-metadata.outputs.version }}
+
+      - name: Store Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: integration-tests-playwright/playwright-report/
+          retention-days: 5
+
+      - name: Check the Cypress integration test code
+        run: |
+          npm ci
+          npm run eslint
+        working-directory: integration-tests-cypress
+
+      - name: Run Cypress end to end tests against the sirius-web application
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
         uses: cypress-io/github-action@v6
         with:
@@ -229,7 +260,7 @@ jobs:
             docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml logs
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
-          working-directory: integration-tests
+          working-directory: integration-tests-cypress
           record: false
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -242,7 +273,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
-          path: integration-tests/target/screenshots/**/*.png
+          path: integration-tests-cypress/target/screenshots/**/*.png
           retention-days: 5
 
       - name: Log in to Docker Hub
