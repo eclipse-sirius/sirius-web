@@ -33,7 +33,7 @@ export interface ChildCreationDescription {
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
-  kind: string;
+  containerId: string;
   referenceKind?: string;
 }
 
