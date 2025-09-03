@@ -149,7 +149,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Remove the `workbenchConfiguration` query parameter from the URL after loading the workbench.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project which representations are opened.
 - https://github.com/eclipse-sirius/sirius-web/issues/5431[#5431] [core] Support EObject-typed containments
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5433[#5433] [core] Calculate child creation descriptions based on container object
 
 
 == v2025.8.0

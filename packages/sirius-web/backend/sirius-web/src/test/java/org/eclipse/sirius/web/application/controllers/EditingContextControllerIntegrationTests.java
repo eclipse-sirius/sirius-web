@@ -34,9 +34,11 @@ import org.eclipse.sirius.components.graphql.tests.InvokeEditingContextActionMut
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.services.DefaultEditingContextActionProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.LibraryQueryRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,6 +64,9 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private CurrentEditingContextQueryRunner currentEditingContextQueryRunner;
+
+    @Autowired
+    private LibraryQueryRunner libraryQueryRunner;
 
     @Autowired
     private EditingContextActionsQueryRunner editingContextActionsQueryRunner;
@@ -102,6 +107,21 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
         assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a library, when a query to retrieve the editing context ID is performed, then it is returned")
+    public void givenLibraryWhenAQueryToRetrieveEditingContextIdIsPerformedThenItIsReturned() {
+        var namespace = "papaya";
+        var name = "java";
+        var version = "1.0.0";
+
+        Map<String, Object> variables = Map.of("namespace", namespace, "name", name, "version", version);
+        var result = this.libraryQueryRunner.run(variables);
+
+        String editingContextId = JsonPath.read(result, "$.data.viewer.library.currentEditingContext.id");
+        assertThat(editingContextId).isEqualTo(PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID.toString());
     }
 
     @Test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "childCreationDescriptions")
 public class EditingContextChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
-    private static final String KIND_ARGUMENT = "kind";
+    private static final String CONTAINER_ID_ARGUMENT = "containerId";
     private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
 
     private final IEditingContextDispatcher editingContextDispatcher;
@@ -46,9 +46,9 @@ public class EditingContextChildCreationDescriptionsDataFetcher implements IData
     @Override
     public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String kindArgument = environment.getArgument(KIND_ARGUMENT);
+        String containerId = environment.getArgument(CONTAINER_ID_ARGUMENT);
         String referenceKind = environment.getArgument(REFERENCE_KIND_ARGUMENT);
-        var input = new EditingContextChildObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, kindArgument, referenceKind);
+        var input = new EditingContextChildObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, containerId, referenceKind);
 
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(EditingContextChildObjectCreationDescriptionsPayload.class::isInstance)

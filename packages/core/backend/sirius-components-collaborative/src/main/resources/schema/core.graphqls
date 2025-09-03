@@ -18,7 +18,7 @@ type EditingContext {
   representation(representationId: ID!): RepresentationMetadata
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
-  childCreationDescriptions(kind: ID!, referenceKind: String): [ChildCreationDescription!]!
+  childCreationDescriptions(containerId: ID!, referenceKind: String): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
   queryBasedBoolean(query: String!): Boolean

@@ -125,8 +125,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given an object, when the child object creation descriptions are requested, then valid objects are available")
     public void givenAnObjectWhenChildObjectCreationDescriptionsAreRequestedThenValidObjectsAreAvailable() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
-                "kind", "siriusComponents://semantic?domain=buck&entity=Root"
+                "editingContextId", StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID.toString(),
+                "containerId", StudioIdentifiers.ROOT_OBJECT.toString()
         );
         var result = this.childCreationDescriptionsQueryRunner.run(variables);
 
