@@ -54,7 +54,7 @@ export const ShareProjectModal = ({ projectId, workbenchConfiguration, onClose }
     <Dialog open onClose={onClose} aria-labelledby="dialog-title" fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent ref={refCallback}>
-        <DialogContentText>{path}</DialogContentText>
+        <DialogContentText data-testid="share-path">{path}</DialogContentText>
       </DialogContent>
     </Dialog>
   );

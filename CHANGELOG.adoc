@@ -133,6 +133,8 @@ This includes any resource that is not persisted, not only the libraries.
 * The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
 - https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export these stateful components `AppearanceColorPicker`, `AppearanceNumberTextfield ` and `AppearanceSelect` to use in custom node appearance section
 - https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bending points only when the source or target handle would change position (top, left, ...).
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [test] Add Cypress tests for the 'Share' action of a project, and for the resolution of a URL with search parameter `workbenchConfiguration`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Remove the `workbenchConfiguration` query parameter from the URL after loading the workbench.
 
 
 == v2025.8.0
@@ -392,6 +394,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] The shareable URL now includes the open/closed state of the left and right panels.
 
 
 
