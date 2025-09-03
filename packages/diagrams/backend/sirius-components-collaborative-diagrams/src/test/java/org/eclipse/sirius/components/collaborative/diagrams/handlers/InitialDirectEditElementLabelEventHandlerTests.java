@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -125,7 +126,7 @@ public class InitialDirectEditElementLabelEventHandlerTests {
                 .borderStyle(LineStyle.Solid)
                 .build();
         Node node = new TestDiagramBuilder().getNodeWithOutsideLabels(UUID.randomUUID().toString(), false, List.of(new OutsideLabel(labelId, "text", OutsideLabelLocation.BOTTOM_MIDDLE, labelStyle,
-                LabelOverflowStrategy.NONE, LabelTextAlign.LEFT)));
+                LabelOverflowStrategy.NONE, LabelTextAlign.LEFT, new HashSet<>())));
         Diagram diagram = Diagram.newDiagram(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())).nodes(List.of(node)).build();
 
         var input = new InitialDirectEditElementLabelInput(UUID.randomUUID(), this.editingContextId.toString(), UUID.randomUUID().toString(), labelId);

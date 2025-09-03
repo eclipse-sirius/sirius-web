@@ -125,6 +125,7 @@ export interface OutsideLabel {
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
+  appearanceData: LabelAppearanceData;
 }
 
 export type ReactFlowPropsCustomizer = (

@@ -80,4 +80,12 @@ export class PlaywrightNode {
     await this.page.mouse.move(box.x + offset.height, box.y + offset.width, { steps: 2 });
     await this.page.mouse.up();
   }
+
+  async openPalette() {
+    await this.nodeLocator.click({ button: 'right', position: { x: 10, y: 10 } });
+  }
+
+  async closePalette() {
+    await this.page.getByTestId('Close-palette').click();
+  }
 }

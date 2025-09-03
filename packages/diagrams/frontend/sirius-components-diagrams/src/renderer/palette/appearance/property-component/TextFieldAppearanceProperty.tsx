@@ -34,7 +34,14 @@ export const TextFieldAppearanceProperty = ({
       <Box sx={{ display: 'grid', gridTemplateColumns: '1fr min-content' }}>
         <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'end', gap: theme.spacing(1) })}>
           {icon}
-          <TextField variant="standard" value={value} onChange={onChange} onKeyDown={onKeyDown} onBlur={onBlur} />
+          <TextField
+            variant="standard"
+            value={value}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            onBlur={onBlur}
+            data-testid={`toolSection-Appearance-${label}`}
+          />
         </Box>
         <IconButton
           aria-label="reset"
