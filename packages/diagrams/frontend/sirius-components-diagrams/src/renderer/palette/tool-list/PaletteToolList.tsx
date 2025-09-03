@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { PaletteToolSectionList, ToolListItem } from '@eclipse-sirius/sirius-components-palette';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -22,10 +23,8 @@ import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
-import { PaletteToolSectionList } from './PaletteToolSectionList';
 
 const useStyle = makeStyles()((theme) => ({
   container: {
