@@ -142,6 +142,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5091[#5091] [sirius-web] Remove state machine from used to manage project images
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Remove the `workbenchConfiguration` query parameter from the URL after loading the workbench.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project which representations are opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/5431[#5431] [core] Support EObject-typed containments
 
 
 
