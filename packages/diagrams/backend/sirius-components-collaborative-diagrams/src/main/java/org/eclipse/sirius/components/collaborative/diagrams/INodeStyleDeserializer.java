@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +20,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.ICustomNodeStyleDeserializer;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -37,41 +38,41 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
 
     private static final long serialVersionUID = 5722074461929397488L;
+    private final List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers;
 
-    public INodeStyleDeserializer() {
-        this(null);
+    public INodeStyleDeserializer(List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers) {
+        this(null, customNodeStyleDeserializers);
     }
 
-    public INodeStyleDeserializer(Class<?> valueClass) {
+    public INodeStyleDeserializer(Class<?> valueClass, List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers) {
         super(valueClass);
+        this.customNodeStyleDeserializers = customNodeStyleDeserializers;
     }
 
     @Override
-    public INodeStyle deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
+    public INodeStyle deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
         INodeStyle nodeStyle = null;
         ObjectCodec objectCodec = jsonParser.getCodec();
         if (objectCodec instanceof ObjectMapper mapper) {
             ObjectNode root = mapper.readTree(jsonParser);
-
             Object parent = jsonParser.getParsingContext().getCurrentValue();
             if (parent instanceof Node parentNode) {
-                switch (parentNode.getType()) {
-                    case NodeType.NODE_RECTANGLE:
-                        nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);
-                        break;
-                    case NodeType.NODE_IMAGE:
-                        nodeStyle = mapper.readValue(root.toString(), ImageNodeStyle.class);
-                        break;
-                    case NodeType.NODE_ICON_LABEL:
-                        nodeStyle = mapper.readValue(root.toString(), IconLabelNodeStyle.class);
-                        break;
-                    default:
-                        nodeStyle = mapper.readValue(root.toString(), RectangularNodeStyle.class);
-                        break;
-                }
+                nodeStyle = switch (parentNode.getType()) {
+                    case NodeType.NODE_RECTANGLE -> mapper.readValue(root.toString(), RectangularNodeStyle.class);
+                    case NodeType.NODE_IMAGE -> mapper.readValue(root.toString(), ImageNodeStyle.class);
+                    case NodeType.NODE_ICON_LABEL -> mapper.readValue(root.toString(), IconLabelNodeStyle.class);
+                    default -> {
+                        var customDeserialize = this.customNodeStyleDeserializers.stream()
+                                .filter(iCustomNodeStyleDeserializer -> iCustomNodeStyleDeserializer.canHandle(parentNode.getType())).findFirst();
+                        if (customDeserialize.isPresent()) {
+                            yield customDeserialize.get().handle(mapper, root.toString());
+                        } else {
+                            yield mapper.readValue(root.toString(), RectangularNodeStyle.class);
+                        }
+                    }
+                };
             }
         }
         return nodeStyle;
     }
-
 }
