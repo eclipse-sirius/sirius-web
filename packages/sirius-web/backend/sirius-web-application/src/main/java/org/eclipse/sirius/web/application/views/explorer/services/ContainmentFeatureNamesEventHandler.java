@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -99,10 +99,9 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
     }
 
     private List<String> getContainmentFeatureNames(EObject container, EObject containedObject) {
-        EClass containedObjectEClass = containedObject.eClass();
         return container.eClass().getEAllContainments().stream()
-                .filter(eReference -> containedObjectEClass.equals(eReference.getEReferenceType()) || containedObjectEClass.getEAllSuperTypes().stream()
-                        .anyMatch(superType -> superType.equals(eReference.getEReferenceType())))
+                .filter(eReference -> eReference.getEReferenceType() == EcorePackage.Literals.EOBJECT
+                        || eReference.getEReferenceType().isInstance(containedObject))
                 .map(ENamedElement::getName)
                 .toList();
     }
