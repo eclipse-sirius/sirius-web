@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,6 +107,26 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getModelBrowserIdExpression() <em>Model Browser Id Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getModelBrowserIdExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String MODEL_BROWSER_ID_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getModelBrowserIdExpression() <em>Model Browser Id Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getModelBrowserIdExpression()
+     * @generated
+     * @ordered
+     */
+    protected String modelBrowserIdExpression = MODEL_BROWSER_ID_EXPRESSION_EDEFAULT;
+
+    /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -201,6 +221,30 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         if (this.eNotificationRequired())
             this.eNotify(
                     new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, this.referenceNameExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getModelBrowserIdExpression() {
+        return this.modelBrowserIdExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setModelBrowserIdExpression(String newModelBrowserIdExpression) {
+        String oldModelBrowserIdExpression = this.modelBrowserIdExpression;
+        this.modelBrowserIdExpression = newModelBrowserIdExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION, oldModelBrowserIdExpression,
+                    this.modelBrowserIdExpression));
     }
 
     /**
@@ -332,6 +376,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getReferenceOwnerExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 return this.getReferenceNameExpression();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION:
+                return this.getModelBrowserIdExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.getBody();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
@@ -359,6 +405,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 this.setReferenceNameExpression((String) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION:
+                this.setModelBrowserIdExpression((String) newValue);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
@@ -392,6 +441,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 this.setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION:
+                this.setModelBrowserIdExpression(MODEL_BROWSER_ID_EXPRESSION_EDEFAULT);
+                return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
                 return;
@@ -419,6 +471,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? this.referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(this.referenceOwnerExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION:
+                return MODEL_BROWSER_ID_EXPRESSION_EDEFAULT == null ? this.modelBrowserIdExpression != null : !MODEL_BROWSER_ID_EXPRESSION_EDEFAULT.equals(this.modelBrowserIdExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
@@ -446,6 +500,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         result.append(this.referenceOwnerExpression);
         result.append(", referenceNameExpression: ");
         result.append(this.referenceNameExpression);
+        result.append(", modelBrowserIdExpression: ");
+        result.append(this.modelBrowserIdExpression);
         result.append(')');
         return result.toString();
     }

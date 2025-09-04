@@ -67,6 +67,9 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
         if (viewReferenceWidgetDescription.getHelpExpression() != null && !viewReferenceWidgetDescription.getHelpExpression().isBlank()) {
             referenceWidgetDescriptionBuilder.helpTextProvider(new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getHelpExpression()).orElse("")));
         }
+        if (viewReferenceWidgetDescription.getModelBrowserIdExpression() != null && !viewReferenceWidgetDescription.getModelBrowserIdExpression().isBlank()) {
+            referenceWidgetDescriptionBuilder.modelBrowserIdProvider(new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getModelBrowserIdExpression()).orElse("")));
+        }
         if (viewReferenceWidgetDescription.getBody().isEmpty()) {
             referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.handleSetReference(interpreter, variableManager, viewReferenceWidgetDescription));
             referenceWidgetDescriptionBuilder.addHandlerProvider(variableManager -> this.handleAddReference(interpreter, variableManager, viewReferenceWidgetDescription));
