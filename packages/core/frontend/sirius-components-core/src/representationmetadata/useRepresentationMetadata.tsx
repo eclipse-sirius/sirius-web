@@ -46,8 +46,16 @@ export const useRepresentationMetadata = (
   editingContextId: string,
   selection: Selection
 ): UseRepresentationMetadataValue => {
-  const { addErrorMessage } = useMultiToast();
   const representationIds: string[] = selection.entries.map((entry) => entry.id);
+  return useRepresentationMetadataFromIds(editingContextId, representationIds);
+};
+
+export const useRepresentationMetadataFromIds = (
+  editingContextId: string,
+  representationIds: string[]
+): UseRepresentationMetadataValue => {
+  const { addErrorMessage } = useMultiToast();
+
   const variables: GQLRepresentationMetadataQueryVariables = {
     editingContextId,
     representationIds,

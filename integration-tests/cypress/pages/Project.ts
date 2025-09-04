@@ -14,8 +14,13 @@
 import { RenameProjectDialog } from './RenameProject';
 
 export class Project {
-  public visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
-    return cy.visit(`/projects/${projectId}/edit`, {
+  public visit(
+    projectId: string,
+    representationId?: string,
+    options?: Partial<Cypress.VisitOptions>
+  ): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit(`/projects/${projectId}/edit${representationId ? '/' + representationId : ''}`, {
+      ...options,
       onBeforeLoad(win) {
         cy.spy(win.console, 'debug').as('consoleDebug');
       },
@@ -71,11 +76,26 @@ class ProjectNavigationBar {
     return new RenameProjectDialog();
   }
 
+  public getShareButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('share');
+  }
+
+  public getShareDialog(): ShareProjectDialog {
+    this.getShareButton().should('exist').click();
+    return new ShareProjectDialog();
+  }
+
   public getDeleteButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('delete');
   }
 
   public getSettingsButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('project-settings-link');
+  }
+}
+
+class ShareProjectDialog {
+  public getSharePathTextField(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('share-path');
   }
 }
