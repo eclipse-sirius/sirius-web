@@ -149,7 +149,9 @@ export const PaletteQuickAccessToolBar = ({
   if (quickAccessToolComponents.length > 0) {
     return (
       <>
-        <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
+        <div>
+          <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
+        </div>
         <Divider />
       </>
     );
