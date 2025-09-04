@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> ownerIdProvider;
 
+    private Function<VariableManager, String> modelBrowserIdProvider;
+
     private Function<VariableManager, IStatus> clearHandlerProvider;
 
     private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
@@ -121,6 +123,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     public Function<VariableManager, String> getReferenceKindProvider() {
         return this.referenceKindProvider;
+    }
+
+    public Function<VariableManager, String> getModelBrowserIdProvider() {
+        return this.modelBrowserIdProvider;
     }
 
     public Function<VariableManager, Boolean> getIsContainmentProvider() {
@@ -208,6 +214,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
         private Function<VariableManager, String> ownerIdProvider;
+
+        private Function<VariableManager, String> modelBrowserIdProvider;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
@@ -319,6 +327,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder modelBrowserIdProvider(Function<VariableManager, String> modelBrowserIdProvider) {
+            this.modelBrowserIdProvider = Objects.requireNonNull(modelBrowserIdProvider);
+            return this;
+        }
+
         public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
             this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
             return this;
@@ -380,6 +393,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);
+            referenceWidgetDescription.modelBrowserIdProvider = this.modelBrowserIdProvider; // Optional on purpose
             referenceWidgetDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             referenceWidgetDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             referenceWidgetDescription.messageProvider = Objects.requireNonNull(this.messageProvider);

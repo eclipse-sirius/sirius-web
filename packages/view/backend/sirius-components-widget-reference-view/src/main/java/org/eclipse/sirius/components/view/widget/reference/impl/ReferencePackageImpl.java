@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -168,8 +168,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
-    public EReference getReferenceWidgetDescription_Body() {
-        return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(3);
+    public EAttribute getReferenceWidgetDescription_ModelBrowserIdExpression() {
+        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -178,7 +178,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
-    public EReference getReferenceWidgetDescription_Style() {
+    public EReference getReferenceWidgetDescription_Body() {
         return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -188,8 +188,18 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
-    public EReference getReferenceWidgetDescription_ConditionalStyles() {
+    public EReference getReferenceWidgetDescription_Style() {
         return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getReferenceWidgetDescription_ConditionalStyles() {
+        return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -258,6 +268,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION);
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION);
+        this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__MODEL_BROWSER_ID_EXPRESSION);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__BODY);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__STYLE);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
@@ -306,6 +317,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.initEAttribute(this.getReferenceWidgetDescription_ReferenceOwnerExpression(), theViewPackage.getInterpretedExpression(), "referenceOwnerExpression", null, 0, 1,
                 ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getReferenceWidgetDescription_ReferenceNameExpression(), theViewPackage.getInterpretedExpression(), "referenceNameExpression", null, 1, 1,
+                ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getReferenceWidgetDescription_ModelBrowserIdExpression(), theViewPackage.getInterpretedExpression(), "modelBrowserIdExpression", null, 1, 1,
                 ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getReferenceWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

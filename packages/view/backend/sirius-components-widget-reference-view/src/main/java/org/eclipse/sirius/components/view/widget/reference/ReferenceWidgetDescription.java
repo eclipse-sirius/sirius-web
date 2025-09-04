@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,30 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setReferenceNameExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Model Browser Id Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Model Browser Id Expression</em>' attribute.
+     * @see #setModelBrowserIdExpression(String)
+     * @see org.eclipse.sirius.components.view.widget.reference.ReferencePackage#getReferenceWidgetDescription_ModelBrowserIdExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+     * @generated
+     */
+    String getModelBrowserIdExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription#getModelBrowserIdExpression
+     * <em>Model Browser Id Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Model Browser Id Expression</em>' attribute.
+     * @see #getModelBrowserIdExpression()
+     * @generated
+     */
+    void setModelBrowserIdExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type

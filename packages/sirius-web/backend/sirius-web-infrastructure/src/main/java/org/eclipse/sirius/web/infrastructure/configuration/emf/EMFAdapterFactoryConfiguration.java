@@ -23,8 +23,8 @@ import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactor
 import org.eclipse.sirius.components.view.table.customcells.provider.CustomcellsItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.table.provider.TableItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.widget.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetItemProviderAdapterFactory;
-import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
