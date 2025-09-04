@@ -35,7 +35,9 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodePositionEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
@@ -144,7 +146,21 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         Diagram newDiagram = new DiagramRenderer().render(element);
 
+        List<DiagramNodePositionEvent> diagramNodeLayoutEvents = diagramEvents.stream()
+                .filter(DiagramNodePositionEvent.class::isInstance)
+                .map(DiagramNodePositionEvent.class::cast).toList();
+
         var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
+        if (!newLayoutData.nodeLayoutData().isEmpty()) {
+            diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent -> {
+                var previousNodeLayoutData = newLayoutData.nodeLayoutData().get(nodeLayoutDataEvent.nodeId());
+                if (previousNodeLayoutData != null) {
+                    var updatedNodeLayoutData = new NodeLayoutData(previousNodeLayoutData.id(), nodeLayoutDataEvent.position(), previousNodeLayoutData.size(), previousNodeLayoutData.resizedByUser(), previousNodeLayoutData.handleLayoutData());
+                    newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), updatedNodeLayoutData);
+                }
+            });
+        }
+
         newDiagram = Diagram.newDiagram(newDiagram)
                 .layoutData(newLayoutData)
                 .build();

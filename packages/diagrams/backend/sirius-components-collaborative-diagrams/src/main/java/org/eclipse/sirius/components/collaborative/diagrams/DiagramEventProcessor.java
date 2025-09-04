@@ -205,6 +205,19 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
                 this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
+        } else {
+            //TODO ADD CORRECT CHANGE DESCRIPTION
+            Optional<Diagram> reloadedDiagram = this.representationSearchService.findById(this.editingContext, this.diagramContext.getDiagram().getId(), Diagram.class);
+            if (reloadedDiagram.isPresent()) {
+                Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+                this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
+                this.diagramContext.reset();
+                this.diagramContext.update(refreshedDiagram);
+                this.currentRevisionId = changeDescription.getInput().id();
+                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
+                this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
+            }
         }
     }
 
@@ -245,6 +258,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE.equals(changeDescription.getKind());
             }
+            //TODO replace with dedicated changeKind
+            if (changeDescription.getInput().getClass().getSimpleName().equals("UndoInput")) {
+                shouldRefresh = false;
+            }
             return shouldRefresh;
         };
     }
@@ -263,6 +280,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();
+    }
+
+    public IDiagramContext getDiagramContext() {
+        return this.diagramContext;
     }
 
 }

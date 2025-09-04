@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventHandler;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -28,6 +29,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Handler used to redo mutations.
  *
@@ -38,8 +42,11 @@ public class RedoEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    public RedoEventHandler(ICollaborativeDiagramMessageService messageService) {
-        this.messageService = messageService;
+    private final List<IRepresentationEventHandler> representationEventProcessorChangeHandlers;
+
+    public RedoEventHandler(ICollaborativeDiagramMessageService messageService, List<IRepresentationEventHandler> representationEventProcessorChangeHandlers) {
+        this.messageService = Objects.requireNonNull(messageService);
+        this.representationEventProcessorChangeHandlers = Objects.requireNonNull(representationEventProcessorChangeHandlers);
     }
 
     @Override
@@ -57,9 +64,12 @@ public class RedoEventHandler implements IEditingContextEventHandler {
             var emfChangeDescription = siriusEditingContext.getInputId2change().get(redoInput.mutationId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-                payload = new SuccessPayload(input.id());
             }
+            representationEventProcessorChangeHandlers.stream()
+                    .filter(changeHandler -> changeHandler.canHandle(redoInput.mutationId(), siriusEditingContext))
+                    .forEach(changeHandler -> changeHandler.redo(redoInput.mutationId(), siriusEditingContext));
+            changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+            payload = new SuccessPayload(input.id());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
