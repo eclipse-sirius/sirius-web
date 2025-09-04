@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -170,10 +169,8 @@ public class ExplorerDropTreeItemExecutor implements IExplorerDropTreeItemExecut
     }
 
     private Optional<String> getContainmentFeatureName(EObject source, EObject target) {
-        EClass containedObjectEClass = source.eClass();
         return target.eClass().getEAllContainments().stream()
-                .filter(eReference -> containedObjectEClass.equals(eReference.getEReferenceType()) || containedObjectEClass.getEAllSuperTypes().stream()
-                        .anyMatch(superType -> superType.equals(eReference.getEReferenceType())))
+                .filter(eReference -> eReference.getEReferenceType().isInstance(source))
                 .map(ENamedElement::getName)
                 .findFirst();
     }
