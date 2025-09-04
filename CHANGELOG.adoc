@@ -86,6 +86,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Fix a lifecycle issue on diagram with nodes change event
 - https://github.com/eclipse-sirius/sirius-web/issues/5429[#5429] [diagram] Fix edge deletion by keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
+- https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
 
 
 === New Features
