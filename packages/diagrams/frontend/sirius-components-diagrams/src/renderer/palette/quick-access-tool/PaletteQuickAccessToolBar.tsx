@@ -48,6 +48,7 @@ const useStyle = makeStyles()((theme: Theme) => ({
     gap: theme.spacing(0.5),
     paddingLeft: theme.spacing(0.5),
     overflowX: 'auto',
+    minHeight: theme.spacing(3.5),
   },
 }));
 
