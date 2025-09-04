@@ -54,6 +54,7 @@ Downstream projects should stop provide their own implementations.
 * `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 `UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
 
 
 === Dependency update
@@ -109,6 +110,7 @@ Downstream projects can provide their own scheduler providing an implementation 
 - https://github.com/eclipse-sirius/sirius-web/issues/5440[#5440] [sirius-web] Add support for a navigation bar menu header.
 Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible contribution of a header of the navigation bar menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
+- https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] Add ICustomNodeStyleDeserializer API to correctly deserialize custom node style
 
 
 === Improvements
