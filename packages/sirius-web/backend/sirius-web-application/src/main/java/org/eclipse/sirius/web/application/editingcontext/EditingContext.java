@@ -16,10 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.LinkedHashMap;
 
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.representations.events.IRepresentationEventRecord;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -40,6 +42,8 @@ public class EditingContext implements IEMFEditingContext {
     private final List<View> views;
 
     private final Map<String, ChangeDescription> inputId2change = new HashMap<>();
+
+    private final LinkedHashMap<String, IRepresentationEventRecord> inputId2GraphicalChange = new LinkedHashMap<>();
 
     private final ChangeRecorder changeRecorder;
 
@@ -81,6 +85,10 @@ public class EditingContext implements IEMFEditingContext {
 
     public Map<String, ChangeDescription> getInputId2change() {
         return this.inputId2change;
+    }
+
+    public LinkedHashMap<String, IRepresentationEventRecord> getInputId2GraphicalChange() {
+        return this.inputId2GraphicalChange;
     }
 
 }
