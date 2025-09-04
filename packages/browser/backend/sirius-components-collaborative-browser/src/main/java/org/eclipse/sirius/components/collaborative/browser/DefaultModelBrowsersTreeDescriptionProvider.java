@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowserMetadata;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
@@ -62,21 +63,25 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class ModelBrowserDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
-
-    public static final String CONTAINER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_container_tree_description".getBytes()).toString();
-
-    public static final String REFERENCE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_reference_tree_description".getBytes()).toString();
-
-    public static final String REPRESENTATION_NAME = "Model Browser";
-
-    public static final String DOCUMENT_KIND = "siriusWeb://document";
+public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String PREFIX = "modelBrowser://";
 
     public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
 
     public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
+
+    public static final String CONTAINER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_container_tree_description".getBytes()).toString();
+
+    public static final String REFERENCE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_reference_tree_description".getBytes()).toString();
+
+    public static final ModelBrowserMetadata CONTAINER_METADATA = new ModelBrowserMetadata("container", CONTAINER_DESCRIPTION_ID);
+
+    public static final ModelBrowserMetadata REFERENCE_METADATA = new ModelBrowserMetadata("reference", REFERENCE_DESCRIPTION_ID);
+
+    public static final String REPRESENTATION_NAME = "Model Browser";
+
+    private static final String DOCUMENT_KIND = "siriusWeb://document";
 
     private final IObjectService objectService;
 
@@ -92,7 +97,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private final IModelBrowserRootCandidateSearchProvider defaultCandidateProvider;
 
-    public ModelBrowserDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
+    public DefaultModelBrowsersTreeDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
