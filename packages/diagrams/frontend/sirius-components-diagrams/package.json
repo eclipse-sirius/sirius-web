@@ -51,6 +51,7 @@
   "devDependencies": {
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-palette": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "xstate": "4.32.1",
     "@xstate/react": "3.0.0",

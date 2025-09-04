@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
-import { XYPosition } from '@xyflow/react';
+import { GQLTreeItem } from '../../views/TreeView.types';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -34,10 +34,9 @@ export interface GQLToolVariable {
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface PaletteProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
+  editingContextId: string;
+  treeId: string;
+  treeItem: GQLTreeItem;
   onDirectEditClick: () => void;
   onClose: () => void;
   children: React.ReactElement<PaletteExtensionSectionProps>[];
@@ -45,12 +44,6 @@ export interface PaletteProps {
 
 export interface PaletteState {
   searchToolValue: string;
-  controlledPosition: XYPosition;
-}
-
-export interface PaletteStyleProps {
-  paletteWidth: string;
-  paletteHeight: string;
 }
 
 export interface GQLTool extends GQLPaletteEntry {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool } from '../Palette.types';
-export interface PaletteSearchResultProps {
-  onToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette;
-  searchToolValue: string;
+export interface UseTreeCapabilitiesValue {
+  data: GQLGetTreeQueryData | null;
+  loading: boolean;
+}
+export interface GQLGetTreeQueryVariables {}
+
+export interface GQLGetTreeQueryData {
+  tree: GQLTree;
 }
 
-export interface HighlightedLabelProps {
-  label: string;
-  textToHighlight: string;
+export interface GQLTree {
+  capabilities: GQLTreeCapabilities;
+}
+
+export interface GQLTreeCapabilities {
+  useExplorerPalette: boolean;
 }

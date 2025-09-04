@@ -11,18 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
-import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
-
-export interface PaletteToolListProps {
+import { GQLPalette, GQLTool } from '../Palette.types';
+export interface PaletteSearchResultProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
-  onBackToMainList: () => void;
-  diagramElementId: string;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  searchToolValue: string;
 }
 
-export interface PaletteToolListStateValue {
-  toolSection: GQLToolSection | null;
-  extensionSection: string | null;
+export interface HighlightedLabelProps {
+  label: string;
+  textToHighlight: string;
 }
