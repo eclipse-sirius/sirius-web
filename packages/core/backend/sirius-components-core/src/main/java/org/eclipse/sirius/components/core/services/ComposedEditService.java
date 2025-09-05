@@ -54,14 +54,14 @@ public class ComposedEditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind) {
         var optionalDelegate = this.editServiceDelegates.stream()
                 .filter(delegate -> delegate.canHandle(editingContext))
                 .findFirst();
         if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getChildCreationDescriptions(editingContext, kind, referenceKind);
+            return optionalDelegate.get().getChildCreationDescriptions(editingContext, containerId, referenceKind);
         }
-        return this.defaultEditService.getChildCreationDescriptions(editingContext, kind, referenceKind);
+        return this.defaultEditService.getChildCreationDescriptions(editingContext, containerId, referenceKind);
     }
 
     @Override

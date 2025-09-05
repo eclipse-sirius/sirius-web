@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class EditingContextChildObjectCreationDescriptionsEventHandler implement
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         List<ChildCreationDescription> childCreationDescriptions = List.of();
         if (input instanceof EditingContextChildObjectCreationDescriptionsInput editingContextChildObjectCreationDescriptionsInput) {
-            childCreationDescriptions = this.editService.getChildCreationDescriptions(editingContext, editingContextChildObjectCreationDescriptionsInput.kindArgument(),
+            childCreationDescriptions = this.editService.getChildCreationDescriptions(editingContext, editingContextChildObjectCreationDescriptionsInput.containerId(),
                     editingContextChildObjectCreationDescriptionsInput.referenceKind());
         }
         payloadSink.tryEmitValue(new EditingContextChildObjectCreationDescriptionsPayload(input.id(), childCreationDescriptions));
