@@ -70,6 +70,14 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
     }
   }, [payload]);
 
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      anchorEl: null,
+      projectName: project.name,
+    }));
+  }, [project]);
+
   const onMoreClick = (event: React.MouseEvent<HTMLElement>) =>
     setState((prevState) => ({
       ...prevState,
