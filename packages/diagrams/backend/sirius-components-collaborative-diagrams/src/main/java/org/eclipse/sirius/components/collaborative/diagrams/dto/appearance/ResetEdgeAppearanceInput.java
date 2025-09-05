@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,35 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto.appearance;
 
-export const edgeFragment = `
-fragment edgeFragment on Edge {
-  id
-  type
-  targetObjectId
-  targetObjectKind
-  targetObjectLabel
-  descriptionId
-  sourceId
-  targetId
-  state
-  beginLabel {
-    ...labelFragment
-  }
-  centerLabel {
-    ...labelFragment
-  }
-  endLabel {
-    ...labelFragment
-  }
-  style {
-    size
-    lineStyle
-    sourceArrow
-    targetArrow
-    color
-  }
-  centerLabelEditable
-  customizedStyleProperties
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+/**
+ * Input for resetting style properties of an edge.
+ *
+ * @author mcharfadi
+ */
+public record ResetEdgeAppearanceInput(UUID id, String editingContextId, String representationId, String edgeId, List<String> propertiesToReset) implements IDiagramInput {
+
 }
-`;
