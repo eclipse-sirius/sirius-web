@@ -92,6 +92,13 @@ public final class SiriusWebCapabilities {
          * @since v2025.8.0
          */
         public static final String EDIT = "edit";
+
+        /**
+         * Used to check if a project can be duplicated.
+         *
+         * @since v2025.10.0                                                                                                     .0
+         */
+        public static final String DUPLICATE = "duplicate";
     }
 
     public static final String LIBRARY = "Library";

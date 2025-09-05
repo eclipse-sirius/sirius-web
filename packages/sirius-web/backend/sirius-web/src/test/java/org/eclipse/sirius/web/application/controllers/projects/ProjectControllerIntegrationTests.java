@@ -12,15 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.jayway.jsonpath.JsonPath;
-
+import graphql.relay.Relay;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -57,9 +54,9 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.relay.Relay;
 import reactor.test.StepVerifier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests of the project controllers.
