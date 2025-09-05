@@ -116,6 +116,7 @@ export interface EdgeLabel {
   iconURL: string[];
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
+  position: XYPosition;
 }
 
 export interface OutsideLabel {
@@ -125,6 +126,7 @@ export interface OutsideLabel {
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
+  position: XYPosition;
 }
 
 export type ReactFlowPropsCustomizer = (
