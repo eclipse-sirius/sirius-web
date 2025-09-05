@@ -32,6 +32,15 @@ export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: Rectangul
           customizedStyleProperties={nodeData.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
+      {nodeData.outsideLabels.BOTTOM_MIDDLE ? (
+        <LabelAppearancePart
+          diagramElementId={nodeId}
+          labelId={nodeData.outsideLabels.BOTTOM_MIDDLE.id}
+          position="Outside Middle Label"
+          style={nodeData.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
+          customizedStyleProperties={nodeData.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
+        />
+      ) : null}
     </>
   );
 };

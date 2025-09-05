@@ -135,6 +135,10 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         ...convertContentStyle(labelStyle),
       },
       overflowStrategy,
+      appearanceData: {
+        customizedStyleProperties: gqlOutsideLabel.customizedStyleProperties,
+        gqlStyle: gqlOutsideLabel.style,
+      },
     };
 
     return allOutsideLabels;
