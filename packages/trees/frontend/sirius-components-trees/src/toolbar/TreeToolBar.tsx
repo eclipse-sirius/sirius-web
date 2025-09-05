@@ -14,6 +14,7 @@
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import IconButton from '@mui/material/IconButton';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
 import { TreeToolBarProps } from './TreeToolBar.types';
@@ -45,10 +46,9 @@ export const TreeToolBar = ({
   children,
 }: TreeToolBarProps) => {
   const { classes } = useTreeToolbarStyles();
+  const { t } = useTranslation('siriusComponentsTrees');
 
-  const preferenceButtonSynchronizeTitle = synchronized
-    ? 'Disable synchronization with representation'
-    : 'Enable synchronization with representation';
+  const preferenceButtonSynchronizeTitle = synchronized ? t('disableSynchronization') : t('enableSynchronization');
   return (
     <>
       <div className={classes.toolbar}>
