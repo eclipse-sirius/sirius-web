@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { Node, NodeChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
-import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseMoveChangeValue } from './useMoveChange.types';
@@ -44,15 +43,13 @@ const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChang
   change.type === 'position' && typeof change.dragging === 'boolean';
 
 export const useMoveChange = (): UseMoveChangeValue => {
-  const { getNodes } = useStore();
-
   const transformUndraggableListNodeChanges = useCallback(
-    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
+    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
         if (isMove(change)) {
-          const movedNode = getNodes().find((node) => change.id === node.id);
+          const movedNode = nodes.find((node) => change.id === node.id);
           if (movedNode?.parentId && !movedNode.data.isBorderNode) {
-            applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
+            applyPositionChangeToParentIfUndraggable(movedNode, nodes, change);
           }
           if (movedNode?.data.pinned) {
             change.position = undefined; // canceled move if node is pinned
@@ -61,7 +58,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
         return change;
       });
     },
-    [getNodes]
+    []
   );
 
   const applyMoveChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {

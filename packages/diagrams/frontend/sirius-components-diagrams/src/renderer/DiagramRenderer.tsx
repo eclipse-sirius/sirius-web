@@ -291,24 +291,28 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       ) {
         setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
       } else {
-        resetHelperLines(changes);
-        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
-        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
-        transformedNodeChanges = applyHelperLines(transformedNodeChanges);
-        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        setNodes((oldNodes) => {
+          resetHelperLines(changes);
+          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(
+            noReadOnlyChanges,
+            oldNodes
+          );
+          transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges, oldNodes);
+          transformedNodeChanges = applyHelperLines(transformedNodeChanges, oldNodes);
+          transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges, oldNodes);
 
-        let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
+          let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
 
-        newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-        newNodes = applyHandleChange(transformedNodeChanges, newNodes);
-        newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
+          newNodes = applyMoveChange(transformedNodeChanges, newNodes);
+          newNodes = applyHandleChange(transformedNodeChanges, newNodes);
+          newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
-        layoutOnBoundsChange(transformedNodeChanges, newNodes);
-
-        setNodes(newNodes);
+          layoutOnBoundsChange(transformedNodeChanges, newNodes);
+          return newNodes;
+        });
       }
     },
-    [layoutOnBoundsChange, getNodes, getEdges]
+    [helperLinesEnabled]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
