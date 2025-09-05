@@ -48,6 +48,7 @@ export interface GQLProjectCapabilities {
   canRename: boolean;
   canDelete: boolean;
   canEdit: boolean;
+  canDuplicate: boolean;
   settings: GQLProjectSettingsCapabilities;
 }
 

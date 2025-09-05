@@ -108,6 +108,7 @@ A new button is displayed to export the results when a query returns one or mult
 Downstream projects can provide their own scheduler providing an implementation of `IEventProcessorSubscriptionSchedulerProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5440[#5440] [sirius-web] Add support for a navigation bar menu header.
 Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible contribution of a header of the navigation bar menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
 
 
 === Improvements
@@ -367,6 +368,7 @@ public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter 
 + For now the only workbench state that is shareable is: the active views on the left and right panels.
 + Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
 - https://github.com/eclipse-sirius/sirius-web/issues/5045[#5045] [diagram] Add support for the management of the appearance of all properties for image nodes
+
 
 === Improvements
 

@@ -41,6 +41,7 @@ export const ProjectFragment = gql`
       canDownload
       canRename
       canDelete
+      canDuplicate
     }
   }
 `;

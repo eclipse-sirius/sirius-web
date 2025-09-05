@@ -18,6 +18,7 @@ import { Navigate } from 'react-router-dom';
 import { useCurrentProject } from '../../useCurrentProject';
 import { DeleteProjectMenuItem } from './DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from './DownloadProjectMenuItem';
+import { DuplicateProjectMenuItem } from './DuplicateProjectMenuItem';
 import {
   EditProjectNavbarContextMenuProps,
   EditProjectNavbarContextMenuState,
@@ -60,6 +61,9 @@ export const EditProjectNavbarContextMenu = ({
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onClose} />
         ) : null}
         <ShareProjectMenuItem projectId={project.id} workbenchHandle={workbenchHandle} />
+        {project.capabilities.canDuplicate ? (
+          <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
+        ) : null}
         {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />

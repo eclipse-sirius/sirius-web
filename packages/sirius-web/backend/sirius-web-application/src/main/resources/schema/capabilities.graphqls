@@ -25,6 +25,7 @@ type ProjectCapabilities {
   canDownload: Boolean!
   canRename: Boolean!
   canDelete: Boolean!
+  canDuplicate: Boolean!
   canEdit: Boolean!
   settings: ProjectSettingsCapabilities!
 }
