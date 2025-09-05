@@ -58,6 +58,14 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
     projectName: project.name,
   });
 
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      anchorEl: null,
+      projectName: project.name,
+    }));
+  }, [project]);
+
   const { classes } = useEditProjectViewNavbarStyles();
 
   const { payload } = useProjectSubscription(project.id);

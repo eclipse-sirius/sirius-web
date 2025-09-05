@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { DeleteProjectMenuItem } from '../../edit-project/navbar/context-menu/DeleteProjectMenuItem';
 import { DownloadProjectMenuItem } from '../../edit-project/navbar/context-menu/DownloadProjectMenuItem';
+import { DuplicateProjectMenuItem } from '../../edit-project/navbar/context-menu/DuplicateProjectMenuItem';
 import { RenameProjectMenuItem } from '../../edit-project/navbar/context-menu/RenameProjectMenuItem';
 import {
   ProjectActionButtonProps,
@@ -71,6 +72,7 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
   const menuItemComponentExtensions: ComponentExtension<ProjectContextMenuEntryProps>[] = useComponents(
     projectContextMenuEntryExtensionPoint
   );
+
   return (
     <ProjectContextMenuContainer>
       <Menu
@@ -82,6 +84,9 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         onClose={onClose}>
         {project.capabilities.canRename ? (
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onChange} />
+        ) : null}
+        {project.capabilities.canDuplicate ? (
+          <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
         ) : null}
         {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
