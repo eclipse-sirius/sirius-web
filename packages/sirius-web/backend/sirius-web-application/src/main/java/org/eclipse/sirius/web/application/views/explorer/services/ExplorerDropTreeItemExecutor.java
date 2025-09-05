@@ -18,10 +18,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -170,10 +170,9 @@ public class ExplorerDropTreeItemExecutor implements IExplorerDropTreeItemExecut
     }
 
     private Optional<String> getContainmentFeatureName(EObject source, EObject target) {
-        EClass containedObjectEClass = source.eClass();
         return target.eClass().getEAllContainments().stream()
-                .filter(eReference -> containedObjectEClass.equals(eReference.getEReferenceType()) || containedObjectEClass.getEAllSuperTypes().stream()
-                        .anyMatch(superType -> superType.equals(eReference.getEReferenceType())))
+                .filter(eReference -> eReference.getEReferenceType() == EcorePackage.Literals.EOBJECT
+                        || eReference.getEReferenceType().isInstance(source))
                 .map(ENamedElement::getName)
                 .findFirst();
     }
