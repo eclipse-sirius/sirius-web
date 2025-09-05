@@ -4,6 +4,8 @@
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {
+    "@playwright/test": "1.55.0",
+    "@types/node": "24.3.0",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",
     "cypress": "12.11.0",
@@ -16,7 +18,8 @@
     "start": "cypress open",
     "start:dev": "cypress open --config-file cypress-dev.config.ts",
     "format-lint": "prettier --list-different \"cypress/**/*.ts\"",
-    "eslint": "npx eslint ./cypress/**/*.ts"
+    "eslint": "npx eslint ./cypress/**/*.ts",
+    "playwright:dev": "npx playwright test --ui"
   },
   "dependencies": {
     "prettier": "2.7.1"
