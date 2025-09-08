@@ -15,6 +15,8 @@ import { test, expect } from '@playwright/test';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
+import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
 
 test.describe('diagram - edgeStyle', () => {
   let projectId;
@@ -37,5 +39,24 @@ test.describe('diagram - edgeStyle', () => {
     const playwrightEdge = new PlaywrightEdge(page);
     const color = await playwrightEdge.getEdgeColor();
     await expect(color).toBe('rgb(255, 0, 0)');
+  });
+
+  test('oblique edge type', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramEdgesWithConditionalStyle.xml');
+    await playwrightExplorer.expand('diagramEdgesWithConditionalStyle.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightExplorer.select('TestConditionalEdgeStyle');
+    await new PlaywrightDetails(page).setText('Name', 'TestObliqueEdgeType');
+
+    //Move the node so it's easier to identify the edge type
+    const playwrightNode = new PlaywrightNode(page, 'Entity1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 0, y: -50 });
+
+    const edgePath = await playwrightEdge.getEdgePath();
+    expect(edgePath.trim()).toMatch(/^M\s?[\d.-]+,[\d.-]+\s?L\s?[\d.-]+,[\d.-]+$/); // check it's a straight path
   });
 });
