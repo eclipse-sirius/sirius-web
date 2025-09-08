@@ -82,12 +82,13 @@ export const PaletteToolList = ({
   onToolClick,
   onBackToMainList,
   diagramElementId,
+  elementDescriptionId,
   children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
-  const lastToolInvoked = getLastToolInvoked(palette.id);
+  const lastToolInvoked = getLastToolInvoked(elementDescriptionId);
 
   const { classes } = useStyle();
 
