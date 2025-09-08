@@ -55,25 +55,16 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-const isEdgeElement = (element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined): element is Edge<EdgeData> =>
-  !!element && (element.type === 'manhattan' || element.type === 'smartManhattan');
-
-const isNodeElement = (
-  element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
-): element is InternalNode<Node<NodeData>> =>
-  !!element && element.type !== 'manhattan' && element.type !== 'smartManhattan';
-
-const isFreeFormNode = (
-  element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
-): element is InternalNode<Node<NodeData>> => !!element && element.type === 'freeFormNode';
-
 export const PaletteAppearanceSection = ({
   diagramElementId,
   onBackToMainList,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
+  const edgeElement: Edge<EdgeData> | undefined = edgeLookup.get(diagramElementId);
+  const nodeElement: InternalNode<Node<NodeData>> | undefined = edgeElement
+    ? undefined
+    : nodeLookup.get(diagramElementId);
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -85,9 +76,9 @@ export const PaletteAppearanceSection = ({
   );
 
   const paletteAppearanceSectionComponents: JSX.Element[] = [];
-  if (isNodeElement(diagramElement)) {
+  if (nodeElement) {
     paletteAppearanceSectionData.data
-      .filter((data) => data.canHandle(diagramElement))
+      .filter((data) => data.canHandle(nodeElement))
       .map((data) => data.component)
       .forEach((PaletteAppearanceSectionComponent, index) =>
         paletteAppearanceSectionComponents.push(
@@ -97,19 +88,14 @@ export const PaletteAppearanceSection = ({
           />
         )
       );
-  }
-
-  if (isFreeFormNode(diagramElement)) {
-    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
-      paletteAppearanceSectionComponents.push(
-        <RectangularNodeAppearanceSection diagramElementId={diagramElement.id} />
-      );
+    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
+      paletteAppearanceSectionComponents.push(<RectangularNodeAppearanceSection diagramElementId={nodeElement.id} />);
     }
-    if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
-      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={diagramElement.id} />);
+    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
+      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={nodeElement.id} />);
     }
-  } else if (isEdgeElement(diagramElement) && diagramElement.data) {
-    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={diagramElement.id} />);
+  } else if (edgeElement) {
+    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={edgeElement.id} />);
   }
 
   return (
