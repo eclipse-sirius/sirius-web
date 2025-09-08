@@ -121,7 +121,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .insideLabel(
@@ -185,6 +185,13 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                                 .condition("aql:self.name=='TestConditionalEdgeStyle'")
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
                                 .edgeType(EdgeType.SMART_MANHATTAN)
+                                .build()
+                )
+                .conditionalStyles(
+                        new DiagramBuilders()
+                                .newConditionalEdgeStyle()
+                                .condition("aql:self.name=='TestObliqueEdgeType'")
+                                .edgeType(EdgeType.OBLIQUE)
                                 .build()
                 )
                 .build();

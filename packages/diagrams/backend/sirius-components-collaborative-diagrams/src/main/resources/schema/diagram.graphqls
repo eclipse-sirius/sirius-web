@@ -331,7 +331,8 @@ enum ArrowStyle {
 
 enum EdgeType {
   Manhattan,
-  SmartManhattan
+  SmartManhattan,
+  Oblique
 }
 
 type Position {
