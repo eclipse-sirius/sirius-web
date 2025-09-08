@@ -16,15 +16,18 @@ import { FC } from 'react';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { SmartStepEdgeWrapper } from './SmartStepEdgeWrapper';
 import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
+import { ObliqueEdgeWrapper } from './ObliqueEdgeWrapper';
 
 export const edgeTypes: EdgeComponentsMap = {
   Manhattan: SmoothStepEdgeWrapper,
   SmartManhattan: SmartStepEdgeWrapper,
+  Oblique: ObliqueEdgeWrapper,
 };
 
 export interface EdgeDataMap {
   Manhattan: MultiLabelEdgeData;
   SmartManhattan: MultiLabelEdgeData;
+  Oblique: MultiLabelEdgeData;
 }
 
 export type EdgeComponentsMap = {

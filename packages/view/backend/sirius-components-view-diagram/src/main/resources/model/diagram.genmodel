@@ -95,6 +95,7 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//EdgeType">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/Manhattan"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/SmartManhattan"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/Oblique"/>
     </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
