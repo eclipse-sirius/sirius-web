@@ -1,0 +1,48 @@
+= ADR-208 - Support edge type in edge style
+
+== Context
+
+Today, Sirius Web offers two types of edges: rectangular (default) and smart edge (which prevents edges from crossing over a node).
+
+[source, typescript]
+----
+export const useEdgeType = (): UseEdgeTypeValue => {
+  const [edgeType, setEdgeType] = useState<DiagramEdgeType>('smoothStepEdge');
+  return {
+    edgeType,
+    setEdgeType,
+  };
+};
+----
+
+You can switch between the two types in the panel bar of a diagram, but the change applies to the entire diagram.
+The idea is to be able to specify directly in the edge style which type to apply and thus be able to change it edge by edge using the appearance palette.
+
+== Decision
+
+Add a new feature in edgeStyle
+
+[source]
+----
+<eClassifiers xsi:type="ecore:EEnum" name="EdgeType">
+    <eLiterals name="Manhattan"/>
+    <eLiterals name="Smart Manhattan" value="1"/>
+  </eClassifiers>
+<eStructuralFeatures xsi:type="ecore:EAttribute" name="edgeType" lowerBound="1"
+        eType="#//EdgeType" defaultValueLiteral="Manhattan"/>
+----
+
+During the diagram conversion, the type for edge will no longer be hard-coded to the current `edgeType` but will be retrieved from the graphql edge style.
+
+The button in the panel bar of a diagram will be removed.
+
+
+== Consequences
+
+It will be easier to add a new edge type, and above all, it will be possible to mix several edge types in the same diagram.
+Moreover, since the edge type is supported by the style, it will be possible to have a conditional type.
+It may even be possible to open an API to contribute custom edges.
+
+== Status
+
+Proposed.
