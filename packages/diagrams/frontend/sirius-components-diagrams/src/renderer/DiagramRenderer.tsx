@@ -119,7 +119,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { selection, setSelection } = useSelection();
   const { edgeType, setEdgeType } = useEdgeType();
 
-  useInitialFitToScreen();
+  useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
 
   const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
