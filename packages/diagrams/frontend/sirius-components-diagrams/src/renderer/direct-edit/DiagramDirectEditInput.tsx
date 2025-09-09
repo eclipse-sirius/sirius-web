@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -73,7 +74,7 @@ const isErrorPayload = (payload: GQLRenameElementPayload): payload is GQLErrorPa
 const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'EditLabelSuccessPayload';
 
-export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: DiagramDirectEditInputProps) => {
+export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: DiagramDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
@@ -84,7 +85,6 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
   const { addErrorMessage, addMessages } = useMultiToast();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   const { data: initialLabelItemData, error: initialLabelItemError } = useQuery<
@@ -192,7 +192,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
   };
 
   return (
-    <>
+    <Box width={width}>
       <TextField
         variant="standard"
         name="name"
@@ -206,10 +206,10 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
         onBlur={onBlur}
         autoFocus
         spellCheck={false}
-        fullWidth
+        sx={{ width: width }}
         data-testid="name-edit"
         className="nodrag"
       />
-    </>
+    </Box>
   );
 };
