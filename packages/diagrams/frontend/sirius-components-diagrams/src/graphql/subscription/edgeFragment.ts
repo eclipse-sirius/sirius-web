@@ -37,6 +37,7 @@ fragment edgeFragment on Edge {
     sourceArrow
     targetArrow
     color
+    edgeType
   }
   centerLabelEditable
   customizedStyleProperties

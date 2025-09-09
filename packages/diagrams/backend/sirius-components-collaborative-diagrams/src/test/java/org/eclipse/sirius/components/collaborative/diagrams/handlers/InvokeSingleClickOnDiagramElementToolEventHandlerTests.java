@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -577,6 +578,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .size(1)
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return Edge.newEdge(edgeId)
@@ -603,6 +605,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .lineStyle(LineStyle.Dash)
                 .sourceArrow(ArrowStyle.Diamond)
                 .targetArrow(ArrowStyle.Diamond)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)

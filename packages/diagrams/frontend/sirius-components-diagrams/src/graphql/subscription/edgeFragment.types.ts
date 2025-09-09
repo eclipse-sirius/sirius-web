@@ -37,6 +37,7 @@ export interface GQLEdgeStyle {
   lineStyle: string;
   sourceArrow: string;
   targetArrow: string;
+  edgeType: string;
   color: string;
 }
 

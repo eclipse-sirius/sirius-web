@@ -53,7 +53,6 @@ import { useDropDiagramStyle } from './dropNode/useDropDiagramStyle';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
-import { useEdgeType } from './edge/useEdgeType';
 import { useSelectEdgeChange } from './edgeChange/useSelectEdgeChange';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
@@ -117,7 +116,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const { selection, setSelection } = useSelection();
-  const { edgeType, setEdgeType } = useEdgeType();
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
 
@@ -131,7 +129,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       referencePosition,
       nodeConverters,
       diagramDescription,
-      edgeType,
       store.getState()
     );
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
@@ -252,7 +249,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         }
       });
     }
-  }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
+  }, [diagramRefreshedEventPayload, diagramDescription]);
 
   useEffect(() => {
     setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected && !readOnly })));
@@ -492,8 +489,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           helperLines={helperLinesEnabled}
           onHelperLines={setHelperLinesEnabled}
           reactFlowWrapper={ref}
-          edgeType={edgeType}
-          onEdgeType={setEdgeType}
         />
         <GroupPalette
           x={groupPalettePosition?.x}

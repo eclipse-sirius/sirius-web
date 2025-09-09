@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max Width
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType <em>Edge Type</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle()
@@ -229,5 +230,31 @@ public interface EdgeStyle extends Style, LabelStyle, BorderStyle {
      * @generated
      */
     void setMaxWidthExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Edge Type</b></em>' attribute. The default value is <code>"Manhattan"</code>.
+     * The literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.EdgeType}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Edge Type</em>' attribute.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @see #setEdgeType(EdgeType)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeStyle_EdgeType()
+     * @model default="Manhattan" required="true"
+     * @generated
+     */
+    EdgeType getEdgeType();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType <em>Edge
+     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Edge Type</em>' attribute.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @see #getEdgeType()
+     * @generated
+     */
+    void setEdgeType(EdgeType value);
 
 } // EdgeStyle

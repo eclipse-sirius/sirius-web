@@ -56,12 +56,12 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 const isEdgeElement = (element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined): element is Edge<EdgeData> =>
-  !!element && (element.type === 'smoothStepEdge' || element.type === 'smartStepEdge');
+  !!element && (element.type === 'manhattan' || element.type === 'smartManhattan');
 
 const isNodeElement = (
   element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined
 ): element is InternalNode<Node<NodeData>> =>
-  !!element && element.type !== 'smoothStepEdge' && element.type !== 'smartStepEdge';
+  !!element && element.type !== 'manhattan' && element.type !== 'smartManhattan';
 
 const isFreeFormNode = (
   element: Edge<EdgeData> | InternalNode<Node<NodeData>> | undefined

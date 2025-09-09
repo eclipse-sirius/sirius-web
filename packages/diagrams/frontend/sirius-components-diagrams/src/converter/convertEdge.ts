@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { EdgeProps } from '@xyflow/react';
-import { ComponentType } from 'react';
-
-export type DiagramEdgeType = 'smartStepEdge' | 'smoothStepEdge';
-
-export type DiagramEdgeTypes = {
-  [key in DiagramEdgeType]: ComponentType<EdgeProps>;
+export const convertEdgeType = (gqlEdgeType: string): string => {
+  switch (gqlEdgeType) {
+    case 'Manhattan':
+      return 'manhattan';
+    case 'SmartManhattan':
+      return 'smartManhattan';
+    default:
+      return 'manhattan';
+  }
 };

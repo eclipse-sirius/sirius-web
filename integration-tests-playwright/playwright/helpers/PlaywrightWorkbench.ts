@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramEdgeType } from './EdgeTypes.types';
+import { type Page } from '@playwright/test';
 
-export interface UseEdgeTypeValue {
-  edgeType: DiagramEdgeType;
-  setEdgeType: (edgeType: DiagramEdgeType) => void;
+export class PlaywrightWorkbench {
+  readonly page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async performAction(actionLabel: string) {
+    await this.page
+      .locator('[data-testid="onboard-area"]')
+      .locator('[data-testid="actions"]')
+      .getByText(new RegExp('^' + actionLabel + '$', 'i'))
+      .click();
+  }
 }
