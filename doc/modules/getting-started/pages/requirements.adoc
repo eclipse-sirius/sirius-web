@@ -1,0 +1,27 @@
+= Requirements
+
+The requirements below are for running a sample application made with {sw}. Other applications made with {sw} may entail additional requirements.
+
+* The https://github.com/orgs/eclipse-sirius/packages?q=sirius-web-sample&tab=packages&q=+org.eclipse.sirius.sirius-web-sample-application[latest "fat JAR" of the Sirius Web sample application], which contains the complete sample application and all of its dependencies.
++
+--
+.Download the latest "fat JAR" of the sample application
+image::Download_Application.png["The sample application to download"]
+--
++
+
+* https://www.docker.com/products/docker-desktop/[Docker], which is used to run the PostgreSQL instance used as database. If you want to reuse an existing instance of PostgreSQL (version 12 or later), ensure the database user has admin rights on the database.
+
+* A Java Runtime Environment (JRE), version 17
++
+--
+TIP: If you do not already have a JRE installed on your system, we recommend getting started with one of the builds made available by https://adoptium.net/[Eclipse Adoptium].
+--
++
+
+* A modern web browser
++
+--
+TIP: Sirius Web currently has some known issues with Firefox. We recommend using a Chromium-based browser if needed.
+--
++

@@ -1,0 +1,5 @@
+= Basic Family Tutorial
+
+In this tutorial, you will use the {sw} *low-code* approach to create a simple studio for representing and expressing family relations between individuals.
+
+#TODO: someday in the future, maybe add here a simple tutorial similar to https://wiki.eclipse.org/Sirius/Tutorials/BasicFamily[Sirius Desktop's Basic Family Tutorial]#

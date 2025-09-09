@@ -1,0 +1,12 @@
+= Studio Runtime for Developers
+
+As explained in the xref:user-manual:studio-runtime.adoc[User Manual], the _{stdrt}_ is the runtime engine responsible for interpreting _{stddefs}_ into an editing experience for the _{stdusrs}_.
+
+There are however some elements of this runtime that can be programmatically configured. This chapter will thus focus on going further into the lifecycle of the _{stdrt}_, and the APIs that can be used to configure it.
+
+#TODO: Not sure how much we have here.
+I think having diagrams representing the lifecycles of the data model / view model coordination could help.
+Probably there are some APIs that we can use to configure some parameters of the runtime?
+#
+
+#TODO: Add tip to add delay for the resource set to get disposed, very useful when developing to set this lower.#
