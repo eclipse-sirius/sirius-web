@@ -1,0 +1,121 @@
+= The {sirius} approach
+
+{product} is designed to address the evolving needs of domain-specific modeling by enabling the rapid creation of customized graphical modeling tools.
+It builds on the proven concepts of Eclipse {sirius} while embracing the flexibility and reach of web technologies.
+
+== Addressing the Needs of Modelers
+
+Domain modelers often face diverse and demanding requirements when designing and working with models.
+{sirius} addresses these needs through five key principles:
+
+* *Rapidly* describe graphical modeling solutions tailored to a domain.
+* *Represent* the same system through multiple synchronized views: diagrams, tables, forms, etc.
+* *Adapt* models and visualizations to the business or engineering context.
+* Offer *off-the-shelf* features: navigability, layout management, layers, wizards, image export, and more.
+* *Customizable* and *extensible* for domain-specific or project-specific needs.
+
+== Key Concepts of {product}
+
+=== Principles Behind {product}
+
+{product} is built on key principles that support the creation of modeling tools tailored to specific domains.
+It enables users to rapidly design and deploy graphical modeling solutions that fit their business or engineering context.
+With {product}, the same system can be represented through multiple synchronized views such as diagrams, tables, trees, or forms, providing flexibility for different stakeholders.
+Tools created with {product} are highly adaptable and customizable, while offering many useful features out of the box, including navigation, layout control, wizards, and image export.
+The approach is based on open Eclipse Modeling technologies, making it accessible even to non-experts.
+
+=== Key Benefits
+
+{product} offers distinct advantages for both tool developers and end users.
+
+*For developers*, it significantly reduces the complexity and cost of creating modeling tools.
+Since it does not require deep expertise in web technologies, teams can quickly prototype and iterate on solutions.
+
+*For end users*, the result is a modeling tool that is tightly aligned with their domain, vocabulary, and processes, improving both usability and adoption.
+{product} also supports dynamic evolution: changes to the specification can be applied without code generation or redeployment, making the development cycle more agile.
+
+== Architecture Overview
+
+=== Roles : Studio Makers and End Users
+
+{product} provides a modeling workbench for building model-based applications, structured around two complementary roles:
+
+* *Studio makers* (also known as specifiers) define the business concepts and the graphical tooling to manipulate them.
+* *End users* use those concepts to capture, visualize, and edit domain-specific data through dedicated representations.
+
+image::modeler-specifiers-and-end-users.drawio.svg[]
+
+These roles correspond to two distinct levels in the architecture:
+
+* Studio makers work at a *meta* level, where they define both the *semantic domain* (business concepts) and the *views* (graphical representations).
+* End users work at the *data* level, where they create and manipulate *instances* of the defined concepts using those *representations*.
+
+{product}’s architecture is composed of four major parts:
+
+image::relations.png[]
+
+* *Domain* : defines the business concepts (semantic model).
+* *View* : defines the representations available to users (UI model).
+* *Data* : actual instances of the domain concepts.
+* *Representations* : visual tools used to manipulate the data.
+
+=== Domain
+
+In a *domain*, studio makers define all the core business concepts, their attributes, and relationships.
+For example, a domain could include concepts like `Vehicle`, `Engine`, and `Wheel`, with properties such as `speed`, `energyType`, or `numberOfWheels`.
+
+{product} provides a dedicated *Domain language* to define these concepts directly.
+It also supports reusing existing Ecore models created for Sirius Desktop.
+
+NOTE: In EMF-based environments, domains are often referred to as _metamodels_ or _Ecore packages (EPackages)_.
+
+A studio maker must have a strong understanding of the business domain to model it accurately and meaningfully.
+
+=== View
+
+In a *view*, studio makers define how the domain concepts should be represented visually or in form-based editors.
+Views are used to build diagrams, tables, or forms that allow users to interact with their data in ways that reflect their business needs.
+
+{product} provides the *View language* to design and configure these representations.
+
+NOTE: In Sirius Desktop, this was handled through `.odesign` files.
+
+For example, a diagram could show different types of vehicles, using icons or shapes depending on the number of wheels, or a form could allow editing technical specifications.
+The views are parameterized based on the domain and can include business logic, conditions, and styling rules.
+
+=== Data
+
+End users create and manage *data*, which are instances of the concepts defined in the domain.
+This data is structured and constrained by the domain definition, ensuring semantic consistency.
+
+For example, a user may create a `Vehicle` instance with a `DieselEngine` and four `Wheels`.
+Because the domain is predefined by studio makers, end users can only work with valid concepts and relationships, reducing errors and ensuring data coherence.
+
+=== Representations
+
+To interact with the data, end users rely on *representations* defined by studio makers.
+These can be diagrams, tables, or forms, each designed for specific roles or business use cases.
+
+Examples of representations include:
+
+* A form for technical specifications,
+* A component diagram showing sub-parts,
+* A cabling diagram for electrical layouts,
+* A form to capture maintenance reports,
+* ...
+
+Each representation presents a focused view of the data relevant to a specific activity or user profile.
+This separation of views allows {product} to support complex systems with multiple stakeholders, each interacting with the model through the lens of their own responsibilities.
+
+=== How Specifications Drive the Runtime
+
+{product} includes a dedicated specification environment that enables studio makers to define modeling workbenches without writing code.
+Using a graphical interface, they can configure diagrams, tables, forms, and property views, benefiting from rapid feedback loops and a low technical barrier to entry.
+For more advanced needs, the specification can be extended with custom logic in Java.
+
+Unlike traditional model-driven tools, there is no code generation involved.
+Once the specification is defined, it is interpreted directly by the runtime engine, which dynamically applies it to drive the user interface and behavior. This allows changes to be reflected immediately, without requiring build or deployment steps.
+
+The runtime environment offers a viewpoint-based user interface, specific to the context of each user.
+It ensures that users only see the relevant data and tools, improving clarity and efficiency.
+This separation between specification and execution supports agile iteration and makes it easy to evolve the modeling environment over time.

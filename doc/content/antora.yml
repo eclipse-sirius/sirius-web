@@ -1,0 +1,37 @@
+name: sirius-web
+title: Sirius Web
+version: true
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    github-project: "eclipse-sirius/sirius-web"
+    source-code-url: "https://github.com/{github-project}"
+    bug-url: "{source-code-url}/issues"
+    changelog-url: "{source-code-url}/blob/master/CHANGELOG.adoc"
+    details: "Details"
+    diag-toolbar: "Contextual Toolbar"
+    editor: "Project Editor"
+    explorer-filter-bar: "Project Explorer Filter Bar"
+    explorer-menu: "Element Options Menu"
+    explorer: "Project Explorer"
+    forum-url: "{source-code-url}/discussions"
+    homepage: "Projects Browser"
+    mbse: "Model-Based Systems Engineering"
+    milestones: "{source-code-url}/milestones"
+    packages-url: "{source-code-url}/packages/2069579/versions"
+    product: "Sirius Web"
+    product-artefact: "sirius-web"
+    product-jar: "{product-artefact}-application-YYYY.M.X.jar"
+    projects-list: "Projects List"
+    projects-list-menu: "Project Options Menu"
+    query-view: "Query"
+    related-elements: "Related Elements"
+    representations-view: "Representations"
+    resources-url: "https://eclipse.dev/sirius/sirius-web.html"
+    git-ssh-url: "git@github.com:eclipse-sirius/sirius-web.git"
+    sirius: "Sirius"
+    product-tag: "v2025.6.10"
+    validation: "Validation"
+    website-url: "https://eclipse.dev/sirius/sirius-web.html"

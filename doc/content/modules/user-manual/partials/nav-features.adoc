@@ -1,0 +1,39 @@
+// Reference all the files defined in the features folder
+* xref:user-manual:key-features.adoc[]
+
+* End-User Guide
+** Projects Management
+*** xref:user-manual:features/end-user/homepage.adoc[]
+** Editor
+*** xref:user-manual:features/end-user/editor.adoc[]
+*** xref:user-manual:features/end-user/explorer.adoc[]
+*** xref:user-manual:features/end-user/details.adoc[]
+*** xref:user-manual:features/end-user/related-elements.adoc[]
+*** xref:user-manual:features/end-user/representations-view.adoc[]
+*** xref:user-manual:features/end-user/query-view.adoc[]
+*** xref:user-manual:features/end-user/validation.adoc[]
+*** xref:user-manual:features/end-user/keyboard-shortcuts.adoc[]
+** Representations Types
+*** xref:user-manual:features/end-user/deck.adoc[]
+*** xref:user-manual:features/end-user/diagram.adoc[]
+*** xref:user-manual:features/end-user/form.adoc[]
+*** xref:user-manual:features/end-user/gantt.adoc[]
+*** xref:user-manual:features/end-user/portal.adoc[]
+*** xref:user-manual:features/end-user/table.adoc[]
+*** xref:user-manual:features/end-user/tree.adoc[]
+** xref:user-manual:features/end-user/publication.adoc[]
+** xref:user-manual:features/end-user/cm.adoc[]
+
+* Advanced Guide
+** xref:user-manual:features/end-user/scaling-limits.adoc[]
+** xref:developer-guide:extend.adoc[]
+** xref:user-manual:features/end-user/security.adoc[]
+
+* Studio Maker Guide
+** xref:user-manual:features/studio-maker/deck.adoc[]
+** xref:user-manual:features/studio-maker/diagram.adoc[]
+** xref:user-manual:features/studio-maker/form.adoc[]
+** xref:user-manual:features/studio-maker/gantt.adoc[]
+** xref:user-manual:features/studio-maker/portal.adoc[]
+** xref:user-manual:features/studio-maker/table.adoc[]
+** xref:user-manual:features/studio-maker/tree.adoc[]

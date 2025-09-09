@@ -1,0 +1,4 @@
+= APIs cookbook
+The APIs cookbook offers a collection of practical examples and step-by-step instructions to help you interact with {product}’s REST APIs.
+It includes ready-to-use code snippets and explanations, allowing you to integrate with other tools, automate tasks, and explore advanced features efficiently.
+Each recipe aims for clarity, ease of use, and customizability for different use cases.

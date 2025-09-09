@@ -1,0 +1,49 @@
+= Deck
+
+The *Deck* view in {product} provides a card-based interface to browse and interact with model elements.
+Each element is displayed as an individual card, giving users a clean and readable layout to scan through multiple items—especially when focusing on a specific type of data.
+
+image::deck.png[]
+
+Decks are ideal for presenting collections of similar elements, such as a list of components, tasks, stakeholders, or features, in a compact and visual way.
+
+== What You Can Do
+
+In a deck representation, you can:
+
+* View multiple model elements as cards arranged in a grid or list
+* Click a card to open the element in a form, diagram, or detailed view
+* Filter the displayed cards based on attributes or types
+* Sort or group cards (depending on configuration)
+* Trigger custom actions directly from a card (e.g., mark as completed, assign to a user)
+
+Each card typically shows key information (like name, status, icon, or color) and may include buttons or links defined by the modeling environment.
+
+== When to Use It
+
+Use the deck representation when:
+
+* You need to get an overview of multiple similar elements at once
+* You want a quick way to navigate to detailed editors for individual items
+* A grid or list layout is more suitable than a diagram or table
+* You need to scan elements visually with consistent layout and styling
+
+Decks work well for task lists, requirements, tickets, component overviews, and any domain element with concise summaries.
+
+== Example
+
+A project manager might use a deck to view all project milestones as cards. Each card could display:
+
+* The milestone title and status
+* A color-coded priority indicator
+* A due date
+* A button to open the milestone in a form editor
+* A quick-action icon to mark the milestone as “validated”
+
+Decks provide a flexible way to navigate structured data without needing to rely on diagrams or hierarchical trees.
+
+[NOTE]
+====
+The layout and contents of each card are determined by the modeling environment configuration.
+Studio makers decide which properties are shown and which actions are available.
+====

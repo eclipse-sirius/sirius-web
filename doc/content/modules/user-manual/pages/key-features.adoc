@@ -1,0 +1,90 @@
+= Key features in {product}
+
+This section highlights the key features available to end users in {product}, focusing on how they interact with and manipulate data through role-specific tools and representations defined by studio makers.
+
+{product} encompasses a set of key features aimed at enhancing the modeling experience.
+The primary functionalities of {product} are centered around project management and model creation.
+
+[NOTE]
+====
+In {product}, features are categorized into two distinct levels of maturity:
+
+* **Experimental**: Features in the early stages of development or testing, subject to potential changes and improvements based on user feedback.
+* **Stable**: Features that have completed rigorous testing, are deemed reliable, and are ready for production use with a high level of confidence in their stability and capability.
+
+This dual categorization allows users to select features based on their comfort level with the maturity of each, providing flexibility and transparency in the usage of {product}.
+====
+
+== Features overview
+
+[cols="2,<",width="100%"]
+|===
+| Feature| {product}
+
+2+h|Projects Management
+
+|xref:features/end-user/homepage.adoc[Projects Browser]
+a|✅
+
+|xref:features/end-user/editor.adoc[Project Editor]
+a|✅
+
+2+h|Representations
+|xref:user-manual:features/end-user/deck.adoc[Deck]
+a|✅
+
+|xref:user-manual:features/end-user/diagram.adoc[Diagram]
+a|✅
+
+|xref:user-manual:features/end-user/table.adoc[Form]
+a|✅
+
+|xref:user-manual:features/end-user/gantt.adoc[Gantt]
+a|✅
+
+|xref:user-manual:features/end-user/portal.adoc[Sequence Diagram]
+a|❌
+
+|xref:user-manual:features/end-user/table.adoc[Table]
+a|✅
+
+|xref:user-manual:features/end-user/table.adoc[Tree]
+a|✅
+
+|Libraries
+a|✅
+
+2+h|Diagram Management
+
+|xref:user-manual:key-features.adoc[Contextual Palette, Multi-Selection, Reconnect, Hide/Fade, Collapse/Expand, Drag &Drop, Compartments, Custom Shapes, Assisted Layout (Auto layout, Ruler, Grid, Align, Distribute...)], xref:hands-on/how-tos/model-management.adoc#direct-edit[Direct Edit]
+a|✅
+
+|xref:user-manual:support.adoc[Edit Graphical Properties, Undo/Redo, Copy/Paste]
+a|❌
+
+2+h|Collaboration & Interoperability
+
+|xref:features/end-user/collaboration.adoc[Share Links (Projects, Diagrams...)]
+a|✅
+
+|xref:features/end-user/collaboration.adoc[Concurrent authoring]
+a|✅
+
+|xref:integration/interoperability.adoc[Download / Upload JSON]
+a|✅
+
+
+|xref:developer-guide:api.adoc[API]
+a|✅
+|===
+
+A detailed list of all {product} features is available in the xref:features/features.adoc[Features] section.
+
+== Ongoing development
+
+{product} is xref:user-manual:cycle.adoc[continually evolving], with a commitment to expanding its repertoire of representations.
+Future releases will introduce additional features, ensuring {product} remains a comprehensive and adaptable tool for building and deploying custom modeling environments across a wide range of domains.
+
+== Others
+
+For other features, please xref:user-manual:support.adoc[contact us].

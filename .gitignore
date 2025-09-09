@@ -88,3 +88,6 @@ coverage/
 *.iws
 *.iml
 *.ipr
+
+# Antora
+build/

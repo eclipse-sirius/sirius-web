@@ -1,0 +1,9 @@
+= Customization and extensions
+
+{product} is extendable.
+The platform enables the contribution of new specific views and the specific methodologies implementation.
+Users can seamlessly extend {product}'s capability to meet their specific requirements, such as creating dedicated libraries or contributing specific metadata by adding new representations.
+Extensibility is a key strength of {product}, offering organizations the potential to enhance their processes within the tool, ensuring consistency in modeling practices throughout their practitioners.
+
+Interested in extending {product}?
+Feel free to xref:ROOT:help.adoc[contact us] for more details.
