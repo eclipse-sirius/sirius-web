@@ -291,18 +291,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       ) {
         setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
       } else {
+        resetHelperLines(changes);
+        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
+        transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges, nodes);
+        transformedNodeChanges = applyHelperLines(transformedNodeChanges, nodes);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges, nodes);
         setNodes((oldNodes) => {
-          resetHelperLines(changes);
-          let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(
-            noReadOnlyChanges,
-            oldNodes
-          );
-          transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges, oldNodes);
-          transformedNodeChanges = applyHelperLines(transformedNodeChanges, oldNodes);
-          transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges, oldNodes);
-
           let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
-
           newNodes = applyMoveChange(transformedNodeChanges, newNodes);
           newNodes = applyHandleChange(transformedNodeChanges, newNodes);
           newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
@@ -312,7 +307,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         });
       }
     },
-    [helperLinesEnabled]
+    [helperLinesEnabled, nodes]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
