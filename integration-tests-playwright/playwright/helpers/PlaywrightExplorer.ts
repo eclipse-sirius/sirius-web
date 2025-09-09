@@ -49,4 +49,8 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('upload-document-split-button').click();
     await this.page.getByTestId('upload-document-close').click();
   }
+
+  async dragTo(treeItemLabel: string, target: Locator) {
+    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).dragTo(target);
+  }
 }
