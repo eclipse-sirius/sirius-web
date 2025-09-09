@@ -111,8 +111,17 @@ export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
 export { LibraryBrowserView } from './views/library-browser/LibraryBrowserView';
 export { NewProjectView } from './views/new-project/NewProjectView';
+export { CreateProjectArea } from './views/project-browser/create-projects-area/CreateProjectArea';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
+export type { CreateProjectAreaProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
+export { CreateProjectAreaCard } from './views/project-browser/create-projects-area/CreateProjectAreaCard';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
+export { NewProjectCard } from './views/project-browser/create-projects-area/NewProjectCard';
+export { ProjectTemplateCard } from './views/project-browser/create-projects-area/ProjectTemplateCard';
+export { ShowAllProjectTemplatesCard } from './views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
+export { UploadProjectCard } from './views/project-browser/create-projects-area/UploadProjectCard';
+export { ListProjectsArea } from './views/project-browser/list-projects-area/ListProjectsArea';
+export type { ListProjectsAreaProps } from './views/project-browser/list-projects-area/ListProjectsArea.types';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
 export { type ProjectContextMenuEntryProps } from './views/project-browser/list-projects-area/ProjectActionButton.types';
 export {

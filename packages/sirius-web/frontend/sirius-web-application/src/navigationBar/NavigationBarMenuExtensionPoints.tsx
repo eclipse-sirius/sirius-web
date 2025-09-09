@@ -37,6 +37,20 @@ export const navigationBarMenuContainerExtensionPoint: ComponentExtensionPoint<N
 };
 
 /**
+ * Extension point for the navigation bar menu header.
+ *
+ * This extension point allows the contribution of a custom header for the navigation bar menu.
+ * A contribution can thus define how the header should be rendered and behave.
+ * A contribution to this extension point will be rendered at the top of the menu, above all other entries.
+ *
+ * @since v2025.10.0
+ */
+export const navigationBarMenuHeaderExtensionPoint: ComponentExtensionPoint<NavigationBarMenuContainerProps> = {
+  identifier: 'navigationBarMenu#header',
+  FallbackComponent: () => null,
+};
+
+/**
  * Extension point for the navigation bar menu icon.
  *
  * This extension point allows the contribution of a custom icon for the navigation bar menu.
