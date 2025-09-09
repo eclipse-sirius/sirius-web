@@ -91,7 +91,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
 - https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
 - https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] Fix an issue with the initialization of nodes that could cause edges or the edge palette to blink when refreshing the diagram
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3971[#3971] [diagram] Enforce minimum width for diagram label direct edit input
 
 === New Features
 
