@@ -27,7 +27,8 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
+import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
+import org.eclipse.sirius.web.application.project.services.api.IProjectImportApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -48,11 +49,11 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final List<ICapabilityVoter> capabilityVoters;
 
-    private final IProjectImportService projectImportService;
+    private final IProjectImportApplicationService projectImportService;
 
     private final IMessageService messageService;
 
-    public MutationUploadProjectDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectImportService projectImportService, IMessageService messageService) {
+    public MutationUploadProjectDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectImportApplicationService projectImportService, IMessageService messageService) {
         this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.projectImportService = Objects.requireNonNull(projectImportService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -76,9 +77,9 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
         if (optionalId.isPresent() && optionalFile.isPresent()) {
             var inputId = optionalId.get();
             var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD) == CapabilityVote.GRANTED);
-
+            var uploadFile = optionalFile.get();
             if (hasCapability) {
-                payload = this.projectImportService.importProject(inputId, optionalFile.get());
+                payload = this.projectImportService.importProject(new UploadProjectInput(inputId, uploadFile));
             } else {
                 payload = new ErrorPayload(inputId, this.messageService.unauthorized());
             }

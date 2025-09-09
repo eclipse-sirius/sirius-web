@@ -27,7 +27,7 @@ public class ProjectDuplicationCapabilityVoter implements ICapabilityVoter {
 
     private final boolean enableProjectDuplication;
 
-    public ProjectDuplicationCapabilityVoter(@Value("${sirius.web.capability.project.duplication:false}") boolean enableProjectDuplication) {
+    public ProjectDuplicationCapabilityVoter(@Value("${sirius.web.capability.project.duplication:true}") boolean enableProjectDuplication) {
         this.enableProjectDuplication = enableProjectDuplication;
     }
 
