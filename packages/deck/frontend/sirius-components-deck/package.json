@@ -60,7 +60,7 @@
     "rollup-plugin-peer-deps-external": "2.2.4",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
-    "vite": "7.1.1",
+    "vite": "7.1.5",
     "vitest": "3.2.4",
     "xstate": "4.32.1",
     "react-resizable-panels": "3.0.2"
