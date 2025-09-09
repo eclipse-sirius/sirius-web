@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useState } from 'react';
-import { UseEdgeTypeValue } from './useEdgeType.types';
-import { DiagramEdgeType } from './EdgeTypes.types';
+package org.eclipse.sirius.components.diagrams;
 
-export const useEdgeType = (): UseEdgeTypeValue => {
-  const [edgeType, setEdgeType] = useState<DiagramEdgeType>('smoothStepEdge');
-  return {
-    edgeType,
-    setEdgeType,
-  };
-};
+/**
+ * The type of edge to use.
+ *
+ * @author frouene
+ */
+public enum EdgeType {
+    Manhattan, SmartManhattan
+}

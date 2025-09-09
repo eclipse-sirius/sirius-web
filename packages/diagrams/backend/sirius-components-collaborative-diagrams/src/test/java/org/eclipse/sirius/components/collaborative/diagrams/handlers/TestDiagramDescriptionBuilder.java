@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -70,6 +71,7 @@ public class TestDiagramDescriptionBuilder {
                     .sourceArrow(ArrowStyle.InputArrowWithDiamond)
                     .targetArrow(ArrowStyle.None)
                     .color("rgb(1, 2, 3)")
+                    .edgeType(EdgeType.Manhattan)
                     .build();
         };
 

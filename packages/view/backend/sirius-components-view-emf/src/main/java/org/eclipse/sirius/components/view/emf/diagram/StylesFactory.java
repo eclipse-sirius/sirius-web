@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
@@ -99,6 +100,7 @@ public final class StylesFactory {
                 .size(edgeStyle.getEdgeWidth())
                 .sourceArrow(ArrowStyle.valueOf(edgeStyle.getSourceArrowStyle().getLiteral()))
                 .targetArrow(ArrowStyle.valueOf(edgeStyle.getTargetArrowStyle().getLiteral()))
+                .edgeType(EdgeType.valueOf(edgeStyle.getEdgeType().getLiteral()))
                 .build();
     }
 
