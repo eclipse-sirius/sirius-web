@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
+import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
@@ -230,6 +231,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createUserResizableDirectionFromString(eDataType, initialValue);
             case DiagramPackage.HEADER_SEPARATOR_DISPLAY_MODE:
                 return this.createHeaderSeparatorDisplayModeFromString(eDataType, initialValue);
+            case DiagramPackage.EDGE_TYPE:
+                return this.createEdgeTypeFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -267,6 +270,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertUserResizableDirectionToString(eDataType, instanceValue);
             case DiagramPackage.HEADER_SEPARATOR_DISPLAY_MODE:
                 return this.convertHeaderSeparatorDisplayModeToString(eDataType, instanceValue);
+            case DiagramPackage.EDGE_TYPE:
+                return this.convertEdgeTypeToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -917,6 +922,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertHeaderSeparatorDisplayModeToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public EdgeType createEdgeTypeFromString(EDataType eDataType, String initialValue) {
+        EdgeType result = EdgeType.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertEdgeTypeToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

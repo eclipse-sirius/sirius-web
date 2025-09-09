@@ -25,7 +25,6 @@ import {
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { DiagramEdgeType } from '../renderer/edge/EdgeTypes.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHandleFromReferencePosition';
 import { RawDiagram } from '../renderer/layout/layout.types';
@@ -41,6 +40,7 @@ import { IconLabelNodeConverter } from './IconLabelNodeConverter';
 import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
+import { convertEdgeType } from './convertEdge';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
 import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
 
@@ -131,7 +131,6 @@ export const convertDiagram = (
   referencePosition: GQLReferencePosition | null,
   nodeConverterContributions: INodeConverter[],
   diagramDescription: GQLDiagramDescription,
-  edgeType: DiagramEdgeType,
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
@@ -266,7 +265,7 @@ export const convertDiagram = (
 
     return {
       id: gqlEdge.id,
-      type: edgeType,
+      type: convertEdgeType(gqlEdge.style.edgeType),
       source: sourceNode ? sourceNode.id : '',
       target: targetNode ? targetNode.id : '',
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,

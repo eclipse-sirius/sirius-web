@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.e2e.tests.diagramEdge;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
@@ -25,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
@@ -38,9 +42,6 @@ import org.eclipse.sirius.web.e2e.tests.services.SiriusWebE2EColorProvider;
 import org.eclipse.sirius.web.e2e.tests.services.api.IE2EViewProvider;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * The view provider for the edges-creation.cy.ts test suite.
@@ -65,7 +66,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .build();
 
         view.eAllContents().forEachRemaining(eObject ->
-            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())))
+                eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())))
         );
 
         String resourcePath = UUID.nameUUIDFromBytes("DiagramEdgeView".getBytes()).toString();
@@ -160,6 +161,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .centerLabelExpression("")
                 .sourceExpression("aql:self.source")
                 .sourceDescriptions(sourceDescription)
                 .targetExpression("aql:self.target")
@@ -174,6 +176,15 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(0)
                                 .borderLineStyle(LineStyle.SOLID)
+                                .edgeType(EdgeType.MANHATTAN)
+                                .build()
+                )
+                .conditionalStyles(
+                        new DiagramBuilders()
+                                .newConditionalEdgeStyle()
+                                .condition("aql:self.name=='TestConditionalEdgeStyle'")
+                                .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
+                                .edgeType(EdgeType.SMART_MANHATTAN)
                                 .build()
                 )
                 .build();

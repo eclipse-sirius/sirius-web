@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
+import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
@@ -507,6 +508,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EEnum headerSeparatorDisplayModeEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum edgeTypeEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1655,6 +1663,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getEdgeStyle_EdgeType() {
+        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditionalEdgeStyle() {
         return this.conditionalEdgeStyleEClass;
     }
@@ -2575,6 +2593,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getEdgeType() {
+        return this.edgeTypeEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -2720,6 +2748,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
         this.createEReference(this.edgeStyleEClass, EDGE_STYLE__BACKGROUND);
         this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__MAX_WIDTH_EXPRESSION);
+        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__EDGE_TYPE);
 
         this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
 
@@ -2838,6 +2867,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.labelTextAlignEEnum = this.createEEnum(LABEL_TEXT_ALIGN);
         this.userResizableDirectionEEnum = this.createEEnum(USER_RESIZABLE_DIRECTION);
         this.headerSeparatorDisplayModeEEnum = this.createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
+        this.edgeTypeEEnum = this.createEEnum(EDGE_TYPE);
     }
 
     /**
@@ -3122,6 +3152,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeStyle_EdgeType(), this.getEdgeType(), "edgeType", "Manhattan", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3376,6 +3408,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.NEVER);
         this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.ALWAYS);
         this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.IF_CHILDREN);
+
+        this.initEEnum(this.edgeTypeEEnum, EdgeType.class, "EdgeType");
+        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.MANHATTAN);
+        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.SMART_MANHATTAN);
 
         // Create resource
         this.createResource(eNS_URI);

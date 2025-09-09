@@ -31,8 +31,6 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
 import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
-import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
-import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -46,15 +44,7 @@ import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints'
 import { ExportImageButton } from './ExportImageButton';
 
 export const DiagramPanel = memo(
-  ({
-    snapToGrid,
-    onSnapToGrid,
-    helperLines,
-    onHelperLines,
-    reactFlowWrapper,
-    edgeType,
-    onEdgeType,
-  }: DiagramPanelProps) => {
+  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
       arrangeAllDone: false,
@@ -186,33 +176,6 @@ export const DiagramPanel = memo(
               </Tooltip>
             )}
             <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
-            {edgeType === 'smoothStepEdge' ? (
-              <Tooltip title="Smart Step Edge">
-                <span>
-                  <IconButton
-                    size="small"
-                    aria-label="smart step edge"
-                    onClick={() => onEdgeType('smartStepEdge')}
-                    data-testid="smart-step-edge"
-                    disabled={readOnly}>
-                    <SmoothStepEdgeIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Smooth Step Edge">
-                <span>
-                  <IconButton
-                    size="small"
-                    aria-label="smooth step edge"
-                    onClick={() => onEdgeType('smoothStepEdge')}
-                    data-testid="smooth-step-edge"
-                    disabled={readOnly}>
-                    <SmartEdgeIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
             <Tooltip title="Reveal hidden elements">
               <span>
                 <IconButton

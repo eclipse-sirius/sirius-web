@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,7 @@ const pathfindingJumpPointNoDiagonal: PathFindingFunction = (grid, start, end) =
   const finder = new JumpPointFinder({
     diagonalMovement: DiagonalMovement.Never,
   });
+  if (start.x >= grid.width || end.x >= grid.width || start.y >= grid.height || end.y >= grid.height) return null;
   const fullPath = finder.findPath(start.x, start.y, end.x, end.y, grid);
   const smoothedPath = fullPath;
   if (fullPath.length === 0 || smoothedPath.length === 0) return null;

@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -127,6 +128,7 @@ public class TestDiagramBuilder {
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
                 .color("#FFFFFF")
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return Edge.newEdge(id)

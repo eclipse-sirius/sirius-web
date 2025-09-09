@@ -44,4 +44,11 @@ export class PlaywrightEdge {
   async closePalette() {
     await this.page.getByTestId('Close-palette').click();
   }
+
+  async getEdgeColor() {
+    const path = this.edgeLocator.locator('path').first();
+    return await path.evaluate((el) => {
+      return window.getComputedStyle(el).getPropertyValue('stroke');
+    });
+  }
 }

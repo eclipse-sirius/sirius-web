@@ -21,6 +21,24 @@ export class PlaywrightExplorer {
     this.explorerLocator = page.locator('[data-testid^="explorer://"]').first();
   }
 
+  async createRootObject(treeItemLabel: string, domain: string, entity: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('new-object').click({ force: true });
+    await this.page.getByTestId('domain').click();
+    await this.page.locator(`[data-value="domain://${domain}"]`).click();
+    await this.page.getByTestId('type').click();
+    await this.page.locator(`[data-value="${entity}"]`).click();
+    await this.page.getByTestId('create-object').click();
+  }
+
+  async createNewObject(treeItemLabel: string, childCreationDescriptionLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('new-object').click({ force: true });
+    await this.page.getByTestId('childCreationDescription').click();
+    await this.page.locator(`[data-value="${childCreationDescriptionLabel}"]`).click();
+    await this.page.getByTestId('create-object').click();
+  }
+
   async createRepresentation(
     treeItemLabel: string,
     representationDescriptionName: string,
@@ -37,6 +55,10 @@ export class PlaywrightExplorer {
 
   async select(treeItemLabel: string) {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
+  }
+
+  async getTreeItemLabel(treeItemLabel: string) {
+    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
   async expand(treeItemLabel: string) {

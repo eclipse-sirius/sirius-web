@@ -281,6 +281,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="edgeType" lowerBound="1"
+        eType="#//EdgeType" defaultValueLiteral="Manhattan"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalEdgeStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//EdgeStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">
@@ -429,5 +431,9 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EdgeType">
+    <eLiterals name="Manhattan" literal="Manhattan"/>
+    <eLiterals name="SmartManhattan" value="1" literal="SmartManhattan"/>
   </eClassifiers>
 </ecore:EPackage>
