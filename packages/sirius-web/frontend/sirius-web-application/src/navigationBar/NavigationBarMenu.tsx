@@ -26,6 +26,7 @@ import { NavigationBarMenuItemProps, NavigationBarMenuProps, NavigationBarMenuSt
 import {
   navigationBarMenuContainerExtensionPoint,
   navigationBarMenuEntryExtensionPoint,
+  navigationBarMenuHeaderExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from './NavigationBarMenuExtensionPoints';
@@ -46,6 +47,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
 
   const { Component: NavigationBarMenuContainer } = useComponent(navigationBarMenuContainerExtensionPoint);
   const { Component: MenuIcon } = useComponent(navigationBarMenuIconExtensionPoint);
+  const { Component: NavigationBarMenuHeader } = useComponent(navigationBarMenuHeaderExtensionPoint);
   const { data: url } = useData(navigationBarMenuHelpURLExtensionPoint);
   const menuItemComponentExtensions: ComponentExtension<NavigationBarMenuItemProps>[] = useComponents(
     navigationBarMenuEntryExtensionPoint
@@ -64,6 +66,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
         open={Boolean(state.menuAnchor)}
         anchorEl={state.menuAnchor}
         onClose={handleClose}>
+        <NavigationBarMenuHeader />
         {canListLibrary ? (
           <MenuItem component={RouterLink} to="/libraries" data-testid="libraries-link">
             <ListItemIcon>
