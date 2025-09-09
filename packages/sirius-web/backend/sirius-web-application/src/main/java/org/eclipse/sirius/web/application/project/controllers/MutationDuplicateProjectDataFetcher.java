@@ -39,16 +39,15 @@ public class MutationDuplicateProjectDataFetcher implements IDataFetcherWithFiel
 
     private final ObjectMapper objectMapper;
 
-    private final IProjectDuplicationApplicationService projectDuplicateService;
+    private final IProjectDuplicationApplicationService projectDuplicationApplicationService;
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IMessageService messageService;
 
-
-    public MutationDuplicateProjectDataFetcher(ObjectMapper objectMapper, IProjectDuplicationApplicationService projectDuplicateService, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
+    public MutationDuplicateProjectDataFetcher(ObjectMapper objectMapper, IProjectDuplicationApplicationService projectDuplicationApplicationService, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.projectDuplicateService = Objects.requireNonNull(projectDuplicateService);
+        this.projectDuplicationApplicationService = Objects.requireNonNull(projectDuplicationApplicationService);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -63,6 +62,6 @@ public class MutationDuplicateProjectDataFetcher implements IDataFetcherWithFiel
             return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }
 
-        return projectDuplicateService.duplicateProject(input);
+        return this.projectDuplicationApplicationService.duplicateProject(input);
     }
 }

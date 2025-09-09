@@ -71,8 +71,7 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-
+    
     @Autowired
     private IProjectSearchService projectSearchService;
 

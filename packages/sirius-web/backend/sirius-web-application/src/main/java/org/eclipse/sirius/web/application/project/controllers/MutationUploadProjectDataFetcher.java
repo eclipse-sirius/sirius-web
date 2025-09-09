@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -26,8 +25,11 @@ import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
+import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
+import org.eclipse.sirius.web.application.project.services.api.IProjectUploadApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#uploadProject.
@@ -45,13 +47,13 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
-    private final IProjectImportService projectImportService;
+    private final IProjectUploadApplicationService projectUploadApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationUploadProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectImportService projectImportService, IMessageService messageService) {
+    public MutationUploadProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectUploadApplicationService projectUploadApplicationService, IMessageService messageService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
-        this.projectImportService = Objects.requireNonNull(projectImportService);
+        this.projectUploadApplicationService = Objects.requireNonNull(projectUploadApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -72,10 +74,12 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
         if (optionalId.isPresent() && optionalFile.isPresent()) {
             var inputId = optionalId.get();
+
             var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
+            var uploadFile = optionalFile.get();
 
             if (hasCapability) {
-                payload = this.projectImportService.importProject(inputId, optionalFile.get());
+                payload = this.projectUploadApplicationService.uploadProject(new UploadProjectInput(inputId, uploadFile));
             } else {
                 payload = new ErrorPayload(inputId, this.messageService.unauthorized());
             }
