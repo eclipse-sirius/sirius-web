@@ -25,6 +25,13 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4134[#4134] [core] Our custom `EditingContextCrossReferenceAdapter` has been removed and replaced by EMF's default `ECrossReferenceAdapter`.
 Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Add the ability to duplicate projects.
+The project duplication feature has been implemented as an export of the project and then a import of the project.
+The code responsible for the import has been refactor with:
+* `IProjectImportService` has been renamed in `IProjectImportApplicationService`.
+* `ProjectImporter` no longer exist. Its code has been split among `IProjectContentImportParticipant`.
+
+
 
 === Dependency update
 
@@ -32,6 +39,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
+
 
 === Bug fixes
 
@@ -45,6 +53,8 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the full support to duplicate projects
+
 
 === Improvements
 
@@ -122,6 +132,7 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 - https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the parameters `EditingContextEventProcessor#REPRESENTATION_ID` and `EditingContextEventProcessor#REPRESENTATION_LABEL` which were supposed to be used as the key for some change description parameters in favor of a dedicated class holding those keys `ChangeDescriptionParameters`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the change kind `ChangeKind#FOCUS_CHANGE` since it has not been used in months.
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] In order to handle undo on node appearance events you need to implement a `INodeAppearanceChangeUndoRecorder` the method `List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change)` is used to determine the list of `IAppearanceChange` that will be applied after an undo operation in order to get the previous style after a style change or if the node was deleted.
+
 
 
 === Dependency update
@@ -225,7 +236,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 
