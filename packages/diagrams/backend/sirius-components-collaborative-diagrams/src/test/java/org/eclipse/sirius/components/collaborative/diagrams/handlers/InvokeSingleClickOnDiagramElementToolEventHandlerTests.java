@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -43,6 +42,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -67,6 +67,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -577,6 +579,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .size(1)
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return Edge.newEdge(edgeId)
@@ -602,6 +605,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .lineStyle(LineStyle.Dash)
                 .sourceArrow(ArrowStyle.Diamond)
                 .targetArrow(ArrowStyle.Diamond)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)

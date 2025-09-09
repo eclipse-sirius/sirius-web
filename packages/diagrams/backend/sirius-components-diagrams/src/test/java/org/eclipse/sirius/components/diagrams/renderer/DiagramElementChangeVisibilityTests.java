@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -92,6 +93,7 @@ public class DiagramElementChangeVisibilityTests {
             .lineStyle(LineStyle.Dash)
             .sourceArrow(ArrowStyle.Diamond)
             .targetArrow(ArrowStyle.Diamond)
+            .edgeType(EdgeType.Manhattan)
             .build();
 
     private NodeDescription createNodeDescription(String elementId, List<NodeDescription> borderNodes, List<NodeDescription> children) {

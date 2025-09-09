@@ -2125,13 +2125,21 @@ public interface DiagramPackage extends EPackage {
     int EDGE_STYLE__MAX_WIDTH_EXPRESSION = STYLE_FEATURE_COUNT + 16;
 
     /**
+     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__EDGE_TYPE = STYLE_FEATURE_COUNT + 17;
+
+    /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 17;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 18;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2308,13 +2316,21 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 17;
 
     /**
+     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__EDGE_TYPE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 18;
+
+    /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 18;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 19;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3847,6 +3863,16 @@ public interface DiagramPackage extends EPackage {
     int HEADER_SEPARATOR_DISPLAY_MODE = 58;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge Type</em>}' enum.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
+     * @generated
+     */
+    int EDGE_TYPE = 59;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5067,6 +5093,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getEdgeStyle_MaxWidthExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType <em>Edge Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Edge Type</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_EdgeType();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
      * <em>Conditional Edge Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6120,6 +6158,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getHeaderSeparatorDisplayMode();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge
+     * Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Edge Type</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @generated
+     */
+    EEnum getEdgeType();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -7025,6 +7073,14 @@ public interface DiagramPackage extends EPackage {
         EAttribute EDGE_STYLE__MAX_WIDTH_EXPRESSION = eINSTANCE.getEdgeStyle_MaxWidthExpression();
 
         /**
+         * The meta object literal for the '<em><b>Edge Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__EDGE_TYPE = eINSTANCE.getEdgeStyle_EdgeType();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl <em>Conditional Edge
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7838,6 +7894,16 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EEnum HEADER_SEPARATOR_DISPLAY_MODE = eINSTANCE.getHeaderSeparatorDisplayMode();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge
+         * Type</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.EdgeType
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
+         * @generated
+         */
+        EEnum EDGE_TYPE = eINSTANCE.getEdgeType();
 
     }
 

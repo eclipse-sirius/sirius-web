@@ -25,11 +25,14 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -136,6 +139,15 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .edgeWidth(1)
                 .build();
 
+        var conditionalEdgeStyle = new DiagramBuilders().newConditionalEdgeStyle()
+                .condition("aql:semanticEdgeTarget.name=='sirius-web-infrastructure'")
+                .lineStyle(LineStyle.DASH)
+                .edgeWidth(2)
+                .sourceArrowStyle(ArrowStyle.CIRCLE)
+                .targetArrowStyle(ArrowStyle.CLOSED_ARROW_WITH_VERTICAL_BAR)
+                .edgeType(EdgeType.SMART_MANHATTAN)
+                .build();
+
         var edgePalette = new DiagramBuilders().newEdgePalette()
                 .edgeReconnectionTools(this.sourceEdgeReconnectionTool(), this.targetEdgeReconnectionTool())
                 .build();
@@ -148,6 +160,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .targetDescriptions(nodeDescription)
                 .palette(edgePalette)
                 .style(edgeStyle)
+                .conditionalStyles(conditionalEdgeStyle)
                 .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
