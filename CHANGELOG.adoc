@@ -105,7 +105,7 @@ A new button is displayed to export the results when a query returns one or mult
 - https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicatorDelegate` API.
 - https://github.com/eclipse-sirius/sirius-web/issues/5420[#5420] [sirius-web] The scheduler for `IEventProcessorSubscriptionProvider` can now be customized.
 Downstream projects can provide their own scheduler providing an implementation of `IEventProcessorSubscriptionSchedulerProvider`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5447[#5447] [diagram] Removed some unncessary animations on the diagram, which no longer zooms/pans on newly created or selected node if they are already fully visible.
 
 === Improvements
 
