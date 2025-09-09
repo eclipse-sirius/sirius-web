@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useOnSelectionChange, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useOnSelectionChange, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -25,11 +25,58 @@ const selectionKey = (entries: SelectionEntry[]) => {
   );
 };
 
+interface UseRevealNodesType {
+  revealNodes: (nodesToReveal: Node[]) => void;
+}
+
+const useRevealNodes = (): UseRevealNodesType => {
+  const { fitView } = useFitView();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { flowToScreenPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+
+  const isNodeFullyVisible = useCallback(
+    (node: Node): boolean => {
+      const viewportRect = document.getElementsByClassName('react-flow__pane')[0]?.getBoundingClientRect();
+      const topLeft = flowToScreenPosition(node.position);
+      const bottomRight = flowToScreenPosition({
+        x: node.position.x + (node.width ?? 0),
+        y: node.position.y + (node.height ?? 0),
+      });
+      if (viewportRect && topLeft && bottomRight) {
+        return (
+          topLeft.x >= viewportRect.left &&
+          topLeft.y >= viewportRect.top &&
+          bottomRight.x <= viewportRect.right &&
+          bottomRight.y <= viewportRect.bottom
+        );
+      }
+      return false;
+    },
+    [flowToScreenPosition]
+  );
+
+  const revealNodes = useCallback(
+    (nodesToReveal: Node[]) => {
+      if (nodesToReveal.some((node) => !isNodeFullyVisible(node))) {
+        const zoom = store.getState().transform[2];
+        fitView({
+          nodes: nodesToReveal,
+          minZoom: zoom,
+          maxZoom: zoom,
+          duration: 400,
+        });
+      }
+    },
+    [isNodeFullyVisible]
+  );
+
+  return { revealNodes };
+};
+
 export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
-
-  const { fitView } = useFitView();
+  const { revealNodes } = useRevealNodes();
   const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
   // Called when the workbench-level selection is changed.
@@ -54,11 +101,11 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
     if (
       JSON.stringify(displayedSemanticElementsToSelect) !== JSON.stringify(semanticElementsAlreadySelectedOnDiagram)
     ) {
-      const nodesToReveal: Set<string> = new Set();
+      const nodeToReveal: Set<string> = new Set();
       const newNodes = getNodes().map((node) => {
         const shouldSelect = displayedSemanticElementsToSelect.includes(node.data.targetObjectId) && !node.hidden;
         if (shouldSelect) {
-          nodesToReveal.add(node.id);
+          nodeToReveal.add(node.id);
         }
         if (shouldSelect !== node.selected) {
           return {
@@ -73,8 +120,8 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
         const shouldSelect =
           displayedSemanticElementsToSelect.includes(edge.data ? edge.data.targetObjectId : '') && !edge.hidden;
         if (shouldSelect) {
-          nodesToReveal.add(edge.source);
-          nodesToReveal.add(edge.target);
+          nodeToReveal.add(edge.source);
+          nodeToReveal.add(edge.target);
         }
         if (shouldSelect !== edge.selected) {
           return {
@@ -88,16 +135,8 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
 
       setEdges(newEdges);
       setNodes(newNodes);
-      const zoom = store.getState().transform[2];
 
-      if (nodesToReveal.size > 0) {
-        fitView({
-          nodes: getNodes().filter((node) => nodesToReveal.has(node.id)),
-          minZoom: zoom,
-          maxZoom: zoom,
-          duration: 1000,
-        });
-      }
+      revealNodes(getNodes().filter((node) => nodeToReveal.has(node.id)));
     }
   }, [selection]);
 
