@@ -88,14 +88,7 @@ public class SiriusWebStarterConfiguration {
     @Bean
     @ConditionalOnMissingBean(IEventProcessorSubscriptionSchedulerProvider.class)
     public IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider() {
-        return (editingContextId) -> {
-            var executorService = Executors.newSingleThreadExecutor((Runnable runnable) -> {
-                Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-                thread.setName("Editing context " + editingContextId);
-                return thread;
-            });
-            return Schedulers.fromExecutorService(new DelegatingRequestContextExecutorService(executorService));
-        };
+        return (editingContextId) -> Schedulers.single();
     }
 
     @Bean
