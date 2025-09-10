@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -34,15 +35,13 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
  * @author gcoutable
  */
 public final class EdgeBuilder {
-    private TestLayoutDiagramBuilder diagramBuilder;
 
-    private Label centerLabel;
+    private final TestLayoutDiagramBuilder diagramBuilder;
 
+    private final Label centerLabel;
+    private final Map<String, Integer> edgeIdPrefixToCount;
     private EdgeEndBuilder sourceEdgeBuilder;
-
     private EdgeEndBuilder targetEdgeBuilder;
-
-    private Map<String, Integer> edgeIdPrefixToCount;
 
     public EdgeBuilder(TestLayoutDiagramBuilder diagramBuilder, String edgeCenterLabel, Map<String, Integer> edgeIdPrefixToCount) {
         this.diagramBuilder = Objects.requireNonNull(diagramBuilder);
@@ -65,13 +64,13 @@ public final class EdgeBuilder {
     }
 
     private String computeEdgeId(String sourceId, String targetId, int edgeCount) {
-        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + ": " + sourceId + " --> " + targetId + " - " + edgeCount;
+        String rawIdentifier = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID + ": " + sourceId + " --> " + targetId + " - " + edgeCount;
         String id = UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
         return id;
     }
 
     private String computeEdgeDiscriminant(String sourceId, String targetId) {
-        String rawDiscriminant = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID.toString() + sourceId + targetId;
+        String rawDiscriminant = TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID + sourceId + targetId;
         return UUID.nameUUIDFromBytes(rawDiscriminant.getBytes()).toString();
     }
 
@@ -84,6 +83,7 @@ public final class EdgeBuilder {
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
                 .color("#002639")
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         String sourceId = targetObjectIdToNodeId.get(sourceEdgeEnd.getEndId());

@@ -32,4 +32,11 @@ export class PlaywrightEdge {
   async getEdgePath() {
     return await this.edgeLocator.locator('path').first().getAttribute('d');
   }
+
+  async getEdgeColor() {
+    const path = this.edgeLocator.locator('path').first();
+    return await path.evaluate((el) => {
+      return window.getComputedStyle(el).getPropertyValue('stroke');
+    });
+  }
 }

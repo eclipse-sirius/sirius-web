@@ -281,6 +281,7 @@ type EdgeStyle {
   size: Int!
   sourceArrow: ArrowStyle!
   targetArrow: ArrowStyle!
+  edgeType: EdgeType!
 }
 
 enum ArrowStyle {
@@ -300,6 +301,11 @@ enum ArrowStyle {
   CrossedCircle
   ClosedArrowWithVerticalBar
   ClosedArrowWithDots
+}
+
+enum EdgeType {
+  Manhattan,
+  SmartManhattan
 }
 
 type Position {
