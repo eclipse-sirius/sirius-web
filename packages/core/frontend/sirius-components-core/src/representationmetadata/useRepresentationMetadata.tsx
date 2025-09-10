@@ -19,7 +19,7 @@ import {
   UseRepresentationMetadataValue,
 } from './useRepresentationMetadata.types';
 
-const getRepresentationMetadataQuery = gql`
+export const getRepresentationMetadataQuery = gql`
   query getRepresentationMetadata($editingContextId: ID!, $representationIds: [ID!]!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {

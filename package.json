@@ -21,7 +21,8 @@
   "scripts": {
     "build": "turbo run build",
     "start": "turbo run start",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "coverage": "turbo run coverage"
   },
   "devDependencies": {
     "turbo": "2.4.4"
