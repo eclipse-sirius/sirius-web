@@ -214,5 +214,15 @@ public class ConditionalEdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for EdgeType.
+     *
+     * @generated
+     */
+    public ConditionalEdgeStyleBuilder edgeType(org.eclipse.sirius.components.view.diagram.EdgeType value) {
+        this.getConditionalEdgeStyle().setEdgeType(value);
+        return this;
+    }
+
 }
 

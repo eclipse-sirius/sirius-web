@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             this.addLabelIconPropertyDescriptor(object);
             this.addBackgroundPropertyDescriptor(object);
             this.addMaxWidthExpressionPropertyDescriptor(object);
+            this.addEdgeTypePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -275,6 +276,17 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Edge Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addEdgeTypePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeStyle_edgeType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_edgeType_feature", "_UI_EdgeStyle_type"),
+                DiagramPackage.Literals.EDGE_STYLE__EDGE_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns ConditionalEdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -334,6 +346,7 @@ public class ConditionalEdgeStyleItemProvider extends ConditionalItemProvider {
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__SHOW_ICON:
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__LABEL_ICON:
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

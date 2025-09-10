@@ -205,5 +205,15 @@ public class EdgeStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for EdgeType.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder edgeType(org.eclipse.sirius.components.view.diagram.EdgeType value) {
+        this.getEdgeStyle().setEdgeType(value);
+        return this;
+    }
+
 }
 
