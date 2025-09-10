@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { useEffect } from 'react';
 import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
-import { GQLRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata.types';
 import { useSelection } from '../selection/useSelection';
 import { UseSynchronizeRepresentationWithSelectionValue } from './useSynchronizeRepresentationWithSelection.types';
 
@@ -29,8 +28,5 @@ export const useSynchronizeRepresentationWithSelection = (
     );
   }, [editingContextId, selection]);
 
-  const representationMetadata: GQLRepresentationMetadata[] | null =
-    data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? null;
-
-  return { representationMetadata };
+  return { data: data ?? null };
 };

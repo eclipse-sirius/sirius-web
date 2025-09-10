@@ -81,11 +81,16 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       representationsMetadata: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     });
 
-    const { representationMetadata: selectedRepresentationMetadata } =
-      useSynchronizeRepresentationWithSelection(editingContextId);
+    const { data: synchronizeWithSelectionData } = useSynchronizeRepresentationWithSelection(editingContextId);
     useEffect(() => {
-      if (selectedRepresentationMetadata && selectedRepresentationMetadata[0]) {
-        const displayedRepresentationMetadata = selectedRepresentationMetadata[0];
+      const selectedRepresentationMetadata: GQLRepresentationMetadata[] =
+        synchronizeWithSelectionData?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [];
+      if (
+        selectedRepresentationMetadata.length > 0 &&
+        selectedRepresentationMetadata[0]?.id !== state.displayedRepresentationMetadata?.id
+      ) {
+        const displayedRepresentationMetadata: RepresentationMetadata | null =
+          selectedRepresentationMetadata[0] ?? null;
 
         const representationsMetadata = [...state.representationsMetadata];
         const newRepresentationsMetadata = selectedRepresentationMetadata.filter(
@@ -101,7 +106,7 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
           representationsMetadata: newSelectedRepresentations,
         }));
       }
-    }, [(selectedRepresentationMetadata ?? []).map((metadata) => metadata.id).join(', ')]);
+    }, [synchronizeWithSelectionData]);
 
     const { representationMetadata: workbenchConfigurationRepresentationMetadata } =
       useSynchronizeRepresentationWithWorkbenchConfiguration(editingContextId, initialWorkbenchConfiguration);

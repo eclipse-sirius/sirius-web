@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata.types';
+import { GQLRepresentationMetadataQueryData } from '../representationmetadata/useRepresentationMetadata.types';
 
 export interface UseSynchronizeRepresentationWithSelectionValue {
-  representationMetadata: GQLRepresentationMetadata[] | null;
+  data: GQLRepresentationMetadataQueryData | null;
 }
