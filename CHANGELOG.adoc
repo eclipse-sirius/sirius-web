@@ -12,6 +12,7 @@
 - [ADR-205] Add support for exporting query result
 - [ADR-206] Add support for importing documents with read-only permissions
 - [ADR-207] Make React contexts extensible
+- [ADR-208] Add a way to customize the tree displayed to select the candidates in a Reference Widget
 
 === Deprecation warning
 
