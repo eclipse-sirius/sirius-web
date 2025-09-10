@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserMetadataProvider;
-import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowserMetadata;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +25,10 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class DefaultModelBrowsersMetadataProvider implements IModelBrowserMetadataProvider {
+public class DefaultModelBrowsersMetadataProvider implements IModelBrowserProvider {
 
     @Override
-    public List<ModelBrowserMetadata> getModelBrowsersMetadata(IEditingContext editingContext) {
+    public List<ModelBrowser> getModelBrowsers(IEditingContext editingContext) {
         return List.of(
                 DefaultModelBrowsersTreeDescriptionProvider.CONTAINER_METADATA,
                 DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_METADATA
