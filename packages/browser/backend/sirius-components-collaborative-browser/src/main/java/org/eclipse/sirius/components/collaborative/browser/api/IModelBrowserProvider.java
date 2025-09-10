@@ -12,11 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.browser.api;
 
+import java.util.List;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
+
 /**
- * The metadata for a Model Browser.
+ * Used to indicate which TreeDescription can be used as model browser in a given editing context (and under which
+ * name).
  *
  * @author pcdavid
  */
-public record ModelBrowserMetadata(String modelBrowserId, String treeDescriptionId) {
-
+public interface IModelBrowserProvider {
+    List<ModelBrowser> getModelBrowsers(IEditingContext editingContext);
 }

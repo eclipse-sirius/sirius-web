@@ -21,8 +21,8 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserMetadataProvider;
-import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowserMetadata;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowser;
 import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
@@ -42,6 +42,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 @Service
 public class ModelBrowserEventProcessorFactory implements IRepresentationEventProcessorFactory {
+    public static final String PREFIX = "modelBrowser://";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -55,23 +56,23 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
 
     private final IURLParser urlParser;
 
-    private final List<IModelBrowserMetadataProvider> modelBrowserMetadataProviders;
+    private final List<IModelBrowserProvider> modelBrowserProviders;
 
     public ModelBrowserEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, List<ITreeEventHandler> treeEventHandlers, ITreeService treeService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory, IURLParser urlParser,
-            List<IModelBrowserMetadataProvider> modelBrowserMetadataProviders) {
+            List<IModelBrowserProvider> modelBrowserProviders) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.modelBrowserMetadataProviders = Objects.requireNonNull(modelBrowserMetadataProviders);
+        this.modelBrowserProviders = Objects.requireNonNull(modelBrowserProviders);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return representationId.startsWith(DefaultModelBrowsersTreeDescriptionProvider.PREFIX);
+        return representationId.startsWith(PREFIX);
     }
 
     @Override
@@ -101,7 +102,7 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
     }
 
     private Optional<TreeDescription> findModelBrowserTreeDescription(IEditingContext editingContext, String representationId) {
-        return this.extractModelBroswerId(representationId)
+        return this.extractModelBrowserId(representationId)
                    .flatMap(modelBrowserId -> this.findModelBrowserTreeDescriptionId(editingContext, modelBrowserId))
                    .flatMap(treeDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, treeDescriptionId))
                    .filter(TreeDescription.class::isInstance)
@@ -109,16 +110,16 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
     }
 
     private Optional<String> findModelBrowserTreeDescriptionId(IEditingContext editingContext, String modelBrowserId) {
-        return this.modelBrowserMetadataProviders.stream()
-                .flatMap(provider -> provider.getModelBrowsersMetadata(editingContext).stream())
-                .filter(modelBrowserMetadata -> Objects.equals(modelBrowserMetadata.modelBrowserId(), modelBrowserId))
-                .map(ModelBrowserMetadata::treeDescriptionId)
+        return this.modelBrowserProviders.stream()
+                .flatMap(provider -> provider.getModelBrowsers(editingContext).stream())
+                .filter(modelBrowser -> Objects.equals(modelBrowser.modelBrowserId(), modelBrowserId))
+                .map(ModelBrowser::treeDescriptionId)
                 .findFirst();
     }
 
-    private Optional<String> extractModelBroswerId(String representationId) {
-        if (representationId.startsWith(DefaultModelBrowsersTreeDescriptionProvider.PREFIX)) {
-            String modelBrowserId = representationId.substring(DefaultModelBrowsersTreeDescriptionProvider.PREFIX.length());
+    private Optional<String> extractModelBrowserId(String representationId) {
+        if (representationId.startsWith(PREFIX)) {
+            String modelBrowserId = representationId.substring(PREFIX.length());
             int endOffset = modelBrowserId.indexOf("?");
             if (endOffset != -1) {
                 modelBrowserId = modelBrowserId.substring(0, endOffset);

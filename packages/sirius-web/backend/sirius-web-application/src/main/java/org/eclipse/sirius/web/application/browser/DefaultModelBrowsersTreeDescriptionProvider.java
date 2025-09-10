@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
+
+import static org.eclipse.sirius.components.collaborative.browser.ModelBrowserEventProcessorFactory.PREFIX;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +36,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
-import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowserMetadata;
+import org.eclipse.sirius.components.collaborative.browser.api.ModelBrowser;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
@@ -65,8 +67,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
-    public static final String PREFIX = "modelBrowser://";
-
     public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
 
     public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
@@ -75,9 +75,9 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     public static final String REFERENCE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_reference_tree_description".getBytes()).toString();
 
-    public static final ModelBrowserMetadata CONTAINER_METADATA = new ModelBrowserMetadata("container", CONTAINER_DESCRIPTION_ID);
+    public static final ModelBrowser CONTAINER_METADATA = new ModelBrowser("container", CONTAINER_DESCRIPTION_ID);
 
-    public static final ModelBrowserMetadata REFERENCE_METADATA = new ModelBrowserMetadata("reference", REFERENCE_DESCRIPTION_ID);
+    public static final ModelBrowser REFERENCE_METADATA = new ModelBrowser("reference", REFERENCE_DESCRIPTION_ID);
 
     public static final String REPRESENTATION_NAME = "Model Browser";
 
