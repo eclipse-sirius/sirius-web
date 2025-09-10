@@ -252,7 +252,11 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
                       />
                     </Panel>
                     {index < leftSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle className={classes.horizontalResizer} data-testid="view-resizer" />
+                      <PanelResizeHandle
+                        key={`left-resizer-${leftContribution.id}`}
+                        className={classes.horizontalResizer}
+                        data-testid="view-resizer"
+                      />
                     ) : null}
                   </>
                 ))}
@@ -292,7 +296,11 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
                       />
                     </Panel>
                     {index < rightSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle className={classes.horizontalResizer} data-testid="view-resizer" />
+                      <PanelResizeHandle
+                        key={`right-resizer-${rightContribution.id}`}
+                        className={classes.horizontalResizer}
+                        data-testid="view-resizer"
+                      />
                     ) : null}
                   </>
                 ))}
