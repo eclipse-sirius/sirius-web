@@ -15,6 +15,7 @@ import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 export interface DiagramDirectEditInputProps {
   labelId: string;
   editingKey: string | null;
+  width: number;
   onClose: () => void;
 }
 
