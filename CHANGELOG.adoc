@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-218] Ensure Elasticsearch query results contain enough information
+- [ADR-219] Add a way to customize the tree displayed to select the candidates in a Reference Widget
 
 
 === Deprecation warning

@@ -1,0 +1,77 @@
+= ADR-219 - Add a way to customize the tree displayed to select the candidates in a Reference Widget and other model browsers
+
+== Context
+
+The reference widget has originaly been designed for the specific use case of editing a single EMF `EReference`, and thus only offered limited customizability.
+Over the time, several mechanisms have been introduced to make it more configurable.
+However, one part that is currently still hard-coded is the definition of the _tree_ that is presented to the end-user for selecting new value(s) when editing the reference.
+
+Currently there are only two, hard-coded, tree descriptions that can be used, and the choice between them is itself hard-coded in the frontend:
+
+* In the `CreateModal` (used to allow the user to select the parent of the element to create), we always use the `ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID`
+* In either the `BrowseModal.tsx` or `TransferModal.tsx` (used to select an existing object to set/add in a reference), we always use `ModelBrowserDescriptionProvider..REFERENCE_DESCRIPTION_ID`.
+
+This choice should be made more open, with each widget being allowed to indicate a specific `TreeDescription` to use, among the ones available on the backend.
+
+== Decision
+
+Internally the current implementation works like this:
+
+* On the frontend, `ModelBrowserTreeView` accepts a `leafType` property, which can only be  `'containment'` (used in `CreateModal`) or `'reference'` (used in `BrowseModal` and `TransferModal`).
+* This `leafType` is used to build the tree id to which we subscribe in `ModelBrowserTreeView`, which will thus (currently) always start with either `'modelBrowser://container'` or `'modelBrowser://reference'`.
+* On the backend, when receiving a subscription request, `ModelBrowserEventProcessorFactory` only handles these two specific prefixes to select one of the two hard-coded `ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID` and `ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID`.
+
+Note that the `ModelBrowserEventProcessorFactory` (on the backend) and `ModelBrowserTreeView` (on the frontend), while they were introduced for the reference widget, are not coupled to it.
+Indeed, is also used by the completely unrelated `DuplicateObjectModal` on the frontend.
+
+To make the mechanism more flexible for all use cases (not only the reference widget), we will make `ModelBrowserEventProcessorFactory` open so that extensions can decide which tree description to use for a model browser given its (structured) id.
+We will follow the same general pattern as elswhere on the frontend, with the following new APIs:
+
+[source,java]
+----
+// Main entry point, used by ModelBrowserEventProcessorFactory
+public interface IModelBrowserTreeDescriptionIdProvider {
+    String getModelBrowserTreeDescriptionId(IEditingContext editingContext, String modelBrowserId);
+}
+
+// Can be used to provide custom tree descriptions, depending on the modelBrowserId requested
+public interface IModelBrowserTreeDescriptionIdProviderDelegate {
+    boolean canHandle(IEditingContext editingContext, String modelBrowserId);
+    String getModelBrowserTreeDescriptionId(IEditingContext editingContext, String modelBrowserId);
+}
+
+// Provides the default logic if no delegate matches
+public interface IDefaultModelBrowserTreeDescriptionIdProvider {
+    String getModelBrowserTreeDescriptionId(IEditingContext editingContext, String modelBrowserId);
+}
+
+// The actual implementation of IModelBrowserTreeDescriptionIdProvider, which uses the
+// first matching delegate and fall backs to the default if none is found.
+@Service
+public class ComposedModelBrowserTreeDescriptionIdProvider implements IModelBrowserTreeDescriptionIdProvider {
+}
+----
+
+Instead of hard-coding the knoweldge about `ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID` and `ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID`, the `ModelBrowserEventProcessorFactory` will simply ask the `IModelBrowserTreeDescriptionIdProvider` which tree description id to use.
+
+We will *not* modify anything related to the reference widget.
+
+=== Usage
+
+To use the new mechanism to customize the tree description used for given reference widget (for example), a downstream application must:
+
+1. Register the corresponding tree description inside the editing context (for example using a `IEditingContextRepresentationDescriptionProvider`).
+2. Provide a custom `IModelBrowserTreeDescriptionIdProviderDelegate`, which parses the structured `modelBrowserId` to check the `descriptionId` parameter, and return the custom tree description if it corresponds to the widget(s) to customize.
+The delegate can also use the other `modelBrowserId` parameters, in particular the `leafType`, `ownerKind`, etc. to decide which tree description to provide.
+
+=== Breadboarding
+
+No UI change.
+
+== Status
+
+Accepted
+
+== Consequences
+
+* The `DuplicateObjectModal` can be modified to provide a well-known `descriptionId`, which can then be matched on the backend by a `IModelBrowserTreeDescriptionIdProviderDelegate` to customize the tree description used there.
