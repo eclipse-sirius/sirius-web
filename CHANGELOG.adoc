@@ -114,7 +114,8 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] Add ICustomNodeStyleDeserializer API to correctly deserialize custom node style
 - https://github.com/eclipse-sirius/sirius-web/issues/5283[#5283] [diagram] Add support for the management of the appearance of outside labels
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [forms] The _Reference_ widget can now provide an optional `modelBrowserId`.
+It can be used, in conjunction with `IModelBrowserMetadataProvider` on the backend, to use a custom `TreeDescription` to display the possible candidates in the modals used to edit the reference on the frontend.
 
 === Improvements
 

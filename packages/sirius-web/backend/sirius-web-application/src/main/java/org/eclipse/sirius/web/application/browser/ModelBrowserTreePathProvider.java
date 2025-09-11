@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -51,7 +51,7 @@ public class ModelBrowserTreePathProvider implements ITreePathProvider {
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree != null && List.of(ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID, ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+        return tree != null && List.of(DefaultModelBrowsersTreeDescriptionProvider.CONTAINER_DESCRIPTION_ID, DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_DESCRIPTION_ID)
                 .contains(tree.getDescriptionId());
     }
 

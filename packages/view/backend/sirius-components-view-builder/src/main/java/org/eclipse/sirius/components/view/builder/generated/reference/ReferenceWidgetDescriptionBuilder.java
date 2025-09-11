@@ -106,6 +106,16 @@ public class ReferenceWidgetDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for ModelBrowserIdExpression.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder modelBrowserIdExpression(java.lang.String value) {
+        this.getReferenceWidgetDescription().setModelBrowserIdExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated
