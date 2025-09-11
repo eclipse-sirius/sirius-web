@@ -55,6 +55,12 @@ Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 `UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Add the ability to duplicate projects: Backend contribution only.
+The project duplication feature has been implemented as an export of the project and then a import of the project.
+The code responsible for the import has been refactor with:
+* `IProjectImportService` has been renamed in `IProjectImportApplicationService`.
+* `ProjectImporter` no longer exist. Its code has been split among `IProjectContentImportParticipant`.
+
 
 
 === Dependency update
@@ -114,6 +120,7 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] Add ICustomNodeStyleDeserializer API to correctly deserialize custom node style
 - https://github.com/eclipse-sirius/sirius-web/issues/5283[#5283] [diagram] Add support for the management of the appearance of outside labels
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the backend to duplicate projects.
 
 
 === Improvements
