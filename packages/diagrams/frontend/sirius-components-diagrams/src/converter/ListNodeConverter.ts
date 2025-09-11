@@ -147,7 +147,12 @@ const toListNode = (
     node.height = data.defaultHeight ?? defaultHeight;
     node.width = data.defaultWidth ?? defaultWidth;
   }
-
+  if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
+    node.measured = {
+      height: gqlNodeLayoutData.size.height,
+      width: gqlNodeLayoutData.size.width,
+    };
+  }
   return node;
 };
 
