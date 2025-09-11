@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import { DropNodeContextProviderProps, DropNodeContextState, DropNodeContextValu
 const defaultValue: DropNodeContextValue = {
   initialPosition: null,
   droppableOnDiagram: false,
-  draggedNodeId: '',
+  dragging: false,
   initializeDrop: () => {},
   resetDrop: () => {},
 };
@@ -36,7 +36,7 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
       ...prevState,
       initialPosition: null,
       droppableOnDiagram: false,
-      draggedNodeId: '',
+      dragging: false,
     }));
   };
 
@@ -45,7 +45,7 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
       value={{
         initialPosition: state.initialPosition,
         droppableOnDiagram: state.droppableOnDiagram,
-        draggedNodeId: state.draggedNodeId,
+        dragging: state.dragging,
         initializeDrop,
         resetDrop,
       }}>
