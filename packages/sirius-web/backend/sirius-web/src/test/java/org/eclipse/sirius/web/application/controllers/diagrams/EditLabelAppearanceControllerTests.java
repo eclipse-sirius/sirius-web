@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelAppeara
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ResetLabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelAppearanceMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ResetLabelAppearanceMutationRunner;
@@ -111,15 +112,16 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     .allMatch(node -> node.getInsideLabel().getStyle().getBorderSize() == 1)
                     .allMatch(node -> "black".equals(node.getInsideLabel().getStyle().getColor()))
                     .allMatch(node -> "transparent".equals(node.getInsideLabel().getStyle().getBackground()))
-                    .allMatch(node -> LineStyle.Solid.equals(node.getInsideLabel().getStyle().getBorderStyle()));
+                    .allMatch(node -> LineStyle.Solid.equals(node.getInsideLabel().getStyle().getBorderStyle()))
+                    .allMatch(node -> LabelVisibility.visible.equals(node.getInsideLabel().getStyle().getVisibility()));
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
             siriusWebApplicationNodeInsideLabelId.set(siriusWebApplicationNode.getInsideLabel().getId());
         });
 
-        Runnable setLabelBold = () -> {
-            var appearanceInput = new LabelAppearanceInput(10, true, true, true, true, "blue", 5, 2, LineStyle.Dash, "red", "green");
+        Runnable setLabelCustomisation = () -> {
+            var appearanceInput = new LabelAppearanceInput(10, true, true, true, true, "blue", 5, 2, LineStyle.Dash, "red", "green", LabelVisibility.hidden);
 
             var input = new EditLabelAppearanceInput(
                     UUID.randomUUID(),
@@ -146,16 +148,17 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                 .allMatch(node -> node.getInsideLabel().getStyle().getBorderSize() == 2)
                 .allMatch(node -> "red".equals(node.getInsideLabel().getStyle().getColor()))
                 .allMatch(node -> "green".equals(node.getInsideLabel().getStyle().getBackground()))
-                .allMatch(node -> LineStyle.Dash.equals(node.getInsideLabel().getStyle().getBorderStyle())));
+                .allMatch(node -> LineStyle.Dash.equals(node.getInsideLabel().getStyle().getBorderStyle()))
+                .allMatch(node -> LabelVisibility.hidden.equals(node.getInsideLabel().getStyle().getVisibility())));
 
-        Runnable resetLabelBold = () -> {
+        Runnable resetLabelCustomisation = () -> {
             var input = new ResetLabelAppearanceInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     siriusWebApplicationNodeId.get(),
                     siriusWebApplicationNodeInsideLabelId.get(),
-                    List.of("FONT_SIZE", "ITALIC", "BOLD", "UNDERLINE", "STRIKE_THROUGH", "BORDER_COLOR", "BORDER_RADIUS", "BORDER_SIZE", "BORDER_STYLE", "COLOR", "BACKGROUND")
+                    List.of("FONT_SIZE", "ITALIC", "BOLD", "UNDERLINE", "STRIKE_THROUGH", "BORDER_COLOR", "BORDER_RADIUS", "BORDER_SIZE", "BORDER_STYLE", "COLOR", "BACKGROUND", "VISIBILITY")
             );
 
             this.resetLabelAppearanceMutationRunner.run(input);
@@ -174,13 +177,13 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                 .allMatch(node -> node.getInsideLabel().getStyle().getBorderSize() == 1)
                 .allMatch(node -> "black".equals(node.getInsideLabel().getStyle().getColor()))
                 .allMatch(node -> "transparent".equals(node.getInsideLabel().getStyle().getBackground()))
-                .allMatch(node -> LineStyle.Solid.equals(node.getInsideLabel().getStyle().getBorderStyle())));
+                .allMatch(node -> LabelVisibility.visible.equals(node.getInsideLabel().getStyle().getVisibility())));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(setLabelBold)
+                .then(setLabelCustomisation)
                 .consumeNextWith(updatedAfterBoldDiagramContentConsumer)
-                .then(resetLabelBold)
+                .then(resetLabelCustomisation)
                 .consumeNextWith(updatedAfterResetBoldDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -209,7 +212,7 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
         });
 
         Runnable setLabelBold = () -> {
-            var appearanceInput = new LabelAppearanceInput(10, true, null, null, null, null, null, null, null, null, null);
+            var appearanceInput = new LabelAppearanceInput(10, true, null, null, null, null, null, null, null, null, null, null);
 
             var input = new EditLabelAppearanceInput(
                     UUID.randomUUID(),

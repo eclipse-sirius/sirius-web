@@ -29,6 +29,7 @@ fragment labelFragment on Label {
     borderSize
     borderRadius
     maxWidth
+    visibility
   }
   customizedStyleProperties
 }
@@ -57,6 +58,7 @@ fragment insideLabelFragment on InsideLabel {
     borderSize
     borderRadius
     maxWidth
+    visibility
   }
   customizedStyleProperties
 }
@@ -82,6 +84,7 @@ fragment outsideLabelFragment on OutsideLabel {
     borderSize
     borderRadius
     maxWidth
+    visibility
   }
   overflowStrategy,
   customizedStyleProperties

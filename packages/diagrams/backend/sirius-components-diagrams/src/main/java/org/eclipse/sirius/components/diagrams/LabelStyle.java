@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public final class LabelStyle {
     private LineStyle borderStyle;
 
     private String maxWidth;
+
+    private LabelVisibility visibility;
 
     private LabelStyle() {
         // Prevent instantiation
@@ -111,6 +113,10 @@ public final class LabelStyle {
         return this.maxWidth;
     }
 
+    public LabelVisibility getVisibility() {
+        return this.visibility;
+    }
+
     /**
      * The builder used to create the label style.
      *
@@ -144,6 +150,8 @@ public final class LabelStyle {
         private LineStyle borderStyle;
 
         private String maxWidth;
+
+        private LabelVisibility visibility;
 
         private Builder() {
         }
@@ -213,6 +221,11 @@ public final class LabelStyle {
             return this;
         }
 
+        public Builder visibility(LabelVisibility visibility) {
+            this.visibility = Objects.requireNonNull(visibility);
+            return this;
+        }
+
         public LabelStyle build() {
             LabelStyle labelDescription = new LabelStyle();
             labelDescription.color = Objects.requireNonNull(this.color);
@@ -228,6 +241,7 @@ public final class LabelStyle {
             labelDescription.borderRadius = this.borderRadius;
             labelDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
             labelDescription.maxWidth = this.maxWidth;
+            labelDescription.visibility = Objects.requireNonNull(this.visibility);
 
             return labelDescription;
         }

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
@@ -124,6 +125,7 @@ public class InitialDirectEditElementLabelEventHandlerTests {
                 .borderColor("black")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
         Node node = new TestDiagramBuilder().getNodeWithOutsideLabels(UUID.randomUUID().toString(), false, List.of(new OutsideLabel(labelId, "text", OutsideLabelLocation.BOTTOM_MIDDLE, labelStyle,
                 LabelOverflowStrategy.NONE, LabelTextAlign.LEFT, Set.of())));

@@ -12,7 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -21,11 +27,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppe
 import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceProperty;
 import org.eclipse.sirius.components.representations.VariableManager;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Use to create the label style and their necessary diagram events.
@@ -101,6 +102,11 @@ public class LabelStyleComponentProvider {
         if (borderLineStyleAppearance.customized()) {
             newCustomizedStyleProperties.add(LabelAppearanceHandler.BORDER_STYLE);
         }
+        LabelAppearanceProperty<LabelVisibility> visibilityAppearance = labelAppearanceHandler.getVisibility(() -> labelStyleDescription.getVisibilityProvider().apply(variableManager));
+        LabelVisibility visibility = visibilityAppearance.value();
+        if (visibilityAppearance.customized()) {
+            newCustomizedStyleProperties.add(LabelAppearanceHandler.VISIBILITY);
+        }
 
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
         String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
@@ -119,6 +125,7 @@ public class LabelStyleComponentProvider {
                 .borderSize(borderSize)
                 .borderStyle(borderLineStyle)
                 .maxWidth(maxWidth)
+                .visibility(visibility)
                 .build();
     }
 }
