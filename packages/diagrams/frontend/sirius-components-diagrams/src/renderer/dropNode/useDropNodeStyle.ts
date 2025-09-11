@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,12 +25,12 @@ export const useDropNodeStyle = (
   isDragging: boolean
 ): useDropNodeStyleValue => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
+  const { dragging } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const theme = useTheme();
   const style: React.CSSProperties = {};
 
-  if (draggedNodeId && !readOnly) {
+  if (dragging && !readOnly) {
     if (!isDragging && !isDropNodeCandidate) {
       style.opacity = '0.4';
     }
@@ -39,7 +39,7 @@ export const useDropNodeStyle = (
     }
   }
 
-  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging, draggedNodeId]);
+  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging, dragging]);
 
   return { style: memoizedStyle };
 };

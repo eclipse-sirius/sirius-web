@@ -58,6 +58,8 @@ Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] `org.eclipse.sirius.components.diagrams.Label` is now a record
 - https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] To avoid edge blinking when refreshing the diagram, you need to set the property measured.height and measured.width with the value of the node layout data when converting a custom node accordingly to the xyflow https://reactflow.dev/learn/advanced-use/ssr-ssg-configuration#node-dimensions[documentation].
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] The _boolean_ `isDraggedNode` has been added to `NodeData`.
+This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 
 
 === Dependency update
@@ -92,6 +94,8 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
 - https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] Fix an issue with the initialization of nodes that could cause edges or the edge palette to blink when refreshing the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/3971[#3971] [diagram] Enforce minimum width for diagram label direct edit input
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent node to be dropped on the diagram during a move inside its parent
+
 
 === New Features
 

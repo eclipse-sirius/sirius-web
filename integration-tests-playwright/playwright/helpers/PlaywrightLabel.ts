@@ -22,6 +22,15 @@ export class PlaywrightLabel {
   }
 
   async getFontSize() {
+    const elementHandle = await this.labelLocator.elementHandle();
+    await this.page.waitForFunction(
+      (element) => {
+        const computedStyle = window.getComputedStyle(element);
+        return computedStyle && computedStyle.fontSize !== undefined;
+      },
+      elementHandle,
+      { timeout: 2000 }
+    );
     const style = await this.labelLocator.evaluate((element) => {
       const computedStyle = window.getComputedStyle(element);
       return {
