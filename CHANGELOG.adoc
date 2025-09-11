@@ -104,6 +104,9 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Revert the fix 5160 related to the lifecycle of the diagram because of instability issues
 - https://github.com/eclipse-sirius/sirius-web/issues/3029[#3029] [diagram] Fix drop position to match node feedback instead of cursor position
 - https://github.com/eclipse-sirius/sirius-web/issues/5516[#5516] [diagram] Fix an issue where a node style was not updated after canceling a connection
+- https://github.com/eclipse-sirius/sirius-web/issues/5457[#5457] [explorer, diagram] Fix a rendering issue where some menus could be partially obscured.
+This occured for the tree filter menu in the Explorer when a table was opened, and with the diagram filters menu which could be obscured by the right-side panel.
+
 
 === New Features
 
