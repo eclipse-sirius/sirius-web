@@ -142,7 +142,12 @@ const toRectangularNode = (
     node.height = data.defaultHeight ?? defaultHeight;
     node.width = data.defaultWidth ?? defaultWidth;
   }
-
+  if (nodeLayoutData?.size.height && nodeLayoutData?.size.width) {
+    node.measured = {
+      height: nodeLayoutData.size.height,
+      width: nodeLayoutData.size.width,
+    };
+  }
   return node;
 };
 
