@@ -19,9 +19,14 @@ import {
   PanelResizeHandle,
 } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
-import { PanelsProps, PanelState } from './Panels.types';
+import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
 import { Sidebar } from './Sidebar';
-import { PanelsHandle, WorkbenchViewConfiguration, WorkbenchViewContribution } from './Workbench.types';
+import {
+  WorkbenchPanelsHandle,
+  WorkbenchViewConfiguration,
+  WorkbenchViewContribution,
+  WorkbenchViewHandle,
+} from './Workbench.types';
 import { WorkbenchPart } from './WorkbenchPart';
 
 /**
@@ -58,7 +63,7 @@ const usePanelStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
+export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
   (
     {
       editingContextId,
@@ -71,7 +76,7 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
       leftPanelInitialSize,
       rightPanelInitialSize,
     }: PanelsProps,
-    refPanelsHandle: ForwardedRef<PanelsHandle | null>
+    refPanelsHandle: ForwardedRef<WorkbenchPanelsHandle | null>
   ) => {
     disableGlobalCursorStyles();
 
@@ -103,6 +108,8 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
     };
 
     const { classes } = usePanelStyles();
+    const leftWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
+    const rightWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
     const leftRef = useRef<ImperativePanelHandle>(null);
     const rightRef = useRef<ImperativePanelHandle>(null);
     const [leftPanelState, setLeftPanelState] = useState<PanelState>(leftInitialState);
@@ -119,7 +126,7 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
       refPanelsHandle,
       () => {
         return {
-          getSidePanelConfigurations: () => {
+          getWorkbenchPanelConfigurations: () => {
             const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => ({
               id: contribution.id,
               isActive: leftPanelState.selectedContributionIds.includes(contribution.id),
@@ -132,6 +139,18 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
               { id: 'left', isOpen: leftPanelState?.isOpen, views: leftViewConfigurations },
               { id: 'right', isOpen: rightPanelState?.isOpen, views: rightViewConfigurations },
             ];
+          },
+          getWorkbenchPanelHandles: () => {
+            const panelHandles: WorkbenchPanelHandle[] = [];
+            panelHandles.push({
+              side: 'left',
+              getWorkbenchViewHandles: () => Array.from(leftWorkbenchViewRef.current.values()),
+            });
+            panelHandles.push({
+              side: 'right',
+              getWorkbenchViewHandles: () => Array.from(rightWorkbenchViewRef.current.values()),
+            });
+            return panelHandles;
           },
         };
       },
@@ -249,6 +268,14 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
                             (configuration) => configuration && configuration.id === leftContribution.id
                           ) ?? null
                         }
+                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
+                          if (workbenchViewHandle) {
+                            leftWorkbenchViewRef.current.set(leftContribution.id, workbenchViewHandle);
+                          }
+                          return () => {
+                            leftWorkbenchViewRef.current.delete(leftContribution.id);
+                          };
+                        }}
                       />
                     </Panel>
                     {index < leftSelectedContributions.length - 1 ? (
@@ -293,6 +320,14 @@ export const Panels = forwardRef<PanelsHandle | null, PanelsProps>(
                             (configuration) => configuration && configuration.id === rightContribution.id
                           ) ?? null
                         }
+                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
+                          if (workbenchViewHandle) {
+                            rightWorkbenchViewRef.current.set(rightContribution.id, workbenchViewHandle);
+                          }
+                          return () => {
+                            rightWorkbenchViewRef.current.delete(rightContribution.id);
+                          };
+                        }}
                       />
                     </Panel>
                     {index < rightSelectedContributions.length - 1 ? (

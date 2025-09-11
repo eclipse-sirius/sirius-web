@@ -14,13 +14,21 @@ import { MockedProvider } from '@apollo/client/testing';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { ThemeProvider } from '@mui/material/styles';
+import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { ExtensionProvider } from '../../extension/ExtensionProvider';
 import { ExtensionRegistry } from '../../extension/ExtensionRegistry';
 import { SelectionContextProvider } from '../../selection/SelectionContext';
 import { SelectionEntry } from '../../selection/SelectionContext.types';
 import { useSelection } from '../../selection/useSelection';
 import { theme } from '../../theme';
-import { MainAreaComponentProps, RepresentationComponentProps, WorkbenchViewComponentProps } from '../Workbench.types';
+import { WorkbenchPanelHandle } from '../Panels.types';
+import { useWorkbench } from '../useWorkbench';
+import {
+  MainAreaComponentProps,
+  RepresentationComponentProps,
+  WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
+} from '../Workbench.types';
 import {
   representationFactoryExtensionPoint,
   workbenchMainAreaExtensionPoint,
@@ -78,38 +86,96 @@ const MainArea = ({}: MainAreaComponentProps) => {
   );
 };
 
-const ExplorerView = ({}: WorkbenchViewComponentProps) => {
-  const { setSelection } = useSelection();
+const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+  ({ id }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id,
+          getWorkbenchViewConfiguration: () => {
+            return {
+              key: 'Value from the explorer',
+            };
+          },
+        };
+      },
+      []
+    );
 
-  const firstRepresentationSelectionEntry: SelectionEntry = {
-    id: 'first-representation',
-  };
-  const secondRepresentationSelectionEntry: SelectionEntry = {
-    id: 'second-representation',
-  };
+    const { setSelection } = useSelection();
 
-  return (
-    <div data-testid="explorer-view">
-      <div>Explorer View</div>
-      <ul>
-        <li
-          data-testid="explorer-first-representation"
-          onClick={() => setSelection({ entries: [firstRepresentationSelectionEntry] })}>
-          First representation
-        </li>
-        <li
-          data-testid="explorer-second-representation"
-          onClick={() => setSelection({ entries: [secondRepresentationSelectionEntry] })}>
-          Second representation
-        </li>
-      </ul>
-    </div>
-  );
-};
+    const firstRepresentationSelectionEntry: SelectionEntry = {
+      id: 'first-representation',
+    };
+    const secondRepresentationSelectionEntry: SelectionEntry = {
+      id: 'second-representation',
+    };
 
-const DetailsView = ({}: WorkbenchViewComponentProps) => {
-  return <div data-testid="details-view">Details View</div>;
-};
+    return (
+      <div data-testid="explorer-view">
+        <div>Explorer View</div>
+        <ul>
+          <li
+            data-testid="explorer-first-representation"
+            onClick={() => setSelection({ entries: [firstRepresentationSelectionEntry] })}>
+            First representation
+          </li>
+          <li
+            data-testid="explorer-second-representation"
+            onClick={() => setSelection({ entries: [secondRepresentationSelectionEntry] })}>
+            Second representation
+          </li>
+        </ul>
+      </div>
+    );
+  }
+);
+
+const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+  ({ id }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+    const [state, setState] = useState<string>('');
+
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id,
+          getWorkbenchViewConfiguration: () => {
+            return {};
+          },
+        };
+      },
+      []
+    );
+
+    const { getWorkbenchPanelHandles } = useWorkbench();
+    const handleRefresh = () => {
+      const workbenchPanelHandle: WorkbenchPanelHandle | null =
+        getWorkbenchPanelHandles().find((panelHandle) => panelHandle.side === 'left') ?? null;
+      if (workbenchPanelHandle) {
+        const workbenchViewHandle: WorkbenchViewHandle | null =
+          workbenchPanelHandle
+            .getWorkbenchViewHandles()
+            .find((workbenchViewHandle) => workbenchViewHandle.id === 'explorer-view') ?? null;
+        if (workbenchViewHandle) {
+          const data = (workbenchViewHandle.getWorkbenchViewConfiguration()['key'] ?? '').toString();
+          setState(data);
+        }
+      }
+    };
+
+    return (
+      <div data-testid="details-view">
+        <div>Details View</div>
+        <div data-testid="details-view-content">{state}</div>
+        <button data-testid="details-view-refresh" onClick={handleRefresh}>
+          Refresh
+        </button>
+      </div>
+    );
+  }
+);
 
 const Representation = ({ representationId }: RepresentationComponentProps) => {
   return <div data-testid={representationId}>{representationId}</div>;

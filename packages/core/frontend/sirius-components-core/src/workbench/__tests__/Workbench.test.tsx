@@ -102,3 +102,23 @@ test('given a workbench, when we open a representation, then it should be render
   expect(firstRepresentation).not.toBeNull();
   expect(screen.queryByTestId('main-area')).toBeNull();
 });
+
+test('given a workbench, when ask for data accross workbench views, then we can retrieve it', async () => {
+  render(
+    <WorkbenchTestEnvironment initialSelection={null}>
+      <Workbench
+        editingContextId="editing-context-id"
+        initialRepresentationSelected={null}
+        initialWorkbenchConfiguration={null}
+        onRepresentationSelected={() => {}}
+        readOnly={false}
+      />
+    </WorkbenchTestEnvironment>
+  );
+
+  expect(screen.getByTestId('explorer-view')).not.toBeNull();
+  expect(screen.getByTestId('details-view')).not.toBeNull();
+
+  userEvent.click(screen.getByTestId('details-view-refresh'));
+  expect(screen.getByTestId('details-view-content').textContent).toContain('Value from the explorer');
+});
