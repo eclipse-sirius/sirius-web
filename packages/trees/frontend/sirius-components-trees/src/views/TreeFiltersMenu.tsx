@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,16 +13,13 @@
 
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Checkbox from '@mui/material/Checkbox';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Fade from '@mui/material/Fade';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
+import Menu from '@mui/material/Menu';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeFilterMenuProps, TreeFilter } from './TreeFiltersMenu.types';
+import { TreeFilter, TreeFilterMenuProps } from './TreeFiltersMenu.types';
 
 const useTreeFiltersMenuStyles = makeStyles()((_) => ({
   root: {
@@ -74,39 +71,25 @@ export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilt
         onClick={handleToggle}>
         <FilterListIcon color={open ? 'disabled' : 'inherit'} />
       </IconButton>
-      <Popper
-        data-testid={`tree-filter-menu`}
-        open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        placement={'bottom-start'}
-        transition>
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <FormGroup>
-                  {filters.map((filter) => (
-                    <FormControlLabel
-                      key={filter.id}
-                      className={classes.treeFilter}
-                      control={
-                        <Checkbox
-                          data-testid={`tree-filter-menu-checkbox-${filter.label}`}
-                          checked={filter.state}
-                          onChange={(event) => updateTreeFilters(filter, event.target.checked)}
-                          name={filter.label}
-                        />
-                      }
-                      label={filter.label}
-                    />
-                  ))}
-                </FormGroup>
-              </ClickAwayListener>
-            </Paper>
-          </Fade>
-        )}
-      </Popper>
+      <Menu data-testid="tree-filter-menu" anchorEl={anchorRef.current} open={open} onClose={handleClose}>
+        <FormGroup>
+          {filters.map((filter) => (
+            <FormControlLabel
+              key={filter.id}
+              className={classes.treeFilter}
+              control={
+                <Checkbox
+                  data-testid={`tree-filter-menu-checkbox-${filter.label}`}
+                  checked={filter.state}
+                  onChange={(event) => updateTreeFilters(filter, event.target.checked)}
+                  name={filter.label}
+                />
+              }
+              label={filter.label}
+            />
+          ))}
+        </FormGroup>
+      </Menu>
     </div>
   );
 };
