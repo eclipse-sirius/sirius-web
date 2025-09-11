@@ -10,17 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.diagrams.events.appearance.label;
 
 import org.eclipse.sirius.components.diagrams.LabelVisibility;
-import org.eclipse.sirius.components.diagrams.LineStyle;
 
 /**
- * Input for the edition of a label's appearance.
+ * Appearance change for a label's visibility property.
  *
- * @author nvannier
+ * @author frouene
  */
-public record LabelAppearanceInput(Integer fontSize, Boolean italic, Boolean bold, Boolean underline, Boolean strikeThrough, String borderColor, Integer borderRadius, Integer borderSize,
-                                   LineStyle borderStyle, String color, String background, LabelVisibility visibility) {
+public record LabelVisibilityAppearanceChange(String labelId, LabelVisibility visibility) implements ILabelAppearanceChange {
 
 }

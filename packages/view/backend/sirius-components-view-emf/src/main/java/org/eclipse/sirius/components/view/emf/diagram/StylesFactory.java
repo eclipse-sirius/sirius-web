@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -89,6 +90,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> edgeStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(edgeStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(edgeStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 
@@ -187,6 +189,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 
@@ -219,6 +222,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 
