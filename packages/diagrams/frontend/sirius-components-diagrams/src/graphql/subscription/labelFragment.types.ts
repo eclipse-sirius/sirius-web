@@ -72,4 +72,5 @@ export interface GQLLabelStyle {
   borderSize: number;
   borderRadius: number;
   maxWidth: string;
+  visibility: 'visible' | 'hidden';
 }

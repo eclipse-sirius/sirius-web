@@ -107,6 +107,7 @@ public class TestDiagramDescriptionBuilder {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> "visible")
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")

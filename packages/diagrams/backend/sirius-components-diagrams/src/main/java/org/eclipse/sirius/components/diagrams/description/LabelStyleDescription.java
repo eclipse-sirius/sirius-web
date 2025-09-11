@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,8 @@ public final class LabelStyleDescription {
     private Function<VariableManager, LineStyle> borderStyleProvider;
 
     private Function<VariableManager, String> maxWidthProvider;
+
+    private Function<VariableManager, String> visibilityProvider;
 
     private LabelStyleDescription() {
         // Prevent instantiation
@@ -114,6 +116,10 @@ public final class LabelStyleDescription {
         return this.maxWidthProvider;
     }
 
+    public Function<VariableManager, String> getVisibilityProvider() {
+        return this.visibilityProvider;
+    }
+
     /**
      * The builder used to create a new label description.
      *
@@ -147,6 +153,8 @@ public final class LabelStyleDescription {
         private Function<VariableManager, LineStyle> borderStyleProvider;
 
         private Function<VariableManager, String> maxWidthProvider;
+
+        private Function<VariableManager, String> visibilityProvider;
 
         private Builder() {
         }
@@ -216,6 +224,11 @@ public final class LabelStyleDescription {
             return this;
         }
 
+        public Builder visibilityProvider(Function<VariableManager, String> visibilityProvider) {
+            this.visibilityProvider = Objects.requireNonNull(visibilityProvider);
+            return this;
+        }
+
         public LabelStyleDescription build() {
             LabelStyleDescription styleDescription = new LabelStyleDescription();
             styleDescription.colorProvider = Objects.requireNonNull(this.colorProvider);
@@ -231,6 +244,7 @@ public final class LabelStyleDescription {
             styleDescription.borderRadiusProvider = Objects.requireNonNull(this.borderRadiusProvider);
             styleDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
             styleDescription.maxWidthProvider = Objects.requireNonNull(this.maxWidthProvider);
+            styleDescription.visibilityProvider = Objects.requireNonNull(this.visibilityProvider);
             return styleDescription;
         }
 

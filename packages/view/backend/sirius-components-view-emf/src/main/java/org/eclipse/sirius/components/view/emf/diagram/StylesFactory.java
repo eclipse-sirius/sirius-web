@@ -89,6 +89,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> edgeStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(edgeStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(edgeStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> "visible")
                 .build();
     }
 
@@ -187,6 +188,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> "visible")
                 .build();
     }
 
@@ -219,6 +221,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> "visible")
                 .build();
     }
 

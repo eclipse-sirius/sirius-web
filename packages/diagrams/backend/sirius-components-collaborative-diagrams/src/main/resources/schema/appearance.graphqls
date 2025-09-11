@@ -62,6 +62,7 @@ input LabelAppearanceInput {
   borderStyle: LineStyle
   color: String
   background: String
+  visibility: String
 }
 
 union EditLabelAppearancePayload = ErrorPayload | SuccessPayload

@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -48,7 +46,11 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelFontS
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelItalicAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelStrikeThroughAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelUnderlineAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelVisibilityAppearanceChange;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -111,6 +113,8 @@ public class EditLabelAppearanceEventHandler implements IDiagramEventHandler {
                         .ifPresent(borderSize -> appearanceChanges.add(new LabelBorderSizeAppearanceChange(editAppearanceInput.labelId(), borderSize)));
                 Optional.ofNullable(editAppearanceInput.appearance().borderStyle())
                         .ifPresent(borderStyle -> appearanceChanges.add(new LabelBorderStyleAppearanceChange(editAppearanceInput.labelId(), borderStyle)));
+                Optional.ofNullable(editAppearanceInput.appearance().visibility())
+                        .ifPresent(visibility -> appearanceChanges.add(new LabelVisibilityAppearanceChange(editAppearanceInput.labelId(), visibility)));
 
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());

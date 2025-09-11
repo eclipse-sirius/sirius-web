@@ -209,6 +209,7 @@ public class DiagramRendererNodeTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> "visible")
                 .build();
 
         InsideLabelDescription insideLbelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")

@@ -175,6 +175,10 @@ export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProper
     style.textDecoration = decoration;
   }
 
+  if (gqlLabelStyle.visibility) {
+    style.visibility = gqlLabelStyle.visibility;
+  }
+
   return style;
 };
 

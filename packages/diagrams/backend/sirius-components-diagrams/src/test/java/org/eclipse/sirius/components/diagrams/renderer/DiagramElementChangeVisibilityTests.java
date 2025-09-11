@@ -119,6 +119,7 @@ public class DiagramElementChangeVisibilityTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> "visible")
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
