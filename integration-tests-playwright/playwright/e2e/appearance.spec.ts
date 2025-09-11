@@ -161,4 +161,16 @@ test.describe('appearance', () => {
       { timeout: 2000 }
     );
   });
+
+  test('change label visibility', async ({ page }) => {
+    const label = page.locator(`[data-testid="Label - DataSource1"]`);
+    await expect(label).toBeVisible();
+
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    await playwrightNode.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Hide"]').click();
+    await playwrightNode.closePalette();
+    await expect(label).not.toBeVisible();
+  });
 });

@@ -53,4 +53,5 @@ export interface GQLLabelAppearanceInput {
   borderStyle: string;
   color: string;
   background: string;
+  visibility: 'visible' | 'hidden';
 }

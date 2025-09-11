@@ -67,6 +67,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelFontS
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelItalicAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelStrikeThroughAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelUnderlineAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelVisibilityAppearanceChange;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
@@ -296,6 +297,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 case LabelAppearanceHandler.BORDER_SIZE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(labelId, labelStyle.getBorderSize()))));
                 case LabelAppearanceHandler.BORDER_RADIUS -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(labelId, labelStyle.getBorderRadius()))));
                 case LabelAppearanceHandler.BORDER_STYLE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(labelId, labelStyle.getBorderStyle()))));
+                case LabelAppearanceHandler.VISIBILITY -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelVisibilityAppearanceChange(labelId, labelStyle.getVisibility()))));
                 default -> {
                     //We do nothing, the style property is not supported
                 }

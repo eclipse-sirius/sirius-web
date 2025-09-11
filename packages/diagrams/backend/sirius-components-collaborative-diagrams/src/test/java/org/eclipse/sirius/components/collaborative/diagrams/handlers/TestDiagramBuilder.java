@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -113,6 +114,7 @@ public class TestDiagramBuilder {
                     .borderColor("black")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
+                    .visibility(LabelVisibility.visible)
                     .build();
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                     .text("text")
