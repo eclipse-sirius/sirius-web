@@ -13,7 +13,7 @@
 
 export interface WorkbenchConfiguration {
   mainPanel: WorkbenchMainPanelConfiguration | null;
-  sidePanels: WorkbenchSidePanelConfiguration[];
+  workbenchPanels: WorkbenchSidePanelConfiguration[];
 }
 
 export interface WorkbenchSidePanelConfiguration {

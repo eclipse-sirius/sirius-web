@@ -12,8 +12,9 @@
  *******************************************************************************/
 
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { WorkbenchViewHandle } from './Workbench.types';
 import { WorkbenchPartProps } from './WorkbenchPart.types';
 
 const useSiteStyles = makeStyles()((theme) => ({
@@ -49,19 +50,30 @@ const useSiteStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const WorkbenchPart = ({ editingContextId, readOnly, side, contribution }: WorkbenchPartProps) => {
-  const { classes } = useSiteStyles();
+export const WorkbenchPart = forwardRef<WorkbenchViewHandle, WorkbenchPartProps>(
+  (
+    { editingContextId, readOnly, side, contribution, initialConfiguration }: WorkbenchPartProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
+    const { classes } = useSiteStyles();
 
-  const { title, icon, component: Component } = contribution;
-  return (
-    <div className={classes.view} data-testid={`site-${side}`}>
-      <div className={classes.viewHeader}>
-        {React.cloneElement(icon, { className: classes.viewHeaderIcon })}
-        <Typography className={classes.viewHeaderTitle}>{title}</Typography>
+    const { id, title, icon, component: Component } = contribution;
+    return (
+      <div className={classes.view} data-testid={`site-${side}`}>
+        <div className={classes.viewHeader}>
+          {React.cloneElement(icon, { className: classes.viewHeaderIcon })}
+          <Typography className={classes.viewHeaderTitle}>{title}</Typography>
+        </div>
+        <div className={classes.viewContent} data-testid={`view-${title}`}>
+          <Component
+            id={id}
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            initialConfiguration={initialConfiguration}
+            ref={ref}
+          />
+        </div>
       </div>
-      <div className={classes.viewContent} data-testid={`view-${title}`}>
-        <Component editingContextId={editingContextId} readOnly={readOnly} />
-      </div>
-    </div>
-  );
-};
+    );
+  }
+);

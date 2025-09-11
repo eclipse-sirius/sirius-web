@@ -15,7 +15,7 @@ import { WorkbenchConfiguration } from './workbench-configuration.data.types';
 
 export const workbenchConfigurationWithClosedPanels: WorkbenchConfiguration = {
   mainPanel: null,
-  sidePanels: [
+  workbenchPanels: [
     {
       id: 'left',
       isOpen: false,
@@ -39,7 +39,7 @@ export const workbenchConfigurationWithClosedPanels: WorkbenchConfiguration = {
 
 export const workbenchConfigurationWithExpandedPanels: WorkbenchConfiguration = {
   mainPanel: null,
-  sidePanels: [
+  workbenchPanels: [
     {
       id: 'left',
       isOpen: true,

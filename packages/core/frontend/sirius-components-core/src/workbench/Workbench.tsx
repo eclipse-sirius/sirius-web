@@ -27,17 +27,18 @@ import {
 import { useSynchronizeRepresentationWithSelection } from './useSynchronizeRepresentationWithSelection';
 import { useSynchronizeRepresentationWithWorkbenchConfiguration } from './useSynchronizeRepresentationWithWorkbenchConfiguration';
 import {
-  PanelsHandle,
   RepresentationComponentProps,
   RepresentationMetadata,
   RepresentationNavigationHandle,
   WorkbenchHandle,
+  WorkbenchPanelsHandle,
   WorkbenchProps,
   WorkbenchSidePanelConfiguration,
   WorkbenchState,
   WorkbenchViewContribution,
 } from './Workbench.types';
 import { WorkbenchContext } from './WorkbenchContext';
+import { WorkbenchContextValue } from './WorkbenchContext.types';
 import {
   representationFactoryExtensionPoint,
   workbenchMainAreaExtensionPoint,
@@ -141,13 +142,13 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const refRepresentationNavigationHandle: RefObject<RepresentationNavigationHandle | null> =
       useRef<RepresentationNavigationHandle | null>(null);
-    const refPanelsHandle: RefObject<PanelsHandle | null> = useRef<PanelsHandle | null>(null);
+    const refPanelsHandle: RefObject<WorkbenchPanelsHandle | null> = useRef<WorkbenchPanelsHandle | null>(null);
     useImperativeHandle(refWorkbenchHandle, () => {
       return {
         getConfiguration: () => {
           return {
             mainPanel: refRepresentationNavigationHandle.current?.getMainPanelConfiguration() ?? null,
-            sidePanels: refPanelsHandle.current?.getSidePanelConfigurations() ?? [],
+            workbenchPanels: refPanelsHandle.current?.getWorkbenchPanelConfigurations() ?? [],
           };
         },
       };
@@ -243,11 +244,11 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     }
 
     const leftPanelConfiguration: WorkbenchSidePanelConfiguration | null =
-      (initialWorkbenchConfiguration?.sidePanels ?? []).find(
+      (initialWorkbenchConfiguration?.workbenchPanels ?? []).find(
         (configuration) => configuration && configuration.id === 'left'
       ) ?? null;
     const rightPanelConfiguration: WorkbenchSidePanelConfiguration | null =
-      (initialWorkbenchConfiguration?.sidePanels ?? []).find(
+      (initialWorkbenchConfiguration?.workbenchPanels ?? []).find(
         (configuration) => configuration && configuration.id === 'right'
       ) ?? null;
 
@@ -286,8 +287,15 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       }
     }
 
+    const workbenchContextValue: WorkbenchContextValue = {
+      displayedRepresentationMetadata: state.displayedRepresentationMetadata,
+      getWorkbenchPanelHandles: () => {
+        return refPanelsHandle.current?.getWorkbenchPanelHandles() ?? [];
+      },
+    };
+
     return (
-      <WorkbenchContext.Provider value={{ displayedRepresentationMetadata: state.displayedRepresentationMetadata }}>
+      <WorkbenchContext.Provider value={workbenchContextValue}>
         <ImpactAnalysisDialogContextProvider>
           <Panels
             editingContextId={editingContextId}

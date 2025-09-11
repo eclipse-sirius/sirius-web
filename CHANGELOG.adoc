@@ -165,6 +165,8 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5450[#5450] [sirius-web] Default implementation of `IRewriteProxiesResourceFilter` now relies on `IReadOnlyObjectPredicate` instead of always returning `true`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5414[#5414] [diagram] Create a dedicated package for the palette component
 - https://github.com/eclipse-sirius/sirius-web/issues/5394[#5394] [diagram] Position new bend points in the middle rather than on a node side
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Update the API used by workbench views to contribute additional information
+
 
 
 == v2025.8.0

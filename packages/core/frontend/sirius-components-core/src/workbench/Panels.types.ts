@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchSidePanelConfiguration, WorkbenchViewContribution } from './Workbench.types';
+import { WorkbenchSidePanelConfiguration, WorkbenchViewContribution, WorkbenchViewHandle } from './Workbench.types';
 
 export interface PanelsProps {
   editingContextId: string;
@@ -29,3 +29,8 @@ export type PanelState = {
   selectedContributionIds: string[];
   isOpen: boolean;
 };
+
+export interface WorkbenchPanelHandle {
+  side: 'left' | 'right';
+  getWorkbenchViewHandles: () => WorkbenchViewHandle[];
+}

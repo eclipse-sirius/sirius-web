@@ -29,7 +29,7 @@ export const FormBasedView = memo(({ editingContextId, form, readOnly, postProce
   });
 
   if (postProcessor) {
-    return postProcessor({ editingContextId, readOnly }, convertedForm);
+    return postProcessor(editingContextId, convertedForm, readOnly);
   }
   return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
 });

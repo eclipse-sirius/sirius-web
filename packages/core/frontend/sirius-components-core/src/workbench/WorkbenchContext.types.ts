@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchPanelHandle } from './Panels.types';
 import { RepresentationMetadata } from './Workbench.types';
 
 export interface WorkbenchContextValue {
   displayedRepresentationMetadata: RepresentationMetadata | null;
+  getWorkbenchPanelHandles: () => WorkbenchPanelHandle[];
 }
