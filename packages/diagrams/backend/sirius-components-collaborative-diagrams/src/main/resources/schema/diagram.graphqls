@@ -161,6 +161,7 @@ enum LabelStyleProperty {
   BORDER_STYLE
   COLOR
   BACKGROUND
+  VISIBILITY
 }
 
 enum HeaderSeparatorDisplayMode {
@@ -224,6 +225,7 @@ type LabelStyle {
   borderStyle: LineStyle!
   background: String!
   maxWidth: String
+  visibility: String!
 }
 
 union INodeStyle = ImageNodeStyle | IconLabelNodeStyle | RectangularNodeStyle

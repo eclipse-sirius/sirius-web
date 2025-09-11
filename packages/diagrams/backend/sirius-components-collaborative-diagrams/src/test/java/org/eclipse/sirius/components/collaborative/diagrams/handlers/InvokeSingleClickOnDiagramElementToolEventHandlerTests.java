@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -67,6 +66,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -525,6 +526,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> "visible")
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")

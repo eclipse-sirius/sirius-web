@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelFontS
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelItalicAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelStrikeThroughAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelUnderlineAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelVisibilityAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.ResetLabelAppearanceChange;
 
 /**
@@ -52,6 +53,7 @@ public class LabelAppearanceHandler {
     public static final String BORDER_SIZE = "BORDER_SIZE";
     public static final String BORDER_RADIUS = "BORDER_RADIUS";
     public static final String BORDER_STYLE = "BORDER_STYLE";
+    public static final String VISIBILITY = "VISIBILITY";
 
     private final Set<String> previousCustomizedStyleProperties;
 
@@ -365,6 +367,33 @@ public class LabelAppearanceHandler {
             } else if (this.previousCustomizedStyleProperties.contains(BORDER_STYLE) && this.optionalPreviousLabelStyle.isPresent()) {
                 LabelStyle previousLabelStyle = this.optionalPreviousLabelStyle.get();
                 result = new LabelAppearanceProperty<>(previousLabelStyle.getBorderStyle(), true);
+            } else {
+                result = new LabelAppearanceProperty<>(provider.get(), false);
+            }
+            return result;
+        }
+    }
+
+    public LabelAppearanceProperty<String> getVisibility(Supplier<String> provider) {
+        boolean visibilityReset = this.appearanceChanges.stream()
+                .filter(ResetLabelAppearanceChange.class::isInstance)
+                .map(ResetLabelAppearanceChange.class::cast)
+                .anyMatch(reset -> Objects.equals(reset.propertyName(), VISIBILITY));
+
+        if (visibilityReset) {
+            return new LabelAppearanceProperty<>(provider.get(), false);
+        } else {
+            Optional<LabelVisibilityAppearanceChange> optionalVisibilityChange = this.appearanceChanges.stream()
+                    .filter(LabelVisibilityAppearanceChange.class::isInstance)
+                    .map(LabelVisibilityAppearanceChange.class::cast)
+                    .findFirst();
+
+            LabelAppearanceProperty<String> result;
+            if (optionalVisibilityChange.isPresent()) {
+                result = new LabelAppearanceProperty<>(optionalVisibilityChange.get().visibility(), true);
+            } else if (this.previousCustomizedStyleProperties.contains(VISIBILITY) && this.optionalPreviousLabelStyle.isPresent()) {
+                LabelStyle previousLabelStyle = this.optionalPreviousLabelStyle.get();
+                result = new LabelAppearanceProperty<>(previousLabelStyle.getVisibility(), true);
             } else {
                 result = new LabelAppearanceProperty<>(provider.get(), false);
             }

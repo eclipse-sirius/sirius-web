@@ -60,6 +60,7 @@ public class LabelComponent implements IComponent {
         Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
         LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
         String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
+        String visibility = labelStyleDescription.getVisibilityProvider().apply(variableManager);
 
         var labelStyle = LabelStyle.newLabelStyle()
                 .color(color)
@@ -75,6 +76,7 @@ public class LabelComponent implements IComponent {
                 .borderSize(borderSize)
                 .borderStyle(borderLineStyle)
                 .maxWidth(maxWidth)
+                .visibility(visibility)
                 .build();
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)
