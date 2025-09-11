@@ -259,7 +259,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   }, [edges.map((edge) => edge.id + edge.selected).join(), readOnly]);
 
   const { onShiftSelection, setShiftSelection } = useShiftSelection();
-  useDiagramSelection(onShiftSelection);
+  useDiagramSelection(diagramRefreshedEventPayload.diagram.targetObjectId, onShiftSelection);
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -319,6 +319,15 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     },
     [onEdgesChange]
   );
+
+  const handlePaneClick = useCallback(() => {
+    setSelection({
+      entries: [
+        { id: diagramRefreshedEventPayload.diagram.targetObjectId },
+        { id: diagramRefreshedEventPayload.diagram.id },
+      ],
+    });
+  }, [diagramRefreshedEventPayload.diagram.id, diagramRefreshedEventPayload.diagram.targetObjectId, setSelection]);
 
   const handlePaneContextMenu = useCallback(
     (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
@@ -439,6 +448,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
+    onPaneClick: handlePaneClick,
     onPaneContextMenu: handlePaneContextMenu,
     onEdgeContextMenu: handleEdgeContextMenu,
     onNodeContextMenu: handleNodeContextMenu,
