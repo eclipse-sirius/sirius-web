@@ -98,6 +98,7 @@ const toEllipseNode = (
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,

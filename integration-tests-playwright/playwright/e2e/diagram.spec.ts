@@ -56,11 +56,10 @@ test.describe('diagram', () => {
 
   test('moving a node by click', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'DataSource1');
-    await playwrightNode.click();
 
     const reactFlowXYPositionBefore = await playwrightNode.getReactFlowXYPosition();
 
-    await playwrightNode.move({ x: 250, y: 550 });
+    await playwrightNode.move({ x: 450, y: 450 });
 
     const reactFlowXYPositionAfter = await playwrightNode.getReactFlowXYPosition();
 
@@ -70,7 +69,6 @@ test.describe('diagram', () => {
 
   test('resizing a node by click', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
 
     const reactFlowSizeBefore = await playwrightNode.getReactFlowSizePosition();
 

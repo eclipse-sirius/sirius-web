@@ -101,6 +101,7 @@ const toListNode = (
     growableNodeIds: isListLayoutStrategy(style.childrenLayoutStrategy)
       ? style.childrenLayoutStrategy.growableNodeIds
       : [],
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     connectionLinePositionOnNode: 'none',

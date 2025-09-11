@@ -16,9 +16,9 @@ export class PlaywrightNode {
   readonly page: Page;
   readonly nodeLocator: Locator;
 
-  constructor(page: Page, name: string) {
+  constructor(page: Page, name: string, type: string = 'FreeForm') {
     this.page = page;
-    this.nodeLocator = this.page.locator(`[data-testid$="- ${name}"]`).first().locator('..').filter({ hasText: name });
+    this.nodeLocator = this.page.locator(`[data-testid$="${type} - ${name}"]`).first().locator('..');
   }
 
   async click() {
@@ -43,6 +43,7 @@ export class PlaywrightNode {
   }
 
   async getReactFlowXYPosition() {
+    await this.nodeLocator.click({ position: { x: 10, y: 10 } });
     const xSpan = this.page.locator('div[data-testid="nodePanelInfos"] span:has-text("x :")');
     const xText = await xSpan.textContent();
     const xValue = Number(xText?.split(':')[1].trim());
@@ -58,6 +59,7 @@ export class PlaywrightNode {
   }
 
   async getReactFlowSizePosition() {
+    await this.nodeLocator.click({ position: { x: 10, y: 10 } });
     const heightSpan = this.page.locator('div[data-testid="nodePanelInfos"] span:has-text("Height :")');
     const heightText = await heightSpan.textContent();
     const heightValue = Number(heightText?.split(':')[1].trim());
@@ -76,7 +78,7 @@ export class PlaywrightNode {
     const xyPosition = await this.getDOMXYPosition();
     await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await this.page.mouse.down();
-    await this.page.mouse.move(xyPosition.x + offset.x, xyPosition.y + offset.y, { steps: 2 });
+    await this.page.mouse.move(xyPosition.x + offset.x, xyPosition.y + offset.y, { steps: 10 });
     await this.page.mouse.up();
   }
 
