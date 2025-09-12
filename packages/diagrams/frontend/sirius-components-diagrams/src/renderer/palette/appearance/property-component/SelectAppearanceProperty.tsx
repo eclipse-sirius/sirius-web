@@ -19,8 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { SelectAppearancePropertyProps } from './SelectAppearanceProperty.types';
-//maxWidth: theme.spacing(18),
-//sx={{ whiteSpace: 'normal' }}
+
 export const SelectAppearanceProperty = ({
   icon,
   label,
@@ -28,7 +27,7 @@ export const SelectAppearanceProperty = ({
   onChange,
   options,
   onReset,
-  isDisabled,
+  disabled,
 }: SelectAppearancePropertyProps) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -57,7 +56,7 @@ export const SelectAppearanceProperty = ({
           aria-label="reset"
           size="small"
           onClick={onReset}
-          disabled={isDisabled}
+          disabled={disabled}
           sx={{
             alignSelf: 'center',
             justifySelf: 'center',

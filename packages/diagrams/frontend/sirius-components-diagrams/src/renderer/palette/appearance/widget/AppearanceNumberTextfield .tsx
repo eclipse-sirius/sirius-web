@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextFieldAppearanceProperty } from '../property-component/TextFieldAppearanceProperty';
 import { AppearanceNumberTextfieldProps, AppearanceNumberTextfieldState } from './AppearanceNumberTextfield.types';
 
@@ -18,13 +18,21 @@ export const AppearanceNumberTextfield = ({
   icon,
   label,
   initialValue,
-  isDisabled,
+  disabled,
   onEdit,
   onReset,
 }: AppearanceNumberTextfieldProps) => {
   const [state, setState] = useState<AppearanceNumberTextfieldState>({
     value: initialValue,
+    focused: false,
   });
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      value: prevState.focused ? prevState.value : initialValue,
+    }));
+  }, [initialValue]);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(event.target.value);
@@ -42,6 +50,23 @@ export const AppearanceNumberTextfield = ({
     }
   };
 
+  const handleOnFocus = (_event: React.ChangeEvent<HTMLInputElement>) => {
+    setState((prevState) => ({
+      ...prevState,
+      focused: true,
+    }));
+  };
+
+  const handleOnBlur = () => {
+    if (state.value != initialValue) {
+      onEdit(state.value);
+    }
+    setState((prevState) => ({
+      ...prevState,
+      focused: false,
+    }));
+  };
+
   return (
     <TextFieldAppearanceProperty
       icon={icon}
@@ -49,9 +74,10 @@ export const AppearanceNumberTextfield = ({
       value={state.value}
       onChange={handleOnChange}
       onKeyDown={handleOnKeyDownEdit}
-      onBlur={() => onEdit(state.value)}
+      onBlur={handleOnBlur}
+      onFocus={handleOnFocus}
       onReset={onReset}
-      isDisabled={isDisabled}
+      disabled={disabled}
     />
   );
 };

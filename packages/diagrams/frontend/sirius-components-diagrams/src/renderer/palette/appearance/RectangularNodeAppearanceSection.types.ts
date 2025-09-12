@@ -10,9 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeData } from '../../DiagramRenderer.types';
 
 export interface RectangularNodeAppearanceSectionProps {
-  nodeId: string;
-  nodeData: NodeData;
+  diagramElementId: string;
 }

@@ -10,35 +10,43 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node, useNodesData } from '@xyflow/react';
 import { GQLRectangularNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
+import { NodeData } from '../../DiagramRenderer.types';
 import { LabelAppearancePart } from './label/LabelAppearancePart';
 import { RectangularNodePart } from './rectangular-node/RectangularNodePart';
 import { RectangularNodeAppearanceSectionProps } from './RectangularNodeAppearanceSection.types';
 
-export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: RectangularNodeAppearanceSectionProps) => {
+export const RectangularNodeAppearanceSection = ({ diagramElementId }: RectangularNodeAppearanceSectionProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
+
+  if (!nodeData) {
+    return null;
+  }
+
   return (
     <>
       <RectangularNodePart
-        nodeId={nodeId}
-        style={nodeData.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle}
-        customizedStyleProperties={nodeData.nodeAppearanceData.customizedStyleProperties}
+        nodeId={diagramElementId}
+        style={nodeData.data.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle}
+        customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
       />
-      {nodeData.insideLabel ? (
+      {nodeData.data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={nodeId}
-          labelId={nodeData.insideLabel.id}
+          diagramElementId={diagramElementId}
+          labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
-          style={nodeData.insideLabel.appearanceData.gqlStyle}
-          customizedStyleProperties={nodeData.insideLabel.appearanceData.customizedStyleProperties}
+          style={nodeData.data.insideLabel.appearanceData.gqlStyle}
+          customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
-      {nodeData.outsideLabels.BOTTOM_MIDDLE ? (
+      {nodeData.data.outsideLabels.BOTTOM_MIDDLE ? (
         <LabelAppearancePart
-          diagramElementId={nodeId}
-          labelId={nodeData.outsideLabels.BOTTOM_MIDDLE.id}
+          diagramElementId={diagramElementId}
+          labelId={nodeData.data.outsideLabels.BOTTOM_MIDDLE.id}
           position="Outside Middle Label"
-          style={nodeData.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
-          customizedStyleProperties={nodeData.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
+          style={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
+          customizedStyleProperties={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
         />
       ) : null}
     </>

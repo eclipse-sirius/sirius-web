@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
 import FormatColorResetIcon from '@mui/icons-material/FormatColorReset';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { TextFieldAppearancePropertyProps } from './TextFieldAppearanceProperty.types';
 
@@ -25,8 +25,9 @@ export const TextFieldAppearanceProperty = ({
   onChange,
   onKeyDown,
   onBlur,
+  onFocus,
   onReset,
-  isDisabled,
+  disabled,
 }: TextFieldAppearancePropertyProps) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -41,13 +42,15 @@ export const TextFieldAppearanceProperty = ({
             onKeyDown={onKeyDown}
             onBlur={onBlur}
             data-testid={`toolSection-Appearance-${label}`}
+            onFocus={onFocus}
           />
         </Box>
         <IconButton
           aria-label="reset"
           size="small"
           onClick={onReset}
-          disabled={isDisabled}
+          disabled={disabled}
+          data-testid={`toolSection-Appearance-${label}-Reset`}
           sx={{
             alignSelf: 'center',
             justifySelf: 'center',

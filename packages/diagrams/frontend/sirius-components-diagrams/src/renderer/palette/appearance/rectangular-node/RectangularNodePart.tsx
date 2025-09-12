@@ -55,14 +55,14 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
         <AppearanceColorPicker
           label={'Background'}
           initialValue={style.background}
-          isDisabled={isDisabled('BACKGROUND')}
+          disabled={isDisabled('BACKGROUND')}
           onEdit={(newValue) => handleEditProperty({ background: newValue })}
           onReset={() => handleResetProperty('BACKGROUND')}></AppearanceColorPicker>
 
         <AppearanceColorPicker
           label={'Border Color'}
           initialValue={style.borderColor}
-          isDisabled={isDisabled('BORDER_COLOR')}
+          disabled={isDisabled('BORDER_COLOR')}
           onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
           onReset={() => handleResetProperty('BORDER_COLOR')}></AppearanceColorPicker>
 
@@ -70,7 +70,7 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
           icon={<Crop32Icon />}
           label={'Border Radius'}
           initialValue={style.borderRadius}
-          isDisabled={isDisabled('BORDER_RADIUS')}
+          disabled={isDisabled('BORDER_RADIUS')}
           onEdit={(newValue) => handleEditProperty({ borderRadius: newValue })}
           onReset={() => handleResetProperty('BORDER_RADIUS')}></AppearanceNumberTextfield>
 
@@ -78,7 +78,7 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
           icon={<LineWeightIcon />}
           label={'Border Size'}
           initialValue={style.borderSize}
-          isDisabled={isDisabled('BORDER_SIZE')}
+          disabled={isDisabled('BORDER_SIZE')}
           onEdit={(newValue) => handleEditProperty({ borderSize: newValue })}
           onReset={() => handleResetProperty('BORDER_SIZE')}></AppearanceNumberTextfield>
 
@@ -87,7 +87,7 @@ export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }
           label={'Border Line Style'}
           options={LINE_STYLE_OPTIONS}
           initialValue={style.borderStyle}
-          isDisabled={isDisabled('BORDER_STYLE')}
+          disabled={isDisabled('BORDER_STYLE')}
           onEdit={(newValue) => handleEditProperty({ borderStyle: newValue })}
           onReset={() => handleResetProperty('BORDER_STYLE')}></AppearanceSelect>
       </Box>

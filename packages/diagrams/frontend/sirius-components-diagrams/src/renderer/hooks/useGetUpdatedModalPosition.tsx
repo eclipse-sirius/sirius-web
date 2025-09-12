@@ -13,11 +13,17 @@
 import { ReactFlowState, useStore, XYPosition } from '@xyflow/react';
 import { UseGetUpdatedModalPositionValue } from './useGetUpdatedModalPosition.types';
 
+const equalityFunction = (oldValue: DOMRect | undefined, newValue: DOMRect | undefined) =>
+  Object.is(oldValue, newValue) ||
+  (oldValue?.bottom === newValue?.bottom &&
+    oldValue?.top === newValue?.top &&
+    oldValue?.left === newValue?.left &&
+    oldValue?.right === newValue?.right);
 const xyFlowDomBoundsSelector = (state: ReactFlowState): DOMRect | undefined => state.domNode?.getBoundingClientRect();
 
 // Using this hook will make the component rerender when the value of the xyFlowDomBoundsSelector changes
 export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue => {
-  const xyFlowDomBounds = useStore(xyFlowDomBoundsSelector);
+  const xyFlowDomBounds = useStore(xyFlowDomBoundsSelector, equalityFunction);
 
   const getUpdatedModalPosition = (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => {
     let position: XYPosition = { ...initialPosition };

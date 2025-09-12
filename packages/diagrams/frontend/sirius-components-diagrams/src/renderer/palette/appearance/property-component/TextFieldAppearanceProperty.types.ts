@@ -17,7 +17,8 @@ export interface TextFieldAppearancePropertyProps {
   value: string | number;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (event) => void;
+  onFocus: (event) => void;
   onBlur: () => void;
   onReset: () => void;
-  isDisabled: boolean;
+  disabled: boolean;
 }
