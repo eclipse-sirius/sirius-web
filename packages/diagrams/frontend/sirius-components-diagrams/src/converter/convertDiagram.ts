@@ -72,6 +72,10 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
       x: 0,
       y: 0,
     },
+    appearanceData: {
+      customizedStyleProperties: gqlEdgeLabel.customizedStyleProperties,
+      gqlStyle: gqlEdgeLabel.style,
+    },
   };
 };
 

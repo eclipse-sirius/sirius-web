@@ -112,7 +112,7 @@ public class NodeNavigator {
 
 
     public EdgeNavigator edgeWithLabel(String label) {
-        return this.findConnectedEdgeMatching(e -> e.getCenterLabel().getText().equals(label))
+        return this.findConnectedEdgeMatching(e -> e.getCenterLabel().text().equals(label))
             .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format("No edge found with label \"{0}\"", label)));
     }
 

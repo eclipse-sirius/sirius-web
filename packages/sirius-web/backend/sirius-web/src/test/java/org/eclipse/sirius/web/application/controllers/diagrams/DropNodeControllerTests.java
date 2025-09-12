@@ -106,7 +106,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-application"))
                     .isEmpty();
         });
 
@@ -127,7 +127,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-application"))
                     .hasSize(1);
         });
 

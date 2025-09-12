@@ -157,11 +157,11 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 Object self = optionalSelf.get();
 
                 Optional<EdgeLabelKind> optionalEdgeLabelKind = Optional.empty();
-                if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
+                if (edge.getBeginLabel() != null && edge.getBeginLabel().id().equals(labelId)) {
                     optionalEdgeLabelKind = Optional.of(EdgeLabelKind.BEGIN_LABEL);
-                } else if (edge.getCenterLabel() != null && edge.getCenterLabel().getId().equals(labelId)) {
+                } else if (edge.getCenterLabel() != null && edge.getCenterLabel().id().equals(labelId)) {
                     optionalEdgeLabelKind = Optional.of(EdgeLabelKind.CENTER_LABEL);
-                } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
+                } else if (edge.getEndLabel() != null && edge.getEndLabel().id().equals(labelId)) {
                     optionalEdgeLabelKind = Optional.of(EdgeLabelKind.END_LABEL);
                 }
                 if (optionalEdgeLabelKind.isPresent() && edgeDescription.getLabelEditHandler() != null) {

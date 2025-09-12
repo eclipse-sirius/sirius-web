@@ -565,11 +565,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderStyle(LineStyle.Solid)
                 .build();
 
-        var label = Label.newLabel(UUID.randomUUID().toString())
-                .style(labelStyle)
-                .text("text")
-                .type("labelType")
-                .build();
+        var label = new Label(UUID.randomUUID().toString(), "text", "labelType", labelStyle, Set.of());
 
         var edgeStyle = EdgeStyle.newEdgeStyle()
                 .color("#000000")
