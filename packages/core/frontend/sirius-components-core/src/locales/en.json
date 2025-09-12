@@ -1,0 +1,15 @@
+{
+  "siriusComponentsCore": {
+    "messages": {
+      "loading": "Loading..."
+    },
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page",
+      "fileTooLarge": "An unexpected error has occurred, the file uploaded may be too large"
+    },
+    "share": {
+      "link": "Shareable link",
+      "copied": "(copied into the clipboard)"
+    }
+  }
+}

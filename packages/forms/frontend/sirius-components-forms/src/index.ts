@@ -19,6 +19,7 @@ export type { PreviewWidgetProps, WidgetContribution } from './form/WidgetContri
 export { widgetContributionExtensionPoint } from './form/WidgetContributionExtensionPoints';
 export * from './groups/Group';
 export * from './groups/Group.types';
+export { default as siriusComponentsFormsEn } from './locales/en.json';
 export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';
 export type { CheckboxStyleProps } from './propertysections/CheckboxPropertySection.types';
 export type { DateTimeStyleProps } from './propertysections/DateTimeWidgetPropertySection.types';
