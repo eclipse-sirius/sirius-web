@@ -66,6 +66,7 @@ Downstream projects should stop provide their own implementations.
 - [releng] Remove the dependency to Google Guava, which was only used in a single location in `sirius-components-interpreter`.
 The code in question now use `com.github.ben-manes.caffeine` instead, the alternative https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/cache/CacheBuilder.html[recommended by Guava themselves].
 - [releng] Remove the dependency to @rollup/plugin-image
+- [releng] Remove the dependency to xstate
 
 
 === Bug fixes
