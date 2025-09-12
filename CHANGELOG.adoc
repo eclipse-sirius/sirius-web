@@ -87,7 +87,8 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5429[#5429] [diagram] Fix edge deletion by keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
 - https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5457[#5457] [explorer, diagram] Fix a rendering issue where some menus could be partially obscured.
+This occured for the tree filter menu in the Explorer when a table was opened, and with the diagram filters menu which could be obscured by the right-side panel.
 
 === New Features
 
