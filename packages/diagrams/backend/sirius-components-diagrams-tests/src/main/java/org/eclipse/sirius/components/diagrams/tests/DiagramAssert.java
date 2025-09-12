@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,10 +142,10 @@ public class DiagramAssert extends AbstractAssert<DiagramAssert, Diagram> {
 
     private void visitLabelId(List<String> ids, Label label) {
         if (label != null) {
-            if (ids.contains(label.getId())) {
-                this.failWithMessage("The id of the label <%s> already exist in the diagram", label.getId());
+            if (ids.contains(label.id())) {
+                this.failWithMessage("The id of the label <%s> already exist in the diagram", label.id());
             }
-            ids.add(label.getId());
+            ids.add(label.id());
         }
     }
 

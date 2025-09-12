@@ -70,9 +70,9 @@ public class DiagramQueryService implements IDiagramQueryService {
     @Override
     public Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId) {
         return diagram.getEdges().stream().filter(edge -> {
-            boolean isValid = edge.getBeginLabel() != null && Objects.equals(edge.getBeginLabel().getId(), labelId);
-            isValid = isValid || (edge.getCenterLabel() != null && Objects.equals(edge.getCenterLabel().getId(), labelId));
-            isValid = isValid || (edge.getEndLabel() != null && Objects.equals(edge.getEndLabel().getId(), labelId));
+            boolean isValid = edge.getBeginLabel() != null && Objects.equals(edge.getBeginLabel().id(), labelId);
+            isValid = isValid || (edge.getCenterLabel() != null && Objects.equals(edge.getCenterLabel().id(), labelId));
+            isValid = isValid || (edge.getEndLabel() != null && Objects.equals(edge.getEndLabel().id(), labelId));
             return isValid;
         }).findFirst();
     }

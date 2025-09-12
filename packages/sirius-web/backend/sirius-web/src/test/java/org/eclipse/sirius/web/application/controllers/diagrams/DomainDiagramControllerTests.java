@@ -243,7 +243,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
                     var humansEdgeCenterLabel = new DiagramNavigator(diagram).edgeWithLabel("humans [0..*]").findCenterLabel();
-                    humansEdgeCenterLabelId.set(humansEdgeCenterLabel.getId());
+                    humansEdgeCenterLabelId.set(humansEdgeCenterLabel.id());
                 }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {

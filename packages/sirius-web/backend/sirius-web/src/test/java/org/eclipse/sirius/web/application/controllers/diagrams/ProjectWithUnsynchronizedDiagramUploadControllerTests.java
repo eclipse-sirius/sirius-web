@@ -295,6 +295,23 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(edgeStyle.getSize()).isEqualTo(2);
         assertThat(edgeStyle.getSourceArrow()).isEqualTo(ArrowStyle.Circle);
         assertThat(edgeStyle.getTargetArrow()).isEqualTo(ArrowStyle.Circle);
+
+        var edgeLabel = standardEdge.getCenterLabel();
+        Assertions.assertThat(edgeLabel.customizedStyleProperties()).hasSize(11);
+        Assertions.assertThat(edgeLabel.customizedStyleProperties()).containsExactlyInAnyOrderElementsOf(List.of("BOLD", "ITALIC", "UNDERLINE", "STRIKE_THROUGH", "COLOR",
+                "FONT_SIZE", "BACKGROUND", "BORDER_COLOR", "BORDER_SIZE", "BORDER_RADIUS", "BORDER_STYLE"));
+        var edgeLabelStyle = edgeLabel.style();
+        Assertions.assertThat(edgeLabelStyle.isBold()).isFalse();
+        Assertions.assertThat(edgeLabelStyle.getColor()).isEqualTo("#002B40");
+        Assertions.assertThat(edgeLabelStyle.getFontSize()).isEqualTo(15);
+        Assertions.assertThat(edgeLabelStyle.isItalic()).isTrue();
+        Assertions.assertThat(edgeLabelStyle.isUnderline()).isTrue();
+        Assertions.assertThat(edgeLabelStyle.isStrikeThrough()).isTrue();
+        Assertions.assertThat(edgeLabelStyle.getBackground()).isEqualTo("red");
+        Assertions.assertThat(edgeLabelStyle.getBorderColor()).isEqualTo("green");
+        Assertions.assertThat(edgeLabelStyle.getBorderSize()).isEqualTo(1);
+        Assertions.assertThat(edgeLabelStyle.getBorderRadius()).isEqualTo(0);
+        Assertions.assertThat(edgeLabelStyle.getBorderStyle()).isEqualTo(LineStyle.Dash);
     }
 
     private byte[] getZipTestFile() {
@@ -649,20 +666,33 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "type": "label:edge-center",
                       "text": "6",
                       "style": {
-                        "color": "#B1BCBE",
-                        "fontSize": 14,
+                        "color": "#002B40",
+                        "fontSize": 15,
                         "bold": false,
-                        "italic": false,
-                        "underline": false,
-                        "strikeThrough": false,
+                        "italic": true,
+                        "underline": true,
+                        "strikeThrough": true,
                         "iconURL": [],
-                        "background": "transparent",
-                        "borderColor": "black",
-                        "borderSize": 0,
-                        "borderRadius": 3,
-                        "borderStyle": "Solid",
+                        "background": "red",
+                        "borderColor": "green",
+                        "borderSize": 1,
+                        "borderRadius": 0,
+                        "borderStyle": "Dash",
                         "maxWidth": null
-                      }
+                      },
+                      "customizedStyleProperties": [
+                        "BOLD",
+                        "ITALIC",
+                        "UNDERLINE",
+                        "STRIKE_THROUGH",
+                        "COLOR",
+                        "FONT_SIZE",
+                        "BACKGROUND",
+                        "BORDER_COLOR",
+                        "BORDER_SIZE",
+                        "BORDER_RADIUS",
+                        "BORDER_STYLE"
+                        ]
                     },
                     "endLabel": null,
                     "sourceId": "8c413729-434f-33f0-b54f-1f299baffaf0",

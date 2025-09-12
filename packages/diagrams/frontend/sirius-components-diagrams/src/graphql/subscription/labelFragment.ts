@@ -30,6 +30,7 @@ fragment labelFragment on Label {
     borderRadius
     maxWidth
   }
+  customizedStyleProperties
 }
 `;
 

@@ -98,7 +98,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
@@ -129,7 +129,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
         Consumer<Object> updatedAfterCustomAppearanceDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
@@ -154,7 +154,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
         Consumer<Object> updatedAfterResetCustomAppearanceDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
@@ -186,7 +186,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
@@ -217,7 +217,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
         Consumer<Object> updatedAfterCustomAppearanceDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
@@ -239,7 +239,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
         Consumer<Object> updatedAfterResetCustomAppearanceDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .hasSize(1)
                     .allMatch(edge -> edge.getStyle() != null)
                     .extracting(Edge::getStyle)
