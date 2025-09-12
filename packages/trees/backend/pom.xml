@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-trees-root</artifactId>
-	<version>2025.8.4</version>
+	<version>2024.8.5</version>
 
 	<name>sirius-components-trees-root</name>
 	<description>Sirius Components Trees Root</description>

@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.4</version>
+		<version>2024.8.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative</artifactId>
-	<version>2025.8.4</version>
+	<version>2024.8.5</version>
 	<name>sirius-components-collaborative</name>
 	<description>Sirius Components Collaborative</description>
 
@@ -56,23 +56,23 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2025.8.4</version>
+			<version>2024.8.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2025.8.4</version>
+			<version>2024.8.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.8.4</version>
+			<version>2024.8.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.8.4</version>
+			<version>2024.8.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

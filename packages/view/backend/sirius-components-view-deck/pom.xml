@@ -17,13 +17,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.4</version>
+		<version>2024.8.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-deck</artifactId>
-	<version>2025.8.4</version>
+	<version>2024.8.5</version>
 	<name>sirius-components-view-deck</name>
 	<description>Sirius Components Deck View Definition DSL</description>
 
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2025.8.4</version>
+			<version>2024.8.5</version>
 		</dependency>
 	</dependencies>
 
