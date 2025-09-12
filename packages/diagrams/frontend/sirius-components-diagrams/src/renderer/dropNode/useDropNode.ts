@@ -141,7 +141,7 @@ const useDropNodeMutation = () => {
 };
 
 export const useDropNode = (): UseDropNodeValue => {
-  const { droppableOnDiagram, initialPosition, draggedNodeId, initializeDrop, resetDrop } =
+  const { droppableOnDiagram, initialPosition, initializeDrop, resetDrop } =
     useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
@@ -185,7 +185,7 @@ export const useDropNode = (): UseDropNodeValue => {
       initializeDrop({
         initialPosition: computedNode.position,
         droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
-        draggedNodeId: computedNode.id,
+        dragging: true,
       });
 
       setNodes((nds) =>
@@ -195,6 +195,7 @@ export const useDropNode = (): UseDropNodeValue => {
               ...n,
               data: {
                 ...n.data,
+                isDraggedNode: n.id === computedNode.id,
                 isDropNodeCandidate: true,
               },
             };
@@ -205,6 +206,15 @@ export const useDropNode = (): UseDropNodeValue => {
               data: {
                 ...n.data,
                 isDropNodeTarget: true,
+              },
+            };
+          }
+          if (n.id === computedNode.id) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isDraggedNode: true,
               },
             };
           }
@@ -222,7 +232,7 @@ export const useDropNode = (): UseDropNodeValue => {
         return;
       }
 
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
 
       if (draggedNode && !draggedNode.data.isBorderNode) {
         const rectNode: Rect = {
@@ -267,12 +277,12 @@ export const useDropNode = (): UseDropNodeValue => {
         }
       }
     },
-    [droppableOnDiagram, draggedNodeId, getNodes]
+    [droppableOnDiagram, getNodes]
   );
 
   const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
     (event) => {
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
       const dropPosition = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
@@ -329,7 +339,7 @@ export const useDropNode = (): UseDropNodeValue => {
         );
       }
     },
-    [droppableOnDiagram, initialPosition, draggedNodeId, getNodes]
+    [droppableOnDiagram, initialPosition, getNodes]
   );
 
   const cancelDrop = (node: Node<NodeData>) => {

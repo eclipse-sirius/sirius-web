@@ -32,6 +32,22 @@ const createProjectFromTemplateQuery = `
   }
   `;
 
+const createProjectQuery = `
+ mutation createProject($input: CreateProjectInput!) {
+   createProject(input: $input) {
+       __typename    
+       ... on CreateProjectSuccessPayload {
+             project {
+                     id        
+             }      
+       }    
+       ... on ErrorPayload {
+             message     
+      }  
+    }
+  }
+  `;
+
 const deleteProjectQuery = `
     mutation deleteProject($input: DeleteProjectInput!) {
       deleteProject(input: $input) {
@@ -68,6 +84,29 @@ export class PlaywrightProject {
     const projectId = payload.project.id;
     const representationToOpenId = payload.representationToOpen.id;
     return { projectId, representationId: representationToOpenId };
+  }
+
+  async createProject(projectName: string): Promise<{ projectId: string }> {
+    const variables = {
+      input: {
+        id: crypto.randomUUID(),
+        name: projectName,
+        natures: [],
+      },
+    };
+    const response = await this.request.post('http://localhost:8080/api/graphql', {
+      data: {
+        query: createProjectQuery,
+        variables,
+      },
+    });
+
+    expect(response.ok()).toBeTruthy();
+    const jsonResponse = await response.json();
+
+    const payload = jsonResponse.data.createProject;
+    const projectId = payload.project.id;
+    return { projectId };
   }
 
   async deleteProject(projectId: string) {

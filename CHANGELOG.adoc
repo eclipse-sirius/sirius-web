@@ -55,7 +55,8 @@ Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 `UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] The _boolean_ `isDraggedNode` has been add to `NodeData`.
+This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 
 === Dependency update
 
@@ -87,6 +88,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5429[#5429] [diagram] Fix edge deletion by keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
 - https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent node to dropped on the diagram during a move inside its parent
 
 
 === New Features
