@@ -1,0 +1,41 @@
+= (M) Make path computation more flexible
+
+== Problem
+
+In the frontend, the application sometimes needs to produce a URL for a particular state of the application.
+For instance in `ShareRepresentationModal` we want to produce a URL for a representation.
+Or in `ShareProjectModal` we want to produce a URL for a project.
+
+Currently, `EditProjectView` and `DisplayLibraryView` provide the `getRepresentationPath` function used to produce these paths.
+It relies on a hard-coded route.
+
+There are 2 issues with this hard-coded route:
+* It does not support URLs with named SemanticData, e.g. `/projects/123@main/edit`, which can be used by downstream applications to implement branches inside projects.
+* It makes assumptions on the routes of the application, i.e. that the routes contributed in the extension registry (for the default Sirius Web Application, that is in `packages\sirius-web\frontend\sirius-web-application\src\extension\DefaultExtensionRegistry.tsx`) are compatible with the hard-coded route.
+
+== Key Result
+
+* The hard-coded route should be made modular, contributed alongside the route itself in the extension registry, to ensure downstream applications can manage their own routes.
+* The default implementation should support URLs with named SemanticData.
+
+=== Acceptance Criteria
+
+* The 'Share representation' and 'Share project' actions in the default Sirius Web Application should support named SemanticDatas (i.e. work for `/projects/123@main/edit/456`).
+* The 'Share representation' and 'Share project' actions should produce URLs matching the routes contributed to the extension registry.
+
+== Solution
+
+* The components specified in the routes should include a prop that is a function that can be used to produce paths for URLs.
+* `EditProjectView` and `DisplayLibraryView` should retrieve this prop and pass it down so that `ShareRepresentationModal` and `ShareProjectModal` can use it to produce a valid URL.
+
+=== Cutting backs
+
+N/A.
+
+== Rabbit holes
+
+N/A.
+
+== No-gos
+
+N/A.
