@@ -10,7 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
+import React, { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react';
+import { WorkbenchPanelHandle } from './Panels.types';
+
+export type WorkbenchProps = {
+  editingContextId: string;
+  initialRepresentationSelected: RepresentationMetadata | null;
+  onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
+  readOnly: boolean;
+  initialWorkbenchConfiguration: WorkbenchConfiguration | null;
+};
 
 export type WorkbenchState = {
   id: string;
@@ -32,31 +41,10 @@ export type RepresentationDescription = {
 
 export type WorkbenchViewSide = 'left' | 'right';
 
-export interface WorkbenchViewContribution {
-  id: string;
-  side: WorkbenchViewSide;
-  title: string;
-  icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
-}
-
-export interface WorkbenchViewComponentProps {
-  editingContextId: string;
-  readOnly: boolean;
-}
-
 export interface MainAreaComponentProps {
   editingContextId: string;
   readOnly: boolean;
 }
-
-export type WorkbenchProps = {
-  editingContextId: string;
-  initialRepresentationSelected: RepresentationMetadata | null;
-  onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
-  readOnly: boolean;
-  initialWorkbenchConfiguration: WorkbenchConfiguration | null;
-};
 
 export type RepresentationComponentProps = {
   editingContextId: string;
@@ -74,17 +62,40 @@ export interface WorkbenchHandle {
   getConfiguration(): WorkbenchConfiguration;
 }
 
-export interface PanelsHandle {
-  getSidePanelConfigurations: () => WorkbenchSidePanelConfiguration[];
+export interface WorkbenchPanelsHandle {
+  getWorkbenchPanelConfigurations: () => WorkbenchSidePanelConfiguration[];
+  getWorkbenchPanelHandles: () => WorkbenchPanelHandle[];
 }
 
 export interface RepresentationNavigationHandle {
   getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
 }
 
+export interface WorkbenchViewContribution {
+  id: string;
+  side: WorkbenchViewSide;
+  title: string;
+  icon: React.ReactElement;
+  component: ForwardRefExoticComponent<
+    PropsWithoutRef<WorkbenchViewComponentProps> & RefAttributes<WorkbenchViewHandle>
+  >;
+}
+
+export interface WorkbenchViewComponentProps {
+  id: string;
+  editingContextId: string;
+  readOnly: boolean;
+  initialConfiguration: WorkbenchViewConfiguration | null;
+}
+
+export interface WorkbenchViewHandle {
+  id: string;
+  getWorkbenchViewConfiguration: () => Record<string, unknown>;
+}
+
 export interface WorkbenchConfiguration {
-  sidePanels: WorkbenchSidePanelConfiguration[];
   mainPanel: WorkbenchMainPanelConfiguration | null;
+  workbenchPanels: WorkbenchSidePanelConfiguration[];
 }
 
 export interface WorkbenchSidePanelConfiguration {

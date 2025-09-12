@@ -17,9 +17,11 @@ import { WorkbenchContext } from './WorkbenchContext';
 import { WorkbenchContextValue } from './WorkbenchContext.types';
 
 export const useWorkbench = (): UseWorkbenchValue => {
-  const { displayedRepresentationMetadata } = React.useContext<WorkbenchContextValue>(WorkbenchContext);
+  const { displayedRepresentationMetadata, getWorkbenchPanelHandles: getWorkbenchPanelHandles } =
+    React.useContext<WorkbenchContextValue>(WorkbenchContext);
 
   return {
     displayedRepresentationMetadata,
+    getWorkbenchPanelHandles: getWorkbenchPanelHandles,
   };
 };

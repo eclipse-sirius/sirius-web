@@ -15,6 +15,7 @@ import {
   ServerContext,
   ServerContextValue,
   WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
@@ -29,7 +30,7 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType, useContext } from 'react';
+import { ComponentType, ForwardedRef, forwardRef, useContext, useImperativeHandle } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useCurrentProject } from '../../useCurrentProject';
 import {
@@ -50,30 +51,45 @@ import {
 import { useExpression } from './useExpression';
 import { useResultAreaSize } from './useResultAreaSize';
 
-export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const queryViewStyle: SxProps<Theme> = (theme) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(2),
-    paddingX: theme.spacing(1),
-  });
+export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+  ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+    const queryViewStyle: SxProps<Theme> = (theme) => ({
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(2),
+      paddingX: theme.spacing(1),
+    });
 
-  const { evaluateExpression, loading, result } = useEvaluateExpression();
-  const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id,
+          getWorkbenchViewConfiguration: () => {
+            return {};
+          },
+        };
+      },
+      []
+    );
 
-  const { ref, width, height } = useResultAreaSize();
+    const { evaluateExpression, loading, result } = useEvaluateExpression();
+    const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
 
-  return (
-    <Box data-representation-kind="query" sx={queryViewStyle} ref={ref}>
-      <ExpressionArea
-        editingContextId={editingContextId}
-        onEvaluateExpression={handleEvaluateExpression}
-        disabled={loading || readOnly}
-      />
-      <ResultArea loading={loading} payload={result} width={width} height={height} />
-    </Box>
-  );
-};
+    const { ref: resultAreaRef, width, height } = useResultAreaSize();
+
+    return (
+      <Box data-representation-kind="query" sx={queryViewStyle} ref={resultAreaRef}>
+        <ExpressionArea
+          editingContextId={editingContextId}
+          onEvaluateExpression={handleEvaluateExpression}
+          disabled={loading || readOnly}
+        />
+        <ResultArea loading={loading} payload={result} width={width} height={height} />
+      </Box>
+    );
+  }
+);
 
 const ExpressionArea = ({ editingContextId, onEvaluateExpression, disabled }: ExpressionAreaProps) => {
   const { expression, onExpressionChange } = useExpression(editingContextId);

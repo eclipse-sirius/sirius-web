@@ -149,6 +149,7 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  * Used to register all the views available in the left and right of the workbench
  *
  *******************************************************************************/
+
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
     id: 'explorer',
