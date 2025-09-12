@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchViewConfiguration, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
 import { GQLEvaluateExpressionSuccessPayload, GQLExpressionResult } from './useEvaluateExpression.types';
 
 export interface ExpressionAreaProps {
   editingContextId: string;
   onEvaluateExpression: (expression: string) => void;
   disabled: boolean;
+  initialQueryText: string | null;
 }
 
 export interface ResultAreaProps {
@@ -34,4 +36,16 @@ export interface ExpressionResultViewerProps {
 
 export interface ExportResultButtonProps {
   objectIds: string[];
+}
+
+export interface QueryViewHandle extends WorkbenchViewHandle {
+  getWorkbenchViewConfiguration: () => QueryViewConfiguration | null;
+}
+
+export interface QueryViewConfiguration extends WorkbenchViewConfiguration {
+  queryText: string;
+}
+
+export interface ExpressionHandle {
+  getQueryViewExpression: () => string;
 }
