@@ -79,7 +79,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
         <AppearanceColorPicker
           label={'Color'}
           initialValue={style.color}
-          isDisabled={isDisabled('COLOR')}
+          disabled={isDisabled('COLOR')}
           onEdit={(newValue) => handleEditProperty({ color: newValue })}
           onReset={() => handleResetProperty('COLOR')}></AppearanceColorPicker>
 
@@ -87,7 +87,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
           icon={<LineWeightIcon />}
           label={'Size'}
           initialValue={style.size}
-          isDisabled={isDisabled('SIZE')}
+          disabled={isDisabled('SIZE')}
           onEdit={(newValue) => handleEditProperty({ size: newValue })}
           onReset={() => handleResetProperty('SIZE')}></AppearanceNumberTextfield>
 
@@ -96,7 +96,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
           label={'Line Style'}
           options={LINE_STYLE_OPTIONS}
           initialValue={style.lineStyle}
-          isDisabled={isDisabled('LINESTYLE')}
+          disabled={isDisabled('LINESTYLE')}
           onEdit={(newValue) => handleEditProperty({ lineStyle: newValue })}
           onReset={() => handleResetProperty('LINESTYLE')}></AppearanceSelect>
 
@@ -105,7 +105,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
           options={ARROW_OPTIONS}
           label={'Source arrow'}
           initialValue={style.sourceArrow}
-          isDisabled={isDisabled('SOURCE_ARROW')}
+          disabled={isDisabled('SOURCE_ARROW')}
           onEdit={(newValue) => handleEditProperty({ sourceArrowStyle: newValue })}
           onReset={() => handleResetProperty('SOURCE_ARROW')}></AppearanceSelect>
 
@@ -114,7 +114,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
           options={ARROW_OPTIONS}
           label={'Target arrow'}
           initialValue={style.targetArrow}
-          isDisabled={isDisabled('TARGET_ARROW')}
+          disabled={isDisabled('TARGET_ARROW')}
           onEdit={(newValue) => handleEditProperty({ targetArrowStyle: newValue })}
           onReset={() => handleResetProperty('TARGET_ARROW')}></AppearanceSelect>
       </Box>

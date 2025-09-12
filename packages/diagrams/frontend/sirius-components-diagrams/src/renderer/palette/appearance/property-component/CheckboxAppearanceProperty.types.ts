@@ -17,5 +17,5 @@ export interface CheckboxAppearancePropertyProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   onReset: () => void;
-  isDisabled: boolean;
+  disabled: boolean;
 }

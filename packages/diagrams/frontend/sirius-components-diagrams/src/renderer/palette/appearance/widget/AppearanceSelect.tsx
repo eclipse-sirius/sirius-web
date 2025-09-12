@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectAppearanceProperty } from '../property-component/SelectAppearanceProperty';
 import { AppearanceSelectProps, AppearanceSelectState } from './AppearanceSelect.types';
 
@@ -21,7 +21,7 @@ export const AppearanceSelect = ({
   label,
   initialValue,
   options,
-  isDisabled,
+  disabled,
   onEdit,
   onReset,
 }: AppearanceSelectProps) => {
@@ -29,13 +29,22 @@ export const AppearanceSelect = ({
     value: initialValue,
   });
 
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      value: initialValue,
+    }));
+  }, [initialValue]);
+
   const handleOnChange = (event: SelectChangeEvent<string>) => {
     const newValue = event.target.value;
     setState((prevState) => ({
       ...prevState,
       value: newValue,
     }));
-    onEdit(newValue);
+    if (newValue != initialValue) {
+      onEdit(newValue);
+    }
   };
 
   return (
@@ -46,7 +55,7 @@ export const AppearanceSelect = ({
       onChange={handleOnChange}
       options={options}
       onReset={onReset}
-      isDisabled={isDisabled}
+      disabled={disabled}
     />
   );
 };

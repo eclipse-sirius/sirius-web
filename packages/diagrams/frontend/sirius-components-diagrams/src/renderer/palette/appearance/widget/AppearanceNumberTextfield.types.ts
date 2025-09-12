@@ -15,11 +15,12 @@ export interface AppearanceNumberTextfieldProps {
   icon: JSX.Element;
   label: string;
   initialValue: number;
-  isDisabled: boolean;
+  disabled: boolean;
   onEdit: (value: number) => void;
   onReset: () => void;
 }
 
 export interface AppearanceNumberTextfieldState {
   value: number;
+  focused: boolean;
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Color } from '../Color';
 import { TextFieldAppearanceProperty } from '../property-component/TextFieldAppearanceProperty';
 import { AppearanceColorPickerProps, AppearanceColorPickerState } from './AppearanceColorPicker.types';
@@ -18,18 +18,43 @@ import { AppearanceColorPickerProps, AppearanceColorPickerState } from './Appear
 export const AppearanceColorPicker = ({
   label,
   initialValue,
-  isDisabled,
+  disabled,
   onEdit,
   onReset,
 }: AppearanceColorPickerProps) => {
   const [state, setState] = useState<AppearanceColorPickerState>({
     value: initialValue,
+    focused: false,
   });
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      value: prevState.focused ? prevState.value : initialValue,
+    }));
+  }, [initialValue]);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState((prevState) => ({
       ...prevState,
       value: event.target.value,
+    }));
+  };
+
+  const handleOnFocus = (_event: React.ChangeEvent<HTMLInputElement>) => {
+    setState((prevState) => ({
+      ...prevState,
+      focused: true,
+    }));
+  };
+
+  const handleOnBlur = () => {
+    if (state.value != initialValue) {
+      onEdit(state.value);
+    }
+    setState((prevState) => ({
+      ...prevState,
+      focused: false,
     }));
   };
 
@@ -46,9 +71,10 @@ export const AppearanceColorPicker = ({
       value={state.value}
       onChange={handleOnChange}
       onKeyDown={handleOnKeyDownEdit}
-      onBlur={() => onEdit(state.value)}
+      onBlur={handleOnBlur}
+      onFocus={handleOnFocus}
       onReset={onReset}
-      isDisabled={isDisabled}
+      disabled={disabled}
     />
   );
 };

@@ -13,24 +13,33 @@
 
 import {
   LabelAppearancePart,
+  NodeData,
   PaletteAppearanceSectionContributionComponentProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import { Node, useNodesData } from '@xyflow/react';
 import { EllipseNodePart } from './EllipseNodePart';
+import { GQLEllipseNodeStyle } from './EllipseNodePart.types';
 
-export const EllipseNodeAppearanceSection = ({
-  element,
-  elementId,
-}: PaletteAppearanceSectionContributionComponentProps) => {
+export const EllipseNodeAppearanceSection = ({ elementId }: PaletteAppearanceSectionContributionComponentProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(elementId);
+
+  if (!nodeData) {
+    return null;
+  }
   return (
     <>
-      <EllipseNodePart element={element} />
-      {element.data.insideLabel ? (
+      <EllipseNodePart
+        nodeId={elementId}
+        style={nodeData.data.nodeAppearanceData.gqlStyle as GQLEllipseNodeStyle}
+        customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
+      />
+      {nodeData.data.insideLabel ? (
         <LabelAppearancePart
           diagramElementId={elementId}
-          labelId={element.data.insideLabel.id}
+          labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
-          style={element.data.insideLabel.appearanceData.gqlStyle}
-          customizedStyleProperties={element.data.insideLabel.appearanceData.customizedStyleProperties}
+          style={nodeData.data.insideLabel.appearanceData.gqlStyle}
+          customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
     </>

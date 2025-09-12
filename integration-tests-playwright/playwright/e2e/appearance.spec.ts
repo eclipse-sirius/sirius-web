@@ -75,6 +75,26 @@ test.describe('appearance', () => {
     await playwrightNode.click();
     await expect(edgeStyle).toHaveCSS('stroke-width', '5px');
     await expect(edgeStyle).toHaveCSS('stroke', 'rgb(255, 0, 0)');
+
+    //Reset the appearance
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+    await playwrightEdge.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Color-Reset"]').click();
+    await page.locator('[data-testid="toolSection-Appearance-Size-Reset"]').click();
+    await page.waitForFunction(
+      () => {
+        const colorInput: HTMLInputElement | null = document.querySelector(
+          '[data-testid="toolSection-Appearance-Color"] input'
+        );
+        const sizeInput: HTMLInputElement | null = document.querySelector(
+          '[data-testid="toolSection-Appearance-Size"] input'
+        );
+        return colorInput && sizeInput && colorInput.value === '#B1BCBE' && sizeInput && sizeInput.value === '1';
+      },
+      { timeout: 2000 }
+    );
   });
 
   test('change edge center label appearance', async ({ page }) => {
