@@ -122,7 +122,6 @@ public class ExplorerDropTreeItemExecutor implements IExplorerDropTreeItemExecut
         if (index >= 0) {
             this.moveObjectToIndex(source, featureListEObject, targetSiblings, index);
         } else {
-            EcoreUtil.remove(source);
             featureListEObject.add(source);
         }
         return new Success();
@@ -154,14 +153,12 @@ public class ExplorerDropTreeItemExecutor implements IExplorerDropTreeItemExecut
                 featureListEObject.move(featureIndex, source);
             }
         } else {
-            EcoreUtil.remove(source);
             featureListEObject.add(featureIndex, source);
         }
     }
 
     private IStatus moveObjectToSingleFeature(EObject source, EObject targetContainer, EStructuralFeature feature) {
         if (targetContainer.eGet(feature) == null) {
-            EcoreUtil.remove(source);
             targetContainer.eSet(feature, source);
             return new Success();
         }
