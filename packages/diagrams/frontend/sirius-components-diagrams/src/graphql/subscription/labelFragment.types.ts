@@ -15,6 +15,7 @@ export interface GQLLabel {
   id: string;
   text: string;
   style: GQLLabelStyle;
+  customizedStyleProperties: string[];
 }
 
 export interface GQLInsideLabel {

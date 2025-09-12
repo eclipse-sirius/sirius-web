@@ -49,11 +49,7 @@ public final class LabelBuilder {
                 .borderStyle(LineStyle.Solid)
                 .build();
 
-        return Label.newLabel(UUID.randomUUID().toString())
-                .type(Objects.requireNonNull(labelType).getValue())
-                .text(Objects.requireNonNull(text))
-                .style(labelStyle)
-                .build();
+        return new Label(UUID.randomUUID().toString(), labelType.getValue(), text, labelStyle, Set.of());
     }
 
     public InsideLabel basicInsideLabel(String text, LabelType labelType, boolean isHeader) {

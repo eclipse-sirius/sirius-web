@@ -170,7 +170,7 @@ public class DiagramElementFactory implements IElementFactory {
         return children.stream()
                 .filter(Label.class::isInstance)
                 .map(Label.class::cast)
-                .filter(label -> label.getType().equals(labelType.getValue()))
+                .filter(label -> label.type().equals(labelType.getValue()))
                 .findFirst()
                 .orElse(null);
 
@@ -178,11 +178,7 @@ public class DiagramElementFactory implements IElementFactory {
 
     private Label instantiateLabel(IProps props) {
         if (props instanceof LabelElementProps labelElementProps) {
-            return Label.newLabel(labelElementProps.getId())
-                    .type(labelElementProps.getType())
-                    .text(labelElementProps.getText())
-                    .style(labelElementProps.getStyle())
-                    .build();
+            return new Label(labelElementProps.getId(), labelElementProps.getType(), labelElementProps.getText(), labelElementProps.getStyle(), labelElementProps.getCustomizedStyleProperties());
         }
         return null;
     }

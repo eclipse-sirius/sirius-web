@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,17 +29,17 @@ public class LabelAssert extends AbstractObjectAssert<LabelAssert, Label> {
     }
 
     public LabelAssert hasId(String id) {
-        assertThat(this.actual.getId()).isEqualTo(id);
+        assertThat(this.actual.id()).isEqualTo(id);
         return this;
     }
 
     public LabelAssert hasType(String type) {
-        assertThat(this.actual.getType()).isEqualTo(type);
+        assertThat(this.actual.type()).isEqualTo(type);
         return this;
     }
 
     public LabelAssert hasText(String text) {
-        assertThat(this.actual.getText()).isEqualTo(text);
+        assertThat(this.actual.text()).isEqualTo(text);
         return this;
     }
 }

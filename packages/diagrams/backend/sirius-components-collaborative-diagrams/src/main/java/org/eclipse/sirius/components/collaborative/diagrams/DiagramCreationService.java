@@ -142,7 +142,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .previousDiagram(optionalPreviousDiagram)
                 .diagramEvents(diagramEvents)
                 .nodeAppearanceHandlers(this.nodeAppearanceHandlers)
-                .edgeAppearanceHandlers(edgeAppearanceHandlers);
+                .edgeAppearanceHandlers(this.edgeAppearanceHandlers);
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);

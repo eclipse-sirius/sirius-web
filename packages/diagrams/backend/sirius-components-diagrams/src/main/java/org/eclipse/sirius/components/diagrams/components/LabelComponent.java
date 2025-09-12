@@ -12,14 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
+import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
-import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.elements.LabelElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -47,40 +51,18 @@ public class LabelComponent implements IComponent {
 
         LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
 
-        String color = labelStyleDescription.getColorProvider().apply(variableManager);
-        Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = labelStyleDescription.getBoldProvider().apply(variableManager);
-        Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
-        Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
-        Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
-        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
-        String background = labelStyleDescription.getBackgroundProvider().apply(variableManager);
-        String borderColor = labelStyleDescription.getBorderColorProvider().apply(variableManager);
-        Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
-        Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
-        LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
-        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
+        List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
+        Optional<LabelStyle> optionalPreviousLabelStyle = this.props.getPreviousLabel().map(Label::style);
+        Set<String> newCustomizedStyleProperties = new LinkedHashSet<>();
+        Set<String> previousCustomizedStyleProperties = this.props.getPreviousLabel().map(Label::customizedStyleProperties).orElse(new LinkedHashSet<>());
 
-        var labelStyle = LabelStyle.newLabelStyle()
-                .color(color)
-                .fontSize(fontSize)
-                .bold(bold)
-                .italic(italic)
-                .strikeThrough(strikeThrough)
-                .underline(underline)
-                .iconURL(iconURL)
-                .background(background)
-                .borderColor(borderColor)
-                .borderRadius(borderRadius)
-                .borderSize(borderSize)
-                .borderStyle(borderLineStyle)
-                .maxWidth(maxWidth)
-                .build();
+        var labelStyle = new LabelStyleComponentProvider().getLabelStyle(id, diagramEvents, previousCustomizedStyleProperties, optionalPreviousLabelStyle, labelStyleDescription, variableManager, newCustomizedStyleProperties);
 
         LabelElementProps labelElementProps = LabelElementProps.newLabelElementProps(id)
                 .type(type)
                 .text(text)
                 .style(labelStyle)
+                .customizedStyleProperties(newCustomizedStyleProperties)
                 .build();
         return new Element(LabelElementProps.TYPE, labelElementProps);
     }
