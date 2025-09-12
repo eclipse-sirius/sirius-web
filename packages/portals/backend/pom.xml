@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-portals-root</artifactId>
-	<version>2024.8.5</version>
+	<version>2025.8.5</version>
 
 	<name>sirius-components-portals-root</name>
 	<description>Sirius Components Portals Root</description>
