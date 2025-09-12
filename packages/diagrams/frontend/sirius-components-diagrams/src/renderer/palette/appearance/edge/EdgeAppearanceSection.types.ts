@@ -10,8 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MultiLabelEdgeData } from '../../../edge/MultiLabelEdge.types';
 export interface EdgeAppearanceSectionProps {
-  edgeId: string;
-  edgeData: MultiLabelEdgeData;
+  diagramElementId: string;
 }

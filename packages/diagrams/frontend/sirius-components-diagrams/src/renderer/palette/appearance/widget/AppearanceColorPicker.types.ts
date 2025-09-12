@@ -14,11 +14,12 @@
 export interface AppearanceColorPickerProps {
   label: string;
   initialValue: string;
-  isDisabled: boolean;
+  disabled: boolean;
   onEdit: (value: string) => void;
   onReset: () => void;
 }
 
 export interface AppearanceColorPickerState {
   value: string;
+  focused: boolean;
 }

@@ -69,7 +69,7 @@ export const LabelAppearancePart = ({
           icon={<FormatSizeIcon />}
           label={'Font Size'}
           initialValue={style.fontSize}
-          isDisabled={isDisabled('FONT_SIZE')}
+          disabled={isDisabled('FONT_SIZE')}
           onEdit={(newValue) => handleEditProperty({ fontSize: newValue })}
           onReset={() => handleResetProperty('FONT_SIZE')}></AppearanceNumberTextfield>
 
@@ -77,7 +77,7 @@ export const LabelAppearancePart = ({
           icon={<FormatItalicIcon />}
           label="Italic"
           checked={style.italic}
-          isDisabled={isDisabled('ITALIC')}
+          disabled={isDisabled('ITALIC')}
           onChange={(checked) => handleEditProperty({ italic: checked })}
           onReset={() => handleResetProperty('ITALIC')}
         />
@@ -85,7 +85,7 @@ export const LabelAppearancePart = ({
           icon={<FormatBoldIcon />}
           label="Bold"
           checked={style.bold}
-          isDisabled={isDisabled('BOLD')}
+          disabled={isDisabled('BOLD')}
           onChange={(checked) => handleEditProperty({ bold: checked })}
           onReset={() => handleResetProperty('BOLD')}
         />
@@ -93,7 +93,7 @@ export const LabelAppearancePart = ({
           icon={<FormatUnderlinedIcon />}
           label="Underline"
           checked={style.underline}
-          isDisabled={isDisabled('UNDERLINE')}
+          disabled={isDisabled('UNDERLINE')}
           onChange={(checked) => handleEditProperty({ underline: checked })}
           onReset={() => handleResetProperty('UNDERLINE')}
         />
@@ -101,7 +101,7 @@ export const LabelAppearancePart = ({
           icon={<FormatStrikethroughIcon />}
           label="Strike Through"
           checked={style.strikeThrough}
-          isDisabled={isDisabled('STRIKE_THROUGH')}
+          disabled={isDisabled('STRIKE_THROUGH')}
           onChange={(checked) => handleEditProperty({ strikeThrough: checked })}
           onReset={() => handleResetProperty('STRIKE_THROUGH')}
         />
@@ -109,7 +109,7 @@ export const LabelAppearancePart = ({
         <AppearanceColorPicker
           label={'Border Color'}
           initialValue={style.borderColor}
-          isDisabled={isDisabled('BORDER_COLOR')}
+          disabled={isDisabled('BORDER_COLOR')}
           onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
           onReset={() => handleResetProperty('BORDER_COLOR')}></AppearanceColorPicker>
 
@@ -117,7 +117,7 @@ export const LabelAppearancePart = ({
           icon={<Crop32Icon />}
           label={'Border Radius'}
           initialValue={style.borderRadius}
-          isDisabled={isDisabled('BORDER_RADIUS')}
+          disabled={isDisabled('BORDER_RADIUS')}
           onEdit={(newValue) => handleEditProperty({ borderRadius: newValue })}
           onReset={() => handleResetProperty('BORDER_RADIUS')}></AppearanceNumberTextfield>
 
@@ -125,7 +125,7 @@ export const LabelAppearancePart = ({
           icon={<Crop32Icon />}
           label={'Border Size'}
           initialValue={style.borderSize}
-          isDisabled={isDisabled('BORDER_SIZE')}
+          disabled={isDisabled('BORDER_SIZE')}
           onEdit={(newValue) => handleEditProperty({ borderSize: newValue })}
           onReset={() => handleResetProperty('BORDER_SIZE')}></AppearanceNumberTextfield>
 
@@ -134,21 +134,21 @@ export const LabelAppearancePart = ({
           label={'Border Line Style'}
           options={LINE_STYLE_OPTIONS}
           initialValue={style.borderStyle}
-          isDisabled={isDisabled('BORDER_STYLE')}
+          disabled={isDisabled('BORDER_STYLE')}
           onEdit={(newValue) => handleEditProperty({ borderStyle: newValue })}
           onReset={() => handleResetProperty('BORDER_STYLE')}></AppearanceSelect>
 
         <AppearanceColorPicker
           label={'Label Color'}
           initialValue={style.color}
-          isDisabled={isDisabled('COLOR')}
+          disabled={isDisabled('COLOR')}
           onEdit={(newValue) => handleEditProperty({ color: newValue })}
           onReset={() => handleResetProperty('COLOR')}></AppearanceColorPicker>
 
         <AppearanceColorPicker
           label={'Background'}
           initialValue={style.background}
-          isDisabled={isDisabled('BACKGROUND')}
+          disabled={isDisabled('BACKGROUND')}
           onEdit={(newValue) => handleEditProperty({ background: newValue })}
           onReset={() => handleResetProperty('BACKGROUND')}></AppearanceColorPicker>
       </Box>

@@ -10,21 +10,32 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ReactFlowState, useStore } from '@xyflow/react';
+import { MultiLabelEdgeData } from '../../../edge/MultiLabelEdge.types';
 import { LabelAppearancePart } from '../label/LabelAppearancePart';
 import { EdgeAppearancePart } from './EdgeAppearancePart';
 import { EdgeAppearanceSectionProps } from './EdgeAppearanceSection.types';
 
-export const EdgeAppearanceSection = ({ edgeId, edgeData }: EdgeAppearanceSectionProps) => {
+const edgeDataSelector = (state: ReactFlowState, edgeId: string) =>
+  state.edgeLookup.get(edgeId)?.data as MultiLabelEdgeData | undefined;
+
+export const EdgeAppearanceSection = ({ diagramElementId }: EdgeAppearanceSectionProps) => {
+  const edgeData = useStore((state) => edgeDataSelector(state, diagramElementId));
+
+  if (!edgeData) {
+    return null;
+  }
+
   return (
     <>
       <EdgeAppearancePart
-        edgeId={edgeId}
+        edgeId={diagramElementId}
         style={edgeData.edgeAppearanceData.gqlStyle}
         customizedStyleProperties={edgeData.edgeAppearanceData.customizedStyleProperties}
       />
       {edgeData.beginLabel ? (
         <LabelAppearancePart
-          diagramElementId={edgeId}
+          diagramElementId={diagramElementId}
           labelId={edgeData.beginLabel.id}
           position="Begin Label"
           style={edgeData.beginLabel.appearanceData.gqlStyle}
@@ -33,7 +44,7 @@ export const EdgeAppearanceSection = ({ edgeId, edgeData }: EdgeAppearanceSectio
       ) : null}
       {edgeData.label ? (
         <LabelAppearancePart
-          diagramElementId={edgeId}
+          diagramElementId={diagramElementId}
           labelId={edgeData.label.id}
           position="Center Label"
           style={edgeData.label.appearanceData.gqlStyle}
@@ -42,7 +53,7 @@ export const EdgeAppearanceSection = ({ edgeId, edgeData }: EdgeAppearanceSectio
       ) : null}
       {edgeData.endLabel ? (
         <LabelAppearancePart
-          diagramElementId={edgeId}
+          diagramElementId={diagramElementId}
           labelId={edgeData.endLabel.id}
           position="End Label"
           style={edgeData.endLabel.appearanceData.gqlStyle}

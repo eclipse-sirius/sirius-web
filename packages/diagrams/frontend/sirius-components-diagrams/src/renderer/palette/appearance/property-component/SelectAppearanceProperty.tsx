@@ -28,7 +28,7 @@ export const SelectAppearanceProperty = ({
   onChange,
   options,
   onReset,
-  isDisabled,
+  disabled,
 }: SelectAppearancePropertyProps) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -57,7 +57,7 @@ export const SelectAppearanceProperty = ({
           aria-label="reset"
           size="small"
           onClick={onReset}
-          disabled={isDisabled}
+          disabled={disabled}
           sx={{
             alignSelf: 'center',
             justifySelf: 'center',

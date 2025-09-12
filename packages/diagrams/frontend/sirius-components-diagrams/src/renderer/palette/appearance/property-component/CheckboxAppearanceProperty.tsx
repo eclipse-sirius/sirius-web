@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import FormatColorResetIcon from '@mui/icons-material/FormatColorReset';
+import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import IconButton from '@mui/material/IconButton';
-import FormatColorResetIcon from '@mui/icons-material/FormatColorReset';
-import Box from '@mui/material/Box';
 import { CheckboxAppearancePropertyProps } from './CheckboxAppearanceProperty.types';
 
 export const CheckboxAppearanceProperty = ({
@@ -25,7 +25,7 @@ export const CheckboxAppearanceProperty = ({
   checked,
   onChange,
   onReset,
-  isDisabled,
+  disabled,
 }: CheckboxAppearancePropertyProps) => {
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: '1fr min-content' }}>
@@ -45,7 +45,7 @@ export const CheckboxAppearanceProperty = ({
         aria-label="reset"
         size="small"
         onClick={onReset}
-        disabled={isDisabled}
+        disabled={disabled}
         sx={{
           alignSelf: 'center',
           justifySelf: 'center',

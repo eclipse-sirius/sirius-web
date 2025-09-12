@@ -20,5 +20,5 @@ export interface SelectAppearancePropertyProps {
   onChange: (event: SelectChangeEvent<string>) => void;
   options: { value: string; label: string }[];
   onReset: () => void;
-  isDisabled: boolean;
+  disabled: boolean;
 }

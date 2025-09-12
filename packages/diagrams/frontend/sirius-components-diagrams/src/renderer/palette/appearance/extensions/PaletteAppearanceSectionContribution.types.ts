@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { InternalNode, Node } from '@xyflow/react';
+import { Node } from '@xyflow/react';
 import { NodeData } from '../../../DiagramRenderer.types';
 
 export interface PaletteAppearanceSectionContributionProps {
@@ -21,5 +21,4 @@ export interface PaletteAppearanceSectionContributionProps {
 
 export interface PaletteAppearanceSectionContributionComponentProps {
   elementId: string;
-  element: InternalNode<Node<NodeData>>;
 }

@@ -92,7 +92,6 @@ export const PaletteAppearanceSection = ({
       .forEach((PaletteAppearanceSectionComponent, index) =>
         paletteAppearanceSectionComponents.push(
           <PaletteAppearanceSectionComponent
-            element={diagramElement}
             elementId={diagramElementId}
             key={'paletteAppearanceSectionComponents_' + index.toString()}
           />
@@ -103,18 +102,14 @@ export const PaletteAppearanceSection = ({
   if (isFreeFormNode(diagramElement)) {
     if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
       paletteAppearanceSectionComponents.push(
-        <RectangularNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />
+        <RectangularNodeAppearanceSection diagramElementId={diagramElement.id} />
       );
     }
     if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
-      paletteAppearanceSectionComponents.push(
-        <ImageNodeAppearanceSection nodeId={diagramElement.id} nodeData={diagramElement.data} />
-      );
+      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={diagramElement.id} />);
     }
   } else if (isEdgeElement(diagramElement) && diagramElement.data) {
-    paletteAppearanceSectionComponents.push(
-      <EdgeAppearanceSection edgeId={diagramElement.id} edgeData={diagramElement.data} />
-    );
+    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={diagramElement.id} />);
   }
 
   return (
