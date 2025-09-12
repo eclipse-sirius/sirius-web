@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import LocationSearchingIcon from '@mui/icons-material/LocationSearchingOutlined';
 import IconButton from '@mui/material/IconButton';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -36,9 +36,8 @@ const useTreeToolbarStyles = makeStyles()((theme) => ({
 
 export const TreeToolBar = ({
   editingContextId,
-  onSynchronizedClick,
-  synchronized,
   treeFilters,
+  onRevealSelection,
   onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
   readOnly,
@@ -46,9 +45,6 @@ export const TreeToolBar = ({
 }: TreeToolBarProps) => {
   const { classes } = useTreeToolbarStyles();
 
-  const preferenceButtonSynchronizeTitle = synchronized
-    ? 'Disable synchronization with representation'
-    : 'Enable synchronization with representation';
   return (
     <>
       <div className={classes.toolbar}>
@@ -68,11 +64,11 @@ export const TreeToolBar = ({
         <IconButton
           color="inherit"
           size="small"
-          aria-label={preferenceButtonSynchronizeTitle}
-          title={preferenceButtonSynchronizeTitle}
-          onClick={onSynchronizedClick}
-          data-testid="tree-synchronize">
-          <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
+          data-testid="reveal-selection-button"
+          aria-label="Reveal selected elements"
+          title="Reveal selected elements"
+          onClick={onRevealSelection}>
+          <LocationSearchingIcon color="inherit" />
         </IconButton>
       </div>
     </>

@@ -36,6 +36,7 @@ describe('Project - Omnibox', () => {
       omnibox.sendQuery('').findByTestId('Search').click();
       omnibox.sendQuery('').findByTestId('DSP').click();
       omnibox.shouldBeClosed();
+      explorer.revealGlobalSelectionInExplorer();
       explorer.getSelectedTreeItems().contains('DSP').should('exist');
     });
   });
