@@ -43,6 +43,54 @@ public class ListLayoutStrategyDescriptionBuilder {
     }
 
     /**
+     * Setter for OnWestAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder onWestAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getListLayoutStrategyDescription().getOnWestAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnEastAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder onEastAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getListLayoutStrategyDescription().getOnEastAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnSouthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder onSouthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getListLayoutStrategyDescription().getOnSouthAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnNorthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder onNorthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getListLayoutStrategyDescription().getOnNorthAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for AreChildNodesDraggableExpression.
      *
      * @generated

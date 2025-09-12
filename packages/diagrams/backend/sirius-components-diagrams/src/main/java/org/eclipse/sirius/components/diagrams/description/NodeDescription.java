@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.description;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -23,6 +24,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -92,6 +94,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, IStatus> dropNodeHandler;
 
+    private Map<String, BorderNodePosition> initialChildBorderNodePositions;
+
     private NodeDescription() {
         // Prevent instantiation
     }
@@ -125,7 +129,6 @@ public final class NodeDescription implements IDiagramElementDescription {
      * Provides a function used to compute the kind of the semantic element used as the target of the node.
      *
      * @return A function used to return the kind of the semantic element.
-     *
      * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
      */
     public Function<VariableManager, String> getTargetObjectKindProvider() {
@@ -136,7 +139,6 @@ public final class NodeDescription implements IDiagramElementDescription {
      * Provides a function used to compute the label of the semantic element used as the target of the node.
      *
      * @return A function used to return the label of the semantic element.
-     *
      * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
      */
     public Function<VariableManager, String> getTargetObjectLabelProvider() {
@@ -148,7 +150,7 @@ public final class NodeDescription implements IDiagramElementDescription {
      * nodes created from this description.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -172,7 +174,6 @@ public final class NodeDescription implements IDiagramElementDescription {
      * Provides a predicate used to indicate if a node should be rendered from the node description.
      *
      * @return A predicate to determine if a node should be rendered or not
-     *
      * @technical-debt This method should probably be removed and the predicate be integrated in the semantic elements
      * provider by downstream specifiers.
      */
@@ -220,7 +221,7 @@ public final class NodeDescription implements IDiagramElementDescription {
      * Provides a function used to execute the deletion of the node.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -233,7 +234,6 @@ public final class NodeDescription implements IDiagramElementDescription {
      * </ul>
      *
      * @return A function provided by a specifier to trigger the deletion of the node
-     *
      * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
      * into the description also provides a poor extensibility of the diagram representation by preventing downstream
      * consumers from updating the existing behavior or adding a new one easily
@@ -246,7 +246,7 @@ public final class NodeDescription implements IDiagramElementDescription {
      * Provides a function used to let end users drop nodes on another node.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -263,7 +263,6 @@ public final class NodeDescription implements IDiagramElementDescription {
      * </ul>
      *
      * @return A function provided by a specifier to drop nodes on another node
-     *
      * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
      * into the description also provides a poor extensibility of the diagram representation by preventing downstream
      * consumers from updating the existing behavior or adding a new one easily
@@ -298,6 +297,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, Integer> getDefaultHeightProvider() {
         return this.defaultHeightProvider;
+    }
+
+    public Map<String, BorderNodePosition> getInitialChildBorderNodePositions() {
+        return this.initialChildBorderNodePositions;
     }
 
     @Override
@@ -366,6 +369,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Map<String, BorderNodePosition> initialChildBorderNodePositions;
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -396,6 +401,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.isFadedByDefaultPredicate = nodeDescription.getIsFadedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
+            this.initialChildBorderNodePositions = nodeDescription.getInitialChildBorderNodePositions();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -523,6 +529,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder initialChildBorderNodePositions(Map<String, BorderNodePosition> initialChildBorderNodePositions) {
+            this.initialChildBorderNodePositions = Objects.requireNonNull(initialChildBorderNodePositions);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -551,8 +562,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.isFadedByDefaultPredicate = Objects.requireNonNull(this.isFadedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
+            nodeDescription.initialChildBorderNodePositions = Objects.requireNonNull(this.initialChildBorderNodePositions);
             return nodeDescription;
         }
     }
-
 }

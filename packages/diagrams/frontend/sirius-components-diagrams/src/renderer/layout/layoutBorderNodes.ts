@@ -64,7 +64,7 @@ export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType
       const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         const newPosition = findBorderNodePosition(borderNode.position, borderNode, parentNode);
-        borderNode.data.borderNodePosition = newPosition ?? BorderNodePosition.EAST;
+        borderNode.data.borderNodePosition = newPosition ?? borderNode.data.borderNodePosition;
       }
     });
 };

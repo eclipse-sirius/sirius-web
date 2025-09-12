@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -84,6 +85,7 @@ public class DiagramComponent implements IComponent {
                             .parentElementState(ViewModifier.Normal)
                             .operationValidator(this.props.getOperationValidator())
                             .nodeAppearanceHandlers(this.props.getNodeAppearanceHandlers())
+                            .initialBorderNodePositions(Map.of())// is not a border node, thus not used
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).toList();

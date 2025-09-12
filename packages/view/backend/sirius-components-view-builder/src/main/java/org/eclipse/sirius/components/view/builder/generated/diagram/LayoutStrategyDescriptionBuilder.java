@@ -26,6 +26,54 @@ public abstract class LayoutStrategyDescriptionBuilder {
      */
     protected abstract org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription getLayoutStrategyDescription();
 
+    /**
+     * Setter for OnWestAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public LayoutStrategyDescriptionBuilder onWestAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getLayoutStrategyDescription().getOnWestAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnEastAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public LayoutStrategyDescriptionBuilder onEastAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getLayoutStrategyDescription().getOnEastAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnSouthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public LayoutStrategyDescriptionBuilder onSouthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getLayoutStrategyDescription().getOnSouthAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnNorthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public LayoutStrategyDescriptionBuilder onNorthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getLayoutStrategyDescription().getOnNorthAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
 
 }
 

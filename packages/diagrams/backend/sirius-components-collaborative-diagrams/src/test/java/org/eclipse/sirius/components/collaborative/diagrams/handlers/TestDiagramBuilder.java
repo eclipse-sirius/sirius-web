@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Success;
 
@@ -99,7 +100,8 @@ public class TestDiagramBuilder {
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
                 .outsideLabels(outsideLabels)
-                .customizedStyleProperties(Set.of());
+                .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST);
 
         if (withInsideLabel) {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()

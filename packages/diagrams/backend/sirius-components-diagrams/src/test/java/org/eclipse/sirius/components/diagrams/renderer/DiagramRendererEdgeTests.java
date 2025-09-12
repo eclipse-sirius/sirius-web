@@ -225,6 +225,7 @@ public class DiagramRendererEdgeTests {
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 

@@ -13,7 +13,9 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -39,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.components.LabelIdProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -283,6 +286,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy);
         };
 
+        Map<String, BorderNodePosition> initialBorderNodePositions = this.getInitialBorderNodePositions(viewNodeDescription);
+
         Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
 
         Predicate<VariableManager> isHiddenByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsHiddenByDefaultExpression(), interpreter, variableManager);
@@ -330,7 +335,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .isFadedByDefaultPredicate(isFadedByDefaultPredicate)
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
-                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
+                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio())
+                .initialChildBorderNodePositions(initialBorderNodePositions);
+
         if (insideLabel != null) {
             builder.insideLabelDescription(insideLabel);
         }
@@ -340,6 +347,27 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
+    }
+
+    private Map<String, BorderNodePosition> getInitialBorderNodePositions(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription) {
+        Map<String, BorderNodePosition> initialBorderNodePositions = new LinkedHashMap<>();
+        LayoutStrategyDescription childrenLayoutStrategy = viewNodeDescription.getStyle().getChildrenLayoutStrategy();
+        if (childrenLayoutStrategy != null) {
+            this.addInitialPosition(initialBorderNodePositions, childrenLayoutStrategy.getOnEastAtCreationBorderNodes(), BorderNodePosition.EAST);
+            this.addInitialPosition(initialBorderNodePositions, childrenLayoutStrategy.getOnWestAtCreationBorderNodes(), BorderNodePosition.WEST);
+            this.addInitialPosition(initialBorderNodePositions, childrenLayoutStrategy.getOnSouthAtCreationBorderNodes(), BorderNodePosition.SOUTH);
+            this.addInitialPosition(initialBorderNodePositions, childrenLayoutStrategy.getOnNorthAtCreationBorderNodes(), BorderNodePosition.NORTH);
+        }
+
+        return initialBorderNodePositions;
+    }
+
+    private void addInitialPosition(Map<String, BorderNodePosition> borderNodePositions, List<org.eclipse.sirius.components.view.diagram.NodeDescription> borderNodeDescriptions, BorderNodePosition initialBorderNodePosition) {
+        borderNodeDescriptions.stream()
+                .map(this.diagramIdProvider::getId)
+                .forEach(id -> {
+                    borderNodePositions.put(id, initialBorderNodePosition);
+                });
     }
 
     private ILayoutStrategy getListLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {

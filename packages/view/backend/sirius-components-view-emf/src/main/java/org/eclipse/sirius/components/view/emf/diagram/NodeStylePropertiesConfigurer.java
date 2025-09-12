@@ -29,11 +29,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureChoiceOfValueProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -80,12 +83,15 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final ILabelService labelService;
 
+    private final ComposedAdapterFactory composedAdapterFactory;
+
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, PropertiesConfigurerService propertiesConfigurerService,
-                                         IPropertiesWidgetCreationService propertiesWidgetCreationService, ILabelService labelService) {
+            IPropertiesWidgetCreationService propertiesWidgetCreationService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.labelService = Objects.requireNonNull(labelService);
+        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
@@ -125,6 +131,26 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this::getSubNodes);
         controls.add(growableNodes);
 
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onWestBorderNodes",
+                "On West At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onEastBorderNodes",
+                "On East At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onSouthBorderNodes",
+                "On South At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onNorthBorderNodes",
+                "On North At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
@@ -132,6 +158,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .isPresent();
 
         return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+    }
+
+    private Function<VariableManager, List<?>> getBorderNodeOptionsProvider() {
+        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private List<NodeDescription> getSubNodes(VariableManager variableManager) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
@@ -277,4 +278,50 @@ public class ViewValidatorTests {
         assertThat(diagnosticChain).isEqualTo(new BasicDiagnostic(Diagnostic.OK, null, 0, null, null));
     }
 
+    @Test
+    public void testLayoutStrategyHasValidBorderNodeDescriptionInitialPosition() {
+        Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
+        NodeDescription borderNodeDescription1 = DiagramFactory.eINSTANCE.createNodeDescription();
+
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
+        nodeDescription.setName("Node Description");
+        FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription();
+        freeFormLayoutStrategyDescription.getOnSouthAtCreationBorderNodes().add(borderNodeDescription1);
+        freeFormLayoutStrategyDescription.getOnEastAtCreationBorderNodes().add(borderNodeDescription1);
+        var style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        nodeDescription.setStyle(style);
+        style.setChildrenLayoutStrategy(freeFormLayoutStrategyDescription);
+
+        ResourceSetImpl resourceSet = new ResourceSetImpl();
+        XMIResourceImpl viewResource = new XMIResourceImpl();
+        viewResource.getContents().add(nodeDescription);
+        resourceSet.getResources().add(viewResource);
+
+        BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
+        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
+                SIRIUS_COMPONENTS_EMF_PACKAGE,
+                0,
+                String.format("The border node descriptions of \"%1$s\" should have at most one initial position", nodeDescription.getName()),
+                new Object[] {
+                    freeFormLayoutStrategyDescription,
+                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
+                }));
+
+        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
+                SIRIUS_COMPONENTS_EMF_PACKAGE,
+                0,
+                String.format(
+                        "In the node description \"%1$s\", the border node descriptions for initial position should be among the border node descriptions(owned and reused) of the node description.",
+                        nodeDescription.getName()),
+                new Object[] {
+                    freeFormLayoutStrategyDescription,
+                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
+                }));
+
+
+        BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
+        boolean validationResult = new DiagramDescriptionValidator().validate(freeFormLayoutStrategyDescription.eClass(), freeFormLayoutStrategyDescription, diagnosticChain, defaultContext);
+        assertThat(validationResult).isFalse();
+        assertThat(diagnosticChain).isEqualTo(expected);
+    }
 }

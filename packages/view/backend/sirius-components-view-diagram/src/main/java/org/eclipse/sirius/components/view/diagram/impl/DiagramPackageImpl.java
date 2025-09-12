@@ -1025,6 +1025,46 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getLayoutStrategyDescription_OnWestAtCreationBorderNodes() {
+        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLayoutStrategyDescription_OnEastAtCreationBorderNodes() {
+        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLayoutStrategyDescription_OnSouthAtCreationBorderNodes() {
+        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLayoutStrategyDescription_OnNorthAtCreationBorderNodes() {
+        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getListLayoutStrategyDescription() {
         return this.listLayoutStrategyDescriptionEClass;
     }
@@ -2599,6 +2639,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
 
         this.layoutStrategyDescriptionEClass = this.createEClass(LAYOUT_STRATEGY_DESCRIPTION);
+        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
+        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
+        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
+        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
 
         this.listLayoutStrategyDescriptionEClass = this.createEClass(LIST_LAYOUT_STRATEGY_DESCRIPTION);
         this.createEAttribute(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION);
@@ -2951,6 +2995,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.layoutStrategyDescriptionEClass, LayoutStrategyDescription.class, "LayoutStrategyDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getLayoutStrategyDescription_OnWestAtCreationBorderNodes(), this.getNodeDescription(), null, "onWestAtCreationBorderNodes", null, 0, -1,
+                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLayoutStrategyDescription_OnEastAtCreationBorderNodes(), this.getNodeDescription(), null, "onEastAtCreationBorderNodes", null, 0, -1,
+                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLayoutStrategyDescription_OnSouthAtCreationBorderNodes(), this.getNodeDescription(), null, "onSouthAtCreationBorderNodes", null, 0, -1,
+                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLayoutStrategyDescription_OnNorthAtCreationBorderNodes(), this.getNodeDescription(), null, "onNorthAtCreationBorderNodes", null, 0, -1,
+                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.listLayoutStrategyDescriptionEClass, ListLayoutStrategyDescription.class, "ListLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getListLayoutStrategyDescription_AreChildNodesDraggableExpression(), theViewPackage.getInterpretedExpression(), "areChildNodesDraggableExpression", "aql:true", 1, 1,
