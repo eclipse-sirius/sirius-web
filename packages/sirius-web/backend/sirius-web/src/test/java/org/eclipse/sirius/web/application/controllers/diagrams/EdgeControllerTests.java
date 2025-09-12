@@ -156,7 +156,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-application"))
                     .isEmpty();
         });
 
@@ -181,7 +181,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-application"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-application"))
                     .hasSize(1);
         });
 
@@ -210,11 +210,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
             var dependencyEdge = diagram.getEdges().stream()
-                    .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filter(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .findFirst().orElseThrow(IllegalStateException::new);
             edgeId.set(dependencyEdge.getId());
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-domain"))
                     .isEmpty();
         });
 
@@ -234,7 +234,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-infrastructure -> sirius-web-domain"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-infrastructure -> sirius-web-domain"))
                     .hasSize(1);
         });
 
@@ -263,11 +263,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             siriusWebInfrastructureNodeId.set(siriusWebInfrastructureNode.getId());
 
             var dependencyEdge = diagram.getEdges().stream()
-                    .filter(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-domain"))
+                    .filter(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
                     .findFirst().orElseThrow(IllegalStateException::new);
             edgeId.set(dependencyEdge.getId());
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-infrastructure"))
                     .isEmpty();
         });
 
@@ -287,7 +287,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
-                    .filteredOn(edge -> edge.getCenterLabel().getText().equals("sirius-web-application -> sirius-web-infrastructure"))
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-infrastructure"))
                     .hasSize(1);
         });
 

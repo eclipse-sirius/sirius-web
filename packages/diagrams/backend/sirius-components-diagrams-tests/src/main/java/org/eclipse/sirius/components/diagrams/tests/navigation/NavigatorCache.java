@@ -164,7 +164,7 @@ public class NavigatorCache {
         List<Edge> edgesWithTargetObjectId = this.targetObjectIdToEdges.computeIfAbsent(edge.getTargetObjectId(), k -> new ArrayList<>());
         edgesWithTargetObjectId.add(edge);
         if (edge.getCenterLabel() != null) {
-            List<Edge> edgesWithLabel = this.labelToEdges.computeIfAbsent(edge.getCenterLabel().getText(), k -> new ArrayList<>());
+            List<Edge> edgesWithLabel = this.labelToEdges.computeIfAbsent(edge.getCenterLabel().text(), k -> new ArrayList<>());
             edgesWithLabel.add(edge);
         }
     }

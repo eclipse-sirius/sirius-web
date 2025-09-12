@@ -173,7 +173,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
 
             var edge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application - sirius-web-domain").getEdge();
             edgeId.set(edge.getId());
-            labelId.set(edge.getCenterLabel().getId());
+            labelId.set(edge.getCenterLabel().id());
         });
 
         Runnable editLabel = () -> {

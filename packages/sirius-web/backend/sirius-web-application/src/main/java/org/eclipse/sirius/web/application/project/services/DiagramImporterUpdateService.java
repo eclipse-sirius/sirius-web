@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -267,73 +268,49 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
         if (oldNode.getInsideLabel() != null && oldNode.getInsideLabel().getCustomizedStyleProperties() != null && !oldNode.getInsideLabel().getCustomizedStyleProperties().isEmpty()) {
             var newInsideLabelNodeId = this.computeInsideLabelId(newNodeId);
-            oldNode.getInsideLabel().getCustomizedStyleProperties().forEach(customizedStyleProperty -> {
-                switch (customizedStyleProperty) {
-                    case LabelAppearanceHandler.BOLD ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().isBold()))));
-                    case LabelAppearanceHandler.ITALIC ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().isItalic()))));
-                    case LabelAppearanceHandler.UNDERLINE ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().isUnderline()))));
-                    case LabelAppearanceHandler.STRIKE_THROUGH ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().isStrikeThrough()))));
-                    case LabelAppearanceHandler.COLOR ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getColor()))));
-                    case LabelAppearanceHandler.FONT_SIZE ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getFontSize()))));
-                    case LabelAppearanceHandler.BACKGROUND ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getBackground()))));
-                    case LabelAppearanceHandler.BORDER_COLOR ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getBorderColor()))));
-                    case LabelAppearanceHandler.BORDER_SIZE ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getBorderSize()))));
-                    case LabelAppearanceHandler.BORDER_RADIUS ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getBorderRadius()))));
-                    case LabelAppearanceHandler.BORDER_STYLE ->
-                            diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(newInsideLabelNodeId, oldNode.getInsideLabel().getStyle().getBorderStyle()))));
-                    default -> {
-                        //We do nothing, the style property is not supported
-                    }
-                }
-            });
+            addLabelAppearanceEvents(diagramEvents, newInsideLabelNodeId, oldNode.getInsideLabel().getCustomizedStyleProperties(), oldNode.getInsideLabel().getStyle());
         }
 
         for (OutsideLabel outsideLabel : oldNode.getOutsideLabels()) {
             if (outsideLabel.customizedStyleProperties() != null && !outsideLabel.customizedStyleProperties().isEmpty()) {
                 var newOutsideLabelId = this.computeOutsideLabelId(newNodeId, outsideLabel.outsideLabelLocation().name());
-                outsideLabel.customizedStyleProperties().forEach(customizedStyleProperty -> {
-                    switch (customizedStyleProperty) {
-                        case LabelAppearanceHandler.BOLD ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(newOutsideLabelId, outsideLabel.style().isBold()))));
-                        case LabelAppearanceHandler.ITALIC ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(newOutsideLabelId, outsideLabel.style().isItalic()))));
-                        case LabelAppearanceHandler.UNDERLINE ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(newOutsideLabelId, outsideLabel.style().isUnderline()))));
-                        case LabelAppearanceHandler.STRIKE_THROUGH ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(newOutsideLabelId, outsideLabel.style().isStrikeThrough()))));
-                        case LabelAppearanceHandler.COLOR ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(newOutsideLabelId, outsideLabel.style().getColor()))));
-                        case LabelAppearanceHandler.FONT_SIZE ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(newOutsideLabelId, outsideLabel.style().getFontSize()))));
-                        case LabelAppearanceHandler.BACKGROUND ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(newOutsideLabelId, outsideLabel.style().getBackground()))));
-                        case LabelAppearanceHandler.BORDER_COLOR ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderColor()))));
-                        case LabelAppearanceHandler.BORDER_SIZE ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderSize()))));
-                        case LabelAppearanceHandler.BORDER_RADIUS ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderRadius()))));
-                        case LabelAppearanceHandler.BORDER_STYLE ->
-                                diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(newOutsideLabelId, outsideLabel.style().getBorderStyle()))));
-                        default -> {
-                            //We do nothing, the style property is not supported
-                        }
-                    }
-                });
+                addLabelAppearanceEvents(diagramEvents, newOutsideLabelId, outsideLabel.customizedStyleProperties(), outsideLabel.style());
             }
         }
 
         return diagramEvents;
+    }
+
+    private void addLabelAppearanceEvents(List<IDiagramEvent> diagramEvents, String labelId, Set<String> customizedStyleProperties, LabelStyle labelStyle) {
+        customizedStyleProperties.forEach(customizedStyleProperty -> {
+            switch (customizedStyleProperty) {
+                case LabelAppearanceHandler.BOLD ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(labelId, labelStyle.isBold()))));
+                case LabelAppearanceHandler.ITALIC ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(labelId, labelStyle.isItalic()))));
+                case LabelAppearanceHandler.UNDERLINE ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(labelId, labelStyle.isUnderline()))));
+                case LabelAppearanceHandler.STRIKE_THROUGH ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(labelId, labelStyle.isStrikeThrough()))));
+                case LabelAppearanceHandler.COLOR ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(labelId, labelStyle.getColor()))));
+                case LabelAppearanceHandler.FONT_SIZE ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(labelId, labelStyle.getFontSize()))));
+                case LabelAppearanceHandler.BACKGROUND ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(labelId, labelStyle.getBackground()))));
+                case LabelAppearanceHandler.BORDER_COLOR ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(labelId, labelStyle.getBorderColor()))));
+                case LabelAppearanceHandler.BORDER_SIZE ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(labelId, labelStyle.getBorderSize()))));
+                case LabelAppearanceHandler.BORDER_RADIUS ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(labelId, labelStyle.getBorderRadius()))));
+                case LabelAppearanceHandler.BORDER_STYLE ->
+                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(labelId, labelStyle.getBorderStyle()))));
+                default -> {
+                    //We do nothing, the style property is not supported
+                }
+            }
+        });
     }
 
     private List<IDiagramEvent> getEdgeAppearanceEvents(Edge oldEdge, String newEdgeId) {
@@ -349,6 +326,20 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 diagramEvents.add(new EditAppearanceEvent(appearanceChanges));
             }
         }
+
+        if (oldEdge.getCenterLabel() != null && oldEdge.getCenterLabel().customizedStyleProperties() != null && !oldEdge.getCenterLabel().customizedStyleProperties().isEmpty()) {
+            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX);
+            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getCenterLabel().customizedStyleProperties(), oldEdge.getCenterLabel().style());
+        }
+        if (oldEdge.getBeginLabel() != null && oldEdge.getBeginLabel().customizedStyleProperties() != null && !oldEdge.getBeginLabel().customizedStyleProperties().isEmpty()) {
+            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX);
+            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getBeginLabel().customizedStyleProperties(), oldEdge.getBeginLabel().style());
+        }
+        if (oldEdge.getEndLabel() != null && oldEdge.getEndLabel().customizedStyleProperties() != null && !oldEdge.getEndLabel().customizedStyleProperties().isEmpty()) {
+            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX);
+            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getEndLabel().customizedStyleProperties(), oldEdge.getEndLabel().style());
+        }
+
         return diagramEvents;
     }
 
@@ -409,5 +400,9 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
     private String computeOutsideLabelId(String parentElementId, String position) {
         return new LabelIdProvider().getOutsideLabelId(parentElementId, position);
+    }
+
+    private String computeEdgeLabelId(String parentElementId, String position) {
+        return new LabelIdProvider().getEdgeLabelId(parentElementId, position);
     }
 }

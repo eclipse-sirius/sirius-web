@@ -76,4 +76,37 @@ test.describe('appearance', () => {
     await expect(edgeStyle).toHaveCSS('stroke-width', '5px');
     await expect(edgeStyle).toHaveCSS('stroke', 'rgb(255, 0, 0)');
   });
+
+  test('change edge center label appearance', async ({ page }) => {
+    //Move the node so it's easier to select the edge
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 250, y: 0 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+    await playwrightEdge.openPalette();
+
+    const playwrightLabel = new PlaywrightLabel(page, '6');
+    const fontSizeBefore = await playwrightLabel.getFontSize();
+    expect(fontSizeBefore).toBe('14px');
+
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Font Size"] input').fill('16');
+
+    //Unselect the edge by selecting the node in order to test the validation on blur
+    await playwrightNode.click();
+    await page.waitForFunction(
+      () => {
+        const label = document.querySelector(`[data-testid="Label - 6"]`);
+        if (!label) {
+          return false;
+        }
+        const style = window.getComputedStyle(label);
+        return style.fontSize === '16px';
+      },
+      { timeout: 2000 }
+    );
+  });
 });

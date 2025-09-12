@@ -141,6 +141,7 @@ type Label {
   text: String!
   type: String!
   style: LabelStyle!
+  customizedStyleProperties: [LabelStyleProperty!]!
 }
 
 type InsideLabel {
