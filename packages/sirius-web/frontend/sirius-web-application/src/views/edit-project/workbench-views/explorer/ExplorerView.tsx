@@ -70,6 +70,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     expanded: {},
     maxDepth: {},
     tree: null,
+    selectedTreeItemIds: [],
     singleTreeItemSelected: null,
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
@@ -77,8 +78,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     (contribution) => contribution.props.component
   );
   const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
-
-  const { selection, setSelection } = useSelection();
 
   const { payload } = useExplorerSubscription(
     editingContextId,
@@ -93,8 +92,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       setState((prevState) => ({ ...prevState, tree: payload.tree }));
     }
   }, [payload]);
-
-  const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
 
   const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
 
@@ -115,6 +112,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       }));
     }
   }, [explorerDescriptions]);
+
+  const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
 
   useEffect(() => {
     if (!loading) {
@@ -148,9 +147,11 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     return null;
   }, [treeElement]);
 
+  const { selection, setSelection } = useSelection();
+
+  // If we are requested to reveal the global selection, we need to compute the tree path to expand
   const { getTreePath, data: treePathData } = useTreePath();
 
-  // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
   const selectionKey: string = selection?.entries
     .map((entry) => entry.id)
     .sort()
@@ -181,6 +182,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         });
         return {
           ...prevState,
+          selectedTreeItemIds: selection.entries.map((entry) => entry.id),
           expanded: {
             ...prevState.expanded,
             [prevState.activeTreeDescriptionId]: newExpanded,
@@ -246,6 +248,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   const onTreeItemClick = (event, item: GQLTreeItem) => {
     if (event.ctrlKey || event.metaKey) {
       event.stopPropagation();
+      // Update the global selection
       const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
       if (isItemInSelection) {
         const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
@@ -256,11 +259,21 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         const newSelection: Selection = { entries: [...selection.entries, newEntry] };
         setSelection(newSelection);
       }
+      // Update the local selection
+      const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
+      if (isItemInLocalSelection) {
+        const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
+        setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+      } else {
+        const { id } = item;
+        const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
+        setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+      }
       setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
     } else {
       const { id } = item;
+      setState((prevState) => ({ ...prevState, selectedTreeItemIds: [id], singleTreeItemSelected: item }));
       setSelection({ entries: [{ id }] });
-      setState((prevState) => ({ ...prevState, singleTreeItemSelected: item }));
     }
   };
 
@@ -319,7 +332,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
               expanded={state.expanded[state.activeTreeDescriptionId]}
               maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
               onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+              selectedTreeItemIds={state.selectedTreeItemIds}
             />
           ) : null}
         </div>
