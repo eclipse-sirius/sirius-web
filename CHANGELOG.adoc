@@ -5,6 +5,7 @@
 === Shapes
 
 - Add support for exporting query result
+- Add support for search history
 
 === Architectural decision records
 
