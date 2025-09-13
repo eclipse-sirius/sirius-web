@@ -87,6 +87,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5429[#5429] [diagram] Fix edge deletion by keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
 - https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
+- https://github.com/eclipse-sirius/sirius-web/issues/5481[#5481] [diagram] Fix React error on non-unique keys for palette
 
 
 === New Features
