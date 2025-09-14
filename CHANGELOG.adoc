@@ -68,6 +68,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
 - https://github.com/eclipse-sirius/sirius-web/issues/6141|#6141] [table] Prevent tables in a form to share the same id
 - https://github.com/eclipse-sirius/sirius-web/issues/6200|#6200] [diagram] Prevent list node to be resized to a size smaller than that produced by the layout
+- https://github.com/eclipse-sirius/sirius-web/issues/5485[#5485] [diagram] Edge bending points are above line segments
 
 
 === New Features
