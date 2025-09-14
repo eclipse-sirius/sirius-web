@@ -47,6 +47,7 @@ These fields were temporary while reworking library identifiers, and are needed 
 - https://github.com/eclipse-sirius/sirius-web/issues/6671[#6671] [diagram] Preserve wrapped inside labels within their nodes after using Adjust size.
 - https://github.com/eclipse-sirius/sirius-web/issues/7115[#7115] [diagram] Display helper lines when resizing nodes with children from the left or top.
 - https://github.com/eclipse-sirius/sirius-web/issues/7162[#7162] [form] Fix editing of table widgets in the Details view.
+- https://github.com/eclipse-sirius/sirius-web/issues/5485[#5485] [diagram] Edge bending points are above line segments
 
 
 === New Features
@@ -65,7 +66,6 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - https://github.com/eclipse-sirius/sirius-web/issues/7163[#7163] [table] Support Select cells in View-based tables
 - https://github.com/eclipse-sirius/sirius-web/issues/6743[#6743] [sirius-web] Add the `LibraryId` scalar, serialized as `namespace:name@version`.
 - [releng] Update the `check-labels.js` script to check for the `queue:` and `review-window:` labels
-
 
 
 == 2026.11.0
