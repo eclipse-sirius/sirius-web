@@ -22,6 +22,7 @@ Custom factories and subclasses must remove this argument from constructor calls
 - Wrapped labels now fit inside their nodes immediately after using Adjust size.
 - Helper lines now appear when resizing a node containing children from the left or top.
 - Tables embedded in the Details view can now be edited.
+- Bending points on rectilinear edges now take priority over line segments when dragging.
 
 
 == New features

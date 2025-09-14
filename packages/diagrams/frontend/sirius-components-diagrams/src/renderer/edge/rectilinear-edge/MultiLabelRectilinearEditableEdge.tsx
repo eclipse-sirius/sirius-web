@@ -90,6 +90,21 @@ export const MultiLabelRectilinearEditableEdge = memo(
           <EdgeCreationHandle edgeId={id} edgePath={edgePath} isPathDragged={geometry.isDragging}></EdgeCreationHandle>
         ) : null}
         {selected &&
+          middlePoints &&
+          middlePoints.map((point, index) => (
+            <TemporaryMovingLine
+              key={index}
+              x={point.x}
+              y={point.y}
+              direction={point.direction}
+              segmentLength={point.segmentLength}
+              index={index}
+              onDragStart={(_eventData, index, direction) => onDragStart(id, index, direction, true)}
+              onDrag={(eventData, index, direction) => onTemporaryLineDrag(id, eventData, index, direction)}
+              onDragStop={(eventData, index) => onTemporaryLineDragStop(id, eventData, index)}
+            />
+          ))}
+        {selected &&
           bendingPoints &&
           bendingPoints.map((point, index) => {
             const reorderBendPoint = [...bendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
@@ -109,21 +124,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
               />
             );
           })}
-        {selected &&
-          middlePoints &&
-          middlePoints.map((point, index) => (
-            <TemporaryMovingLine
-              key={index}
-              x={point.x}
-              y={point.y}
-              direction={point.direction}
-              segmentLength={point.segmentLength}
-              index={index}
-              onDragStart={(_eventData, index, direction) => onDragStart(id, index, direction, true)}
-              onDrag={(eventData, index, direction) => onTemporaryLineDrag(id, eventData, index, direction)}
-              onDragStop={(eventData, index) => onTemporaryLineDragStop(id, eventData, index)}
-            />
-          ))}
         {data ? (
           <DraggableEdgeLabels
             id={id}
