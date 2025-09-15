@@ -88,7 +88,7 @@ public class SiriusWebStarterConfiguration {
     @Bean
     @ConditionalOnMissingBean(IEventProcessorSubscriptionSchedulerProvider.class)
     public IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider() {
-        return (editingContextId) -> Schedulers.single();
+        return Schedulers::single;
     }
 
     @Bean

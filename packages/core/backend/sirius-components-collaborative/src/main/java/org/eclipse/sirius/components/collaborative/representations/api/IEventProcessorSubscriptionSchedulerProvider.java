@@ -18,11 +18,16 @@ import reactor.core.scheduler.Scheduler;
  * Used to provide a different scheduler for subscriptions.
  *
  * <p>
+ *     The provided scheduler will be used by all representations regardless of the editing context to schedule representations output events.
+ *     We suggest to only call this method once to avoid unnecessary executor service creation.
+ * </p>
+ *
+ * <p>
  * Thanks to this API, it will be easier to customize the thread management strategy of subscriptions.
  * </p>
  *
  * @author gcoutable
  */
 public interface IEventProcessorSubscriptionSchedulerProvider {
-    Scheduler getScheduler(String editingContextId);
+    Scheduler getScheduler();
 }

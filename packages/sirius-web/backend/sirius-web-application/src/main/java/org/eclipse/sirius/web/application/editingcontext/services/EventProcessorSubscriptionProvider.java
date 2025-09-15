@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
 
 /**
  * Used to provide the subscription of a representation in an editing context.
@@ -51,7 +52,7 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     private final List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers;
 
-    private final IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider;
+    private final Scheduler eventProcessorSubscriptionScheduler;
 
     private final IMessageService messageService;
 
@@ -62,7 +63,7 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
         this.libraryEditingContextService = Objects.requireNonNull(libraryEditingContextService);
         this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
         this.representationEventProcessorFluxCustomizers = Objects.requireNonNull(representationEventProcessorFluxCustomizers);
-        this.eventProcessorSubscriptionSchedulerProvider = Objects.requireNonNull(eventProcessorSubscriptionSchedulerProvider);
+        this.eventProcessorSubscriptionScheduler = Objects.requireNonNull(eventProcessorSubscriptionSchedulerProvider).getScheduler();
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -87,7 +88,7 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
                 .map(representationEventProcessor -> this.customizeFlux(editingContextId, representationId, input, representationEventProcessor))
                 .orElse(Flux.empty())
-                .publishOn(this.eventProcessorSubscriptionSchedulerProvider.getScheduler(editingContextId));
+                .publishOn(this.eventProcessorSubscriptionScheduler);
     }
 
     private Flux<IPayload> customizeFlux(String editingContextId, String representationId, IInput input, IRepresentationEventProcessor representationEventProcessor) {
