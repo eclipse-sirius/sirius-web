@@ -12,11 +12,12 @@
  *******************************************************************************/
 
 import { gql, useQuery } from '@apollo/client';
-import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationComponentProps, Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
+import { DialogContextProvider } from '../dialog/DialogContext';
 import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
@@ -34,7 +35,6 @@ import {
   GQLDiagramDescriptionVariables,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
-import { DialogContextProvider } from '../dialog/DialogContext';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -72,8 +72,30 @@ export const DiagramRepresentation = memo(
     const [state, setState] = useState<DiagramRepresentationState>({
       id: crypto.randomUUID(),
       message: null,
+      toolSelections: new Map<string, Selection>(),
     });
     const { addErrorMessage } = useMultiToast();
+
+    const registerPostToolSelection = (id: string, selection: Selection) => {
+      setState((prevState) => {
+        const newToolSelections = new Map(prevState.toolSelections);
+        newToolSelections.set(id, selection);
+        return { ...prevState, toolSelections: newToolSelections };
+      });
+    };
+
+    const consumePostToolSelection = (id: string): Selection | null => {
+      const newToolSelections = new Map(state.toolSelections);
+      const selection = newToolSelections.get(id);
+      if (selection) {
+        newToolSelections.delete(id);
+        setState((prevState) => {
+          return { ...prevState, toolSelections: newToolSelections };
+        });
+        return selection;
+      }
+      return null;
+    };
 
     const {
       loading: diagramDescriptionLoading,
@@ -126,6 +148,8 @@ export const DiagramRepresentation = memo(
                             editingContextId,
                             diagramId: representationId,
                             readOnly,
+                            registerPostToolSelection,
+                            consumePostToolSelection,
                           }}>
                           <ManageVisibilityContextProvider>
                             <DialogContextProvider>

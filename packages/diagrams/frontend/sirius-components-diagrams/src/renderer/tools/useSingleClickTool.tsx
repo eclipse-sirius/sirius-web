@@ -11,9 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, useImpactAnalysisDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect, useState } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
-import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
+import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
+import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
@@ -25,15 +29,13 @@ import {
   UseSingleClickToolState,
   UseSingleClickToolValue,
 } from './useSingleClickTool.types';
-import { useEffect, useState } from 'react';
-import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
-import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 
 const invokeSingleClickOnDiagramElementToolMutation = gql`
   mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
     invokeSingleClickOnDiagramElementTool(input: $input) {
       __typename
       ... on InvokeSingleClickOnDiagramElementToolSuccessPayload {
+        id
         newSelection {
           entries {
             id
@@ -66,8 +68,8 @@ const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClic
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const useSingleClickTool = (): UseSingleClickToolValue => {
+  const { registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const { addMessages, addErrorMessage } = useMultiToast();
-  const { setSelection } = useSelection();
   const { showDialog } = useDialog();
   const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
 
@@ -81,9 +83,9 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
       if (data) {
         const { invokeSingleClickOnDiagramElementTool } = data;
         if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-          const { newSelection } = invokeSingleClickOnDiagramElementTool;
+          const { id, newSelection } = invokeSingleClickOnDiagramElementTool;
           if (newSelection?.entries.length ?? 0 > 0) {
-            setSelection(newSelection);
+            registerPostToolSelection(id, newSelection);
           }
           addMessages(invokeSingleClickOnDiagramElementTool.messages);
         }
