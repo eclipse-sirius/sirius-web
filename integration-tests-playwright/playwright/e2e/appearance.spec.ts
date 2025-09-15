@@ -70,8 +70,9 @@ test.describe('appearance', () => {
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Color"] input').fill('red');
     await page.locator('[data-testid="toolSection-Appearance-Size"] input').fill('5');
+    await page.locator('[data-testid="toolSection-Appearance-Size"] input').press('Enter');
+    await playwrightEdge.closePalette();
 
-    //Unselect the edge by selecting the node in order to test the validation on blur
     await playwrightNode.click();
     await expect(edgeStyle).toHaveCSS('stroke-width', '5px');
     await expect(edgeStyle).toHaveCSS('stroke', 'rgb(255, 0, 0)');

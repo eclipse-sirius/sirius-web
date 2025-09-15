@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Request, expect } from '@playwright/test';
-import { DeleteProjectVariables } from '../../cypress/support/server/deleteProjectCommand.types';
 
 const createProjectFromTemplateQuery = `
   mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
@@ -110,7 +109,7 @@ export class PlaywrightProject {
   }
 
   async deleteProject(projectId: string) {
-    const variables: DeleteProjectVariables = {
+    const variables = {
       input: {
         id: crypto.randomUUID(),
         projectId,

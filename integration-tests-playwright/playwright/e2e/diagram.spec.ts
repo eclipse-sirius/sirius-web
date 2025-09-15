@@ -59,7 +59,7 @@ test.describe('diagram', () => {
 
     const reactFlowXYPositionBefore = await playwrightNode.getReactFlowXYPosition();
 
-    await playwrightNode.move({ x: 450, y: 450 });
+    await playwrightNode.move({ x: 350, y: 450 });
 
     const reactFlowXYPositionAfter = await playwrightNode.getReactFlowXYPosition();
 
@@ -98,11 +98,18 @@ test.describe('diagram', () => {
       const playwrightNode = new PlaywrightNode(page, 'DataSource1');
       await playwrightNode.resetNodeLabelPosition();
 
-      const boxAfterReset = await dataSourceLabel.labelLocator.boundingBox();
-      if (boxAfterReset) {
-        expect(boxAfterReset.x).toEqual(initialBox.x);
-        expect(boxAfterReset.y).toEqual(initialBox.y);
-      }
+      await page.waitForFunction(
+        ({ x, y }) => {
+          const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
+          if (!label) {
+            return false;
+          }
+          const boxAfterReset = label.getBoundingClientRect();
+          return boxAfterReset.x === x && boxAfterReset.y === y;
+        },
+        { x: initialBox.x, y: initialBox.y },
+        { timeout: 2000 }
+      );
     }
   });
 });
