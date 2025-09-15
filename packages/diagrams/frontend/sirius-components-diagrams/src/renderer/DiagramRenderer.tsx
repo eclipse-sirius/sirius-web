@@ -83,7 +83,7 @@ import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { readOnly, consumePostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
@@ -123,7 +123,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
-    const { diagram, cause, referencePosition } = diagramRefreshedEventPayload;
+    const { id, diagram, cause, referencePosition } = diagramRefreshedEventPayload;
+    const selectionFromTool = consumePostToolSelection(id);
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
       referencePosition,
@@ -150,65 +151,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       }
     });
 
+    const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
-      const diagramElementIds: string[] = [
-        ...getNodes().map((node) => node.data.targetObjectId),
-        ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
-      ];
-
-      const selectionDiagramEntryIds = selection.entries
-        .map((entry) => entry.id)
-        .filter((id) => diagramElementIds.includes(id))
-        .sort((id1: string, id2: string) => id1.localeCompare(id2));
-      const selectedDiagramElementIds = [
-        ...new Set(
-          [...getNodes(), ...getEdges()]
-            .filter((element) => element.selected)
-            .map((element) => element.data?.targetObjectId ?? '')
-        ),
-      ];
-      selectedDiagramElementIds.sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-      const semanticElementsViews: Map<string, string[]> = new Map();
-      [...getNodes(), ...getEdges()].forEach((element) => {
-        const viewId = element.id;
-        const semanticElementId = element.data?.targetObjectId ?? '';
-        if (!semanticElementsViews.has(semanticElementId)) {
-          semanticElementsViews.set(semanticElementId, [viewId]);
-        } else {
-          semanticElementsViews.get(semanticElementId)?.push(viewId);
-        }
-      });
-
-      // For each selected semantic element which appears on the diagram,
-      // determine which of its views should be selected.
-      const viewsToSelect: Map<string, string[]> = new Map();
-      const previouslySelectedViews = [...getNodes(), ...getEdges()].filter((element) => element.selected);
-      for (var semanticElementId of selectionDiagramEntryIds) {
-        const allRelatedViews = semanticElementsViews.get(semanticElementId) || [];
-        const alreadySelectedViews = allRelatedViews.filter(
-          (viewId) => !!previouslySelectedViews.find((view: Node<NodeData> | Edge<EdgeData>) => view.id === viewId)
-        );
-        if (alreadySelectedViews.length > 0) {
-          // Keep the previous graphical selection if there was one that is still valid
-          viewsToSelect.set(semanticElementId, alreadySelectedViews);
-        } else if (allRelatedViews.length > 0 && allRelatedViews[0]) {
-          // Otherwise select a single view among the candidates.
-          // Given the order we receive the views from the backend, if there
-          // are multiple candidates in the same view hierarchy, the parent
-          // will appear first, and it's the "main" view we want to select.
-          viewsToSelect.set(semanticElementId, [allRelatedViews[0]]);
-        }
-      }
-
-      // Apply the new graphical selection
+      // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
       convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
         ...node,
-        selected: viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id),
+        selected: selectionFromTool
+          ? selectionFromTool.entries.some((entry) => entry.id === node.data.targetObjectId)
+          : !!nodeLookup.get(node.id)?.selected,
       }));
       convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
         ...edge,
-        selected: !!(edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)),
+        selected: selectionFromTool
+          ? selectionFromTool.entries.some((entry) => entry.id === edge.data?.targetObjectId)
+          : !!edgeLookup.get(edge.id)?.selected,
       }));
 
       setEdges(convertedDiagram.edges);
@@ -219,8 +175,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         edges,
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
-        const { nodeLookup, edgeLookup } = store.getState();
-
         laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
           if (nodeLookup.get(node.id)) {
             return {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { DiagramContextValue } from './DiagramContext.types';
+import { Node } from '@xyflow/react';
 
-const value: DiagramContextValue = {
-  editingContextId: '',
-  diagramId: '',
-  readOnly: false,
-  registerPostToolSelection: () => {},
-  consumePostToolSelection: () => null,
-};
-
-export const DiagramContext = React.createContext<DiagramContextValue>(value);
+export interface UseRevealNodesType {
+  /**
+   * Make sure all the specified nodes are visible in the viewport.
+   * Only adjusts the viewport if required to make them all fully visible.
+   * @param nodesToReveal the nodes to make visible
+   */
+  revealNodes: (nodesToReveal: Node[]) => void;
+}

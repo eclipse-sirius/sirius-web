@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 
 export interface DiagramRepresentationState {
   id: string;
   message: string | null;
+  toolSelections: Map<string, Selection>;
 }
 
 export interface GQLDiagramEventData {

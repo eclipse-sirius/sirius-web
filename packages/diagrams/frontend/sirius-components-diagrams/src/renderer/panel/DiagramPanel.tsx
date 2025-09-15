@@ -42,6 +42,7 @@ import { ArrangeAllButton } from './ArrangeAllButton';
 import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
+import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
 export const DiagramPanel = memo(
   ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
@@ -212,6 +213,7 @@ export const DiagramPanel = memo(
                 </IconButton>
               </span>
             </Tooltip>
+            <RevealSelectionInDiagramButton editingContextId={editingContextId} />
             {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
               <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
             ))}

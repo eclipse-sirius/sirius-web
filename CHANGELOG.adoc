@@ -143,6 +143,8 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/4214[#4214] [sirius-web] The Explorer's local selection is not updated automatically on workbench selection change anymore.
 In the _Explorer_ view, replace "Synchronize with representation" mode with an explicit "Reveal selection" action button.
 We will display the labels of the elements about to be selected in the tooltip of the button.
+- https://github.com/eclipse-sirius/sirius-web/issues/5512[#5512] [diagram] The nodes/edges selected inside a diagram no longer automatically follow the global workbench selection.
+Instead, a new button available in the diagram's toolbar can be used to trigger a "one-shot" update the diagram's selection according to the current global selection.
 
 
 === Improvements

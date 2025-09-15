@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,14 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 
-export interface DiagramContextValue {
-  editingContextId: string;
-  diagramId: string;
-  readOnly: boolean;
-  registerPostToolSelection: (id: string, selection: Selection) => void;
-  consumePostToolSelection: (id: string) => Selection | null;
+export interface UseApplySelectionValue {
+  /**
+   * Applies the given selection to the diagram, selecting the nodes and edges
+   * corresponding to the selected semantic elements.
+   * If fitSelection is true, the view will adjust to fit the newly selected elements.
+   *
+   * @param selection the selection to apply (e.g. from the workbench or another view)
+   * @param fitSelection whether to adjust the view to fit the selected elements
+   */
+  applySelection: (selection: Selection, fitSelection: boolean) => void;
 }

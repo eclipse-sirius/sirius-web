@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { IconOverlay, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -79,6 +79,7 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
     invokeSingleClickOnTwoDiagramElementsTool(input: $input) {
       __typename
       ... on InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
+        id
         newSelection {
           entries {
             id
@@ -114,12 +115,11 @@ const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingle
   tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { editingContextId, diagramId, registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
     useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
-  const { setSelection } = useSelection();
 
   const { showDialog, isOpened } = useDialog();
 
@@ -244,9 +244,9 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
         addMessages(payload.messages);
       }
       if (isSuccessPayload(payload)) {
-        const { newSelection } = payload;
+        const { id, newSelection } = payload;
         if (newSelection?.entries.length ?? 0 > 0) {
-          setSelection(newSelection);
+          registerPostToolSelection(id, newSelection);
         }
         addMessages(payload.messages);
         onShouldConnectorContextualMenuClose();
