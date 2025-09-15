@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Request, expect } from '@playwright/test';
+import { APIRequestContext, expect } from '@playwright/test';
 
 const createProjectFromTemplateQuery = `
   mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
@@ -56,9 +56,9 @@ const deleteProjectQuery = `
     `;
 
 export class PlaywrightProject {
-  readonly request: Request;
+  readonly request: APIRequestContext;
 
-  constructor(request: Request) {
+  constructor(request: APIRequestContext) {
     this.request = request;
   }
 
