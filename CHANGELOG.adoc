@@ -99,7 +99,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent node to be dropped on the diagram during a move inside its parent
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] Fix an issue where resetting an appearance was not updating the corresponding input
 - https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Revert the fix 5160 related to the lifecycle of the diagram because of instability issues
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3029[#3029] [diagram] Fix drop position to match node feedback instead of cursor position
 
 === New Features
 
