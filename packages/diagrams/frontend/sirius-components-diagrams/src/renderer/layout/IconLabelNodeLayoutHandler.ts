@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getInsideLabelWidthConstraint } from './layoutNode';
@@ -21,7 +20,7 @@ import { getInsideLabelWidthConstraint } from './layoutNode';
 const rectangularNodePadding = 8;
 
 export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelNodeData> {
-  canHandle(node: Node<NodeData, DiagramNodeType>) {
+  canHandle(node: Node<NodeData>) {
     return node.type === 'iconLabelNode';
   }
 
@@ -29,9 +28,9 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     _layoutEngine: ILayoutEngine,
     _previousDiagram: RawDiagram | null,
     node: Node<IconLabelNodeData>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _directChildren: Node<NodeData, DiagramNodeType>[],
-    _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    _directChildren: Node<NodeData>[],
+    _newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);

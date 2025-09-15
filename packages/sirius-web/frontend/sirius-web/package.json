@@ -56,7 +56,7 @@
     "react-draggable": "4.4.6",
     "react-router-dom": "6.26.0",
     "react-window": "1.8.11",
-    "@xyflow/react": "12.6.0",
+    "@xyflow/react": "12.8.2",
     "subscriptions-transport-ws": "0.11.0",
     "svg-path-parser": "1.1.0",
     "tss-react": "4.9.16",

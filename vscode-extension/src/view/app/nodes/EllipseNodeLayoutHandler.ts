@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 import {
   Diagram,
-  DiagramNodeType,
   ForcedDimensions,
   ILayoutEngine,
   INodeLayoutHandler,
@@ -54,7 +53,7 @@ const findBorderNodePosition = (
 };
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
-  canHandle(node: Node<NodeData, DiagramNodeType>) {
+  canHandle(node: Node<NodeData>) {
     return node.type === 'ellipseNode';
   }
 
@@ -62,9 +61,9 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
     node: Node<NodeData>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);

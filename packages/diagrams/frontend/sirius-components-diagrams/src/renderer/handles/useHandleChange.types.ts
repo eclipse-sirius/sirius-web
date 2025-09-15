@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,10 @@
  *******************************************************************************/
 import { Edge, Node, NodeChange, Position, XYPosition } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 
 export interface UseHandleChangeValue {
-  applyHandleChange: (
-    changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ) => Node<NodeData, DiagramNodeType>[];
+  applyHandleChange: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => Node<NodeData>[];
 }
 
 export type PopulateHandleIdToOtherHandNode = (

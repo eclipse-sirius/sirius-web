@@ -12,7 +12,6 @@
  *******************************************************************************/
 import {
   Diagram,
-  DiagramNodeType,
   ForcedDimensions,
   ILayoutEngine,
   INodeLayoutHandler,
@@ -51,7 +50,7 @@ const findBorderNodePosition = (borderNodePosition: XYPosition | undefined, pare
 };
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
-  canHandle(node: Node<NodeData, DiagramNodeType>) {
+  canHandle(node: Node<NodeData>) {
     return node.type === 'ellipseNode';
   }
 
@@ -59,9 +58,9 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
     node: Node<NodeData>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    visibleNodes: Node<NodeData>[],
+    directChildren: Node<NodeData>[],
+    newlyAddedNode: Node<NodeData> | undefined,
     forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
