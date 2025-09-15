@@ -70,11 +70,11 @@ test.describe('diagram', () => {
   test('resizing a node by click', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
 
-    const reactFlowSizeBefore = await playwrightNode.getReactFlowSizePosition();
+    const reactFlowSizeBefore = await playwrightNode.getReactFlowSize();
 
     await playwrightNode.resize({ height: 20, width: 50 });
 
-    const reactFlowSizeAfter = await playwrightNode.getReactFlowSizePosition();
+    const reactFlowSizeAfter = await playwrightNode.getReactFlowSize();
 
     expect(reactFlowSizeAfter.height).toBeGreaterThan(reactFlowSizeBefore.height);
     expect(reactFlowSizeAfter.width).toBeGreaterThan(reactFlowSizeBefore.width);
