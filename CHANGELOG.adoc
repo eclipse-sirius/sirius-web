@@ -6,6 +6,7 @@
 
 - Add support for exporting query result
 - Add support for search history
+- Rework the management of the selection in the workbench and in various representations
 
 === Architectural decision records
 
