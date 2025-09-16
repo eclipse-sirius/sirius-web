@@ -42,8 +42,9 @@ import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
 import { useBorderChange } from './border/useBorderChange';
-import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
+import { ConnectorPalette } from './connector/ConnectorPalette';
 import { useConnector } from './connector/useConnector';
+import { useConnectorPalette } from './connector/useConnectorPalette';
 import { useResetXYFlowConnection } from './connector/useResetXYFlowConnection';
 import { DebugPanel } from './debug/DebugPanel';
 import { useDiagramDelete } from './delete/useDiagramDelete';
@@ -406,7 +407,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
-  const { isOpened } = useDiagramPalette();
+  const { isOpened: isDiagramPaletteOpened } = useDiagramPalette();
+  const { isOpened: isConnectorPaletteOpened } = useConnectorPalette();
 
   const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
     useOnRightClickElement(selectedElementsIds);
@@ -481,14 +483,14 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         )}
         <DiagramPanel reactFlowWrapper={ref} />
 
-        {isOpened ? (
+        {isDiagramPaletteOpened ? (
           <DiagramPalette
             diagramId={diagramRefreshedEventPayload.diagram.id}
             diagramTargetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
           />
         ) : null}
+        {isConnectorPaletteOpened ? <ConnectorPalette /> : null}
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
-        <ConnectorContextualMenu />
         {isHelperLineEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
         {isMiniMapVisible && (
           <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />

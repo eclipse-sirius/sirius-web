@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,14 @@ import { useContext, useEffect } from 'react';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { GQLPalette } from './Palette.types';
+import { GQLPalette } from './../palette/Palette.types';
 import {
   GQLDiagramDescription,
-  GQLGetPaletteData,
-  GQLGetPaletteVariables,
+  GQLGetConnectorPaletteData,
+  GQLGetConnectorPaletteVariables,
   GQLRepresentationDescription,
-  UsePaletteContentValue,
-} from './usePaletteContents.types';
+  UseConnectorPaletteContentValue,
+} from './useConnectorPaletteContents.types';
 
 export const getPaletteQuery = gql`
   fragment ToolFields on Tool {
@@ -32,22 +32,25 @@ export const getPaletteQuery = gql`
     id
     label
     iconURL
-    ... on SingleClickOnDiagramElementTool {
-      targetDescriptions {
-        id
-      }
-      appliesToDiagramRoot
+    ... on SingleClickOnTwoDiagramElementsTool {
       dialogDescriptionId
-      withImpactAnalysis
     }
   }
-  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementIds: [ID!]) {
+  query getConnectorPalette(
+    $editingContextId: ID!
+    $diagramId: ID!
+    $sourceDiagramElementId: ID!
+    $targetDiagramElementId: ID!
+  ) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              palette(diagramElementIds: $diagramElementIds) {
+              connectorPalette(
+                sourceDiagramElementId: $sourceDiagramElementId
+                targetDiagramElementId: $targetDiagramElementId
+              ) {
                 id
                 quickAccessTools {
                   ...ToolFields
@@ -76,7 +79,10 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementIds: string[]): UsePaletteContentValue => {
+export const useConnectorPaletteContents = (
+  sourceDiagramElementId: string | null,
+  targetDiagramElementId: string | null
+): UseConnectorPaletteContentValue => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
@@ -84,17 +90,19 @@ export const usePaletteContents = (diagramElementIds: string[]): UsePaletteConte
     data: paletteData,
     loading,
     error: paletteError,
-  } = useQuery<GQLGetPaletteData, GQLGetPaletteVariables>(getPaletteQuery, {
+  } = useQuery<GQLGetConnectorPaletteData, GQLGetConnectorPaletteVariables>(getPaletteQuery, {
     variables: {
       editingContextId,
       diagramId,
-      diagramElementIds,
+      sourceDiagramElementId,
+      targetDiagramElementId,
     },
   });
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
-  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+  const connectorPalette: GQLPalette | null =
+    description && isDiagramDescription(description) ? description.connectorPalette : null;
 
   useEffect(() => {
     if (paletteError) {
@@ -102,5 +110,5 @@ export const usePaletteContents = (diagramElementIds: string[]): UsePaletteConte
     }
   }, [paletteError]);
 
-  return { palette, loading };
+  return { connectorPalette, loading };
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,21 +15,17 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
+import { useConnectorPalette } from './useConnectorPalette';
 import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
-
-  const { candidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { candidateDescriptionIds, isConnectionInProgress } = useConnectorPalette();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-
   const style: React.CSSProperties = {};
-  if (isNewConnection) {
-    const isConnectionCompatibleNode = Boolean(
-      candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
-    );
+
+  if (isConnectionInProgress) {
+    const isConnectionCompatibleNode = candidateDescriptionIds.includes(descriptionId);
     const isSelectedNode = hoveredNode?.id === nodeId;
     if (isConnectionCompatibleNode) {
       if (isSelectedNode) {
@@ -46,7 +42,7 @@ export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): Us
 
   const memoizedStyle = useMemo(
     () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isNewConnection, hoveredNode?.id]
+    [candidateDescriptionIds.join('-'), isConnectionInProgress, hoveredNode?.id]
   );
 
   return { style: memoizedStyle };

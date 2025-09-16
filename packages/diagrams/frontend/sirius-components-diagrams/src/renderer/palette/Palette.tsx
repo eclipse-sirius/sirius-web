@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition'
 import {
   GQLPaletteDivider,
   GQLPaletteEntry,
-  GQLSingleClickOnDiagramElementTool,
   GQLTool,
   GQLToolSection,
   PaletteProps,
@@ -38,9 +37,6 @@ import {
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 import { useDiagramPalette } from './useDiagramPalette';
-
-export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
-  tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 

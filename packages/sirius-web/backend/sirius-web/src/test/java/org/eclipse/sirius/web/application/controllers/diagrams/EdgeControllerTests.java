@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsCandidatesQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -69,7 +69,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
     private EdgeDiagramDescriptionProvider edgeDiagramDescriptionProvider;
 
     @Autowired
-    private ConnectorToolsQueryRunner connectorToolsQueryRunner;
+    private ConnectorToolsCandidatesQueryRunner connectorToolsQueryRunner;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -95,7 +95,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a diagram with some nodes, when the connectors tools between two nodes are requested, then the available tools are returned")
+    @DisplayName("Given a diagram with some nodes, when the connectors tools for a given source node is requested, then the available tools are returned")
     public void givenDiagramWithSomeNodesWhenTheConnectorToolsBetweenTwoNodesAreRequestedThenTheAvailableToolsAreReturned() {
         var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
 
@@ -121,12 +121,11 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "representationId", diagramId.get(),
-                    "sourceDiagramElementId", siriusWebInfrastructureNodeId.get(),
-                    "targetDiagramElementId", siriusWebApplicationNodeId.get()
+                    "sourceDiagramElementId", siriusWebInfrastructureNodeId.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].label");
-            assertThat(connectorToolsLabel).contains("New dependencies");
+            List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorToolsCandidates.candidateDescriptionIds");
+            assertThat(connectorToolsLabel).hasSize(1);
         };
 
         StepVerifier.create(flux)

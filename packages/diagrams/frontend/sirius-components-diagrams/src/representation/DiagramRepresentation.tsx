@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { DialogContextProvider } from '../dialog/DialogContext';
 import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
-import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
+import { ConnectorPaletteContextProvider } from '../renderer/connector/contexts/ConnectorPaletteContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
@@ -171,7 +171,7 @@ export const DiagramRepresentation = memo(
         <ReactFlowProvider>
           <DiagramDirectEditContextProvider>
             <DiagramPaletteContextProvider>
-              <ConnectorContextProvider>
+              <ConnectorPaletteContextProvider>
                 <DropNodeContextProvider>
                   <NodeContextProvider>
                     <MarkerDefinitions />
@@ -202,7 +202,7 @@ export const DiagramRepresentation = memo(
                     </FullscreenContextProvider>
                   </NodeContextProvider>
                 </DropNodeContextProvider>
-              </ConnectorContextProvider>
+              </ConnectorPaletteContextProvider>
             </DiagramPaletteContextProvider>
           </DiagramDirectEditContextProvider>
         </ReactFlowProvider>

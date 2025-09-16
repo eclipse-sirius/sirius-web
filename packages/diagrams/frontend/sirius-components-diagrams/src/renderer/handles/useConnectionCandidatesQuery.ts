@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,30 +18,19 @@ import {
   GQLDiagramDescription,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
-  GQLNodeDescription,
-  GQLPaletteEntry,
   GQLRepresentationDescription,
-  GQLSingleClickOnTwoDiagramElementsTool,
-  GQLToolSection,
 } from '../connector/useConnector.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
-const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementIds: [ID!]) {
+const getConnectorToolsCandidatesQuery = gql`
+  query getConnectorToolsCandidates($editingContextId: ID!, $diagramId: ID!, $sourceDiagramElementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              palette(diagramElementIds: $diagramElementIds) {
-                paletteEntries {
-                  ...ConnectionToolFields
-                  ... on ToolSection {
-                    tools {
-                      ...ConnectionToolFields
-                    }
-                  }
-                }
+              connectorToolsCandidates(sourceDiagramElementId: $sourceDiagramElementId) {
+                candidateDescriptionIds
               }
             }
           }
@@ -49,75 +38,38 @@ const getToolSectionsQuery = gql`
       }
     }
   }
-
-  fragment ConnectionToolFields on Tool {
-    __typename
-    ... on SingleClickOnTwoDiagramElementsTool {
-      candidates {
-        sources {
-          id
-        }
-        targets {
-          id
-        }
-      }
-      dialogDescriptionId
-    }
-  }
 `;
 
 const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
-const isSingleClickOnTwoDiagramElementsTool = (
-  entry: GQLPaletteEntry
-): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
-const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 
-export const useConnectionCandidatesQuery = (
-  editingContextId: string,
-  diagramId: string,
-  nodeId: string
-): GQLNodeDescription[] | null => {
+export const useConnectionCandidatesQuery = (editingContextId: string, diagramId: string, nodeId: string): string[] => {
   const { addErrorMessage } = useMultiToast();
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const shouldSkip =
     getNodes().filter((node) => node.selected).length + getEdges().filter((edge) => edge.selected).length > 1;
 
-  const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
-    variables: {
-      editingContextId,
-      diagramId,
-      diagramElementIds: [nodeId],
-    },
-    skip: shouldSkip,
-  });
+  const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
+    getConnectorToolsCandidatesQuery,
+    {
+      variables: {
+        editingContextId,
+        diagramId,
+        sourceDiagramElementId: nodeId,
+      },
+      skip: shouldSkip,
+    }
+  );
 
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
 
-  const collectConnectionToolsFromPaletteEntry = (entry: GQLPaletteEntry): GQLNodeDescription[] => {
-    const candidates: GQLNodeDescription[] = [];
-    if (isSingleClickOnTwoDiagramElementsTool(entry)) {
-      entry.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-    } else if (isToolSection(entry)) {
-      entry.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-        tool.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-      });
-    }
-    return candidates;
-  };
-
-  const nodeCandidates: GQLNodeDescription[] = useMemo(() => {
-    const candidates: GQLNodeDescription[] = [];
-    if (diagramDescription && isDiagramDescription(diagramDescription)) {
-      diagramDescription.palette.paletteEntries.forEach((entry) =>
-        candidates.push(...collectConnectionToolsFromPaletteEntry(entry))
-      );
-    }
-
-    return candidates;
+  const candidateDescriptionIds: string[] = useMemo(() => {
+    return diagramDescription && isDiagramDescription(diagramDescription)
+      ? diagramDescription.connectorToolsCandidates.candidateDescriptionIds
+      : [];
   }, [diagramDescription]);
 
   useEffect(() => {
@@ -126,5 +78,5 @@ export const useConnectionCandidatesQuery = (
     }
   }, [error]);
 
-  return nodeCandidates;
+  return candidateDescriptionIds;
 };

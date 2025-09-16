@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorPaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -67,7 +67,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private ConnectorToolsQueryRunner connectorToolsQueryRunner;
+    private ConnectorPaletteQueryRunner connectorPaletteQueryRunner;
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
@@ -151,8 +151,8 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     "sourceDiagramElementId", channelNodeId,
                     "targetDiagramElementId", subscriptionEdgeId
             );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
+            var connectorToolsResult = this.connectorPaletteQueryRunner.run(variables);
+            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description..connectorPalette.paletteEntries.[*].id");
             assertThat(connectorToolsId).hasSize(1);
             connectorToolId.set(connectorToolsId.get(0));
         };
@@ -221,8 +221,8 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     "sourceDiagramElementId", subscriptionEdgeId,
                     "targetDiagramElementId", channelNodeId
             );
-            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
+            var connectorToolsResult = this.connectorPaletteQueryRunner.run(variables);
+            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorPalette.paletteEntries.[*].id");
             assertThat(connectorToolsId).hasSize(1);
             connectorToolId.set(connectorToolsId.get(0));
         };

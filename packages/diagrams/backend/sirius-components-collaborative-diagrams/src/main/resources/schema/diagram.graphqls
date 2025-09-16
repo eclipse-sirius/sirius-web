@@ -421,13 +421,18 @@ type DiagramDescription implements RepresentationDescription {
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementIds: [ID!]): Palette!
+  connectorToolsCandidates(sourceDiagramElementId: ID!): ConnectorToolsDescriptionCandidates!
+  connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
-  connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
+}
+
+type ConnectorToolsDescriptionCandidates {
+  candidateDescriptionIds: [String]!
 }
 
 enum ArrangeLayoutDirection {
