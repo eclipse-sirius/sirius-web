@@ -98,6 +98,37 @@ test.describe('appearance', () => {
     );
   });
 
+  test('change edge type appearance', async ({ page }) => {
+    //Move the node so it's easier to select the edge
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 250, y: 0 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+    const edgePathBefore = await playwrightEdge.getEdgePath();
+
+    await playwrightEdge.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Edge Type"]').click();
+    await page.waitForSelector('.MuiMenu-paper');
+    await page.locator('[data-value="SmartManhattan"]').click();
+
+    await page.waitForFunction(
+      ({ initialPath }) => {
+        const path = document.querySelector('path.react-flow__edge-path');
+        if (!path) {
+          return false;
+        }
+        return initialPath !== path.getAttribute('d');
+      },
+      { initialPath: edgePathBefore },
+      { timeout: 2000 }
+    );
+  });
+
   test('change edge center label appearance', async ({ page }) => {
     //Move the node so it's easier to select the edge
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');

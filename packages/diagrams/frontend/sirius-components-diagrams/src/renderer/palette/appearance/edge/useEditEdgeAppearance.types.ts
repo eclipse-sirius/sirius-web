@@ -45,4 +45,5 @@ export interface GQLEdgeAppearanceInput {
   lineStyle: string;
   sourceArrowStyle: string;
   targetArrowStyle: string;
+  edgeType: string;
 }

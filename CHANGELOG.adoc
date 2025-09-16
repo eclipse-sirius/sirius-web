@@ -146,6 +146,7 @@ We will display the labels of the elements about to be selected in the tooltip o
 - https://github.com/eclipse-sirius/sirius-web/issues/5512[#5512] [diagram] The nodes/edges selected inside a diagram no longer automatically follow the global workbench selection.
 Instead, a new button available in the diagram's toolbar can be used to trigger a "one-shot" update the diagram's selection according to the current global selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5458[#5458] [diagram] Add support for oblique edge type in view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
 
 === Improvements
 

@@ -43,7 +43,7 @@ export const SelectAppearanceProperty = ({
           })}>
           {icon}
           <FormControl variant="standard" sx={{ width: '100%' }}>
-            <Select value={value} onChange={onChange}>
+            <Select value={value} onChange={onChange} data-testid={`toolSection-Appearance-${label}`}>
               {options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   <Typography sx={{ textWrap: 'wrap' }}>{option.label}</Typography>
