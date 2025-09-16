@@ -60,7 +60,7 @@ export const EditProjectNavbarContextMenu = ({
         {project.capabilities.canRename ? (
           <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onClose} />
         ) : null}
-        <ShareProjectMenuItem projectId={project.id} workbenchHandle={workbenchHandle} />
+        <ShareProjectMenuItem workbenchHandle={workbenchHandle} />
         {project.capabilities.canDuplicate ? (
           <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
         ) : null}
