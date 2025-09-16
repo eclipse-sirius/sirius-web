@@ -14,8 +14,5 @@ import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseResizeChangeValue {
-  transformResizeListNodeChanges: (
-    changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData>[]
-  ) => NodeChange<Node<NodeData>>[];
+  transformResizeListNodeChanges: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
 }

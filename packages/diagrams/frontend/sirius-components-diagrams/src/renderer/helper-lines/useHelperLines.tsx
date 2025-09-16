@@ -17,6 +17,7 @@ import {
   NodeChange,
   NodeDimensionChange,
   NodePositionChange,
+  useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
@@ -313,9 +314,9 @@ export const useHelperLines = (): UseHelperLinesValue => {
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
   //Here we need the nodes in the ReactFlow store to get positionAbsolute
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-
+  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const applyHelperLines = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const nodeLookup = storeApi.getState().nodeLookup;
       if (enabled && changes.every((change) => isMove(change, true))) {
         const nodePositionChanges = changes.map((change) => change as NodePositionChange);
@@ -325,7 +326,12 @@ export const useHelperLines = (): UseHelperLinesValue => {
           .filter((node) => !node.data.pinned);
         if (movingNodes && movingNodes.length > 0) {
           const movingNodesBounds = getRectangularBounds(nodePositionChanges, nodeLookup);
-          const helperLines: HelperLines = getHelperLinesForMove(movingNodesBounds, movingNodes, nodes, nodeLookup);
+          const helperLines: HelperLines = getHelperLinesForMove(
+            movingNodesBounds,
+            movingNodes,
+            getNodes(),
+            nodeLookup
+          );
           setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
           const movingNodeBoundsSnapX = movingNodesBounds.x1 - (helperLines.snapX ?? 0);
           const movingNodeBoundsSnapY = movingNodesBounds.y1 - (helperLines.snapY ?? 0);
@@ -358,7 +364,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
         if (isResize(change)) {
           const resizingNode = nodeLookup.get(change.id);
           if (resizingNode) {
-            const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, nodes, nodeLookup);
+            const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes(), nodeLookup);
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });
             if (helperLines.snapX && change.dimensions && resizingNode.internals.positionAbsolute) {
               change.dimensions.width = Math.abs(resizingNode.internals.positionAbsolute.x - helperLines.snapX);
@@ -378,7 +384,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
               resizingChange,
               movingChange,
               resizingNode,
-              nodes,
+              getNodes(),
               nodeLookup
             );
             setState({ vertical: helperLines.vertical, horizontal: helperLines.horizontal });

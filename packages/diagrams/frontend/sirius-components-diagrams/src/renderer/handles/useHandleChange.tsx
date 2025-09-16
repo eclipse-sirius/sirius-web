@@ -13,6 +13,7 @@
 import { Edge, Node, NodeChange, NodePositionChange, Position, getConnectedEdges, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
+import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
   getEdgeParametersWhileMoving,
@@ -48,7 +49,7 @@ const getEdgeAnchorNodePosition = (
 };
 
 export const useHandleChange = (): UseHandleChangeValue => {
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { getEdges, getEdge } = useStore();
   const { diagramDescription } = useDiagramDescription();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
@@ -61,7 +62,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id && !node.data.pinned);
         if (movingNode) {
-          const connectedEdges = getConnectedEdges([movingNode], store.getState().edges);
+          const connectedEdges = getConnectedEdges([movingNode], getEdges());
           connectedEdges.forEach((edge) => {
             const { sourceHandle, targetHandle } = edge;
             const sourceNode = nodeLookup.get(edge.source);
@@ -85,10 +86,10 @@ export const useHandleChange = (): UseHandleChangeValue => {
               );
 
               if (isEdgeAnchorNode(sourceNode)) {
-                const baseEdge = store.getState().edgeLookup.get(sourceNode.id);
+                const baseEdge = getEdge(sourceNode.id);
                 sourcePosition = getEdgeAnchorNodePosition(sourcePosition, sourceNode, baseEdge, movingNode);
               } else if (isEdgeAnchorNode(targetNode)) {
-                const baseEdge = store.getState().edgeLookup.get(targetNode.id);
+                const baseEdge = getEdge(targetNode.id);
                 targetPosition = getEdgeAnchorNodePosition(targetPosition, targetNode, baseEdge, movingNode);
               }
 
@@ -134,7 +135,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
         return node;
       });
     },
-    []
+    [getEdges]
   );
 
   return { applyHandleChange };

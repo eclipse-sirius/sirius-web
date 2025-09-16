@@ -18,7 +18,7 @@ export interface UseHelperLinesValue {
   setHelperLinesEnabled: (enable: boolean) => void;
   verticalHelperLine: number | null;
   horizontalHelperLine: number | null;
-  applyHelperLines: (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => NodeChange<Node<NodeData>>[];
+  applyHelperLines: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
   resetHelperLines: (changes: NodeChange<Node<NodeData>>[]) => void;
 }
 
