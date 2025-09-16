@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+import { GQLConnectorTool, GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
 
 export interface ConnectorContextualMenuProps {}
 
@@ -63,7 +63,7 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  connectorTools: GQLTool[];
+  connectorTools: GQLConnectorTool[];
 }
 
 export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {

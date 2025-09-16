@@ -26,16 +26,7 @@ export interface UseConnectorValue {
   position: XYPosition | null;
   isConnectionInProgress: () => boolean;
   isReconnectionInProgress: () => boolean;
-  candidates: GQLNodeDescription[];
-}
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-export interface GQLGetToolSectionsVariables {
-  editingContextId: string;
-  diagramId: string;
-  diagramElementId: string;
+  toolCandidates: GQLConnectorTool[];
 }
 export interface GQLViewer {
   editingContext: GQLEditingContext;
@@ -55,7 +46,25 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
+  connectorTools: GQLConnectorTool[];
+}
+
+export interface GQLConnectorTool {
+  id: string;
+  label: string;
+  iconURL: string[];
+  dialogDescriptionId: string;
+  candidatesDescriptionId: string[];
+  __typename: string;
+}
+
+export interface GQLGetToolSectionsData {
+  viewer: GQLViewer;
+}
+export interface GQLGetToolSectionsVariables {
+  editingContextId: string;
+  diagramId: string;
+  diagramElementId: string;
 }
 
 export interface GQLPalette {
