@@ -298,7 +298,8 @@ enum EdgeStyleProperty {
   COLOR,
   LINESTYLE,
   SOURCE_ARROW,
-  TARGET_ARROW
+  TARGET_ARROW,
+  EDGE_TYPE
 }
 
 type EdgeStyle {
