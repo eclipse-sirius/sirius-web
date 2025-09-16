@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { ShareProjectMenuItemProps, ShareProjectMenuItemState } from './ShareProjectMenuItem.types';
 import { ShareProjectModal } from './ShareProjectModal';
 
-export const ShareProjectMenuItem = ({ projectId, workbenchHandle }: ShareProjectMenuItemProps) => {
+export const ShareProjectMenuItem = ({ workbenchHandle }: ShareProjectMenuItemProps) => {
   const [state, setState] = useState<ShareProjectMenuItemState>({
     isOpen: false,
   });
@@ -34,7 +34,6 @@ export const ShareProjectMenuItem = ({ projectId, workbenchHandle }: ShareProjec
       </MenuItem>
       {state.isOpen ? (
         <ShareProjectModal
-          projectId={projectId}
           workbenchConfiguration={workbenchHandle.getConfiguration()}
           onClose={() => setState((prevState) => ({ ...prevState, isOpen: false }))}
         />

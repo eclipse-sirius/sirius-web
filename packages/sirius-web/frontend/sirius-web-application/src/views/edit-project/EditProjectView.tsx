@@ -121,7 +121,7 @@ export const EditProjectView = () => {
 
   const getRepresentationPath = (representationId: string) => {
     // Note that this should match the corresponding route configuration
-    return `/projects/${projectId}/edit/${representationId}`;
+    return `/projects/${rawProjectId}/edit/${representationId}`;
   };
 
   const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
