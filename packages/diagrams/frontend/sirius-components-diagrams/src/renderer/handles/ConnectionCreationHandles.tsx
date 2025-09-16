@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
-import { Handle, Position } from '@xyflow/react';
+import { Edge, Handle, Node, Position, useStoreApi } from '@xyflow/react';
 import React, { memo, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -20,6 +20,7 @@ import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { useConnector } from '../connector/useConnector';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionCreationHandlesProps, ConnectionCreationHandlesState } from './ConnectionCreationHandles.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
@@ -27,7 +28,8 @@ const connectionCreationHandleStyle = (
   position: Position,
   theme: Theme,
   isHovered: Position | null,
-  isMouseDown: Position | null
+  isMouseDown: Position | null,
+  isEdgeAnchorNode: boolean
 ): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'absolute',
@@ -38,25 +40,25 @@ const connectionCreationHandleStyle = (
     padding: '2px',
     borderColor: theme.palette.secondary.light,
     backgroundColor: 'transparent',
-    width: 12,
-    height: 12,
+    width: isEdgeAnchorNode ? 6 : 12,
+    height: isEdgeAnchorNode ? 6 : 12,
     zIndex: 9999,
   };
   switch (position) {
     case Position.Left:
-      style.left = '-15px';
+      style.left = isEdgeAnchorNode ? '-5px' : '-15px';
       style.transform = 'translateY(-50%) rotate(135deg)';
       break;
     case Position.Right:
-      style.right = '-15px';
+      style.right = isEdgeAnchorNode ? '-5px' : '-15px';
       style.transform = 'translateY(-50%) rotate(-45deg)';
       break;
     case Position.Top:
-      style.top = '-15px';
+      style.top = isEdgeAnchorNode ? '-5px' : '-15px';
       style.transform = 'translateX(-50%) rotate(-135deg)';
       break;
     case Position.Bottom:
-      style.bottom = '-15px';
+      style.bottom = isEdgeAnchorNode ? '-5px' : '-15px';
       style.transform = 'translateX(-50%) rotate(45deg)';
       break;
   }
@@ -71,6 +73,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
   const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   // If diagramElementId is set then we use it for the request otherwise we use the id of the node used to place the handle
   diagramElementId = diagramElementId || nodeId;
@@ -82,6 +85,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
 
   const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, diagramElementId);
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
+  const isEdgeAnchorNode = !!store.getState().edgeLookup.get(diagramElementId);
 
   useRefreshTargetHandles(nodeId, shouldRender);
 
@@ -131,7 +135,13 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
                 id={`creationhandle--${nodeId}--${position}`}
                 type="source"
                 position={position}
-                style={connectionCreationHandleStyle(position, theme, state.isHovered, state.isMouseDown)}
+                style={connectionCreationHandleStyle(
+                  position,
+                  theme,
+                  state.isHovered,
+                  state.isMouseDown,
+                  isEdgeAnchorNode
+                )}
                 onMouseDown={(event) => handleOnMouseDown(event, position)}
                 onMouseEnter={() => handleOnMouseEnter(position)}
                 onMouseLeave={handleOnMouseLeave}
