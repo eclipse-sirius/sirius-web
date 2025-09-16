@@ -60,10 +60,13 @@ test.describe('edgeOnEdge', () => {
     await page.getByTestId('creationhandle-right').hover();
     await page.mouse.down();
     const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
+    await playwrightNode1a.nodeLocator.hover();
     await playwrightNode2a.nodeLocator.hover();
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E1toE2A').click();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('tool-E1toE2A').click();
     await expect(edges).toHaveCount(1);
+
     //Create edge to node
     const edgeAnchorNode = page.locator('[data-testid^="rf__node-edgeAnchorNodeCreationHandles"]');
     await expect(edgeAnchorNode).toHaveCount(1);
@@ -73,6 +76,7 @@ test.describe('edgeOnEdge', () => {
     await playwrightNode2b.nodeLocator.hover();
     await page.mouse.up();
     await expect(edges).toHaveCount(2);
+
     //Create node to edge
     playwrightNode2b.click();
     await page.getByTestId('creationhandle-bottom').hover();
@@ -83,7 +87,7 @@ test.describe('edgeOnEdge', () => {
       .first()
       .hover({ position: { x: 50, y: 10 }, force: true });
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E2ToEdge1A').click();
+    await page.getByTestId('tool-E2ToEdge1A').click();
     await expect(edges).toHaveCount(3);
   });
 });

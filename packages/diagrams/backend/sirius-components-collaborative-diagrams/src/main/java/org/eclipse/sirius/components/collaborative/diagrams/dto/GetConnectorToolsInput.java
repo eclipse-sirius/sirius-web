@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author nvannier
  */
-public record GetConnectorToolsInput(UUID id, String editingContextId, String representationId, String sourceDiagramElementId, String targetDiagramElementId) implements IDiagramInput {
+public record GetConnectorToolsInput(UUID id, String editingContextId, String representationId, String sourceDiagramElementId) implements IDiagramInput {
 }
