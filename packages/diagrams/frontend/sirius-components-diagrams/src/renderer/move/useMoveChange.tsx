@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, NodeChange, NodePositionChange } from '@xyflow/react';
 import { useCallback } from 'react';
+import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseMoveChangeValue } from './useMoveChange.types';
@@ -43,13 +44,15 @@ const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChang
   change.type === 'position' && typeof change.dragging === 'boolean';
 
 export const useMoveChange = (): UseMoveChangeValue => {
+  const { getNodes } = useStore();
+
   const transformUndraggableListNodeChanges = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
         if (isMove(change)) {
-          const movedNode = nodes.find((node) => change.id === node.id);
+          const movedNode = getNodes().find((node) => change.id === node.id);
           if (movedNode?.parentId && !movedNode.data.isBorderNode) {
-            applyPositionChangeToParentIfUndraggable(movedNode, nodes, change);
+            applyPositionChangeToParentIfUndraggable(movedNode, getNodes(), change);
           }
           if (movedNode?.data.pinned) {
             change.position = undefined; // canceled move if node is pinned
@@ -58,7 +61,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
         return change;
       });
     },
-    []
+    [getNodes]
   );
 
   const applyMoveChange = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]): Node<NodeData>[] => {
