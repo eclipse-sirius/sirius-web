@@ -20,12 +20,12 @@ import { UseConnectorEdgeStyleValue } from './useConnectorEdgeStyle.types';
 export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean): UseConnectorEdgeStyleValue => {
   const theme = useTheme();
 
-  const { candidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { toolCandidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const style: React.CSSProperties = {};
   if (isNewConnection) {
     const isConnectionCompatibleNode = Boolean(
-      candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
+      toolCandidates.find((tool) => tool.candidateDescriptionIds.includes(descriptionId))
     );
 
     if (isConnectionCompatibleNode) {
@@ -43,7 +43,7 @@ export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean)
 
   const memoizedStyle = useMemo(
     () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isNewConnection, isHovered]
+    [toolCandidates.map((candidate) => candidate.id).join('-'), isNewConnection, isHovered]
   );
 
   return { style: memoizedStyle };
