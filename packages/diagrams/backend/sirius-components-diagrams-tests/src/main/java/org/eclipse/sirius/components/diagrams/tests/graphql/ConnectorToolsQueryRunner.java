@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ public class ConnectorToolsQueryRunner implements IQueryRunner {
               $editingContextId: ID!
               $representationId: ID!
               $sourceDiagramElementId: ID!
-              $targetDiagramElementId: ID!
             ) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
@@ -41,11 +40,12 @@ public class ConnectorToolsQueryRunner implements IQueryRunner {
                       ... on DiagramDescription {
                         connectorTools(
                           sourceDiagramElementId: $sourceDiagramElementId
-                          targetDiagramElementId: $targetDiagramElementId
                         ) {
-                          id
-                          label
-                          iconURL
+                            id
+                            label
+                            iconURL
+                            dialogDescriptionId
+                            candidatesDescriptionId
                         }
                       }
                     }
