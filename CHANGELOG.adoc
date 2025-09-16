@@ -65,6 +65,8 @@ Instead of creating an EObject instance of the EClass in the EPackage previously
 This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] The GraphQL field `connectorTools` in `DiagramDescription` has been changed from `connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!` to `connectorTools(sourceDiagramElementId: ID!): [ConnectorTool!]!`.
+* This can now be used to retrieve both the available connection tools for a given source node and the available target candidates for a given tool.
 
 
 === Dependency update
@@ -201,7 +203,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5439[#5439] [diagram] Support edge type by its style
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
 - https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] Improve `connectorTools` field in order to get all the information about a connector tool in one request
 
 
 == v2025.8.0

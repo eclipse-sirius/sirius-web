@@ -21,6 +21,7 @@ import { useConnector } from '../connector/useConnector';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { GQLConnectorTool } from '../connector/useConnector.types';
 import { ConnectionCreationHandlesProps, ConnectionCreationHandlesState } from './ConnectionCreationHandles.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
@@ -83,17 +84,21 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
     isMouseDown: null,
   });
 
-  const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, diagramElementId);
-  const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
-  const isEdgeAnchorNode = !!store.getState().edgeLookup.get(diagramElementId);
+  const connectorTools: GQLConnectorTool[] | null = useConnectionCandidatesQuery(
+    editingContextId,
+    diagramId,
+    diagramElementId
+  );
 
+  const shouldRender = connectorTools !== null && connectorTools.length > 0 && !readOnly;
+  const isEdgeAnchorNode = !!store.getState().edgeLookup.get(diagramElementId);
   useRefreshTargetHandles(nodeId, shouldRender);
 
   useEffect(() => {
-    if (candidates !== null) {
-      setCandidates(candidates);
+    if (connectorTools !== null) {
+      setCandidates(connectorTools);
     }
-  }, [candidates]);
+  }, [connectorTools]);
 
   useEffect(() => {
     if (!isConnectionInProgress()) {

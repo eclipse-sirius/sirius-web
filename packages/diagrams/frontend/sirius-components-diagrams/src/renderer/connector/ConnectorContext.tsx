@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,12 @@ import {
   ConnectorContextProviderState,
   ConnectorContextValue,
 } from './ConnectorContext.types';
-import { GQLNodeDescription } from './useConnector.types';
+import { GQLConnectorTool } from './useConnector.types';
 
 const defaultValue: ConnectorContextValue = {
   connection: null,
   position: null,
-  candidates: [],
+  toolCandidates: [],
   isNewConnection: false,
   setConnection: () => {},
   setPosition: () => {},
@@ -38,7 +38,7 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
   const [state, setState] = useState<ConnectorContextProviderState>({
     connection: null,
     position: null,
-    candidates: [],
+    toolCandidates: [],
     isNewConnection: false,
   });
 
@@ -50,8 +50,8 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     setState((prevState) => ({ ...prevState, position }));
   };
 
-  const setCandidates = (candidates: GQLNodeDescription[]) => {
-    setState((prevState) => ({ ...prevState, candidates }));
+  const setCandidates = (candidates: GQLConnectorTool[]) => {
+    setState((prevState) => ({ ...prevState, toolCandidates: candidates }));
   };
 
   const setIsNewConnection = (isNewConnection: boolean) => {
@@ -73,7 +73,7 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
       value={{
         connection: state.connection,
         position: state.position,
-        candidates: state.candidates,
+        toolCandidates: state.toolCandidates,
         isNewConnection: state.isNewConnection,
         setConnection,
         setPosition,

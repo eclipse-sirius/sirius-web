@@ -15,33 +15,27 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import {
+  GQLConnectorTool,
   GQLDiagramDescription,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
-  GQLNodeDescription,
-  GQLPaletteEntry,
   GQLRepresentationDescription,
-  GQLSingleClickOnTwoDiagramElementsTool,
-  GQLToolSection,
 } from '../connector/useConnector.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
-const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+const getConnectorToolsQuery = gql`
+  query getConnectorTools($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              palette(diagramElementId: $diagramElementId) {
-                paletteEntries {
-                  ...ConnectionToolFields
-                  ... on ToolSection {
-                    tools {
-                      ...ConnectionToolFields
-                    }
-                  }
-                }
+              connectorTools(sourceDiagramElementId: $diagramElementId) {
+                id
+                label
+                iconURL
+                dialogDescriptionId
+                candidateDescriptionIds
               }
             }
           }
@@ -49,43 +43,24 @@ const getToolSectionsQuery = gql`
       }
     }
   }
-
-  fragment ConnectionToolFields on Tool {
-    __typename
-    ... on SingleClickOnTwoDiagramElementsTool {
-      candidates {
-        sources {
-          id
-        }
-        targets {
-          id
-        }
-      }
-      dialogDescriptionId
-    }
-  }
 `;
 
 const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
-const isSingleClickOnTwoDiagramElementsTool = (
-  entry: GQLPaletteEntry
-): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
-const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 
 export const useConnectionCandidatesQuery = (
   editingContextId: string,
   diagramId: string,
   nodeId: string
-): GQLNodeDescription[] | null => {
+): GQLConnectorTool[] | null => {
   const { addErrorMessage } = useMultiToast();
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const shouldSkip =
     getNodes().filter((node) => node.selected).length + getEdges().filter((edge) => edge.selected).length > 1;
 
-  const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
+  const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getConnectorToolsQuery, {
     variables: {
       editingContextId,
       diagramId,
@@ -97,27 +72,8 @@ export const useConnectionCandidatesQuery = (
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
 
-  const collectConnectionToolsFromPaletteEntry = (entry: GQLPaletteEntry): GQLNodeDescription[] => {
-    const candidates: GQLNodeDescription[] = [];
-    if (isSingleClickOnTwoDiagramElementsTool(entry)) {
-      entry.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-    } else if (isToolSection(entry)) {
-      entry.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-        tool.candidates.forEach((candidate) => candidates.push(...candidate.targets));
-      });
-    }
-    return candidates;
-  };
-
-  const nodeCandidates: GQLNodeDescription[] = useMemo(() => {
-    const candidates: GQLNodeDescription[] = [];
-    if (diagramDescription && isDiagramDescription(diagramDescription)) {
-      diagramDescription.palette.paletteEntries.forEach((entry) =>
-        candidates.push(...collectConnectionToolsFromPaletteEntry(entry))
-      );
-    }
-
-    return candidates;
+  const nodeCandidates: GQLConnectorTool[] = useMemo(() => {
+    return diagramDescription && isDiagramDescription(diagramDescription) ? diagramDescription.connectorTools : [];
   }, [diagramDescription]);
 
   useEffect(() => {
