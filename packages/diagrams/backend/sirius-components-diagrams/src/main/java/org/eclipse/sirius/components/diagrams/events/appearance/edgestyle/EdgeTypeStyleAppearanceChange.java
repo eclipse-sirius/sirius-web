@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
+package org.eclipse.sirius.components.diagrams.events.appearance.edgestyle;
 
-export const SmartEdgeIcon = (props: SvgIconProps) => {
-  return (
-    <SvgIcon
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      aria-labelledby="title"
-      aria-describedby="desc"
-      role="img"
-      {...props}>
-      <path d="M17.17,11l-1.59,1.59L17,14l4-4l-4-4l-1.41,1.41L17.17,9L9,9c-1.1,0-2,0.9-2,2v9h2v-9L17.17,11z" />
-    </SvgIcon>
-  );
-};
+import org.eclipse.sirius.components.diagrams.EdgeType;
+
+/**
+ * Appearance change for an edge type style property.
+ *
+ * @author frouene
+ */
+public record EdgeTypeStyleAppearanceChange(String edgeId, EdgeType edgeType) implements IEdgeAppearanceChange {
+
+}

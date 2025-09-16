@@ -103,6 +103,7 @@ input EdgeAppearanceInput {
   lineStyle: LineStyle
   sourceArrowStyle: ArrowStyle
   targetArrowStyle: ArrowStyle
+  edgeType: EdgeType
 }
 
 union EditEdgeAppearancePayload = ErrorPayload | SuccessPayload

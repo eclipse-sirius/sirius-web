@@ -12,12 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.EdgeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.EditEdgeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.ResetEdgeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditEdgeAppearanceMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ResetEdgeAppearanceMutationRunner;
@@ -34,17 +44,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Tests for edge appearance edition.
@@ -106,7 +108,8 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     .allMatch(edgeStyle -> edgeStyle.getSize() == 1)
                     .allMatch(edgeStyle -> edgeStyle.getSourceArrow() == ArrowStyle.None)
                     .allMatch(edgeStyle -> edgeStyle.getTargetArrow() == ArrowStyle.InputArrow)
-                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Solid);
+                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Solid)
+                    .allMatch(edgeStyle -> edgeStyle.getEdgeType() == EdgeType.Manhattan);
 
             var siriusWebApplicationEdge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application -> sirius-web-domain").getEdge();
             siriusWebApplicationEdgeId.set(siriusWebApplicationEdge.getId());
@@ -114,7 +117,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
 
         Runnable setEdgeCustomAppearance = () -> {
-            var appearanceInput = new EdgeAppearanceInput(2, "blue", LineStyle.Dash_Dot, ArrowStyle.Circle, ArrowStyle.Circle);
+            var appearanceInput = new EdgeAppearanceInput(2, "blue", LineStyle.Dash_Dot, ArrowStyle.Circle, ArrowStyle.Circle, EdgeType.SmartManhattan);
 
             var input = new EditEdgeAppearanceInput(
                     UUID.randomUUID(),
@@ -137,7 +140,8 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     .allMatch(edgeStyle -> edgeStyle.getSize() == 2)
                     .allMatch(edgeStyle -> edgeStyle.getSourceArrow() == ArrowStyle.Circle)
                     .allMatch(edgeStyle -> edgeStyle.getTargetArrow() == ArrowStyle.Circle)
-                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Dash_Dot);
+                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Dash_Dot)
+                    .allMatch(edgeStyle -> edgeStyle.getEdgeType() == EdgeType.SmartManhattan);
         });
 
         Runnable resetEdgeCustomAppearance = () -> {
@@ -146,7 +150,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     siriusWebApplicationEdgeId.get(),
-                    List.of("COLOR", "SIZE", "LINESTYLE", "SOURCE_ARROW", "TARGET_ARROW")
+                    List.of("COLOR", "SIZE", "LINESTYLE", "SOURCE_ARROW", "TARGET_ARROW", "EDGE_TYPE")
             );
 
             this.resetEdgeAppearanceMutationRunner.run(input);
@@ -162,7 +166,8 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     .allMatch(edgeStyle -> edgeStyle.getSize() == 1)
                     .allMatch(edgeStyle -> edgeStyle.getSourceArrow() == ArrowStyle.None)
                     .allMatch(edgeStyle -> edgeStyle.getTargetArrow() == ArrowStyle.InputArrow)
-                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Solid);
+                    .allMatch(edgeStyle -> edgeStyle.getLineStyle() == LineStyle.Solid)
+                    .allMatch(edgeStyle -> edgeStyle.getEdgeType() == EdgeType.Manhattan);
         });
 
         StepVerifier.create(flux)
@@ -202,7 +207,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
 
         Runnable setEdgeCustomAppearance = () -> {
-            var appearanceInput = new EdgeAppearanceInput(5, "blue", LineStyle.Solid, ArrowStyle.None, ArrowStyle.InputArrow);
+            var appearanceInput = new EdgeAppearanceInput(5, "blue", LineStyle.Solid, ArrowStyle.None, ArrowStyle.InputArrow, null);
 
             var input = new EditEdgeAppearanceInput(
                     UUID.randomUUID(),

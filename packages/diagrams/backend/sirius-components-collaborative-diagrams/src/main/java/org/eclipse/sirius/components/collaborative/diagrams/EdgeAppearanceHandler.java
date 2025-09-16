@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.components.EdgeAppearance;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeColorAppearanceChange;
@@ -19,16 +25,11 @@ import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeLi
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSizeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSourceArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTargetArrowStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTypeStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.ResetEdgeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Default implementation of a service used to handle the customization of an edge appearance.
@@ -43,6 +44,7 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
     public static final String LINESTYLE = "LINESTYLE";
     public static final String SOURCE_ARROW = "SOURCE_ARROW";
     public static final String TARGET_ARROW = "TARGET_ARROW";
+    public static final String EDGE_TYPE = "EDGE_TYPE";
 
     @Override
     public boolean canHandle(EdgeStyle edgeStyle) {
@@ -60,12 +62,13 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
         this.handleLineStyle(styleBuilder, changes, optionalPreviousEdgeStyle, customizedStyleProperties);
         this.handleSourceArrow(styleBuilder, changes, optionalPreviousEdgeStyle, customizedStyleProperties);
         this.handleTargetArrow(styleBuilder, changes, optionalPreviousEdgeStyle, customizedStyleProperties);
+        this.handleEdgeType(styleBuilder, changes, optionalPreviousEdgeStyle, customizedStyleProperties);
         return new EdgeAppearance(styleBuilder.build(), customizedStyleProperties);
 
     }
 
     private void handleColor(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
-        if (!handleResetChange(COLOR, changes, customizedStyleProperties)) {
+        if (!this.handleResetChange(COLOR, changes, customizedStyleProperties)) {
             Optional<EdgeColorAppearanceChange> optionalColorChange = changes.stream()
                     .filter(EdgeColorAppearanceChange.class::isInstance)
                     .map(EdgeColorAppearanceChange.class::cast)
@@ -85,7 +88,7 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
     }
 
     private void handleSize(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
-        if (!handleResetChange(SIZE, changes, customizedStyleProperties)) {
+        if (!this.handleResetChange(SIZE, changes, customizedStyleProperties)) {
             Optional<EdgeSizeAppearanceChange> optionalEdgeSizeChange = changes.stream()
                     .filter(EdgeSizeAppearanceChange.class::isInstance)
                     .map(EdgeSizeAppearanceChange.class::cast)
@@ -105,7 +108,7 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
     }
 
     private void handleLineStyle(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
-        if (!handleResetChange(LINESTYLE, changes, customizedStyleProperties)) {
+        if (!this.handleResetChange(LINESTYLE, changes, customizedStyleProperties)) {
             Optional<EdgeLineStyleAppearanceChange> optionalLineStyleChange = changes.stream()
                     .filter(EdgeLineStyleAppearanceChange.class::isInstance)
                     .map(EdgeLineStyleAppearanceChange.class::cast)
@@ -125,7 +128,7 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
     }
 
     private void handleSourceArrow(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
-        if (!handleResetChange(SOURCE_ARROW, changes, customizedStyleProperties)) {
+        if (!this.handleResetChange(SOURCE_ARROW, changes, customizedStyleProperties)) {
             Optional<EdgeSourceArrowStyleAppearanceChange> optionalEdgeSourceArrowAppearanceChange = changes.stream()
                     .filter(EdgeSourceArrowStyleAppearanceChange.class::isInstance)
                     .map(EdgeSourceArrowStyleAppearanceChange.class::cast)
@@ -145,7 +148,7 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
     }
 
     private void handleTargetArrow(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
-        if (!handleResetChange(TARGET_ARROW, changes, customizedStyleProperties)) {
+        if (!this.handleResetChange(TARGET_ARROW, changes, customizedStyleProperties)) {
             Optional<EdgeTargetArrowStyleAppearanceChange> optionalEdgeTargetArrowAppearanceChange = changes.stream()
                     .filter(EdgeTargetArrowStyleAppearanceChange.class::isInstance)
                     .map(EdgeTargetArrowStyleAppearanceChange.class::cast)
@@ -160,6 +163,26 @@ public class EdgeAppearanceHandler implements IEdgeAppearanceHandler {
                 styleBuilder.targetArrow(previousTargetArrow);
             } else {
                 customizedStyleProperties.remove(TARGET_ARROW);
+            }
+        }
+    }
+
+    private void handleEdgeType(EdgeStyle.Builder styleBuilder, List<IEdgeAppearanceChange> changes, Optional<EdgeStyle> optionalPreviousEdgeStyle, Set<String> customizedStyleProperties) {
+        if (!this.handleResetChange(EDGE_TYPE, changes, customizedStyleProperties)) {
+            Optional<EdgeTypeStyleAppearanceChange> optionalEdgeTypeAppearanceChange = changes.stream()
+                    .filter(EdgeTypeStyleAppearanceChange.class::isInstance)
+                    .map(EdgeTypeStyleAppearanceChange.class::cast)
+                    .findFirst();
+
+            if (optionalEdgeTypeAppearanceChange.isPresent()) {
+                var newEdgeType = optionalEdgeTypeAppearanceChange.get().edgeType();
+                styleBuilder.edgeType(newEdgeType);
+                customizedStyleProperties.add(EDGE_TYPE);
+            } else if (customizedStyleProperties.contains(EDGE_TYPE) && optionalPreviousEdgeStyle.isPresent()) {
+                var previousEdgeType = optionalPreviousEdgeStyle.get().getEdgeType();
+                styleBuilder.edgeType(previousEdgeType);
+            } else {
+                customizedStyleProperties.remove(EDGE_TYPE);
             }
         }
     }

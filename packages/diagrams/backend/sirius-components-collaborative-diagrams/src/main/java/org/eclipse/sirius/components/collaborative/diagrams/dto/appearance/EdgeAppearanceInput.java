@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.diagrams.dto.appearance;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 
 /**
@@ -20,6 +21,6 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
  *
  * @author mcharfadi
  */
-public record EdgeAppearanceInput(Integer size, String color, LineStyle lineStyle, ArrowStyle sourceArrowStyle, ArrowStyle targetArrowStyle) {
+public record EdgeAppearanceInput(Integer size, String color, LineStyle lineStyle, ArrowStyle sourceArrowStyle, ArrowStyle targetArrowStyle, EdgeType edgeType) {
 
 }
