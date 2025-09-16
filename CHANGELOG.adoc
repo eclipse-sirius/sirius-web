@@ -45,6 +45,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
 You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
 The command is only visible if Elasticsearch is up and running.
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] Adopt Palette for rendering connector tools
 
 
 === Improvements

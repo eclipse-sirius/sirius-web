@@ -17,16 +17,14 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 
-
 /**
- * The payload of a "Get Palette" query returned on success.
+ * The payload of the "Get Connector Tools" query returned on success.
  *
- * @author arichard
+ * @author nvannier
  */
-public record GetPaletteSuccessPayload(UUID id, Palette palette) implements IPayload {
-
-    public GetPaletteSuccessPayload {
+public record GetConnectorToolsCandidatesSuccessPayload(UUID id, ConnectorToolsDescriptionCandidates candidateDescriptionIds) implements IPayload {
+    public GetConnectorToolsCandidatesSuccessPayload {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(palette);
+        Objects.requireNonNull(candidateDescriptionIds);
     }
 }

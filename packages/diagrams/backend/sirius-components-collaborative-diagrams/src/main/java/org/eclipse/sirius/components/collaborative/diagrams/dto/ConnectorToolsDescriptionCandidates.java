@@ -10,12 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { GQLPaletteDivider, GQLPaletteEntry, GQLTool, GQLToolSection } from './Palette.types';
+import java.util.List;
 
-export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
-
-export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSection =>
-  entry.__typename === 'PaletteDivider';
-
-export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
+/**
+ * DTO for the connector tools candidates.
+ *
+ * @author mcharfadi
+ */
+public record ConnectorToolsDescriptionCandidates(List<String> candidateDescriptionIds) {
+}
