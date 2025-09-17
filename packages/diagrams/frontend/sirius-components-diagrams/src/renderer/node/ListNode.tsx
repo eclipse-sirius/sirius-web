@@ -101,7 +101,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             ...dropFeedbackStyle,
             ...connectionLineActiveNodeStyle,
           }}
-          data-svg="rect"
+          data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>
