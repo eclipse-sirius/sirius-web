@@ -28,10 +28,10 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { DraggableOutsideLabel } from './DraggableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
-import { DraggableOutsideLabel } from './DraggableOutsideLabel';
 
 const freeFormNodeStyle = (
   theme: Theme,
@@ -166,7 +166,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...dropFeedbackStyle,
             ...connectionLineActiveNodeStyle,
           }}
-          data-svg="rect"
+          data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
           className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
