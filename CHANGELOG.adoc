@@ -56,6 +56,8 @@ Downstream projects should stop provide their own implementations.
 - https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
 `UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5433[#5433] [core] Replace the use of the attribute `kind` to compute the child creation descriptions by the container ID.
+Instead of creating an EObject instance of the EClass in the EPackage previously provided by the attribute `kind` to compute child descriptors, use the `ObjectSearchService` with the container ID to retrieve that EObject.
 - https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] `org.eclipse.sirius.components.diagrams.Label` is now a record
 - https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] To avoid edge blinking when refreshing the diagram, you need to set the property measured.height and measured.width with the value of the node layout data when converting a custom node accordingly to the xyflow https://reactflow.dev/learn/advanced-use/ssr-ssg-configuration#node-dimensions[documentation].
 - https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] The _boolean_ `isDraggedNode` has been added to `NodeData`.
