@@ -14,7 +14,6 @@
 import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
 
 export interface ShareProjectMenuItemProps {
-  projectId: string;
   workbenchHandle: WorkbenchHandle;
 }
 

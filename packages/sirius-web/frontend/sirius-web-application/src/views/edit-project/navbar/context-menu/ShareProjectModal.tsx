@@ -16,11 +16,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { generatePath } from 'react-router-dom';
+import { generatePath, useParams } from 'react-router-dom';
+import { EditProjectViewParams } from '../../EditProjectView.types';
 import { selectionToSearchParamsValue } from '../../SelectionSynchronizer';
 import { ShareProjectModalProps } from './ShareProjectModal.types';
 
-export const ShareProjectModal = ({ projectId, workbenchConfiguration, onClose }: ShareProjectModalProps) => {
+export const ShareProjectModal = ({ workbenchConfiguration, onClose }: ShareProjectModalProps) => {
+  const { projectId: rawProjectId } = useParams<EditProjectViewParams>();
+
   const refCallback = (node: HTMLElement) => {
     if (node !== null) {
       var range = document.createRange();
@@ -47,11 +50,18 @@ export const ShareProjectModal = ({ projectId, workbenchConfiguration, onClose }
   const origin = window.location.origin;
   if (representationId) {
     path =
-      generatePath(':origin/projects/:projectId/edit/:representationId', { origin, projectId, representationId }) +
+      generatePath(':origin/projects/:projectId/edit/:representationId', {
+        origin,
+        projectId: rawProjectId,
+        representationId,
+      }) +
       '?' +
       searchParams.toString();
   } else {
-    path = generatePath(':origin/projects/:projectId/edit', { origin, projectId }) + '?' + searchParams.toString();
+    path =
+      generatePath(':origin/projects/:projectId/edit', { origin, projectId: rawProjectId }) +
+      '?' +
+      searchParams.toString();
   }
 
   let title = 'Shareable link';

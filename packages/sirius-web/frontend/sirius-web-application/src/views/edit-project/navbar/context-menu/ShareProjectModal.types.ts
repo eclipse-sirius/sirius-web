@@ -14,7 +14,6 @@
 import { WorkbenchConfiguration } from '@eclipse-sirius/sirius-components-core';
 
 export interface ShareProjectModalProps {
-  projectId: string;
   workbenchConfiguration: WorkbenchConfiguration;
   onClose: () => void;
 }

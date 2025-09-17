@@ -98,6 +98,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/3971[#3971] [diagram] Enforce minimum width for diagram label direct edit input
 - https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent node to be dropped on the diagram during a move inside its parent
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] Fix an issue where resetting an appearance was not updating the corresponding input
+- https://github.com/eclipse-sirius/sirius-web/issues/5222[#5222] [sirius-web] Fix the 'Share Project' and 'Share Representation' actions not always providing the right URL
 
 
 === New Features
