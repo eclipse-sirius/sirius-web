@@ -120,14 +120,16 @@ export const useExperimentalSvgExport = (): UseExperimentalSvgExport => {
     style: SVGStyleElement | null | undefined,
     htmlToImageViewport: HTMLElement
   ): string => {
-    const elementsToExport = element?.querySelectorAll<HTMLElement>('[data-svg]');
+    const nodeContainer = element.querySelector<HTMLElement>('.react-flow__nodes');
     const edgeContainer: HTMLElement | null = element.querySelector<HTMLElement>('.react-flow__edges');
+    const edgeLabelContainer = element.querySelector<HTMLElement>('.react-flow__edgelabel-renderer');
+
     const svgExportEngine = new SVGExportEngine(width, height, transform, style, htmlToImageViewport.style.transform);
 
     elementSvgExportHandlerContributions.forEach((contribution) =>
       svgExportEngine.registerElementSVGExportHandlerContribution(contribution)
     );
-    const { svgDocument } = svgExportEngine.svgExport(Array.from(elementsToExport ?? []), edgeContainer);
+    const { svgDocument } = svgExportEngine.svgExport(nodeContainer, edgeContainer, edgeLabelContainer);
 
     return new XMLSerializer().serializeToString(svgDocument);
   };
