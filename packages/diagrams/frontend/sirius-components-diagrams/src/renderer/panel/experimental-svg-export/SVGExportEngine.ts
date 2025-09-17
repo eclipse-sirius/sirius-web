@@ -45,6 +45,9 @@ export class SVGExportEngine implements ISVGExportEngine {
     this.svg = this.svgDocument.documentElement as unknown as SVGSVGElement;
     this.svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
     this.svg.style.transform = transform;
+    this.svg.setAttribute('width', width.toString());
+    this.svg.setAttribute('height', height.toString());
+    this.svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     this.svg.style.width = width.toString();
     this.svg.style.height = height.toString();
     if (style) {
