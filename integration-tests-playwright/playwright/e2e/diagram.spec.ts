@@ -59,7 +59,7 @@ test.describe('diagram', () => {
 
     const reactFlowXYPositionBefore = await playwrightNode.getReactFlowXYPosition();
 
-    await playwrightNode.move({ x: 350, y: 450 });
+    await playwrightNode.move({ x: 450, y: 450 });
 
     const reactFlowXYPositionAfter = await playwrightNode.getReactFlowXYPosition();
 
@@ -86,30 +86,42 @@ test.describe('diagram', () => {
 
     const positionOnLabelToStartDragging = { x: 10, y: 10 };
     const initialBox = await dataSourceLabel.labelLocator.boundingBox();
-    if (initialBox) {
-      await dataSourceLabel.move({ x: initialBox.x + 50, y: initialBox.y + 150 }, positionOnLabelToStartDragging);
+    expect(initialBox).toBeDefined();
+    await dataSourceLabel.move({ x: initialBox.x + 50, y: initialBox.y + 150 }, positionOnLabelToStartDragging);
 
-      const boxAfterMove = await dataSourceLabel.labelLocator.boundingBox();
-      if (boxAfterMove) {
-        expect(boxAfterMove.x).toEqual(initialBox.x + 50 - positionOnLabelToStartDragging.x);
-        expect(boxAfterMove.y).toEqual(initialBox.y + 150 - positionOnLabelToStartDragging.y);
-      }
+    await page.waitForFunction(
+      ({ expectedX, expectedY }) => {
+        const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
+        if (!label) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        return labelBoundingBox.x === expectedX && labelBoundingBox.y === expectedY;
+      },
+      {
+        expectedX: initialBox.x + 50 - positionOnLabelToStartDragging.x,
+        expectedY: initialBox.y + 150 - positionOnLabelToStartDragging.y,
+      },
+      { timeout: 2000 }
+    );
 
-      const playwrightNode = new PlaywrightNode(page, 'DataSource1');
-      await playwrightNode.resetNodeLabelPosition();
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    await playwrightNode.resetNodeLabelPosition();
 
-      await page.waitForFunction(
-        ({ x, y }) => {
-          const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
-          if (!label) {
-            return false;
-          }
-          const boxAfterReset = label.getBoundingClientRect();
-          return boxAfterReset.x === x && boxAfterReset.y === y;
-        },
-        { x: initialBox.x, y: initialBox.y },
-        { timeout: 2000 }
-      );
-    }
+    await page.waitForFunction(
+      ({ expectedX, expectedY }) => {
+        const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
+        if (!label) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        return labelBoundingBox.x === expectedX && labelBoundingBox.y === expectedY;
+      },
+      {
+        expectedX: initialBox.x,
+        expectedY: initialBox.y,
+      },
+      { timeout: 2000 }
+    );
   });
 });
