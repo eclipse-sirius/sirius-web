@@ -56,10 +56,15 @@ export class SVGExportEngine implements ISVGExportEngine {
     }
   }
 
-  svgExport(element: HTMLElement[], edgeContainer: HTMLElement | null): SvgExportResult {
+  svgExport(
+    nodeContainer: HTMLElement | null,
+    edgeContainer: HTMLElement | null,
+    edgeLabelContainer: HTMLElement | null
+  ): SvgExportResult {
     const elementToAddAtTheEnd: SVGElement[] = [];
 
-    element.forEach((child) => {
+    const nodes = Array.from(nodeContainer?.querySelectorAll<HTMLElement>('[data-svg]') ?? []);
+    nodes.forEach((child) => {
       this.elementSVGExportHandlers.forEach((svgExportHandler) => {
         if (svgExportHandler.canHandle(child)) {
           const addAtTheEnd = svgExportHandler.handle(child, this.svg, this.svgDocument);
@@ -81,6 +86,16 @@ export class SVGExportEngine implements ISVGExportEngine {
           this.svg.appendChild(gElement);
         }
       }
+    });
+
+    const edgeLabels = Array.from(edgeLabelContainer?.querySelectorAll<HTMLElement>('[data-svg]') ?? []);
+    edgeLabels.forEach((child) => {
+      this.elementSVGExportHandlers.forEach((svgExportHandler) => {
+        if (svgExportHandler.canHandle(child)) {
+          const addAtTheEnd = svgExportHandler.handle(child, this.svg, this.svgDocument);
+          elementToAddAtTheEnd.push(...addAtTheEnd);
+        }
+      });
     });
 
     elementToAddAtTheEnd.forEach((element) => {
