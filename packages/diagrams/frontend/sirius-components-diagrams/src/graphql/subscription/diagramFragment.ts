@@ -81,6 +81,48 @@ fragment diagramFragment on Diagram {
               borderNodes {
                 ...nodeFragment
               }
+              childNodes {
+                ...nodeFragment
+                borderNodes {
+                  ...nodeFragment
+                }
+                childNodes {
+                  ...nodeFragment
+                  borderNodes {
+                    ...nodeFragment
+                  }
+                  childNodes {
+                    ...nodeFragment
+                    borderNodes {
+                      ...nodeFragment
+                    }
+                    childNodes {
+                      ...nodeFragment
+                      borderNodes {
+                        ...nodeFragment
+                      }
+                      childNodes {
+                        ...nodeFragment
+                        borderNodes {
+                          ...nodeFragment
+                        }
+                        childNodes {
+                          ...nodeFragment
+                          borderNodes {
+                            ...nodeFragment
+                          }
+                          childNodes {
+                            ...nodeFragment
+                            borderNodes {
+                              ...nodeFragment
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
