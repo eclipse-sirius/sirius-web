@@ -11,10 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  GQLErrorPayload,
+  useImpactAnalysisDialog,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
+import { useEffect, useState } from 'react';
 import { useDialog } from '../../dialog/useDialog';
-import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
-import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
+import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
+import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
+import { GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
@@ -25,9 +33,6 @@ import {
   UseSingleClickToolState,
   UseSingleClickToolValue,
 } from './useSingleClickTool.types';
-import { useEffect, useState } from 'react';
-import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
-import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 
 const invokeSingleClickOnDiagramElementToolMutation = gql`
   mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {

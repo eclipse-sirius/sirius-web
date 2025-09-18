@@ -11,14 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLConnectorTool, GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+import { GQLToolVariable } from '@eclipse-sirius/sirius-components-palette';
+import { GQLConnectorTool } from './useConnector.types';
 
 export interface ConnectorContextualMenuProps {}
-
-export interface ConnectorContextualMenuState {
-  openDialogInvoked: boolean;
-  tool: GQLSingleClickOnTwoDiagramElementsTool | null;
-}
 
 export interface GetConnectorToolsVariables {
   editingContextId: string;
@@ -26,21 +22,6 @@ export interface GetConnectorToolsVariables {
   sourceDiagramElementId: string;
   targetDiagramElementId: string;
 }
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface GetConnectorToolsData {
   viewer: GQLViewer;
