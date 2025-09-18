@@ -15,6 +15,8 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface DetailsViewState {
   form: GQLForm | null;
+  objectIds: string[];
+  pinned: boolean;
 }
 
 export interface DetailsViewConfiguration {

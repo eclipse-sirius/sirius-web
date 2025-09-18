@@ -36,7 +36,8 @@ describe('Diagram - edit node label', () => {
     it('Then we can use direct by typing after creating a new node', () => {
       const diagram = new Diagram();
       //Open the palette
-      cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 800).rightclick(100, 800);
+      cy.getByTestId('rf__wrapper').should('exist');
+      cy.getByTestId('rf__wrapper').rightclick(100, 800);
       diagram.getPalette().should('exist');
       //Create a new node
       diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');

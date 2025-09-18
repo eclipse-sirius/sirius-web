@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
 import { FormHandle } from '@eclipse-sirius/sirius-components-forms';
 import { ForwardedRef, MutableRefObject, useImperativeHandle } from 'react';
 
 export const useDetailsViewHandle = (
   id: string,
   formBasedViewRef: MutableRefObject<FormHandle | null>,
+  applySelection: (selection: Selection) => void,
   ref: ForwardedRef<WorkbenchViewHandle>
 ) => {
   const detailsViewHandlerProvider = () => {
@@ -28,7 +29,7 @@ export const useDetailsViewHandle = (
           selectedPageId: formBasedViewRef.current?.selectedPageId || null,
         };
       },
-      applySelection: null,
+      applySelection,
     };
   };
   useImperativeHandle(ref, detailsViewHandlerProvider, [id, formBasedViewRef]);
