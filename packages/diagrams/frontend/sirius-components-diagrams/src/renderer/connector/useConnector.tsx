@@ -179,12 +179,13 @@ export const useConnector = (): UseConnectorValue => {
     setEdges((previousEdges) => previousEdges.filter((previousEdge) => !previousEdge.id.includes('temp')));
     setNodes((previousNodes) =>
       previousNodes.map((previousNode) => {
-        if (previousNode.data.connectionLinePositionOnNode !== 'none') {
+        if (previousNode.data.connectionLinePositionOnNode !== 'none' || previousNode.data.isHovered) {
           return {
             ...previousNode,
             data: {
               ...previousNode.data,
               connectionLinePositionOnNode: 'none',
+              isHovered: false,
             },
           };
         }
