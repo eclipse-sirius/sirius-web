@@ -52,7 +52,7 @@ export const useConnector = (): UseConnectorValue => {
     position,
     setPosition,
     resetConnection,
-    candidates,
+    toolCandidates,
     isNewConnection,
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
@@ -89,7 +89,9 @@ export const useConnector = (): UseConnectorValue => {
       let candidate: InternalNode<Node<NodeData>> | undefined = store.getState().nodeLookup.get(connection.target);
 
       while (!isNodeCandidate && !!candidate) {
-        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+        isNodeCandidate = toolCandidates
+          .flatMap((tool) => tool.candidatesDescriptionId)
+          .includes(candidate.data.descriptionId);
 
         if (isNodeCandidate && candidate) {
           connection.target = candidate.id;
@@ -100,7 +102,7 @@ export const useConnector = (): UseConnectorValue => {
 
       setConnection(connection);
     },
-    [candidates.join('-')]
+    [toolCandidates.map((tool) => tool.id).join('-')]
   );
 
   const onConnectStart: OnConnectStart = useCallback(
@@ -205,6 +207,6 @@ export const useConnector = (): UseConnectorValue => {
     position,
     isConnectionInProgress,
     isReconnectionInProgress,
-    candidates,
+    toolCandidates,
   };
 };

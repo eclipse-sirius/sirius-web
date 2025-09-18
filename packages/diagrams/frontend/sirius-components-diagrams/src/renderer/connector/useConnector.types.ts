@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
-import { GQLTool } from '../palette/Palette.types';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
@@ -26,16 +25,7 @@ export interface UseConnectorValue {
   position: XYPosition | null;
   isConnectionInProgress: () => boolean;
   isReconnectionInProgress: () => boolean;
-  candidates: GQLNodeDescription[];
-}
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-export interface GQLGetToolSectionsVariables {
-  editingContextId: string;
-  diagramId: string;
-  diagramElementId: string;
+  toolCandidates: GQLConnectorTool[];
 }
 export interface GQLViewer {
   editingContext: GQLEditingContext;
@@ -55,47 +45,23 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
+  connectorTools: GQLConnectorTool[];
 }
 
-export interface GQLPalette {
+export interface GQLConnectorTool {
   id: string;
-  paletteEntries: GQLPaletteEntry[];
-}
-
-export interface GQLPaletteEntry {
-  id: string;
-  __typename: string;
-}
-export interface GQLPaletteDivider extends GQLPaletteEntry {}
-
-export interface GQLToolSection extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
-  tools: GQLTool[];
-}
-
-export interface GQLToolSection {
-  id: string;
-  label: string;
-  tools: GQLTool[];
+  dialogDescriptionId: string;
+  candidatesDescriptionId: string[];
   __typename: string;
 }
-export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
-  candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
-  dialogDescriptionId: string;
-}
-export interface GQLSingleClickOnTwoDiagramElementsCandidate {
-  sources: GQLDiagramElementDescription[];
-  targets: GQLDiagramElementDescription[];
-}
 
-export interface GQLEdgeDescription {
-  id: string;
+export interface GQLGetToolSectionsData {
+  viewer: GQLViewer;
 }
-
-export type GQLDiagramElementDescription = GQLNodeDescription | GQLEdgeDescription;
-
-export interface GQLNodeDescription {
-  id: string;
+export interface GQLGetToolSectionsVariables {
+  editingContextId: string;
+  diagramId: string;
+  diagramElementId: string;
 }

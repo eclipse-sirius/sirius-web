@@ -22,24 +22,22 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
+import { isTool, isToolSection } from '../Palette';
+import { GQLPaletteEntry, GQLTool } from '../Palette.types';
 import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
 
-const convertToList = (entry: GQLPaletteEntry): GQLSingleClickOnDiagramElementTool[] => {
-  if (isSingleClickOnDiagramElementTool(entry)) {
+const convertToList = (entry: GQLPaletteEntry): GQLTool[] => {
+  if (isTool(entry)) {
     return [entry];
   } else if (isToolSection(entry)) {
-    return entry.tools.filter(isSingleClickOnDiagramElementTool);
+    return entry.tools.filter(isTool);
   } else {
     return [];
   }
 };
 
-const flatToolsFromPaletteEntries = (paletteEntries: GQLPaletteEntry[]): GQLSingleClickOnDiagramElementTool[] => {
-  return paletteEntries
-    .filter((entry) => isToolSection(entry) || isSingleClickOnDiagramElementTool(entry))
-    .flatMap(convertToList);
+const flatToolsFromPaletteEntries = (paletteEntries: GQLPaletteEntry[]): GQLTool[] => {
+  return paletteEntries.filter((entry) => isToolSection(entry) || isTool(entry)).flatMap(convertToList);
 };
 
 const useLabelStyles = makeStyles()((theme: Theme) => ({
@@ -121,14 +119,9 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
 
   const { classes } = useStyle();
 
-  const toolList: GQLSingleClickOnDiagramElementTool[] = useMemo(
-    () => flatToolsFromPaletteEntries(palette.paletteEntries),
-    [palette]
-  );
+  const toolList: GQLTool[] = useMemo(() => flatToolsFromPaletteEntries(palette.paletteEntries), [palette]);
 
-  const filteredToolList: GQLSingleClickOnDiagramElementTool[] = toolList.filter((tool) =>
-    filterFromSearchValue(tool, searchToolValue)
-  );
+  const filteredToolList: GQLTool[] = toolList.filter((tool) => filterFromSearchValue(tool, searchToolValue));
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -154,7 +147,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
     };
   }, [selectedIndex, filteredToolList]);
 
-  const convertToListItem = (tool: GQLSingleClickOnDiagramElementTool, index: number): JSX.Element | null => {
+  const convertToListItem = (tool: GQLTool, index: number): JSX.Element | null => {
     return (
       <Tooltip title={tool.label} key={tool.id} placement="right">
         <ListItemButton

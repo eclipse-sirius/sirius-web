@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLTool } from '../palette/Palette.types';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UseInvokePaletteToolValue {
   invokeTool: (
