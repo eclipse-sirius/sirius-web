@@ -73,7 +73,7 @@ const useRevealNodes = (): UseRevealNodesType => {
   return { revealNodes };
 };
 
-export const useDiagramSelection = (onShiftSelection: boolean): void => {
+export const useDiagramSelection = (targetObjectId: string, onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
   const { revealNodes } = useRevealNodes();
@@ -83,6 +83,10 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   // Apply it on our diagram by selecting exactly the diagram elements
   // present which correspond to the workbench-selected semantic elements.
   useEffect(() => {
+    if (selection.entries.some((entry) => entry.id === targetObjectId)) {
+      return;
+    }
+
     const allDiagramElements = [...getNodes(), ...getEdges()];
     const displayedSemanticElements: Set<string> = new Set([
       ...getNodes().map((node) => node.data.targetObjectId),
@@ -138,7 +142,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
 
       revealNodes(getNodes().filter((node) => nodeToReveal.has(node.id)));
     }
-  }, [selection]);
+  }, [targetObjectId, selection]);
 
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const onChange = useCallback(
@@ -181,7 +185,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       if (selectionKey(nextSelectionEntries) !== selectionKey(selection.entries)) {
         if (onShiftSelection) {
           setShiftSelection(nextSelectionEntries);
-        } else {
+        } else if (nextSelectionEntries.length) {
           setSelection({ entries: nextSelectionEntries });
         }
       }
