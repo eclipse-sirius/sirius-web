@@ -96,7 +96,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
   }, [candidates]);
 
   useEffect(() => {
-    if (!isConnectionInProgress) {
+    if (!isConnectionInProgress()) {
       setState((prevState) => ({
         ...prevState,
         isMouseDown: null,

@@ -60,20 +60,20 @@ export const useConnector = (): UseConnectorValue => {
 
   const { diagramDescription } = useDiagramDescription();
 
-  const { setEdges, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { setEdges, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
   const updateNodeInternals = useUpdateNodeInternals();
 
-  const isConnectionInProgress = () => {
+  const isConnectionInProgress = useCallback(() => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
     return (!!connectionNodeId && isNewConnection) || !!connection;
-  };
+  }, [isNewConnection, connection]);
 
-  const isReconnectionInProgress = () => {
+  const isReconnectionInProgress = useCallback(() => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
     return !!connectionNodeId && !isNewConnection;
-  };
+  }, [isNewConnection]);
 
   //  Set the new connection if we're connecting to a node
   const onConnect: OnConnect = useCallback(
@@ -171,12 +171,26 @@ export const useConnector = (): UseConnectorValue => {
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };
-      setEdges((oldEdges) => [...oldEdges, edge]);
+      setEdges((previousEdges) => [...previousEdges, edge]);
     }
   };
 
   const removeTempConnectionLine = () => {
-    setEdges((oldEdges) => oldEdges.filter((item) => !item.id.includes('temp')));
+    setEdges((previousEdges) => previousEdges.filter((previousEdge) => !previousEdge.id.includes('temp')));
+    setNodes((previousNodes) =>
+      previousNodes.map((previousNode) => {
+        if (previousNode.data.connectionLinePositionOnNode !== 'none') {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              connectionLinePositionOnNode: 'none',
+            },
+          };
+        }
+        return previousNode;
+      })
+    );
   };
 
   return {
