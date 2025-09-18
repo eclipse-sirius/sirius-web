@@ -12,12 +12,14 @@
  *******************************************************************************/
 import {
   RepresentationLoadingIndicator,
+  Selection,
   useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
 import Box from '@mui/material/Box';
+import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -42,8 +44,11 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
   ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const [state, setState] = useState<DetailsViewState>({
       form: null,
+      objectIds: [],
+      pinned: true,
     });
 
+    const { selection } = useSelection();
     useImperativeHandle(
       ref,
       () => {
@@ -57,11 +62,14 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
       []
     );
 
-    const { selection } = useSelection();
+    useEffect(() => {
+      if (!state.pinned) {
+        setState((prevState) => ({ ...prevState, objectIds: selection.entries.map((entry) => entry.id) }));
+      }
+    }, [selection, state.pinned]);
 
-    const objectIds: string[] = selection.entries.map((entry) => entry.id);
-    const skip = objectIds.length === 0;
-    const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+    const skip = state.objectIds.length === 0;
+    const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, state.objectIds, skip);
 
     useEffect(() => {
       if (isFormRefreshedEventPayload(payload)) {
@@ -71,9 +79,22 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
 
     const { classes } = useDetailsViewStyles();
 
+    const pinToggle = (
+      <div>
+        <Switch
+          checked={state.pinned}
+          onChange={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}
+          name="pinned"
+          color="primary"
+        />
+        <Typography variant="caption">{state.pinned ? 'Pinned' : 'Unpinned'}</Typography>
+      </div>
+    );
+
     if (complete || skip) {
       return (
         <div className={classes.idle}>
+          {pinToggle}
           <Typography variant="subtitle2">No object selected</Typography>
         </div>
       );
@@ -87,12 +108,13 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
           }}
           data-representation-kind="form-details">
           {!state.form || loading ? (
-            <Box sx={{ gridRow: '1', gridColumn: '1', zIndex: 1 }}>
+            <Box sx={{ gridRow: '1', gridColumn: '1' }}>
               <RepresentationLoadingIndicator />
             </Box>
           ) : null}
           {state.form ? (
-            <Box sx={{ gridRow: '1', gridColumn: '1' }}>
+            <Box sx={{ gridRow: '1', gridColumn: '1', display: 'grid', gridTemplateRows: 'min-content 1fr' }}>
+              {pinToggle}
               <FormContext.Provider
                 value={{
                   payload: payload,
