@@ -34,7 +34,13 @@ export const CheckboxAppearanceProperty = ({
         <FormGroup aria-label="position" row>
           <FormControlLabel
             value="bottom"
-            control={<Checkbox checked={checked} onChange={(_, checked) => onChange(checked)} />}
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={(_, checked) => onChange(checked)}
+                data-testid={`toolSection-Appearance-${label}`}
+              />
+            }
             label={label}
             labelPlacement="end"
             sx={{ marginLeft: 0, marginRight: 0 }}

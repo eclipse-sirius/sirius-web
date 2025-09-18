@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -53,6 +54,8 @@ public final class LabelStyleDescription {
     private Function<VariableManager, LineStyle> borderStyleProvider;
 
     private Function<VariableManager, String> maxWidthProvider;
+
+    private Function<VariableManager, LabelVisibility> visibilityProvider;
 
     private LabelStyleDescription() {
         // Prevent instantiation
@@ -114,6 +117,10 @@ public final class LabelStyleDescription {
         return this.maxWidthProvider;
     }
 
+    public Function<VariableManager, LabelVisibility> getVisibilityProvider() {
+        return this.visibilityProvider;
+    }
+
     /**
      * The builder used to create a new label description.
      *
@@ -147,6 +154,8 @@ public final class LabelStyleDescription {
         private Function<VariableManager, LineStyle> borderStyleProvider;
 
         private Function<VariableManager, String> maxWidthProvider;
+
+        private Function<VariableManager, LabelVisibility> visibilityProvider;
 
         private Builder() {
         }
@@ -216,6 +225,11 @@ public final class LabelStyleDescription {
             return this;
         }
 
+        public Builder visibilityProvider(Function<VariableManager, LabelVisibility> visibilityProvider) {
+            this.visibilityProvider = Objects.requireNonNull(visibilityProvider);
+            return this;
+        }
+
         public LabelStyleDescription build() {
             LabelStyleDescription styleDescription = new LabelStyleDescription();
             styleDescription.colorProvider = Objects.requireNonNull(this.colorProvider);
@@ -231,6 +245,7 @@ public final class LabelStyleDescription {
             styleDescription.borderRadiusProvider = Objects.requireNonNull(this.borderRadiusProvider);
             styleDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
             styleDescription.maxWidthProvider = Objects.requireNonNull(this.maxWidthProvider);
+            styleDescription.visibilityProvider = Objects.requireNonNull(this.visibilityProvider);
             return styleDescription;
         }
 

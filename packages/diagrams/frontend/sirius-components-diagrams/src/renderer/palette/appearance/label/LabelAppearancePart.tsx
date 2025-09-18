@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import Crop32Icon from '@mui/icons-material/Crop32';
+import DisabledVisibleIcon from '@mui/icons-material/DisabledVisible';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatSizeIcon from '@mui/icons-material/FormatSize';
@@ -64,6 +65,15 @@ export const LabelAppearancePart = ({
     <ListItem disablePadding sx={(theme) => ({ paddingX: theme.spacing(1) })}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Typography variant="subtitle2">{position}</Typography>
+
+        <CheckboxAppearanceProperty
+          icon={<DisabledVisibleIcon />}
+          label="Hide"
+          checked={style.visibility === 'hidden'}
+          disabled={isDisabled('VISIBILITY')}
+          onChange={(checked) => handleEditProperty({ visibility: checked ? 'hidden' : 'visible' })}
+          onReset={() => handleResetProperty('VISIBILITY')}
+        />
 
         <AppearanceNumberTextfield
           icon={<FormatSizeIcon />}
