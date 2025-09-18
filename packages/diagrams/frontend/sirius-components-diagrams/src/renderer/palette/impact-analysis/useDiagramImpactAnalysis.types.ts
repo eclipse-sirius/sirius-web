@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { LazyQueryExecFunction } from '@apollo/client';
 import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
-import { GQLToolVariable } from '../Palette.types';
+import { GQLToolVariable } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UseInvokeImpactAnalysisValue {
   getImpactAnalysisReport: LazyQueryExecFunction<GQLGetImpactAnalysisReportData, GQLInvokeImpactAnalysisToolVariables>;

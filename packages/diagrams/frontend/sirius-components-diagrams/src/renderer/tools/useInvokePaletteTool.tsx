@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { GQLTool } from '../palette/Palette.types';
 import { useCollapseExpand } from './useCollapseExpand';
 import { GQLCollapsingState } from './useCollapseExpand.types';
 import { useDelete } from './useDelete';

@@ -11,7 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteSearchField, PaletteSearchResult } from '@eclipse-sirius/sirius-components-palette';
+import {
+  GQLPalette,
+  GQLPaletteDivider,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  PaletteSearchField,
+  PaletteSearchResult,
+} from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -28,24 +36,12 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
-import {
-  GQLPalette,
-  GQLPaletteDivider,
-  GQLPaletteEntry,
-  GQLSingleClickOnDiagramElementTool,
-  GQLTool,
-  GQLToolSection,
-  PaletteProps,
-  PaletteState,
-} from './Palette.types';
+import { PaletteProps, PaletteState } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 import { PaletteToolList } from './tool-list/PaletteToolList';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
-
-export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
-  tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 
@@ -58,11 +54,10 @@ const paletteWidth = 200;
 
 const getPaletteToolCount = (palette: GQLPalette): number => {
   return (
-    palette.paletteEntries.filter(isSingleClickOnDiagramElementTool).length +
-    palette.quickAccessTools.filter(isSingleClickOnDiagramElementTool).length +
-    palette.paletteEntries
-      .filter(isToolSection)
-      .filter((toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0).length
+    palette.paletteEntries.filter(isTool).length +
+    palette.quickAccessTools.filter(isTool).length +
+    palette.paletteEntries.filter(isToolSection).filter((toolSection) => toolSection.tools.filter(isTool).length > 0)
+      .length
   );
 };
 

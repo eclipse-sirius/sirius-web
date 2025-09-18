@@ -20,10 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -171,17 +169,15 @@ public class ViewPaletteProviderTests {
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
-        assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(2);
+        assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(1);
 
         var tools = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).toList();
         assertThat(tools.get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
         assertThat(((SingleClickOnDiagramElementTool) tools.get(0)).appliesToDiagramRoot()).isFalse();
-        assertThat(tools.get(1)).isInstanceOf(SingleClickOnTwoDiagramElementsTool.class);
-        assertThat(((SingleClickOnTwoDiagramElementsTool) tools.get(1)).candidates()).isNotEmpty();
         assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(2);
 
         var toolSections = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).toList();
-        assertThat(toolSections.get(0).tools()).hasSize(2);
+        assertThat(toolSections.get(0).tools()).hasSize(1);
     }
 
     @Test
@@ -248,7 +244,7 @@ public class ViewPaletteProviderTests {
             }
         };
 
-        return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramDescriptionService.NoOp(), new IDiagramIdProvider.NoOp(),
+        return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramIdProvider.NoOp(),
                 new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()), List.of(new PaletteDefaultToolsProvider()));
     }
 

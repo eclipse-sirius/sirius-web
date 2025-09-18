@@ -362,7 +362,6 @@ type Palette {
 union PaletteEntry =
   ToolSection
   | SingleClickOnDiagramElementTool
-  | SingleClickOnTwoDiagramElementsTool
   | PaletteDivider
 
 type PaletteDivider {
@@ -390,19 +389,6 @@ type SingleClickOnDiagramElementTool implements Tool {
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!
-}
-
-type SingleClickOnTwoDiagramElementsTool implements Tool {
-  id: ID!
-  label: String!
-  iconURL: [String!]!
-  dialogDescriptionId: String
-  candidates: [SingleClickOnTwoDiagramElementsCandidate]!
-}
-
-type SingleClickOnTwoDiagramElementsCandidate {
-  sources: [DiagramElementDescription!]!
-  targets: [DiagramElementDescription!]!
 }
 
 type DiagramDescription implements RepresentationDescription {

@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { GQLTool } from './Palette.types';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UseDiagramPaletteValue {
   x: number | null;

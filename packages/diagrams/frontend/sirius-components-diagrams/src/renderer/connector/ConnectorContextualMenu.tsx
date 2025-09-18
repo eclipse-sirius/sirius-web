@@ -13,6 +13,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLToolVariable } from '@eclipse-sirius/sirius-components-palette';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -33,7 +34,6 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
-  GQLToolVariable,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { GQLConnectorTool } from './useConnector.types';

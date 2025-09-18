@@ -11,6 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export type {
+  GQLPalette,
+  GQLPaletteDivider,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  GQLToolVariable,
+} from './Palette.types';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,

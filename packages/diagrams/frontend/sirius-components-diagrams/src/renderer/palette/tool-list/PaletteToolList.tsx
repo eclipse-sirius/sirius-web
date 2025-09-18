@@ -10,7 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolSectionList, ToolListItem } from '@eclipse-sirius/sirius-components-palette';
+import {
+  GQLPalette,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  PaletteToolSectionList,
+  ToolListItem,
+} from '@eclipse-sirius/sirius-components-palette';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -21,8 +28,7 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
-import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { isPaletteDivider, isTool, isToolSection } from '../Palette';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 
@@ -109,7 +115,7 @@ export const PaletteToolList = ({
   };
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
-    if (isSingleClickOnDiagramElementTool(paletteEntry)) {
+    if (isTool(paletteEntry)) {
       return (
         <ToolListItem
           onToolClick={onToolClick}
