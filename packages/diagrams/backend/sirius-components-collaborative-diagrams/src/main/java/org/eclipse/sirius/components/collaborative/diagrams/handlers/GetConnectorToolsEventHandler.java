@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -22,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -35,10 +35,11 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ConnectorTool;
+import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Sinks.Many;
-import reactor.core.publisher.Sinks.One;
+import reactor.core.publisher.Sinks;
 
 /**
  * Event handler for "get connector tools" query.
@@ -52,17 +53,14 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
 
     private final IDiagramQueryService diagramQueryService;
 
-    private final List<IConnectorToolsProvider> connectorToolsProviders;
-
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
     public GetConnectorToolsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-            List<IConnectorToolsProvider> connectorToolsProviders, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+                                          ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.connectorToolsProviders = Objects.requireNonNull(connectorToolsProviders);
         this.messageService = Objects.requireNonNull(messageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -75,45 +73,47 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
+
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
         IPayload payload = null;
 
-        if (diagramInput instanceof GetConnectorToolsInput) {
-            GetConnectorToolsInput connectorToolsInput = (GetConnectorToolsInput) diagramInput;
+        if (diagramInput instanceof GetConnectorToolsInput connectorToolsInput) {
             Diagram diagram = diagramContext.diagram();
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
 
             if (diagramDescription.isPresent()) {
-                List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
-                        .filter(provider -> provider.canHandle(diagramDescription.get()))
-                        .toList();
+                String sourceDiagramElementId = connectorToolsInput.sourceDiagramElementId();
+                var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceDiagramElementId);
 
-                if (!compatibleConnectorToolsProviders.isEmpty()) {
-                    String sourceDiagramElementId = connectorToolsInput.sourceDiagramElementId();
-                    String targetDiagramElementId = connectorToolsInput.targetDiagramElementId();
+                List<ConnectorTool> connectorTools = new ArrayList<>();
+                sourceDiagramElement.ifPresent(diagramElement -> diagramDescription.get().getPalettes().stream()
+                        .flatMap(palette -> Stream.concat(
+                                palette.getTools().stream(),
+                                palette.getToolSections().stream()
+                                        .flatMap(toolSection -> toolSection.getTools().stream())
+                        ))
+                        .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
+                        .map(SingleClickOnTwoDiagramElementsTool.class::cast)
+                        .forEach(tool -> {
+                            var sourceCandidatesDescriptionId = tool.getCandidates().stream()
+                                    .flatMap(singleClickOnTwoDiagramElementsCandidate -> singleClickOnTwoDiagramElementsCandidate.getSources().stream())
+                                    .map(IDiagramElementDescription::getId);
 
-                    var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceDiagramElementId);
-                    var targetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, targetDiagramElementId);
+                            if (sourceCandidatesDescriptionId.anyMatch(descriptionId -> descriptionId.equals(diagramElement.getDescriptionId()))) {
+                                var targetCandidates = tool.getCandidates().stream()
+                                        .flatMap(singleClickOnTwoDiagramElementsCandidate -> singleClickOnTwoDiagramElementsCandidate.getTargets().stream())
+                                        .map(IDiagramElementDescription::getId)
+                                        .toList();
+                                connectorTools.add(new ConnectorTool(tool.getId(), tool.getLabel(), tool.getIconURL(), tool.getHandler(), targetCandidates));
 
-                    List<ITool> connectorTools = new ArrayList<>();
-
-                    if (sourceDiagramElement.isPresent() && targetDiagramElement.isPresent()) {
-                        compatibleConnectorToolsProviders.stream()
-                            .map(provider -> provider.getConnectorTools(sourceDiagramElement.get(), targetDiagramElement.get(), diagram, editingContext))
-                            .flatMap(List::stream)
-                            .distinct()
-                            .forEach(connectorTools::add);
-                    }
-
-                    payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), connectorTools);
-                } else {
-                    payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), List.of());
-                }
+                            }
+                        }));
+                payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), connectorTools);
             }
         } else {
             String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetConnectorToolsInput.class.getSimpleName());

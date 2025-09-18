@@ -23,7 +23,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ConnectorTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
@@ -45,7 +45,6 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
@@ -148,7 +147,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .build();
 
         SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID)
-                .candidates(List.of(candidates))
+                .candidates(List.of())
                 .handler(variableManager -> new Success())
                 .label(NOT_CONNECTOR_TOOL_LABEL)
                 .iconURL(List.of())
@@ -184,25 +183,12 @@ public class GetConnectorToolsEventHandlerTests {
 
         ICollaborativeMessageService messageService = new ICollaborativeMessageService.NoOp();
 
-        IConnectorToolsProvider connectorToolsProvider = new IConnectorToolsProvider() {
-
-            @Override
-            public List<ITool> getConnectorTools(Object sourceDiagramElement, Object targetDiagramElement, Diagram diagram, IEditingContext editingContext) {
-                return List.of(connectorTool);
-            }
-
-            @Override
-            public boolean canHandle(DiagramDescription diagramDescription) {
-                return diagramDescription.getId().equals(DIAGRAM_DESCRIPTION_ID.toString());
-            }
-        };
-
-        var handler = new GetConnectorToolsEventHandler(representationDescriptionSearchService, new DiagramQueryService(), List.of(connectorToolsProvider), messageService, new SimpleMeterRegistry());
+        var handler = new GetConnectorToolsEventHandler(representationDescriptionSearchService, new DiagramQueryService(), messageService, new SimpleMeterRegistry());
 
         /*
          * Testing the valid tool.
          */
-        var input = new GetConnectorToolsInput(UUID.randomUUID(), UUID.randomUUID().toString(), DIAGRAM_ID, SOURCE_NODE_ID, TARGET_NODE_ID);
+        var input = new GetConnectorToolsInput(UUID.randomUUID(), UUID.randomUUID().toString(), DIAGRAM_ID, SOURCE_NODE_ID);
 
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -214,9 +200,12 @@ public class GetConnectorToolsEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);
-        List<ITool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).connectorTools();
+        List<ConnectorTool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).connectorTools();
         assertThat(connectorTools.size()).isEqualTo(1);
-        assertThat(connectorTools.get(0)).isEqualTo(connectorTool);
+        assertThat(connectorTools.get(0).id()).isEqualTo(connectorTool.getId());
+        assertThat(connectorTools.get(0).label()).isEqualTo(connectorTool.getLabel());
+        assertThat(connectorTools.get(0).iconURL().size()).isEqualTo(0);
+        assertThat(connectorTools.get(0).handler()).isEqualTo(connectorTool.getHandler());
     }
 
     private Diagram getDiagram(String id, List<Node> nodes) {
