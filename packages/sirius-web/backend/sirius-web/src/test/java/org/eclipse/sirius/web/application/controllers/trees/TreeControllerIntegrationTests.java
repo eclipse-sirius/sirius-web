@@ -256,10 +256,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var editingContext = optionalEditingContext.get();
         var expandedIds = new ArrayList<String>();
         editingContext.getDomain().getResourceSet().getAllContents().forEachRemaining(notifier -> {
-            if (notifier instanceof Resource resource) {
-                expandedIds.add(resource.getURI().path().substring(1));
-            } else if (notifier instanceof EObject eObject) {
-                expandedIds.add(this.identityService.getId(eObject));
+            if (notifier instanceof Resource || notifier instanceof EObject) {
+                expandedIds.add(this.identityService.getId(notifier));
             }
         });
         return expandedIds;

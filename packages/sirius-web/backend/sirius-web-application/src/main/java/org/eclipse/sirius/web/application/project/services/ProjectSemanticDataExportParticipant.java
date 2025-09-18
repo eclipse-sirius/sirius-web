@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
@@ -50,6 +51,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectSemanticDataExportParticipant implements IProjectExportParticipant {
 
+    private final IIdentityService identityService;
+
     private final IEditingContextSearchService editingContextSearchService;
 
     private final List<IDocumentExporter> documentExporters;
@@ -60,7 +63,8 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
 
     private final Logger logger = LoggerFactory.getLogger(ProjectSemanticDataExportParticipant.class);
 
-    public ProjectSemanticDataExportParticipant(IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters, List<IEditingContextPersistenceFilter> persistenceFilters, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public ProjectSemanticDataExportParticipant(IIdentityService identityService, IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters, List<IEditingContextPersistenceFilter> persistenceFilters, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.documentExporters = Objects.requireNonNull(documentExporters);
         this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
@@ -111,7 +115,7 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
         List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
                 .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource))).toList();
         for (var resource: resources) {
-            var resourceId = resource.getURI().path().substring(1);
+            var resourceId = this.identityService.getId(resource);
             var optionalDocumentId = new UUIDParser().parse(resourceId);
 
             var optionalDocumentName = resource.eAdapters().stream()

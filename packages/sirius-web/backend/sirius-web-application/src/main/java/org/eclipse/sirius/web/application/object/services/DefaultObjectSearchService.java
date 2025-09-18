@@ -44,13 +44,8 @@ public class DefaultObjectSearchService implements IDefaultObjectSearchService {
                 .flatMap(resourceSet -> this.getEObject(resourceSet, objectId));
 
         return optionalObject
-                .or(() -> {
-                    if (Objects.equals(editingContext.getId(), objectId)) {
-                        return Optional.of(editingContext);
-                    } else {
-                        return Optional.empty();
-                    }
-                });
+                .or(() -> this.getResource(editingContext, objectId))
+                .or(() -> this.getEditingContext(editingContext, objectId));
     }
 
     private Optional<Object> getEObject(ResourceSet resourceSet, String objectId) {
@@ -78,5 +73,22 @@ public class DefaultObjectSearchService implements IDefaultObjectSearchService {
             }
         }
         return optionalEObject.map(Object.class::cast);
+    }
+
+    private Optional<Object> getResource(IEditingContext editingContext, String objectId) {
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            return emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                    .filter(resource -> resource.getURI().path().substring(1).equals(objectId))
+                    .map(Object.class::cast)
+                    .findFirst();
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Object> getEditingContext(IEditingContext editingContext, String objectId) {
+        if (Objects.equals(editingContext.getId(), objectId)) {
+            return Optional.of(editingContext);
+        }
+        return Optional.empty();
     }
 }

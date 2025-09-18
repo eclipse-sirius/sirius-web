@@ -259,9 +259,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
     private String getTreeItemId(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         String id = null;
-        if (self instanceof Resource resource) {
-            id = resource.getURI().path().substring(1);
-        } else if (self instanceof EObject) {
+        if (self instanceof Resource || self instanceof EObject) {
             id = this.identityService.getId(self);
         }
         return id;

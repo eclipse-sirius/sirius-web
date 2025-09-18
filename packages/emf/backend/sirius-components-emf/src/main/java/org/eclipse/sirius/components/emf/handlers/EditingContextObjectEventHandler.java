@@ -23,9 +23,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Sinks;
 
 /**
@@ -52,12 +50,6 @@ public class EditingContextObjectEventHandler implements IEditingContextEventHan
         Optional<Object> optionalObject = Optional.empty();
         if (input instanceof EditingContextObjectInput objectInput) {
             optionalObject = this.objectSearchService.getObject(editingContext, objectInput.objectId());
-            if (optionalObject.isEmpty() && editingContext instanceof IEMFEditingContext emfEditingContext) {
-                optionalObject = emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                        .filter(resource -> resource.getURI().toString().contains(objectInput.objectId()))
-                        .map(Object.class::cast)
-                        .findFirst();
-            }
         }
         payloadSink.tryEmitValue(new EditingContextObjectPayload(input.id(), optionalObject.orElse(null)));
     }
