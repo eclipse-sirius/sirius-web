@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
-import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - edgeStyle', () => {
   let projectId;
@@ -48,7 +48,7 @@ test.describe('diagram - edgeStyle', () => {
     await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
     const playwrightEdge = new PlaywrightEdge(page);
 
-    await playwrightExplorer.select('TestConditionalEdgeStyle');
+    await playwrightExplorer.showIn('TestConditionalEdgeStyle', 'Details');
     await new PlaywrightDetails(page).setText('Name', 'TestObliqueEdgeType');
 
     //Move the node so it's easier to identify the edge type

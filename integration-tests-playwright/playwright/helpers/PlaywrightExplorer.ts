@@ -80,9 +80,9 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('explorer-reveal-selection-button').click();
   }
 
-  async showIn(treeItemLabel: string, selectionTargetId: string) {
+  async showIn(treeItemLabel: string, selectionTargetLabel: string) {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId(`push-selection-to-${selectionTargetId}`).click();
+    await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
   }
 }

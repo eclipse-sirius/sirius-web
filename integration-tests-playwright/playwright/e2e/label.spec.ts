@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightNodeLabel } from '../helpers/PlaywrightNodeLabel';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
-import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
 
 test.describe('diagram - label', () => {
   let projectId;
@@ -54,6 +54,11 @@ test.describe('diagram - label', () => {
   test('when a node with an empty label is selected, then the label is not highlighted', async ({ page }) => {
     const dataSourceNode = new PlaywrightNode(page, 'DataSource1');
     await dataSourceNode.click();
+
+    await dataSourceNode.openPalette();
+    await page.getByTestId('toolSection-Show in').click();
+    await page.getByTestId('push-diagram-selection-to-details').click();
+
     const playwrightDetails = new PlaywrightDetails(page);
     await playwrightDetails.setText('Name', '');
 
