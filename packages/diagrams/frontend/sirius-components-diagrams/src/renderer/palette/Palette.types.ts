@@ -11,27 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
+import { GQLTool, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { XYPosition } from '@xyflow/react';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface PaletteProps {
   x: number;
@@ -53,33 +38,8 @@ export interface PaletteStyleProps {
   paletteHeight: string;
 }
 
-export interface GQLTool extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
-}
-
-export interface GQLPalette {
-  id: string;
-  quickAccessTools: GQLTool[];
-  paletteEntries: GQLPaletteEntry[];
-}
-
-export interface GQLPaletteEntry {
-  id: string;
-  __typename: string;
-}
-
-export interface GQLPaletteDivider extends GQLPaletteEntry {}
-
-export interface GQLToolSection extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  tools: GQLTool[];
 }

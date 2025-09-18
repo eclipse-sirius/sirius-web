@@ -67,6 +67,7 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
 - https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] The GraphQL field `connectorTools` in `DiagramDescription` has been changed from `connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!` to `connectorTools(sourceDiagramElementId: ID!): [ConnectorTool!]!`.
 * This can now be used to retrieve both the available connection tools for a given source node and the available target candidates for a given tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/5514[#5514] [diagram] The GraphQL field palette no longer return `SingleClickOnTwoDiagramElementsTool` tools, you should use the `connectorTools` field in order to retrieve the connector tools.
 
 
 === Dependency update
