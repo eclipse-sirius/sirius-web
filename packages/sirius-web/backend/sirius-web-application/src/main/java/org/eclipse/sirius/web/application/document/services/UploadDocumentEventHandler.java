@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -58,6 +59,8 @@ import reactor.core.publisher.Sinks;
 @Service
 public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
+    private final IIdentityService identityService;
+
     private final IEditingContextSearchService editingContextSearchService;
 
     private final List<IUploadDocumentReportProvider> uploadDocumentReportProviders;
@@ -66,20 +69,21 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IUploadFileLoader uploadDocumentLoader;
 
-    private final Counter counter;
-
     private final boolean reuseActiveResourceSet;
 
-    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
-            IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
+    private final Counter counter;
+
+    public UploadDocumentEventHandler(IIdentityService identityService, IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
+                                      IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.messageService = Objects.requireNonNull(messageService);
         this.uploadDocumentLoader = Objects.requireNonNull(uploadDocumentLoader);
+        this.reuseActiveResourceSet = reuseActiveResourceSet;
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        this.reuseActiveResourceSet = reuseActiveResourceSet;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             if (result instanceof Success<UploadedResource> success) {
                 var newResource = success.data().resource();
 
-                var optionalId = new UUIDParser().parse(newResource.getURI().path().substring(1));
+                var optionalId = new UUIDParser().parse(this.identityService.getId(newResource));
 
                 var optionalName = newResource.eAdapters().stream()
                         .filter(ResourceMetadataAdapter.class::isInstance)

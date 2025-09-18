@@ -16,10 +16,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
@@ -40,11 +42,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResourceToDocumentService implements IResourceToDocumentService {
 
-    private final Logger logger = LoggerFactory.getLogger(ResourceToDocumentService.class);
+    private final IIdentityService identityService;
 
     private final List<IMigrationParticipant> migrationParticipants;
 
-    public ResourceToDocumentService(List<IMigrationParticipant> migrationParticipants) {
+    private final Logger logger = LoggerFactory.getLogger(ResourceToDocumentService.class);
+
+
+    public ResourceToDocumentService(IIdentityService identityService, List<IMigrationParticipant> migrationParticipants) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.migrationParticipants = migrationParticipants;
     }
 
@@ -87,7 +93,7 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
                     .map(ResourceMetadataAdapter::isReadOnly)
                     .orElse(false);
 
-            var resourceId = resource.getURI().path().substring(1);
+            var resourceId = this.identityService.getId(resource);
             var documentId = new UUIDParser().parse(resourceId).orElse(UUID.randomUUID());
 
             var document = Document.newDocument(documentId)

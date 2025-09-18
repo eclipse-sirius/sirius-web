@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextDependencyLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
@@ -36,14 +37,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextDependencyLoader implements IEditingContextDependencyLoader {
 
+    private final IIdentityService identityService;
+
     private final IResourceLoader resourceLoader;
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
     private final ILibrarySearchService librarySearchService;
 
-    public EditingContextDependencyLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader,
-            List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService) {
+    public EditingContextDependencyLoader(ISemanticDataSearchService semanticDataSearchService, IIdentityService identityService, IResourceLoader resourceLoader,
+                                          List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ILibrarySearchService librarySearchService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
@@ -84,6 +88,6 @@ public class EditingContextDependencyLoader implements IEditingContextDependency
      */
     private boolean isAlreadyLoaded(IEMFEditingContext editingContext, Document document) {
         return editingContext.getDomain().getResourceSet().getResources().stream()
-                .anyMatch(resource -> resource.getURI().path().substring(1).equals(document.getId().toString()));
+                .anyMatch(resource -> this.identityService.getId(resource).equals(document.getId().toString()));
     }
 }

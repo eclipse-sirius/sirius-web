@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreePathProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathInput;
@@ -75,25 +74,17 @@ public class ModelBrowserTreePathProvider implements ITreePathProvider {
         Optional<Object> optionalObject = Optional.empty();
         if (optionalSemanticObject.isPresent()) {
             // The first parent of a semantic object item is the item for its actual container
-            optionalObject = optionalSemanticObject.filter(EObject.class::isInstance).map(EObject.class::cast)
+            optionalObject = optionalSemanticObject.filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
                     .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
         }
 
         while (optionalObject.isPresent()) {
-            ancestorsIds.add(this.getItemId(optionalObject.get()));
-            optionalObject = optionalObject.filter(EObject.class::isInstance).map(EObject.class::cast)
+            ancestorsIds.add(this.identityService.getId(optionalObject.get()));
+            optionalObject = optionalObject.filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
                     .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
         }
         return ancestorsIds;
-    }
-
-    private String getItemId(Object object) {
-        String result = null;
-        if (object instanceof Resource resource) {
-            result = resource.getURI().path().substring(1);
-        } else if (object instanceof EObject) {
-            result = this.identityService.getId(object);
-        }
-        return result;
     }
 }

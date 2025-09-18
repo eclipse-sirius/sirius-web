@@ -69,9 +69,7 @@ public class ExplorerServices implements IExplorerServices {
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
             id = representationMetadata.getId().toString();
-        } else if (self instanceof Resource resource) {
-            id = resource.getURI().path().substring(1);
-        } else if (self instanceof EObject) {
+        } else if (self instanceof Resource || self instanceof EObject) {
             id = this.objectService.getId(self);
         }
         return id;
