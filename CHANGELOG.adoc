@@ -24,6 +24,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5644[#5644] [core] Fix cross-reference adapter for restored model objects
 
 
 === New Features
