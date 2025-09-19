@@ -13,11 +13,13 @@
 import {
   RepresentationLoadingIndicator,
   Selection,
+  SelectionTarget,
   useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -48,20 +50,33 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
       pinned: true,
     });
 
-    const { selection } = useSelection();
+    const detailsViewSelectionTarget: SelectionTarget = {
+      viewId: id,
+      label: 'Details View',
+      icon: <MenuIcon />,
+      applySelection: (selection: Selection) => {
+        setState((prevState) => ({
+          ...prevState,
+          objectIds: selection.entries.map((entry) => entry.id),
+        }));
+      },
+    };
     useImperativeHandle(
       ref,
       () => {
         return {
           id,
           getWorkbenchViewConfiguration: () => {
-            return {};
+            return {
+              selectionTarget: detailsViewSelectionTarget,
+            };
           },
         };
       },
       []
     );
 
+    const { selection } = useSelection();
     useEffect(() => {
       if (!state.pinned) {
         setState((prevState) => ({ ...prevState, objectIds: selection.entries.map((entry) => entry.id) }));
