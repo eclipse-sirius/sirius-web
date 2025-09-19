@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeLi
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSizeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSourceArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTargetArrowStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTypeStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBackgroundAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBoldAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBorderColorAppearanceChange;
@@ -268,13 +269,13 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
         if (oldNode.getInsideLabel() != null && oldNode.getInsideLabel().getCustomizedStyleProperties() != null && !oldNode.getInsideLabel().getCustomizedStyleProperties().isEmpty()) {
             var newInsideLabelNodeId = this.computeInsideLabelId(newNodeId);
-            addLabelAppearanceEvents(diagramEvents, newInsideLabelNodeId, oldNode.getInsideLabel().getCustomizedStyleProperties(), oldNode.getInsideLabel().getStyle());
+            this.addLabelAppearanceEvents(diagramEvents, newInsideLabelNodeId, oldNode.getInsideLabel().getCustomizedStyleProperties(), oldNode.getInsideLabel().getStyle());
         }
 
         for (OutsideLabel outsideLabel : oldNode.getOutsideLabels()) {
             if (outsideLabel.customizedStyleProperties() != null && !outsideLabel.customizedStyleProperties().isEmpty()) {
                 var newOutsideLabelId = this.computeOutsideLabelId(newNodeId, outsideLabel.outsideLabelLocation().name());
-                addLabelAppearanceEvents(diagramEvents, newOutsideLabelId, outsideLabel.customizedStyleProperties(), outsideLabel.style());
+                this.addLabelAppearanceEvents(diagramEvents, newOutsideLabelId, outsideLabel.customizedStyleProperties(), outsideLabel.style());
             }
         }
 
@@ -284,28 +285,17 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
     private void addLabelAppearanceEvents(List<IDiagramEvent> diagramEvents, String labelId, Set<String> customizedStyleProperties, LabelStyle labelStyle) {
         customizedStyleProperties.forEach(customizedStyleProperty -> {
             switch (customizedStyleProperty) {
-                case LabelAppearanceHandler.BOLD ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(labelId, labelStyle.isBold()))));
-                case LabelAppearanceHandler.ITALIC ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(labelId, labelStyle.isItalic()))));
-                case LabelAppearanceHandler.UNDERLINE ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(labelId, labelStyle.isUnderline()))));
-                case LabelAppearanceHandler.STRIKE_THROUGH ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(labelId, labelStyle.isStrikeThrough()))));
-                case LabelAppearanceHandler.COLOR ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(labelId, labelStyle.getColor()))));
-                case LabelAppearanceHandler.FONT_SIZE ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(labelId, labelStyle.getFontSize()))));
-                case LabelAppearanceHandler.BACKGROUND ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(labelId, labelStyle.getBackground()))));
-                case LabelAppearanceHandler.BORDER_COLOR ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(labelId, labelStyle.getBorderColor()))));
-                case LabelAppearanceHandler.BORDER_SIZE ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(labelId, labelStyle.getBorderSize()))));
-                case LabelAppearanceHandler.BORDER_RADIUS ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(labelId, labelStyle.getBorderRadius()))));
-                case LabelAppearanceHandler.BORDER_STYLE ->
-                        diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(labelId, labelStyle.getBorderStyle()))));
+                case LabelAppearanceHandler.BOLD -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBoldAppearanceChange(labelId, labelStyle.isBold()))));
+                case LabelAppearanceHandler.ITALIC -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelItalicAppearanceChange(labelId, labelStyle.isItalic()))));
+                case LabelAppearanceHandler.UNDERLINE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelUnderlineAppearanceChange(labelId, labelStyle.isUnderline()))));
+                case LabelAppearanceHandler.STRIKE_THROUGH -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelStrikeThroughAppearanceChange(labelId, labelStyle.isStrikeThrough()))));
+                case LabelAppearanceHandler.COLOR -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelColorAppearanceChange(labelId, labelStyle.getColor()))));
+                case LabelAppearanceHandler.FONT_SIZE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelFontSizeAppearanceChange(labelId, labelStyle.getFontSize()))));
+                case LabelAppearanceHandler.BACKGROUND -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBackgroundAppearanceChange(labelId, labelStyle.getBackground()))));
+                case LabelAppearanceHandler.BORDER_COLOR -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderColorAppearanceChange(labelId, labelStyle.getBorderColor()))));
+                case LabelAppearanceHandler.BORDER_SIZE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderSizeAppearanceChange(labelId, labelStyle.getBorderSize()))));
+                case LabelAppearanceHandler.BORDER_RADIUS -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderRadiusAppearanceChange(labelId, labelStyle.getBorderRadius()))));
+                case LabelAppearanceHandler.BORDER_STYLE -> diagramEvents.add(new EditAppearanceEvent(List.of(new LabelBorderStyleAppearanceChange(labelId, labelStyle.getBorderStyle()))));
                 default -> {
                     //We do nothing, the style property is not supported
                 }
@@ -318,9 +308,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
         if (oldEdge.getCustomizedStyleProperties() != null && !oldEdge.getCustomizedStyleProperties().isEmpty()) {
             List<IAppearanceChange> appearanceChanges = new ArrayList<>();
-            oldEdge.getCustomizedStyleProperties().forEach(customizedProperty -> {
-                getEdgeAppearanceEvent(newEdgeId, oldEdge.getStyle(), customizedProperty).ifPresent(appearanceChanges::add);
-            });
+            oldEdge.getCustomizedStyleProperties().forEach(customizedProperty -> this.getEdgeAppearanceEvent(newEdgeId, oldEdge.getStyle(), customizedProperty).ifPresent(appearanceChanges::add));
 
             if (!appearanceChanges.isEmpty()) {
                 diagramEvents.add(new EditAppearanceEvent(appearanceChanges));
@@ -329,27 +317,28 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
         if (oldEdge.getCenterLabel() != null && oldEdge.getCenterLabel().customizedStyleProperties() != null && !oldEdge.getCenterLabel().customizedStyleProperties().isEmpty()) {
             var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX);
-            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getCenterLabel().customizedStyleProperties(), oldEdge.getCenterLabel().style());
+            this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getCenterLabel().customizedStyleProperties(), oldEdge.getCenterLabel().style());
         }
         if (oldEdge.getBeginLabel() != null && oldEdge.getBeginLabel().customizedStyleProperties() != null && !oldEdge.getBeginLabel().customizedStyleProperties().isEmpty()) {
             var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX);
-            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getBeginLabel().customizedStyleProperties(), oldEdge.getBeginLabel().style());
+            this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getBeginLabel().customizedStyleProperties(), oldEdge.getBeginLabel().style());
         }
         if (oldEdge.getEndLabel() != null && oldEdge.getEndLabel().customizedStyleProperties() != null && !oldEdge.getEndLabel().customizedStyleProperties().isEmpty()) {
             var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX);
-            addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getEndLabel().customizedStyleProperties(), oldEdge.getEndLabel().style());
+            this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getEndLabel().customizedStyleProperties(), oldEdge.getEndLabel().style());
         }
 
         return diagramEvents;
     }
 
-    private  Optional<IAppearanceChange> getEdgeAppearanceEvent(String edgeId, EdgeStyle edgeStyle, String customizedStyleProperty) {
+    private Optional<IAppearanceChange> getEdgeAppearanceEvent(String edgeId, EdgeStyle edgeStyle, String customizedStyleProperty) {
         return switch (customizedStyleProperty) {
             case EdgeAppearanceHandler.COLOR -> Optional.of(new EdgeColorAppearanceChange(edgeId, edgeStyle.getColor()));
             case EdgeAppearanceHandler.SIZE -> Optional.of(new EdgeSizeAppearanceChange(edgeId, edgeStyle.getSize()));
             case EdgeAppearanceHandler.LINESTYLE -> Optional.of(new EdgeLineStyleAppearanceChange(edgeId, edgeStyle.getLineStyle()));
             case EdgeAppearanceHandler.SOURCE_ARROW -> Optional.of(new EdgeSourceArrowStyleAppearanceChange(edgeId, edgeStyle.getSourceArrow()));
             case EdgeAppearanceHandler.TARGET_ARROW -> Optional.of(new EdgeTargetArrowStyleAppearanceChange(edgeId, edgeStyle.getTargetArrow()));
+            case EdgeAppearanceHandler.EDGE_TYPE -> Optional.of(new EdgeTypeStyleAppearanceChange(edgeId, edgeStyle.getEdgeType()));
             default -> Optional.empty();
         };
     }

@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers.appearance;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -36,13 +39,12 @@ import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeLi
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSizeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeSourceArrowStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTargetArrowStyleAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.EdgeTypeStyleAppearanceChange;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Sinks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks;
 
 /**
  * Handles diagram events related to editing an edge appearance.
@@ -88,8 +90,11 @@ public class EditEdgeAppearanceEventHandler implements IDiagramEventHandler {
                 Optional.ofNullable(editAppearanceInput.appearance().size()).ifPresent(size -> appearanceChanges.add(new EdgeSizeAppearanceChange(edgeId, size)));
                 Optional.ofNullable(editAppearanceInput.appearance().color()).ifPresent(color -> appearanceChanges.add(new EdgeColorAppearanceChange(edgeId, color)));
                 Optional.ofNullable(editAppearanceInput.appearance().lineStyle()).ifPresent(linestyle -> appearanceChanges.add(new EdgeLineStyleAppearanceChange(edgeId, linestyle)));
-                Optional.ofNullable(editAppearanceInput.appearance().sourceArrowStyle()).ifPresent(sourceArrowStyle -> appearanceChanges.add(new EdgeSourceArrowStyleAppearanceChange(edgeId, sourceArrowStyle)));
-                Optional.ofNullable(editAppearanceInput.appearance().targetArrowStyle()).ifPresent(targetArrowStyle -> appearanceChanges.add(new EdgeTargetArrowStyleAppearanceChange(edgeId, targetArrowStyle)));
+                Optional.ofNullable(editAppearanceInput.appearance().sourceArrowStyle())
+                        .ifPresent(sourceArrowStyle -> appearanceChanges.add(new EdgeSourceArrowStyleAppearanceChange(edgeId, sourceArrowStyle)));
+                Optional.ofNullable(editAppearanceInput.appearance().targetArrowStyle())
+                        .ifPresent(targetArrowStyle -> appearanceChanges.add(new EdgeTargetArrowStyleAppearanceChange(edgeId, targetArrowStyle)));
+                Optional.ofNullable(editAppearanceInput.appearance().edgeType()).ifPresent(edgeType -> appearanceChanges.add(new EdgeTypeStyleAppearanceChange(edgeId, edgeType)));
 
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
