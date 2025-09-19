@@ -143,7 +143,7 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/4214[#4214] [sirius-web] The Explorer's local selection is not updated automatically on workbench selection change anymore.
 In the _Explorer_ view, replace "Synchronize with representation" mode with an explicit "Reveal selection" action button.
 We will display the labels of the elements about to be selected in the tooltip of the button.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 
 === Improvements
 

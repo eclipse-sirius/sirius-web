@@ -25,6 +25,7 @@ import { makeStyles } from 'tss-react/mui';
 import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
 import { OmniboxObjectList } from './OmniboxObjectList';
+import { OmniboxSearchList } from './OmniboxSearchList';
 import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
 import { useOmniboxSearch } from './useOmniboxSearch';
@@ -65,10 +66,53 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isLocalStorageAvailable = (): boolean => {
+  let available = false;
+
+  if (window.localStorage) {
+    try {
+      window.localStorage.setItem('local_storage_availability', 'value');
+      window.localStorage.getItem('local_storage_availability');
+      window.localStorage.removeItem('local_storage_availability');
+      available = true;
+    } catch {
+      available = false;
+    }
+  }
+
+  return available;
+};
+
+const sessionStorageKey = 'sirius_web_search_history';
+
+const getPreviousSearches = (): string[] => {
+  if (!isLocalStorageAvailable()) return [];
+  try {
+    const data = window.localStorage.getItem(sessionStorageKey);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveNewSearchQuery = (newSearch: string) => {
+  if (isLocalStorageAvailable() && newSearch && newSearch.length > 0) {
+    const previousSearches = getPreviousSearches().filter((value) => value !== newSearch);
+
+    const newPreviousSearch =
+      previousSearches.length < 10
+        ? [newSearch, ...previousSearches]
+        : [newSearch, ...previousSearches.slice(0, previousSearches.length - 1)];
+
+    window.localStorage.setItem(sessionStorageKey, JSON.stringify(newPreviousSearch));
+  }
+};
+
 export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
+    query: '',
   });
 
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
@@ -103,6 +147,7 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
         selectedObjectIds,
         query,
       };
+      saveNewSearchQuery(query);
       getOmniboxSearchResults({ variables });
     } else {
       const variables: GQLGetOmniboxCommandsQueryVariables = {
@@ -116,7 +161,7 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
     if (event.key === 'Enter' && state.queryHasChanged) {
-      sendQuery(event.currentTarget.value);
+      sendQuery(state.query);
     } else if (event.key === 'ArrowDown' && listRef.current) {
       const firstListItem = listRef.current.childNodes[0];
       if (firstListItem instanceof HTMLElement) {
@@ -127,11 +172,13 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
 
   const onSubmitQuery = () => {
     if (state.queryHasChanged) {
-      sendQuery(inputRef?.current?.value ?? '');
-      if (inputRef?.current) {
-        inputRef.current.focus();
-      }
+      doSubmitQuery(state.query);
     }
+  };
+
+  const doSubmitQuery = (query: string) => {
+    sendQuery(query);
+    inputRef.current?.focus();
   };
 
   const onModeChanged = (mode: OmniboxMode) => {
@@ -139,10 +186,8 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
       ...prevState,
       mode,
       queryHasChanged: true,
+      query: '',
     }));
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
     inputRef.current?.focus();
   };
 
@@ -160,8 +205,20 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
     );
   }
   if (state.mode === 'Search') {
-    omniboxResult = (
+    omniboxResult = searchResultsData ? (
       <OmniboxObjectList loading={searchResultsLoading} data={searchResultsData} onClose={onClose} ref={listRef} />
+    ) : (
+      <OmniboxSearchList
+        previousSearches={getPreviousSearches()}
+        onItemSelected={(item) => {
+          setState((prev) => ({
+            ...prev,
+            query: item,
+            queryHasChanged: true,
+          }));
+          sendQuery(item);
+        }}
+      />
     );
   }
 
@@ -174,7 +231,14 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
         <FormControl variant="standard" className={classes.omniboxFormControl}>
           <Input
             inputRef={inputRef}
-            onChange={() => onChange()}
+            onChange={(e) => {
+              setState((prev) => ({
+                ...prev,
+                query: e.target.value,
+                queryHasChanged: true,
+              }));
+              onChange();
+            }}
             onKeyDown={handleKeyDown}
             placeholder={
               state.mode === 'Search' ? "Hit 'Enter' to search an element..." : "Hit 'Enter' to search a command..."
@@ -182,6 +246,7 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
             disableUnderline
             autoFocus
             fullWidth
+            value={state.query}
             slotProps={{
               input: {
                 style: {

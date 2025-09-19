@@ -23,6 +23,11 @@ export class Omnibox {
     return this.getOmnibox();
   }
 
+  public activateSearch() {
+    this.getOmnibox().findByTestId('Search').click();
+    return this.getOmnibox();
+  }
+
   public sendQuery(query: string, hasResult: boolean = true): Cypress.Chainable<JQuery<HTMLElement>> {
     if (query !== '') {
       this.getOmnibox().find('.MuiInputBase-input').type(`${query}`);
