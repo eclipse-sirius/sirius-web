@@ -18,5 +18,5 @@ package org.eclipse.sirius.components.diagrams;
  * @author frouene
  */
 public enum EdgeType {
-    Manhattan, SmartManhattan
+    Manhattan, SmartManhattan, Oblique
 }

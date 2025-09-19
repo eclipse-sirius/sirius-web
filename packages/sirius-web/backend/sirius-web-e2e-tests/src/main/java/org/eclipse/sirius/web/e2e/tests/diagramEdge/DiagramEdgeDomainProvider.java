@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.e2e.tests.diagramEdge;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
@@ -22,8 +24,6 @@ import org.eclipse.sirius.components.domain.Relation;
 import org.eclipse.sirius.web.application.studio.services.api.IDomainProvider;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Used to contribute domains for edges-creation.cy.ts tests.
@@ -46,13 +46,13 @@ public class DiagramEdgeDomainProvider implements IDomainProvider {
         root.setName("Root");
         domain.getTypes().add(root);
 
-        Entity entity1 = createContainmentChild(root, "Entity1", "entity1s");
+        Entity entity1 = this.createContainmentChild(root, "Entity1", "entity1s");
         domain.getTypes().add(entity1);
-        Entity entity2 = createContainmentChild(root, "Entity2", "entity2s");
+        Entity entity2 = this.createContainmentChild(root, "Entity2", "entity2s");
         domain.getTypes().add(entity2);
-        Entity entity3 = createContainmentChild(root, "E1toE2A", "toEdge1");
+        Entity entity3 = this.createContainmentChild(root, "E1toE2A", "toEdge1");
         domain.getTypes().add(entity3);
-        Entity entity4 = createContainmentChild(root, "E1toE2B", "toEdge2");
+        Entity entity4 = this.createContainmentChild(root, "E1toE2B", "toEdge2");
         domain.getTypes().add(entity4);
 
         this.addAttribute(entity1, "name", DataType.STRING);

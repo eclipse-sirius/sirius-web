@@ -43,7 +43,15 @@ public enum EdgeType implements Enumerator {
      * @generated
      * @ordered
      */
-    SMART_MANHATTAN(1, "SmartManhattan", "SmartManhattan");
+    SMART_MANHATTAN(1, "SmartManhattan", "SmartManhattan"),
+    /**
+     * The '<em><b>Oblique</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #OBLIQUE_VALUE
+     * @generated
+     * @ordered
+     */
+    OBLIQUE(2, "Oblique", "Oblique");
 
     /**
      * The '<em><b>Manhattan</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -66,11 +74,21 @@ public enum EdgeType implements Enumerator {
     public static final int SMART_MANHATTAN_VALUE = 1;
 
     /**
+     * The '<em><b>Oblique</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #OBLIQUE
+     * @model name="Oblique"
+     * @generated
+     * @ordered
+     */
+    public static final int OBLIQUE_VALUE = 2;
+
+    /**
      * An array of all the '<em><b>Edge Type</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    private static final EdgeType[] VALUES_ARRAY = new EdgeType[] { MANHATTAN, SMART_MANHATTAN, };
+    private static final EdgeType[] VALUES_ARRAY = new EdgeType[] { MANHATTAN, SMART_MANHATTAN, OBLIQUE, };
 
     /**
      * A public read-only list of all the '<em><b>Edge Type</b></em>' enumerators. <!-- begin-user-doc --> <!--
@@ -165,6 +183,8 @@ public enum EdgeType implements Enumerator {
                 return MANHATTAN;
             case SMART_MANHATTAN_VALUE:
                 return SMART_MANHATTAN;
+            case OBLIQUE_VALUE:
+                return OBLIQUE;
         }
         return null;
     }

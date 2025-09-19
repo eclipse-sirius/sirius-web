@@ -3412,6 +3412,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEEnum(this.edgeTypeEEnum, EdgeType.class, "EdgeType");
         this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.MANHATTAN);
         this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.SMART_MANHATTAN);
+        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.OBLIQUE);
 
         // Create resource
         this.createResource(eNS_URI);

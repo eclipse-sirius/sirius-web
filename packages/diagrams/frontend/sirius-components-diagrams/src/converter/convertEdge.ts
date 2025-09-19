@@ -17,6 +17,8 @@ export const convertEdgeType = (gqlEdgeType: string): string => {
       return 'manhattan';
     case 'SmartManhattan':
       return 'smartManhattan';
+    case 'Oblique':
+      return 'oblique';
     default:
       return 'manhattan';
   }
