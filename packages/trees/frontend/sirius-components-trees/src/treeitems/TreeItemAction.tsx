@@ -39,6 +39,7 @@ export const TreeItemAction = ({
   maxDepth,
   onExpandedElementChange,
   onEnterEditingMode,
+  selectedTreeItemIds,
 }: TreeItemActionProps) => {
   const { classes } = useTreeItemActionStyle();
   const [state, setState] = useState<TreeItemActionState>({
@@ -88,6 +89,7 @@ export const TreeItemAction = ({
         onExpandedElementChange={onExpandedElementChange}
         enterEditingMode={enterEditingMode}
         onClose={closeContextMenu}
+        selectedTreeItemIds={selectedTreeItemIds}
       />
     );
   }

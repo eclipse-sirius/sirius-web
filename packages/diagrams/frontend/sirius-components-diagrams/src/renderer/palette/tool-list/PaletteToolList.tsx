@@ -10,8 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelectionTargets } from '@eclipse-sirius/sirius-components-core';
 import { PaletteToolSectionList, ToolListItem } from '@eclipse-sirius/sirius-components-palette';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { ListItemIcon } from '@mui/material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -21,6 +23,7 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { useStore } from '../../../representation/useStore';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { useDiagramPalette } from '../useDiagramPalette';
@@ -136,6 +139,35 @@ export const PaletteToolList = ({
     }
     return [];
   });
+
+  const { getEdges, getNodes } = useStore();
+  const diagramSelection: string[] = [];
+  [...getNodes(), ...getEdges()]
+    .filter((e) => e.selected)
+    .forEach((e) => {
+      if (e.data?.targetObjectId) {
+        diagramSelection.push(e.data?.targetObjectId);
+      }
+    });
+
+  const { selectionTargets } = useSelectionTargets();
+  selectionTargets
+    .filter((target) => target.viewId !== 'diagram')
+    .map((target) => (
+      <Tooltip title={'Show in ' + target.label} placement="right" key={`push-diagram-selection-to-${target.viewId}`}>
+        <ListItemButton
+          className={classes.listItemButton}
+          data-testid={`push-diagram-selection-to-${target.viewId}`}
+          onClick={() => {
+            const localSelection = { entries: diagramSelection.map((id) => ({ id })) };
+            target.applySelection(localSelection);
+          }}>
+          <ListItemIcon className={classes.listItemIcon}>{target.icon}</ListItemIcon>
+          <ListItemText primary={'Show in ' + target.label} className={classes.listItemText} />
+        </ListItemButton>
+      </Tooltip>
+    ))
+    .forEach((element) => listItemsRendered.push(element));
 
   children.forEach((extensionSection) => {
     const extensionSectionId = extensionSection.props.id;

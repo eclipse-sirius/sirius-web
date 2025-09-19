@@ -55,6 +55,8 @@ export * from './selection/SelectionContext';
 export type * from './selection/SelectionContext.types';
 export * from './selection/useSelection';
 export type * from './selection/useSelection.types';
+export * from './selection/useSelectionTargets';
+export type * from './selection/useSelectionTargets.types';
 export * from './theme';
 export * from './toast/MultiToast';
 export * from './toast/Toast';

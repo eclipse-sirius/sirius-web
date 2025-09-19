@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
+import { Selection } from './SelectionContext.types';
 
-export interface DetailsViewState {
-  form: GQLForm | null;
-  objectIds: string[];
-  pinned: boolean;
+export interface SelectionTarget {
+  viewId: string;
+  label: string;
+  icon: React.ReactElement;
+  applySelection(selection: Selection): void;
+}
+
+export interface UseSelectionTargetValue {
+  selectionTargets: SelectionTarget[];
 }
