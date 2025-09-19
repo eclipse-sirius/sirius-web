@@ -45,6 +45,9 @@ export class SVGExportEngine implements ISVGExportEngine {
     this.svg = this.svgDocument.documentElement as unknown as SVGSVGElement;
     this.svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
     this.svg.style.transform = transform;
+    this.svg.setAttribute('width', width.toString());
+    this.svg.setAttribute('height', height.toString());
+    this.svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     this.svg.style.width = width.toString();
     this.svg.style.height = height.toString();
     if (style) {
@@ -53,10 +56,15 @@ export class SVGExportEngine implements ISVGExportEngine {
     }
   }
 
-  svgExport(element: HTMLElement[], edgeContainer: HTMLElement | null): SvgExportResult {
+  svgExport(
+    nodeContainer: HTMLElement | null,
+    edgeContainer: HTMLElement | null,
+    edgeLabelContainer: HTMLElement | null
+  ): SvgExportResult {
     const elementToAddAtTheEnd: SVGElement[] = [];
 
-    element.forEach((child) => {
+    const nodes = Array.from(nodeContainer?.querySelectorAll<HTMLElement>('[data-svg]') ?? []);
+    nodes.forEach((child) => {
       this.elementSVGExportHandlers.forEach((svgExportHandler) => {
         if (svgExportHandler.canHandle(child)) {
           const addAtTheEnd = svgExportHandler.handle(child, this.svg, this.svgDocument);
@@ -78,6 +86,16 @@ export class SVGExportEngine implements ISVGExportEngine {
           this.svg.appendChild(gElement);
         }
       }
+    });
+
+    const edgeLabels = Array.from(edgeLabelContainer?.querySelectorAll<HTMLElement>('[data-svg]') ?? []);
+    edgeLabels.forEach((child) => {
+      this.elementSVGExportHandlers.forEach((svgExportHandler) => {
+        if (svgExportHandler.canHandle(child)) {
+          const addAtTheEnd = svgExportHandler.handle(child, this.svg, this.svgDocument);
+          elementToAddAtTheEnd.push(...addAtTheEnd);
+        }
+      });
     });
 
     elementToAddAtTheEnd.forEach((element) => {

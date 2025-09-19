@@ -12,8 +12,6 @@
  *******************************************************************************/
 import { IElementSVGExportHandler, svgNamespace } from './SVGExportEngine.types';
 
-const TEXT_NEW_LINE_SEPARATOR = '\n';
-
 /**
  * Convert a dom element marked as a text with the attribute 'data-svg="text"' into a svg text element.
  * It converts carriage return into many tspan element (one tspan for a line)
@@ -35,6 +33,7 @@ export class TextElementSVGExportHandler implements IElementSVGExportHandler {
   private handleTextElement(textElement: Text, parentElement: HTMLElement, svgDocument: XMLDocument): SVGTextElement {
     const svgTextElement: SVGTextElement = svgDocument.createElementNS(svgNamespace, 'text');
     const styles = parentElement.style;
+    const textContent: string = textElement.nodeValue ?? '';
 
     if (parentElement.parentElement?.parentElement?.style.opacity) {
       // The opacity is put on the parent of both the label and the label icon, thus, we have to get opacity from the great-grandparent
@@ -44,55 +43,104 @@ export class TextElementSVGExportHandler implements IElementSVGExportHandler {
     // https://css-tricks.com/svg-properties-and-css
     this.copyTextStyles(styles, svgTextElement);
 
-    const tabSize = parseInt(styles.tabSize, 10);
-
     // Make sure the y attribute is the bottom of the box, not the baseline
     svgTextElement.setAttribute('dominant-baseline', 'text-after-edge');
-    const lines = (textElement?.nodeValue ?? '').split(TEXT_NEW_LINE_SEPARATOR);
-    if (lines.length === 1 && lines[0]) {
-      const lineRange: Range = textElement.ownerDocument.createRange();
-      lineRange.setStart(textElement, 0);
-      lineRange.setEnd(textElement, lines[0].length);
-      let lineRectangle = lineRange.getBoundingClientRect();
-      const textSpan = svgDocument.createElementNS(svgNamespace, 'tspan');
-      // TODO: try with a value with many white-space, if it works, use white-space css property
-      textSpan.setAttribute('xml:space', 'preserve');
-      // SVG does not support tabs in text. Tabs get rendered as one space character. Convert the
-      // tabs to spaces according to tab-size instead.
-      // Ideally we would keep the tab and create offset tspans.
-      // TODO: Test with a value containing a tab character (\t)
-      textSpan.textContent = lines[0].replace(/\t/g, ' '.repeat(tabSize));
-      textSpan.setAttribute('x', lineRectangle.x.toString());
-      textSpan.setAttribute('y', lineRectangle.bottom.toString()); // intentionally bottom because of dominant-baseline setting
-      textSpan.setAttribute('textLength', lineRectangle.width.toString());
-      textSpan.setAttribute('lengthAdjust', 'spacingAndGlyphs');
-      svgTextElement.append(textSpan);
-    } else if (lines.length > 1) {
-      let textIndex = 0;
-      lines.forEach((lineValue) => {
-        const lineRange: Range = textElement.ownerDocument.createRange();
-        lineRange.setStart(textElement, textIndex);
-        lineRange.setEnd(textElement, textIndex + lineValue.length);
-        let lineRectangle = lineRange.getBoundingClientRect();
-        const textSpan = svgDocument.createElementNS(svgNamespace, 'tspan');
-        // TODO: try with a value with many white-space, if it works, use white-space css property
-        textSpan.setAttribute('xml:space', 'preserve');
-        // SVG does not support tabs in text. Tabs get rendered as one space character. Convert the
-        // tabs to spaces according to tab-size instead.
-        // Ideally we would keep the tab and create offset tspans.
-        // TODO: Test with a value containing a tab character (\t) with and without the replace by space
-        textSpan.textContent = lineValue.replace(/\t/g, ' '.repeat(tabSize));
-        textSpan.setAttribute('x', lineRectangle.x.toString());
-        textSpan.setAttribute('y', lineRectangle.bottom.toString()); // intentionally bottom because of dominant-baseline setting
-        textSpan.setAttribute('textLength', lineRectangle.width.toString());
-        textSpan.setAttribute('lengthAdjust', 'spacingAndGlyphs');
-        svgTextElement.append(textSpan);
-        textIndex = textIndex + lineValue.length + TEXT_NEW_LINE_SEPARATOR.length;
-        // TODO: try with a text with ellipsis and see the difference in chrome and firefox
-        // TODO: If there is an issue look for an hint in `@dom-to-svg$text.ts#handleTextNode (l.93)`
+
+    const oneCharRange: Range = svgDocument.createRange();
+    oneCharRange.setStart(textElement, 0);
+    oneCharRange.setEnd(textElement, 1);
+    const oneCharBounds: DOMRect = oneCharRange.getBoundingClientRect();
+
+    const textRange: Range = svgDocument.createRange();
+    textRange.setStart(textElement, 0);
+    textRange.setEnd(textElement, textElement.nodeValue?.length ?? 0);
+    const textBounds: DOMRect = textRange.getBoundingClientRect();
+
+    const isMultiline = textBounds.height > oneCharBounds.height;
+    if (!isMultiline) {
+      this.handleTextLine(svgTextElement, textContent, textBounds, styles, svgDocument);
+    } else {
+      const lineRanges: Range[] = this.computeLineRanges(textContent, textElement, oneCharBounds.height, svgDocument);
+
+      lineRanges.forEach((lineRange) => {
+        const lineBounds: DOMRect = lineRange.getBoundingClientRect();
+        const lineTextContent = lineRange.toString();
+        if (lineTextContent) {
+          this.handleTextLine(svgTextElement, lineTextContent, lineBounds, styles, svgDocument);
+        }
       });
     }
     return svgTextElement;
+  }
+
+  private handleTextLine(
+    svgTextElement: SVGTextElement,
+    textContent: string,
+    textBounds: DOMRect,
+    parentStyles: CSSStyleDeclaration,
+    svgDocument: XMLDocument
+  ): void {
+    const tabSize = parseInt(parentStyles.tabSize, 10);
+    const textSpan: SVGTSpanElement = svgDocument.createElementNS(svgNamespace, 'tspan');
+    // TODO: try with a value with many white-space, if it works, use white-space css property
+    textSpan.setAttribute('xml:space', 'preserve');
+    // SVG does not support tabs in text. Tabs get rendered as one space character. Convert the
+    // tabs to spaces according to tab-size instead.
+    // Ideally we would keep the tab and create offset tspans.
+    // TODO: Test with a value containing a tab character (\t)
+    textSpan.textContent = textContent.replace(/\t/g, ' '.repeat(tabSize));
+    textSpan.setAttribute('x', textBounds.x.toString());
+    textSpan.setAttribute('y', textBounds.bottom.toString()); // intentionally bottom because of dominant-baseline setting
+    textSpan.setAttribute('textLength', textBounds.width.toString());
+    svgTextElement.append(textSpan);
+  }
+
+  /**
+   * Compute the ranges of each line in a text element.
+   * We suppose the text element is multiline because we first verified that its height is greater than the height of one character.
+   *
+   * Character by character until the whole text content has been processed, tests if the height of the range is greater than the height of one character.
+   * When it becomes greater, we know we have a line break, thus we store the range and start a new one.
+   * Before storing the range, we trim the end of the range to remove any space at the end of the line.
+   */
+  private computeLineRanges(
+    textContent: string,
+    textElement: Text,
+    oneCharHeight: number,
+    svgDocument: XMLDocument
+  ): Range[] {
+    const lineRanges: Range[] = [];
+    let i = 0;
+    while (i < textContent.length) {
+      const lineRange: Range = svgDocument.createRange();
+      lineRange.setStart(textElement, i);
+      let shouldSwitchLine = false;
+      let j = i + 1;
+      do {
+        lineRange.setEnd(textElement, j);
+        const lineBounds: DOMRect = lineRange.getBoundingClientRect();
+        if (lineBounds.height > oneCharHeight) {
+          // We have a line break, update the range end to the previous character
+          lineRange.setEnd(textElement, --j);
+          shouldSwitchLine = true;
+        } else if (j >= textContent.length) {
+          // We reached the end of the text content
+          shouldSwitchLine = true;
+        } else {
+          // Only increase the range when the line is not complete
+          ++j;
+        }
+      } while (!shouldSwitchLine);
+      i = j;
+      const lineLength = lineRange.toString().length;
+      const trimmedLineLength = lineRange.toString().trimEnd().length;
+      if (trimmedLineLength < lineLength) {
+        // We trimmed some spaces at the end of the line, we can remove them from the range
+        lineRange.setEnd(textElement, j - (lineLength - trimmedLineLength));
+      }
+      lineRanges.push(lineRange);
+    }
+    return lineRanges;
   }
 
   private copyTextStyles(styles: CSSStyleDeclaration, svgElement: SVGElement): void {
