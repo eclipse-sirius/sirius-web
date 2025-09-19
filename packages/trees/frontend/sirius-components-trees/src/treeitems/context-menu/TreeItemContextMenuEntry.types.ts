@@ -25,4 +25,5 @@ export interface TreeItemContextMenuComponentProps {
   key: string;
   expanded: string[];
   maxDepth: number;
+  selectedTreeItemIds: string[];
 }
