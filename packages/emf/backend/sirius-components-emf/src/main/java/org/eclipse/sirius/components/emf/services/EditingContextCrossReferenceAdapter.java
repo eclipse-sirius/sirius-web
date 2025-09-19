@@ -70,7 +70,7 @@ public class EditingContextCrossReferenceAdapter extends ECrossReferenceAdapter 
         }
 
         // clean the crossRefererenceAdapter
-        this.unsetTarget(eObject);
+        this.removeAdapter(eObject);
     }
 
     private void handleRemoveResource(Resource resource) {
@@ -84,7 +84,7 @@ public class EditingContextCrossReferenceAdapter extends ECrossReferenceAdapter 
         }
 
         // clean the crossRefererenceAdapter
-        this.unsetTarget(resource);
+        this.removeAdapter(resource);
     }
 
     private void clearReferencesTo(EObject referencedObject) {
