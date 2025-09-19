@@ -102,14 +102,22 @@ export const PaletteAppearanceSection = ({
   if (isFreeFormNode(diagramElement)) {
     if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
       paletteAppearanceSectionComponents.push(
-        <RectangularNodeAppearanceSection diagramElementId={diagramElement.id} />
+        <RectangularNodeAppearanceSection
+          diagramElementId={diagramElement.id}
+          key={'paletteAppearanceSectionComponents_RectangularNodeAppearanceSection'}
+        />
       );
     }
     if (diagramElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
       paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={diagramElement.id} />);
     }
   } else if (isEdgeElement(diagramElement) && diagramElement.data) {
-    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={diagramElement.id} />);
+    paletteAppearanceSectionComponents.push(
+      <EdgeAppearanceSection
+        diagramElementId={diagramElement.id}
+        key={'paletteAppearanceSectionComponents_EdgeAppearanceSection'}
+      />
+    );
   }
 
   return (
