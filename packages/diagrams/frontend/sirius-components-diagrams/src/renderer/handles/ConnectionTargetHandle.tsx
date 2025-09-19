@@ -40,7 +40,7 @@ export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandlePr
 
   const shouldRender = useMemo(() => {
     return isConnectionInProgress() || isReconnectionInProgress();
-  }, [isConnectionInProgress, isReconnectionInProgress]);
+  }, [isConnectionInProgress(), isReconnectionInProgress()]);
 
   useRefreshTargetHandles(nodeId, shouldRender);
 
