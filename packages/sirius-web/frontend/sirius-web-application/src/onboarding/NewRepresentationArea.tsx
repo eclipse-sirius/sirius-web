@@ -22,13 +22,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { NewDocumentAreaState } from './NewDocumentArea.types';
 import {
   GQLCreateRepresentationData,
   GQLCreateRepresentationInput,
   GQLCreateRepresentationVariables,
   GQLErrorPayload,
   NewRepresentationAreaProps,
+  NewRepresentationAreaState,
 } from './NewRepresentationArea.types';
 
 const useNewRepresentationAreaStyles = makeStyles()((theme) => ({
@@ -70,7 +70,7 @@ export const NewRepresentationArea = ({
   representationDescriptions,
   readOnly,
 }: NewRepresentationAreaProps) => {
-  const [state, setState] = useState<NewDocumentAreaState>({
+  const [state, setState] = useState<NewRepresentationAreaState>({
     message: null,
   });
   const { classes } = useNewRepresentationAreaStyles();

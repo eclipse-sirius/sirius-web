@@ -146,3 +146,12 @@ export {
 } from './views/project-settings/ProjectSettingsView.types';
 export * from './views/project-settings/ProjectSettingsViewExtensionPoints';
 export { UploadProjectView } from './views/upload-project/UploadProjectView';
+export { NewDocumentArea } from './onboarding/NewDocumentArea';
+export { type NewDocumentAreaProps, type EditingContextAction } from './onboarding/NewDocumentArea.types';
+export { NewRepresentationArea } from './onboarding/NewRepresentationArea';
+export {
+  type NewRepresentationAreaProps,
+  type RepresentationDescriptionMetadata,
+} from './onboarding/NewRepresentationArea.types';
+export { RepresentationsArea } from './onboarding/RepresentationsArea';
+export { type RepresentationAreaProps } from './onboarding/RepresentationsArea.types';
