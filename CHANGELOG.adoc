@@ -65,6 +65,7 @@ Instead of creating an EObject instance of the EClass in the EPackage previously
 This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
+//TODO
 
 
 === Dependency update
@@ -182,6 +183,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5487[#5487] [diagram] Use the mouse position instead of the dragged node one to compute the drop position.
 - https://github.com/eclipse-sirius/sirius-web/issues/5504[#5504] [diagram] Reduce the size of the creation handles when creating an edge from another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [diagram] The `diagramPaletteToolExtensionPoint` has been renamed to `paletteQuickToolExtensionPoint` and has now no coupling with XYFlow types, see breaking change section for more details.
 
 == v2025.8.0
 

@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramPaletteToolComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import Slideshow from '@mui/icons-material/Slideshow';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -31,11 +32,13 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
+export const PapayaComponentLabelDetailToolContribution = ({
+  representationElementId,
+}: PaletteToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const { classes } = useToolStyle();
   const nodes = useNodes<Node<NodeData>>();
-  const targetedNode = nodes.find((node) => node.id === diagramElementId);
+  const targetedNode = nodes.find((node) => node.id === representationElementId);
   if (
     !targetedNode ||
     targetedNode.data.targetObjectKind !== 'siriusComponents://semantic?domain=papaya&entity=Component'

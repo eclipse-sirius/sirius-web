@@ -12,17 +12,18 @@
  *******************************************************************************/
 
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPaletteToolContributionProps } from './DiagramPaletteToolContribution.types';
+import { PaletteQuickToolContributionProps } from './DiagramPaletteToolContribution.types';
 
 /**
  * Extension point for diagram palette tools.
  *
- * This extension point allows the addition of custom tools to the diagram palette.
+ * This extension point allows the addition of custom quick tools to the diagram palette.
  * Each contribution can define how a tool should be rendered and behave.
+ * It was renamed in v2025.10.0 from diagramPaletteToolExtensionPoint to paletteQuickToolExtensionPoint
  *
  * @since v2024.9.0
  */
-export const diagramPaletteToolExtensionPoint: DataExtensionPoint<Array<DiagramPaletteToolContributionProps>> = {
+export const paletteQuickToolExtensionPoint: DataExtensionPoint<Array<PaletteQuickToolContributionProps>> = {
   identifier: 'diagramPalette#tool',
   fallback: [],
 };

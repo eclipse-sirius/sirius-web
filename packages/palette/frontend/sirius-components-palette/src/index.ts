@@ -11,11 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export type {
+  PaletteQuickToolContributionProps,
+  PaletteToolContributionComponentProps,
+} from './extensions/DiagramPaletteToolContribution.types';
+export { paletteQuickToolExtensionPoint } from './extensions/DiagramPaletteToolExtensionPoints';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,
   PaletteExtensionSectionProps,
 } from './PaletteExtensionSection.types';
+export { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 export { PaletteSearchField } from './search/PaletteSearchField';
 export { PaletteSearchResult } from './search/PaletteSearchResult';
 export { ToolListItem } from './tool-list-item/ToolListItem';
