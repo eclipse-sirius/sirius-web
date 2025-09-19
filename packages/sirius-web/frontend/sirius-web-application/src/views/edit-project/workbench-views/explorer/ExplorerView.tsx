@@ -14,6 +14,7 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   SelectionEntry,
+  SelectionTarget,
   useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
@@ -30,6 +31,7 @@ import {
   useTreeFilters,
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import { Theme } from '@mui/material/styles';
 import {
   ForwardedRef,
@@ -85,13 +87,43 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       singleTreeItemSelected: null,
     });
 
+    // If we are requested to reveal the global selection, we need to compute the tree path to expand
+    const { getTreePath, data: treePathData } = useTreePath();
+
+    const localSelectionKey: string = state.selectedTreeItemIds.sort().join(':');
+
+    const revealLocalSelection = useCallback(() => {
+      if (state.tree && state.selectedTreeItemIds.length > 0) {
+        const variables: GQLGetTreePathVariables = {
+          editingContextId,
+          treeId: state.tree.id,
+          selectionEntryIds: state.selectedTreeItemIds,
+        };
+        getTreePath({ variables });
+      }
+    }, [editingContextId, localSelectionKey, state.tree, getTreePath]);
+
+    const explorerViewSelectionTarget: SelectionTarget = {
+      viewId: id,
+      label: 'Explorer View',
+      icon: <AccountTreeIcon />,
+      applySelection: (selection: Selection) => {
+        console.log('ExplorerView.applySelection', selection);
+        setState((prevState) => ({
+          ...prevState,
+          selectedTreeItemIds: selection.entries.map((entry) => entry.id),
+        }));
+        revealLocalSelection();
+      },
+    };
+
     useImperativeHandle(
       ref,
       () => {
         return {
           id,
           getWorkbenchViewConfiguration: () => {
-            return {};
+            return { selectionTarget: explorerViewSelectionTarget };
           },
         };
       },
@@ -176,9 +208,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     }, [treeElement]);
 
     const { selection, setSelection } = useSelection();
-
-    // If we are requested to reveal the global selection, we need to compute the tree path to expand
-    const { getTreePath, data: treePathData } = useTreePath();
 
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)
