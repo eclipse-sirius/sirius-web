@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,14 +46,16 @@ export const useDelete = (): UseDeleteValue => {
   >(deleteFromDiagramMutation);
 
   const deleteDiagramElements = (editingContextId: string, diagramId: string, nodeIds: string[], edgeIds: string[]) => {
-    const input: GQLDeleteFromDiagramInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: diagramId,
-      nodeIds,
-      edgeIds,
-    };
-    rawDeleteFromDiagram({ variables: { input } });
+    if (nodeIds.length > 0 || edgeIds.length > 0) {
+      const input: GQLDeleteFromDiagramInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        nodeIds,
+        edgeIds,
+      };
+      rawDeleteFromDiagram({ variables: { input } });
+    }
   };
 
   useReporting(rawDeleteFromDiagramResult, (data: GQLDeleteFromDiagramData) => data.deleteFromDiagram);
