@@ -24,6 +24,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5646[#5646] [diagram] Don't invoke deletion command for empty diagram selection
 
 
 === New Features
