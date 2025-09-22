@@ -23,6 +23,10 @@ export class Diagram {
     });
   }
 
+  public pullWorkbenchSelection() {
+    cy.getByTestId('diagram-reveal-selection').click();
+  }
+
   public getLabel(diagramLabel: string, label: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).findByTestId(`Label - ${label}`);
   }

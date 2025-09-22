@@ -39,6 +39,7 @@ describe('Diagram - edges', () => {
       explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
+      diagram.pullWorkbenchSelection();
       cy.getByTestId('bend-point-0').should('exist');
       cy.getByTestId('bend-point-1').should('exist');
       cy.getByTestId('temporary-moving-line-1').should('exist');
@@ -50,6 +51,7 @@ describe('Diagram - edges', () => {
       explorer.expandWithDoubleClick('DataSource1');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
+      diagram.pullWorkbenchSelection();
       cy.getByTestId('bend-point-2').should('exist');
       cy.getByTestId('bend-point-2').click();
       cy.getByTestId('bend-point-4').should('not.exist');
