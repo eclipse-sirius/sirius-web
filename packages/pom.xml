@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2022, 2024 Obeo.
+ Copyright (c) 2022, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -22,6 +22,10 @@
 	<name>sirius-components</name>
 	<description>Sirius Components</description>
 	<packaging>pom</packaging>
+
+	<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/sirius-components-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
 
 	<distributionManagement>
 		<repository>
@@ -69,6 +73,20 @@
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>sonar</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.sonarsource.scanner.maven</groupId>
+							<artifactId>sonar-maven-plugin</artifactId>
+							<version>5.3.0.6276</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
 		<profile>
 			<id>verify-iplog</id>
 			<build>
