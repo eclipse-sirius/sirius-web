@@ -43,7 +43,7 @@ export const ExportImageButton = () => {
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {
-      new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+      new Promise((resolve) => setTimeout(resolve, 5000)).then(() => {
         if (urlParams.get('mode') === 'png-viewer') {
           exportToPNG((dataUrl) => {
             var img = new Image();
