@@ -315,8 +315,6 @@ export const useDropNode = (): UseDropNodeValue => {
           cancelDrop(draggedNode);
         }
 
-        resetDrop();
-
         setNodes((previousNodes) =>
           previousNodes.map((previousNode) => {
             if (previousNode.data.isDropNodeCandidate || previousNode.data.isDropNodeTarget) {
@@ -339,6 +337,7 @@ export const useDropNode = (): UseDropNodeValue => {
           })
         );
       }
+      resetDrop();
     },
     [droppableOnDiagram, initialPosition, getNodes]
   );

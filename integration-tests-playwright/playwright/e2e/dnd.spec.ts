@@ -91,4 +91,38 @@ test.describe('diagram - drag and drop', () => {
     expect(reactFlowXYPositionAfter.x).not.toBe(reactFlowXYPositionBefore.x);
     expect(requestTriggered).toBe(false);
   });
+
+  test('when dragging a node, then not compatible node style changed', async ({ page }) => {
+    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
+
+    const opacityBefore = await entity1Locator.evaluate((node) => {
+      return window.getComputedStyle(node).getPropertyValue('opacity');
+    });
+    expect(opacityBefore).toBe('1');
+
+    const entity2PlaywrightNode = new PlaywrightNode(page, 'Entity2-outside');
+    const xyPosition = await entity2PlaywrightNode.getDOMXYPosition();
+
+    await entity2PlaywrightNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition.x + 25, xyPosition.y + 25, { steps: 10 });
+
+    await page.waitForFunction(
+      () => {
+        const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
+        return node && window.getComputedStyle(node).getPropertyValue('opacity') === '0.4';
+      },
+      { timeout: 2000 }
+    );
+
+    await page.mouse.up();
+
+    await page.waitForFunction(
+      () => {
+        const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
+        return node && window.getComputedStyle(node).getPropertyValue('opacity') === '1';
+      },
+      { timeout: 2000 }
+    );
+  });
 });

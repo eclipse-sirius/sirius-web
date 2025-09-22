@@ -109,7 +109,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5519[#5519] [diagram] Fix an issue where ending a connection on a creation handle could make it impossible to start a new connection
 - https://github.com/eclipse-sirius/sirius-web/issues/5540[#5540] [diagram] Preserve label positions when importing a diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/5547[#5547] [diagram] Fix an issue where the internal handle of a node could be out of sync with the displayed handle after moving an edge segment.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5535[#5535] [diagram] Prevent node style to be faded after drag and drop
 
 === New Features
 
