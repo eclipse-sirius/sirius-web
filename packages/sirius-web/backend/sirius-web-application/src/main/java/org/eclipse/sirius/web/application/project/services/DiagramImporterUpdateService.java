@@ -355,16 +355,18 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
     }
 
     private void handleEdges(DiagramContext diagramContext, List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
-        int count = 0;
+        Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
         // Create edges on edges last
         for (Edge oldEdge : oldEdges) {
             if (semanticElementsIdMappings.get(oldEdge.getSourceId()) != null && semanticElementsIdMappings.get(oldEdge.getTargetId()) != null) {
                 var oldEdgeId = oldEdge.getId();
+                var edgeIdPrefix = this.computeEdgeIdPrefix(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()));
+                int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
                 elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
                 diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
-                count++;
+                edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
             }
         }
 
@@ -380,13 +382,20 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 if (newTargetId == null) {
                     newTargetId = edgeElementOldNewIds.get(oldEdge.getTargetId());
                 }
+                var edgeIdPrefix = this.computeEdgeIdPrefix(oldEdge.getDescriptionId(), newSourceId, newTargetId);
+                int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), newSourceId, newTargetId, count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
                 elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
                 diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
-                count++;
+                edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
             }
         }
+    }
+
+    private String computeEdgeIdPrefix(String edgeDescriptionId, String sourceId, String targetId) {
+        String rawIdentifier = edgeDescriptionId + ": " + sourceId + " --> " + targetId;
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
     private String computeEdgeId(String edgeDescriptionId, String sourceId, String targetId, int count) {
