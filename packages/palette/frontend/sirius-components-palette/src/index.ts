@@ -16,6 +16,7 @@ export type {
   PaletteToolContributionComponentProps,
 } from './extensions/DiagramPaletteToolContribution.types';
 export { paletteQuickToolExtensionPoint } from './extensions/DiagramPaletteToolExtensionPoints';
+export { Palette } from './Palette';
 export type {
   GQLPalette,
   GQLPaletteDivider,

@@ -17,6 +17,10 @@ export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
 
+export interface PaletteState {
+  searchToolValue: string;
+}
+
 export interface GQLTool {
   id: string;
   label: string;
@@ -33,13 +37,29 @@ export interface GQLToolVariable {
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface PaletteProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
+  paletteXYPosition: XYPosition;
+  representationElementId: string;
+  palette: GQLPalette;
+  lastToolInvoked: GQLTool | null;
+  onToolClick: (
+    toolExecutedPosition: XYPosition,
+    representationElementId: string,
+    onDirectEditClick: () => void,
+    tool: GQLTool
+  ) => void;
   onDirectEditClick: () => void;
   onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  extensions: React.ReactElement<PaletteExtensionSectionProps>[];
+  //The props below are here to ensure compatibility with react draggable
+  style?: React.CSSProperties;
+  className?: string | undefined;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement> | undefined;
+}
+
+export interface XYPosition {
+  x: number;
+  y: number;
 }
 
 export interface PaletteStyleProps {

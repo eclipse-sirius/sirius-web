@@ -17,8 +17,7 @@ import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 export interface PaletteToolListProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
-  onBackToMainList: () => void;
-  diagramElementId: string;
+  representationElementId: string;
   lastToolInvoked: GQLTool | null;
   children: React.ReactElement<PaletteExtensionSectionProps>[];
 }

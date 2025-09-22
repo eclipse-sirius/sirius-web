@@ -79,8 +79,7 @@ const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
 export const PaletteToolList = ({
   palette,
   onToolClick,
-  onBackToMainList,
-  diagramElementId,
+  representationElementId,
   lastToolInvoked,
   children,
 }: PaletteToolListProps) => {
@@ -103,7 +102,6 @@ export const PaletteToolList = ({
 
   const handleBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
-    onBackToMainList();
   };
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
@@ -194,7 +192,7 @@ export const PaletteToolList = ({
               unmountOnExit
               mountOnEnter>
               <div className={classes.toolList}>
-                <SectionComponent onBackToMainList={handleBackToMainList} diagramElementId={diagramElementId} />
+                <SectionComponent onBackToMainList={handleBackToMainList} diagramElementId={representationElementId} />
               </div>
             </Slide>
           );

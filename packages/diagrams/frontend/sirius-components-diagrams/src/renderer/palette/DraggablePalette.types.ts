@@ -18,7 +18,7 @@ export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
 
-export interface PaletteProps {
+export interface DraggablePaletteProps {
   x: number;
   y: number;
   diagramElementId: string;
@@ -28,12 +28,11 @@ export interface PaletteProps {
   children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
-export interface PaletteState {
-  searchToolValue: string;
+export interface DraggablePaletteState {
   controlledPosition: XYPosition;
 }
 
-export interface PaletteStyleProps {
+export interface DraggablePaletteStyleProps {
   paletteWidth: string;
   paletteHeight: string;
 }

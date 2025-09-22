@@ -15,7 +15,7 @@ import { memo, useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
-import { Palette } from './Palette';
+import { DraggablePalette } from './DraggablePalette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
 
@@ -41,7 +41,7 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
   return isOpened && x && y ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
-        <Palette
+        <DraggablePalette
           x={x}
           y={y}
           diagramElementId={diagramElementId}

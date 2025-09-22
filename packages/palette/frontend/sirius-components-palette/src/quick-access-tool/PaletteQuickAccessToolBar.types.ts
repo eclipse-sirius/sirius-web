@@ -16,7 +16,7 @@ import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 export interface PaletteQuickAccessToolBarProps {
   x: number;
   y: number;
-  diagramElementId: string;
+  representationElementId: string;
   onToolClick: (tool: GQLTool) => void;
   quickAccessTools: GQLTool[];
 }

@@ -430,7 +430,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     edges: edges,
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
-    onKeyDown: onKeyDown,
+    onKeyDown: onKeyDown, // direct edit should probably not be handled there
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,

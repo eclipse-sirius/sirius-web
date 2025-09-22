@@ -20,9 +20,9 @@ import {
 import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { useEffect, useState } from 'react';
 import { useDialog } from '../../dialog/useDialog';
+import { GQLSingleClickOnDiagramElementTool } from '../palette/DraggablePalette.types';
 import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
-import { GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,

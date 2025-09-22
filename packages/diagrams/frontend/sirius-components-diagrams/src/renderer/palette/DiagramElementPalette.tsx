@@ -20,7 +20,7 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
-import { Palette } from './Palette';
+import { DraggablePalette } from './DraggablePalette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
@@ -78,7 +78,7 @@ export const DiagramElementPalette = memo(
     return isOpened && x && y && !currentlyEditedLabelId ? (
       <PalettePortal>
         <div onKeyDown={onKeyDown}>
-          <Palette
+          <DraggablePalette
             x={x}
             y={y}
             diagramElementId={diagramElementId}
@@ -86,7 +86,7 @@ export const DiagramElementPalette = memo(
             onDirectEditClick={handleDirectEditClick}
             onClose={onClose}>
             {extensionSections}
-          </Palette>
+          </DraggablePalette>
         </div>
       </PalettePortal>
     ) : null;
