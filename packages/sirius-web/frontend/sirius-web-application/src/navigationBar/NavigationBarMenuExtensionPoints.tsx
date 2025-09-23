@@ -14,6 +14,7 @@ import { ComponentExtensionPoint, DataExtensionPoint } from '@eclipse-sirius/sir
 import { Help } from './Help';
 import {
   NavigationBarMenuContainerProps,
+  NavigationBarMenuHeaderProps,
   NavigationBarMenuIconProps,
   NavigationBarMenuItemProps,
 } from './NavigationBarMenu.types';
@@ -45,7 +46,7 @@ export const navigationBarMenuContainerExtensionPoint: ComponentExtensionPoint<N
  *
  * @since v2025.10.0
  */
-export const navigationBarMenuHeaderExtensionPoint: ComponentExtensionPoint<NavigationBarMenuContainerProps> = {
+export const navigationBarMenuHeaderExtensionPoint: ComponentExtensionPoint<NavigationBarMenuHeaderProps> = {
   identifier: 'navigationBarMenu#header',
   FallbackComponent: () => null,
 };
