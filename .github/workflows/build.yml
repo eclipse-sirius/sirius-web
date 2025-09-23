@@ -222,6 +222,7 @@ jobs:
       - name: Install Playwright Browsers
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
         run: npx playwright install --with-deps
+        working-directory: integration-tests-playwright
 
       - name: Run Playwright tests against the sirius-web application
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
