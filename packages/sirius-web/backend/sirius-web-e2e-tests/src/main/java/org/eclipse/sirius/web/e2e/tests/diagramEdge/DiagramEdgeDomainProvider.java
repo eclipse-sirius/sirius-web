@@ -50,18 +50,32 @@ public class DiagramEdgeDomainProvider implements IDomainProvider {
         domain.getTypes().add(entity1);
         Entity entity2 = this.createContainmentChild(root, "Entity2", "entity2s");
         domain.getTypes().add(entity2);
+
         Entity entity3 = this.createContainmentChild(root, "E1toE2A", "toEdge1");
         domain.getTypes().add(entity3);
         Entity entity4 = this.createContainmentChild(root, "E1toE2B", "toEdge2");
         domain.getTypes().add(entity4);
 
+        Entity entity5 = this.createContainmentChild(root, "EdgeToE2", "toEdge3");
+        domain.getTypes().add(entity5);
+
+        Entity entity6 = this.createContainmentChild(root, "E2ToEdge1A", "toEdge4");
+        domain.getTypes().add(entity6);
+        Entity entity7 = this.createContainmentChild(root, "E2ToEdge1B", "toEdge5");
+        domain.getTypes().add(entity7);
+
         this.addAttribute(entity1, "name", DataType.STRING);
         this.addAttribute(entity2, "name", DataType.STRING);
         this.addAttribute(entity3, "name", DataType.STRING);
         this.addAttribute(entity4, "name", DataType.STRING);
+        this.addAttribute(entity5, "name", DataType.STRING);
+        this.addAttribute(entity6, "name", DataType.STRING);
+        this.addAttribute(entity7, "name", DataType.STRING);
         this.addSourceTargetRelation(entity3, entity1, entity2);
         this.addSourceTargetRelation(entity4, entity1, entity2);
-
+        this.addSourceTargetRelation(entity5, entity3, entity2);
+        this.addSourceTargetRelation(entity6, entity2, entity3);
+        this.addSourceTargetRelation(entity7, entity2, entity3);
 
         return List.of(domain);
     }
