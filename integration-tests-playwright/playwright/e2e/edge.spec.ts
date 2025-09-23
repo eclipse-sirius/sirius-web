@@ -80,4 +80,53 @@ test.describe('edge', () => {
     const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();
     expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBe(targetNodeBox.x + targetNodeBox.width / 2);
   });
+
+  test('when moving a node, then custom handle are preserved', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 200, y: 50 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
+    const box = (await lastBendingPoint.boundingBox())!;
+    await lastBendingPoint.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x - 40, box.y - 40, { steps: 2 });
+    await page.mouse.up();
+
+    await page.waitForFunction(
+      () => {
+        const parent = document.querySelector('[data-testid="FreeForm - Processor1"]');
+        if (!parent) return false;
+
+        const divHandle = parent.querySelector('.react-flow__handle-left') as HTMLElement;
+        return divHandle && divHandle.style.top !== 'auto';
+      },
+      { timeout: 2000 }
+    );
+
+    const divBefore = await page.getByTestId('FreeForm - Processor1').locator('.react-flow__handle-left').first();
+    const topValueBefore = await divBefore.evaluate((el) => el.style.top);
+
+    const playwrightProcessorNode = new PlaywrightNode(page, 'Processor1');
+    await playwrightProcessorNode.move({ x: 25, y: 25 });
+
+    await page.waitForFunction(
+      ({ expectedTopValue }) => {
+        const parent = document.querySelector('[data-testid="FreeForm - Processor1"]');
+        if (!parent) return false;
+
+        const divHandle = parent.querySelector(
+          '.react-flow__handle-left:not([data-handleid^="creationhandle"])'
+        ) as HTMLElement;
+        return divHandle && divHandle.style.top === expectedTopValue;
+      },
+      { expectedTopValue: topValueBefore },
+      { timeout: 2000 }
+    );
+  });
 });
