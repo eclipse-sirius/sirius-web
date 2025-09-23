@@ -539,7 +539,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-        <MiniMap pannable zoomable zoomStep={2} />
+        <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
       </>
     ),
   };

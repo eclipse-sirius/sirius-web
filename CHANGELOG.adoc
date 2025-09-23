@@ -215,6 +215,7 @@ This includes any resource that is not persisted, not only the libraries.
 The priority order to identify the graphical element to select in this case is: nodes before edges, parent (container) nodes before their children (sub-nodes and border nodes), and finally the order in which the node descriptions are defined in the diagram description.
 When the user _explictly_ asks to synchronize the diagram's selection with the workbench (through the new diagram panel button) or from a another view (e.g. _Show in_ action from the Explorer), if a semantic element to select appears multiple times on a diagram, they are all selected unless their ancestors (direct or indirect parent/ancestor node) represents the same semantic element.
 In other words, all top-level nodes corresponding to a semantic element to select are selected, but not their sub-nodes which target the same semantic element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5545[#5545] [diagram] Reduce the size and opacity of the Minimap
 
 
 
