@@ -134,16 +134,19 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var diagramContext = new DiagramContext(newRepresentation.get());
                 Map<String, String> nodeElementOldNewIds = new HashMap<>();
                 Map<String, String> edgeElementOldNewIds = new HashMap<>();
+                Map<String, String> labelElementOldNewIds = new HashMap<>();
                 Map<String, ViewModifier> elementIdToViewModifier = new HashMap<>();
 
                 this.handleNodes(oldRepresentation.getNodes(), nodeElementOldNewIds, elementIdToViewModifier, diagramDescription.get(), newRepresentationId, diagramContext, semanticElementsIdMappings);
-                this.handleEdges(diagramContext, oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, elementIdToViewModifier, semanticElementsIdMappings);
+                this.handleEdges(oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, elementIdToViewModifier, semanticElementsIdMappings);
+                this.handleLabels(oldRepresentation.getNodes(), oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, labelElementOldNewIds);
+                this.handleAppearance(oldRepresentation.getNodes(), oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, labelElementOldNewIds, diagramContext);
 
                 Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
                 Map<String, EdgeLayoutData> edgeLayoutData = new HashMap<>();
                 Map<String, LabelLayoutData> labelLayoutData = new HashMap<>();
                 var newLayoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
-                this.handleLayout(newLayoutData, oldRepresentation.getLayoutData(), nodeElementOldNewIds, edgeElementOldNewIds);
+                this.handleLayout(newLayoutData, oldRepresentation.getLayoutData(), nodeElementOldNewIds, edgeElementOldNewIds, labelElementOldNewIds);
 
                 var updatedDiagram = this.diagramCreationService.refresh(editingContext.get(), diagramContext)
                         .flatMap(diagram -> this.handleViewModifier(editingContext.get(), diagram, elementIdToViewModifier));
@@ -187,7 +190,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         return this.diagramCreationService.refresh(editingContext, diagramContext);
     }
 
-    private void handleLayout(DiagramLayoutData newLayoutData, DiagramLayoutData oldLayoutData, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds) {
+    private void handleLayout(DiagramLayoutData newLayoutData, DiagramLayoutData oldLayoutData, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, String> labelElementOldNewIds) {
         var oldNodeLayoutData = oldLayoutData.nodeLayoutData();
 
         oldNodeLayoutData.keySet().forEach(key -> {
@@ -204,6 +207,15 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var oldLayoutEdgeData = oldEdgeLayoutData.get(key);
                 var newEdgeLayoutData = new EdgeLayoutData(edgeElementOldNewIds.get(key), oldLayoutEdgeData.bendingPoints(), oldLayoutEdgeData.edgeAnchorLayoutData());
                 newLayoutData.edgeLayoutData().put(edgeElementOldNewIds.get(key), newEdgeLayoutData);
+            }
+        });
+
+        var oldLabelLayoutData = oldLayoutData.labelLayoutData();
+        oldLabelLayoutData.keySet().forEach(key -> {
+            if (labelElementOldNewIds.get(key) != null) {
+                var oldLayoutLabelData = oldLabelLayoutData.get(key);
+                var newLabelLayout = new LabelLayoutData(labelElementOldNewIds.get(key), oldLayoutLabelData.position());
+                newLayoutData.labelLayoutData().put(labelElementOldNewIds.get(key), newLabelLayout);
             }
         });
     }
@@ -239,8 +251,6 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         nodeElementOldNewIds.put(oldNodeId, newNodeId);
         elementIdToViewModifier.put(newNodeId, oldNode.getState());
 
-        diagramContext.diagramEvents().addAll(this.getNodeAppearanceEvents(oldNode, newNodeId, parentId));
-
         oldNode.getChildNodes().forEach(childNode ->
                 this.handleNode(diagramDescription, childNode, newNodeId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
         oldNode.getBorderNodes().forEach(childNode ->
@@ -251,7 +261,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription, containmentKind, targetObjectId);
     }
 
-    private List<IDiagramEvent> getNodeAppearanceEvents(Node oldNode, String newNodeId, String parentId) {
+    private List<IDiagramEvent> getNodeAppearanceEvents(Node oldNode, String newNodeId, Map<String, String> labelElementOldNewIds) {
         List<IDiagramEvent> diagramEvents = new ArrayList<>();
 
         if (oldNode.getCustomizedStyleProperties() != null && !oldNode.getCustomizedStyleProperties().isEmpty()) {
@@ -269,13 +279,13 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         }
 
         if (oldNode.getInsideLabel() != null && oldNode.getInsideLabel().getCustomizedStyleProperties() != null && !oldNode.getInsideLabel().getCustomizedStyleProperties().isEmpty()) {
-            var newInsideLabelNodeId = this.computeInsideLabelId(newNodeId);
+            var newInsideLabelNodeId = labelElementOldNewIds.get(oldNode.getInsideLabel().getId());
             this.addLabelAppearanceEvents(diagramEvents, newInsideLabelNodeId, oldNode.getInsideLabel().getCustomizedStyleProperties(), oldNode.getInsideLabel().getStyle());
         }
 
         for (OutsideLabel outsideLabel : oldNode.getOutsideLabels()) {
             if (outsideLabel.customizedStyleProperties() != null && !outsideLabel.customizedStyleProperties().isEmpty()) {
-                var newOutsideLabelId = this.computeOutsideLabelId(newNodeId, outsideLabel.outsideLabelLocation().name());
+                var newOutsideLabelId = labelElementOldNewIds.get(outsideLabel.id());
                 this.addLabelAppearanceEvents(diagramEvents, newOutsideLabelId, outsideLabel.customizedStyleProperties(), outsideLabel.style());
             }
         }
@@ -305,7 +315,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         });
     }
 
-    private List<IDiagramEvent> getEdgeAppearanceEvents(Edge oldEdge, String newEdgeId) {
+    private List<IDiagramEvent> getEdgeAppearanceEvents(Edge oldEdge, String newEdgeId, Map<String, String> labelElementOldNewIds) {
         List<IDiagramEvent> diagramEvents = new ArrayList<>();
 
         if (oldEdge.getCustomizedStyleProperties() != null && !oldEdge.getCustomizedStyleProperties().isEmpty()) {
@@ -318,15 +328,15 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         }
 
         if (oldEdge.getCenterLabel() != null && oldEdge.getCenterLabel().customizedStyleProperties() != null && !oldEdge.getCenterLabel().customizedStyleProperties().isEmpty()) {
-            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX);
+            var newLabelId = labelElementOldNewIds.get(oldEdge.getCenterLabel().id());
             this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getCenterLabel().customizedStyleProperties(), oldEdge.getCenterLabel().style());
         }
         if (oldEdge.getBeginLabel() != null && oldEdge.getBeginLabel().customizedStyleProperties() != null && !oldEdge.getBeginLabel().customizedStyleProperties().isEmpty()) {
-            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX);
+            var newLabelId = labelElementOldNewIds.get(oldEdge.getBeginLabel().id());
             this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getBeginLabel().customizedStyleProperties(), oldEdge.getBeginLabel().style());
         }
         if (oldEdge.getEndLabel() != null && oldEdge.getEndLabel().customizedStyleProperties() != null && !oldEdge.getEndLabel().customizedStyleProperties().isEmpty()) {
-            var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX);
+            var newLabelId = labelElementOldNewIds.get(oldEdge.getEndLabel().id());
             this.addLabelAppearanceEvents(diagramEvents, newLabelId, oldEdge.getEndLabel().customizedStyleProperties(), oldEdge.getEndLabel().style());
         }
 
@@ -345,7 +355,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         };
     }
 
-    private void handleEdges(DiagramContext diagramContext, List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
+    private void handleEdges(List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
         Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
         // Create edges on edges last
         for (Edge oldEdge : oldEdges) {
@@ -356,7 +366,6 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
                 elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
-                diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
                 edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
             }
         }
@@ -378,10 +387,57 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), newSourceId, newTargetId, count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
                 elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
-                diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(oldEdge, newEdgeId));
                 edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
             }
         }
+    }
+
+    private void handleLabels(List<Node> nodes, List<Edge> edges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, String> labelElementOldNewIds) {
+        nodes.forEach(node -> this.handleNodeLabels(node, nodeElementOldNewIds, labelElementOldNewIds));
+
+        edges.forEach(edge -> {
+            var newEdgeId = edgeElementOldNewIds.get(edge.getId());
+            if (edge.getCenterLabel() != null) {
+                var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX);
+                labelElementOldNewIds.put(edge.getCenterLabel().id(), newLabelId);
+            }
+            if (edge.getBeginLabel() != null) {
+                var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX);
+                labelElementOldNewIds.put(edge.getBeginLabel().id(), newLabelId);
+            }
+            if (edge.getEndLabel() != null) {
+                var newLabelId = this.computeEdgeLabelId(newEdgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX);
+                labelElementOldNewIds.put(edge.getEndLabel().id(), newLabelId);
+            }
+        });
+    }
+
+    private void handleNodeLabels(Node node, Map<String, String> nodeElementOldNewIds, Map<String, String> labelElementOldNewIds) {
+        if (node.getInsideLabel() != null) {
+            var newInsideLabelNodeId = this.computeInsideLabelId(nodeElementOldNewIds.get(node.getId()));
+            labelElementOldNewIds.put(node.getInsideLabel().getId(), newInsideLabelNodeId);
+        }
+        for (OutsideLabel outsideLabel : node.getOutsideLabels()) {
+            var newOutsideLabelId = this.computeOutsideLabelId(nodeElementOldNewIds.get(node.getId()), outsideLabel.outsideLabelLocation().name());
+            labelElementOldNewIds.put(outsideLabel.id(), newOutsideLabelId);
+        }
+        node.getChildNodes().forEach(childNode -> this.handleNodeLabels(childNode, nodeElementOldNewIds, labelElementOldNewIds));
+        node.getBorderNodes().forEach(childNode -> this.handleNodeLabels(childNode, nodeElementOldNewIds, labelElementOldNewIds));
+    }
+
+    private void handleAppearance(List<Node> nodes, List<Edge> edges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, String> labelElementOldNewIds, DiagramContext diagramContext) {
+        nodes.forEach(node -> this.handleNodeAppearance(node, nodeElementOldNewIds, labelElementOldNewIds, diagramContext));
+        edges.forEach(edge -> {
+            var newEdgeId = edgeElementOldNewIds.get(edge.getId());
+            diagramContext.diagramEvents().addAll(this.getEdgeAppearanceEvents(edge, newEdgeId, labelElementOldNewIds));
+        });
+    }
+
+    private void handleNodeAppearance(Node node, Map<String, String> nodeElementOldNewIds, Map<String, String> labelElementOldNewIds, DiagramContext diagramContext) {
+        var newNodeId = nodeElementOldNewIds.get(node.getId());
+        diagramContext.diagramEvents().addAll(this.getNodeAppearanceEvents(node, newNodeId, labelElementOldNewIds));
+        node.getChildNodes().forEach(childNode -> this.handleNodeAppearance(childNode, nodeElementOldNewIds, labelElementOldNewIds, diagramContext));
+        node.getBorderNodes().forEach(childNode -> this.handleNodeAppearance(childNode, nodeElementOldNewIds, labelElementOldNewIds, diagramContext));
     }
 
     private String computeEdgeIdPrefix(String edgeDescriptionId, String sourceId, String targetId) {
