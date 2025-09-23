@@ -10,12 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { useState, useEffect } from 'react';
+import { Edge, InternalNode, Node, Position, useUpdateNodeInternals, XYPosition } from '@xyflow/react';
+import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { getNodesUpdatedWithHandles } from '../EdgeLayout';
 import { useEditableEdgePath } from '../useEditableEdgePath';
+import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import {
   cleanBendPoint,
   determineSegmentAxis,
@@ -25,10 +27,8 @@ import {
   getMiddlePoint,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
-import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
-import { getNodesUpdatedWithHandles } from '../EdgeLayout';
+import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 
 export const useTemporaryLines = (
   edgeId: string,
@@ -48,6 +48,7 @@ export const useTemporaryLines = (
 ): UseTemporaryLinesValue => {
   const { getEdges, getNodes, setEdges, setNodes } = useStore();
   const { synchronizeEdgeLayoutData } = useEditableEdgePath();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const [middleBendingPoints, setMiddleBendingPoints] = useState<MiddlePoint[]>([]);
   const [isSourceSegment, setIsSourceSegment] = useState<boolean>(false);
@@ -103,6 +104,7 @@ export const useTemporaryLines = (
 
       setEdges(edges);
       setNodes(nodes);
+      updateNodeInternals([sourceNode.id, targetNode.id]);
       synchronizeEdgeLayoutData(edges, nodes);
       setDragInProgress(false);
     }
