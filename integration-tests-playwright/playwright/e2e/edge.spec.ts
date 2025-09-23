@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('edge', () => {
   let projectId;
