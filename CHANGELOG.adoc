@@ -107,6 +107,7 @@ The code in question now use `com.github.ben-manes.caffeine` instead, the altern
 - https://github.com/eclipse-sirius/sirius-web/issues/5457[#5457] [explorer, diagram] Fix a rendering issue where some menus could be partially obscured.
 This occured for the tree filter menu in the Explorer when a table was opened, and with the diagram filters menu which could be obscured by the right-side panel.
 - https://github.com/eclipse-sirius/sirius-web/issues/5519[#5519] [diagram] Fix an issue where ending a connection on a creation handle could make it impossible to start a new connection
+- https://github.com/eclipse-sirius/sirius-web/issues/5540[#5540] [diagram] Preserve label positions when importing a diagram
 
 === New Features
 
