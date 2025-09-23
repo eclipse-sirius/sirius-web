@@ -22,6 +22,7 @@ import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection'
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
+import { ShowInSection } from './ShowInSection';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
 export const DiagramElementPalette = memo(
@@ -67,6 +68,7 @@ export const DiagramElementPalette = memo(
       sectionComponents.push(
         <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
       );
+      sectionComponents.push(<PaletteExtensionSection component={ShowInSection} title="Show in" id="show_in" />);
 
       return sectionComponents;
     }, []);

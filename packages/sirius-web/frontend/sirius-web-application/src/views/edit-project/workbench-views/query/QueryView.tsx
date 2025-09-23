@@ -68,6 +68,7 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []

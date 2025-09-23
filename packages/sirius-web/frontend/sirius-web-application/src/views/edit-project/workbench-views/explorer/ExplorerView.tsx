@@ -85,6 +85,23 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       singleTreeItemSelected: null,
     });
 
+    // If we are requested to reveal the global selection, we need to compute the tree path to expand
+    const { getTreePath, data: treePathData } = useTreePath();
+
+    const revealLocalSelection = useCallback(
+      (selectedTreeItemIds: string[]) => {
+        if (state.tree && selectedTreeItemIds.length > 0) {
+          const variables: GQLGetTreePathVariables = {
+            editingContextId,
+            treeId: state.tree.id,
+            selectionEntryIds: selectedTreeItemIds,
+          };
+          getTreePath({ variables });
+        }
+      },
+      [editingContextId, state.tree, getTreePath]
+    );
+
     useImperativeHandle(
       ref,
       () => {
@@ -92,6 +109,14 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           id,
           getWorkbenchViewConfiguration: () => {
             return {};
+          },
+          applySelection: (selection: Selection) => {
+            const newSelectedTreeItemIds = selection.entries.map((entry) => entry.id);
+            setState((prevState) => ({
+              ...prevState,
+              selectedTreeItemIds: newSelectedTreeItemIds,
+            }));
+            revealLocalSelection(newSelectedTreeItemIds);
           },
         };
       },
@@ -176,9 +201,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     }, [treeElement]);
 
     const { selection, setSelection } = useSelection();
-
-    // If we are requested to reveal the global selection, we need to compute the tree path to expand
-    const { getTreePath, data: treePathData } = useTreePath();
 
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)

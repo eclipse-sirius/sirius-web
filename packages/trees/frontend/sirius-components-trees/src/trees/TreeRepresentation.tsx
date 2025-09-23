@@ -17,67 +17,84 @@ import {
   Selection,
   SelectionEntry,
   useSelection,
+  WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { TreeView } from '../views/TreeView';
 import { GQLTreeItem } from '../views/TreeView.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
 import { useTreeSubscription } from './useTreeSubscription';
 
-export const TreeRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
-  const [state, setState] = useState<TreeRepresentationState>({
-    expanded: [],
-    maxDepth: 1,
-  });
-  const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
+export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const [state, setState] = useState<TreeRepresentationState>({
+      expanded: [],
+      maxDepth: 1,
+    });
+    const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
 
-  const { selection, setSelection } = useSelection();
+    const { selection, setSelection } = useSelection();
 
-  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
-    setState((prevState) => ({
-      ...prevState,
-      expanded: newExpandedIds,
-      maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
-    }));
-  };
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
+      },
+      []
+    );
 
-  const onTreeItemClick = (event, item: GQLTreeItem) => {
-    if (event.ctrlKey || event.metaKey) {
-      event.stopPropagation();
-      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-      if (isItemInSelection) {
-        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-        setSelection(newSelection);
+    const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpandedIds,
+        maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
+      }));
+    };
+
+    const onTreeItemClick = (event, item: GQLTreeItem) => {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+        if (isItemInSelection) {
+          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+          setSelection(newSelection);
+        } else {
+          const { id } = item;
+          const newEntry: SelectionEntry = { id };
+          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+          setSelection(newSelection);
+        }
       } else {
         const { id } = item;
-        const newEntry: SelectionEntry = { id };
-        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-        setSelection(newSelection);
+        setSelection({ entries: [{ id }] });
       }
+    };
+    if (!tree || loading) {
+      return <RepresentationLoadingIndicator />;
     } else {
-      const { id } = item;
-      setSelection({ entries: [{ id }] });
+      return (
+        <div>
+          <TreeView
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            treeId={representationId}
+            tree={tree}
+            textToFilter={''}
+            textToHighlight={''}
+            onExpandedElementChange={onExpandedElementChange}
+            onTreeItemClick={onTreeItemClick}
+            selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+            expanded={state.expanded}
+            maxDepth={state.maxDepth}
+          />
+        </div>
+      );
     }
-  };
-  if (!tree || loading) {
-    return <RepresentationLoadingIndicator />;
-  } else {
-    return (
-      <div>
-        <TreeView
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          treeId={representationId}
-          tree={tree}
-          textToFilter={''}
-          textToHighlight={''}
-          onExpandedElementChange={onExpandedElementChange}
-          onTreeItemClick={onTreeItemClick}
-          selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
-          expanded={state.expanded}
-          maxDepth={state.maxDepth}
-        />
-      </div>
-    );
   }
-};
+);

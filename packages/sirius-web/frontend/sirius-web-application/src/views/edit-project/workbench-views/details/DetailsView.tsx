@@ -43,6 +43,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     const [state, setState] = useState<DetailsViewState>({
       form: null,
     });
+    const { selection } = useSelection();
 
     useImperativeHandle(
       ref,
@@ -52,12 +53,11 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []
     );
-
-    const { selection } = useSelection();
 
     const objectIds: string[] = selection.entries.map((entry) => entry.id);
     const skip = objectIds.length === 0;

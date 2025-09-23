@@ -46,6 +46,7 @@ export const RevealSelectionButton = ({ editingContextId, onClick }: RevealSelec
         <IconButton
           size="small"
           aria-label="reveal selection elements"
+          color="inherit"
           onClick={onClick}
           data-testid="reveal-selection-button">
           <LocationSearchingIcon />

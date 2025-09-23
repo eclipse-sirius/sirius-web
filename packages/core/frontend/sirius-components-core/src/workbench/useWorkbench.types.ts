@@ -12,9 +12,10 @@
  *******************************************************************************/
 
 import { WorkbenchPanelHandle } from './Panels.types';
-import { RepresentationMetadata } from './Workbench.types';
+import { RepresentationMetadata, WorkbenchMainRepresentationHandle } from './Workbench.types';
 
 export interface UseWorkbenchValue {
   displayedRepresentationMetadata: RepresentationMetadata | null;
+  getDisplayedRepresentationHandle: () => WorkbenchMainRepresentationHandle | null;
   getWorkbenchPanelHandles: () => WorkbenchPanelHandle[];
 }
