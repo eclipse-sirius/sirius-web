@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useTheme } from '@mui/material/styles';
 import {
   Background,
   BackgroundVariant,
@@ -83,6 +84,7 @@ import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
+  const theme = useTheme();
   const { readOnly, consumePostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
@@ -458,7 +460,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-        <MiniMap pannable zoomable zoomStep={2} />
+        <MiniMap
+          pannable
+          zoomable
+          zoomStep={2}
+          style={{ width: 150, height: 100, opacity: 0.75, border: `2px solid ${theme.palette.divider}` }}
+        />
       </>
     ),
   };
