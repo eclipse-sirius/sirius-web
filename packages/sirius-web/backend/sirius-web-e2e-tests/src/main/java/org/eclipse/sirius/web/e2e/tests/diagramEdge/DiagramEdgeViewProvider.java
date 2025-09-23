@@ -83,11 +83,23 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
 
         var edgeDescription1 = this.getEdgeDescription(colorProvider, "E1toE2A", nodeDescription1, nodeDescription2);
         var edgeDescription2 = this.getEdgeDescription(colorProvider, "E1toE2B", nodeDescription1, nodeDescription2);
+        var edgeDescription3 = this.getEdgeDescription(colorProvider, "EdgeToE2", edgeDescription1, nodeDescription2);
 
+        var edgeDescription4 = this.getEdgeDescription(colorProvider, "E2ToEdge1A", nodeDescription2, edgeDescription1);
+        var edgeDescription5 = this.getEdgeDescription(colorProvider, "E2ToEdge1B", nodeDescription2, edgeDescription1);
 
         nodeDescription1.setPalette(new DiagramBuilders().newNodePalette().edgeTools(
                 this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"),
                 this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2")
+        ).build());
+
+        edgeDescription1.setPalette(new DiagramBuilders().newEdgePalette().edgeTools(
+                this.createEgeCreationTool("EdgeToE2", nodeDescription2, edgeDescription3.getDomainType(), "toEdge3")
+        ).build());
+
+        nodeDescription2.setPalette(new DiagramBuilders().newNodePalette().edgeTools(
+                this.createEgeCreationTool("E2ToEdge1A", edgeDescription1, edgeDescription4.getDomainType(), "toEdge4"),
+                this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5")
         ).build());
 
         return new DiagramBuilders()
@@ -98,7 +110,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
-                .edgeDescriptions(edgeDescription1, edgeDescription2)
+                .edgeDescriptions(edgeDescription1, edgeDescription2, edgeDescription3, edgeDescription4, edgeDescription5)
                 .build();
     }
 
