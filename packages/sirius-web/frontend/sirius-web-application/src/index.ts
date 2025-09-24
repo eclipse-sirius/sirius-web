@@ -79,6 +79,8 @@ export {
 export { RepresentationsArea } from './onboarding/RepresentationsArea';
 export { type RepresentationAreaProps } from './onboarding/RepresentationsArea.types';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
+export { CursorBasedPagination } from './table/CursorBasedPagination';
+export type { CursorBasedPaginationProps } from './table/CursorBasedPagination.types';
 export { useCurrentViewer } from './viewer/useCurrentViewer';
 export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
 export { useViewer } from './viewer/useViewer';
