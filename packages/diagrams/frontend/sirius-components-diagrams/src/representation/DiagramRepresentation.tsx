@@ -186,6 +186,7 @@ export const DiagramRepresentation = forwardRef<WorkbenchMainRepresentationHandl
                             readOnly,
                             registerPostToolSelection,
                             consumePostToolSelection,
+                            toolSelections: state.toolSelections,
                           }}>
                           <ApplySelectionWrapper representationId={representationId} ref={ref}>
                             <ManageVisibilityContextProvider>
