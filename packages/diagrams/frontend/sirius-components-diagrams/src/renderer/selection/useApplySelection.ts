@@ -11,22 +11,44 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useStoreApi } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseApplySelectionValue } from './useApplySelection.types';
 import { useRevealNodes } from './useRevealNodes';
 
 export const useApplySelection = (): UseApplySelectionValue => {
   const { getNodes, setNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { nodeLookup } = store.getState();
   const { revealNodes } = useRevealNodes();
+
+  const hasAncestorOrSelfSelected = (nodeId: string, targetObjectId: string, selectedNodes: Set<string>) => {
+    const node = nodeLookup.get(nodeId);
+    if (!node) {
+      return false;
+    } else if (node.data.targetObjectId && selectedNodes.has(node.id)) {
+      return true;
+    } else if (node.parentId) {
+      return hasAncestorOrSelfSelected(node.parentId, targetObjectId, selectedNodes);
+    }
+    return false;
+  };
 
   const applySelection = (selection: Selection, fitSelection: boolean) => {
     const nodesToReveal: Set<string> = new Set();
-    // TODO: only select the first node or edge matching a given semantic element
+    const semanticElementsSelected: Set<string> = new Set();
     const newNodes = getNodes().map((node) => {
-      const shouldSelect = !node.hidden && selection.entries.some((entry) => entry.id === node.data.targetObjectId);
+      const shouldSelect =
+        !node.hidden &&
+        selection.entries.some(
+          (entry) =>
+            entry.id === node.data.targetObjectId &&
+            (node.parentId === undefined ||
+              !hasAncestorOrSelfSelected(node.parentId, node.data.targetObjectId, nodesToReveal))
+        );
       if (shouldSelect) {
         nodesToReveal.add(node.id);
+        semanticElementsSelected.add(node.data.targetObjectId);
       }
       if (shouldSelect !== node.selected) {
         return {
@@ -38,10 +60,17 @@ export const useApplySelection = (): UseApplySelectionValue => {
       }
     });
     const newEdges = getEdges().map((edge) => {
-      const shouldSelect = !edge.hidden && selection.entries.some((entry) => entry.id === edge.data?.targetObjectId);
+      const shouldSelect =
+        !edge.hidden &&
+        selection.entries.some(
+          (entry) => entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data?.targetObjectId)
+        );
       if (shouldSelect) {
         nodesToReveal.add(edge.source);
         nodesToReveal.add(edge.target);
+        if (edge.data?.targetObjectId) {
+          semanticElementsSelected.add(edge.data?.targetObjectId);
+        }
       }
       if (shouldSelect !== edge.selected) {
         return {
