@@ -202,7 +202,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
 - https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
 - https://github.com/eclipse-sirius/sirius-web/issues/5582[#5582] [diagram] Perform a fit to screen after arrangeAll
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5556[#5556] [sirius-web] In the onboard area, update `NewRepresentationArea`'s entries labels from `defaultName` to `defaultName: diagramDescriptionName` to make it more clear which representation description will be used when creating a new representation.
 
 == v2025.8.0
 

@@ -147,7 +147,10 @@ export const NewRepresentationArea = ({
                         <ListItemIcon>
                           <Collections fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary={representationDescription.defaultName} />
+                        <ListItemText
+                          primary={representationDescription.defaultName}
+                          secondary={representationDescription.label}
+                        />
                       </ListItemButton>
                     );
                   })}
