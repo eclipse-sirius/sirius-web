@@ -154,17 +154,46 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
       // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
+      const semanticElementsSelected: Set<string> = new Set();
+      const shouldSelectNode = (node: Node<NodeData>) => {
+        const result =
+          !node.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === node.data.targetObjectId && !semanticElementsSelected.has(node.data.targetObjectId)
+              )
+            : nodeLookup.get(node.id)?.selected);
+        if (selectionFromTool && result) {
+          // If we "auto-select" a node because it matches what a previous tool invocation
+          // asked, we only select the first matching diagram element we find and ignore the rest,
+          // even if the new diagram shows the requested semantic element through multiple
+          // nodes.
+          semanticElementsSelected.add(node.data.targetObjectId);
+        }
+        return result;
+      };
+      const shouldSelectEdge = (edge: Edge<EdgeData>) => {
+        const result =
+          !edge.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data.targetObjectId)
+              )
+            : edgeLookup.get(edge.id)?.selected);
+        if (selectionFromTool && result && edge.data?.targetObjectId) {
+          semanticElementsSelected.add(edge.data.targetObjectId);
+        }
+        return result;
+      };
       convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
         ...node,
-        selected: selectionFromTool
-          ? selectionFromTool.entries.some((entry) => entry.id === node.data.targetObjectId)
-          : !!nodeLookup.get(node.id)?.selected,
+        selected: shouldSelectNode(node),
       }));
       convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
         ...edge,
-        selected: selectionFromTool
-          ? selectionFromTool.entries.some((entry) => entry.id === edge.data?.targetObjectId)
-          : !!edgeLookup.get(edge.id)?.selected,
+        selected: shouldSelectEdge(edge),
       }));
 
       setEdges(convertedDiagram.edges);
