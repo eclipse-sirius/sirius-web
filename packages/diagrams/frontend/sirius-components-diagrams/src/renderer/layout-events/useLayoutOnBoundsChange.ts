@@ -11,10 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import {
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  XYPosition,
+  useUpdateNodeInternals,
+  Edge,
+} from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeData, EdgeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
@@ -22,10 +30,22 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
+export const isOverlap = (point: XYPosition, targetNode: Node<NodeData>): boolean => {
+  const { position, width, height } = targetNode;
+
+  return (
+    point.x >= position.x &&
+    point.x <= position.x + (width ?? 0) &&
+    point.y >= position.y &&
+    point.y <= position.y + (height ?? 0)
+  );
+};
+
 export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { getEdges, getNodes } = useStore();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const isMoveFinished = (
     change: NodeChange<Node<NodeData>>,
@@ -96,15 +116,64 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
     });
   };
 
+  const resetEdgePathWhenOverlapping = (
+    nodes: Node<NodeData>[],
+    change: NodeChange<Node<NodeData>>
+  ): Edge<EdgeData>[] => {
+    const nodeToUpdate: string[] = [];
+    const updatedEdges: Edge<EdgeData>[] = getEdges().map((edge) => {
+      const targetNode = nodes.find((node) => node.id === edge.target);
+      const sourceNode = nodes.find((node) => node.id === edge.source);
+      if (targetNode && sourceNode && (edge.data?.bendingPoints?.length ?? 0) > 0) {
+        if (change.type === 'position' && typeof change.dragging === 'boolean' && !change.dragging && edge.data) {
+          if (
+            (edge.target === change.id && edge.data.bendingPoints?.some((point) => isOverlap(point, targetNode))) ||
+            (edge.source === change.id && edge.data.bendingPoints?.some((point) => isOverlap(point, sourceNode)))
+          ) {
+            targetNode.data.connectionHandles = targetNode.data.connectionHandles.map((handle) => {
+              if (edge.id === handle.edgeId) {
+                return {
+                  ...handle,
+                  XYPosition: null,
+                };
+              } else {
+                return handle;
+              }
+            });
+            sourceNode.data.connectionHandles = sourceNode.data.connectionHandles.map((handle) => {
+              if (edge.id === handle.edgeId) {
+                return {
+                  ...handle,
+                  XYPosition: null,
+                };
+              } else {
+                return handle;
+              }
+            });
+            nodeToUpdate.push(targetNode.id);
+            nodeToUpdate.push(sourceNode.id);
+            edge.data.bendingPoints = [];
+          }
+        }
+      }
+      return edge;
+    });
+
+    updateNodeInternals(nodeToUpdate);
+
+    return updatedEdges;
+  };
+
   const layoutOnBoundsChange = useCallback(
     (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
       const change = isBoundsChangeFinished(changes, getNodes());
       if (change) {
         const updatedNodes = updateNodeResizeByUserState(changes, nodes);
+        const updatedEdges: Edge<EdgeData>[] = resetEdgePathWhenOverlapping(updatedNodes, change);
 
         const diagramToLayout: RawDiagram = {
           nodes: updatedNodes,
-          edges: getEdges(),
+          edges: updatedEdges,
         };
 
         layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
