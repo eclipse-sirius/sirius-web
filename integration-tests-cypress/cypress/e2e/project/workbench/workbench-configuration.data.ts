@@ -60,3 +60,16 @@ export const workbenchConfigurationWithExpandedPanels: WorkbenchConfiguration = 
     },
   ],
 };
+
+const queryViewConfiguration = { id: 'query', isActive: true, queryText: 'aql:self' };
+
+export const workbenchConfigurationWithQueryView: WorkbenchConfiguration = {
+  mainPanel: null,
+  workbenchPanels: [
+    {
+      id: 'right',
+      isOpen: true,
+      views: [queryViewConfiguration],
+    },
+  ],
+};
