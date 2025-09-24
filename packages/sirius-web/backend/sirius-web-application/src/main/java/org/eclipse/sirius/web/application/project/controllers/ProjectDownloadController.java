@@ -12,12 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.core.io.ByteArrayResource;
@@ -50,14 +48,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/projects")
 public class ProjectDownloadController {
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IProjectSearchService projectSearchService;
 
     private final IProjectExportService projectExportService;
 
-    public ProjectDownloadController(List<ICapabilityVoter> capabilityVoters, IProjectSearchService projectSearchService, IProjectExportService projectExportService) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ProjectDownloadController(ICapabilityEvaluator capabilityEvaluator, IProjectSearchService projectSearchService, IProjectExportService projectExportService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectExportService = Objects.requireNonNull(projectExportService);
     }
@@ -67,7 +65,7 @@ public class ProjectDownloadController {
     public ResponseEntity<Resource> downloadProject(@PathVariable String projectId) {
         ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
 
-        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.DOWNLOAD) == CapabilityVote.GRANTED);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.DOWNLOAD);
 
         var optionalProject = this.projectSearchService.findById(projectId);
         if (hasCapability && optionalProject.isPresent()) {

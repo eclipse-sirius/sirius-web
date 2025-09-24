@@ -13,16 +13,16 @@
 package org.eclipse.sirius.web.application.project.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import graphql.schema.DataFetchingEnvironment;
-import java.util.List;
+
 import java.util.Objects;
+
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.DuplicateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectDuplicationApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -41,15 +41,15 @@ public class MutationDuplicateProjectDataFetcher implements IDataFetcherWithFiel
 
     private final IProjectDuplicationApplicationService projectDuplicateService;
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IMessageService messageService;
 
 
-    public MutationDuplicateProjectDataFetcher(ObjectMapper objectMapper, List<ICapabilityVoter> capabilityVoters, IProjectDuplicationApplicationService projectDuplicateService, IMessageService messageService) {
+    public MutationDuplicateProjectDataFetcher(ObjectMapper objectMapper, IProjectDuplicationApplicationService projectDuplicateService, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectDuplicateService = Objects.requireNonNull(projectDuplicateService);
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -58,7 +58,7 @@ public class MutationDuplicateProjectDataFetcher implements IDataFetcherWithFiel
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DuplicateProjectInput.class);
 
-        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, input.projectId(), SiriusWebCapabilities.Project.DUPLICATE) == CapabilityVote.GRANTED);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, input.projectId(), SiriusWebCapabilities.Project.DUPLICATE);
         if (!hasCapability) {
             return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }

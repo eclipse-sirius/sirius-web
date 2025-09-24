@@ -12,16 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.capability.controllers;
 
-import java.util.List;
 import java.util.Objects;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-
-import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 
 /**
  * Data fetcher for the field ProjectsCapabilities#canUpload.
@@ -31,14 +28,14 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "ProjectsCapabilities", field = "canUpload")
 public class ProjectsCapabilitiesCanUploadDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
-    public ProjectsCapabilitiesCanUploadDataFetcher(List<ICapabilityVoter> capabilityVoters) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ProjectsCapabilitiesCanUploadDataFetcher(ICapabilityEvaluator capabilityEvaluator) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
     }
 
     @Override
     public Boolean get(DataFetchingEnvironment environment) throws Exception {
-        return this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD) == CapabilityVote.GRANTED);
+        return this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
     }
 }

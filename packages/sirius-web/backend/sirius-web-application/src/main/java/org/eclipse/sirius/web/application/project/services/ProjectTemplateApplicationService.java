@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
@@ -56,16 +56,16 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
 
     private final ITemplateBasedProjectInitializer templateBasedProjectInitializer;
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IMessageService messageService;
 
     public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, IProjectApplicationService projectApplicationService, ITemplateBasedProjectInitializer templateBasedProjectInitializer,
-            List<ICapabilityVoter> capabilityVoters, IMessageService messageService) {
+                                             List<ICapabilityVoter> capabilityVoters, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.projectTemplateProviders = Objects.requireNonNull(projectTemplateProviders);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.templateBasedProjectInitializer = Objects.requireNonNull(templateBasedProjectInitializer);
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -117,7 +117,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
 
     private Optional<ProjectTemplate> getUploadProject() {
         Optional<ProjectTemplate> result = Optional.empty();
-        var canCreate = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD) == CapabilityVote.GRANTED);
+        var canCreate = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
         if (canCreate) {
             result = Optional.of(new ProjectTemplate("upload-project", "", "", List.of()));
         }

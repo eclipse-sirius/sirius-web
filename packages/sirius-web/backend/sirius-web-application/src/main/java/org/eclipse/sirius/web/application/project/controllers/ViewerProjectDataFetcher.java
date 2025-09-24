@@ -13,21 +13,18 @@
 package org.eclipse.sirius.web.application.project.controllers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import graphql.execution.DataFetcherResult;
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-
-import graphql.execution.DataFetcherResult;
-import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Viewer#project.
@@ -39,12 +36,12 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
 
     private static final String PROJECT_ID_ARGUMENT = "projectId";
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IProjectApplicationService projectApplicationService;
 
-    public ViewerProjectDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectApplicationService projectApplicationService) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ViewerProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
     }
 
@@ -53,7 +50,7 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
         var optionalProject = this.projectApplicationService.findById(projectId);
 
-        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.VIEW) == CapabilityVote.GRANTED);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.VIEW);
         if (!hasCapability || optionalProject.isEmpty()) {
             return null;
         }

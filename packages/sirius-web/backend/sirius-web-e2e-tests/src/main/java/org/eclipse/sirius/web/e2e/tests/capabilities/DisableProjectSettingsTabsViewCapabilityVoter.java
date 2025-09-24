@@ -48,6 +48,6 @@ public class DisableProjectSettingsTabsViewCapabilityVoter implements ICapabilit
             }
         }
 
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 }

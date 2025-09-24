@@ -22,7 +22,7 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  * </p>
  *
  * <p>
- *    <em>Ensure your capability voter returns {@link CapabilityVote#GRANTED} by default in order to prevent all other capabilities to be disabled by default.</em>
+ *    <em>Ensure your capability voter returns {@link CapabilityVote#ABSTAIN} by default in order to prevent all other capabilities to be disabled by default.</em>
  * </p>
  * <hr/>
  * <p>
@@ -39,7 +39,7 @@ import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
  *          if (SiriusWebCapabilities.PROJECT.equals(type) && identifier == null && SiriusWebCapabilities.Project.CREATE.equals(capability)) {
  *              return CapabilityVote.DENIED;
  *          }
- *          return CapabilityVote.GRANTED;
+ *          return CapabilityVote.ABSTAIN;
  *      }
  * }
  *}

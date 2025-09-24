@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
@@ -21,13 +20,11 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -45,16 +42,16 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     private final ILibraryEditingContextService libraryEditingContextService;
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IMessageService messageService;
 
     public EditingContextDispatcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService,
-            ILibraryEditingContextService libraryEditingContextService, List<ICapabilityVoter> capabilityVoters, IMessageService messageService) {
+                                    ILibraryEditingContextService libraryEditingContextService, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.libraryEditingContextService = Objects.requireNonNull(libraryEditingContextService);
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -63,11 +60,11 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
         var canView = false;
         var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
         if (optionalProjectId.isPresent()) {
-            canView = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.VIEW) == CapabilityVote.GRANTED);
+            canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.VIEW);
         } else {
             var optionalLibraryId = this.libraryEditingContextService.getLibraryIdentifier(editingContextId);
             if (optionalLibraryId.isPresent()) {
-                canView = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.LIBRARY, optionalLibraryId.get(), SiriusWebCapabilities.Library.VIEW) == CapabilityVote.GRANTED);
+                canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, optionalLibraryId.get(), SiriusWebCapabilities.Library.VIEW);
             }
         }
 
@@ -84,7 +81,7 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
         var canView = false;
         var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
         if (optionalProjectId.isPresent()) {
-            canView = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.EDIT) == CapabilityVote.GRANTED);
+            canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.EDIT);
         } else {
             var optionalLibraryId = this.libraryEditingContextService.getLibraryIdentifier(editingContextId);
             canView = optionalLibraryId.isEmpty();

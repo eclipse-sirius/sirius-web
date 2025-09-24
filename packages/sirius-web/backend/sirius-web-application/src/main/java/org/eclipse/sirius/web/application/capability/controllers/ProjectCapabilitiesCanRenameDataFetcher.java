@@ -12,19 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.capability.controllers;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-
-import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 
 /**
  * Data fetcher for the field ProjectCapabilities#canRename.
@@ -34,10 +31,10 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "ProjectCapabilities", field = "canRename")
 public class ProjectCapabilitiesCanRenameDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
-    public ProjectCapabilitiesCanRenameDataFetcher(List<ICapabilityVoter> capabilityVoters) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ProjectCapabilitiesCanRenameDataFetcher(ICapabilityEvaluator capabilityEvaluator) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
     }
 
     @Override
@@ -48,6 +45,6 @@ public class ProjectCapabilitiesCanRenameDataFetcher implements IDataFetcherWith
             return false;
         }
 
-        return this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.RENAME) == CapabilityVote.GRANTED);
+        return this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.RENAME);
     }
 }

@@ -17,15 +17,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.dto.ProjectSettingsTabCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-
-import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 
 /**
  * Data fetcher for the field ProjectSettingsCapabilities#tabs.
@@ -37,10 +35,10 @@ public class ProjectSettingsCapabilitiesTabsDataFetcher implements IDataFetcherW
 
     private static final String TAB_IDS_ARGUMENT = "tabIds";
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
-    public ProjectSettingsCapabilitiesTabsDataFetcher(List<ICapabilityVoter> capabilityVoters) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ProjectSettingsCapabilitiesTabsDataFetcher(ICapabilityEvaluator capabilityEvaluator) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
     }
 
     @Override
@@ -63,8 +61,7 @@ public class ProjectSettingsCapabilitiesTabsDataFetcher implements IDataFetcherW
 
     private ProjectSettingsTabCapabilities toTabCapabilities(String tabId, String projectId) {
         String type = SiriusWebCapabilities.PROJECT_SETTINGS + '#' + tabId;
-        boolean canViewTab = this.capabilityVoters.stream().allMatch(voter -> voter.vote(
-                type, projectId, SiriusWebCapabilities.ProjectSettingsTab.VIEW) == CapabilityVote.GRANTED);
+        boolean canViewTab = this.capabilityEvaluator.hasCapability(type, projectId, SiriusWebCapabilities.ProjectSettingsTab.VIEW);
         return new ProjectSettingsTabCapabilities(tabId, canViewTab);
     }
 }

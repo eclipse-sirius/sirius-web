@@ -14,21 +14,18 @@ package org.eclipse.sirius.web.application.project.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.List;
 import java.util.Objects;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-
-import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#createProject.
@@ -42,15 +39,15 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final ObjectMapper objectMapper;
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IProjectApplicationService projectApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, List<ICapabilityVoter> capabilityVoters, IProjectApplicationService projectApplicationService, IMessageService messageService) {
+    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -60,7 +57,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
 
-        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE) == CapabilityVote.GRANTED);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE);
         if (!hasCapability) {
             return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }

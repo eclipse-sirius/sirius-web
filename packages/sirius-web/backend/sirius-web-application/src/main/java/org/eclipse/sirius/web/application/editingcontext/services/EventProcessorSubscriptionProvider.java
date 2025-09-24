@@ -24,13 +24,11 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 
@@ -48,7 +46,7 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     private final ILibraryEditingContextService libraryEditingContextService;
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers;
 
@@ -56,12 +54,12 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     private final IMessageService messageService;
 
-    public EventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService, ILibraryEditingContextService libraryEditingContextService, List<ICapabilityVoter> capabilityVoters,
+    public EventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService, ILibraryEditingContextService libraryEditingContextService, ICapabilityEvaluator capabilityEvaluator,
                                               List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers, IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider, IMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.libraryEditingContextService = Objects.requireNonNull(libraryEditingContextService);
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.representationEventProcessorFluxCustomizers = Objects.requireNonNull(representationEventProcessorFluxCustomizers);
         this.eventProcessorSubscriptionScheduler = Objects.requireNonNull(eventProcessorSubscriptionSchedulerProvider).getScheduler();
         this.messageService = Objects.requireNonNull(messageService);
@@ -72,11 +70,11 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
         var canView = false;
         var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
         if (optionalProjectId.isPresent()) {
-            canView = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.VIEW) == CapabilityVote.GRANTED);
+            canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.VIEW);
         } else {
             var optionalLibraryId = this.libraryEditingContextService.getLibraryIdentifier(editingContextId);
             if (optionalLibraryId.isPresent()) {
-                canView = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.LIBRARY, optionalLibraryId.get(), SiriusWebCapabilities.Library.VIEW) == CapabilityVote.GRANTED);
+                canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, optionalLibraryId.get(), SiriusWebCapabilities.Library.VIEW);
             }
         }
 
