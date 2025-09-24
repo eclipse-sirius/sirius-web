@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-forms-root</artifactId>
-	<version>2025.8.6</version>
+	<version>2025.8.7</version>
 
 	<name>sirius-components-forms-root</name>
 	<description>Sirius Components Forms Root</description>
