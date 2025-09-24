@@ -26,6 +26,17 @@ const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
 };
 
+const isOverlap = (point: XYPosition, targetNode: Node<NodeData>): boolean => {
+  const { position, width, height } = targetNode;
+
+  return (
+    point.x >= position.x &&
+    point.x <= position.x + (width ?? 0) &&
+    point.y >= position.y &&
+    point.y <= position.y + (height ?? 0)
+  );
+};
+
 const getUpdatedConnectionHandlesIndexByPosition: GetUpdatedConnectionHandlesIndexByPosition = (
   node,
   nodeConnectionHandle,
@@ -186,11 +197,62 @@ const layoutHandlePosition = (
   });
 };
 
+const resetEdgePathWhenOverlapping = (diagram: RawDiagram, nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>) => {
+  diagram.edges.map((edge) => {
+    const { source: sourceEdgeNode, target: targetEdgeNode } = edge;
+    const sourceNode = nodeLookup.get(sourceEdgeNode);
+    const targetNode = nodeLookup.get(targetEdgeNode);
+    if (targetNode && sourceNode && (edge.data?.bendingPoints?.length ?? 0) > 0) {
+      if (
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, targetNode)) ||
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, sourceNode))
+      ) {
+        const sourceConnectionHandles = sourceNode.data.connectionHandles.map((handle) => {
+          if (edge.id === handle.edgeId) {
+            return {
+              ...handle,
+              XYPosition: null,
+            };
+          } else {
+            return handle;
+          }
+        });
+        const targetConnectionHandles = targetNode.data.connectionHandles.map((handle) => {
+          if (edge.id === handle.edgeId) {
+            return {
+              ...handle,
+              XYPosition: null,
+            };
+          } else {
+            return handle;
+          }
+        });
+
+        diagram.nodes = diagram.nodes.map((node) => {
+          if (edge.source && edge.target) {
+            if (edge.source === node.id) {
+              node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
+            }
+            if (edge.target === node.id) {
+              node.data = { ...node.data, connectionHandles: targetConnectionHandles };
+            }
+          }
+          return node;
+        });
+
+        edge.data.bendingPoints = [];
+      }
+    }
+    return edge;
+  });
+};
+
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
+  resetEdgePathWhenOverlapping(diagram, nodeLookup);
   layoutHandlePosition(diagram, diagramDescription, nodeLookup);
   layoutHandleIndex(diagram, nodeLookup);
 };
