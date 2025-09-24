@@ -479,7 +479,7 @@ export const getNodeCenter: GetNodeCenter = (node, nodeLookUp) => {
 };
 
 export const getHandlePositionWithOffSet: GetHandlePositionWithOffSet = (handleXYPosition, handlePosition) => {
-  // The offeset is equal to the size of the node divided per 2 to center the edge on the handle
+  // The offset is equal to the size of the node divided per 2 to center the edge on the handle
   // And one extra pixel is added/removed to point to the border of the handle
   const { x, y } = handleXYPosition;
   if (handlePosition === Position.Left || handlePosition === Position.Right) {

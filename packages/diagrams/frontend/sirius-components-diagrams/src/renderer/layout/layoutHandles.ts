@@ -20,10 +20,26 @@ import {
   GetUpdatedConnectionHandlesIndexByPosition,
   PopulateHandleIdToOtherHandNode,
 } from '../handles/useHandleChange.types';
+import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { RawDiagram } from './layout.types';
 
 const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
+};
+
+const isOverlap = (
+  point: XYPosition,
+  node: Node<NodeData>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): boolean => {
+  const { width, height } = node;
+  const positionAbsolute: XYPosition = evaluateAbsolutePosition(node, nodeLookup);
+  return (
+    point.x >= positionAbsolute.x &&
+    point.x <= positionAbsolute.x + (width ?? 0) &&
+    point.y >= positionAbsolute.y &&
+    point.y <= positionAbsolute.y + (height ?? 0)
+  );
 };
 
 const getUpdatedConnectionHandlesIndexByPosition: GetUpdatedConnectionHandlesIndexByPosition = (
@@ -186,11 +202,29 @@ const layoutHandlePosition = (
   });
 };
 
+const resetEdgePathWhenOverlapping = (diagram: RawDiagram, nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>) => {
+  diagram.edges.map((edge) => {
+    const { source: sourceEdgeNode, target: targetEdgeNode } = edge;
+    const sourceNode = nodeLookup.get(sourceEdgeNode);
+    const targetNode = nodeLookup.get(targetEdgeNode);
+    if (targetNode && sourceNode && (edge.data?.bendingPoints?.length ?? 0) > 0) {
+      if (
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, targetNode, nodeLookup)) ||
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, sourceNode, nodeLookup))
+      ) {
+        edge.data.bendingPoints = [];
+      }
+    }
+    return edge;
+  });
+};
+
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
+  resetEdgePathWhenOverlapping(diagram, nodeLookup);
   layoutHandlePosition(diagram, diagramDescription, nodeLookup);
   layoutHandleIndex(diagram, nodeLookup);
 };

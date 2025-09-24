@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from '@xyflow/react';
+import { Node, InternalNode, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
+import { NodeLookup } from '@xyflow/system';
 
 export const getNodeLabel = (node: Node<NodeData>): string => {
   let label = '';
@@ -27,4 +28,21 @@ export const getNodeLabel = (node: Node<NodeData>): string => {
     }
   }
   return label;
+};
+
+export const evaluateAbsolutePosition = (
+  node: Node,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): XYPosition => {
+  let nextParentId: string | undefined = node.parentId;
+  const positionAbsolute: XYPosition = { ...node.position };
+  while (nextParentId) {
+    const parent = nodeLookup.get(nextParentId);
+    nextParentId = parent?.parentId;
+    if (parent) {
+      positionAbsolute.x += parent.position.x;
+      positionAbsolute.y += parent.position.y;
+    }
+  }
+  return positionAbsolute;
 };

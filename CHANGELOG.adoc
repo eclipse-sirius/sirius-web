@@ -204,6 +204,7 @@ As a result, some of those menu items are not contributed anymore on invalid use
 The executor typically needs to check the `menuEntryId` of the input to ensure it is reacting to the correct input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5784[#5784] [diagram] Export `Action` components and related types to enable reuse in custom nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] Apply reference position to all newly created nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5558[#5558] [diagram] Prevent the node from overlapping its edge bend points
 
 
 
