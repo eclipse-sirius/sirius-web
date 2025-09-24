@@ -127,14 +127,24 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
       () => {
         return {
           getWorkbenchPanelConfigurations: () => {
-            const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => ({
-              id: contribution.id,
-              isActive: leftPanelState.selectedContributionIds.includes(contribution.id),
-            }));
-            const rightViewConfigurations: WorkbenchViewConfiguration[] = rightContributions.map((contribution) => ({
-              id: contribution.id,
-              isActive: rightPanelState.selectedContributionIds.includes(contribution.id),
-            }));
+            const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => {
+              const data: Record<string, unknown> =
+                leftWorkbenchViewRef.current.get(contribution.id)?.getWorkbenchViewConfiguration() ?? {};
+              return {
+                id: contribution.id,
+                isActive: leftPanelState.selectedContributionIds.includes(contribution.id),
+                ...data,
+              };
+            });
+            const rightViewConfigurations: WorkbenchViewConfiguration[] = rightContributions.map((contribution) => {
+              const data: Record<string, unknown> =
+                rightWorkbenchViewRef.current.get(contribution.id)?.getWorkbenchViewConfiguration() ?? {};
+              return {
+                id: contribution.id,
+                isActive: rightPanelState.selectedContributionIds.includes(contribution.id),
+                ...data,
+              };
+            });
             return [
               { id: 'left', isOpen: leftPanelState?.isOpen, views: leftViewConfigurations },
               { id: 'right', isOpen: rightPanelState?.isOpen, views: rightViewConfigurations },

@@ -13,10 +13,19 @@
 
 import { GQLEvaluateExpressionSuccessPayload, GQLExpressionResult } from './useEvaluateExpression.types';
 
+export interface QueryViewConfiguration {
+  queryText: string;
+}
+
 export interface ExpressionAreaProps {
   editingContextId: string;
+  initialQueryText: string | null;
   onEvaluateExpression: (expression: string) => void;
   disabled: boolean;
+}
+
+export interface ExpressionAreaHandle {
+  getExpression: () => string;
 }
 
 export interface ResultAreaProps {

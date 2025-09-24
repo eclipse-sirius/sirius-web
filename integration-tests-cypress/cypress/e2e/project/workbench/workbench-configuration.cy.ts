@@ -19,6 +19,7 @@ import { Workbench } from '../../../workbench/Workbench';
 import {
   workbenchConfigurationWithClosedPanels,
   workbenchConfigurationWithExpandedPanels,
+  workbenchConfigurationWithQueryView,
 } from './workbench-configuration.data';
 
 const projectName = 'Cypress - Workbench Configuration Resolution';
@@ -186,11 +187,32 @@ describe('Workbench Configuration Resolution', () => {
             },
           ]);
           const diagram: Diagram = new Diagram();
-          diagram.getDiagram('Topography2').should('not.exist');
+          diagram.getDiagram('Topography1').should('not.exist');
           diagram.getDiagram('Topography2').should('exist');
         });
       }
     );
+
+    context('When opening the project with a workbench configuration with a configuration for the "Query" view', () => {
+      let workbench: Workbench;
+      beforeEach(() => {
+        new Project().visit(projectId, undefined, {
+          qs: {
+            workbenchConfiguration: JSON.stringify(workbenchConfigurationWithQueryView),
+          },
+        });
+        workbench = new Workbench();
+      });
+      it('Then, in the "Query" view, the text is set as specified in the configuration', () => {
+        workbench.checkPanelContent('right', ['Query']);
+        cy.getByTestId('query-textfield')
+          .should('exist')
+          .get('div')
+          .get('textarea')
+          .invoke('val')
+          .should('equal', 'aql:self');
+      });
+    });
   });
 });
 

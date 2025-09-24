@@ -30,13 +30,15 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType, ForwardedRef, forwardRef, useContext, useImperativeHandle } from 'react';
+import { ComponentType, ForwardedRef, forwardRef, RefObject, useContext, useImperativeHandle, useRef } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useCurrentProject } from '../../useCurrentProject';
 import {
   ExportResultButtonProps,
+  ExpressionAreaHandle,
   ExpressionAreaProps,
   ExpressionResultViewerProps,
+  QueryViewConfiguration,
   ResultAreaProps,
 } from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
@@ -49,10 +51,14 @@ import {
   GQLStringsExpressionResult,
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
+import { useQueryViewHandle } from './useQueryViewHandle';
 import { useResultAreaSize } from './useResultAreaSize';
 
 export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  (
+    { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
     const queryViewStyle: SxProps<Theme> = (theme) => ({
       display: 'flex',
       flexDirection: 'column',
@@ -60,30 +66,26 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       paddingX: theme.spacing(1),
     });
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          id,
-          getWorkbenchViewConfiguration: () => {
-            return {};
-          },
-        };
-      },
-      []
-    );
+    const expressionAreaRef: RefObject<ExpressionAreaHandle | null> = useRef<ExpressionAreaHandle | null>(null);
+
+    useQueryViewHandle(id, expressionAreaRef, ref);
 
     const { evaluateExpression, loading, result } = useEvaluateExpression();
     const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
 
     const { ref: resultAreaRef, width, height } = useResultAreaSize();
 
+    const initialQueryViewConfiguration: QueryViewConfiguration =
+      initialConfiguration as unknown as QueryViewConfiguration;
+    const initialQueryText = initialQueryViewConfiguration?.queryText ?? null;
     return (
       <Box data-representation-kind="query" sx={queryViewStyle} ref={resultAreaRef}>
         <ExpressionArea
           editingContextId={editingContextId}
+          initialQueryText={initialQueryText}
           onEvaluateExpression={handleEvaluateExpression}
           disabled={loading || readOnly}
+          ref={expressionAreaRef}
         />
         <ResultArea loading={loading} payload={result} width={width} height={height} />
       </Box>
@@ -91,61 +93,77 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
   }
 );
 
-const ExpressionArea = ({ editingContextId, onEvaluateExpression, disabled }: ExpressionAreaProps) => {
-  const { expression, onExpressionChange } = useExpression(editingContextId);
+const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
+  (
+    { editingContextId, initialQueryText, onEvaluateExpression, disabled }: ExpressionAreaProps,
+    ref: ForwardedRef<ExpressionAreaHandle>
+  ) => {
+    const { expression, onExpressionChange } = useExpression(editingContextId, initialQueryText);
 
-  const expressionAreaToolbarStyle: SxProps<Theme> = {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  };
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          getExpression: () => expression,
+        };
+      },
+      [expression]
+    );
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
-      onEvaluateExpression(expression);
-    }
-  };
+    const expressionAreaToolbarStyle: SxProps<Theme> = {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    };
 
-  var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+    const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+      if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
+        onEvaluateExpression(expression);
+      }
+    };
 
-  return (
-    <div data-role="expression">
-      <Box sx={expressionAreaToolbarStyle}>
-        <Typography variant="subtitle2">Expression</Typography>
+    var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
-        <Tooltip
-          title={`Press this button or ${
-            isApple ? '⌘ ' : 'Ctrl '
-          } + Enter when the textfield below is focused to execute the expression`}>
-          <IconButton
-            onClick={() => onEvaluateExpression(expression)}
-            color={expression.trim().length > 0 ? 'primary' : undefined}
-            disabled={disabled || expression.trim().length === 0}>
-            <PlayCircleOutlineIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-      <div>
-        <TextField
-          placeholder="Enter an expression to get started"
-          value={expression}
-          onChange={onExpressionChange}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          spellCheck={false}
-          multiline
-          minRows={5}
-          fullWidth
-          autoFocus
-          sx={{
-            backgroundColor: '#fff8e5',
-          }}
-        />
+    return (
+      <div data-role="expression">
+        <Box sx={expressionAreaToolbarStyle}>
+          <Typography variant="subtitle2">Expression</Typography>
+
+          <Tooltip
+            title={`Press this button or ${
+              isApple ? '⌘ ' : 'Ctrl '
+            } + Enter when the textfield below is focused to execute the expression`}>
+            <IconButton
+              onClick={() => onEvaluateExpression(expression)}
+              color={expression.trim().length > 0 ? 'primary' : undefined}
+              disabled={disabled || expression.trim().length === 0}>
+              <PlayCircleOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <div>
+          <TextField
+            placeholder="Enter an expression to get started"
+            data-testid="query-textfield"
+            value={expression}
+            onChange={onExpressionChange}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            spellCheck={false}
+            multiline
+            minRows={5}
+            fullWidth
+            autoFocus
+            sx={{
+              backgroundColor: '#fff8e5',
+            }}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   if (result.__typename !== 'ObjectExpressionResult') {
