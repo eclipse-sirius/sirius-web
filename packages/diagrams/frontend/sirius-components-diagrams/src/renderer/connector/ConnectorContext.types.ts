@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ export interface ConnectorContextValue {
   position: XYPosition | null;
   candidates: GQLNodeDescription[];
   isNewConnection: boolean;
-  setConnection: (connection: Connection) => void;
+  setConnection: (connection: Connection | null) => void;
   setPosition: (position: XYPosition) => void;
   setCandidates: (candidates: GQLNodeDescription[]) => void;
   setIsNewConnection: (isNewConnection: boolean) => void;

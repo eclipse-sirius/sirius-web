@@ -111,6 +111,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5547[#5547] [diagram] Fix an issue where the internal handle of a node could be out of sync with the displayed handle after moving an edge segment.
 - https://github.com/eclipse-sirius/sirius-web/issues/5535[#5535] [diagram] Prevent node style to be faded after drag and drop
 - https://github.com/eclipse-sirius/sirius-web/issues/5222[#5222] [sirius-web] Fix the 'Share Project' and 'Share Representation' actions to always provide the right URL
+- https://github.com/eclipse-sirius/sirius-web/issues/5560[#5560] [diagram] Fix an issue where a mutation could be sent when ending a connection on an invalid target
 
 
 === New Features
