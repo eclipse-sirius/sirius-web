@@ -18,20 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
-import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
-import org.springframework.data.domain.KeysetScrollPosition;
-import org.springframework.data.domain.ScrollPosition;
-
 import graphql.execution.DataFetcherResult;
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -41,6 +27,18 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
+import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.ScrollPosition;
 
 /**
  * Data fetcher for the field Viewer#projects.
@@ -60,21 +58,21 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private static final String FILTER_ARGUMENT = "filter";
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IProjectApplicationService projectApplicationService;
 
     private final ILimitProvider limitProvider;
 
-    public ViewerProjectsDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ViewerProjectsDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.limitProvider = Objects.requireNonNull(limitProvider);
     }
 
     @Override
     public Connection<DataFetcherResult<ProjectDTO>> get(DataFetchingEnvironment environment) throws Exception {
-        var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.LIST) == CapabilityVote.GRANTED);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.LIST);
         if (!hasCapability) {
             return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
         }

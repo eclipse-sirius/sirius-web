@@ -48,6 +48,6 @@ public class DisableDownloadCapabilityVoter implements ICapabilityVoter {
             }
         }
 
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 }

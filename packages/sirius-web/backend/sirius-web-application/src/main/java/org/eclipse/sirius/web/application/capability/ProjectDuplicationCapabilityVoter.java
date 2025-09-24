@@ -37,7 +37,7 @@ public class ProjectDuplicationCapabilityVoter implements ICapabilityVoter {
         if (SiriusWebCapabilities.Project.DUPLICATE.equals(capability) && !this.enableProjectDuplication) {
             return CapabilityVote.DENIED;
         }
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 
 }

@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.capability.services;
+package org.eclipse.sirius.web.application.capability.services.api;
 
 /**
- * The possible results of vote to enable or disable a capability.
+ * Used to evaluate all the capability voter to find the result of a vote.
  *
- * @author gcoutable
+ * @author sbegaudeau
  */
-public enum CapabilityVote {
-    GRANTED,
-    DENIED,
-    ABSTAIN
+public interface ICapabilityEvaluator {
+    boolean hasCapability(String type, String identifier, String capability);
 }

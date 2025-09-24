@@ -12,19 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.capability.controllers;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-
-import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 
 /**
  * Data fetcher for the field ProjectSettingsCapabilities#canView.
@@ -34,10 +31,10 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "ProjectSettingsCapabilities", field = "canView")
 public class ProjectSettingsCapabilitiesCanViewDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
-    public ProjectSettingsCapabilitiesCanViewDataFetcher(List<ICapabilityVoter> capabilityVoters) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public ProjectSettingsCapabilitiesCanViewDataFetcher(ICapabilityEvaluator capabilityEvaluator) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
     }
 
     @Override
@@ -48,6 +45,6 @@ public class ProjectSettingsCapabilitiesCanViewDataFetcher implements IDataFetch
             return false;
         }
 
-        return this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT_SETTINGS, projectId, SiriusWebCapabilities.ProjectSettings.VIEW) == CapabilityVote.GRANTED);
+        return this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT_SETTINGS, projectId, SiriusWebCapabilities.ProjectSettings.VIEW);
     }
 }

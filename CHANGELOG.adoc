@@ -150,6 +150,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 - https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5463[#5463] [diagram] Add visibility field in the style of a label to be able to hide a label from the appearance palette.
 
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5220[#5220] [diagram] The palette now has a maximum size but not a minimum one.
@@ -195,6 +196,9 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5504[#5504] [diagram] Reduce the size of the creation handles when creating an edge from another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/5439[#5439] [diagram] Support edge type by its style
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
+- https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
+
+
 
 == v2025.8.0
 

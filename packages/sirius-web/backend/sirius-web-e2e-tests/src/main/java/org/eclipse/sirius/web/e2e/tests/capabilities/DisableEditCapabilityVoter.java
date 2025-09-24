@@ -48,6 +48,6 @@ public class DisableEditCapabilityVoter implements ICapabilityVoter {
             }
         }
 
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 }

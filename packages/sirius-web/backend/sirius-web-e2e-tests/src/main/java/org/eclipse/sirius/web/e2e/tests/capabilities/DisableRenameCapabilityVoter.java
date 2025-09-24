@@ -48,6 +48,6 @@ public class DisableRenameCapabilityVoter implements ICapabilityVoter {
             }
         }
 
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 }

@@ -48,6 +48,6 @@ public class DisableDeleteCapabilityVoter implements ICapabilityVoter {
             }
         }
 
-        return CapabilityVote.GRANTED;
+        return CapabilityVote.ABSTAIN;
     }
 }

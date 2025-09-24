@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -25,12 +25,9 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-
-import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#uploadProject.
@@ -46,14 +43,14 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String FILE = "file";
 
-    private final List<ICapabilityVoter> capabilityVoters;
+    private final ICapabilityEvaluator capabilityEvaluator;
 
     private final IProjectImportService projectImportService;
 
     private final IMessageService messageService;
 
-    public MutationUploadProjectDataFetcher(List<ICapabilityVoter> capabilityVoters, IProjectImportService projectImportService, IMessageService messageService) {
-        this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+    public MutationUploadProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectImportService projectImportService, IMessageService messageService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectImportService = Objects.requireNonNull(projectImportService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -75,7 +72,7 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
         if (optionalId.isPresent() && optionalFile.isPresent()) {
             var inputId = optionalId.get();
-            var hasCapability = this.capabilityVoters.stream().allMatch(voter -> voter.vote(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD) == CapabilityVote.GRANTED);
+            var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
 
             if (hasCapability) {
                 payload = this.projectImportService.importProject(inputId, optionalFile.get());
