@@ -31,23 +31,15 @@ import {
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import {
-  ForwardedRef,
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { ForwardedRef, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
-import { ExplorerViewState } from './ExplorerView.types';
+import { ExplorerViewConfiguration, ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
+import { useExplorerViewHandle } from './useExplorerViewHandle';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -69,15 +61,20 @@ const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is G
   payload && payload.__typename === 'TreeRefreshedEventPayload';
 
 export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ editingContextId, id, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  (
+    { editingContextId, id, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
     const { classes: styles } = useStyles();
 
+    const initialExplorerViewConfiguration: ExplorerViewConfiguration =
+      initialConfiguration as unknown as ExplorerViewConfiguration;
     const [state, setState] = useState<ExplorerViewState>({
       filterBar: false,
       filterBarText: '',
       filterBarTreeFiltering: false,
-      treeFilters: [],
-      activeTreeDescriptionId: null,
+      treeFilters: initialExplorerViewConfiguration?.activeTreeFilters ?? [],
+      activeTreeDescriptionId: initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null,
       expanded: {},
       maxDepth: {},
       tree: null,
@@ -85,18 +82,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       singleTreeItemSelected: null,
     });
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          id,
-          getWorkbenchViewConfiguration: () => {
-            return {};
-          },
-        };
-      },
-      []
-    );
+    useExplorerViewHandle(id, state.treeFilters, state.activeTreeDescriptionId, ref);
 
     const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
       (contribution) => contribution.props.component
@@ -130,7 +116,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
         setState((prevState) => ({
           ...prevState,
-          activeTreeDescriptionId: explorerDescriptions[0].id,
+          activeTreeDescriptionId: state.activeTreeDescriptionId ?? explorerDescriptions[0].id,
           expanded: expandedInitiated,
           maxDepth: maxDepthInitiated,
         }));
@@ -141,12 +127,25 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     useEffect(() => {
       if (!loading) {
-        const allFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
+        const allAvailableFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
           id: gqlTreeFilter.id,
           label: gqlTreeFilter.label,
           state: gqlTreeFilter.defaultState,
         }));
-        setState((prevState) => ({ ...prevState, treeFilters: allFilters }));
+        setState((prevState) => ({
+          ...prevState,
+          treeFilters: allAvailableFilters.map((availableFilter) => {
+            const existingFilter: TreeFilter = state.treeFilters.find((filter) => filter.id === availableFilter.id);
+            if (existingFilter) {
+              return {
+                ...availableFilter,
+                state: existingFilter.state,
+              };
+            } else {
+              return availableFilter;
+            }
+          }),
+        }));
       }
     }, [loading, treeFilters]);
 
