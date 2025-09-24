@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, InternalNode, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
-import { NodeLookup, Rect } from '@xyflow/system';
+import { Edge, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Rect } from '@xyflow/system';
 import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -24,6 +24,7 @@ import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isDescendantOf } from '../layout/layoutNode';
 import { ListNodeData } from '../node/ListNode.types';
+import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
@@ -72,20 +73,6 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
     nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentId);
   }
   return nodeDepth;
-};
-
-const evaluateAbsolutePosition = (node: Node, nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>): XYPosition => {
-  let nextParentId: string | undefined = node.parentId;
-  const positionAbsolute: XYPosition = { ...node.position };
-  while (nextParentId) {
-    const parent = nodeLookup.get(nextParentId);
-    nextParentId = parent?.parentId;
-    if (parent) {
-      positionAbsolute.x += parent.position.x;
-      positionAbsolute.y += parent.position.y;
-    }
-  }
-  return positionAbsolute;
 };
 
 const useDropNodeMutation = () => {
