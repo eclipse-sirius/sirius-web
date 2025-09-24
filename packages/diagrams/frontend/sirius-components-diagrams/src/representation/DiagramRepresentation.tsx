@@ -187,6 +187,7 @@ export const DiagramRepresentation = memo(
                               readOnly,
                               registerPostToolSelection,
                               consumePostToolSelection,
+                              toolSelections: state.toolSelections,
                             }}>
                             <ApplySelectionWrapper representationId={representationId} ref={ref}>
                               <ManageVisibilityContextProvider>
