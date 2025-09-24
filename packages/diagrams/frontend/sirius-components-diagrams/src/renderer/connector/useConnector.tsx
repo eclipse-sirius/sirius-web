@@ -100,7 +100,11 @@ export const useConnector = (): UseConnectorValue => {
         }
       }
 
-      setConnection(connection);
+      if (isNodeCandidate) {
+        setConnection(connection);
+      } else {
+        setConnection(null);
+      }
     },
     [toolCandidates.map((tool) => tool.id).join('-')]
   );

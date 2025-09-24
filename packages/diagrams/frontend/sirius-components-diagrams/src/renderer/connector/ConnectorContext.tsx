@@ -42,7 +42,7 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     isNewConnection: false,
   });
 
-  const setConnection = (connection: Connection) => {
+  const setConnection = (connection: Connection | null) => {
     setState((prevState) => ({ ...prevState, connection }));
   };
 

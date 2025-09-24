@@ -19,7 +19,7 @@ export interface ConnectorContextValue {
   position: XYPosition | null;
   toolCandidates: GQLConnectorTool[];
   isNewConnection: boolean;
-  setConnection: (connection: Connection) => void;
+  setConnection: (connection: Connection | null) => void;
   setPosition: (position: XYPosition) => void;
   setCandidates: (candidates: GQLConnectorTool[]) => void;
   setIsNewConnection: (isNewConnection: boolean) => void;
