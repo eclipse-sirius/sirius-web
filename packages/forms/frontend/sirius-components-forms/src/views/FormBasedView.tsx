@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
-import { memo } from 'react';
+import { ForwardedRef, forwardRef, memo } from 'react';
 import { Form } from '../form/Form';
+import { FormHandle } from '../form/Form.types';
 import { GQLForm } from '../form/FormEventFragments.types';
 import { FormBasedViewProps, FormConverter } from './FormBasedView.types';
 import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensionPoints';
@@ -20,16 +21,33 @@ import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensi
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = memo(({ editingContextId, form, readOnly, postProcessor }: FormBasedViewProps) => {
-  const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
+export const FormBasedView = memo(
+  forwardRef<FormHandle | null, FormBasedViewProps>(
+    (
+      { editingContextId, form, initialSelectedPageId, readOnly, postProcessor }: FormBasedViewProps,
+      ref: ForwardedRef<FormHandle | null>
+    ) => {
+      const { data: formConverters }: DataExtension<FormConverter[]> = useData(
+        formBasedViewFormConverterExtensionPoint
+      );
 
-  let convertedForm: GQLForm = form;
-  formConverters.forEach((formConverter) => {
-    convertedForm = formConverter.convert(editingContextId, convertedForm);
-  });
+      let convertedForm: GQLForm = form;
+      formConverters.forEach((formConverter) => {
+        convertedForm = formConverter.convert(editingContextId, convertedForm);
+      });
 
-  if (postProcessor) {
-    return postProcessor(editingContextId, convertedForm, readOnly);
-  }
-  return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
-});
+      if (postProcessor) {
+        return postProcessor(editingContextId, convertedForm, readOnly);
+      }
+      return (
+        <Form
+          editingContextId={editingContextId}
+          form={convertedForm}
+          initialSelectedPageId={initialSelectedPageId}
+          readOnly={readOnly}
+          ref={ref}
+        />
+      );
+    }
+  )
+);

@@ -75,6 +75,7 @@ export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: Dia
         <FormBasedView
           editingContextId={editingContextId}
           form={state.form}
+          initialSelectedPageId={null}
           readOnly={readOnly}
           postProcessor={extractFirstGroup}
         />

@@ -15,6 +15,7 @@ import { GQLForm } from '../form/FormEventFragments.types';
 export interface FormBasedViewProps {
   editingContextId: string;
   form: GQLForm;
+  initialSelectedPageId: string | null;
   readOnly: boolean;
   postProcessor?: (editingContextId: string, form: GQLForm, readOnly: boolean) => JSX.Element;
 }
