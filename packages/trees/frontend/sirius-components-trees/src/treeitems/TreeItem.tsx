@@ -375,6 +375,7 @@ export const TreeItem = ({
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
                     isHovered: state.partHovered === 'item',
+                    selectedTreeItemIds: selectedTreeItemIds,
                   })
                 ) : (
                   <TreeItemAction
@@ -388,6 +389,7 @@ export const TreeItem = ({
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
                     isHovered={state.partHovered === 'item'}
+                    selectedTreeItemIds={selectedTreeItemIds}
                   />
                 )}
               </div>

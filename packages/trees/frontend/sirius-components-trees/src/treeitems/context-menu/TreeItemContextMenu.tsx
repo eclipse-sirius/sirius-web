@@ -10,11 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ComponentExtension, useComponents, useData } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  useComponents,
+  useData,
+  useSelectionTargets,
+} from '@eclipse-sirius/sirius-components-core';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import { DefaultMenuItem } from './DefaultMenuItem';
 import { DeleteMenuItem } from './DeleteMenuItem';
 import { RenameMenuItem } from './RenameMenuItem';
+
+import MenuItem from '@mui/material/MenuItem';
 import { TreeItemContextMenuProps } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
 import {
@@ -23,7 +32,6 @@ import {
 } from './TreeItemContextMenuEntryExtensionPoints';
 import { TreeItemContextMenuOverrideContribution } from './TreeItemContextMenuEntryExtensionPoints.types';
 import { useContextMenuEntries } from './useContextMenuEntries';
-
 export const TreeItemContextMenu = ({
   menuAnchor,
   editingContextId,
@@ -33,6 +41,7 @@ export const TreeItemContextMenu = ({
   depth,
   expanded,
   maxDepth,
+  selectedTreeItemIds,
   onExpandedElementChange,
   enterEditingMode,
   onClose,
@@ -50,6 +59,8 @@ export const TreeItemContextMenu = ({
       onExpandedElementChange([...expanded, item.id], Math.max(depth, maxDepth));
     }
   };
+
+  const { selectionTargets } = useSelectionTargets();
 
   const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id);
   if (loading) {
@@ -82,6 +93,7 @@ export const TreeItemContextMenu = ({
           treeId={treeId}
           expanded={expanded}
           maxDepth={maxDepth}
+          selectedTreeItemIds={selectedTreeItemIds}
         />
       ))}
       {contextMenuEntries.map((entry) => {
@@ -102,6 +114,7 @@ export const TreeItemContextMenu = ({
               treeId={treeId}
               expanded={expanded}
               maxDepth={maxDepth}
+              selectedTreeItemIds={selectedTreeItemIds}
             />
           ));
         } else {
@@ -118,7 +131,21 @@ export const TreeItemContextMenu = ({
           );
         }
       })}
-
+      {selectionTargets
+        .filter((target) => target.id !== 'explorer')
+        .map((target) => (
+          <MenuItem
+            key={`push-selection-to-${target.id}`}
+            data-testid={`push-selection-to-${target.label}`}
+            onClick={() => {
+              const localSelection = { entries: selectedTreeItemIds.map((id) => ({ id })) };
+              target.applySelection(localSelection);
+              onClose();
+            }}>
+            <ListItemIcon>{target.icon}</ListItemIcon>
+            <ListItemText primary={`Show in ${target.label}`} />
+          </MenuItem>
+        ))}
       <RenameMenuItem item={item} readOnly={readOnly} onClick={enterEditingMode} />
       <DeleteMenuItem
         editingContextId={editingContextId}

@@ -16,6 +16,7 @@ import { WorkbenchContextValue } from './WorkbenchContext.types';
 
 const defaultWorkbenchContextValue: WorkbenchContextValue = {
   displayedRepresentationMetadata: null,
+  getDisplayedRepresentationHandle: () => null,
   getWorkbenchPanelHandles: () => [],
 };
 

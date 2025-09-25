@@ -27,6 +27,7 @@ export const useQueryViewHandle = (
           queryText: expressionAreaRef.current?.getExpression() || '',
         };
       },
+      applySelection: null,
     };
   };
   useImperativeHandle(ref, workbenchViewHandleProvider, [id, expressionAreaRef]);

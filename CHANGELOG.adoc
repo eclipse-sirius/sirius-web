@@ -153,6 +153,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 - https://github.com/eclipse-sirius/sirius-web/issues/5458[#5458] [diagram] Add support for oblique edge type in view DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5463[#5463] [diagram] Add visibility field in the style of a label to be able to hide a label from the appearance palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/5526[#5526] [core] Add support for "Show in ..." actions to "push" the local selection from a representation or view into another one (provided it supports it).
 
 
 === Improvements

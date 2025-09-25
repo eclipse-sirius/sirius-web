@@ -64,6 +64,7 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []

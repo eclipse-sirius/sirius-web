@@ -11,11 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchPanelHandle } from './Panels.types';
-import { RepresentationMetadata, WorkbenchMainRepresentationHandle } from './Workbench.types';
+import { Selection } from './SelectionContext.types';
 
-export interface WorkbenchContextValue {
-  displayedRepresentationMetadata: RepresentationMetadata | null;
-  getDisplayedRepresentationHandle: () => WorkbenchMainRepresentationHandle | null;
-  getWorkbenchPanelHandles: () => WorkbenchPanelHandle[];
+export interface SelectionTarget {
+  id: string;
+  label: string;
+  icon: React.ReactElement;
+  applySelection: (selection: Selection) => void;
+}
+
+export interface UseSelectionTargetValue {
+  selectionTargets: SelectionTarget[];
 }

@@ -36,7 +36,7 @@ export class Explorer {
   }
 
   public revealGlobalSelectionInExplorer(): void {
-    cy.getByTestId('reveal-selection-button').click();
+    cy.getByTestId('explorer-reveal-selection-button').click();
   }
 
   public expandWithDoubleClick(treeItemLabel: string): void {

@@ -10,11 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  DRAG_SOURCES_TYPE,
+  RepresentationComponentProps,
+  useMultiToast,
+  WorkbenchMainRepresentationHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-import { useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import GridLayout, { Layout, LayoutItem, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -61,164 +66,176 @@ const getFirstDroppedElementId = (event): string | null => {
   return null;
 };
 
-export const PortalRepresentation = ({
-  editingContextId,
-  representationId,
-  readOnly,
-}: RepresentationComponentProps) => {
-  const theme = useTheme();
-  const { classes } = usePortalRepresentationStyles();
-  const domNode = useRef<HTMLDivElement>(null);
-  const { addErrorMessage } = useMultiToast();
-  const { portal, complete, message } = usePortal(editingContextId, representationId);
-  const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
-    editingContextId,
-    representationId
-  );
+export const PortalRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const theme = useTheme();
+    const { classes } = usePortalRepresentationStyles();
+    const domNode = useRef<HTMLDivElement>(null);
+    const { addErrorMessage } = useMultiToast();
+    const { portal, complete, message } = usePortal(editingContextId, representationId);
+    const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
+      editingContextId,
+      representationId
+    );
 
-  const [mode, setMode] = useState<PortalRepresentationMode | null>(null);
-  const portalHasViews: boolean | null = portal && portal.views.length > 0;
-  useEffect(() => {
-    if (readOnly) {
-      setMode('read-only');
-    } else if (portal !== null && (mode === null || mode === 'read-only')) {
-      // We pass here when we have received the portal (it is non-null) but:
-      // - either we have not yet decided what the initial/default mode should be
-      //   (mode is still null);
-      // - or we were previously in read-only mode and become editable again.
-      setMode(portalHasViews ? 'direct' : 'edit');
-    }
-  }, [readOnly, portal, portalHasViews]);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
+      },
+      []
+    );
 
-  const portalIncludesRepresentation = (representationId: string) => {
-    return portal?.views.find((view) => view?.representationMetadata?.id === representationId);
-  };
+    const [mode, setMode] = useState<PortalRepresentationMode | null>(null);
+    const portalHasViews: boolean | null = portal && portal.views.length > 0;
+    useEffect(() => {
+      if (readOnly) {
+        setMode('read-only');
+      } else if (portal !== null && (mode === null || mode === 'read-only')) {
+        // We pass here when we have received the portal (it is non-null) but:
+        // - either we have not yet decided what the initial/default mode should be
+        //   (mode is still null);
+        // - or we were previously in read-only mode and become editable again.
+        setMode(portalHasViews ? 'direct' : 'edit');
+      }
+    }, [readOnly, portal, portalHasViews]);
 
-  const handleDrop = (event: Event, item: LayoutItem) => {
-    event.preventDefault();
-    if (mode === 'read-only') {
-      return;
-    }
-    const droppedRepresentationId: string | null = getFirstDroppedElementId(event);
-    if (droppedRepresentationId === null) {
-      addErrorMessage('Invalid drop.');
-    } else if (portalIncludesRepresentation(droppedRepresentationId)) {
-      addErrorMessage('The representation is already present in this portal.');
-    } else {
-      addPortalView(droppedRepresentationId, item.x, item.y, item.w, item.h);
-    }
-  };
+    const portalIncludesRepresentation = (representationId: string) => {
+      return portal?.views.find((view) => view?.representationMetadata?.id === representationId);
+    };
 
-  const handleDeleteView = (view: GQLPortalView) => {
-    removePortalView(view.id);
-  };
+    const handleDrop = (event: Event, item: LayoutItem) => {
+      event.preventDefault();
+      if (mode === 'read-only') {
+        return;
+      }
+      const droppedRepresentationId: string | null = getFirstDroppedElementId(event);
+      if (droppedRepresentationId === null) {
+        addErrorMessage('Invalid drop.');
+      } else if (portalIncludesRepresentation(droppedRepresentationId)) {
+        addErrorMessage('The representation is already present in this portal.');
+      } else {
+        addPortalView(droppedRepresentationId, item.x, item.y, item.w, item.h);
+      }
+    };
 
-  const handleLayoutChange = (layout: Layout) => {
-    if (!layoutInProgress) {
-      const newLayoutData: GQLLayoutPortalLayoutData[] = layout.map((layoutItem) => ({
-        portalViewId: layoutItem.i,
-        x: layoutItem.x,
-        y: layoutItem.y,
-        width: layoutItem.w,
-        height: layoutItem.h,
-      }));
-      layoutPortal(newLayoutData);
-    }
-  };
+    const handleDeleteView = (view: GQLPortalView) => {
+      removePortalView(view.id);
+    };
 
-  let items: JSX.Element[] = [
-    <div
-      key="drop-area"
-      className={classes.dropArea}
-      data-testid="portal-drop-area"
-      data-grid={{
-        x: 0,
-        y: 0,
-        w: 10,
-        h: 20,
-        static: true,
-      }}>
-      <AddIcon fontSize="large" />
-      <Typography variant="subtitle2" align="center">
-        Add representations by dropping them from the explorer
-      </Typography>
-    </div>,
-  ];
-  if (mode && portal && portal.views.length > 0) {
-    items = portal.views
-      .filter((view) => view?.representationMetadata?.id !== representationId)
-      .map((view) => {
-        const layout = portal.layoutData?.find((viewLayoutData) => viewLayoutData.portalViewId === view.id);
-        if (layout && view.representationMetadata) {
-          return (
-            <div
-              key={view.id}
-              data-grid={{
-                x: layout.x,
-                y: layout.y,
-                w: layout.width,
-                h: layout.height,
-                static: mode === 'direct',
-              }}
-              style={{ display: 'grid' }}>
-              <RepresentationFrame
-                editingContextId={editingContextId}
-                representation={{ ...view.representationMetadata, iconURLs: [] }}
-                portalMode={mode}
-                onDelete={() => {
-                  if (mode !== 'read-only') {
-                    handleDeleteView(view);
-                  }
+    const handleLayoutChange = (layout: Layout) => {
+      if (!layoutInProgress) {
+        const newLayoutData: GQLLayoutPortalLayoutData[] = layout.map((layoutItem) => ({
+          portalViewId: layoutItem.i,
+          x: layoutItem.x,
+          y: layoutItem.y,
+          width: layoutItem.w,
+          height: layoutItem.h,
+        }));
+        layoutPortal(newLayoutData);
+      }
+    };
+
+    let items: JSX.Element[] = [
+      <div
+        key="drop-area"
+        className={classes.dropArea}
+        data-testid="portal-drop-area"
+        data-grid={{
+          x: 0,
+          y: 0,
+          w: 10,
+          h: 20,
+          static: true,
+        }}>
+        <AddIcon fontSize="large" />
+        <Typography variant="subtitle2" align="center">
+          Add representations by dropping them from the explorer
+        </Typography>
+      </div>,
+    ];
+    if (mode && portal && portal.views.length > 0) {
+      items = portal.views
+        .filter((view) => view?.representationMetadata?.id !== representationId)
+        .map((view) => {
+          const layout = portal.layoutData?.find((viewLayoutData) => viewLayoutData.portalViewId === view.id);
+          if (layout && view.representationMetadata) {
+            return (
+              <div
+                key={view.id}
+                data-grid={{
+                  x: layout.x,
+                  y: layout.y,
+                  w: layout.width,
+                  h: layout.height,
+                  static: mode === 'direct',
                 }}
-              />
-            </div>
-          );
-        } else {
-          return <div key={view.id} />;
-        }
-      });
-  }
-
-  if (message) {
-    return <div>{message}</div>;
-  }
-  if (complete) {
-    return <div>The representation is not available anymore</div>;
-  }
-  if (!portal || !mode) {
-    return <div></div>;
-  }
-
-  const cellSize: number = parseInt(theme.spacing(3));
-  return (
-    <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
-      <PortalToolbar
-        representationId={representationId}
-        fullscreenNode={domNode}
-        portalMode={mode}
-        setPortalMode={(newMode) => setMode(newMode)}
-      />
-      <ResponsiveGridLayout
-        data-testid="portal-grid-layout"
-        className="layout"
-        rowHeight={cellSize}
-        autoSize={true}
-        margin={[parseInt(theme.spacing(1)), parseInt(theme.spacing(1))]}
-        compactType={portalHasViews ? 'vertical' : null}
-        draggableHandle=".draggable"
-        isDraggable={mode === 'edit'}
-        isResizable={mode === 'edit'}
-        isDroppable={mode === 'edit'}
-        allowOverlap={!portalHasViews}
-        droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
-        onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
-          if (mode !== 'read-only') {
-            handleDrop(event, item);
+                style={{ display: 'grid' }}>
+                <RepresentationFrame
+                  editingContextId={editingContextId}
+                  representation={{ ...view.representationMetadata, iconURLs: [] }}
+                  portalMode={mode}
+                  onDelete={() => {
+                    if (mode !== 'read-only') {
+                      handleDeleteView(view);
+                    }
+                  }}
+                />
+              </div>
+            );
+          } else {
+            return <div key={view.id} />;
           }
-        }}
-        onLayoutChange={handleLayoutChange}>
-        {items}
-      </ResponsiveGridLayout>
-    </div>
-  );
-};
+        });
+    }
+
+    if (message) {
+      return <div>{message}</div>;
+    }
+    if (complete) {
+      return <div>The representation is not available anymore</div>;
+    }
+    if (!portal || !mode) {
+      return <div></div>;
+    }
+
+    const cellSize: number = parseInt(theme.spacing(3));
+    return (
+      <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
+        <PortalToolbar
+          representationId={representationId}
+          fullscreenNode={domNode}
+          portalMode={mode}
+          setPortalMode={(newMode) => setMode(newMode)}
+        />
+        <ResponsiveGridLayout
+          data-testid="portal-grid-layout"
+          className="layout"
+          rowHeight={cellSize}
+          autoSize={true}
+          margin={[parseInt(theme.spacing(1)), parseInt(theme.spacing(1))]}
+          compactType={portalHasViews ? 'vertical' : null}
+          draggableHandle=".draggable"
+          isDraggable={mode === 'edit'}
+          isResizable={mode === 'edit'}
+          isDroppable={mode === 'edit'}
+          allowOverlap={!portalHasViews}
+          droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
+          onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
+            if (mode !== 'read-only') {
+              handleDrop(event, item);
+            }
+          }}
+          onLayoutChange={handleLayoutChange}>
+          {items}
+        </ResponsiveGridLayout>
+      </div>
+    );
+  }
+);

@@ -82,7 +82,27 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       singleTreeItemSelected: null,
     });
 
-    useExplorerViewHandle(id, state.treeFilters, state.activeTreeDescriptionId, ref);
+    // If we are requested to reveal the global selection, we need to compute the tree path to expand
+    const { getTreePath, data: treePathData } = useTreePath();
+
+    const applySelection = (selection: Selection) => {
+      const newSelectedTreeItemIds = selection.entries.map((entry) => entry.id);
+      setState((prevState) => ({
+        ...prevState,
+        selectedTreeItemIds: newSelectedTreeItemIds,
+      }));
+
+      if (state.tree && newSelectedTreeItemIds.length > 0) {
+        const variables: GQLGetTreePathVariables = {
+          editingContextId,
+          treeId: state.tree.id,
+          selectionEntryIds: newSelectedTreeItemIds,
+        };
+        getTreePath({ variables });
+      }
+    };
+
+    useExplorerViewHandle(id, state.treeFilters, state.activeTreeDescriptionId, applySelection, ref);
 
     const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
       (contribution) => contribution.props.component
@@ -175,9 +195,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     }, [treeElement]);
 
     const { selection, setSelection } = useSelection();
-
-    // If we are requested to reveal the global selection, we need to compute the tree path to expand
-    const { getTreePath, data: treePathData } = useTreePath();
 
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)
