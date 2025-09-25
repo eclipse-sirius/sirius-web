@@ -14,13 +14,14 @@ import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
   useData,
+  WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLFormDescriptionEditorRefreshedEventPayload } from './FormDescriptionEditorEventFragment.types';
 import {
@@ -129,174 +130,189 @@ const isFormDescriptionEditorRefreshedEventPayload = (
 ): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
   payload && payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
 
-export const FormDescriptionEditorRepresentation = ({
-  editingContextId,
-  representationId,
-  readOnly,
-}: RepresentationComponentProps) => {
-  const { classes } = useFormDescriptionEditorStyles();
-  const noop = () => {};
+export const FormDescriptionEditorRepresentation = forwardRef<
+  WorkbenchMainRepresentationHandle,
+  RepresentationComponentProps
+>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const { classes } = useFormDescriptionEditorStyles();
+    const noop = () => {};
 
-  const [state, setState] = useState<FormDescriptionEditorRepresentationState>({
-    formDescriptionEditor: null,
-  });
-
-  const {
-    loading,
-    payload: formDescriptionEditorEventPayload,
-    complete,
-  } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
-
-  useEffect(() => {
-    if (
-      formDescriptionEditorEventPayload &&
-      isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)
-    ) {
-      setState((prevState) => ({
-        ...prevState,
-        formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
-      }));
-    }
-  }, [formDescriptionEditorEventPayload]);
-
-  const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
-  const allWidgets: WidgetDescriptor[] = [...coreWidgets];
-  widgetContributions.forEach((widgetContribution) => {
-    allWidgets.push({
-      name: widgetContribution.name,
-      label: widgetContribution.name,
-      icon: widgetContribution.icon,
+    const [state, setState] = useState<FormDescriptionEditorRepresentationState>({
+      formDescriptionEditor: null,
     });
-  });
-  allWidgets.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
 
-  const handleDragStartPage: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
-    event.dataTransfer.setData('draggedElementType', 'Page');
-  };
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
+      },
+      []
+    );
 
-  const handleDragStartGroup: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
-    event.dataTransfer.setData('draggedElementType', 'Group');
-  };
+    const {
+      loading,
+      payload: formDescriptionEditorEventPayload,
+      complete,
+    } = useFormDescriptionEditorEventSubscription(editingContextId, representationId);
 
-  const handleDragStartWidget: React.DragEventHandler<HTMLDivElement> = (event) => {
-    event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
-    event.dataTransfer.setData('draggedElementType', 'Widget');
-  };
+    useEffect(() => {
+      if (
+        formDescriptionEditorEventPayload &&
+        isFormDescriptionEditorRefreshedEventPayload(formDescriptionEditorEventPayload)
+      ) {
+        setState((prevState) => ({
+          ...prevState,
+          formDescriptionEditor: formDescriptionEditorEventPayload.formDescriptionEditor,
+        }));
+      }
+    }, [formDescriptionEditorEventPayload]);
 
-  let content: JSX.Element | null = null;
-  if (state.formDescriptionEditor) {
-    content = (
-      <div className={classes.main}>
-        <div className={classes.widgets}>
-          <Typography gutterBottom>Pages</Typography>
-          <div
-            id="Page"
-            data-testid="FormDescriptionEditor-Page"
-            draggable={!readOnly}
-            className={classes.widgetKind}
-            onDragStart={readOnly ? noop : handleDragStartPage}>
-            <WebIcon />
-            <Typography variant="caption" gutterBottom>
-              Page
-            </Typography>
+    const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
+    const allWidgets: WidgetDescriptor[] = [...coreWidgets];
+    widgetContributions.forEach((widgetContribution) => {
+      allWidgets.push({
+        name: widgetContribution.name,
+        label: widgetContribution.name,
+        icon: widgetContribution.icon,
+      });
+    });
+    allWidgets.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
+
+    const handleDragStartPage: React.DragEventHandler<HTMLDivElement> = (event) => {
+      event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+      event.dataTransfer.setData('draggedElementType', 'Page');
+    };
+
+    const handleDragStartGroup: React.DragEventHandler<HTMLDivElement> = (event) => {
+      event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+      event.dataTransfer.setData('draggedElementType', 'Group');
+    };
+
+    const handleDragStartWidget: React.DragEventHandler<HTMLDivElement> = (event) => {
+      event.dataTransfer.setData('draggedElementId', event.currentTarget.id);
+      event.dataTransfer.setData('draggedElementType', 'Widget');
+    };
+
+    let content: JSX.Element | null = null;
+    if (state.formDescriptionEditor) {
+      content = (
+        <div className={classes.main}>
+          <div className={classes.widgets}>
+            <Typography gutterBottom>Pages</Typography>
+            <div
+              id="Page"
+              data-testid="FormDescriptionEditor-Page"
+              draggable={!readOnly}
+              className={classes.widgetKind}
+              onDragStart={readOnly ? noop : handleDragStartPage}>
+              <WebIcon />
+              <Typography variant="caption" gutterBottom>
+                Page
+              </Typography>
+            </div>
+            <Typography gutterBottom>Groups</Typography>
+            <div
+              id="Group"
+              data-testid="FormDescriptionEditor-Group"
+              draggable={!readOnly}
+              className={classes.widgetKind}
+              onDragStart={readOnly ? noop : handleDragStartGroup}>
+              <ViewAgendaIcon />
+              <Typography variant="caption" gutterBottom>
+                Group
+              </Typography>
+            </div>
+            <Typography gutterBottom>Controls</Typography>
+            <div
+              id="FormElementFor"
+              data-testid="FormDescriptionEditor-FormElementFor"
+              draggable={!readOnly}
+              className={classes.widgetKind}
+              onDragStart={readOnly ? noop : handleDragStartWidget}>
+              <ForIcon />
+              <Typography variant="caption" gutterBottom>
+                For
+              </Typography>
+            </div>
+            <div
+              id="FormElementIf"
+              data-testid="FormDescriptionEditor-FormElementIf"
+              draggable={!readOnly}
+              className={classes.widgetKind}
+              onDragStart={readOnly ? noop : handleDragStartWidget}>
+              <IfIcon />
+              <Typography variant="caption" gutterBottom>
+                If
+              </Typography>
+            </div>
+            <Typography gutterBottom>Widgets</Typography>
+
+            {allWidgets.map((widgetDescriptor) => {
+              return (
+                <div
+                  id={widgetDescriptor.name}
+                  key={widgetDescriptor.name}
+                  data-testid={`FormDescriptionEditor-${widgetDescriptor.name}`}
+                  draggable={!readOnly}
+                  className={classes.widgetKind}
+                  onDragStart={readOnly ? noop : handleDragStartWidget}>
+                  {widgetDescriptor.icon}
+                  <Typography variant="caption" gutterBottom align="center">
+                    {widgetDescriptor.label || widgetDescriptor.name}
+                  </Typography>
+                </div>
+              );
+            })}
           </div>
-          <Typography gutterBottom>Groups</Typography>
-          <div
-            id="Group"
-            data-testid="FormDescriptionEditor-Group"
-            draggable={!readOnly}
-            className={classes.widgetKind}
-            onDragStart={readOnly ? noop : handleDragStartGroup}>
-            <ViewAgendaIcon />
-            <Typography variant="caption" gutterBottom>
-              Group
-            </Typography>
+          <div className={classes.preview}>
+            <div className={classes.body}>
+              <PageList />
+            </div>
           </div>
-          <Typography gutterBottom>Controls</Typography>
-          <div
-            id="FormElementFor"
-            data-testid="FormDescriptionEditor-FormElementFor"
-            draggable={!readOnly}
-            className={classes.widgetKind}
-            onDragStart={readOnly ? noop : handleDragStartWidget}>
-            <ForIcon />
-            <Typography variant="caption" gutterBottom>
-              For
-            </Typography>
-          </div>
-          <div
-            id="FormElementIf"
-            data-testid="FormDescriptionEditor-FormElementIf"
-            draggable={!readOnly}
-            className={classes.widgetKind}
-            onDragStart={readOnly ? noop : handleDragStartWidget}>
-            <IfIcon />
-            <Typography variant="caption" gutterBottom>
-              If
-            </Typography>
-          </div>
-          <Typography gutterBottom>Widgets</Typography>
-
-          {allWidgets.map((widgetDescriptor) => {
-            return (
-              <div
-                id={widgetDescriptor.name}
-                key={widgetDescriptor.name}
-                data-testid={`FormDescriptionEditor-${widgetDescriptor.name}`}
-                draggable={!readOnly}
-                className={classes.widgetKind}
-                onDragStart={readOnly ? noop : handleDragStartWidget}>
-                {widgetDescriptor.icon}
-                <Typography variant="caption" gutterBottom align="center">
-                  {widgetDescriptor.label || widgetDescriptor.name}
-                </Typography>
-              </div>
-            );
-          })}
         </div>
-        <div className={classes.preview}>
-          <div className={classes.body}>
-            <PageList />
-          </div>
+      );
+    }
+
+    if (complete) {
+      content = (
+        <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
+          <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
+            The form description editor does not exist
+          </Typography>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
-  if (complete) {
-    content = (
-      <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
-        <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
-          The form description editor does not exist
-        </Typography>
-      </div>
-    );
-  }
-
-  if (!state.formDescriptionEditor || loading) {
-    return (
-      <div className={classes.formDescriptionEditor}>
-        <RepresentationLoadingIndicator />
-      </div>
-    );
-  }
-
-  return (
-    <Box>
-      <FormDescriptionEditorContextProvider
-        editingContextId={editingContextId}
-        representationId={representationId}
-        readOnly={readOnly}
-        formDescriptionEditor={state.formDescriptionEditor}>
+    if (!state.formDescriptionEditor || loading) {
+      return (
         <div className={classes.formDescriptionEditor}>
-          <div className={classes.header}>
-            <Typography>Form</Typography>
-          </div>
-          {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
+          <RepresentationLoadingIndicator />
         </div>
-      </FormDescriptionEditorContextProvider>
-    </Box>
-  );
-};
+      );
+    }
+
+    return (
+      <Box>
+        <FormDescriptionEditorContextProvider
+          editingContextId={editingContextId}
+          representationId={representationId}
+          readOnly={readOnly}
+          formDescriptionEditor={state.formDescriptionEditor}>
+          <div className={classes.formDescriptionEditor}>
+            <div className={classes.header}>
+              <Typography>Form</Typography>
+            </div>
+            {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
+          </div>
+        </FormDescriptionEditorContextProvider>
+      </Box>
+    );
+  }
+);

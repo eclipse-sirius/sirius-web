@@ -18,6 +18,7 @@ export interface TreeItemActionProps {
   item: GQLTreeItem;
   depth: number;
   expanded: string[];
+  selectedTreeItemIds: string[];
   maxDepth: number;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onEnterEditingMode: () => void;

@@ -73,6 +73,7 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []

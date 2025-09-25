@@ -11,17 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import React from 'react';
+import { useContext } from 'react';
 import { UseWorkbenchValue } from './useWorkbench.types';
 import { WorkbenchContext } from './WorkbenchContext';
 import { WorkbenchContextValue } from './WorkbenchContext.types';
 
 export const useWorkbench = (): UseWorkbenchValue => {
-  const { displayedRepresentationMetadata, getWorkbenchPanelHandles: getWorkbenchPanelHandles } =
-    React.useContext<WorkbenchContextValue>(WorkbenchContext);
+  const { displayedRepresentationMetadata, getWorkbenchPanelHandles, getDisplayedRepresentationHandle } =
+    useContext<WorkbenchContextValue>(WorkbenchContext);
 
   return {
     displayedRepresentationMetadata,
-    getWorkbenchPanelHandles: getWorkbenchPanelHandles,
+    getDisplayedRepresentationHandle,
+    getWorkbenchPanelHandles,
   };
 };

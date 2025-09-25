@@ -58,6 +58,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []

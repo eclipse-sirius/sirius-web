@@ -28,6 +28,7 @@ export const useDetailsViewHandle = (
           selectedPageId: formBasedViewRef.current?.selectedPageId || null,
         };
       },
+      applySelection: null,
     };
   };
   useImperativeHandle(ref, detailsViewHandlerProvider, [id, formBasedViewRef]);

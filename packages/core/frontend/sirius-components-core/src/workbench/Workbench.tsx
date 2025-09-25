@@ -31,6 +31,7 @@ import {
   RepresentationMetadata,
   RepresentationNavigationHandle,
   WorkbenchHandle,
+  WorkbenchMainRepresentationHandle,
   WorkbenchPanelsHandle,
   WorkbenchProps,
   WorkbenchSidePanelConfiguration,
@@ -260,6 +261,9 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       setSelection({ entries: [{ id: representation.id }] });
     };
 
+    const refDisplayedRepresentationHandle: RefObject<WorkbenchMainRepresentationHandle | null> =
+      useRef<WorkbenchMainRepresentationHandle | null>(null);
+
     const { data: representationFactories } = useData(representationFactoryExtensionPoint);
     if (state.displayedRepresentationMetadata) {
       const displayedRepresentationMetadata = state.displayedRepresentationMetadata;
@@ -279,9 +283,12 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
               displayedRepresentation={displayedRepresentationMetadata}
               onRepresentationClick={onRepresentationClick}
               onClose={onClose}
-              ref={refRepresentationNavigationHandle}
             />
-            <RepresentationComponent key={`${editingContextId}#${displayedRepresentationMetadata.id}`} {...props} />
+            <RepresentationComponent
+              key={`${editingContextId}#${displayedRepresentationMetadata.id}`}
+              {...props}
+              ref={refDisplayedRepresentationHandle}
+            />
           </div>
         );
       }
@@ -289,6 +296,9 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const workbenchContextValue: WorkbenchContextValue = {
       displayedRepresentationMetadata: state.displayedRepresentationMetadata,
+      getDisplayedRepresentationHandle: () => {
+        return refDisplayedRepresentationHandle.current;
+      },
       getWorkbenchPanelHandles: () => {
         return refPanelsHandle.current?.getWorkbenchPanelHandles() ?? [];
       },

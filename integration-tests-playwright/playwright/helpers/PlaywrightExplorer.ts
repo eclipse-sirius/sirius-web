@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { Page, Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 export class PlaywrightExplorer {
   readonly page: Page;
@@ -58,7 +58,7 @@ export class PlaywrightExplorer {
   }
 
   async getTreeItemLabel(treeItemLabel: string) {
-    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`);
+    return await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
   async expand(treeItemLabel: string) {
@@ -74,5 +74,15 @@ export class PlaywrightExplorer {
 
   async dragTo(treeItemLabel: string, target: Locator) {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).dragTo(target);
+  }
+
+  async revealGlobalSelection() {
+    await this.page.getByTestId('explorer-reveal-selection-button').click();
+  }
+
+  async showIn(treeItemLabel: string, selectionTargetId: string) {
+    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId(`push-selection-to-${selectionTargetId}`).click();
   }
 }
