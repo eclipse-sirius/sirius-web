@@ -52,11 +52,11 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     private boolean isCandidateVersion(IMigrationParticipant migrationParticipant) {
-        return migrationParticipant.getVersion().compareTo(this.documentMigrationData.migrationVersion()) > 0;
+        return new MigrationVersionComparator().compare(migrationParticipant.getVersion(), this.documentMigrationData.migrationVersion()) > 0;
     }
 
     private void updateCandidates() {
-        this.migrationParticipantsCandidates =  this.migrationParticipants.stream()
+        this.migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
                 .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
                 .toList();

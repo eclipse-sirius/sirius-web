@@ -25,6 +25,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.migration.MigrationVersionComparator;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -78,7 +79,7 @@ public class RepresentationContentMigrationService implements IRepresentationCon
 
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> Objects.equals(migrationParticipant.getKind(), kind))
-                .filter(migrationParticipant -> migrationParticipant.getVersion().compareTo(migrationVersion) > 0)
+                .filter(migrationParticipant -> new MigrationVersionComparator().compare(migrationParticipant.getVersion(), migrationVersion) > 0)
                 .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
                 .toList();
     }
