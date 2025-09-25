@@ -17,13 +17,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.8</version>
+		<version>2025.8.9</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-form-edit</artifactId>
-	<version>2025.8.8</version>
+	<version>2025.8.9</version>
 	<name>sirius-components-view-form-edit</name>
 	<description>Sirius Components Form View Definition DSL - Edit Support</description>
 
@@ -41,12 +41,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.8.8</version>
+			<version>2025.8.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2025.8.8</version>
+			<version>2025.8.9</version>
 		</dependency>
 	</dependencies>
 
