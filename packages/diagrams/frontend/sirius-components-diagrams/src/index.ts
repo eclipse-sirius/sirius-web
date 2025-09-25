@@ -90,3 +90,6 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
+export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';

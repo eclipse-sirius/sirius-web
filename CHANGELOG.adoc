@@ -87,6 +87,11 @@ The following files have been moved from the frontend module `sirius-components-
 The `ImpactAnalysisReport` GraphQL type has been updated to contain `impactTree: DataTree!`, the corresponding query hooks and backend code has been updated to consume and provide this new value.
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] `DiagramElementPalette` is no longer exported, when using custom nodes, the palette will still be opened when right clicking an element.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] `RectangularNodeAppearanceSection`, `ImageNodeAppearanceSection` and `EdgeAppearanceSection` are no longer hard-coded in the frontend, but contribute via the  `paletteAppearanceSectionExtensionPoint`.
+If you are not contributing custom appearance sections, no action is required.
+Otherwise, you may need to add a merge strategy to merge the two contributions.
+The extension point signature has also changed to take edges into account: `canHandle: (node: Node<NodeData> | undefined, edge: Edge<EdgeData> | undefined) => boolean;`.
+And the props of `PaletteAppearanceSectionContributionComponentProps` has been renamed from `elementId` to `diagramElementId`.
 
 === Dependency update
 
@@ -135,7 +140,7 @@ You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure 
 - https://github.com/eclipse-sirius/sirius-web/issues/5743[#5743] [datatree] Add support for data trees.
 A new module `sirius-components-datatree` has been created to:
 * Define data trees in the backend
-* Display data trees in the frontend (component `DataTree`) 
+* Display data trees in the frontend (component `DataTree`)
 - https://github.com/eclipse-sirius/sirius-web/issues/5731[#5731] [sirius-web] Add the omnibox on the projects browser
 
 
@@ -154,6 +159,7 @@ The command palette can now be configured with the commands to display, and func
 This will allow to integrate the command palette in other contexts than the workbench.
 - https://github.com/eclipse-sirius/sirius-web/issues/5603[#5603] [sirius-web] Add a tree visualization of the impacts in the impact analysis dialog.
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] Merge all frontend palette into one common component
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular, image and edge appearance sections with the corresponding contribution point
 
 
 == 2025.10.0

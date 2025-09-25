@@ -13,11 +13,13 @@
 import { Node, useNodesData } from '@xyflow/react';
 import { GQLRectangularNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../../DiagramRenderer.types';
+import { PaletteAppearanceSectionContributionComponentProps } from './extensions/PaletteAppearanceSectionContribution.types';
 import { LabelAppearancePart } from './label/LabelAppearancePart';
 import { RectangularNodePart } from './rectangular-node/RectangularNodePart';
-import { RectangularNodeAppearanceSectionProps } from './RectangularNodeAppearanceSection.types';
 
-export const RectangularNodeAppearanceSection = ({ diagramElementId }: RectangularNodeAppearanceSectionProps) => {
+export const RectangularNodeAppearanceSection = ({
+  diagramElementId,
+}: PaletteAppearanceSectionContributionComponentProps) => {
   const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
 
   if (!nodeData) {

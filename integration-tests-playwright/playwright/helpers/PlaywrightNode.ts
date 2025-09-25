@@ -15,12 +15,12 @@ import { type Locator, type Page } from '@playwright/test';
 export class PlaywrightNode {
   readonly page: Page;
   readonly nodeLocator: Locator;
-  readonly nodeStyle: Locator;
+  readonly nodeStyleLocator: Locator;
 
   constructor(page: Page, name: string, type: string = 'FreeForm', index = 0) {
     this.page = page;
     this.nodeLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).nth(index).locator('..');
-    this.nodeStyle = this.page.locator(`[data-testid="${type} - ${name}"]`).first();
+    this.nodeStyleLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).first();
   }
 
   async click() {

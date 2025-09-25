@@ -12,14 +12,14 @@
  *******************************************************************************/
 import { ReactFlowState, useStore } from '@xyflow/react';
 import { MultiLabelEdgeData } from '../../../edge/MultiLabelEdge.types';
+import { PaletteAppearanceSectionContributionComponentProps } from '../extensions/PaletteAppearanceSectionContribution.types';
 import { LabelAppearancePart } from '../label/LabelAppearancePart';
 import { EdgeAppearancePart } from './EdgeAppearancePart';
-import { EdgeAppearanceSectionProps } from './EdgeAppearanceSection.types';
 
 const edgeDataSelector = (state: ReactFlowState, edgeId: string) =>
   state.edgeLookup.get(edgeId)?.data as MultiLabelEdgeData | undefined;
 
-export const EdgeAppearanceSection = ({ diagramElementId }: EdgeAppearanceSectionProps) => {
+export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSectionContributionComponentProps) => {
   const edgeData = useStore((state) => edgeDataSelector(state, diagramElementId));
 
   if (!edgeData) {

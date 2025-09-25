@@ -20,8 +20,10 @@ import { Node, useNodesData } from '@xyflow/react';
 import { EllipseNodePart } from './EllipseNodePart';
 import { GQLEllipseNodeStyle } from './EllipseNodePart.types';
 
-export const EllipseNodeAppearanceSection = ({ elementId }: PaletteAppearanceSectionContributionComponentProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(elementId);
+export const EllipseNodeAppearanceSection = ({
+  diagramElementId,
+}: PaletteAppearanceSectionContributionComponentProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
 
   if (!nodeData) {
     return null;
@@ -29,13 +31,13 @@ export const EllipseNodeAppearanceSection = ({ elementId }: PaletteAppearanceSec
   return (
     <>
       <EllipseNodePart
-        nodeId={elementId}
+        nodeId={diagramElementId}
         style={nodeData.data.nodeAppearanceData.gqlStyle as GQLEllipseNodeStyle}
         customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
       />
       {nodeData.data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={elementId}
+          diagramElementId={diagramElementId}
           labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}
