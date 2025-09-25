@@ -1,0 +1,12 @@
+= Application Development
+
+#TODO: This should explain how to create a custom application that embeds the Sirius Web runtime.
+Previously we'd just fork sirius-web-sample-application and tweak it a bit.
+I think now there might be a framework we can rely upon.#
+
+Maybe use:
+
+* Backend: https://github.com/eclipse-sirius/sirius-web/tree/master/packages/sirius-web/backend/sirius-web
+* Frontend: https://github.com/eclipse-sirius/sirius-web/tree/master/packages/sirius-web/frontend/sirius-web
+* https://github.com/eclipse-sirius/sirius-web/blob/master/doc/explanation/evolution-of-the-sirius-web-architecture.adoc
+* https://github.com/eclipse-sirius/sirius-web/blob/master/doc/reference/03_architecture.adoc

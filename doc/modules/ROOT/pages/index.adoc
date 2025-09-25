@@ -1,0 +1,53 @@
+= Welcome to {sw}
+
+image::Sirius-Logo.png["Sirius Logo"]
+
+This is the official {sw} Documentation Center, serving as the central location for any and all documentation related to the {sw-website}[Eclipse {sw} open-source project].
+
+
+== Introduction
+
+{sw} is an Eclipse project which allows you to easily create *your own cloud-based graphical modeling studio*.
+
+.A sample diagram made with {sw}
+image::Flow-Diagram-Sample.gif["Sample Flow Diagram"]
+
+It provides a _generic workbench_ for model-based architecture engineering that can easily be tailored to fit specific needs. Ouf of the box, this generic workbench supports various kinds of more-or-less graphical representations, including *diagrams*, *forms* and *trees*.
+
+{sw} is the cloud-based version of the {sirius-website}[Eclipse Sirius project].
+
+
+=== Purpose
+
+{sw} is both a _framework_ for the creation of custom domain-specific cloud-based studios, and a _runtime_ for their deployment :
+
+* As a framework, its goal is to *facilitate and accelerate the implementation of modeling studios* by supporting, out of the box, a variety of representation types for your domain-specific data. This allows _{stdmkrs}_ and/or _{stddevs}_ to create editors which are intuitive, feature-rich and fit the knowledge and workflow of the domain experts.
+
+* As a runtime, it leverages *modern web technologies* to provide an efficient user experience, and supports many productivity-enhancing features out of the box.
+
+Both the framework and runtime aspects of {sw} are *highly extensible*, making it a great platform both for quick and dirty prototypes as well as full-fledged products.
+
+
+=== Key features and benefits
+
+* A *low-code* approach for creating and editing custom modeling studios, to enable simple use cases or prototypes.
+* A powerful and extensible *programmatic* approach for creating and editing custom modeling studios, to enable more complex featureful customized applications.
+* A flexible runtime, that can be deployed either as a *standalone web application*, or easily *integrated* into another web application.
+* Developed in xref:ROOT:introduction/sources.adoc[open-source] and under a xref:ROOT:introduction/governance.adoc[vendor-neutral] foundation, to ensure that your data is and remains yours.
+
+Check out the xref:ROOT:introduction/overview.adoc[] and xref:ROOT:introduction/features.adoc[] pages for more details about the functionalities provided by {sw}.
+
+
+== Explore Further
+
+Are you an end user looking into *getting a better understanding of how to use a custom studio* made with {sw}?
+
+=> The xref:user-manual:index.adoc[] shows off the user interface and explains the runtime concepts of {sw}.
+
+Are you planning to work on a *custom studio made with the low-code approach* of {sw}?
+
+=> The xref:maker-manual:index.adoc[] shows how to define and edit a custom studio made with the low-code approach of {sw}.
+
+Are you a developer looking to *programmatically create or edit a studio* with {sw}? Or are you working on *integrating* a custom studio within another application?
+
+=> The xref:developer-guide:index.adoc[] explains all about the {sw} APIs you can use to define or extend a custom studio.
