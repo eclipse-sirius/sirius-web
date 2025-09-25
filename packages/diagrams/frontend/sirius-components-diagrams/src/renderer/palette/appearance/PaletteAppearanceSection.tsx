@@ -23,11 +23,9 @@ import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
-import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
+import { PaletteAppearanceSectionContributionProps } from './extensions/PaletteAppearanceSectionContribution.types';
+import { paletteAppearanceSectionExtensionPoint } from './extensions/PaletteAppearanceSectionExtensionPoints';
 import { EdgeAppearanceSection } from './edge/EdgeAppearanceSection';
-import { ImageNodeAppearanceSection } from './ImageNodeAppearanceSection';
-import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
 
 const useStyle = makeStyles()((theme) => ({
   toolListItemButton: {
@@ -88,12 +86,6 @@ export const PaletteAppearanceSection = ({
           />
         )
       );
-    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
-      paletteAppearanceSectionComponents.push(<RectangularNodeAppearanceSection diagramElementId={nodeElement.id} />);
-    }
-    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
-      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={nodeElement.id} />);
-    }
   } else if (edgeElement) {
     paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={edgeElement.id} />);
   }
