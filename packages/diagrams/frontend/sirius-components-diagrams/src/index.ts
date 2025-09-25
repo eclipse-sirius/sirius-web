@@ -91,3 +91,6 @@ export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useI
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
 export { convertBorderNodePosition } from './converter/convertBorderNodes';
+export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
+export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';

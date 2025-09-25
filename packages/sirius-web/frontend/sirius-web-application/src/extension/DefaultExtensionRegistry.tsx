@@ -25,7 +25,10 @@ import {
   DiagramDialogContribution,
   DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
+  EdgeAppearanceSection,
+  ImageNodeAppearanceSection,
   PaletteAppearanceSectionContributionProps,
+  RectangularNodeAppearanceSection,
   diagramDialogContributionExtensionPoint,
   diagramNodeActionOverrideContributionExtensionPoint,
   diagramPanelActionExtensionPoint,
@@ -627,18 +630,36 @@ defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
  * Used to contribute custom node appearance section on the palette for ellipse nodes
  *
  *******************************************************************************/
-const ellipseNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+const diagramElementPaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
   {
-    canHandle: (element) => {
-      return element.type === 'ellipseNode';
+    canHandle: (nodeElement, _edgeElement) => {
+      return nodeElement?.type === 'ellipseNode';
     },
     component: EllipseNodeAppearanceSection,
+  },
+  {
+    canHandle: (nodeElement, _edgeElement) => {
+      return nodeElement?.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle';
+    },
+    component: RectangularNodeAppearanceSection,
+  },
+  {
+    canHandle: (nodeElement, _edgeElement) => {
+      return nodeElement?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle';
+    },
+    component: ImageNodeAppearanceSection,
+  },
+  {
+    canHandle: (_nodeElement, edgeElement) => {
+      return !!edgeElement;
+    },
+    component: EdgeAppearanceSection,
   },
 ];
 
 defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
   identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
-  data: ellipseNodePaletteAppearanceSectionContribution,
+  data: diagramElementPaletteAppearanceSectionContribution,
 });
 
 export { defaultExtensionRegistry };

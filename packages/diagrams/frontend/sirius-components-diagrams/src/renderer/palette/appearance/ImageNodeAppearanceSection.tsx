@@ -13,12 +13,12 @@
 import { Node, useNodesData } from '@xyflow/react';
 import { GQLImageNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../../DiagramRenderer.types';
+import { PaletteAppearanceSectionContributionComponentProps } from './extensions/PaletteAppearanceSectionContribution.types';
 import { ImageNodePart } from './image-node/ImageNodePart';
-import { ImageNodeAppearanceSectionProps } from './ImageNodeAppearanceSection.types';
 import { LabelAppearancePart } from './label/LabelAppearancePart';
 
-export const ImageNodeAppearanceSection = ({ diagramElementId }: ImageNodeAppearanceSectionProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
+export const ImageNodeAppearanceSection = ({ elementId }: PaletteAppearanceSectionContributionComponentProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(elementId);
 
   if (!nodeData) {
     return null;
@@ -26,13 +26,13 @@ export const ImageNodeAppearanceSection = ({ diagramElementId }: ImageNodeAppear
   return (
     <>
       <ImageNodePart
-        nodeId={diagramElementId}
+        nodeId={elementId}
         style={nodeData.data.nodeAppearanceData.gqlStyle as GQLImageNodeStyle}
         customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
       />
       {nodeData.data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
+          diagramElementId={elementId}
           labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}
@@ -41,7 +41,7 @@ export const ImageNodeAppearanceSection = ({ diagramElementId }: ImageNodeAppear
       ) : null}
       {nodeData.data.outsideLabels.BOTTOM_MIDDLE ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
+          diagramElementId={elementId}
           labelId={nodeData.data.outsideLabels.BOTTOM_MIDDLE.id}
           position="Outside Middle Label"
           style={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}

@@ -13,12 +13,12 @@
 import { Node, useNodesData } from '@xyflow/react';
 import { GQLRectangularNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../../DiagramRenderer.types';
+import { PaletteAppearanceSectionContributionComponentProps } from './extensions/PaletteAppearanceSectionContribution.types';
 import { LabelAppearancePart } from './label/LabelAppearancePart';
 import { RectangularNodePart } from './rectangular-node/RectangularNodePart';
-import { RectangularNodeAppearanceSectionProps } from './RectangularNodeAppearanceSection.types';
 
-export const RectangularNodeAppearanceSection = ({ diagramElementId }: RectangularNodeAppearanceSectionProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
+export const RectangularNodeAppearanceSection = ({ elementId }: PaletteAppearanceSectionContributionComponentProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(elementId);
 
   if (!nodeData) {
     return null;
@@ -27,13 +27,13 @@ export const RectangularNodeAppearanceSection = ({ diagramElementId }: Rectangul
   return (
     <>
       <RectangularNodePart
-        nodeId={diagramElementId}
+        nodeId={elementId}
         style={nodeData.data.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle}
         customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
       />
       {nodeData.data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
+          diagramElementId={elementId}
           labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}
@@ -42,7 +42,7 @@ export const RectangularNodeAppearanceSection = ({ diagramElementId }: Rectangul
       ) : null}
       {nodeData.data.outsideLabels.BOTTOM_MIDDLE ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
+          diagramElementId={elementId}
           labelId={nodeData.data.outsideLabels.BOTTOM_MIDDLE.id}
           position="Outside Middle Label"
           style={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
