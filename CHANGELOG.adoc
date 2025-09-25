@@ -49,6 +49,7 @@ This also includes an update from ANTLR 4.10.1 to 4.13.2.
 - https://github.com/eclipse-sirius/sirius-web/issues/4134[#4134] [core] Our custom `EditingContextCrossReferenceAdapter` has been removed and replaced by EMF's default `ECrossReferenceAdapter`.
 Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] Ensure that the project download uses the proper editing context
+- https://github.com/eclipse-sirius/sirius-web/issues/5366[#5366] [core] Fix version comparison for migration participants
 
 
 === New Features
