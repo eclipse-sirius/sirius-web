@@ -11,4 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ConnectorContextualMenuProps {}
+import { Connection, XYPosition } from '@xyflow/react';
+import { GQLConnectorTool } from './useConnector.types';
+
+export interface UseConnectorContextValue {
+  connection: Connection | null;
+  position: XYPosition | null;
+  toolCandidates: GQLConnectorTool[];
+  setConnection: (connection: Connection | null) => void;
+  setPosition: (position: XYPosition) => void;
+  setToolCandidates: (toolCandidates: GQLConnectorTool[]) => void;
+}

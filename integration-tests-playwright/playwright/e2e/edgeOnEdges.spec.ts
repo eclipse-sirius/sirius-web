@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
@@ -72,5 +73,14 @@ test.describe('edgeOnEdge', () => {
     await playwrightNode2b.nodeLocator.hover();
     await page.mouse.up();
     await expect(edges).toHaveCount(2);
+    //Create node to edge
+    playwrightNode2b.click();
+    await page.getByTestId('creationhandle-top').hover();
+    await page.mouse.down();
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.edgeLocator.hover({ force: true });
+    await page.mouse.up();
+    await page.getByTestId('connectorContextualMenu-E2ToEdge1A').click();
+    await expect(edges).toHaveCount(3);
   });
 });
