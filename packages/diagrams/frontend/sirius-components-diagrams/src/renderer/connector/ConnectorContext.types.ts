@@ -18,12 +18,9 @@ export interface ConnectorContextValue {
   connection: Connection | null;
   position: XYPosition | null;
   toolCandidates: GQLConnectorTool[];
-  isNewConnection: boolean;
   setConnection: (connection: Connection | null) => void;
   setPosition: (position: XYPosition) => void;
-  setCandidates: (candidates: GQLConnectorTool[]) => void;
-  setIsNewConnection: (isNewConnection: boolean) => void;
-  resetConnection: () => void;
+  setToolCandidates: (toolCandidates: GQLConnectorTool[]) => void;
 }
 
 export interface ConnectorContextProviderProps {
@@ -34,5 +31,4 @@ export interface ConnectorContextProviderState {
   connection: Connection | null;
   position: XYPosition | null;
   toolCandidates: GQLConnectorTool[];
-  isNewConnection: boolean;
 }

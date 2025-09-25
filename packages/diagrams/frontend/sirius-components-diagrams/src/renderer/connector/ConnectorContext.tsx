@@ -24,12 +24,9 @@ const defaultValue: ConnectorContextValue = {
   connection: null,
   position: null,
   toolCandidates: [],
-  isNewConnection: false,
   setConnection: () => {},
   setPosition: () => {},
-  setCandidates: () => {},
-  resetConnection: () => {},
-  setIsNewConnection: () => {},
+  setToolCandidates: () => {},
 };
 
 export const ConnectorContext = React.createContext<ConnectorContextValue>(defaultValue);
@@ -39,7 +36,6 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     connection: null,
     position: null,
     toolCandidates: [],
-    isNewConnection: false,
   });
 
   const setConnection = (connection: Connection | null) => {
@@ -50,22 +46,8 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     setState((prevState) => ({ ...prevState, position }));
   };
 
-  const setCandidates = (candidates: GQLConnectorTool[]) => {
+  const setToolCandidates = (candidates: GQLConnectorTool[]) => {
     setState((prevState) => ({ ...prevState, toolCandidates: candidates }));
-  };
-
-  const setIsNewConnection = (isNewConnection: boolean) => {
-    setState((prevState) => ({ ...prevState, isNewConnection }));
-  };
-
-  const resetConnection = () => {
-    setState((prevState) => ({
-      ...prevState,
-      connection: null,
-      targetCandidates: [],
-      isNewConnection: false,
-      selectedNodeId: null,
-    }));
   };
 
   return (
@@ -74,12 +56,9 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
         connection: state.connection,
         position: state.position,
         toolCandidates: state.toolCandidates,
-        isNewConnection: state.isNewConnection,
         setConnection,
         setPosition,
-        setCandidates,
-        resetConnection,
-        setIsNewConnection,
+        setToolCandidates,
       }}>
       {children}
     </ConnectorContext.Provider>

@@ -15,18 +15,16 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
+import { useConnectorContext } from './useConnectorContext';
 import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
-
-  const { toolCandidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { toolCandidates, connection } = useConnectorContext();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const style: React.CSSProperties = {};
-  if (isNewConnection) {
+  if (!!connection) {
     const isConnectionCompatibleNode = Boolean(
       toolCandidates.find((tool) => tool.candidateDescriptionIds.includes(descriptionId))
     );
@@ -46,7 +44,7 @@ export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): Us
 
   const memoizedStyle = useMemo(
     () => style,
-    [toolCandidates.map((candidate) => candidate.id).join('-'), isNewConnection, hoveredNode?.id]
+    [toolCandidates.map((candidate) => candidate.id).join('-'), !!connection, hoveredNode?.id]
   );
 
   return { style: memoizedStyle };

@@ -12,18 +12,16 @@
  *******************************************************************************/
 
 import { useTheme } from '@mui/material/styles';
-import { useContext, useMemo } from 'react';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
+import { useMemo } from 'react';
+import { useConnectorContext } from './useConnectorContext';
 import { UseConnectorEdgeStyleValue } from './useConnectorEdgeStyle.types';
 
 export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean): UseConnectorEdgeStyleValue => {
   const theme = useTheme();
-
-  const { toolCandidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { toolCandidates, connection } = useConnectorContext();
 
   const style: React.CSSProperties = {};
-  if (isNewConnection) {
+  if (!!connection) {
     const isConnectionCompatibleNode = Boolean(
       toolCandidates.find((tool) => tool.candidateDescriptionIds.includes(descriptionId))
     );
@@ -43,7 +41,7 @@ export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean)
 
   const memoizedStyle = useMemo(
     () => style,
-    [toolCandidates.map((candidate) => candidate.id).join('-'), isNewConnection, isHovered]
+    [toolCandidates.map((candidate) => candidate.id).join('-'), !!connection, isHovered]
   );
 
   return { style: memoizedStyle };
