@@ -12,9 +12,14 @@
  *******************************************************************************/
 
 import { gql, useQuery } from '@apollo/client';
-import { RepresentationComponentProps, Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  Selection,
+  useMultiToast,
+  WorkbenchMainRepresentationHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
-import { memo, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { DialogContextProvider } from '../dialog/DialogContext';
@@ -27,6 +32,7 @@ import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenCont
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
+import { useApplySelection } from '../renderer/selection/useApplySelection';
 import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import {
   DiagramRepresentationState,
@@ -67,8 +73,38 @@ export const getDiagramDescription = gql`
   }
 `;
 
-export const DiagramRepresentation = memo(
-  ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
+/**
+ * This is needed because the DiagramRepresentation component, which receives the `ref`, can not use it itself:
+ * the `applySelection` it needs to publish with `useImperativeHandle` can only be implemented from inside
+ * the React Flow context (where `useApplySelection()` can be invoked).
+ */
+const ApplySelectionWrapper = forwardRef(
+  (
+    props: { representationId: string; children: React.ReactNode },
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const { applySelection: applyAndRevealSelection } = useApplySelection();
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: props.representationId,
+          applySelection: (selection: Selection) => {
+            applyAndRevealSelection(selection, true);
+          },
+        };
+      },
+      []
+    );
+    return <>{props.children}</>;
+  }
+);
+
+export const DiagramRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
     const [state, setState] = useState<DiagramRepresentationState>({
       id: crypto.randomUUID(),
       message: null,
@@ -151,17 +187,19 @@ export const DiagramRepresentation = memo(
                             registerPostToolSelection,
                             consumePostToolSelection,
                           }}>
-                          <ManageVisibilityContextProvider>
-                            <DialogContextProvider>
-                              <DiagramToolExecutorContextProvider>
-                                <DiagramSubscriptionProvider
-                                  diagramId={representationId}
-                                  editingContextId={editingContextId}
-                                  readOnly={readOnly}
-                                />
-                              </DiagramToolExecutorContextProvider>
-                            </DialogContextProvider>
-                          </ManageVisibilityContextProvider>
+                          <ApplySelectionWrapper representationId={representationId} ref={ref}>
+                            <ManageVisibilityContextProvider>
+                              <DialogContextProvider>
+                                <DiagramToolExecutorContextProvider>
+                                  <DiagramSubscriptionProvider
+                                    diagramId={representationId}
+                                    editingContextId={editingContextId}
+                                    readOnly={readOnly}
+                                  />
+                                </DiagramToolExecutorContextProvider>
+                              </DialogContextProvider>
+                            </ManageVisibilityContextProvider>
+                          </ApplySelectionWrapper>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
                     </FullscreenContextProvider>

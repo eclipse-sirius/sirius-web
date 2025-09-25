@@ -10,9 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RepresentationComponentProps, RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  RepresentationLoadingIndicator,
+  WorkbenchMainRepresentationHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { FormContext } from '../contexts/FormContext';
 import { Form } from '../form/Form';
@@ -56,79 +60,100 @@ const useFormRepresentationStyles = makeStyles()((theme) => ({
 const isFormRefreshedEventPayload = (payload: GQLFormEventPayload): payload is GQLFormRefreshedEventPayload =>
   payload && payload.__typename === 'FormRefreshedEventPayload';
 
-export const FormRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
-  const [state, setState] = useState<FormRepresentationState>({
-    form: null,
-  });
+export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const [state, setState] = useState<FormRepresentationState>({
+      form: null,
+    });
 
-  const { payload, complete } = useFormSubscription(editingContextId, representationId);
-  useEffect(() => {
-    if (payload && isFormRefreshedEventPayload(payload)) {
-      setState((prevState) => ({ ...prevState, form: payload.form }));
-    }
-  }, [payload]);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
+      },
+      []
+    );
 
-  const { classes } = useFormRepresentationStyles();
+    const { payload, complete } = useFormSubscription(editingContextId, representationId);
+    useEffect(() => {
+      if (payload && isFormRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, form: payload.form }));
+      }
+    }, [payload]);
 
-  let content: JSX.Element | null = null;
-  if (state.form) {
-    const { id } = state.form;
-    if (state.form.pages.length > 1) {
-      content = (
-        <Form editingContextId={editingContextId} form={state.form} initialSelectedPageId={null} readOnly={readOnly} />
-      );
-    } else if (state.form.pages.length === 1) {
-      const page: GQLPage | null = state.form.pages[0] ?? null;
+    const { classes } = useFormRepresentationStyles();
 
-      if (page) {
-        let selectedPageToolbar: JSX.Element | null = null;
-        if (page.toolbarActions?.length ?? 0 > 0) {
-          selectedPageToolbar = (
-            <div className={classes.toolbar}>
-              {page.toolbarActions.map((toolbarAction) => (
-                <div className={classes.toolbarAction} key={toolbarAction.id}>
-                  <ToolbarAction
-                    editingContextId={editingContextId}
-                    formId={id}
-                    readOnly={readOnly}
-                    widget={toolbarAction}
-                  />
-                </div>
-              ))}
+    let content: JSX.Element | null = null;
+    if (state.form) {
+      const { id } = state.form;
+      if (state.form.pages.length > 1) {
+        content = (
+          <Form
+            editingContextId={editingContextId}
+            form={state.form}
+            initialSelectedPageId={null}
+            readOnly={readOnly}
+          />
+        );
+      } else if (state.form.pages.length === 1) {
+        const page: GQLPage | null = state.form.pages[0] ?? null;
+
+        if (page) {
+          let selectedPageToolbar: JSX.Element | null = null;
+          if (page.toolbarActions?.length ?? 0 > 0) {
+            selectedPageToolbar = (
+              <div className={classes.toolbar}>
+                {page.toolbarActions.map((toolbarAction) => (
+                  <div className={classes.toolbarAction} key={toolbarAction.id}>
+                    <ToolbarAction
+                      editingContextId={editingContextId}
+                      formId={id}
+                      readOnly={readOnly}
+                      widget={toolbarAction}
+                    />
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          content = (
+            <div data-testid="page" className={classes.page}>
+              {selectedPageToolbar}
+              <Page editingContextId={editingContextId} formId={id} page={page} readOnly={readOnly} />
             </div>
           );
         }
-        content = (
-          <div data-testid="page" className={classes.page}>
-            {selectedPageToolbar}
-            <Page editingContextId={editingContextId} formId={id} page={page} readOnly={readOnly} />
-          </div>
-        );
       }
     }
-  }
 
-  if (complete) {
-    content = (
-      <div className={classes.complete}>
-        <Typography variant="h6" align="center">
-          The form does not exist anymore
-        </Typography>
+    if (complete) {
+      content = (
+        <div className={classes.complete}>
+          <Typography variant="h6" align="center">
+            The form does not exist anymore
+          </Typography>
+        </div>
+      );
+    }
+    if (!state.form) {
+      return <RepresentationLoadingIndicator />;
+    }
+
+    return (
+      <div data-representation-kind="form">
+        <FormContext.Provider
+          value={{
+            payload: payload,
+          }}>
+          {content}
+        </FormContext.Provider>
       </div>
     );
   }
-  if (!state.form) {
-    return <RepresentationLoadingIndicator />;
-  }
-
-  return (
-    <div data-representation-kind="form">
-      <FormContext.Provider
-        value={{
-          payload: payload,
-        }}>
-        {content}
-      </FormContext.Provider>
-    </div>
-  );
-};
+);
