@@ -15,9 +15,11 @@ import { type Locator, type Page } from '@playwright/test';
 export class PlaywrightNode {
   readonly page: Page;
   readonly nodeLocator: Locator;
+  readonly styleLocator: Locator;
 
   constructor(page: Page, name: string, type: string = 'FreeForm') {
     this.page = page;
+    this.styleLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).first();
     this.nodeLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).first().locator('..');
   }
 

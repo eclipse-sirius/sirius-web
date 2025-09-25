@@ -65,6 +65,9 @@ Instead of creating an EObject instance of the EClass in the EPackage previously
 This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] `RectangularNodeAppearanceSection` and `ImageNodeAppearanceSection` are no longer hard-coded in the frontend, but contribute via the  `paletteAppearanceSectionExtensionPoint`.
+If you are not contributing custom appearance sections, no action is required.
+Otherwise, you may need to add a merge strategy to merge the two contributions.
 
 
 === Dependency update
@@ -199,7 +202,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5439[#5439] [diagram] Support edge type by its style
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
 - https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular and image appearance sections with the corresponding contribution point
 
 
 == v2025.8.0

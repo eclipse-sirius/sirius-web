@@ -30,6 +30,8 @@ import {
   diagramNodeActionOverrideContributionExtensionPoint,
   diagramPanelActionExtensionPoint,
   paletteAppearanceSectionExtensionPoint,
+  ImageNodeAppearanceSection,
+  RectangularNodeAppearanceSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
@@ -618,18 +620,30 @@ defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
  * Used to contribute custom node appearance section on the palette for ellipse nodes
  *
  *******************************************************************************/
-const ellipseNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+const nodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
   {
     canHandle: (element) => {
       return element.type === 'ellipseNode';
     },
     component: EllipseNodeAppearanceSection,
   },
+  {
+    canHandle: (element) => {
+      return element.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle';
+    },
+    component: RectangularNodeAppearanceSection,
+  },
+  {
+    canHandle: (element) => {
+      return element.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle';
+    },
+    component: ImageNodeAppearanceSection,
+  },
 ];
 
 defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
   identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
-  data: ellipseNodePaletteAppearanceSectionContribution,
+  data: nodePaletteAppearanceSectionContribution,
 });
 
 export { defaultExtensionRegistry };
