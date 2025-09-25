@@ -10,9 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RepresentationComponentProps, RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  RepresentationLoadingIndicator,
+  WorkbenchMainRepresentationHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { getColumnFilters } from '../columns/useTableColumnFiltering';
 import { useTableRowFilters } from '../rows/filters/useTableRowFilters';
@@ -41,149 +45,165 @@ const defaultPagination: TableRepresentationPagination = {
   size: 0,
 };
 
-export const TableRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
-  const { classes } = useTableRepresentationStyles();
-  const [state, setState] = useState<TableRepresentationState>({
-    ...defaultPagination,
-    globalFilter: null,
-    columnFilters: null,
-    expanded: [],
-    activeRowFilterIds: [],
-    columnSort: null,
-  });
+export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const { classes } = useTableRepresentationStyles();
+    const [state, setState] = useState<TableRepresentationState>({
+      ...defaultPagination,
+      globalFilter: null,
+      columnFilters: null,
+      expanded: [],
+      activeRowFilterIds: [],
+      columnSort: null,
+    });
 
-  const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
-    editingContextId,
-    representationId
-  );
+    const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
+      editingContextId,
+      representationId
+    );
 
-  useEffect(() => {
-    if (globalFilter !== null && columnFilters !== null && columnSort !== null && defaultPageSize !== null) {
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
+      },
+      []
+    );
+
+    useEffect(() => {
+      if (globalFilter !== null && columnFilters !== null && columnSort !== null && defaultPageSize !== null) {
+        setState((prevState) => ({
+          ...prevState,
+          size: defaultPageSize,
+          globalFilter: globalFilter,
+          columnFilters: getColumnFilters(columnFilters),
+          columnSort: columnSort,
+        }));
+      }
+    }, [
+      globalFilter,
+      columnFilters?.map((filter) => filter.id + filter.value).join(),
+      columnSort?.map((sort) => sort.id + sort.desc).join(),
+      defaultPageSize,
+    ]);
+
+    const representationFullId: string | null = tableIdProvider(
+      representationId,
+      state.cursor,
+      state.direction,
+      state.size,
+      state.globalFilter,
+      state.columnFilters,
+      state.expanded,
+      state.activeRowFilterIds,
+      state.columnSort
+    );
+    const { complete, table } = useTableSubscription(editingContextId, representationFullId);
+
+    const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId, table === null);
+
+    useEffect(() => {
+      setState((prevState) => ({ ...prevState, activeRowFilterIds }));
+    }, [activeRowFilterIds.join('')]);
+
+    const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number | null) => {
+      if (size) {
+        setState((prevState) => ({ ...prevState, cursor, direction, size }));
+      } else {
+        setState((prevState) => ({ ...prevState, cursor, direction }));
+      }
+    };
+
+    const onGlobalFilterChange = (globalFilter: string) => {
       setState((prevState) => ({
         ...prevState,
-        size: defaultPageSize,
-        globalFilter: globalFilter,
-        columnFilters: getColumnFilters(columnFilters),
-        columnSort: columnSort,
+        cursor: defaultPagination.cursor,
+        direction: defaultPagination.direction,
+        globalFilter,
       }));
-    }
-  }, [
-    globalFilter,
-    columnFilters?.map((filter) => filter.id + filter.value).join(),
-    columnSort?.map((sort) => sort.id + sort.desc).join(),
-    defaultPageSize,
-  ]);
+    };
 
-  const representationFullId: string | null = tableIdProvider(
-    representationId,
-    state.cursor,
-    state.direction,
-    state.size,
-    state.globalFilter,
-    state.columnFilters,
-    state.expanded,
-    state.activeRowFilterIds,
-    state.columnSort
-  );
-  const { complete, table } = useTableSubscription(editingContextId, representationFullId);
+    const onColumnFiltersChange = (columnFilters: ColumnFilter[]) => {
+      setState((prevState) => ({
+        ...prevState,
+        cursor: defaultPagination.cursor,
+        direction: defaultPagination.direction,
+        columnFilters,
+      }));
+    };
 
-  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId, table === null);
+    const onRowFiltersChange = (activeRowFilterIds: string[]) => {
+      setState((prevState) => ({
+        ...prevState,
+        cursor: defaultPagination.cursor,
+        direction: defaultPagination.direction,
+        activeRowFilterIds,
+      }));
+    };
 
-  useEffect(() => {
-    setState((prevState) => ({ ...prevState, activeRowFilterIds }));
-  }, [activeRowFilterIds.join('')]);
+    const onSortingChange = (columnSort: ColumnSort[]) => {
+      setState((prevState) => ({
+        ...prevState,
+        cursor: defaultPagination.cursor,
+        direction: defaultPagination.direction,
+        columnSort,
+      }));
+    };
 
-  const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number | null) => {
-    if (size) {
-      setState((prevState) => ({ ...prevState, cursor, direction, size }));
+    const onExpandedElementChange = (rowId: string) => {
+      if (state.expanded.includes(rowId)) {
+        setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
+      } else {
+        setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
+      }
+    };
+
+    if (complete) {
+      return (
+        <div className={classes.complete}>
+          <Typography variant="h6" align="center">
+            The table does not exist anymore
+          </Typography>
+        </div>
+      );
+    } else if (!table || !representationFullId) {
+      return <RepresentationLoadingIndicator />;
     } else {
-      setState((prevState) => ({ ...prevState, cursor, direction }));
+      return (
+        <div data-testid={'table-representation'} className={classes.representation}>
+          <TableContent
+            editingContextId={editingContextId}
+            representationId={representationFullId}
+            table={table}
+            readOnly={readOnly}
+            onPaginationChange={onPaginationChange}
+            onGlobalFilterChange={onGlobalFilterChange}
+            onColumnFiltersChange={onColumnFiltersChange}
+            onExpandedElementChange={onExpandedElementChange}
+            onRowFiltersChange={onRowFiltersChange}
+            onSortingChange={onSortingChange}
+            enableColumnVisibility
+            enableColumnResizing
+            enableColumnFilters
+            enableRowSizing
+            enableGlobalFilter
+            enablePagination
+            enableColumnOrdering
+            enableSelectionSynchronization
+            expandedRowIds={state.expanded}
+            pageSize={state.size}
+            rowFilters={rowFilters}
+            activeRowFilterIds={state.activeRowFilterIds}
+            enableSorting
+          />
+        </div>
+      );
     }
-  };
-
-  const onGlobalFilterChange = (globalFilter: string) => {
-    setState((prevState) => ({
-      ...prevState,
-      cursor: defaultPagination.cursor,
-      direction: defaultPagination.direction,
-      globalFilter,
-    }));
-  };
-
-  const onColumnFiltersChange = (columnFilters: ColumnFilter[]) => {
-    setState((prevState) => ({
-      ...prevState,
-      cursor: defaultPagination.cursor,
-      direction: defaultPagination.direction,
-      columnFilters,
-    }));
-  };
-
-  const onRowFiltersChange = (activeRowFilterIds: string[]) => {
-    setState((prevState) => ({
-      ...prevState,
-      cursor: defaultPagination.cursor,
-      direction: defaultPagination.direction,
-      activeRowFilterIds,
-    }));
-  };
-
-  const onSortingChange = (columnSort: ColumnSort[]) => {
-    setState((prevState) => ({
-      ...prevState,
-      cursor: defaultPagination.cursor,
-      direction: defaultPagination.direction,
-      columnSort,
-    }));
-  };
-
-  const onExpandedElementChange = (rowId: string) => {
-    if (state.expanded.includes(rowId)) {
-      setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
-    } else {
-      setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
-    }
-  };
-
-  if (complete) {
-    return (
-      <div className={classes.complete}>
-        <Typography variant="h6" align="center">
-          The table does not exist anymore
-        </Typography>
-      </div>
-    );
-  } else if (!table || !representationFullId) {
-    return <RepresentationLoadingIndicator />;
-  } else {
-    return (
-      <div data-testid={'table-representation'} className={classes.representation}>
-        <TableContent
-          editingContextId={editingContextId}
-          representationId={representationFullId}
-          table={table}
-          readOnly={readOnly}
-          onPaginationChange={onPaginationChange}
-          onGlobalFilterChange={onGlobalFilterChange}
-          onColumnFiltersChange={onColumnFiltersChange}
-          onExpandedElementChange={onExpandedElementChange}
-          onRowFiltersChange={onRowFiltersChange}
-          onSortingChange={onSortingChange}
-          enableColumnVisibility
-          enableColumnResizing
-          enableColumnFilters
-          enableRowSizing
-          enableGlobalFilter
-          enablePagination
-          enableColumnOrdering
-          enableSelectionSynchronization
-          expandedRowIds={state.expanded}
-          pageSize={state.size}
-          rowFilters={rowFilters}
-          activeRowFilterIds={state.activeRowFilterIds}
-          enableSorting
-        />
-      </div>
-    );
   }
-};
+);

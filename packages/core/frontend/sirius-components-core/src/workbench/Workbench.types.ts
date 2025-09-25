@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React, { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react';
+import { Selection } from '../selection/SelectionContext.types';
 import { WorkbenchPanelHandle } from './Panels.types';
 
 export type WorkbenchProps = {
@@ -52,7 +53,9 @@ export type RepresentationComponentProps = {
   readOnly: boolean;
 };
 
-export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;
+export type RepresentationComponent = ForwardRefExoticComponent<
+  PropsWithoutRef<RepresentationComponentProps> & RefAttributes<WorkbenchMainRepresentationHandle>
+>;
 
 export type RepresentationComponentFactory = {
   (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
@@ -91,6 +94,7 @@ export interface WorkbenchViewComponentProps {
 export interface WorkbenchViewHandle {
   id: string;
   getWorkbenchViewConfiguration: () => Record<string, unknown>;
+  applySelection: ((selection: Selection) => void) | null;
 }
 
 export interface WorkbenchConfiguration {
@@ -117,4 +121,9 @@ export interface WorkbenchMainPanelConfiguration {
 export interface WorkbenchRepresentationEditorConfiguration {
   representationId: string;
   isActive: boolean;
+}
+
+export interface WorkbenchMainRepresentationHandle {
+  id: string;
+  applySelection: ((selection: Selection) => void) | null;
 }

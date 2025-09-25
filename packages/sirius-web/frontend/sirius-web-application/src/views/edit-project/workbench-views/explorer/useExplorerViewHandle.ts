@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
 import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 import { ForwardedRef, useImperativeHandle } from 'react';
 
@@ -18,6 +18,7 @@ export const useExplorerViewHandle = (
   id: string,
   treeFilters: TreeFilter[],
   activeTreeDescriptionId: string | null,
+  applySelection: (selection: Selection) => void,
   ref: ForwardedRef<WorkbenchViewHandle>
 ) => {
   const workbenchViewHandleProvider = (): WorkbenchViewHandle => {
@@ -29,6 +30,7 @@ export const useExplorerViewHandle = (
           activeTreeDescriptionId,
         };
       },
+      applySelection,
     };
   };
   useImperativeHandle(ref, workbenchViewHandleProvider, [id, treeFilters, activeTreeDescriptionId]);
