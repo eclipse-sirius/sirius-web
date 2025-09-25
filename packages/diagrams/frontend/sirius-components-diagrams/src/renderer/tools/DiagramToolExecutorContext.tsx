@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import React from 'react';
 import {
   DiagramToolExecutorContextProviderProps,
   DiagramToolExecutorContextValue,
 } from './DiagramToolExecutorContext.types';
 import { useInvokePaletteTool } from './useInvokePaletteTool';
-import { GQLTool } from '../palette/Palette.types';
 
 const defaultValue: DiagramToolExecutorContextValue = {
   executeTool: () => {},

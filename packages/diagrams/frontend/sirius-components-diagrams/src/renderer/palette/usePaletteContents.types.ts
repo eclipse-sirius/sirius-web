@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette } from './Palette.types';
+import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UsePaletteContentValue {
   palette: GQLPalette | null;

@@ -53,12 +53,6 @@ export interface GQLTool extends GQLPaletteEntry {
   __typename: string;
 }
 
-export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
-  appliesToDiagramRoot: boolean;
-  dialogDescriptionId: string;
-  withImpactAnalysis: boolean;
-}
-
 export interface GQLPalette {
   id: string;
   quickAccessTools: GQLTool[];
