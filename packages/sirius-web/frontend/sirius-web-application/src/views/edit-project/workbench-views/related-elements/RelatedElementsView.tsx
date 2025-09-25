@@ -131,6 +131,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
             <FormBasedView
               editingContextId={editingContextId}
               form={state.form}
+              initialSelectedPageId={null}
               readOnly={readOnly}
               postProcessor={extractFirstGroup}
             />

@@ -74,7 +74,9 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
   if (state.form) {
     const { id } = state.form;
     if (state.form.pages.length > 1) {
-      content = <Form editingContextId={editingContextId} form={state.form} readOnly={readOnly} />;
+      content = (
+        <Form editingContextId={editingContextId} form={state.form} initialSelectedPageId={null} readOnly={readOnly} />
+      );
     } else if (state.form.pages.length === 1) {
       const page: GQLPage | null = state.form.pages[0] ?? null;
 

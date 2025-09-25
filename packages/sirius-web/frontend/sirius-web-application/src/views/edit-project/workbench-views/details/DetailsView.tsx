@@ -16,12 +16,13 @@ import {
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import { FormBasedView, FormContext, FormHandle } from '@eclipse-sirius/sirius-components-forms';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { DetailsViewState } from './DetailsView.types';
+import { DetailsViewConfiguration, DetailsViewState } from './DetailsView.types';
+import { useDetailsViewHandle } from './useDetailsViewHandle';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
 import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetailsViewSubscription.types';
 
@@ -39,23 +40,17 @@ const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload i
   payload && payload.__typename === 'FormRefreshedEventPayload';
 
 export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  (
+    { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
     const [state, setState] = useState<DetailsViewState>({
       form: null,
     });
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          id,
-          getWorkbenchViewConfiguration: () => {
-            return {};
-          },
-        };
-      },
-      []
-    );
+    const formBasedViewRef: MutableRefObject<FormHandle | null> = useRef<FormHandle | null>(null);
+
+    useDetailsViewHandle(id, formBasedViewRef, ref);
 
     const { selection } = useSelection();
 
@@ -70,6 +65,8 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     }, [payload]);
 
     const { classes } = useDetailsViewStyles();
+    const detailsViewConfiguration = initialConfiguration as unknown as DetailsViewConfiguration;
+    const initialSelectedPageId = detailsViewConfiguration?.selectedPageId ?? null;
 
     if (complete || skip) {
       return (
@@ -97,7 +94,13 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
                 value={{
                   payload: payload,
                 }}>
-                <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
+                <FormBasedView
+                  editingContextId={editingContextId}
+                  form={state.form}
+                  initialSelectedPageId={initialSelectedPageId}
+                  readOnly={readOnly}
+                  ref={formBasedViewRef}
+                />
               </FormContext.Provider>
             </Box>
           ) : null}
