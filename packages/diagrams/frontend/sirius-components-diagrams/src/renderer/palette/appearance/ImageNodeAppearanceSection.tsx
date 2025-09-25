@@ -13,11 +13,13 @@
 import { Node, useNodesData } from '@xyflow/react';
 import { GQLImageNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../../DiagramRenderer.types';
+import { PaletteAppearanceSectionContributionComponentProps } from './extensions/PaletteAppearanceSectionContribution.types';
 import { ImageNodePart } from './image-node/ImageNodePart';
-import { ImageNodeAppearanceSectionProps } from './ImageNodeAppearanceSection.types';
 import { LabelAppearancePart } from './label/LabelAppearancePart';
 
-export const ImageNodeAppearanceSection = ({ diagramElementId }: ImageNodeAppearanceSectionProps) => {
+export const ImageNodeAppearanceSection = ({
+  diagramElementId,
+}: PaletteAppearanceSectionContributionComponentProps) => {
   const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
 
   if (!nodeData) {

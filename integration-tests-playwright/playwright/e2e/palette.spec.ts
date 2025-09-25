@@ -20,7 +20,9 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('diagram - palette', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
+      PlaywrightProject.FLOW_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
@@ -69,7 +71,7 @@ test.describe('diagram - palette', () => {
     await page.getByTestId('GroupPalette').getByTestId('Fade elements').click();
     const edgeStyle = await playwrightEdge.getEdgeStyle();
     await expect(edgeStyle).toHaveCSS('opacity', '0.4');
-    await expect(playwrightNode.nodeStyle).toHaveCSS('opacity', '0.4');
+    await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
   });
 });
 

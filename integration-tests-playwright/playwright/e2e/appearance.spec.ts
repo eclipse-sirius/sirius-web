@@ -175,4 +175,27 @@ test.describe('appearance', () => {
     await playwrightNode.closePalette();
     await expect(label).not.toBeVisible();
   });
+
+  test('change rectangular node appearance', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await expect(playwrightNode.nodeStyleLocator).toHaveCSS('background-color', 'rgb(240, 240, 240)');
+    await playwrightNode.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page
+      .getByTestId('rectangular-node-part')
+      .locator('[data-testid="toolSection-Appearance-Background"] input')
+      .fill('red');
+    await playwrightNode.closePalette();
+    await page.waitForFunction(
+      () => {
+        const node = document.querySelector(`[data-testid="FreeForm - CompositeProcessor1"]`);
+        if (!node) {
+          return false;
+        }
+        const style = window.getComputedStyle(node);
+        return style.backgroundColor === 'rgb(255, 0, 0)';
+      },
+      { timeout: 2000 }
+    );
+  });
 });
