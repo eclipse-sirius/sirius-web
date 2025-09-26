@@ -119,12 +119,12 @@ const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): Reac
   return style;
 };
 
-const minWidth: number = 150;
+const minWidth: number = 130;
 
-const directEditInputWidth = (element: HTMLDivElement | null): number => {
+const directEditInputWidth = (element: HTMLDivElement | null, zoom: number): number => {
   let result = minWidth;
   if (element) {
-    result = element.getBoundingClientRect().width;
+    result = element.getBoundingClientRect().width / zoom;
   }
   return Math.max(minWidth, result);
 };
@@ -152,7 +152,7 @@ export const Label = memo(({ diagramElementId, label, faded, highlighted }: Labe
     label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput
         editingKey={editingKey}
-        width={Math.max(minWidth, directEditInputWidth(labelElementRef.current) / zoom)}
+        width={Math.max(minWidth, directEditInputWidth(labelElementRef.current, zoom))}
         onClose={handleClose}
         labelId={label.id}
       />
