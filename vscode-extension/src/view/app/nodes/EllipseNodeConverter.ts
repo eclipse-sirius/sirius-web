@@ -23,7 +23,7 @@ import {
   GQLViewModifier,
   IConvertEngine,
   INodeConverter,
-  convertBorderNodePosition
+  convertBorderNodePosition,
   convertHandles,
   convertInsideLabel,
   convertLineStyle,
@@ -65,6 +65,7 @@ const toEllipseNode = (
     .flatMap((nodeLayoutData) => nodeLayoutData.handleLayoutData);
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode.id, gqlEdges, handleLayoutData);
+
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
   );
@@ -84,7 +85,7 @@ const toEllipseNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     faded: state === GQLViewModifier.Faded,
     pinned,
     isBorderNode: isBorderNode,
@@ -101,11 +102,11 @@ const toEllipseNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
-    connectionLinePositionOnNode: 'none',
     nodeAppearanceData: {
       gqlStyle: style,
       customizedStyleProperties,
     },
+    connectionLinePositionOnNode: 'none',
   };
 
   data.insideLabel = convertInsideLabel(
