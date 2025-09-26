@@ -92,7 +92,7 @@ const labelContentStyle = (
       ? getCSSColor(String(label.contentStyle.borderColor), theme)
       : undefined,
   };
-  if (highlighted) {
+  if (highlighted && (label.text.length > 0 || label.iconURL.length > 0)) {
     style.borderWidth = `1px`;
     style.borderColor = theme.palette.selected;
     style.borderStyle = 'dashed';
