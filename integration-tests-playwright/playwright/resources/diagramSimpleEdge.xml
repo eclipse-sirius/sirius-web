@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramedges:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramedges="domain://diagramEdges">
+  <entity1s name="Entity1"/>
+  <entity2s name="Entity2"/>
+  <toEdge1 source="//@entity1s.0" target="//@entity2s.0"/>
+</diagramedges:Root>
