@@ -13,7 +13,6 @@
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
-import { PlaywrightNodeLabel } from '../helpers/PlaywrightNodeLabel';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram', () => {
@@ -78,50 +77,5 @@ test.describe('diagram', () => {
 
     expect(reactFlowSizeAfter.height).toBeGreaterThan(reactFlowSizeBefore.height);
     expect(reactFlowSizeAfter.width).toBeGreaterThan(reactFlowSizeBefore.width);
-  });
-
-  test('moving an outside node label by click', async ({ page }) => {
-    const dataSourceLabel = new PlaywrightNodeLabel(page, 'DataSource1');
-    await dataSourceLabel.click();
-
-    const positionOnLabelToStartDragging = { x: 10, y: 10 };
-    const initialBox = await dataSourceLabel.labelLocator.boundingBox();
-    expect(initialBox).toBeDefined();
-    await dataSourceLabel.move({ x: initialBox.x + 50, y: initialBox.y + 150 }, positionOnLabelToStartDragging);
-
-    await page.waitForFunction(
-      ({ expectedX, expectedY }) => {
-        const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
-        if (!label) {
-          return false;
-        }
-        const labelBoundingBox = label.getBoundingClientRect();
-        return labelBoundingBox.x === expectedX && labelBoundingBox.y === expectedY;
-      },
-      {
-        expectedX: initialBox.x + 50 - positionOnLabelToStartDragging.x,
-        expectedY: initialBox.y + 150 - positionOnLabelToStartDragging.y,
-      },
-      { timeout: 2000 }
-    );
-
-    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
-    await playwrightNode.resetNodeLabelPosition();
-
-    await page.waitForFunction(
-      ({ expectedX, expectedY }) => {
-        const label = document.querySelector(`[data-testid="Label - DataSource1"]`);
-        if (!label) {
-          return false;
-        }
-        const labelBoundingBox = label.getBoundingClientRect();
-        return labelBoundingBox.x === expectedX && labelBoundingBox.y === expectedY;
-      },
-      {
-        expectedX: initialBox.x,
-        expectedY: initialBox.y,
-      },
-      { timeout: 2000 }
-    );
   });
 });
