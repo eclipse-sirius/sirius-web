@@ -16,6 +16,7 @@ import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useFitView } from '../fit-to-screen/useFitView';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
@@ -122,6 +123,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   const { diagramDescription } = useDiagramDescription();
   const { resolveNodeOverlap } = useOverlap();
   const { addErrorMessage } = useMultiToast();
+  const { fitView } = useFitView();
 
   const elk = new ELK();
 
@@ -283,6 +285,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
             nodes: laidOutNodesWithElk,
             edges: laidOutDiagram.edges,
           };
+          fitView({ duration: 200, nodes: laidOutNodesWithElk });
           synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
           resolve();
         });
