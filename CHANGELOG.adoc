@@ -201,7 +201,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5439[#5439] [diagram] Support edge type by its style
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
 - https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5582[#5582] [diagram] Perform a fit to screen after arrangeAll
 
 
 == v2025.8.0
