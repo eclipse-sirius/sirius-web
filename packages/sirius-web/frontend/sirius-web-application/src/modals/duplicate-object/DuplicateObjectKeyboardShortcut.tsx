@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useEffect, useState } from 'react';
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { DuplicateObjectModal } from './DuplicateObjectModal';
+import { useEffect, useState } from 'react';
 import { KeyboardShortcutProps } from './DuplicateObjectKeyboardShortcut.types';
+import { DuplicateObjectModal } from './DuplicateObjectModal';
 
 export const DuplicateObjectKeyboardShortcut = ({
   editingContextId,
   readOnly,
   selectedTreeItem,
+  selectTreeItems,
   children,
 }: KeyboardShortcutProps) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -46,6 +47,7 @@ export const DuplicateObjectKeyboardShortcut = ({
 
   const onObjectCreated = (selection: Selection) => {
     setSelection(selection);
+    selectTreeItems(selection.entries.map((entry) => entry.id));
     setOpen(false);
   };
 

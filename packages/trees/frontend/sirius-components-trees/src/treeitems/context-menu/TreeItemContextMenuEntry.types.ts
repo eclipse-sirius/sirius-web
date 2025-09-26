@@ -20,6 +20,7 @@ export interface TreeItemContextMenuComponentProps {
   entry: GQLTreeItemContextMenuEntry | null;
   readOnly: boolean;
   expandItem: () => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onClose: () => void;
   key: string;

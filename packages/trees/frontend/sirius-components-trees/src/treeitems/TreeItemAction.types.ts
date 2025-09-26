@@ -22,6 +22,7 @@ export interface TreeItemActionProps {
   maxDepth: number;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   onEnterEditingMode: () => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   readOnly: boolean;
   isHovered: boolean;
 }

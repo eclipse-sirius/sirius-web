@@ -42,6 +42,7 @@ export const TreeItemContextMenu = ({
   expanded,
   maxDepth,
   selectedTreeItemIds,
+  selectTreeItems,
   onExpandedElementChange,
   enterEditingMode,
   onClose,
@@ -87,6 +88,7 @@ export const TreeItemContextMenu = ({
           entry={null}
           readOnly={readOnly}
           onClose={onClose}
+          selectTreeItems={selectTreeItems}
           onExpandedElementChange={onExpandedElementChange}
           expandItem={expandItem}
           key={index.toString()}
@@ -107,6 +109,7 @@ export const TreeItemContextMenu = ({
               item={item}
               entry={entry}
               readOnly={readOnly}
+              selectTreeItems={selectTreeItems}
               onClose={onClose}
               onExpandedElementChange={onExpandedElementChange}
               expandItem={expandItem}
