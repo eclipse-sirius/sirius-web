@@ -90,6 +90,13 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
             onExpandedElementChange={onExpandedElementChange}
             onTreeItemClick={onTreeItemClick}
             selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+            selectTreeItems={(treeItemIds) =>
+              setSelection({
+                entries: treeItemIds.map((id) => ({
+                  id,
+                })),
+              })
+            }
             expanded={state.expanded}
             maxDepth={state.maxDepth}
           />

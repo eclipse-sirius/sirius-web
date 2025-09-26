@@ -17,4 +17,5 @@ export type KeyboardShortcutProps = {
   readOnly: boolean;
   selectedTreeItem: GQLTreeItem | null;
   children: React.ReactNode;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
 };

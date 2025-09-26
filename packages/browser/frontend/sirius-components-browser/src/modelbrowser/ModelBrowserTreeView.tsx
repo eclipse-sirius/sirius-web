@@ -15,11 +15,11 @@ import { FilterBar } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLGetExpandAllTreePathVariables,
   GQLGetTreePathVariables,
-  useTreePath,
   GQLTreeItem,
   TreeItemActionProps,
   TreeView,
   useExpandAllTreePath,
+  useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
@@ -138,6 +138,7 @@ export const ModelBrowserTreeView = ({
               expanded={state.expanded}
               maxDepth={state.maxDepth}
               onTreeItemClick={onTreeItemClick}
+              selectTreeItems={() => {}}
               selectedTreeItemIds={selectedTreeItemIds}
             />
           ) : null}

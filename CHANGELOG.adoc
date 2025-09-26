@@ -65,7 +65,7 @@ Instead of creating an EObject instance of the EClass in the EPackage previously
 This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5570[#5570] [tree] Tree items context menu entries now take an additional `selectTreeItems: (selectedTreeItemIds: string[]) => void` prop which must be used if the action's effect should modify the selection inside the tree (instead of or in staddition to the workbench selection).
 
 === Dependency update
 
@@ -112,6 +112,8 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5535[#5535] [diagram] Prevent node style to be faded after drag and drop
 - https://github.com/eclipse-sirius/sirius-web/issues/5222[#5222] [sirius-web] Fix the 'Share Project' and 'Share Representation' actions to always provide the right URL
 - https://github.com/eclipse-sirius/sirius-web/issues/5568[#5568] [diagram] Prevent empty labels to be highlighted
+- https://github.com/eclipse-sirius/sirius-web/issues/5570[#5580] [explorer] Make sure newly created elements are automatically selected in the _Explorer_
+
 
 === New Features
 
@@ -203,7 +205,9 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
 - https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
 - https://github.com/eclipse-sirius/sirius-web/issues/5582[#5582] [diagram] Perform a fit to screen after arrangeAll
-- https://github.com/eclipse-sirius/sirius-web/issues/5556[#5556] [sirius-web] In the onboard area, update `NewRepresentationArea`'s entries labels from `defaultName` to `defaultName: diagramDescriptionName` to make it more clear which representation description will be used when creating a new representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/5556[#5556] [sirius-web] In the onboard area, update `NewRepresentationArea`'s entries labels from displaying only the `defaultName` to displaying both the `defaultName` and the `diagramDescriptionName` to make it more clear which representation description will be used when creating a new representation.
+
+
 
 == v2025.8.0
 

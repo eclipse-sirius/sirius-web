@@ -28,6 +28,7 @@ export interface TreeItemProps {
   markedItemIds: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
 }
 

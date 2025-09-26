@@ -17,6 +17,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
 import { DefaultMenuItemProps } from './DefaultMenuItem.types';
+import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
+import { GQLInvokeImpactAnalysisVariables } from './impact-analysis/useTreeImpactAnalysis.types';
 import {
   GQLErrorPayload,
   GQLFetchTreeItemContextEntryDataData,
@@ -27,8 +29,6 @@ import {
   GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
 } from './TreeItemContextMenu.types';
 import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
-import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
-import { GQLInvokeImpactAnalysisVariables } from './impact-analysis/useTreeImpactAnalysis.types';
 
 const invokeSingleClickTreeItemContextMenuEntryMutation = gql`
   mutation invokeSingleClickTreeItemContextMenuEntry($input: InvokeSingleClickTreeItemContextMenuEntryInput!) {

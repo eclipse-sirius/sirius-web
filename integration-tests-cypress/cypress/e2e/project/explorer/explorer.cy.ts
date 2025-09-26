@@ -103,6 +103,41 @@ describe('Explorer', () => {
         explorer.getSelectedTreeItems().should('have.length', 1);
         explorer.getSelectedTreeItems().contains('Central_Unit').should('exist');
       });
+
+      it('Then newly created top-level elements are automatically selected', () => {
+        const explorer = new Explorer();
+        explorer.select('robot');
+        const actions = explorer.openTreeItemAction('robot');
+
+        actions.getNewObjectButton().click();
+
+        cy.getByTestId('domain').click();
+        cy.get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').click();
+        cy.getByTestId('type').click();
+        cy.get('[data-value="CompositeProcessor"]').click();
+
+        cy.getByTestId('create-object').click();
+
+        cy.getByTestId('explorer://').contains('CompositeProcessor');
+        cy.getByTestId('selected').contains('CompositeProcessor');
+      });
+
+      it('Then newly created sub elements are automatically selected', () => {
+        const explorer = new Explorer();
+        explorer.expandWithDoubleClick('robot');
+        explorer.getTreeItemByLabel('System').should('exist');
+        const actions = explorer.openTreeItemAction('System');
+
+        actions.getNewObjectButton().click();
+
+        cy.getByTestId('childCreationDescription').click();
+        cy.get('[data-value="elements-Processor"]').click();
+
+        cy.getByTestId('create-object').click();
+
+        cy.getByTestId('explorer://').contains('Processor');
+        cy.getByTestId('selected').contains('Processor');
+      });
     });
   });
 

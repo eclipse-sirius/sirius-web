@@ -361,7 +361,12 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         <DuplicateObjectKeyboardShortcut
           editingContextId={editingContextId}
           readOnly={readOnly}
-          selectedTreeItem={state.singleTreeItemSelected}>
+          selectedTreeItem={state.singleTreeItemSelected}
+          selectTreeItems={(selectedTreeItemIds: string[]) =>
+            setState((prevState) => {
+              return { ...prevState, selectedTreeItemIds };
+            })
+          }>
           {filterBar}
           <div className={styles.treeContent}>
             {state.tree !== null ? (
@@ -376,6 +381,11 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                 expanded={state.expanded[state.activeTreeDescriptionId]}
                 maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
                 onTreeItemClick={onTreeItemClick}
+                selectTreeItems={(selectedTreeItemIds: string[]) =>
+                  setState((prevState) => {
+                    return { ...prevState, selectedTreeItemIds };
+                  })
+                }
                 selectedTreeItemIds={state.selectedTreeItemIds}
               />
             ) : null}
