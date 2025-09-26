@@ -37,6 +37,7 @@ export const TreeItemAction = ({
   depth,
   expanded,
   maxDepth,
+  selectTreeItems,
   onExpandedElementChange,
   onEnterEditingMode,
 }: TreeItemActionProps) => {
@@ -85,6 +86,7 @@ export const TreeItemAction = ({
         depth={depth}
         expanded={expanded}
         maxDepth={maxDepth}
+        selectTreeItems={selectTreeItems}
         onExpandedElementChange={onExpandedElementChange}
         enterEditingMode={enterEditingMode}
         onClose={closeContextMenu}

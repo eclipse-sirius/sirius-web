@@ -21,6 +21,7 @@ export interface TreeItemContextMenuProps {
   depth: number;
   expanded: string[];
   maxDepth: number;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   enterEditingMode: () => void;
   onClose: () => void;

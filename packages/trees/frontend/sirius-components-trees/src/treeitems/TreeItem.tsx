@@ -137,6 +137,7 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
   onTreeItemClick,
+  selectTreeItems,
   selectedTreeItemIds,
 }: TreeItemProps) => {
   const [state, setState] = useState<TreeItemState>({
@@ -374,6 +375,7 @@ export const TreeItem = ({
                     onExpandedElementChange: onExpandedElementChange,
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
+                    selectTreeItems,
                     isHovered: state.partHovered === 'item',
                   })
                 ) : (
@@ -385,6 +387,7 @@ export const TreeItem = ({
                     expanded={expanded}
                     maxDepth={maxDepth}
                     onExpandedElementChange={onExpandedElementChange}
+                    selectTreeItems={selectTreeItems}
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
                     isHovered={state.partHovered === 'item'}

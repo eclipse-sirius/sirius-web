@@ -24,7 +24,15 @@ type Modal = 'CreateNewRootObject';
 
 export const DocumentTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    {
+      editingContextId,
+      treeId,
+      item,
+      readOnly,
+      selectTreeItems,
+      expandItem,
+      onClose,
+    }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -37,6 +45,7 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);
+      selectTreeItems(selection.entries.map((entry) => entry.id));
       expandItem();
       onClose();
     };
