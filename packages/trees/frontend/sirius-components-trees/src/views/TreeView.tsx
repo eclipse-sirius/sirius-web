@@ -28,6 +28,7 @@ export const TreeView = ({
   expanded,
   maxDepth,
   onTreeItemClick,
+  selectTreeItems,
   selectedTreeItemIds,
 }: TreeViewProps) => {
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
@@ -46,6 +47,7 @@ export const TreeView = ({
         maxDepth={maxDepth}
         onExpandedElementChange={onExpandedElementChange}
         readOnly={readOnly}
+        selectTreeItems={selectTreeItems}
         markedItemIds={markedItemIds}
         textToFilter={textToFilter}
         textToHighlight={textToHighlight}

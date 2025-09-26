@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useEffect, useState } from 'react';
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { DuplicateObjectModal } from './DuplicateObjectModal';
+import { useEffect, useState } from 'react';
 import { KeyboardShortcutProps } from './DuplicateObjectKeyboardShortcut.types';
+import { DuplicateObjectModal } from './DuplicateObjectModal';
 
 export const DuplicateObjectKeyboardShortcut = ({
   editingContextId,

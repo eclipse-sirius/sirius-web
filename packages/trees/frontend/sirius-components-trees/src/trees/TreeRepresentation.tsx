@@ -73,6 +73,13 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           textToHighlight={''}
           onExpandedElementChange={onExpandedElementChange}
           onTreeItemClick={onTreeItemClick}
+          selectTreeItems={(treeItemIds) =>
+            setSelection({
+              entries: treeItemIds.map((id) => ({
+                id,
+              })),
+            })
+          }
           selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
           expanded={state.expanded}
           maxDepth={state.maxDepth}

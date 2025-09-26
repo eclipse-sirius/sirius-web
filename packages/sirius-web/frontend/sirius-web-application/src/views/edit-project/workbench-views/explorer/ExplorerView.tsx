@@ -359,6 +359,11 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                 expanded={state.expanded[state.activeTreeDescriptionId]}
                 maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
                 onTreeItemClick={onTreeItemClick}
+                selectTreeItems={(selectedTreeItemIds: string[]) =>
+                  setState((prevState) => {
+                    return { ...prevState, selectedTreeItemIds };
+                  })
+                }
                 selectedTreeItemIds={state.selectedTreeItemIds}
               />
             ) : null}

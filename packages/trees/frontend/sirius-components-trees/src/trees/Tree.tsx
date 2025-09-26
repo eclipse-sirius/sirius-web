@@ -36,6 +36,7 @@ export const Tree = ({
   markedItemIds,
   treeItemActionRender,
   onTreeItemClick,
+  selectTreeItems,
   selectedTreeItemIds,
 }: TreeProps) => {
   const { classes } = useTreeStyle();
@@ -132,6 +133,7 @@ export const Tree = ({
               markedItemIds={markedItemIds}
               treeItemActionRender={treeItemActionRender}
               onTreeItemClick={onTreeItemClick}
+              selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
             />
             <TreeItemWithChildren
@@ -149,6 +151,7 @@ export const Tree = ({
               markedItemIds={markedItemIds}
               treeItemActionRender={treeItemActionRender}
               onTreeItemClick={onTreeItemClick}
+              selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
             />
           </li>
