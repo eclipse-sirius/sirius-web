@@ -14,6 +14,7 @@
 import { useComponents } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaProps, CreateProjectAreaState } from './CreateProjectArea.types';
@@ -48,6 +49,7 @@ const useCreateProjectAreaStyles = makeStyles()((theme) => ({
 
 export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
   const { classes } = useCreateProjectAreaStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
 
   const createProjectAreaCards = useComponents(createProjectAreaCardExtensionPoint);
 
@@ -81,7 +83,7 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
     <>
       <div className={classes.createProjectArea}>
         <div className={classes.header}>
-          <Typography variant="h4">Create a new project</Typography>
+          <Typography variant="h4">{t('createNewProject')}</Typography>
         </div>
         <div className={classes.content}>
           {projectTemplates.map((template) =>

@@ -21,6 +21,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCreateRepresentationData,
@@ -74,6 +75,8 @@ export const NewRepresentationArea = ({
     message: null,
   });
   const { classes } = useNewRepresentationAreaStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.edit' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { selection, setSelection } = useSelection();
 
   const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
@@ -87,7 +90,7 @@ export const NewRepresentationArea = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setState({ message: 'An unexpected error has occurred, please refresh the page' });
+        setState({ message: coreT('errors.unexpected') });
       }
       if (data) {
         const { createRepresentation } = data;
@@ -100,7 +103,7 @@ export const NewRepresentationArea = ({
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   const onCreateRepresentation = (representationDescriptionId) => {
     const selected = representationDescriptions.find((candidate) => candidate.id === representationDescriptionId);
@@ -116,17 +119,15 @@ export const NewRepresentationArea = ({
   };
 
   const subtitle =
-    selectedItem && representationDescriptions.length > 0
-      ? 'Select the representation to create'
-      : 'There are no representations available for the current selection';
+    selectedItem && representationDescriptions.length > 0 ? t('selectRepresentationToCreate') : t('noRepresentations');
 
   return (
     <>
       <Card>
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{'Create a new Representation'}</Typography>
+          <Typography variant="h6">{t('createRepresentation')}</Typography>
           <Typography className={classes.subtitles} color="textSecondary">
-            {readOnly ? 'You need edit access to create representations' : subtitle}
+            {readOnly ? t('noAccessToCreateRepresentation') : subtitle}
           </Typography>
           <List dense={true}>
             {readOnly
