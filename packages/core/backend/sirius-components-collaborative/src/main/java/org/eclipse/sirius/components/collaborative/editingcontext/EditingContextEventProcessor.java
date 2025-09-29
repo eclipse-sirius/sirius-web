@@ -34,10 +34,11 @@ import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
-import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -137,7 +138,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             var refreshRepresentationSample = Timer.start(this.meterRegistry);
 
             try {
-                RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), changeDescription.getSourceId());
+                RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessorRegistry.get(this.editingContext.getId(), changeDescription.getSourceId());
                 if (representationEventProcessorEntry != null) {
                     IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
 
@@ -278,7 +279,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      *         The description of change to consider in order to determine if the representation should be refreshed
      */
     private void refreshOtherRepresentations(ChangeDescription changeDescription) {
-        this.representationEventProcessorRegistry.values(editingContext.getId()).stream()
+        this.representationEventProcessorRegistry.values(this.editingContext.getId()).stream()
                 .filter(representationEventProcessor -> !Objects.equals(changeDescription.getSourceId(), representationEventProcessor.getRepresentation().getId()))
                 .forEach(representationEventProcessor -> {
                     long start = System.currentTimeMillis();
@@ -303,7 +304,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * Disposes the representation when its target object has been removed.
      */
     private void disposeRepresentationIfNeeded() {
-        for (var representationEventProcessor : this.representationEventProcessorRegistry.values(editingContext.getId())) {
+        for (var representationEventProcessor : this.representationEventProcessorRegistry.values(this.editingContext.getId())) {
             if (this.danglingRepresentationDeletionService.isDangling(this.editingContext, representationEventProcessor.getRepresentation())) {
                 this.disposeRepresentation(representationEventProcessor.getRepresentation().getId());
             }
@@ -324,6 +325,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input);
         } else {
             this.logger.warn("No handler found for event: {}", input);
+            payloadSink.tryEmitValue(new ErrorPayload(input.id(), "No handler found for event: " + input.toString()));
         }
     }
 
@@ -342,7 +344,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input) {
         var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
 
-        var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessorRegistry.get(editingContext.getId(), representationId))
+        var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessorRegistry.get(this.editingContext.getId(), representationId))
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         if (optionalRepresentationEventProcessor.isEmpty()) {
@@ -362,7 +364,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                         }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
 
                 var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
-                this.representationEventProcessorRegistry.put(editingContext.getId(), representationId, representationEventProcessorEntry);
+                this.representationEventProcessorRegistry.put(this.editingContext.getId(), representationId, representationEventProcessorEntry);
             } else {
                 this.logger.debug("The representation with the id {} does not exist", representationId);
             }
@@ -374,19 +376,19 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             getRepresentationEventProcessorSample.stop(timer);
         }
 
-        this.logger.trace("Representation event processors count: {}", this.representationEventProcessorRegistry.values(editingContext.getId()).size());
+        this.logger.trace("Representation event processors count: {}", this.representationEventProcessorRegistry.values(this.editingContext.getId()).size());
         return optionalRepresentationEventProcessor;
     }
 
     @Override
     public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
-        return this.representationEventProcessorRegistry.values(editingContext.getId());
+        return this.representationEventProcessorRegistry.values(this.editingContext.getId());
     }
 
     private void disposeRepresentation(String representationId) {
-        this.representationEventProcessorRegistry.disposeRepresentation(editingContext.getId(), representationId);
+        this.representationEventProcessorRegistry.disposeRepresentation(this.editingContext.getId(), representationId);
 
-        if (this.representationEventProcessorRegistry.values(editingContext.getId()).isEmpty()) {
+        if (this.representationEventProcessorRegistry.values(this.editingContext.getId()).isEmpty()) {
             EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting that the processor can be disposed: {}";
@@ -418,7 +420,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.executorService.shutdown();
 
-        this.representationEventProcessorRegistry.dispose(editingContext.getId());
+        this.representationEventProcessorRegistry.dispose(this.editingContext.getId());
 
         this.editingContext.dispose();
 
