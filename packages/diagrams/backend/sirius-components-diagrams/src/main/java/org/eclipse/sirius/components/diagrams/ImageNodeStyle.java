@@ -89,7 +89,7 @@ public final class ImageNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'imageURL: {1}', border: '{' size: {2}, color: {3}, style: {4} '}'}'";
+        String pattern = "{0} '{'imageURL: {1}, border: '{' size: {2}, color: {3}, style: {4} '}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.imageURL, this.borderSize, this.borderColor, this.borderStyle);
     }
 
@@ -128,6 +128,7 @@ public final class ImageNodeStyle implements INodeStyle {
             this.borderStyle = sourceImageNodeStyle.getBorderStyle();
             this.scalingFactor = sourceImageNodeStyle.getScalingFactor();
             this.imageURL = sourceImageNodeStyle.getImageURL();
+            this.positionDependentRotation = sourceImageNodeStyle.isPositionDependentRotation();
             this.childrenLayoutStrategy = sourceImageNodeStyle.getChildrenLayoutStrategy();
         }
 

@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.diagrams;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
@@ -34,9 +37,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Used to provide a view based diagram description to test diagrams with image nodes.
@@ -99,7 +99,18 @@ public class ImageNodeDiagramDescriptionProvider implements IEditingContextProce
                 .outsideLabels(outsideLabel)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .style(new ImageNodeStyleDescriptionBuilder()
-                        .shape("/flow-images/sensor.svg")
+                        .shape("component.svg")
+                        .borderSize(0)
+                        .build())
+                .borderNodesDescriptions(new NodeDescriptionBuilder()
+                        .name("Package")
+                        .domainType("papaya:Package")
+                        .semanticCandidatesExpression("aql:self.eContents()")
+                        .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                        .style(new ImageNodeStyleDescriptionBuilder()
+                                .shape("package.svg")
+                                .positionDependentRotation(true)
+                                .build())
                         .build())
                 .build();
 
