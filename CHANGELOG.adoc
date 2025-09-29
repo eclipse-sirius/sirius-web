@@ -67,6 +67,7 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 * `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
 - https://github.com/eclipse-sirius/sirius-web/issues/5570[#5570] [tree] Tree items context menu entries now take an additional `selectTreeItems: (selectedTreeItemIds: string[]) => void` prop which must be used if the action's effect should modify the selection inside the tree (instead of or in staddition to the workbench selection).
 
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.5[Spring Boot 3.5.5]
@@ -114,6 +115,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5568[#5568] [diagram] Prevent empty labels to be highlighted
 - https://github.com/eclipse-sirius/sirius-web/issues/5570[#5580] [explorer] Make sure newly created elements are automatically selected in the _Explorer_
 - https://github.com/eclipse-sirius/sirius-web/issues/5588[#5588] [diagram] Fix an issue where the collapsed state of the diagram filter modal was lost when refreshing the modal
+- https://github.com/eclipse-sirius/sirius-web/issues/5591[#5591] [sirius-web] Do not block project upload if some of the representations to import can not be created
 
 
 === New Features

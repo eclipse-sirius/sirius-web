@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.project.services;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class ProjectImporter {
             var representationPayloadCreated = this.editingContextEventProcessor.handle(createRepresentationInput)
                     .filter(CreateRepresentationSuccessPayload.class::isInstance)
                     .map(CreateRepresentationSuccessPayload.class::cast)
-                    .blockOptional();
+                    .blockOptional(Duration.ofSeconds(10));
 
             representationCreated = representationPayloadCreated
                     .map(CreateRepresentationSuccessPayload::representation)
