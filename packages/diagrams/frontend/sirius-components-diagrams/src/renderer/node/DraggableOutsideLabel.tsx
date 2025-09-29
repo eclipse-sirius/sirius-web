@@ -10,19 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useViewport } from '@xyflow/react';
+import { ReactFlowState, useStore } from '@xyflow/react';
 import React, { useContext } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { Label } from '../Label';
 import { useLabelMove } from '../move/useLabelMove';
 import { DraggableOutsideLabelProps } from './DraggableOutsideLabel.types';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
 
 export const DraggableOutsideLabel = ({ id, label, faded, highlighted }: DraggableOutsideLabelProps) => {
   const { onNodeLabelMoveStop } = useLabelMove();
-  const { zoom } = useViewport();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const zoom = useStore(zoomSelector);
 
   const onStop = (_e, eventData: DraggableData) => {
     onNodeLabelMoveStop(eventData, id);
