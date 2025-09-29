@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Label } from '../Label';
-import { EdgeLabelRenderer, useViewport, Position } from '@xyflow/react';
+import { EdgeLabelRenderer, Position, ReactFlowState, useStore } from '@xyflow/react';
+import { useContext, useMemo, useRef } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
-import { DraggableEdgeLabelsProps } from './DraggableEdgeLabels.types';
-import { useRef, useMemo, useContext } from 'react';
-import { useLabelMove } from '../move/useLabelMove';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Label } from '../Label';
+import { useLabelMove } from '../move/useLabelMove';
+import { DraggableEdgeLabelsProps } from './DraggableEdgeLabels.types';
 
 const getTranslateFromHandlePositon = (position: Position) => {
   switch (position) {
@@ -32,6 +32,8 @@ const getTranslateFromHandlePositon = (position: Position) => {
   }
 };
 
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
+
 export const DraggableEdgeLabels = ({
   id,
   data,
@@ -45,7 +47,7 @@ export const DraggableEdgeLabels = ({
   edgeCenter,
 }: DraggableEdgeLabelsProps) => {
   const { beginLabel, endLabel, label, faded } = data || {};
-  const { zoom } = useViewport();
+  const zoom = useStore(zoomSelector);
   const { onEdgeLabelMoveStop } = useLabelMove();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const beginLabelNodeRef = useRef<HTMLInputElement | null>(null);

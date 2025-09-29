@@ -13,7 +13,7 @@
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { useViewport } from '@xyflow/react';
+import { ReactFlowState, useStore } from '@xyflow/react';
 import { memo, useContext, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
@@ -129,12 +129,14 @@ const directEditInputWidth = (element: HTMLDivElement | null, zoom: number): num
   return Math.max(minWidth, result);
 };
 
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
+
 export const Label = memo(({ diagramElementId, label, faded, highlighted }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const labelElementRef = useRef<HTMLDivElement>(null);
-  const { zoom } = useViewport();
+  const zoom = useStore(zoomSelector);
 
   const handleClose = () => {
     resetDirectEdit();

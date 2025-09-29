@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useViewport } from '@xyflow/react';
+import { ReactFlowState, useStore } from '@xyflow/react';
 import { RefObject, useContext, useRef } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
+
 export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop }: BendPointProps) => {
-  const { zoom } = useViewport();
+  const zoom = useStore(zoomSelector);
   const nodeRef = useRef<SVGCircleElement>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -50,7 +52,7 @@ export const TemporaryMovingLine = ({
   onDrag,
   onDragStop,
 }: TemporaryMovingLineProps) => {
-  const { zoom } = useViewport();
+  const zoom = useStore(zoomSelector);
   const nodeRef = useRef<SVGRectElement>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
