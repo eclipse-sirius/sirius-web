@@ -16,6 +16,7 @@ import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
 import { ImpactAnalysisDialogContextProvider } from '../modals/impact-analysis/ImpactAnalysisDialogContext';
 import { GQLRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata.types';
+import { Selection } from '../selection/SelectionContext.types';
 import { useSelection } from '../selection/useSelection';
 import { Panels } from './Panels';
 import { RepresentationNavigation } from './RepresentationNavigation';
@@ -151,6 +152,15 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
             mainPanel: refRepresentationNavigationHandle.current?.getMainPanelConfiguration() ?? null,
             workbenchPanels: refPanelsHandle.current?.getWorkbenchPanelConfigurations() ?? [],
           };
+        },
+        applySelection: (selection: Selection) => {
+          refPanelsHandle.current?.getWorkbenchPanelHandles().forEach((handle) => {
+            handle.getWorkbenchViewHandles().map((viewHandle) => {
+              if (viewHandle.applySelection) {
+                viewHandle.applySelection(selection);
+              }
+            });
+          });
         },
       };
     });

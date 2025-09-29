@@ -141,7 +141,9 @@ export const EditProjectView = () => {
         <SelectionContextProvider initialSelection={initialSelection}>
           <SelectionSynchronizer>
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <OmniboxProvider editingContextId={state.project.currentEditingContext.id}>
+              <OmniboxProvider
+                editingContextId={state.project.currentEditingContext.id}
+                workbenchHandle={refWorkbenchHandle.current}>
                 <UndoRedo>
                   <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} />
                   <TreeToolBarProvider>

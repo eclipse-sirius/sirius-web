@@ -71,6 +71,7 @@ export type RepresentationComponentFactory = {
 
 export interface WorkbenchHandle {
   getConfiguration(): WorkbenchConfiguration;
+  applySelection: (selection: Selection) => void;
 }
 
 export interface WorkbenchPanelsHandle {

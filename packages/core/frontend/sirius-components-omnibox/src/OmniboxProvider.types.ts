@@ -11,8 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
+
 export interface OmniboxProviderProps {
   editingContextId: string;
+  workbenchHandle: WorkbenchHandle;
   children: React.ReactNode;
 }
 
