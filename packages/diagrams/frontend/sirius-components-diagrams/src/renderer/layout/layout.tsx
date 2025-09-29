@@ -47,6 +47,18 @@ const emptyNodeProps = {
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 const isRectangularNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'rectangularNode';
 
+const getParentNodeBorderWidth = (parentNode: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
+  if (parentNode.parentId) {
+    const parentNodeParent = visibleNodes.find((node) => node.id === parentNode.parentId);
+    if (parentNodeParent && parentNodeParent.type === 'listNode') {
+      return getParentNodeBorderWidth(parentNodeParent, visibleNodes);
+    }
+    return parentNode.data.style.borderWidth;
+  } else {
+    return parentNode.data.style.borderWidth;
+  }
+};
+
 export const prepareLayoutArea = (
   diagram: RawDiagram,
   renderCallback: () => void,
@@ -65,6 +77,13 @@ export const prepareLayoutArea = (
   // Render all label first
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
+    if (node.parentId) {
+      const parentNode = visibleNodes.find((n) => n.id === node.parentId);
+      if (parentNode && parentNode.type === 'listNode' && parentNode.width) {
+        const borderWidth = getParentNodeBorderWidth(parentNode, visibleNodes);
+        node.width = parentNode.width - borderWidth * 2;
+      }
+    }
     if (hiddenContainer && node.data.insideLabel) {
       const children: JSX.Element[] = [
         createElement(Label, {
