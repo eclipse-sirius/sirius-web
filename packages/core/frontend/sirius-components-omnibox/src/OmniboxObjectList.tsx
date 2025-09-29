@@ -10,18 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
+import { OmniboxContext } from './OmniboxContext';
+import { OmniboxContextValue } from './OmniboxContext.types';
 import { ObjectAction, OmniboxObjectListProps } from './OmniboxObjectList.types';
 
 export const OmniboxObjectList = forwardRef(
   ({ loading, data, onClose }: OmniboxObjectListProps, ref: React.ForwardedRef<HTMLUListElement>) => {
     const { setSelection } = useSelection();
+    const { applySelection } = useContext<OmniboxContextValue>(OmniboxContext);
 
     const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
       if (event.key === 'ArrowDown') {
@@ -38,7 +41,9 @@ export const OmniboxObjectList = forwardRef(
     };
 
     const handleOnActionClick = (action: ObjectAction) => {
-      setSelection({ entries: [{ id: action.id }] });
+      const newSelection: Selection = { entries: [{ id: action.id }] };
+      setSelection(newSelection);
+      applySelection(newSelection);
       onClose();
     };
 
