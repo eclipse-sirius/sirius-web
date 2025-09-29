@@ -104,7 +104,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     .extracting(node -> (ImageNodeStyle) node.getStyle())
                     .allMatch(imageNodeStyle -> "black".equals(imageNodeStyle.getBorderColor()))
                     .allMatch(imageNodeStyle -> imageNodeStyle.getBorderRadius() == 3)
-                    .allMatch(imageNodeStyle -> imageNodeStyle.getBorderSize() == 1)
+                    .allMatch(imageNodeStyle -> imageNodeStyle.getBorderSize() == 0)
                     .allMatch(imageNodeStyle -> LineStyle.Solid.equals(imageNodeStyle.getBorderStyle()));
 
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
@@ -158,7 +158,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     .extracting(node -> (ImageNodeStyle) node.getStyle())
                     .allMatch(imageNodeStyle -> "black".equals(imageNodeStyle.getBorderColor()))
                     .allMatch(imageNodeStyle -> imageNodeStyle.getBorderRadius() == 3)
-                    .allMatch(imageNodeStyle -> imageNodeStyle.getBorderSize() == 1)
+                    .allMatch(imageNodeStyle -> imageNodeStyle.getBorderSize() == 0)
                     .allMatch(imageNodeStyle -> LineStyle.Solid.equals(imageNodeStyle.getBorderStyle()));
         });
 
