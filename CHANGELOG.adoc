@@ -156,6 +156,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 - https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5463[#5463] [diagram] Add visibility field in the style of a label to be able to hide a label from the appearance palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/5526[#5526] [core] Add support for "Show in ..." actions to "push" the local selection from a representation or view into another one (provided it supports it).
+- https://github.com/eclipse-sirius/sirius-web/issues/5580[#5580] [diagram] Fix an issue that could cause label to be layout with a smaller width
 
 
 === Improvements

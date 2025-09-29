@@ -76,7 +76,7 @@ export class PlaywrightNode {
     const heightText = await heightSpan.textContent();
     const heightValue = Number(heightText?.split(':')[1].trim());
 
-    const widthSpan = nodePanel.locator('span:has-text("Height :")');
+    const widthSpan = nodePanel.locator('span:has-text("Width :")');
     const widthText = await widthSpan.textContent();
     const widthValue = Number(widthText?.split(':')[1].trim());
 
@@ -100,7 +100,7 @@ export class PlaywrightNode {
     const box = (await resizeAnchor.boundingBox())!;
     await resizeAnchor.hover();
     await this.page.mouse.down();
-    await this.page.mouse.move(box.x + offset.height, box.y + offset.width, { steps: 2 });
+    await this.page.mouse.move(box.x + offset.width, box.y + offset.height, { steps: 2 });
     await this.page.mouse.up();
   }
 
