@@ -113,6 +113,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5222[#5222] [sirius-web] Fix the 'Share Project' and 'Share Representation' actions to always provide the right URL
 - https://github.com/eclipse-sirius/sirius-web/issues/5568[#5568] [diagram] Prevent empty labels to be highlighted
 - https://github.com/eclipse-sirius/sirius-web/issues/5570[#5580] [explorer] Make sure newly created elements are automatically selected in the _Explorer_
+- https://github.com/eclipse-sirius/sirius-web/issues/5588[#5588] [diagram] Fix an issue where the collapsed state of the diagram filter modal was lost when refreshing the modal
 
 
 === New Features

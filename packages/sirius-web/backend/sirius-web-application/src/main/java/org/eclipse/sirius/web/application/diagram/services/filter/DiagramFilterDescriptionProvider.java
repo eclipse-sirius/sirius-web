@@ -198,7 +198,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private CheckboxDescription createTreeCheckboxDescription() {
         return CheckboxDescription.newCheckboxDescription("diagram-filter/tree-checkbox")
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .idProvider(new WidgetIdProvider())
+                .idProvider(variableManager -> "TreeCheckBox")
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
                     String element = "element";
@@ -212,8 +212,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .valueProvider(variableManager -> this.diagramFilterHelper.getSelectedElementIds(variableManager).size() > 0)
                 .newValueHandler((variableManager, newValue) -> {
                     Map<String, Boolean> checkMap = variableManager.get(SELECTED_TREE_NODES, Map.class).get();
-                    checkMap.entrySet().stream()
-                        .forEach(entry -> entry.setValue(newValue));
+                    checkMap.entrySet().forEach(entry -> entry.setValue(newValue));
                     return new Success();
                 })
                 .diagnosticsProvider(variableManager -> List.of())
@@ -252,7 +251,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private SplitButtonDescription createSplitButtonDescription() {
         return SplitButtonDescription.newSplitButtonDescription("diagram-filter/split-button")
-                .idProvider(new WidgetIdProvider())
+                .idProvider(variableManager -> "TreeSplitButton")
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
