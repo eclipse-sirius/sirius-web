@@ -15,6 +15,7 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
@@ -75,6 +76,8 @@ const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSucce
   payload.__typename === 'EditLabelSuccessPayload';
 
 export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: DiagramDirectEditInputProps) => {
+  const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'edit' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
@@ -109,7 +112,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
   >(editLabelMutationOp);
   useEffect(() => {
     if (editLabelError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (editLabelData) {
       const { editLabel } = editLabelData;
@@ -122,12 +125,12 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
         }
       }
     }
-  }, [editLabelData, editLabelError]);
+  }, [coreT, editLabelData, editLabelError]);
 
   useEffect(() => {
     let cleanup: (() => void) | undefined = undefined;
     if (initialLabelItemError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (initialLabelItemData?.viewer.editingContext.representation.description.initialDirectEditElementLabel) {
       const initialLabel =
@@ -143,7 +146,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
       }
     }
     return cleanup;
-  }, [initialLabelItemError, initialLabelItemData]);
+  }, [coreT, initialLabelItemError, initialLabelItemData]);
 
   useEffect(() => {
     if (textInput.current) {
@@ -198,7 +201,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
         name="name"
         size="small"
         inputRef={textInput}
-        placeholder={'Enter the new value'}
+        placeholder={t('enterNewValue')}
         value={state.newLabel}
         multiline={true}
         onChange={handleChange}
