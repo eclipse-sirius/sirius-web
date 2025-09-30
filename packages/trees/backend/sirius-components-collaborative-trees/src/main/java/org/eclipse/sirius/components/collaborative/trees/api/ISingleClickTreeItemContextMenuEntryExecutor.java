@@ -27,5 +27,5 @@ public interface ISingleClickTreeItemContextMenuEntryExecutor {
 
     boolean canExecute(TreeDescription treeDescription);
 
-    IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId);
+    IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId, ITreeInput treeInput);
 }
