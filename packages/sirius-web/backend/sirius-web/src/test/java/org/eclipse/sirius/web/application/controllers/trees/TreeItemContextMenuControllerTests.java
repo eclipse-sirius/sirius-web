@@ -183,8 +183,8 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a project with dependencies, when the context menu actions are requested on an imported resource, then the update action is returned")
-    public void givenProjectWithDependenciesWhenContextMenuActionsAreRequestedOnImportedResourceThenUpdateActionIsReturned() {
+    @DisplayName("Given a project with dependencies, when the context menu actions are requested on an imported resource, then the update and remove actions are returned")
+    public void givenProjectWithDependenciesWhenContextMenuActionsAreRequestedOnImportedResourceThenUpdateAndRemoveActionsAreReturned() {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -206,6 +206,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty();
             assertThat(actionIds).anyMatch(id -> Objects.equals(id, "updateLibrary"));
+            assertThat(actionIds).anyMatch(id -> Objects.equals(id, "removeLibrary"));
         };
 
         StepVerifier.create(flux)

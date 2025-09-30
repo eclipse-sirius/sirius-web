@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.impactanalysis;
+package org.eclipse.sirius.web.application.impactanalysis.services;
 
 import java.util.ArrayList;
 import java.util.List;

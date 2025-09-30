@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,7 +89,7 @@ public class InvokeSingleClickTreeItemContextMenuEntryEventHandler implements IT
                 var status = this.singleClickTreeItemContextMenuEntryExecutors.stream()
                         .filter(executor -> executor.canExecute(treeDescription))
                         .findFirst()
-                        .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, input.menuEntryId()))
+                        .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, input.menuEntryId(), input))
                         .orElseGet(() -> new Failure(this.messageService.noSingleClickTreeItemExecutor()));
 
                 if (status instanceof Success success) {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.impactanalysis;
+package org.eclipse.sirius.web.application.impactanalysis.services;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +51,8 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandler {
+
+    public static final String IMPACT_ANALYSIS_MESSAGES_PARAMETRER_KEY = "impact_analysis_message_parameter_key";
 
     private final IEditingContextSnapshotService editingContextSnapshotService;
 
@@ -97,7 +99,7 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
                         .flatMap(treeItem -> this.singleClickTreeItemContextMenuEntryExecutors.stream()
                                 .filter(executor -> executor.canExecute(treeDescription))
                                 .findFirst()
-                                .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, invokeTreeImpactAnalysisInput.menuEntryId())))
+                                .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, invokeTreeImpactAnalysisInput.menuEntryId(), invokeTreeImpactAnalysisInput)))
                         .orElseGet(() -> new Failure(this.messageService.notFound()));
 
                 var diff = changeRecorder.summarize();
@@ -106,7 +108,8 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
                 this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get());
 
                 if (entryExecutionResult instanceof Success success) {
-                    payload = new InvokeImpactAnalysisSuccessPayload(invokeTreeImpactAnalysisInput.id(), new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), List.of()), success.getMessages());
+                    List<String> additionalMessages = (List<String>) success.getParameters().getOrDefault(IMPACT_ANALYSIS_MESSAGES_PARAMETRER_KEY, List.of());
+                    payload = new InvokeImpactAnalysisSuccessPayload(invokeTreeImpactAnalysisInput.id(), new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), additionalMessages), success.getMessages());
                 } else if (entryExecutionResult instanceof Failure failure) {
                     payload = new ErrorPayload(invokeTreeImpactAnalysisInput.id(), failure.getMessages());
                 }
