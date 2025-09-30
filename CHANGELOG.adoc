@@ -153,7 +153,8 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 - https://github.com/eclipse-sirius/sirius-web/issues/5458[#5458] [diagram] Add support for oblique edge type in view DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5463[#5463] [diagram] Add visibility field in the style of a label to be able to hide a label from the appearance palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [forms] The _Reference_ widget can now provide an optional `modelBrowserId`.
+It can be used, in conjunction with `IModelBrowserMetadataProvider` on the backend, to use a custom `TreeDescription` to display the possible candidates in the modals used to edit the reference on the frontend.
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,6 +85,10 @@ public class ReferenceWidgetComponent implements IComponent {
                 .many(isMany)
                 .ownerId(ownerId)
                 .children(children);
+
+        if (referenceDescription.getModelBrowserIdProvider() != null) {
+            builder.modelBrowserId(referenceDescription.getModelBrowserIdProvider().apply(idVariableManager));
+        }
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }

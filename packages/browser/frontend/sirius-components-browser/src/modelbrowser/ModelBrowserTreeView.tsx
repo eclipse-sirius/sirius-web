@@ -15,16 +15,16 @@ import { FilterBar } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLGetExpandAllTreePathVariables,
   GQLGetTreePathVariables,
-  useTreePath,
   GQLTreeItem,
   TreeItemActionProps,
   TreeView,
   useExpandAllTreePath,
+  useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 import { useModelBrowserSubscription } from './useModelBrowserSubscription';
@@ -51,7 +51,7 @@ export const ModelBrowserTreeView = ({
   isContainment,
   markedItemIds,
   title,
-  leafType,
+  modelBrowserId,
   ownerKind,
   onTreeItemClick,
   selectedTreeItemIds,
@@ -64,11 +64,11 @@ export const ModelBrowserTreeView = ({
     maxDepth: 1,
   });
 
-  const treeId: string = `modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
-    ownerKind
-  )}&targetType=${encodeURIComponent(referenceKind)}&ownerId=${ownerId}&descriptionId=${encodeURIComponent(
-    descriptionId
-  )}&isContainment=${isContainment}`;
+  const treeId: string = useMemo(() => {
+    return `modelBrowser://${modelBrowserId}?ownerKind=${encodeURIComponent(ownerKind)}&targetType=${encodeURIComponent(
+      referenceKind
+    )}&ownerId=${ownerId}&descriptionId=${encodeURIComponent(descriptionId)}&isContainment=${isContainment}`;
+  }, [descriptionId, isContainment, modelBrowserId, ownerId, ownerKind, referenceKind]);
   const { tree } = useModelBrowserSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
   const { getTreePath, data: treePathData } = useTreePath();
