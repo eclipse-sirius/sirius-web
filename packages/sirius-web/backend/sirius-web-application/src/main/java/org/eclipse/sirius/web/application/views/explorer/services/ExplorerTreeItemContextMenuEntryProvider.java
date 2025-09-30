@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMenuEntryProvider;
@@ -65,15 +64,15 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
     @Override
     public List<ITreeItemContextMenuEntry> getTreeItemContextMenuEntries(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         List<ITreeItemContextMenuEntry> result = new ArrayList<>();
-        this.getUpdateLibraryEntry(editingContext, treeItem).ifPresent(result::add);
+        result.addAll(this.getLibraryRelatedEntries(editingContext, treeItem));
         if (treeItem.isHasChildren()) {
             result.add(new SingleClickTreeItemContextMenuEntry("expandAll", "", List.of(), false));
         }
         return result;
     }
 
-    private Optional<ITreeItemContextMenuEntry> getUpdateLibraryEntry(IEditingContext editingContext, TreeItem treeItem) {
-        Optional<ITreeItemContextMenuEntry> result = Optional.empty();
+    private List<ITreeItemContextMenuEntry> getLibraryRelatedEntries(IEditingContext editingContext, TreeItem treeItem) {
+        List<ITreeItemContextMenuEntry> result = new ArrayList<>();
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var optionalNotifier = this.objectSearchService.getObject(editingContext, treeItem.getId())
                     .filter(Notifier.class::isInstance)
@@ -96,8 +95,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             if (optionalLibraryMetadataAdapter.isPresent()) {
                 var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
                 if (this.isDirectDependency(emfEditingContext, libraryMetadataAdapter)) {
-                    // We do not support the update of a transitive dependency for the moment.
-                    result = Optional.of(new SingleClickTreeItemContextMenuEntry("updateLibrary", "Update the library", List.of(), true));
+                    // We do not support the update or removal of a transitive dependency for the moment.
+                    result.add(new SingleClickTreeItemContextMenuEntry("updateLibrary", "Update the library", List.of(), true));
+                    result.add(new SingleClickTreeItemContextMenuEntry("removeLibrary", "Remove library", List.of("/icons/remove_library.svg"), true));
                 }
             }
         }
