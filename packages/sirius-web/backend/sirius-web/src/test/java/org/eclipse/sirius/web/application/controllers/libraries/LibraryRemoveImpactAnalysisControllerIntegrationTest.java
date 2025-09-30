@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -39,12 +40,16 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.EditingContextUpdateLibraryImpactAnalysisReportQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.TreeImpactAnalysisReportQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,28 +60,35 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the library controllers when computing the impact analysis of a library update.
+ * Integration tests of the library controllers when computing the impact analysis of a library removal.
  *
  * @author gdaniel
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends AbstractIntegrationTests {
+public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends AbstractIntegrationTests {
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private ILibrarySearchService librarySearchService;
+    private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
-    private EditingContextUpdateLibraryImpactAnalysisReportQueryRunner editingContextUpdateLibraryImpactAnalysisReportQueryRunner;
+    private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
 
     @Autowired
     private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
 
     @Autowired
+    private ILibrarySearchService librarySearchService;
+
+    @Autowired
     private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private TreeImpactAnalysisReportQueryRunner treeImpactAnalysisReportQueryRunner;
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -88,35 +100,57 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency, then the report is returned")
-    public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheReportIsReturned() {
+    @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the removal of a dependency, then the report is returned")
+    public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheRemovalOfADependencyThenTheReportIsReturned() {
         Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
         assertThat(optionalLibrary).isPresent();
 
-        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", optionalLibrary.get().getId());
-        var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
-        int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
-        assertThat(nbElementDeleted).isEqualTo(0);
-        int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
-        assertThat(nbElementModified).isEqualTo(0);
-        int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
-        assertThat(nbElementCreated).isEqualTo(0);
-        List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.additionalReports[*]");
-        assertThat(additionalReports).hasSize(2);
-        assertThat(additionalReports.get(0)).isEqualTo("[BROKEN] Sirius Web Architecture - AbstractTest.annotations (previously set to GivenSiriusWebServer)");
-        assertThat(additionalReports.get(1)).isEqualTo("[BROKEN] Sirius Web Architecture - IntegrationTest.annotations (previously set to GivenSiriusWebServer)");
+        var representationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
+        var explorerEventInput = new ExplorerEventInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                representationId
+        );
+
+        var flux = this.explorerEventSubscriptionRunner.run(explorerEventInput);
+
+        Runnable invokeImpactAnalysisReport = () -> {
+            Map<String, Object> impactAnalysisInput = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID,
+                    "representationId", representationId,
+                    "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT,
+                    "menuEntryId", "removeLibrary"
+            );
+
+            String result = this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
+            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
+            assertThat(nbElementDeleted).isEqualTo(0);
+            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
+            assertThat(nbElementCreated).isEqualTo(0);
+            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
+            assertThat(nbElementModified).isEqualTo(2);
+            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
+            assertThat(additionalReports).hasSize(2);
+            assertThat(additionalReports.get(0)).isEqualTo("[BROKEN] Sirius Web Architecture - AbstractTest.annotations (previously set to GivenSiriusWebServer)");
+            assertThat(additionalReports.get(1)).isEqualTo("[BROKEN] Sirius Web Architecture - IntegrationTest.annotations (previously set to GivenSiriusWebServer)");
+        };
+
+        StepVerifier.create(flux)
+            .expectNextMatches(TreeRefreshedEventPayload.class::isInstance)
+            .then(invokeImpactAnalysisReport)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency, then the project's content is not changed")
-    public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheProjectsContentIsNotChanged() {
+    @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the removal of a dependency, then the project's content is not changed")
+    public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheRemovalOfADependencyThenTheProjectsContentIsNotChanged() {
         Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
-
 
         BiFunction<IEditingContext, IInput, IPayload> checkEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -145,14 +179,21 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
             assertThat(payload).isInstanceOf(SuccessPayload.class);
         };
 
-        Runnable getUpdateLibraryImpactAnalysisReport = () -> {
-            Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", optionalLibrary.get().getId());
-            this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
+        var representationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
+
+        Runnable invokeImpactAnalysisReport = () -> {
+            Map<String, Object> impactAnalysisInput = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID,
+                    "representationId", representationId,
+                    "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT,
+                    "menuEntryId", "removeLibrary"
+            );
+            this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
         };
 
         StepVerifier.create(flux)
             .then(checkEditingContext)
-            .then(getUpdateLibraryImpactAnalysisReport)
+            .then(invokeImpactAnalysisReport)
             .then(checkEditingContext)
             .thenCancel()
             .verify(Duration.ofSeconds(5));

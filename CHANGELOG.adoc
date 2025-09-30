@@ -31,6 +31,10 @@ The code responsible for the import has been refactor with:
 * `IProjectImportService` has been renamed in `IProjectImportApplicationService`.
 * `ProjectImporter` no longer exist. Its code has been split among `IProjectContentImportParticipant`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] [sirius-web] `IProjectExportService` and `IProjectExportParticipant` now takes the id of the _EditingContext_ to export as a parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
+* `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
+* `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
+* `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 
 
 === Dependency update
@@ -58,6 +62,8 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
 - https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the full support to duplicate projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5595[#5595] [sirius-web] Provide an API to compute the containment references to consider to duplicate objects instead of relying only on the metamodel.
+- https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
+A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
 
 
 === Improvements
