@@ -29,13 +29,13 @@ import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSucce
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
+import org.eclipse.sirius.web.application.impactanalysis.services.api.IImpactAnalysisMessageService;
 import org.eclipse.sirius.web.application.library.dto.InvokeUpdateLibraryImpactAnalysisInput;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -58,16 +58,16 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
 
     private final IEditingContextSnapshotService editingContextSnapshotService;
 
-    private final ILabelService labelService;
+    private final IImpactAnalysisMessageService impactAnalysisMessageService;
 
     private final IMessageService messageService;
 
     private final Counter counter;
 
-    public InvokeUpdateLibraryImpactAnalysisHandler(IUpdateLibraryExecutor updateLibraryExecutor, IEditingContextSnapshotService editingContextSnapshotService, ILabelService labelService, IMessageService messageService, MeterRegistry meterRegistry) {
+    public InvokeUpdateLibraryImpactAnalysisHandler(IUpdateLibraryExecutor updateLibraryExecutor, IEditingContextSnapshotService editingContextSnapshotService, IImpactAnalysisMessageService impactAnalysisMessageService, IMessageService messageService, MeterRegistry meterRegistry) {
         this.updateLibraryExecutor = Objects.requireNonNull(updateLibraryExecutor);
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
-        this.labelService = Objects.requireNonNull(labelService);
+        this.impactAnalysisMessageService = Objects.requireNonNull(impactAnalysisMessageService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -98,7 +98,7 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
                     Map<EObject, Collection<Setting>> removedProxies = (Map<EObject, Collection<Setting>>) success.getParameters().get(UpdateLibraryExecutor.REMOVED_PROXIES_PARAMETER_KEY);
 
                     List<String> messages = new ArrayList<>();
-                    messages.addAll(this.computeBrokenProxyReport(removedProxies));
+                    messages.addAll(this.impactAnalysisMessageService.getUnresolvedProxyMessages(removedProxies));
 
                     payload = new InvokeImpactAnalysisSuccessPayload(input.id(), new ImpactAnalysisReport(0, 0, 0, messages), success.getMessages());
                 } else if (updateLibraryResult instanceof Failure failure) {
@@ -111,33 +111,5 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
-    }
-
-    private List<String> computeBrokenProxyReport(Map<EObject, Collection<Setting>> unresolvedProxiesAfter) {
-        List<String> report = new ArrayList<>();
-        unresolvedProxiesAfter.entrySet().stream()
-            .forEach(entry -> {
-                EObject proxyObject = entry.getKey();
-                Collection<Setting> settings = entry.getValue();
-                for (Setting setting : settings) {
-                    StringBuilder brokenProxiesBuilder = new StringBuilder();
-                    brokenProxiesBuilder
-                        .append("[BROKEN] ")
-                        .append(this.getResourceAndEObjectLabel(setting.getEObject()))
-                        .append(".")
-                        .append(setting.getEStructuralFeature().getName())
-                        .append(" (previously set to ")
-                        .append(this.labelService.getStyledLabel(proxyObject))
-                        .append(")");
-                    report.add(brokenProxiesBuilder.toString());
-                }
-            });
-        return report;
-    }
-
-    private String getResourceAndEObjectLabel(EObject eObject) {
-        return this.labelService.getStyledLabel(eObject.eResource()).toString()
-                + " - "
-                + this.labelService.getStyledLabel(eObject).toString();
     }
 }
