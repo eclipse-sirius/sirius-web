@@ -16,11 +16,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -235,35 +234,27 @@ export const SplitButtonPropertySection = ({
         </Button>
       </ButtonGroup>
       <LoadingIndicator loading={loading} />
-      <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu">
-                  {widget.actions.map((option, index) => (
-                    <MenuItem
-                      key={index}
-                      selected={index === state.selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                      classes={{ root: classes[index]?.style }}
-                      disabled={readOnly || widget.readOnly || widget.actions[index]?.readOnly}>
-                      {option.imageURL?.length ?? 0 > 0 ? (
-                        <img className={classes[index]?.icon} alt={option.label} src={httpOrigin + option.imageURL} />
-                      ) : null}
-                      {option.buttonLabel}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+      <Menu anchorEl={buttonGroupRef.current} open={state.open} onClose={handleClose}>
+        <Paper>
+          <ClickAwayListener onClickAway={handleClose}>
+            <MenuList id="split-button-menu">
+              {widget.actions.map((option, index) => (
+                <MenuItem
+                  key={index}
+                  selected={index === state.selectedIndex}
+                  onClick={(event) => handleMenuItemClick(event, index)}
+                  classes={{ root: classes[index]?.style }}
+                  disabled={readOnly || widget.readOnly || widget.actions[index]?.readOnly}>
+                  {option.imageURL?.length ?? 0 > 0 ? (
+                    <img className={classes[index]?.icon} alt={option.label} src={httpOrigin + option.imageURL} />
+                  ) : null}
+                  {option.buttonLabel}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </ClickAwayListener>
+        </Paper>
+      </Menu>
     </div>
   );
 };
