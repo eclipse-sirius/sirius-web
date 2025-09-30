@@ -47,15 +47,15 @@ const emptyNodeProps = {
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 const isRectangularNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'rectangularNode';
 
-const getParentNodeBorderWidth = (parentNode: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
-  if (parentNode.parentId) {
-    const parentNodeParent = visibleNodes.find((node) => node.id === parentNode.parentId);
+const getNodeBorderWidth = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
+  if (node.parentId) {
+    const parentNodeParent = visibleNodes.find((node) => node.id === node.parentId);
     if (parentNodeParent && parentNodeParent.type === 'listNode') {
-      return getParentNodeBorderWidth(parentNodeParent, visibleNodes);
+      return getNodeBorderWidth(parentNodeParent, visibleNodes);
     }
-    return parentNode.data.style.borderWidth;
+    return node.data.style.borderWidth;
   } else {
-    return parentNode.data.style.borderWidth;
+    return node.data.style.borderWidth;
   }
 };
 
@@ -77,11 +77,12 @@ export const prepareLayoutArea = (
   // Render all label first
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
+    const borderWidth: number = getNodeBorderWidth(node, visibleNodes) ?? 0;
+    let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
     if (node.parentId) {
       const parentNode = visibleNodes.find((n) => n.id === node.parentId);
       if (parentNode && parentNode.type === 'listNode' && parentNode.width) {
-        const borderWidth = getParentNodeBorderWidth(parentNode, visibleNodes);
-        node.width = parentNode.width - borderWidth * 2;
+        insideLabelConstraintWidth = parentNode.width - borderWidth * 2;
       }
     }
     if (hiddenContainer && node.data.insideLabel) {
@@ -98,7 +99,7 @@ export const prepareLayoutArea = (
         key: `${node.id}-label-${index}`,
         role: 'button', // role applied by react flow
         style: {
-          maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : node.width,
+          maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
         },
         children,
       });
