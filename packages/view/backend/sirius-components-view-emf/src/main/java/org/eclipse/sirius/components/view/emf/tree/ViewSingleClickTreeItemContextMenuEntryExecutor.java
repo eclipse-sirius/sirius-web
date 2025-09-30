@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.ISingleClickTreeItemContextMenuEntryExecutor;
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -79,7 +80,7 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
     }
 
     @Override
-    public IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId) {
+    public IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId, ITreeInput treeInput) {
         var optionalTreeDescription = this.viewRepresentationDescriptionSearchService
                 .findById(editingContext, treeDescription.getId())
                 .filter(org.eclipse.sirius.components.view.tree.TreeDescription.class::isInstance)
