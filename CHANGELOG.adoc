@@ -117,6 +117,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5588[#5588] [diagram] Fix an issue where the collapsed state of the diagram filter modal was lost when refreshing the modal
 - https://github.com/eclipse-sirius/sirius-web/issues/5591[#5591] [sirius-web] Do not block project upload if some of the representations to import can not be created
 - https://github.com/eclipse-sirius/sirius-web/issues/5581[#5581] [diagram] Prevent node header to overlap its children
+- https://github.com/eclipse-sirius/sirius-web/issues/5590[#5590] [diagram] Fix filter modal menu not rendering correctly
 
 === New Features
 

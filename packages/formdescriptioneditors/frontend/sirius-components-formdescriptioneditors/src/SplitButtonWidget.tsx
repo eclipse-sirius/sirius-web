@@ -23,12 +23,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { Theme, useTheme } from '@mui/material/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -333,38 +330,27 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
-      <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu">
-                  {widget.actions.map((option, index) => (
-                    <MenuItem
-                      key={index}
-                      selected={index === state.selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                      style={{ ...getStyle(index) }}>
-                      {state.actionsIsValidImage[index] && state.actionsImageURL[index] ? (
-                        <img
-                          style={{ ...imageStyle(theme, state.actionsIsValidImage[index] ?? false) }}
-                          alt={option.label}
-                          src={state.actionsImageURL[index]}
-                        />
-                      ) : null}
-                      {state.actionsButtonLabel[index]}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+      <Menu anchorEl={buttonGroupRef.current} open={state.open} onClose={handleClose}>
+        <MenuList>
+          {widget.actions.map((option, index) => (
+            <MenuItem
+              key={index}
+              selected={index === state.selectedIndex}
+              onClick={(event) => handleMenuItemClick(event, index)}
+              style={{ ...getStyle(index) }}>
+              {state.actionsIsValidImage[index] && state.actionsImageURL[index] ? (
+                <img
+                  style={{ ...imageStyle(theme, state.actionsIsValidImage[index] ?? false) }}
+                  alt={option.label}
+                  src={state.actionsImageURL[index]}
+                />
+              ) : null}
+              {state.actionsButtonLabel[index]}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
+
       <div
         data-testid={`${widget.__typename}-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
