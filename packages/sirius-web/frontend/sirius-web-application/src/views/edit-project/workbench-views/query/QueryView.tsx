@@ -12,8 +12,10 @@
  *******************************************************************************/
 import {
   IconOverlay,
+  Selection,
   ServerContext,
   ServerContextValue,
+  useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -30,15 +32,28 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType, ForwardedRef, forwardRef, RefObject, useContext, useImperativeHandle, useRef } from 'react';
+import {
+  ComponentType,
+  ForwardedRef,
+  forwardRef,
+  RefObject,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { makeStyles } from 'tss-react/mui';
 import { useCurrentProject } from '../../useCurrentProject';
+import { SynchronizationButton } from '../SynchronizationButton';
 import {
   ExportResultButtonProps,
   ExpressionAreaHandle,
   ExpressionAreaProps,
   ExpressionResultViewerProps,
   QueryViewConfiguration,
+  QueryViewState,
   ResultAreaProps,
 } from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
@@ -54,6 +69,32 @@ import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
 import { useResultAreaSize } from './useResultAreaSize';
 
+const useQueryViewStyles = makeStyles()((theme) => ({
+  view: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridTemplateRows: 'auto 1fr',
+    justifyItems: 'stretch',
+    overflow: 'auto',
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    height: theme.spacing(4),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    justifyContent: 'right',
+    alignItems: 'center',
+    borderBottomColor: theme.palette.divider,
+  },
+  content: {
+    overflow: 'auto',
+  },
+}));
+
 export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   (
     { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
@@ -66,11 +107,31 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       paddingX: theme.spacing(1),
     });
 
+    const [state, setState] = useState<QueryViewState>({
+      objectIds: [],
+      pinned: false,
+    });
+
+    const applySelection = (selection: Selection) => {
+      const newObjetIds = selection.entries.map((entry) => entry.id);
+      setState((prevState) => ({
+        ...prevState,
+        objectIds: newObjetIds,
+      }));
+    };
+
     const expressionAreaRef: RefObject<ExpressionAreaHandle | null> = useRef<ExpressionAreaHandle | null>(null);
+    useQueryViewHandle(id, expressionAreaRef, applySelection, ref);
 
-    useQueryViewHandle(id, expressionAreaRef, ref);
+    const { selection } = useSelection();
+    useEffect(() => {
+      if (!state.pinned) {
+        applySelection(selection);
+      }
+    }, [selection, state.pinned]);
 
-    const { evaluateExpression, loading, result } = useEvaluateExpression();
+    const { classes } = useQueryViewStyles();
+    const { evaluateExpression, loading, result } = useEvaluateExpression(state.objectIds);
     const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
 
     const { ref: resultAreaRef, width, height } = useResultAreaSize();
@@ -78,7 +139,15 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
     const initialQueryViewConfiguration: QueryViewConfiguration =
       initialConfiguration as unknown as QueryViewConfiguration;
     const initialQueryText = initialQueryViewConfiguration?.queryText ?? null;
-    return (
+
+    const toolbar = (
+      <SynchronizationButton
+        pinned={state.pinned}
+        onClick={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}
+      />
+    );
+
+    const contents: JSX.Element = (
       <Box data-representation-kind="query" sx={queryViewStyle} ref={resultAreaRef}>
         <ExpressionArea
           editingContextId={editingContextId}
@@ -89,6 +158,12 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
         />
         <ResultArea loading={loading} payload={result} width={width} height={height} />
       </Box>
+    );
+    return (
+      <div className={classes.view}>
+        <div className={classes.toolbar}>{toolbar}</div>
+        <div className={classes.content}>{contents}</div>
+      </div>
     );
   }
 );
