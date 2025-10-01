@@ -12,6 +12,7 @@
  *******************************************************************************/
 import {
   RepresentationLoadingIndicator,
+  Selection,
   useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
@@ -19,14 +20,18 @@ import {
 import {
   FormBasedView,
   FormContext,
+  FormHandle,
   GQLForm,
   GQLFormRefreshedEventPayload,
   Group,
 } from '@eclipse-sirius/sirius-components-forms';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { SynchronizationButton } from '../SynchronizationButton';
 import { RelatedElementsViewState } from './RelatedElementsView.types';
+import { useRelatedElementsViewHandle } from './useRelatedElementsViewHandle';
 import { useRelatedElementsViewSubscription } from './useRelatedElementsViewSubscription';
 import { GQLRelatedElementsEventPayload } from './useRelatedElementsViewSubscription.types';
 
@@ -34,8 +39,29 @@ const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
+  view: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridTemplateRows: 'auto 1fr',
+    justifyItems: 'stretch',
+    overflow: 'auto',
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    height: theme.spacing(4),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    gap: theme.spacing(1),
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    justifyContent: 'right',
+    alignItems: 'center',
+    borderBottomColor: theme.palette.divider,
+  },
   content: {
-    padding: theme.spacing(1),
+    overflow: 'auto',
   },
 }));
 
@@ -46,49 +72,31 @@ const isFormRefreshedEventPayload = (
 export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const [state, setState] = useState<RelatedElementsViewState>({
-      currentSelection: { entries: [] },
       form: null,
+      objectIds: [],
+      pinned: false,
     });
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          id,
-          getWorkbenchViewConfiguration: () => {
-            return {};
-          },
-          applySelection: null,
-        };
-      },
-      []
-    );
+    const applySelection = (selection: Selection) => {
+      const newObjetIds = selection.entries.map((entry) => entry.id);
+      setState((prevState) => ({
+        ...prevState,
+        objectIds: newObjetIds,
+      }));
+    };
+
+    const formBasedViewRef: MutableRefObject<FormHandle | null> = useRef<FormHandle | null>(null);
+    useRelatedElementsViewHandle(id, formBasedViewRef, applySelection, ref);
 
     const { selection } = useSelection();
-
-    /**
-     * Displays another form if the selection indicates that we should display another properties view.
-     */
-    const currentSelectionKey: string = state.currentSelection.entries
-      .map((entry) => entry.id)
-      .sort()
-      .join(':');
-    const newSelectionKey: string = selection.entries
-      .map((entry) => entry.id)
-      .sort()
-      .join(':');
     useEffect(() => {
-      if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
-        setState((prevState) => ({ ...prevState, currentSelection: selection }));
-      } else if (selection.entries.length === 0) {
-        setState((prevState) => ({ ...prevState, currentSelection: { entries: [] } }));
+      if (!state.pinned) {
+        applySelection(selection);
       }
-    }, [currentSelectionKey, newSelectionKey]);
+    }, [selection, state.pinned]);
 
-    const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
-    const skip = objectIds.length === 0;
-
-    const { payload, complete } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
+    const skip = state.objectIds.length === 0;
+    const { payload, complete, loading } = useRelatedElementsViewSubscription(editingContextId, state.objectIds, skip);
     useEffect(() => {
       if (isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
@@ -110,35 +118,61 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
       }
     };
 
+    const toolbar = (
+      <SynchronizationButton
+        pinned={state.pinned && !skip}
+        onClick={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}
+      />
+    );
+
+    let contents: JSX.Element = <></>;
+
     if (complete || skip) {
-      return (
+      contents = (
         <div className={classes.idle}>
           <Typography variant="subtitle2">No object selected</Typography>
         </div>
       );
-    } else if (!state.form) {
-      return (
-        <div className={classes.idle}>
-          <RepresentationLoadingIndicator />
-        </div>
-      );
     } else {
-      return (
-        <div data-representation-kind="form-related-elements">
-          <FormContext.Provider
-            value={{
-              payload: payload,
-            }}>
-            <FormBasedView
-              editingContextId={editingContextId}
-              form={state.form}
-              initialSelectedPageId={null}
-              readOnly={readOnly}
-              postProcessor={extractFirstGroup}
-            />
-          </FormContext.Provider>
-        </div>
+      contents = (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateRows: '1fr',
+            gridTemplateColumns: '1fr',
+          }}
+          data-representation-kind="form-related-elements">
+          {!state.form || loading ? (
+            <Box sx={{ gridRow: '1', gridColumn: '1' }}>
+              <RepresentationLoadingIndicator />
+            </Box>
+          ) : null}
+          {state.form ? (
+            <Box sx={{ gridRow: '1', gridColumn: '1' }}>
+              <FormContext.Provider
+                value={{
+                  payload: payload,
+                }}>
+                <FormBasedView
+                  editingContextId={editingContextId}
+                  form={state.form}
+                  initialSelectedPageId={null}
+                  readOnly={readOnly}
+                  postProcessor={extractFirstGroup}
+                  ref={formBasedViewRef}
+                />
+              </FormContext.Provider>
+            </Box>
+          ) : null}
+        </Box>
       );
     }
+
+    return (
+      <div className={classes.view}>
+        <div className={classes.toolbar}>{toolbar}</div>
+        <div className={classes.content}>{contents}</div>
+      </div>
+    );
   }
 );

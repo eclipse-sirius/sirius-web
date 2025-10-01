@@ -123,6 +123,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5590[#5590] [diagram] Fix filter modal menu not rendering correctly
 - https://github.com/eclipse-sirius/sirius-web/issues/5593[#5593] [diagram] Restore position dependant rotation for `imageNodeStyle`
 - https://github.com/eclipse-sirius/sirius-web/issues/4171[#4171] [sirius-web] Fix the display of tabs for representations with very long names, which could hide the "close tab" button (and the icon)
+- https://github.com/eclipse-sirius/sirius-web/issues/5614[#5614] [sirius-web] Add support for "pin/unpin" to all right side panels
 
 === New Features
 

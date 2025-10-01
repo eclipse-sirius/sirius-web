@@ -13,6 +13,11 @@
 
 import { GQLEvaluateExpressionSuccessPayload, GQLExpressionResult } from './useEvaluateExpression.types';
 
+export interface QueryViewState {
+  objectIds: string[];
+  pinned: boolean;
+}
+
 export interface QueryViewConfiguration {
   queryText: string;
 }

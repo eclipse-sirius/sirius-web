@@ -43,8 +43,8 @@ export const useRepresentationsViewSubscription = (
 ): UseRepresentationsViewSubscriptionValue => {
   const [state, setState] = useState<UseRepresentationsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    payload: null,
     complete: false,
+    payload: null,
   });
 
   const input: GQLRepresentationsEventInput = {
@@ -55,8 +55,6 @@ export const useRepresentationsViewSubscription = (
 
   const variables: GQLRepresentationsEventVariables = { input };
 
-  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
-
   const onData = ({ data }: OnDataOptions<GQLRepresentationsEventSubscription>) =>
     flushSync(() => {
       setState((prevState) => ({ ...prevState, payload: data.data.representationsEvent, complete: false }));
@@ -66,6 +64,8 @@ export const useRepresentationsViewSubscription = (
   const onError = ({ message }: ApolloError) => {
     addErrorMessage(message);
   };
+
+  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { loading } = useSubscription<GQLRepresentationsEventSubscription, GQLRepresentationsEventVariables>(
     gql(getRepresentationsViewEventSubscription),
