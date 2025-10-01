@@ -13,6 +13,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import Tooltip from '@mui/material/Tooltip';
 import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { IconOverlay } from '../icon/IconOverlay';
@@ -31,8 +32,8 @@ const useRepresentationNavigationStyles = makeStyles()((theme) => ({
     textTransform: 'none',
   },
   tabLabel: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr auto',
     alignItems: 'center',
     width: 'inherit',
   },
@@ -121,20 +122,22 @@ export const RepresentationNavigation = forwardRef<
               classes={{ root: classes.tabRoot }}
               value={representation.id}
               label={
-                <div className={classes.tabLabel}>
-                  {representation.iconURLs && (
-                    <div className={classes.tabRepresentationIcon}>
-                      <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
-                    </div>
-                  )}
-                  <div className={classes.tabLabelText}>{representation.label}</div>
-                  <CloseIcon
-                    className={classes.tabCloseIcon}
-                    fontSize="small"
-                    onClick={(event) => onRepresentationClose(event, representation)}
-                    data-testid={`close-representation-tab-${representation.label}`}
-                  />
-                </div>
+                <Tooltip title={representation.label}>
+                  <div className={classes.tabLabel}>
+                    {representation.iconURLs && (
+                      <div className={classes.tabRepresentationIcon}>
+                        <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                      </div>
+                    )}
+                    <div className={classes.tabLabelText}>{representation.label}</div>
+                    <CloseIcon
+                      className={classes.tabCloseIcon}
+                      fontSize="small"
+                      onClick={(event) => onRepresentationClose(event, representation)}
+                      data-testid={`close-representation-tab-${representation.label}`}
+                    />
+                  </div>
+                </Tooltip>
               }
               key={representation.id}
               data-testid={`representation-tab-${representation.label}`}
