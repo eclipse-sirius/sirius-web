@@ -33,6 +33,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
 
 
 

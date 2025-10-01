@@ -120,7 +120,7 @@ export const PaletteToolList = ({
           data-testid={`paletteEntry-${paletteEntry.label}`}
         />
       );
-    } else if (isToolSection(paletteEntry)) {
+    } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
           <ListItemButton
