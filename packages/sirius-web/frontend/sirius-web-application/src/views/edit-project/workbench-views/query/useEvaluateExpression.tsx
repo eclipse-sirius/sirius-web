@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
   GQLErrorPayload,
@@ -76,7 +76,7 @@ const isEvaluateExpressionSuccessPayload = (
   payload: GQLEvaluateExpressionPayload
 ): payload is GQLEvaluateExpressionSuccessPayload => payload.__typename === 'EvaluateExpressionSuccessPayload';
 
-export const useEvaluateExpression = (): UseEvaluateExpressionResult => {
+export const useEvaluateExpression = (selectedObjectIds: string[]): UseEvaluateExpressionResult => {
   const [performExpressionEvaluation, { loading, data, error }] = useMutation<
     GQLEvaluateExpressionMutationData,
     GQLEvaluateExpressionMutationVariables
@@ -95,15 +95,13 @@ export const useEvaluateExpression = (): UseEvaluateExpressionResult => {
     }
   }, [data, error]);
 
-  const { selection } = useSelection();
-
   const evaluateExpression = (editingContextId: string, expression: string) => {
     const variables: GQLEvaluateExpressionMutationVariables = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
         expression,
-        selectedObjectIds: selection.entries.map((entry) => entry.id),
+        selectedObjectIds,
       },
     };
 

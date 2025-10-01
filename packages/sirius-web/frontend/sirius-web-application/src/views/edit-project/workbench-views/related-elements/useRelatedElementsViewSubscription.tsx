@@ -55,17 +55,18 @@ export const useRelatedElementsViewSubscription = (
 
   const variables: GQLRelatedElementsEventVariables = { input };
 
-  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
-
-  const onData = ({ data }: OnDataOptions<GQLRelatedElementsEventSubscription>) =>
+  const onData = ({ data }: OnDataOptions<GQLRelatedElementsEventSubscription>) => {
     flushSync(() => {
       setState((prevState) => ({ ...prevState, payload: data.data.relatedElementsEvent, complete: false }));
     });
+  };
 
   const { addErrorMessage } = useMultiToast();
   const onError = ({ message }: ApolloError) => {
     addErrorMessage(message);
   };
+
+  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
   const { loading } = useSubscription<GQLRelatedElementsEventSubscription, GQLRelatedElementsEventVariables>(
     gql(getRelatedElementsViewEventSubscription),
