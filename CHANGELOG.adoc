@@ -119,6 +119,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5581[#5581] [diagram] Prevent node header to overlap its children
 - https://github.com/eclipse-sirius/sirius-web/issues/5590[#5590] [diagram] Fix filter modal menu not rendering correctly
 - https://github.com/eclipse-sirius/sirius-web/issues/5593[#5593] [diagram] Restore position dependant rotation for `imageNodeStyle`
+- https://github.com/eclipse-sirius/sirius-web/issues/4171[#4171] [sirius-web] Fix the display of tabs for representations with very long names, which could hide the "close tab" button (and the icon)
 
 === New Features
 
