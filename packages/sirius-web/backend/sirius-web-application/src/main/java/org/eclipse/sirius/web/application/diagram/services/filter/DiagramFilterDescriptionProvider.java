@@ -235,7 +235,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .nodeIconURLProvider(vm -> List.of())
                 .nodeEndIconsURLProvider(this::computeNodeEndIcons)
                 .nodeKindProvider(vm -> "")
-                .nodeSelectableProvider(vm -> true)
+                .nodeSelectableProvider(vm -> false)
                 .childrenProvider(this::getNodeChildren)
                 .expandedNodeIdsProvider(vm -> List.of())
                 .isCheckableProvider(variableManager -> true)
