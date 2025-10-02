@@ -18,6 +18,7 @@ export interface PaletteToolListProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
   onBackToMainList: () => void;
+  onClose: () => void;
   diagramElementId: string;
   children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
