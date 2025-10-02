@@ -56,7 +56,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const ShowInSection = ({ onBackToMainList }: PaletteExtensionSectionComponentProps) => {
+export const ShowInSection = ({ onBackToMainList, onClose }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
   const { getEdges, getNodes } = useStore();
   const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
@@ -86,7 +86,10 @@ export const ShowInSection = ({ onBackToMainList }: PaletteExtensionSectionCompo
         <ListItemButton
           className={classes.toolListItemButton}
           data-testid={`push-diagram-selection-to-${target.id}`}
-          onClick={() => pushDiagramSelectionTo(target)}>
+          onClick={() => {
+            pushDiagramSelectionTo(target);
+            onClose();
+          }}>
           <ListItemIcon className={classes.listItemIcon}>{target.icon}</ListItemIcon>
           <ListItemText primary={target.label} className={classes.listItemText} />
         </ListItemButton>

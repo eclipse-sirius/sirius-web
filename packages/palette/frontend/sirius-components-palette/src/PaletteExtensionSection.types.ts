@@ -14,9 +14,11 @@ export interface PaletteExtensionSectionProps {
   component: React.FC<PaletteExtensionSectionComponentProps>;
   id: string;
   title: string;
+  onClose: () => void;
 }
 
 export interface PaletteExtensionSectionComponentProps {
   onBackToMainList: () => void;
+  onClose: () => void;
   diagramElementId: string;
 }

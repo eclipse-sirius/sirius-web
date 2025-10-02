@@ -81,6 +81,7 @@ export const PaletteToolList = ({
   onToolClick,
   onBackToMainList,
   diagramElementId,
+  onClose,
   children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
@@ -196,7 +197,11 @@ export const PaletteToolList = ({
               unmountOnExit
               mountOnEnter>
               <div className={classes.toolList}>
-                <SectionComponent onBackToMainList={handleBackToMainList} diagramElementId={diagramElementId} />
+                <SectionComponent
+                  onBackToMainList={handleBackToMainList}
+                  diagramElementId={diagramElementId}
+                  onClose={onClose}
+                />
               </div>
             </Slide>
           );

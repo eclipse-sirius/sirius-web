@@ -219,6 +219,7 @@ export const Palette = ({
                 palette={palette}
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
+                onClose={onClose}
                 diagramElementId={diagramElementId}>
                 {children}
               </PaletteToolList>

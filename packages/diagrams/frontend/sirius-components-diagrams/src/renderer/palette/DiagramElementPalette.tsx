@@ -66,9 +66,16 @@ export const DiagramElementPalette = memo(
     const extensionSections = useMemo(() => {
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
       sectionComponents.push(
-        <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
+        <PaletteExtensionSection
+          component={PaletteAppearanceSection}
+          title="Appearance"
+          id="appearance"
+          onClose={() => {}}
+        />
       );
-      sectionComponents.push(<PaletteExtensionSection component={ShowInSection} title="Show in" id="show_in" />);
+      sectionComponents.push(
+        <PaletteExtensionSection component={ShowInSection} title="Show in" id="show_in" onClose={onClose} />
+      );
 
       return sectionComponents;
     }, []);
