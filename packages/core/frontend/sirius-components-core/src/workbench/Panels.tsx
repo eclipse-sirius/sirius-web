@@ -154,11 +154,17 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
             const panelHandles: WorkbenchPanelHandle[] = [];
             panelHandles.push({
               side: 'left',
-              getWorkbenchViewHandles: () => Array.from(leftWorkbenchViewRef.current.values()),
+              getWorkbenchViewHandles: () =>
+                Array.from(leftWorkbenchViewRef.current.values()).filter((handle) =>
+                  leftPanelState.selectedContributionIds.includes(handle.id)
+                ),
             });
             panelHandles.push({
               side: 'right',
-              getWorkbenchViewHandles: () => Array.from(rightWorkbenchViewRef.current.values()),
+              getWorkbenchViewHandles: () =>
+                Array.from(rightWorkbenchViewRef.current.values()).filter((handle) =>
+                  rightPanelState.selectedContributionIds.includes(handle.id)
+                ),
             });
             return panelHandles;
           },

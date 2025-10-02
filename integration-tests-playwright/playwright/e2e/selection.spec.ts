@@ -109,4 +109,23 @@ test.describe('selection', () => {
     node = await new PlaywrightNode(page, 'CompositeProcessor1');
     await expect(node.nodeLocator).toContainClass('selected');
   });
+
+  test('the explorer can not push its local selection to a right-side panel if it is not open', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    await explorer.select('CompositeProcessor1');
+
+    // The Details view is initialy opened, we should be able to "Show in Details"
+    await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
+    await expect(page.getByTestId(`push-selection-to-Details`)).toBeVisible();
+    await page.getByTestId(`push-selection-to-Details`).click();
+
+    // Close the Details panel
+    await page.getByTestId('viewselector-Details').click();
+
+    // Now the "Show in Details" menu item should no longer be available
+    await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
+    await expect(page.getByTestId(`push-selection-to-Details`)).not.toBeVisible();
+  });
 });
