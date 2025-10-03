@@ -20,19 +20,19 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.views.explorer.dto.ContainmentFeature;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesPayload;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for the field EditingContext#containmentFeatureNames.
- * It is used to find the containment feature names of a container object given the candidate contained object.
+ * Data fetcher for the field EditingContext#containmentFeatureNames. It is used to find the containment feature names of a container object given the candidate contained object.
  *
  * @author lfasani
  */
 @QueryDataFetcher(type = "EditingContext", field = "containmentFeatureNames")
-public class EditingContextContainmentFeatureNamesDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<String>>> {
+public class EditingContextContainmentFeatureNamesDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ContainmentFeature>>> {
 
     private static final String CONTAINER_ID = "containerId";
 
@@ -45,7 +45,7 @@ public class EditingContextContainmentFeatureNamesDataFetcher implements IDataFe
     }
 
     @Override
-    public CompletableFuture<List<String>> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<List<ContainmentFeature>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String containerId = environment.getArgument(CONTAINER_ID);
         String containedObjectId = environment.getArgument(CONTAINED_OBJECT_ID);
