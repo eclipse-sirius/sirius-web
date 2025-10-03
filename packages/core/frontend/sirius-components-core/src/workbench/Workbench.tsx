@@ -144,6 +144,8 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const refRepresentationNavigationHandle: RefObject<RepresentationNavigationHandle | null> =
       useRef<RepresentationNavigationHandle | null>(null);
+    const refDisplayedRepresentationHandle: RefObject<WorkbenchMainRepresentationHandle | null> =
+      useRef<WorkbenchMainRepresentationHandle | null>(null);
     const refPanelsHandle: RefObject<WorkbenchPanelsHandle | null> = useRef<WorkbenchPanelsHandle | null>(null);
     useImperativeHandle(refWorkbenchHandle, () => {
       return {
@@ -161,6 +163,9 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
               }
             });
           });
+          if (refDisplayedRepresentationHandle.current && refDisplayedRepresentationHandle.current.applySelection) {
+            refDisplayedRepresentationHandle.current.applySelection(selection);
+          }
         },
       };
     });
@@ -270,9 +275,6 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     const onRepresentationClick = (representation: RepresentationMetadata) => {
       setSelection({ entries: [{ id: representation.id }] });
     };
-
-    const refDisplayedRepresentationHandle: RefObject<WorkbenchMainRepresentationHandle | null> =
-      useRef<WorkbenchMainRepresentationHandle | null>(null);
 
     const { data: representationFactories } = useData(representationFactoryExtensionPoint);
     if (state.displayedRepresentationMetadata) {
