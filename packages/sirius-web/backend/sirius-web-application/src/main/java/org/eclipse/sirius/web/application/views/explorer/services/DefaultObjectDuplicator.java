@@ -65,13 +65,13 @@ public class DefaultObjectDuplicator implements IDefaultObjectDuplicator {
                     .filter(reference -> containmentFeature.equals(reference.getName()))
                     .findFirst();
 
-            Optional<Object> optionalDuplicatedObject = Optional.empty();
+            Optional<EObject> optionalDuplicatedObject = Optional.empty();
 
             if (optionalEReference.isPresent()) {
                 if (this.canFeatureBeSet(containerEObject, optionalEReference.get())) {
-                    optionalDuplicatedObject = this.duplicateObject(objectToDuplicate, settings)
-                            .flatMap(eObject -> this.addOrSetEObjet(optionalEditingDomain.get(), eObject, containerEObject, optionalEReference.get()));
-                    if (optionalDuplicatedObject.isPresent()) {
+                    optionalDuplicatedObject = this.duplicateObject(objectToDuplicate, settings);
+                    optionalDuplicatedObject.ifPresent(eObject -> this.addOrSetEObjet(optionalEditingDomain.get(), eObject, containerEObject, optionalEReference.get()));
+                    if (optionalDuplicatedObject.isPresent() && optionalDuplicatedObject.get().eContainer() != null) {
                         result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(IObjectDuplicator.NEW_OBJECT, optionalDuplicatedObject.get()));
                     }
                 } else {
@@ -79,8 +79,8 @@ public class DefaultObjectDuplicator implements IDefaultObjectDuplicator {
                 }
             }
 
-            if (settings.updateIncomingReferences() && optionalDuplicatedObject.isPresent() && optionalDuplicatedObject.get() instanceof EObject duplicatedEObject) {
-                this.updateIncomingReferences(duplicatedEObject, objectToDuplicate);
+            if (settings.updateIncomingReferences() && optionalDuplicatedObject.isPresent()) {
+                this.updateIncomingReferences(optionalDuplicatedObject.get(), objectToDuplicate);
             }
         }
         return result;
@@ -111,7 +111,7 @@ public class DefaultObjectDuplicator implements IDefaultObjectDuplicator {
                 });
     }
 
-    private Optional<Object> addOrSetEObjet(EditingDomain editingDomain, EObject duplicatedObject, EObject container, EReference eReference) {
+    private void addOrSetEObjet(EditingDomain editingDomain, EObject duplicatedObject, EObject container, EReference eReference) {
         Command command;
         if (eReference.isMany()) {
             command = new AddCommand(editingDomain, container, eReference, List.of(duplicatedObject));
@@ -119,10 +119,7 @@ public class DefaultObjectDuplicator implements IDefaultObjectDuplicator {
             command = new SetCommand(editingDomain, container, eReference, duplicatedObject);
         }
         editingDomain.getCommandStack().execute(command);
-        if (command.getResult().size() == 1) {
-            return Optional.of(command.getResult().iterator().next());
-        }
-        return Optional.empty();
+
     }
 
     private Optional<EObject> duplicateObject(EObject eObjectToDuplicate, DuplicationSettings settings) {
