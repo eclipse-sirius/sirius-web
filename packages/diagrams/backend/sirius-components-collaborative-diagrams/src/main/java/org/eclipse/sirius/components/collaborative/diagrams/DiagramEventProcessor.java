@@ -192,7 +192,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
-            this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), changeDescription));
+            this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
 
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
@@ -262,6 +262,21 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         };
     }
 
+    /**
+     * Used to access the diagram context.
+     *
+     * @return The diagram context
+     *
+     * @technical-debt This accessor has been added to let someone outside any diagram event handler contribute some
+     * diagram events. For example, an editing context event handler could use this to contribute events for some
+     * diagram. This is a temporary situation which will need an evolution in the core parts of the lifecycle of the
+     * event processor in the near future. This accessor should not be used since it will be removed soon.
+     */
+    @Deprecated(forRemoval = true)
+    public DiagramContext getDiagramContext() {
+        return this.diagramContext;
+    }
+
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
         return Flux.merge(
@@ -276,9 +291,5 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();
-    }
-
-    public DiagramContext getDiagramContext() {
-        return this.diagramContext;
     }
 }

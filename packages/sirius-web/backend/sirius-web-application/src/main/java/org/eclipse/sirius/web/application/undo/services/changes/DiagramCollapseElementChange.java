@@ -10,23 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.services.api;
+package org.eclipse.sirius.web.application.undo.services.changes;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 
 /**
- * Use to redo some representation changes.
+ * Used to record changes for UpdateCollapsingStateEvent.
  *
  * @author mcharfadi
  */
-public interface IRepresentationChangeHandler {
-
-    boolean canHandle(UUID inputId, IEditingContext editingContext);
-
-    void redo(UUID inputId, IEditingContext editingContext);
-
-    void undo(UUID inputId, IEditingContext editingContext);
-
+public record DiagramCollapseElementChange(UUID inputId, String representationId, String nodeId, CollapsingState undoValue, CollapsingState redoValue) implements IDiagramChange {
 }

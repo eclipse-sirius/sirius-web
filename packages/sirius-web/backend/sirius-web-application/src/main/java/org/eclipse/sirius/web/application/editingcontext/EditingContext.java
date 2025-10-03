@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
@@ -40,9 +41,9 @@ public class EditingContext implements IEMFEditingContext {
 
     private final List<View> views;
 
-    private final Map<String, ChangeDescription> inputId2change = new HashMap<>();
+    private final Map<UUID, ChangeDescription> inputId2change = new HashMap<>();
 
-    private final Map<String, IRepresentationChange> inputId2RepresentationChange = new HashMap<>();
+    private final Map<UUID, List<IRepresentationChange>> inputId2RepresentationChanges = new HashMap<>();
 
     private final ChangeRecorder changeRecorder;
 
@@ -75,12 +76,12 @@ public class EditingContext implements IEMFEditingContext {
         return this.changeRecorder;
     }
 
-    public Map<String, ChangeDescription> getInputId2change() {
+    public Map<UUID, ChangeDescription> getInputId2change() {
         return this.inputId2change;
     }
 
-    public Map<String, IRepresentationChange> getInputId2RepresentationChange() {
-        return this.inputId2RepresentationChange;
+    public Map<UUID, List<IRepresentationChange>> getInputId2RepresentationChanges() {
+        return this.inputId2RepresentationChanges;
     }
 
     @Override

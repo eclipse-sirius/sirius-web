@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.handler;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -25,12 +28,8 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Handler used to redo mutations.
@@ -61,7 +60,7 @@ public class RedoEventHandler implements IEditingContextEventHandler {
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         if (editingContext instanceof EditingContext siriusEditingContext && input instanceof RedoInput redoInput) {
-            var emfChangeDescription = siriusEditingContext.getInputId2change().get(redoInput.mutationId());
+            var emfChangeDescription = siriusEditingContext.getInputId2change().get(redoInput.inputId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
@@ -69,8 +68,8 @@ public class RedoEventHandler implements IEditingContextEventHandler {
             }
 
             representationEventProcessorChangeHandlers.stream()
-                    .filter(changeHandler -> changeHandler.canHandle(redoInput.mutationId(), siriusEditingContext))
-                    .forEach(changeHandler -> changeHandler.redo(redoInput.mutationId(), siriusEditingContext));
+                    .filter(changeHandler -> changeHandler.canHandle(redoInput.inputId(), siriusEditingContext))
+                    .forEach(changeHandler -> changeHandler.redo(redoInput.inputId(), siriusEditingContext));
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);

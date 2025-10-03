@@ -10,23 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.services.api;
+package org.eclipse.sirius.web.application.undo.services.changes;
 
+import java.util.Set;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-
 /**
- * Use to redo some representation changes.
+ * Used to record changes for FadeDiagramElementEvent.
  *
  * @author mcharfadi
  */
-public interface IRepresentationChangeHandler {
-
-    boolean canHandle(UUID inputId, IEditingContext editingContext);
-
-    void redo(UUID inputId, IEditingContext editingContext);
-
-    void undo(UUID inputId, IEditingContext editingContext);
-
+public record DiagramFadeElementChange(UUID inputId, String representationId, Set<String> elementIds, boolean undoValue, boolean redoValue) implements IDiagramChange {
 }

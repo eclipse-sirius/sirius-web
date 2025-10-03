@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.representations.change;
 
+import java.util.UUID;
+
 /**
  * Used to record changes made to a representation.
  *
@@ -19,7 +21,7 @@ package org.eclipse.sirius.components.collaborative.representations.change;
  */
 public interface IRepresentationChange {
 
-    String mutationId();
+    UUID inputId();
 
     String representationId();
 

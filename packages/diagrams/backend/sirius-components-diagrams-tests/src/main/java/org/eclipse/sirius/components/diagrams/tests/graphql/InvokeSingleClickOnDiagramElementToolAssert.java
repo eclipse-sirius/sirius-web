@@ -38,6 +38,10 @@ public class InvokeSingleClickOnDiagramElementToolAssert {
         this.result = Objects.requireNonNull(result);
     }
 
+    public String getResult() {
+        return result;
+    }
+
     public InvokeSingleClickOnDiagramElementToolAssert isSuccess() {
         String typename = JsonPath.read(this.result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());

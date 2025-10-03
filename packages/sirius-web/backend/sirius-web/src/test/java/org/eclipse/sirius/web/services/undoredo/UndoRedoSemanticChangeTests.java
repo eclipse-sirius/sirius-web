@@ -124,10 +124,9 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
             optionId.set(newValue);
         });
 
-        var mutationId = UUID.randomUUID();
-
+        var inputId = UUID.randomUUID();
         Runnable editCheckbox = () -> {
-            var input = new EditRadioInput(mutationId, StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
+            var input = new EditRadioInput(inputId, StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");
@@ -146,7 +145,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
         });
 
         Runnable undoMutation = () -> {
-            var input = new UndoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), mutationId.toString());
+            var input = new UndoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), inputId);
             var result = this.undoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.undo.__typename");
@@ -154,7 +153,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
         };
 
         Runnable redoMutation = () -> {
-            var input = new RedoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), mutationId.toString());
+            var input = new RedoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), inputId);
             var result = this.redoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.redo.__typename");

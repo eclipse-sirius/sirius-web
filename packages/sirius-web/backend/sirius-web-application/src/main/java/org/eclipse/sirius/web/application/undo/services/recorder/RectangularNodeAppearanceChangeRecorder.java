@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
@@ -56,7 +58,7 @@ public class RectangularNodeAppearanceChangeRecorder implements IDiagramEventCon
     }
 
     @Override
-    public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, ChangeDescription changeDescription) {
+    public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
         if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
             var editAppearanceChanges = diagramEvents.stream()
                     .filter(EditAppearanceEvent.class::isInstance)
@@ -74,8 +76,16 @@ public class RectangularNodeAppearanceChangeRecorder implements IDiagramEventCon
 
             if (!undoAppearanceChanges.isEmpty()) {
                 List<IAppearanceChange> redoAppearanceChanges = new ArrayList<>(editAppearanceChanges);
-                var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id().toString(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
-                siriusEditingContext.getInputId2RepresentationChange().put(diagramInput.id().toString(), diagramNodeAppearanceChange);
+                var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
+
+                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id())
+                        || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
+                    siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), List.of(diagramNodeAppearanceChange));
+                } else {
+                    siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).add(diagramNodeAppearanceChange);
+                }
+
+
             }
         }
     }
