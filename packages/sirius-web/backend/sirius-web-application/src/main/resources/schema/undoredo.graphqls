@@ -6,13 +6,13 @@ extend type Mutation {
 input RedoInput {
     id: ID!
     editingContextId: ID!
-    mutationId: ID!
+    inputId: ID!
 }
 
 input UndoInput {
     id: ID!
     editingContextId: ID!
-    mutationId: ID!
+    inputId: ID!
 }
 
 union UndoPayload = ErrorPayload | SuccessPayload

@@ -23,11 +23,13 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.diagram.CreateViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DropToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -65,6 +67,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool createNodeTool;
 
+    private NodeTool removeViewTool;
+
     private DropTool dropOnDiagramTool;
 
     public UnsynchronizedDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
@@ -85,6 +89,10 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     public String getCreateNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getRemoveViewToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.removeViewTool).toString().getBytes()).toString();
     }
 
     public String getDropToolId() {
@@ -118,7 +126,18 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        var removeComponentView = new DeleteViewBuilder()
+                .viewExpression("aql:selectedNode")
+                .build();
+
+        this.removeViewTool = new NodeToolBuilder()
+                .name("Remove from Diagram")
+                .body(removeComponentView)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
+                .palette(new NodePaletteBuilder().nodeTools(this.removeViewTool)
+                        .build())
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")

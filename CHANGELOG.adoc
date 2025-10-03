@@ -167,6 +167,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 - https://github.com/eclipse-sirius/sirius-web/issues/5580[#5580] [diagram] Fix an issue that could cause label to be layout with a smaller width
 - https://github.com/eclipse-sirius/sirius-web/issues/5527[#5527] [sirius-web] The _Details_ view can now be pinned to keep showing the details of the same element even if others are selected in other parts of the UI.
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
+- https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 
 === Improvements
 

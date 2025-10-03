@@ -10,24 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.api;
+package org.eclipse.sirius.web.application.undo.services.changes;
 
 import java.util.List;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
-import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 
 /**
- * Use to react to diagram events.
+ * Used to record changes for ViewCreationRequest and ViewDeletionRequest.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface IDiagramEventConsumer {
-
-    void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription);
-
+public record DiagramNodeViewRequestChange(UUID inputId, String representationId, List<ViewCreationRequest> undoCreationRequest, List<ViewDeletionRequest> undoViewDeletionRequest, List<ViewCreationRequest> redoCreationRequest, List<ViewDeletionRequest> redoDeletionRequest) implements IDiagramChange {
 }

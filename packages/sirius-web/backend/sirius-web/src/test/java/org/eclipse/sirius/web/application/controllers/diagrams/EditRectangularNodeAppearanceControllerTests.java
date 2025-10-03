@@ -316,7 +316,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
             var input = new UndoInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    mutationInputId.toString()
+                    mutationInputId
             );
 
             this.undoMutationRunner.run(input);
@@ -326,7 +326,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
             var input = new RedoInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    mutationInputId.toString()
+                    mutationInputId
             );
 
             this.redoMutationRunner.run(input);

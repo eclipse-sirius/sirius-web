@@ -61,15 +61,15 @@ public class UndoEventHandler implements IEditingContextEventHandler {
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         if (editingContext instanceof EditingContext siriusEditingContext && input instanceof UndoInput undoInput) {
-            var emfChangeDescription = siriusEditingContext.getInputId2change().get(undoInput.mutationId());
+            var emfChangeDescription = siriusEditingContext.getInputId2change().get(undoInput.inputId());
             if (emfChangeDescription != null) {
                 emfChangeDescription.applyAndReverse();
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 payload = new SuccessPayload(input.id());
             }
             representationEventProcessorChangeHandlers.stream()
-                    .filter(changeHandler -> changeHandler.canHandle(undoInput.mutationId(), siriusEditingContext))
-                    .forEach(changeHandler -> changeHandler.undo(undoInput.mutationId(), siriusEditingContext));
+                    .filter(changeHandler -> changeHandler.canHandle(undoInput.inputId(), siriusEditingContext))
+                    .forEach(changeHandler -> changeHandler.undo(undoInput.inputId(), siriusEditingContext));
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);

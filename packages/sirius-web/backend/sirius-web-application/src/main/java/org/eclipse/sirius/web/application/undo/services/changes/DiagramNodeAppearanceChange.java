@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.undo.services.changes;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 
@@ -21,6 +22,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChang
  *
  * @author mcharfadi
  */
-public record DiagramNodeAppearanceChange(String mutationId, String representationId, List<IAppearanceChange> undoChanges, List<IAppearanceChange> redoChanges) implements IDiagramChange {
+public record DiagramNodeAppearanceChange(UUID inputId, String representationId, List<IAppearanceChange> undoChanges, List<IAppearanceChange> redoChanges) implements IDiagramChange {
   
 }

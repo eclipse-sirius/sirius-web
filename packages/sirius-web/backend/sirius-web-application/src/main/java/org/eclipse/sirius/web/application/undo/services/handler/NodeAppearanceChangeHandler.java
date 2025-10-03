@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.undo.services.handler;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -51,56 +52,66 @@ public class NodeAppearanceChangeHandler implements IRepresentationChangeHandler
     }
 
     @Override
-    public boolean canHandle(String mutationId, IEditingContext editingContext) {
-        return editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChange().get(mutationId) instanceof DiagramNodeAppearanceChange;
+    public boolean canHandle(UUID inputId, IEditingContext editingContext) {
+        return editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChanges().get(inputId) != null &&
+                siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream()
+                .anyMatch(DiagramNodeAppearanceChange.class::isInstance);
     }
 
     @Override
-    public void undo(String mutationId, IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChange().get(mutationId) instanceof DiagramNodeAppearanceChange change) {
-            var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
-            if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
-                var diagramContext = eventProcessor.getDiagramContext();
-                var shouldApplyChange = true;
-                var redoChanges = change.redoChanges().stream()
-                        .filter(INodeAppearanceChange.class::isInstance)
-                        .map(INodeAppearanceChange.class::cast).toList();
+    public void undo(UUID inputId, IEditingContext editingContext) {
+        if (editingContext instanceof EditingContext siriusEditingContext) {
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramNodeAppearanceChange.class::isInstance)
+                    .map(DiagramNodeAppearanceChange.class::cast)
+                    .forEach(change -> {
+                        var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
+                        if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
+                            var diagramContext = eventProcessor.getDiagramContext();
+                            var shouldApplyChange = true;
+                            var redoChanges = change.redoChanges().stream()
+                                    .filter(INodeAppearanceChange.class::isInstance)
+                                    .map(INodeAppearanceChange.class::cast).toList();
 
-                for (INodeAppearanceChange redoChange: redoChanges) {
-                    var currentNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), redoChange.nodeId());
-                    if (shouldApplyChange && currentNode.isPresent() && currentNode.get().getStyle() instanceof RectangularNodeStyle currentStyle) {
-                        shouldApplyChange = shouldApplyChange(redoChange, currentStyle);
-                    }
-                }
-                if (shouldApplyChange) {
-                    diagramContext.diagramEvents().add(new EditAppearanceEvent(change.undoChanges()));
-                }
-            }
+                            for (INodeAppearanceChange redoChange: redoChanges) {
+                                var currentNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), redoChange.nodeId());
+                                if (shouldApplyChange && currentNode.isPresent() && currentNode.get().getStyle() instanceof RectangularNodeStyle currentStyle) {
+                                    shouldApplyChange = this.shouldApplyChange(redoChange, currentStyle);
+                                }
+                            }
+                            if (shouldApplyChange) {
+                                diagramContext.diagramEvents().add(new EditAppearanceEvent(change.undoChanges()));
+                            }
+                        }
+                    });
         }
     }
 
     @Override
-    public void redo(String mutationId, IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChange().get(mutationId) instanceof DiagramNodeAppearanceChange change) {
-            var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
-            if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
-                var diagramContext = eventProcessor.getDiagramContext();
-                var shouldApplyChange = true;
-                var undoChanges = change.undoChanges().stream()
-                        .filter(INodeAppearanceChange.class::isInstance)
-                        .map(INodeAppearanceChange.class::cast).toList();
+    public void redo(UUID inputId, IEditingContext editingContext) {
+        if (editingContext instanceof EditingContext siriusEditingContext) {
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramNodeAppearanceChange.class::isInstance)
+                    .map(DiagramNodeAppearanceChange.class::cast)
+                    .forEach(change -> {
+                        var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
+                        if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
+                            var diagramContext = eventProcessor.getDiagramContext();
+                            var shouldApplyChange = true;
+                            var undoChanges = change.undoChanges().stream()
+                                    .filter(INodeAppearanceChange.class::isInstance)
+                                    .map(INodeAppearanceChange.class::cast).toList();
 
 
-                for (INodeAppearanceChange undoChange: undoChanges) {
-                    var currentNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), undoChange.nodeId());
-                    if (shouldApplyChange && currentNode.isPresent() && currentNode.get().getStyle() instanceof RectangularNodeStyle currentStyle) {
-                        shouldApplyChange = shouldApplyChange(undoChange, currentStyle);
-                    }
-                }
-                if (shouldApplyChange) {
-                    diagramContext.diagramEvents().add(new EditAppearanceEvent(change.redoChanges()));
-                }
-            }
+                            for (INodeAppearanceChange undoChange: undoChanges) {
+                                var currentNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), undoChange.nodeId());
+                                if (shouldApplyChange && currentNode.isPresent() && currentNode.get().getStyle() instanceof RectangularNodeStyle currentStyle) {
+                                    shouldApplyChange = this.shouldApplyChange(undoChange, currentStyle);
+                                }
+                            }
+                            if (shouldApplyChange) {
+                                diagramContext.diagramEvents().add(new EditAppearanceEvent(change.redoChanges()));
+                            }
+                        }
+                    });
         }
     }
 
