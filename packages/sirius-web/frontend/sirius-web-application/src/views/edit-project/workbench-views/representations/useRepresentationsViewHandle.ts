@@ -10,26 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
-import { ForwardedRef, RefObject, useImperativeHandle } from 'react';
-import { ExpressionAreaHandle } from './QueryView.types';
 
-export const useQueryViewHandle = (
+import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import { FormHandle } from '@eclipse-sirius/sirius-components-forms';
+import { ForwardedRef, MutableRefObject, useImperativeHandle } from 'react';
+
+export const useRepresentationsViewHandle = (
   id: string,
-  expressionAreaRef: RefObject<ExpressionAreaHandle | null>,
+  formBasedViewRef: MutableRefObject<FormHandle | null>,
   applySelection: (selection: Selection) => void,
   ref: ForwardedRef<WorkbenchViewHandle>
 ) => {
-  const workbenchViewHandleProvider = (): WorkbenchViewHandle => {
+  const representationsViewHandleProvider = () => {
     return {
       id,
       getWorkbenchViewConfiguration: () => {
-        return {
-          queryText: expressionAreaRef.current?.getExpression() || '',
-        };
+        return {};
       },
       applySelection,
     };
   };
-  useImperativeHandle(ref, workbenchViewHandleProvider, [id, expressionAreaRef]);
+  useImperativeHandle(ref, representationsViewHandleProvider, [id, formBasedViewRef]);
 };

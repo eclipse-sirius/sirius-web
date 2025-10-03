@@ -25,12 +25,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { useSelectedElementsLabels } from '../useSelectedElementsLabels';
 import { DetailsViewConfiguration, DetailsViewState } from './DetailsView.types';
 import { useDetailsViewHandle } from './useDetailsViewHandle';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
 import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetailsViewSubscription.types';
 
-const useDetailsViewStyles = makeStyles()((theme) => ({
+const useViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
   },
@@ -48,6 +49,7 @@ const useDetailsViewStyles = makeStyles()((theme) => ({
     height: theme.spacing(4),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    gap: theme.spacing(1),
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
     justifyContent: 'right',
@@ -73,11 +75,14 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
       pinned: false,
     });
 
+    const [fetchLabels, labels] = useSelectedElementsLabels();
     const applySelection = (selection: Selection) => {
+      const newObjetIds = selection.entries.map((entry) => entry.id);
       setState((prevState) => ({
         ...prevState,
-        objectIds: selection.entries.map((entry) => entry.id),
+        objectIds: newObjetIds,
       }));
+      fetchLabels(editingContextId, newObjetIds);
     };
 
     const formBasedViewRef: MutableRefObject<FormHandle | null> = useRef<FormHandle | null>(null);
@@ -92,28 +97,32 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
 
     const skip = state.objectIds.length === 0;
     const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, state.objectIds, skip);
-
     useEffect(() => {
       if (isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
+        fetchLabels(editingContextId, state.objectIds);
       }
     }, [payload]);
 
-    const { classes } = useDetailsViewStyles();
+    const { classes } = useViewStyles();
+
     const detailsViewConfiguration = initialConfiguration as unknown as DetailsViewConfiguration;
     const initialSelectedPageId = detailsViewConfiguration?.selectedPageId ?? null;
 
     const toolbar = (
-      <Tooltip
-        title={
-          state.pinned
-            ? 'Pinned. Click to follow the global selection.'
-            : 'Unpinned. Click to pin the view to the current selection.'
-        }
-        data-testid="details-toggle-pin"
-        onClick={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}>
-        {state.pinned ? <SyncLockOutlinedIcon /> : <SyncOutlinedIcon />}
-      </Tooltip>
+      <>
+        {state.pinned && !skip ? <Typography variant="caption">{'Pinned on: ' + labels}</Typography> : null}
+        <Tooltip
+          title={
+            state.pinned
+              ? 'Pinned. Click to follow the global selection.'
+              : 'Unpinned. Click to pin the view to the current selection.'
+          }
+          data-testid="details-toggle-pin"
+          onClick={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}>
+          {state.pinned ? <SyncLockOutlinedIcon /> : <SyncOutlinedIcon />}
+        </Tooltip>
+      </>
     );
 
     let contents: JSX.Element = <></>;
@@ -161,7 +170,6 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     return (
       <div className={classes.view}>
         <div className={classes.toolbar}>{toolbar}</div>
-
         <div className={classes.content}>{contents}</div>
       </div>
     );
