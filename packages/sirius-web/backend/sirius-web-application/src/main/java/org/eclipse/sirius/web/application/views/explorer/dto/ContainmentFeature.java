@@ -10,20 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.sirius.web.application.views.explorer.dto;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IPayload;
-
-import jakarta.validation.constraints.NotNull;
-
 /**
- * The payload object for this query.
+ * Representation of a containment feature that can be used to attach a child to a parent.
  *
- * @author lfasani
+ * @param id
+ *         the id of the containment feature
+ * @param label
+ *         label displayed to the user
+ * @author Arthur Daussy
  */
-public record EditingContextContainmentFeatureNamesPayload(@NotNull UUID id, @NotNull List<ContainmentFeature> containmentFeatureNames) implements IPayload {
-
+public record ContainmentFeature(String id, String label) {
 }

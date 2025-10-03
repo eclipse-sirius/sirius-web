@@ -31,7 +31,10 @@ public class ContainmentFeatureNamesQueryRunner implements IQueryRunner {
             query getContainmentFeatureNames($editingContextId: ID!, $containerId: ID!, $containedObjectId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
-                  containmentFeatureNames(containerId: $containerId, containedObjectId: $containedObjectId)
+                  containmentFeatureNames(containerId: $containerId, containedObjectId: $containedObjectId) {
+                    id,
+                    label
+                    }
                 }
               }
             }
