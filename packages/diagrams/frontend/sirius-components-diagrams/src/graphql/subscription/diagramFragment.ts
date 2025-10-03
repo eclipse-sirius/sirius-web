@@ -35,6 +35,7 @@ fragment diagramFragment on Diagram {
         handlePosition
         type
       }
+      minComputedSize { width height }
     }
     edgeLayoutData {
       id

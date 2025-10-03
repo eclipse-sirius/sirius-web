@@ -50,6 +50,7 @@ import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -66,27 +67,16 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private final Logger logger = LoggerFactory.getLogger(DiagramEventProcessor.class);
 
     private final IEditingContext editingContext;
-
-    private DiagramContext diagramContext;
-
     private final List<IDiagramEventHandler> diagramEventHandlers;
-
     private final ISubscriptionManager subscriptionManager;
-
     private final IDiagramCreationService diagramCreationService;
-
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
-
     private final IRepresentationPersistenceService representationPersistenceService;
-
     private final IRepresentationSearchService representationSearchService;
-
     private final DiagramEventFlux diagramEventFlux;
-
     private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
-
+    private DiagramContext diagramContext;
     private UUID currentRevisionId = UUID.randomUUID();
 
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
@@ -136,7 +126,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
                                 NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(), nodeLayoutDataInput.handleLayoutData()),
+                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(),
+                                        nodeLayoutDataInput.handleLayoutData(), nodeLayoutDataInput.minComputedSize()),
                                 (oldValue, newValue) -> newValue
                         ));
 
