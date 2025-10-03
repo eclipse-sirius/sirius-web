@@ -12,7 +12,12 @@
  *******************************************************************************/
 
 export interface UseContainmentFeatureNamesValue {
-  containmentFeatureNames: string[];
+  containmentFeatureNames: ContainmentFeature[];
+}
+
+export interface ContainmentFeature {
+  id: string;
+  label: string;
 }
 
 export interface GQLGetContainmentFeatureNamesQueryVariables {
@@ -30,5 +35,5 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  containmentFeatureNames: string[];
+  containmentFeatureNames: ContainmentFeature[];
 }

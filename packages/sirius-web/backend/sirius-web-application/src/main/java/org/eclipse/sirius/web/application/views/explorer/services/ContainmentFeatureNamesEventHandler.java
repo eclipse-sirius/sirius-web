@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -26,16 +26,15 @@ import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessag
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.web.application.views.explorer.dto.ContainmentFeature;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesPayload;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IContainmentFeatureProvider;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -47,18 +46,22 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class ContainmentFeatureNamesEventHandler implements IEditingContextEventHandler {
 
-    private final ICollaborativeMessageService messageService;
+    private final IObjectSearchService objectSearchService;
 
-    private final IObjectService objectService;
+    private final IContainmentFeatureProvider containmentFeatureNameProvider;
+
+    private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public ContainmentFeatureNamesEventHandler(ICollaborativeMessageService messageService, IObjectService objectService,
-            MeterRegistry meterRegistry) {
+    public ContainmentFeatureNamesEventHandler(IObjectSearchService objectSearchService, IContainmentFeatureProvider containmentFeatureNameProvider, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.containmentFeatureNameProvider = Objects.requireNonNull(containmentFeatureNameProvider);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
 
-        this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
     }
 
     @Override
@@ -76,20 +79,18 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
         IPayload payload = new ErrorPayload(input.id(), messages);
 
         if (input instanceof EditingContextContainmentFeatureNamesInput editingContextContainmentFeatureNamesInput) {
-            Optional<EObject> containerOpt = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containerId()).filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
-            Optional<EObject> containedObjectOpt = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containedObjectId()).filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
+            Optional<Object> optionalContainer = this.objectSearchService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containerId());
+            Optional<Object> optionalChild = this.objectSearchService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containedObjectId());
+            if (optionalContainer.isPresent() && optionalChild.isPresent()) {
+                var container = optionalContainer.get();
+                var child = optionalChild.get();
 
-            if (containedObjectOpt.isPresent()) {
-                List<String> containmentFeatureNames = new java.util.ArrayList<>();
-
-                containerOpt.ifPresent(eObject -> containmentFeatureNames.addAll(this.getContainmentFeatureNames(eObject, containedObjectOpt.get())));
+                List<ContainmentFeature> containmentFeatureNames = this.containmentFeatureNameProvider.getContainmentFeatures(container, child);
 
                 payload = new EditingContextContainmentFeatureNamesPayload(input.id(), containmentFeatureNames);
                 changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
             } else {
-                payload = new ErrorPayload(input.id(), List.of(new Message("Retrieving the candidate containment references failed", MessageLevel.ERROR)));
+                payload = new ErrorPayload(input.id(), List.of(new Message(this.messageService.notFound(), MessageLevel.ERROR)));
             }
         }
 
@@ -97,10 +98,4 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private List<String> getContainmentFeatureNames(EObject container, EObject containedObject) {
-        return container.eClass().getEAllContainments().stream()
-                .filter(eReference -> eReference.getEReferenceType().isInstance(containedObject))
-                .map(ENamedElement::getName)
-                .toList();
-    }
 }
