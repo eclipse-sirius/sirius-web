@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.9</version>
+		<version>2025.8.10</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-emf-forms</artifactId>
-	<version>2025.8.9</version>
+	<version>2025.8.10</version>
 	<name>sirius-components-emf-forms</name>
 	<description>Sirius Components EMF Forms</description>
 
@@ -36,17 +36,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,13 +56,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -17,13 +17,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.9</version>
+		<version>2025.8.10</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-gantt-edit</artifactId>
-	<version>2025.8.9</version>
+	<version>2025.8.10</version>
 	<name>sirius-components-view-gantt-edit</name>
 	<description>Sirius Components Gantt View Definition DSL - Edit Support</description>
 
@@ -41,12 +41,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2025.8.9</version>
+			<version>2025.8.10</version>
 		</dependency>
 	</dependencies>
 
