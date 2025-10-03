@@ -77,10 +77,10 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.containmentFeatureNamesQueryRunner.run(variables);
 
-        List<String> containmentFeatureNames = JsonPath.read(result, "$.data.viewer.editingContext.containmentFeatureNames[*]");
+        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result, "$.data.viewer.editingContext" + ".containmentFeatureNames[*]");
         assertThat(containmentFeatureNames)
                 .isNotEmpty()
-                .contains("attributes");
+                .contains(Map.of("id", "attributes", "label", "Add in attributes"));
     }
 
     @Test
@@ -109,6 +109,26 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         assertThat(objectLabel).isNotBlank();
         assertThat(objectLabel).isEqualTo("label");
 
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an object and a container with a custom IContainmentFeatureNameProviderDelegate, when containment feature names are requested, then the custom feature are returned")
+    public void givenObjectAndContainerWithCustomIContainmentFeatureNameProviderDelegateWhenContainmentFeatureNamesAreRequestedThenCompatibleFeatureNamesAreReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "containerId", StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString(),
+                "containedObjectId", StudioIdentifiers.DOMAIN_OBJECT.toString()
+        );
+
+        var result = this.containmentFeatureNamesQueryRunner.run(variables);
+
+        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result, "$.data.viewer.editingContext.containmentFeatureNames[*]");
+        assertThat(containmentFeatureNames)
+                .isNotEmpty()
+                .contains(Map.of(
+                        "id", "fake:aCommandId",
+                        "label", "Custom containment feature used in my integration test"));
     }
 
     @Test
@@ -194,7 +214,6 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-
         String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
         assertThat(errorMessage).isEqualTo("Unable to create a new instance of \"RectangularNodeStyleDescription\" in feature \"style\" because it has reached its upper-bound cardinality");
@@ -218,7 +237,6 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
 
         String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
-
 
         String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();

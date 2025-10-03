@@ -61,10 +61,11 @@ export const DuplicateObjectModal = ({
   );
 
   useEffect(() => {
-    if (containmentFeatureNames.length > 0) {
+    const defaultFeature = containmentFeatureNames[0]?.id ?? '';
+    if (state.containmentFeatureName !== defaultFeature) {
       setState((prevState) => ({
         ...prevState,
-        containmentFeatureName: containmentFeatureNames[0] ?? '',
+        containmentFeatureName: containmentFeatureNames[0]?.id ?? '',
       }));
     }
   }, [containmentFeatureNames]);
@@ -106,7 +107,11 @@ export const DuplicateObjectModal = ({
   };
 
   const onTreeItemClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
-    setState((prevState) => ({ ...prevState, containerSelectedId: item.id }));
+    setState((prevState) => ({
+      ...prevState,
+      containerSelectedId: item.id,
+      containmentFeatureName: '',
+    }));
   };
 
   return (
@@ -136,7 +141,7 @@ export const DuplicateObjectModal = ({
 
           <div>
             <Typography variant="subtitle1" gutterBottom>
-              Select the containment reference name
+              Select the containment type
             </Typography>
             <Select
               value={state.containmentFeatureName}
@@ -145,8 +150,8 @@ export const DuplicateObjectModal = ({
               fullWidth
               data-testid="containment-feature-name">
               {containmentFeatureNames.map((featureName) => (
-                <MenuItem value={featureName} key={featureName}>
-                  {featureName}
+                <MenuItem value={featureName.id} key={featureName.id}>
+                  {featureName.label}
                 </MenuItem>
               ))}
             </Select>

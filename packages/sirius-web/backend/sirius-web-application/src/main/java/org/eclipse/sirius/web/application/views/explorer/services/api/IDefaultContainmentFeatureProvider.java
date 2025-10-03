@@ -10,20 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.explorer.dto;
+package org.eclipse.sirius.web.application.views.explorer.services.api;
 
 import java.util.List;
-import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.web.application.views.explorer.dto.ContainmentFeature;
 
 /**
- * The payload object for this query.
+ * Used to provide the default implementation in charge of computing the list of features available to add a child in a container.
  *
- * @author lfasani
+ * @author Arthur daussy
  */
-public record EditingContextContainmentFeatureNamesPayload(@NotNull UUID id, @NotNull List<ContainmentFeature> containmentFeatureNames) implements IPayload {
+public interface IDefaultContainmentFeatureProvider {
 
+    List<ContainmentFeature> getContainmentFeatures(Object container, Object child);
 }

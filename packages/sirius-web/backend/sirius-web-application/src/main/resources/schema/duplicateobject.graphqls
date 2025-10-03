@@ -1,5 +1,10 @@
 extend type EditingContext {
-  containmentFeatureNames(containerId: ID!, containedObjectId: ID!): [String!]!
+  containmentFeatureNames(containerId: ID!, containedObjectId: ID!): [ContainmentFeature!]!
+}
+
+type ContainmentFeature {
+  id: ID!
+  label: String!
 }
 
 extend type Mutation {

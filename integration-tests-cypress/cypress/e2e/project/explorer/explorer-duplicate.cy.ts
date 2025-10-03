@@ -55,7 +55,7 @@ describe('Explorer - duplicate object', () => {
         cy.getByTestId('containment-feature-name')
           .children('[role="combobox"]')
           .invoke('text')
-          .should('eq', 'attributes');
+          .should('eq', 'Add in attributes');
         cy.getByTestId('duplicate-object-button').click();
         explorer.getTreeItemByLabel('attribute2').should('have.length', 2);
       });
