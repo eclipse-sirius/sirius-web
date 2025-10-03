@@ -50,6 +50,7 @@ This also includes an update from ANTLR 4.10.1 to 4.13.2.
 Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] Ensure that the project download uses the proper editing context
 - https://github.com/eclipse-sirius/sirius-web/issues/5366[#5366] [core] Fix version comparison for migration participants
+- https://github.com/eclipse-sirius/sirius-web/issues/5689[#5689] [sirius-web] Applying a selection (e.g. from the Omnibox) to the workbench now correctly applies it the opened representation (if any)
 
 
 === New Features
