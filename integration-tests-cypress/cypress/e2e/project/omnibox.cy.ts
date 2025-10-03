@@ -13,6 +13,7 @@
 
 import { Project } from '../../pages/Project';
 import { Flow } from '../../usecases/Flow';
+import { Diagram } from '../../workbench/Diagram';
 import { Explorer } from '../../workbench/Explorer';
 import { Omnibox } from '../../workbench/Omnibox';
 
@@ -29,15 +30,25 @@ describe('Project - Omnibox', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    it('Then the omnibox can be display and used to select an element in the workbench', () => {
+    it('Then the omnibox can be displayed and used to select an element in the workbench', () => {
       const explorer = new Explorer();
+
+      explorer.expandWithDoubleClick('robot');
+      explorer.createRepresentation('System', 'Topography', 'Topography');
+
       const omnibox = new Omnibox();
       omnibox.display();
       omnibox.sendQuery('').findByTestId('Search').click();
       omnibox.sendQuery('').findByTestId('DSP').click();
       omnibox.shouldBeClosed();
+
       explorer.revealGlobalSelectionInExplorer();
       explorer.getSelectedTreeItems().contains('DSP').should('exist');
+
+      const diagram = new Diagram();
+      diagram.getSelectedNodes('Topography', 'DSP').should('be.visible');
+
+      cy.getByTestId('page-tab-DSP').should('be.visible');
     });
   });
 });
