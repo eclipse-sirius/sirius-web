@@ -5,6 +5,7 @@
 === Shapes
 
 - Add command palette on projects page
+- Add support for indexing models
 
 
 === Architectural decision records
