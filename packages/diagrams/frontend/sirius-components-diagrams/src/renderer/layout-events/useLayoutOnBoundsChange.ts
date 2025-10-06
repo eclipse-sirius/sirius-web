@@ -107,7 +107,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
           edges: getEdges(),
         };
 
-        layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
           updatedNodes.map((node) => {
             const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
             if (existingNode) {

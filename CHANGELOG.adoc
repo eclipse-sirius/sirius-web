@@ -101,6 +101,9 @@ As a result, specifiers who want to reuse some of those menu entries of the Siri
 The values in questions are accessible thanks to public constants in `ExplorerTreeItemContextMenuEntryProvider` with `expand-all`, `new-root-object`, `download-document`, `new-object`, `new-representation`, `duplicate-object`, `duplicate-representation`, `update-library`, `remove-library`.
 This mechanisms was previously used to provide the menu entry to update/remove a library with the identifier `updateLibrary` / `removeLibrary` and which have been updated to be aligned with the other identifiers with `update-library`, `remove-library`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5802[#5802] [tree] `ISingleClickTreeItemContextMenuEntryExecutor#canExecute` now requires a new `ITreeInput` parameter to let executors check the input they can react to.
+- https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] During layout of custom nodes, all the newly created nodes are now used and not only the first one.
+The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
+An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 
 
 === Dependency update
@@ -200,6 +203,7 @@ As a result, some of those menu items are not contributed anymore on invalid use
 - https://github.com/eclipse-sirius/sirius-web/issues/5802[#5802] [tree] Add `ITreeInput` parameter to `ISingleClickTreeItemContextMenuEntryExecutor#canExecute`.
 The executor typically needs to check the `menuEntryId` of the input to ensure it is reacting to the correct input.
 - https://github.com/eclipse-sirius/sirius-web/issues/5784[#5784] [diagram] Export `Action` components and related types to enable reuse in custom nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] Apply reference position to all newly created nodes
 
 
 

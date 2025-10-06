@@ -47,7 +47,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -61,7 +61,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         node,
         visibleNodes,
         directChildren,
-        newlyAddedNode,
+        newlyAddedNodes,
         borderWidth,
         forceDimensions
       );
@@ -76,11 +76,11 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -92,7 +92,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
-      const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
+      const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
       const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
 
       if (!!createdNode) {

@@ -189,34 +189,40 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         nodes,
         edges,
       };
-      layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
-        laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
-          if (nodeLookup.get(node.id)) {
-            return {
-              ...node,
-              selected: !!nodeLookup.get(node.id)?.selected,
-            };
+      layout(
+        previousDiagram,
+        convertedDiagram,
+        diagramRefreshedEventPayload.referencePosition,
+        diagramDescription.arrangeLayoutDirection,
+        (laidOutDiagram) => {
+          laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
+            if (nodeLookup.get(node.id)) {
+              return {
+                ...node,
+                selected: !!nodeLookup.get(node.id)?.selected,
+              };
+            }
+            return node;
+          });
+
+          laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
+            if (edgeLookup.get(edge.id)) {
+              return {
+                ...edge,
+                selected: !!edgeLookup.get(edge.id)?.selected,
+              };
+            }
+            return edge;
+          });
+
+          setEdges(laidOutDiagram.edges);
+          setNodes(laidOutDiagram.nodes);
+
+          if (!readOnly) {
+            synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
           }
-          return node;
-        });
-
-        laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
-          if (edgeLookup.get(edge.id)) {
-            return {
-              ...edge,
-              selected: !!edgeLookup.get(edge.id)?.selected,
-            };
-          }
-          return edge;
-        });
-
-        setEdges(laidOutDiagram.edges);
-        setNodes(laidOutDiagram.nodes);
-
-        if (!readOnly) {
-          synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
         }
-      });
+      );
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 

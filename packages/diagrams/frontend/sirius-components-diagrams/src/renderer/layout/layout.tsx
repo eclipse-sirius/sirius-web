@@ -15,7 +15,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
-import { Node, NodeProps, ReactFlowProvider } from '@xyflow/react';
+import { Node, NodeProps, ReactFlowProvider, XYPosition } from '@xyflow/react';
 import { Fragment, createElement, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
@@ -32,8 +32,9 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getNewlyAddedBorderNodePosition, isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
-import { getChildren } from './layoutNode';
+import { getNodeBorderNodeFootprint, getChildren } from './layoutNode';
 import { gap } from './layoutParams';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 const emptyNodeProps = {
   selected: false,
@@ -246,9 +247,10 @@ export const layout = (
   previousDiagram: RawDiagram | null,
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
+  layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ): RawDiagram => {
-  layoutDiagram(previousDiagram, diagram, referencePosition, nodeLayoutHandlerContributions);
+  layoutDiagram(previousDiagram, diagram, referencePosition, layoutDirection, nodeLayoutHandlerContributions);
   return diagram;
 };
 
@@ -256,6 +258,7 @@ const layoutDiagram = (
   previousDiagram: RawDiagram | null,
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
+  layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
@@ -267,36 +270,106 @@ const layoutDiagram = (
     layoutEngine.registerNodeLayoutHandlerContribution(nodeLayoutHandler)
   );
 
-  let newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined = undefined;
+  let newlyAddedNodes: Node<NodeData, DiagramNodeType>[] = [];
   if (referencePosition) {
-    newlyAddedNode = allVisibleNodes
+    newlyAddedNodes = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
-      .find((node) => {
-        if (node.parentId) {
-          return referencePosition.parentId === node.parentId;
+      .map((node, index, array) => {
+        const nodeBorderNodeFootprint = getNodeBorderNodeFootprint(node, allVisibleNodes);
+        const previousSiblingNewNode = array.find((n, nIndex) => nIndex < index && n.parentId === node.parentId);
+        let xOffset = 0;
+        let yOffset = 0;
+        if (previousSiblingNewNode) {
+          const previousNodeBorderNodeFootprint = getNodeBorderNodeFootprint(previousSiblingNewNode, allVisibleNodes);
+          switch (layoutDirection) {
+            case 'DOWN':
+              yOffset =
+                (previousSiblingNewNode.height ?? 0) +
+                gap +
+                previousNodeBorderNodeFootprint.southFootprint +
+                nodeBorderNodeFootprint.northFootprint;
+              break;
+            case 'UP':
+              yOffset =
+                -(previousSiblingNewNode.height ?? 0) -
+                gap -
+                previousNodeBorderNodeFootprint.northFootprint -
+                nodeBorderNodeFootprint.southFootprint;
+              break;
+            case 'LEFT':
+              xOffset =
+                -(previousSiblingNewNode.width ?? 0) -
+                gap -
+                previousNodeBorderNodeFootprint.westFootprint -
+                nodeBorderNodeFootprint.eastFootprint;
+              break;
+            case 'UNDEFINED':
+            case 'RIGHT':
+              xOffset =
+                (previousSiblingNewNode.width ?? 0) +
+                gap +
+                previousNodeBorderNodeFootprint.eastFootprint +
+                nodeBorderNodeFootprint.westFootprint;
+              break;
+          }
         }
-        return !referencePosition.parentId || referencePosition.parentId === '';
+        let newPosition: XYPosition = { ...referencePosition.position };
+        if (
+          (!node.parentId || referencePosition.parentId !== node.parentId) &&
+          referencePosition.parentId &&
+          referencePosition.parentId !== ''
+        ) {
+          const linkedNode = allVisibleNodes.find((n) => n.id === referencePosition?.parentId);
+          if (linkedNode) {
+            switch (layoutDirection) {
+              case 'DOWN':
+                newPosition = {
+                  x: linkedNode.position.x,
+                  y: linkedNode.position.y + (linkedNode.height ?? 0) + gap,
+                };
+                break;
+              case 'UP':
+                newPosition = {
+                  x: linkedNode.position.x,
+                  y: linkedNode.position.y - (node.height ?? 0) - gap,
+                };
+                break;
+              case 'LEFT':
+                newPosition = {
+                  x: linkedNode.position.x - (node.width ?? 0) - gap,
+                  y: linkedNode.position.y,
+                };
+                break;
+              case 'UNDEFINED':
+              case 'RIGHT':
+                newPosition = {
+                  x: linkedNode.position.x + (linkedNode.width ?? 0) + gap,
+                  y: linkedNode.position.y,
+                };
+                break;
+            }
+          }
+        }
+        if (node.data.isBorderNode) {
+          getNewlyAddedBorderNodePosition(
+            node,
+            allVisibleNodes.find((node) => node.id === node?.parentId),
+            referencePosition
+          );
+        }
+        newPosition.x += xOffset;
+        newPosition.y += yOffset;
+        return { ...node, position: newPosition };
       });
-    if (newlyAddedNode) {
-      newlyAddedNode = { ...newlyAddedNode, position: referencePosition.position };
-      if (newlyAddedNode.data.isBorderNode) {
-        getNewlyAddedBorderNodePosition(
-          newlyAddedNode,
-          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentId),
-          referencePosition
-        );
-      }
-    }
   }
-
-  layoutEngine.layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNode);
+  layoutEngine.layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNodes);
 
   // Update position of root nodes
   nodesToLayout.forEach((node, index) => {
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
     const previousPosition = computePreviousPosition(previousNode, node);
 
-    const createdNode = newlyAddedNode?.id === node.id ? newlyAddedNode : undefined;
+    const createdNode = newlyAddedNodes.find((n) => n.id === node.id);
 
     if (!!createdNode) {
       node.position = createdNode.position;

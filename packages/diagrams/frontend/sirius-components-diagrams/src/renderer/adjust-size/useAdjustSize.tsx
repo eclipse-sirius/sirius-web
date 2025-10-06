@@ -39,7 +39,7 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
         edges: getEdges(),
       };
 
-      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+      layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
         nodes.map((node) => {
           if (node.id === targetedNode.id) {
             return laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === targetedNode.id) ?? node;
