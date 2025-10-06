@@ -74,8 +74,7 @@ public class DiagramViewModifiersChangeRecorder implements IDiagramEventConsumer
                     });
 
             if (!representationChanges.isEmpty()) {
-                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id())
-                        || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
+                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
                     siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), representationChanges);
                 } else {
                     siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).addAll(representationChanges);

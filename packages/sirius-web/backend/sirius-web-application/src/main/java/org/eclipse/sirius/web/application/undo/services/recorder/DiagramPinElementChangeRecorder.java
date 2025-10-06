@@ -41,7 +41,6 @@ public class DiagramPinElementChangeRecorder implements IDiagramEventConsumer {
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
         if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
             List<IRepresentationChange> representationChanges = new ArrayList<>();
-
             diagramEvents.stream()
                     .filter(PinDiagramElementEvent.class::isInstance)
                     .map(PinDiagramElementEvent.class::cast)
@@ -51,8 +50,7 @@ public class DiagramPinElementChangeRecorder implements IDiagramEventConsumer {
                     });
 
             if (!representationChanges.isEmpty()) {
-                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id())
-                        || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
+                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
                     siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), representationChanges);
                 } else {
                     siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).addAll(representationChanges);

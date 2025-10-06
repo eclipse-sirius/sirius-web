@@ -23,10 +23,13 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.customnodes.EllipseNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -98,10 +101,22 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                 .position(InsideLabelPosition.MIDDLE_CENTER)
                 .build();
 
+        var deleteTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
+                .palette(new NodePaletteBuilder()
+                        .deleteTool(deleteTool)
+                        .build())
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .build();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
@@ -30,6 +31,8 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuil
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -60,6 +63,8 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool collapseNodeTool;
 
+    private DeleteTool deleteTool;
+
     public ExpandCollapseDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
@@ -82,6 +87,10 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
 
     public String getCollapseNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.collapseNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getDeleteNodeToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.deleteTool).toString().getBytes()).toString();
     }
 
     private View createView() {
@@ -130,8 +139,18 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 )
                 .build();
 
+        this.deleteTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
         var nodePalette = new NodePaletteBuilder()
                 .nodeTools(this.expandNodeTool, this.collapseNodeTool)
+                .deleteTool(this.deleteTool)
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
@@ -157,4 +176,5 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
 
         return this.diagramDescription;
     }
+
 }
