@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { APIRequestContext, expect } from '@playwright/test';
+import { APIRequestContext, expect, type Page } from '@playwright/test';
 
 const createProjectFromTemplateQuery = `
   mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
@@ -129,5 +129,11 @@ export class PlaywrightProject {
     });
 
     expect(response.ok()).toBeTruthy();
+  }
+
+  async uploadProject(page: Page, fileName: string) {
+    await page.goto(`/upload/project`);
+    await page.locator('input[name="file"]').setInputFiles(`./playwright/resources/${fileName}`);
+    await page.getByTestId('upload-project').click();
   }
 }

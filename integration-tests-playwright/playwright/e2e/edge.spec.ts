@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
+import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
@@ -95,7 +96,7 @@ test.describe('edge', () => {
     const box = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover();
     await page.mouse.down();
-    await page.mouse.move(box.x - 40, box.y - 40, { steps: 2 });
+    await page.mouse.move(box.x - 40, box.y + 40, { steps: 2 });
     await page.mouse.up();
 
     await page.waitForFunction(
@@ -128,5 +129,39 @@ test.describe('edge', () => {
       { expectedTopValue: topValueBefore },
       { timeout: 2000 }
     );
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowForBendPointsDeletion.zip');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when source and target handles are aligned, then bend point are removed', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    await expect(page.getByTestId(`bend-point-0`)).toBeAttached();
+
+    const firstLine = page.getByTestId(`temporary-moving-line-0`);
+    const box = (await firstLine.boundingBox())!;
+    await firstLine.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x, box.y + 30, { steps: 2 });
+    await page.mouse.up();
+
+    await expect(page.getByTestId(`bend-point-0`)).not.toBeAttached();
   });
 });

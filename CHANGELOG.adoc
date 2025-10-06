@@ -101,6 +101,7 @@ You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure 
 - https://github.com/eclipse-sirius/sirius-web/issues/5733[#5733] [sirius-web] Extract frontend project creation into a hook
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] Rename Settings menu and export action
 - https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] Add a new `movedByUser` flag to the node layout data.
+- https://github.com/eclipse-sirius/sirius-web/issues/5621[#5621] [diagram] Make it easier to remove all bend points by aligning the edges
 
 == 2025.10.0
 
