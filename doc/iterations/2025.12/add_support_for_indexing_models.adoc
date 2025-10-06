@@ -1,0 +1,69 @@
+= Add support for indexing models
+
+== Problem
+
+Sirius Web does not provide a way to perform full-text search across projects.
+We want to provide such feature, allowing to search in labels but also attributes, and rank the results.
+
+== Key Result
+
+- The content of projects is indexed in ElasticSearch and up-to-date with the actual project data.
+- The way projects are indexed can be configured by downstream applications (a default implementation is provided by Sirius Web).
+- The command palette is visible in the `/projects` page and provides a command to search for elements across projects.
+- The command palette (or the search command) is not visible if Elasticsearch is not available.
+
+=== Acceptance Criteria
+
+- Backend integration tests should be available to ensure that the core parts of the behavior are working as expected.
+- Performance tests should be done on large models to ensure the solution matches the expectations.
+
+== Solution
+
+Sirius Web will provide a default implementation to index projects:
+
+- Each project will be indexed in a dedicated index
+- Only the semantic data of a project will be indexed
+* The raw Json produced by EMF Json will be used as a baseline to produce documents to index.
+* This baseline can be enriched with additional information computed by the backend (e.g. the label of the element).
+- The command palette will be visible in the `/projects` page, and will provide a command to query Elasticsearch to retrieve objects matching a given term.
+- Results will be presented as search results are presented in projects, but their rank in the list will reflect their rank in the query result set.
+- Clicking on a result will redirect the user to the appropriate project, with the appropriate element selected.
+
+Indexes will be created on startup (if they do not exist), and kept up-to-date with the changes performed in the indexed models.
+Indexing and re-indexing models shouldn't block the application.
+
+=== Scenario
+
+=== Search an element with text from its label
+
+- The user opens the command palette on the `/projects` page and selects the _Search_ command
+- The user inputs text matching (fully or partially) the label of an element
+- The command palette shows the element in its result
+- The user can click on the result and is redirected to the correct project, and the element is selected.
+
+=== Search an element with text from an attribute
+
+Same scenario as above, but the input text matches an attribute of an element.
+
+=== Search an element with text matching labels and attributes
+
+Same scenario as above, but matches on labels are presented before matches on attributes in the results.
+
+=== Search an element when ElasticSearch is not running
+
+Sirius Web does not display the command palette (or the search command in the palette) if Elasticsearch is not running.
+
+=== Cutting backs
+
+- (Nice to have) Add a way to discard search results with a confidence below a given threshold.
+- (Nice to have) The command palette should support ES|QL queries on top of full-text search.
+
+== Rabbit holes
+
+Fine tuning of the index can be a rabbit hole.
+An initial version of the index based on https://www.elastic.co/docs/manage-data/data-store/mapping/dynamic-mapping[dynamic mappings] will be provided as a basis for future improvements.
+
+== No-gos
+
+- Updating the existing search command in projects is out of the scope of this shape.
+
