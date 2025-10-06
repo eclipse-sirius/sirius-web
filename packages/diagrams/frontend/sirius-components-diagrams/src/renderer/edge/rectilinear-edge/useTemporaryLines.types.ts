@@ -18,6 +18,12 @@ export interface UseTemporaryLinesValue {
   onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
 }
 
+export interface TemporaryLinesState {
+  isSourceSegment: boolean;
+  isTargetSegment: boolean;
+  dragInProgress: boolean;
+}
+
 export type MiddlePoint = {
   x: number;
   y: number;
