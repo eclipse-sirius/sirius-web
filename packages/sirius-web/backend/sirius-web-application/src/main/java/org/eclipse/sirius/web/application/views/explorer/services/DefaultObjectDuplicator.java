@@ -93,7 +93,10 @@ public class DefaultObjectDuplicator implements IDefaultObjectDuplicator {
                 .flatMap(eCrossReferenceAdapter -> eCrossReferenceAdapter.getInverseReferences(objectToDuplicate).stream())
                 .filter(setting -> {
                     boolean canFeatureBeSet = false;
-                    if (setting.getEStructuralFeature() instanceof EReference eReference && eReference.isMany() && !eReference.isContainment()) {
+                    if (setting.getEStructuralFeature() instanceof EReference eReference
+                            && eReference.isMany()
+                            && !eReference.isContainment()
+                            && eReference.isChangeable()) {
                         List<?> list = (List<?>) setting.getEObject().eGet(eReference);
                         int upperBound = eReference.getUpperBound();
                         canFeatureBeSet = upperBound == -1 || (upperBound > 0 && list.size() < upperBound);

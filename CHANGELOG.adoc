@@ -26,6 +26,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5491[#5491] [test] Add missing module in tsconfig for the playwright package
+- https://github.com/eclipse-sirius/sirius-web/issues/5627[#5627] [sirius-web] Fix the duplication of an element with incoming non changeable references
 
 
 === New Features
@@ -53,6 +54,7 @@
 - [ADR-206] Add support for importing documents with read-only permissions
 - [ADR-207] Make React contexts extensible
 - [ADR-208] Support edge type in edge style
+
 
 === Deprecation warning
 
@@ -162,7 +164,6 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/5593[#5593] [diagram] Restore position dependant rotation for `imageNodeStyle`
 - https://github.com/eclipse-sirius/sirius-web/issues/4171[#4171] [sirius-web] Fix the display of tabs for representations with very long names, which could hide the "close tab" button (and the icon)
 - https://github.com/eclipse-sirius/sirius-web/issues/5614[#5614] [sirius-web] Add support for "pin/unpin" to all right side panels
-
 
 
 === New Features
