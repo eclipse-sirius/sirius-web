@@ -10,25 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, InternalNode, Node, Position, useUpdateNodeInternals, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
-import { useStore } from '../../../representation/useStore';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { getNodesUpdatedWithHandles } from '../EdgeLayout';
-import { useEditableEdgePath } from '../useEditableEdgePath';
+import { NodeData } from '../../DiagramRenderer.types';
 import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import {
-  cleanBendPoint,
   determineSegmentAxis,
   generateNewBendPointOnSegment,
   generateNewHandlePoint,
-  getHandlePositionFromXYPosition,
   getMiddlePoint,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
-import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
+import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
+import { MiddlePoint, UseTemporaryLinesValue, TemporaryLinesState } from './useTemporaryLines.types';
 
 export const useTemporaryLines = (
   edgeId: string,
@@ -46,68 +42,34 @@ export const useTemporaryLines = (
   target: XYPosition,
   setTarget: XYPositionSetter
 ): UseTemporaryLinesValue => {
-  const { getEdges, getNodes, setEdges, setNodes } = useStore();
-  const { synchronizeEdgeLayoutData } = useEditableEdgePath();
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { handleDragStop } = useEdgeDragStopHandler();
 
   const [middleBendingPoints, setMiddleBendingPoints] = useState<MiddlePoint[]>([]);
-  const [isSourceSegment, setIsSourceSegment] = useState<boolean>(false);
-  const [isTargetSegment, setIsTargetSegment] = useState<boolean>(false);
-  const [dragInProgress, setDragInProgress] = useState<boolean>(false);
+
+  const [state, setState] = useState<TemporaryLinesState>({
+    isSourceSegment: false,
+    isTargetSegment: false,
+    dragInProgress: false,
+  });
 
   const onTemporaryLineDragStop = (_eventData: DraggableData, _index: number) => {
-    const edges: Edge<EdgeData>[] = getEdges();
-    const edge = edges.find((edge) => edge.id === edgeId);
-    if (edge?.data) {
-      const newBendingPoint = cleanBendPoint(localBendingPoints.sort((a, b) => a.pathOrder - b.pathOrder));
-      edge.data.bendingPoints = newBendingPoint;
-      let nodes = getNodes();
-      if (isSourceSegment) {
-        let newPosition: Position | null = null;
-        if (newBendingPoint[0]) {
-          newPosition = getHandlePositionFromXYPosition(
-            sourceNode,
-            source,
-            determineSegmentAxis(source, newBendingPoint[0])
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          sourceNode,
-          edge.id,
-          sourceHandleId,
-          source,
-          newPosition ?? sourcePosition
-        );
-        setIsSourceSegment(false);
-      }
-      if (isTargetSegment) {
-        let newPosition: Position | null = null;
-        const lastBendingPoint = newBendingPoint[newBendingPoint.length - 1];
-        if (lastBendingPoint) {
-          newPosition = getHandlePositionFromXYPosition(
-            targetNode,
-            target,
-            determineSegmentAxis(target, lastBendingPoint)
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          targetNode,
-          edge.id,
-          targetHandleId,
-          target,
-          newPosition ?? targetPosition
-        );
-        setIsTargetSegment(false);
-      }
-
-      setEdges(edges);
-      setNodes(nodes);
-      updateNodeInternals([sourceNode.id, targetNode.id]);
-      synchronizeEdgeLayoutData(edges, nodes);
-      setDragInProgress(false);
-    }
+    handleDragStop(
+      edgeId,
+      source,
+      setSource,
+      sourceNode,
+      sourceHandleId,
+      sourcePosition,
+      target,
+      setTarget,
+      targetNode,
+      targetHandleId,
+      targetPosition,
+      state.isSourceSegment,
+      state.isTargetSegment,
+      localBendingPoints
+    );
+    setState((prevState) => ({ ...prevState, isSourceSegment: false, isTargetSegment: false, dragInProgress: false }));
   };
 
   const onTemporaryLineDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
@@ -152,7 +114,7 @@ export const useTemporaryLines = (
             sourceNode.internals.positionAbsolute.y + (sourcePosition === Position.Bottom ? sourceNode.height ?? 0 : 0);
         }
         setSource(newSource);
-        setIsSourceSegment(true);
+        setState((prevState) => ({ ...prevState, isSourceSegment: true }));
       }
     }
     if (index === originalBendingPoints.length) {
@@ -192,7 +154,7 @@ export const useTemporaryLines = (
             targetNode.internals.positionAbsolute.y + (targetPosition === Position.Bottom ? targetNode.height ?? 0 : 0);
         }
         setTarget(newTarget);
-        setIsTargetSegment(true);
+        setState((prevState) => ({ ...prevState, isTargetSegment: true }));
       }
     }
     if (index > 0 && index < originalBendingPoints.length) {
@@ -208,7 +170,7 @@ export const useTemporaryLines = (
       }
     }
     setLocalBendingPoints(newPoints);
-    setDragInProgress(true);
+    setState((prevState) => ({ ...prevState, dragInProgress: true }));
   };
 
   const computeMiddlePoints = () => {
@@ -248,7 +210,7 @@ export const useTemporaryLines = (
   };
 
   useEffect(() => {
-    if (!dragInProgress) {
+    if (!state.dragInProgress) {
       setMiddleBendingPoints(computeMiddlePoints());
     }
   }, [localBendingPoints, source.x, source.y, target.x, target.y]);
