@@ -21,6 +21,7 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 const initialState: UseLayoutState = {
   currentStep: 'INITIAL_STEP',
@@ -29,6 +30,7 @@ const initialState: UseLayoutState = {
   diagramToLayout: null,
   laidoutDiagram: null,
   referencePosition: null,
+  layoutDirection: 'UNDEFINED',
   root: null,
   onLaidoutDiagram: () => {},
 };
@@ -51,6 +53,7 @@ export const useLayout = (): UseLayoutValue => {
     previousLaidoutDiagram: RawDiagram | null,
     diagramToLayout: RawDiagram,
     referencePosition: GQLReferencePosition | null,
+    layoutDirection: GQLArrangeLayoutDirection,
     callback: (laidoutDiagram: RawDiagram) => void
   ) => {
     if (state.currentStep === 'INITIAL_STEP') {
@@ -70,6 +73,7 @@ export const useLayout = (): UseLayoutValue => {
         previousDiagram: previousLaidoutDiagram,
         diagramToLayout,
         referencePosition: processedReferencePosition,
+        layoutDirection,
         onLaidoutDiagram: callback,
       }));
     }
@@ -88,6 +92,7 @@ export const useLayout = (): UseLayoutValue => {
         state.previousDiagram,
         state.diagramToLayout,
         state.referencePosition,
+        state.layoutDirection,
         nodeLayoutHandlers
       );
       setState((prevState) => ({
@@ -101,7 +106,7 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer, state.referencePosition]);
+  }, [state.currentStep, state.hiddenContainer, state.referencePosition, state.layoutDirection]);
 
   return {
     layout: layoutDiagram,

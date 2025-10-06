@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,14 @@
 import { Root } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { RawDiagram } from './layout.types';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 export interface UseLayoutValue {
   layout: (
     previousLaidoutDiagram: RawDiagram | null,
     diagramToLayout: RawDiagram,
     referencePosition: GQLReferencePosition | null,
+    layoutDirection: GQLArrangeLayoutDirection,
     callback: (laidoutDiagram: RawDiagram) => void
   ) => void;
 }
@@ -34,5 +36,6 @@ export interface UseLayoutState {
   diagramToLayout: RawDiagram | null;
   laidoutDiagram: RawDiagram | null;
   referencePosition: GQLReferencePosition | null;
+  layoutDirection: GQLArrangeLayoutDirection;
   onLaidoutDiagram: (laidoutDiagram: RawDiagram) => void;
 }

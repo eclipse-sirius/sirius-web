@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ export interface ILayoutEngine {
     previousDiagram: RawDiagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNode: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   );
 }
@@ -38,7 +38,7 @@ export interface INodeLayoutHandler<T extends NodeData> {
     node: Node<T>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNode: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   );
 

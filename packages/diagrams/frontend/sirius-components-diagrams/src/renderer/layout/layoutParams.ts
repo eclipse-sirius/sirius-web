@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export const gap = 20;
+export const gap = 50;
 export const rectangularNodePadding = 8;
 export const defaultNodeMargin = 8;
 export const borderLeftAndRight = 2;

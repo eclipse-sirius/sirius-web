@@ -42,7 +42,7 @@ test.describe('edge', () => {
 
     const edgePathBefore = playwrightEdge.getEdgePath();
 
-    const lastBendingPoint = page.locator(`[data-testid="bend-point-3"]`).first();
+    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover();
     await page.mouse.down();
@@ -64,7 +64,7 @@ test.describe('edge', () => {
 
     const edgePathBefore = playwrightEdge.getEdgePath();
 
-    const lastBendingPoint = page.locator(`[data-testid="bend-point-3"]`).first();
+    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover();
     await page.mouse.down();
@@ -74,7 +74,7 @@ test.describe('edge', () => {
     const edgePathAfter = playwrightEdge.getEdgePath();
     expect(edgePathAfter).not.toBe(edgePathBefore);
 
-    const newBendingPoint = page.locator(`[data-testid="bend-point-4"]`).first();
+    const newBendingPoint = page.locator(`[data-testid="bend-point-2"]`).first();
     expect(newBendingPoint).toBeAttached();
     const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
     const newBendingPointBox = (await newBendingPoint.boundingBox())!;

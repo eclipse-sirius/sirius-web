@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     node: Node<IconLabelNodeData>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
-    _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
