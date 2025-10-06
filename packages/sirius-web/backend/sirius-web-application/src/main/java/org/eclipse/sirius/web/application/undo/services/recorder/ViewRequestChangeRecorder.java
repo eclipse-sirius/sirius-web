@@ -16,22 +16,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramFadeElementChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramHideElementChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeViewRequestChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElementChange;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,8 +53,11 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
 
     private final IDiagramQueryService diagramQueryService;
 
-    public ViewRequestChangeRecorder(IDiagramQueryService diagramQueryService) {
+    private final List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders;
+
+    public ViewRequestChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+        this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
     }
 
     @Override
@@ -55,13 +67,17 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
             List<ViewDeletionRequest> undoViewDeletionRequests = new ArrayList<>();
             List<ViewCreationRequest> redoViewCreationRequests = new ArrayList<>(viewCreationRequests);
             List<ViewDeletionRequest> redoViewDeletionRequests = new ArrayList<>(viewDeletionRequests);
+            List<IRepresentationChange> representationChanges = new ArrayList<>();
+            List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();
 
             viewDeletionRequests.forEach(viewDeletionRequest -> {
                 var nodeId = viewDeletionRequest.getElementId();
-                var node = this.diagramQueryService.findNodeById(previousDiagram, nodeId);
-                if (node.isPresent()) {
+                var optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, nodeId);
+                if (optionalPreviousNode.isPresent()) {
+                    var previousNode = optionalPreviousNode.get();
+
                     var containmentKind = NodeContainmentKind.CHILD_NODE;
-                    if (node.get().isBorderNode()) {
+                    if (previousNode.isBorderNode()) {
                         containmentKind = NodeContainmentKind.BORDER_NODE;
                     }
 
@@ -69,7 +85,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                     var parentId = previousDiagram.getId();
 
                     for (Node currentNode : previousDiagram.getNodes()) {
-                        optionalParentId = findParentId(currentNode, node.get().getId());
+                        optionalParentId = findParentId(currentNode, previousNode.getId());
                     }
                     if (optionalParentId.isPresent()) {
                         parentId = optionalParentId.get();
@@ -78,11 +94,30 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                     var creationRequest = ViewCreationRequest.newViewCreationRequest()
                             .containmentKind(containmentKind)
                             .parentElementId(parentId)
-                            .descriptionId(node.get().getDescriptionId())
-                            .targetObjectId(node.get().getTargetObjectId())
+                            .descriptionId(previousNode.getDescriptionId())
+                            .targetObjectId(previousNode.getTargetObjectId())
                             .build();
                     undoViewCreationRequests.add(creationRequest);
+
+                    nodeAppearanceChangeUndoRecorders.stream()
+                            .filter(handler -> handler.canHandle(previousNode))
+                            .forEach(handler -> undoAppearanceChanges.addAll(handler.computeUndoNodeAppearanceChanges(previousNode, Optional.empty())));
+
+                    if (previousNode.isPinned()) {
+                        var diagramPinElementChange = new DiagramPinElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramPinElementChange);
+                    }
+                    if (previousNode.getState().equals(ViewModifier.Faded)) {
+                        var diagramFadeElementChange = new DiagramFadeElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramFadeElementChange);
+                    }
+                    if (previousNode.getState().equals(ViewModifier.Hidden)) {
+                        var diagramHideElementChange = new DiagramHideElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramHideElementChange);
+                    }
                 }
+                var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, List.of());
+                representationChanges.add(diagramNodeAppearanceChange);
             });
 
             viewCreationRequests.forEach(viewCreationRequest -> {
@@ -94,14 +129,13 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
             });
 
             if (!undoViewCreationRequests.isEmpty() || !undoViewDeletionRequests.isEmpty()) {
-                var nodeChange = new DiagramNodeViewRequestChange(diagramInput.id(), diagramInput.representationId(), undoViewCreationRequests, undoViewDeletionRequests, redoViewCreationRequests, redoViewDeletionRequests);
-                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id())
-                        || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
-                    siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), List.of(nodeChange));
+                var diagramNodeViewRequestChange = new DiagramNodeViewRequestChange(diagramInput.id(), diagramInput.representationId(), undoViewCreationRequests, undoViewDeletionRequests, redoViewCreationRequests, redoViewDeletionRequests);
+                representationChanges.add(diagramNodeViewRequestChange);
+                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
+                    siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), representationChanges);
                 } else {
-                    siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).add(nodeChange);
+                    siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).addAll(representationChanges);
                 }
-
             }
         }
     }

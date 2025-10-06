@@ -10,29 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.controllers.diagrams;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+package org.eclipse.sirius.web.application.controllers.diagrams.undo;
 
 import com.jayway.jsonpath.JsonPath;
-
-import java.time.Duration;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.diagrams.tests.graphql.PinDiagramElementMutationRunner;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.VisibilityDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -47,15 +37,23 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+
 /**
- * Integration tests of the pin / unpin node element.
+ * Integration tests of undo redo expand / collapse mutation diagrams.
  *
  * @author mcharfadi
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class PinNodeDiagramControllerTests extends AbstractIntegrationTests {
+public class UndoExpandCollapseDiagramControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -64,10 +62,10 @@ public class PinNodeDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private VisibilityDiagramDescriptionProvider visibilityDiagramDescriptionProvider;
+    private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
-    private PinDiagramElementMutationRunner pinDiagramElementMutationRunner;
+    private ExpandCollapseDiagramDescriptionProvider expandCollapseDiagramDescriptionProvider;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -80,53 +78,62 @@ public class PinNodeDiagramControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<Object> givenSubscriptionToVisibilityDiagram() {
+    private Flux<Object> givenSubscriptionToExpandedCollapseDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                this.visibilityDiagramDescriptionProvider.getRepresentationDescriptionId(),
+                this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
-                "VisibilityDiagram"
+                "ExpandCollapseDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a diagram with unpinned node by default, when pinning node is invoked then undo redo is invoked, then the node is pinned")
-    public void givenDiagramWithUnpinnedNodeByDefaultWhenToolPinningNodeIsInvokedUndoRedoInvokedThenVisibleNodesAreHidden() {
-        var flux = this.givenSubscriptionToVisibilityDiagram();
+    @DisplayName("Given a diagram with expanded nodes , when a tool collapsing nodes is invoked then undo and redo are done, then expanded nodes are collapsed")
+    public void givenDiagramWithExpandedNodesByDefaultWhenToolCollapsingNodesIsInvokedUndoRedoIsInvokedThenExpandedNodesAreCollapsed() {
+        var flux = this.givenSubscriptionToExpandedCollapseDiagram();
 
         var diagramId = new AtomicReference<String>();
-        var nodeId = new AtomicReference<String>();
+        var expandedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+        var initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var optionalNode = diagram.getNodes().stream()
-                    .findFirst();
-            assertThat(optionalNode).isPresent();
-            assertThat(optionalNode.get().isPinned()).isFalse();
-            nodeId.set(optionalNode.get().getId());
+
+            diagram.getNodes().stream()
+                    .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
+                    .map(Node::getId)
+                    .findFirst()
+                    .ifPresent(expandedNodeId::set);
         });
 
-        var mutationInputId = UUID.randomUUID();
-        Runnable pinNode = () -> {
-            var input = new PinDiagramElementInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), Set.of(nodeId.get()), true);
-            var result = this.pinDiagramElementMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.pinDiagramElement.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        var inputId = new AtomicReference<UUID>(null);
+        Runnable collapseNodes = () -> {
+            var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    expandedNodeId.get(),
+                    this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId(),
+                    0,
+                    0,
+                    List.of()
+            ).isSuccess().getResult();
+
+            String id = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.id");
+            inputId.set(UUID.fromString(id));
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            var node = new DiagramNavigator(diagram).nodeWithId(nodeId.get()).getNode();
-            assertThat(node.isPinned()).isTrue();
+        var updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            assertThat(new DiagramNavigator(diagram).nodeWithId(expandedNodeId.get()).getNode())
+                    .hasCollapsingState(CollapsingState.COLLAPSED);
         });
 
         Runnable undoChanges = () -> {
             var input = new UndoInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    mutationInputId
+                    inputId.get()
             );
 
             this.undoMutationRunner.run(input);
@@ -136,7 +143,7 @@ public class PinNodeDiagramControllerTests extends AbstractIntegrationTests {
             var input = new RedoInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    mutationInputId
+                    inputId.get()
             );
 
             this.redoMutationRunner.run(input);
@@ -144,7 +151,7 @@ public class PinNodeDiagramControllerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(pinNode)
+                .then(collapseNodes)
                 .consumeNextWith(updatedDiagramContentMatcher)
                 .then(undoChanges)
                 .consumeNextWith(initialDiagramContentConsumer)
