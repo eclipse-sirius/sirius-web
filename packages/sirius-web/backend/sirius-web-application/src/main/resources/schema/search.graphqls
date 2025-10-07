@@ -1,0 +1,22 @@
+extend type EditingContext {
+  search(query: SearchQuery!): SearchPayload!
+}
+
+input SearchQuery {
+  text: String!
+  matchCase: Boolean!
+  matchWholeWord: Boolean!
+  useRegularExpression: Boolean!
+  searchInAttributes: Boolean!
+}
+
+union SearchPayload = ErrorPayload | SearchSuccessPayload
+
+type SearchSuccessPayload {
+  id: ID!
+  result: SearchResult!
+}
+
+type SearchResult {
+  matches: [Object!]!
+}
