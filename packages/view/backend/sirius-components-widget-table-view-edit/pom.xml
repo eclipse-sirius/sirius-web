@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.8.10</version>
+		<version>2025.8.11</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-table-view-edit</artifactId>
-	<version>2025.8.10</version>
+	<version>2025.8.11</version>
 	<name>sirius-components-widget-table-view-edit</name>
 	<description>View support for the table custom widget :: edit support</description>
 
@@ -47,22 +47,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.8.10</version>
+			<version>2025.8.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
-			<version>2025.8.10</version>
+			<version>2025.8.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-edit</artifactId>
-			<version>2025.8.10</version>
+			<version>2025.8.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view</artifactId>
-			<version>2025.8.10</version>
+			<version>2025.8.11</version>
 		</dependency>
 	</dependencies>
 
