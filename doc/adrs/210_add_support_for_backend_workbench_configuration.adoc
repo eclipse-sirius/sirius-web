@@ -1,0 +1,75 @@
+= ADR-210 - Add the support for backend workbench configuration
+
+== Context
+
+We want to configure the workbench from the backend, which views are available, opened or closed, and on which side oh the workbench.
+
+With Sirius Web the workbench state can be shared by exporting the URL from a user to another.
+The structure used to build that URL contains the available workbench views, which one is opened or closed and on which side of the workbench.
+Even if names and data structure are different from the implementation, this subject has been discussed in ADR-198.
+
+What we want and what we already have look similar, and we want to leverage that
+
+
+== Decision
+
+=== Frontend
+
+The `EditProjectView` will ask the backend for the workbench configuration with a graphql query.
+
+[source, graphql]
+----
+query getWorkbenchConfiguration($projectId: ID!) {
+  viewer {
+    project(projectId: $projectId) {
+      workbenchConfiguration {
+        mainPanel {
+          id
+          representationEditors {
+            representationId
+            isActive
+          }
+        }
+        workbenchPanels {
+          id
+          isOpen
+          views {
+            id
+            isActive
+          }
+        }
+      }
+    }
+  }
+}
+----
+
+The user will be able to patch the result using the URL without being able to enable a view that has not been sent by the backend.
+
+=== Backend
+
+Apart from the graphql schema, we will provide the interface `IWorkbenchConfigurationProvider`.
+
+[source, java]
+----
+
+public interface IWorkbenchConfigurationProvider {
+  WorkbenchConfiguration getWorkbenchConfiguration(String projectId);
+}
+
+----
+
+The implementation of this interface will be a composed service which when no delegate is provided will return the workbench configuration that match the actual state of the workbench:
+- On the left, the explorer view which is opened and the validation view which is closed
+- On the right, the details view, the query view, the representations view, and the related elements with only the details view opened.
+
+NOTE: This first implementation will return `null` for `WorkbenchConfiguration#mainPanel`
+
+== Consequences
+
+While today, a workbench view is either available because it has been contributed using the `WorkbenchViewContributionExtensionPoint` extension point, or not even visible because it has not been contributed or removed by a downstream project using an `ExtensionRegistryMergeStrategy`, the backend will be able to control when and where a workbench view will be available or not.
+Thus, from a project to another, the workbench could be totally different.
+
+== Status
+
+Proposed.
