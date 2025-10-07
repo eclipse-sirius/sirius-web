@@ -1,0 +1,57 @@
+= ADR-213 - Add edit capabilities on representations
+
+== Context
+
+We recently introduced capabilities to control the available features in the frontend using the backend.
+We stop the implementation at the project level.
+Now we want to add more finer-grain control inside the project.
+
+== Decision
+
+We will start by adding the edit capabilities on representations and make workbench views leveraging on that edit capability when it is possible.
+
+=== Backend 
+
+Starting with the tree representation we will add a second payload on representations for the representation capabilities.
+This will make possible to return only the payload of capabilities instead of the whole representation.
+
+For example the GraphQL schema for the tree subscription will become:
+
+[source, graphql]
+----
+
+union TreeEventPayload = ErrorPayload | TreeRefreshedEventPayload | TreeCapabilitiesRefreshedEventPayload
+
+type TreeCapabilitiesRefreshedEventPayload {
+  id: ID!
+  capabilities: TreeCapabilities!
+}
+
+type TreeCapabilities {
+  canEdit: Boolean!
+}
+
+----
+
+The change in the GraphQL will come with the data fetchers.
+
+We must ensure that any input related to a representation will also rely on the representation capabilities.
+For that, our implementation of `IEditingContextDispatcher` and `IEventProcessorSubscriptionProvider` will change to check the capabilities against the `Representation` instead of `Project` if the incoming `IInput` is a `IRepresentationInput`.
+
+=== Frontend
+
+Each workbench view displaying a representation will stop using `WorkbenchViewComponentProps#readOnly`.
+Instead, they will rely on the representation `edit` capabilities.
+
+=== Consequences
+
+Since we will update the graphql schema of the whole representation, we will need to move the interface `ICapabilityVoter` from `sirius-web-application` to `sirius-components-graphql` and each data fetcher for representations capabilities will be in `sirius-components-xxx-graphql`.
+
+Once all workbench views will rely on representation `edit` capabilities, the data fetcher that retrieve the project `edit` capability may become obsolete, and thus, may be removed.
+
+By default, a capability check is `GRANTED` if there is no `ICapabilityVoter` for the check.
+Since Sirius Web will not provide default capability voters for representations, if downstream projects support readonly projects, they will need to add capability voters to also make the different representations readonly.
+
+== Status
+
+Proposed
