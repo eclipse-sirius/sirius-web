@@ -1,0 +1,14 @@
+extend type EditingContext {
+  search(query: String!): SearchPayload!
+}
+
+union SearchPayload = ErrorPayload | SearchSuccessPayload
+
+type SearchSuccessPayload {
+  id: ID!
+  result: SearchResult!
+}
+
+type SearchResult {
+  matches: [Object!]!
+}
