@@ -12,7 +12,7 @@ We will add the ability to compute and resolve a URL encoding the state of the w
 The base URL for an open project will be `/projects/:projectId/edit`.
 The state of the workbench will be encoded as a JSON object with the following structure:
 
-[source, json]
+[source, typescript]
 ----
 interface WorkbenchState {
   parts: WorkbenchPart[],
@@ -113,11 +113,11 @@ Notes:
 * Since each `WorkbenchPart` has its own configuration, the default configurations for the various views are omitted for now. In the implementation, we will have to make explicit, for each view that wants to be able to contribute to the URL (`Explorer`, `Validation`, `Details`, `Query`, `Representations`, `Related Elements` and all representation editors) the default configuration to use.
 * In the Sirius Web application, the "left" and "right" panels are essentially similar, so their configurations follow the same structure:
 
-[source, json]
+[source, typescript]
 ----
 interface SiriusWebApplicationSidePanelConfiguration {
-	"partId": string,
-	"closed": boolean
+	partId: string,
+	closed: boolean
 }
 ----
 
