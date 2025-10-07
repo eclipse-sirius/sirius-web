@@ -10,6 +10,7 @@
 - Add support for tree presentation of impact analysis reports
 - Add support for workbench configuration with the backend
 - Improve the creation of new project
+- Add support for representations edit capability
 
 
 === Architectural decision records
@@ -18,6 +19,7 @@
 - [ADR-210] Add the support for backend workbench configuration
 - [ADR-211] Unified project creation
 - [ADR-212] Add support for grouping search results
+- [ADR-213] Add edit capabilities on representation
 
 === Deprecation warning
 
