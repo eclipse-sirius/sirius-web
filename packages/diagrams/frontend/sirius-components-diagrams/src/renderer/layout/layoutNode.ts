@@ -570,3 +570,29 @@ export const getPositionAbsoluteFromNodeChange = (
   }
   return undefined;
 };
+
+export const getNodeBorderNodeFootprint = (node: Node<NodeData>, allVisibleNodes: Node<NodeData>[]) => {
+  const children = getChildren(node, allVisibleNodes);
+  const maxBorderNodeWidthWest = children
+    .filter(isWestBorderNode)
+    .map((borderNode) => borderNode.width || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+  const maxBorderNodeWidthEast = children
+    .filter(isEastBorderNode)
+    .map((borderNode) => borderNode.width || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+  const maxBorderNodeHeightNorth = children
+    .filter(isNorthBorderNode)
+    .map((borderNode) => borderNode.height || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+  const maxBorderNodeHeightSouth = children
+    .filter(isSouthBorderNode)
+    .map((borderNode) => borderNode.height || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+  return {
+    northFootprint: maxBorderNodeHeightNorth,
+    southFootprint: maxBorderNodeHeightSouth,
+    eastFootprint: maxBorderNodeWidthEast,
+    westFootprint: maxBorderNodeWidthWest,
+  };
+};
