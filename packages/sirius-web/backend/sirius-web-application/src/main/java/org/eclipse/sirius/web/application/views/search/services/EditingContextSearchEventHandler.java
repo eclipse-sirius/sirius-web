@@ -73,7 +73,7 @@ public class EditingContextSearchEventHandler implements IEditingContextEventHan
             List<Object> matches = new ArrayList<>();
             emfEditingContext.getDomain().getResourceSet().getAllContents().forEachRemaining(object -> {
                 String labelText = this.labelService.getStyledLabel(object).toString();
-                if (labelText != null && labelText.contains(searchInput.query())) {
+                if (labelText != null && labelText.toLowerCase().contains(searchInput.query().toLowerCase())) {
                     matches.add(object);
                 }
             });
