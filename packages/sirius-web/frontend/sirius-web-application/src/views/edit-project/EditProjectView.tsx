@@ -145,7 +145,7 @@ export const EditProjectView = () => {
                 editingContextId={state.project.currentEditingContext.id}
                 workbenchHandle={refWorkbenchHandle.current}>
                 <UndoRedo>
-                  <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} />
+                  <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} name={name} />
                   <TreeToolBarProvider>
                     <Workbench
                       editingContextId={state.project.currentEditingContext.id}

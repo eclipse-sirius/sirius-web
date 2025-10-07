@@ -22,4 +22,5 @@ export interface EditProjectNavbarSubtitleProps {}
 
 export interface EditProjectNavbarProps {
   workbenchHandle: WorkbenchHandle;
+  name: string | null;
 }

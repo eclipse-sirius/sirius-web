@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.core.io.ByteArrayResource;
@@ -54,15 +55,33 @@ public class ProjectDownloadController {
 
     private final IProjectExportService projectExportService;
 
-    public ProjectDownloadController(ICapabilityEvaluator capabilityEvaluator, IProjectSearchService projectSearchService, IProjectExportService projectExportService) {
+    private final IProjectEditingContextService projectEditingContextService;
+
+    public ProjectDownloadController(ICapabilityEvaluator capabilityEvaluator, IProjectSearchService projectSearchService, IProjectExportService projectExportService,
+        IProjectEditingContextService projectEditingContextService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectExportService = Objects.requireNonNull(projectExportService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @ResponseBody
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<Resource> downloadProject(@PathVariable String projectId) {
+        return projectEditingContextService.getEditingContextId(projectId)
+            .map(editingContext -> doDownloadProject(projectId, editingContext))
+            .orElse(new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND));
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/{projectId}/editing-context-name/{editingContextName}")
+    public ResponseEntity<Resource> downloadProject(@PathVariable String projectId, @PathVariable String editingContextName) {
+        return projectEditingContextService.getEditingContextId(projectId, editingContextName)
+            .map(editingContextId -> doDownloadProject(projectId, editingContextId))
+            .orElse(new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND));
+    }
+
+    private ResponseEntity<Resource> doDownloadProject(String projectId, String editingContextId) {
         ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
 
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.DOWNLOAD);
@@ -70,11 +89,11 @@ public class ProjectDownloadController {
         var optionalProject = this.projectSearchService.findById(projectId);
         if (hasCapability && optionalProject.isPresent()) {
             var project = optionalProject.get();
-            byte[] content = this.projectExportService.export(project);
+            byte[] content = this.projectExportService.export(project, editingContextId);
 
             ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-                    .filename(project.getName() + ".zip")
-                    .build();
+                .filename(project.getName() + ".zip")
+                .build();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDisposition(contentDisposition);

@@ -72,16 +72,16 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
     }
 
     @Override
-    public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
+    public Map<String, Object> exportData(Project project, String editingContextId, ZipOutputStream outputStream) {
         Map<String, Object> manifestEntries = new HashMap<>();
 
-        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
-                .map(ProjectSemanticData::getSemanticData)
-                .map(AggregateReference::getId)
-                .map(UUID::toString)
-                .flatMap(editingContextSearchService::findById)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast);
+        var optionalEditingContext = this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(UUID.fromString(editingContextId)))
+            .map(ProjectSemanticData::getSemanticData)
+            .map(AggregateReference::getId)
+            .map(UUID::toString)
+            .flatMap(editingContextSearchService::findById)
+            .filter(IEMFEditingContext.class::isInstance)
+            .map(IEMFEditingContext.class::cast);
 
         if (optionalEditingContext.isPresent()) {
             var editingContext = optionalEditingContext.get();
@@ -89,8 +89,8 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
             List<String> metamodels = this.getMetamodels(editingContext);
             Map<String, String> id2DocumentName = this.exportSemanticData(editingContext, project.getName(), outputStream);
             List<String> natures = project.getNatures().stream()
-                        .map(Nature::name)
-                        .toList();
+                .map(Nature::name)
+                .toList();
 
             manifestEntries.put("metamodels", metamodels);
             manifestEntries.put("documentIdsToName", id2DocumentName);
@@ -102,32 +102,32 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
 
     private List<String> getMetamodels(IEMFEditingContext editingContext) {
         return editingContext.getDomain().getResourceSet().getPackageRegistry().values().stream()
-                .filter(EPackage.class::isInstance)
-                .map(EPackage.class::cast)
-                .map(EPackage::getNsURI)
-                .sorted(Comparator.naturalOrder())
-                .toList();
+            .filter(EPackage.class::isInstance)
+            .map(EPackage.class::cast)
+            .map(EPackage::getNsURI)
+            .sorted(Comparator.naturalOrder())
+            .toList();
     }
 
     private Map<String, String> exportSemanticData(IEMFEditingContext editingContext, String projectName, ZipOutputStream outputStream) {
         Map<String, String> id2DocumentName = new HashMap<>();
 
         List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
-                .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource))).toList();
-        for (var resource: resources) {
+            .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource))).toList();
+        for (var resource : resources) {
             var resourceId = this.identityService.getId(resource);
             var optionalDocumentId = new UUIDParser().parse(resourceId);
 
             var optionalDocumentName = resource.eAdapters().stream()
-                    .filter(ResourceMetadataAdapter.class::isInstance)
-                    .map(ResourceMetadataAdapter.class::cast)
-                    .map(ResourceMetadataAdapter::getName)
-                    .findFirst();
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .map(ResourceMetadataAdapter::getName)
+                .findFirst();
 
             var optionalContent = this.documentExporters.stream()
-                    .filter(documentExporter -> documentExporter.canHandle(resource, MediaType.APPLICATION_JSON_VALUE))
-                    .findFirst()
-                    .flatMap(documentExporter -> documentExporter.getBytes(resource, MediaType.APPLICATION_JSON_VALUE));
+                .filter(documentExporter -> documentExporter.canHandle(resource, MediaType.APPLICATION_JSON_VALUE))
+                .findFirst()
+                .flatMap(documentExporter -> documentExporter.getBytes(resource, MediaType.APPLICATION_JSON_VALUE));
             if (optionalDocumentId.isPresent() && optionalDocumentName.isPresent() && optionalContent.isPresent()) {
                 var documentId = optionalDocumentId.get();
                 var documentName = optionalDocumentName.get();
