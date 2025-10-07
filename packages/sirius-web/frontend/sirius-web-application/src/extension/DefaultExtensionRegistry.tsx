@@ -78,6 +78,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Navigate, PathRouteProps, useMatch } from 'react-router-dom';
@@ -107,6 +108,7 @@ import { ExplorerView } from '../views/edit-project/workbench-views/explorer/Exp
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
+import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
@@ -164,6 +166,13 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Validation',
     icon: <WarningIcon />,
     component: ValidationView,
+  },
+  {
+    id: 'search',
+    side: 'left',
+    title: 'Search',
+    icon: <SearchIcon />,
+    component: SearchView,
   },
   {
     id: 'details',

@@ -119,6 +119,7 @@ export {
   type GQLRelatedElementsEventPayload,
   type UseRelatedElementsViewSubscriptionValue,
 } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription.types';
+export { SearchView } from './views/edit-project/workbench-views/search/SearchView';
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';

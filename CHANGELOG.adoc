@@ -40,7 +40,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
 
 === Improvements
 
