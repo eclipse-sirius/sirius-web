@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -34,11 +35,14 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramFadeElementChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramHideElementChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeViewRequestChange;
@@ -77,15 +81,12 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                 var optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, nodeId);
                 if (optionalPreviousNode.isPresent()) {
                     var previousNode = optionalPreviousNode.get();
-
                     var containmentKind = NodeContainmentKind.CHILD_NODE;
                     if (previousNode.isBorderNode()) {
                         containmentKind = NodeContainmentKind.BORDER_NODE;
                     }
-
                     Optional<String> optionalParentId = Optional.empty();
                     var parentId = previousDiagram.getId();
-
                     for (Node currentNode : previousDiagram.getNodes()) {
                         optionalParentId = findParentId(currentNode, previousNode.getId());
                     }
@@ -124,6 +125,24 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                         var nodeLayoutChange = new DiagramNodeLayoutChange(diagramInput.id(), diagramInput.representationId(), List.of(undoPositionEvent), List.of());
                         representationChanges.add(nodeLayoutChange);
                     }
+
+                    previousNode.getOutsideLabels().forEach(label -> {
+                        var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                        if (previousLabelLayoutData.containsKey(label.id())) {
+                            var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), diagramInput);
+                            representationChanges.addAll(diagramLabelLayoutChange);
+                        }
+                    });
+
+                    Optional.of(previousNode.getInsideLabel())
+                            .ifPresent(label -> {
+                                var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                                if (previousLabelLayoutData.containsKey(label.getId())) {
+                                    var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()), diagramInput);
+                                    representationChanges.addAll(diagramLabelLayoutChange);
+                                }
+                            });
+
                 }
                 var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, List.of());
                 representationChanges.add(diagramNodeAppearanceChange);
@@ -163,5 +182,13 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
         }
 
         return parentNode;
+    }
+
+    private List<IRepresentationChange> getDiagramNodeLabelChange(String labelId, LabelLayoutData previousLabelLayoutData, IDiagramInput input) {
+        List<IRepresentationChange> representationChanges = new ArrayList<>();
+        var undoPositionEvent = new DiagramLabelLayoutEvent(labelId, previousLabelLayoutData);
+        var nodeLayoutChange = new DiagramLabelLayoutChange(UUID.fromString(labelId), input.representationId(), List.of(undoPositionEvent), List.of());
+        representationChanges.add(nodeLayoutChange);
+        return representationChanges;
     }
 }
