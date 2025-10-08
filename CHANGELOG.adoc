@@ -24,6 +24,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5485[#5485] [diagram] Edge bending points are above line segments
 
 
 === New Features
