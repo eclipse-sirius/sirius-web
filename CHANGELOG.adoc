@@ -238,7 +238,7 @@ This new low level API is quite new and may be changed heavily in the near futur
 - https://github.com/eclipse-sirius/sirius-web/issues/5285[#5285] [core] Extract additional concerns from the `EditingContextEventProcessor` thanks to the introduction of new services.
 We have added the `IRepresentationEventProcessorProvider` in order to either retrieve an `IRepresentationEventProcessor` from the `IRepresentationEventProcessorRegistry` or create an initialize a new instance thanks to the `IRepresentationEventProcessorComposedFactory`.
 We have also added the `IInputDispatcher` which is in charge of dispatching an input to its proper handler.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5635[#5635] [diagram] Improve the position of border nodes when they are used as edge handles
 
 
 == v2025.8.0

@@ -56,18 +56,6 @@ export interface EdgeParameters {
   targetPosition: Position;
 }
 
-export type GetParameters = (
-  movingNode: NodePositionChange | null,
-  nodeA: InternalNode<Node<NodeData>>,
-  nodeB: InternalNode<Node<NodeData>>,
-  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
-  layoutDirection: string
-) => Parameters;
-
-export interface Parameters {
-  position: Position;
-}
-
 export type GetNodeCenter = (
   node: InternalNode<Node<NodeData>>,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
