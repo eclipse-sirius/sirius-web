@@ -307,7 +307,7 @@ export const Group = ({ page, group }: GroupProps) => {
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    if (event.key === 'Delete') {
+    if (event.code === 'Delete') {
       const deleteGroupInput: GQLDeleteGroupInput = {
         id: crypto.randomUUID(),
         editingContextId,
