@@ -252,7 +252,7 @@ export const TransferModal = ({
               isContainment={widget.reference.containment}
               markedItemIds={state.right.map((entry) => entry.id)}
               title={t('edit.choices')}
-              leafType={'reference'}
+              treeDescriptionId={widget.modelBrowserTreeDescriptionId}
               ownerKind={widget.reference.ownerKind}
               onTreeItemClick={onTreeItemClick}
               selectedTreeItemIds={state.selectedTreeItemIds}

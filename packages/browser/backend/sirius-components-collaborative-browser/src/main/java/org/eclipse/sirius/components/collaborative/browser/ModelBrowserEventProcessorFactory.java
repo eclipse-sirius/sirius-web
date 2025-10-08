@@ -40,6 +40,11 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 @Service
 public class ModelBrowserEventProcessorFactory implements IRepresentationEventProcessorFactory {
+    public static final String PREFIX = "modelBrowser://";
+
+    private static final String TREE_DESCRIPTION_ID = "treeDescriptionId";
+
+    private static final String EXPANDED_IDS = "expandedIds";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -65,27 +70,17 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return representationId.startsWith("modelBrowser://");
+        return representationId.startsWith(PREFIX);
     }
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        String descriptionId;
-        if (representationId.startsWith(ModelBrowserDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
-            descriptionId = ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID;
-        } else {
-            descriptionId = ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID;
-        }
-
-        Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
-                .findById(editingContext, descriptionId)
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast);
+        Optional<TreeDescription> optionalTreeDescription = this.findModelBrowserTreeDescription(editingContext, representationId);
         if (optionalTreeDescription.isPresent()) {
             var treeDescription = optionalTreeDescription.get();
 
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
-            String expandedIdsParam = parameters.get("expandedIds").get(0);
+            String expandedIdsParam = parameters.get(EXPANDED_IDS).get(0);
 
             var expanded = this.urlParser.getParameterEntries(expandedIdsParam);
 
@@ -102,6 +97,25 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
         }
 
         return Optional.empty();
+    }
+
+    private Optional<TreeDescription> findModelBrowserTreeDescription(IEditingContext editingContext, String representationId) {
+        return this.extractModelBrowserTreeDescriptionId(representationId)
+                   .flatMap(treeDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, treeDescriptionId))
+                   .filter(TreeDescription.class::isInstance)
+                   .map(TreeDescription.class::cast);
+    }
+
+    private Optional<String> extractModelBrowserTreeDescriptionId(String representationId) {
+        Optional<String> result = Optional.empty();
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
+        if (parameters.get(TREE_DESCRIPTION_ID) != null) {
+            String param = parameters.get(TREE_DESCRIPTION_ID).get(0);
+            if (param != null && !param.isBlank()) {
+                result = Optional.of(param);
+            }
+        }
+        return result;
     }
 
 }

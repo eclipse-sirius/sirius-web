@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.forms;
+package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,9 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureChoiceOfValueProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureLabelProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
@@ -43,6 +46,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.web.application.browser.DefaultModelBrowsersTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -133,6 +137,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
                 .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
                 .isReadOnlyProvider(this.widgetReadOnlyProvider)
+                .modelBrowserTreeDescriptionIdProvider((variableManager) -> DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_DESCRIPTION_ID)
                 .build();
     }
 

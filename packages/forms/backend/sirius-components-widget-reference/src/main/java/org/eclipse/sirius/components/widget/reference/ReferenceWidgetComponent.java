@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public class ReferenceWidgetComponent implements IComponent {
     public static final String MOVE_FROM_VARIABLE = "fromIndex";
 
     public static final String MOVE_TO_VARIABLE = "toIndex";
+
+    public static final String IS_CONTAINMENT_VARIABLE = "isContainment";
 
     private final ReferenceWidgetComponentProps props;
 
@@ -85,6 +87,12 @@ public class ReferenceWidgetComponent implements IComponent {
                 .many(isMany)
                 .ownerId(ownerId)
                 .children(children);
+
+        if (referenceDescription.getModelBrowserTreeDescriptionIdProvider() != null) {
+            VariableManager modelBrowserVariableManager = idVariableManager.createChild();
+            modelBrowserVariableManager.put(IS_CONTAINMENT_VARIABLE, isContainment);
+            builder.modelBrowserTreeDescriptionId(referenceDescription.getModelBrowserTreeDescriptionIdProvider().apply(modelBrowserVariableManager));
+        }
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }

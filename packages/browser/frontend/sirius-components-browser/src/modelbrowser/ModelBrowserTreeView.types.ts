@@ -20,7 +20,7 @@ export interface ModelBrowserTreeViewProps {
   isContainment: boolean;
   markedItemIds: string[];
   title: string;
-  leafType: 'reference' | 'container';
+  treeDescriptionId: string;
   ownerKind: string;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
   selectedTreeItemIds: string[];

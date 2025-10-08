@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
+
+import static org.eclipse.sirius.components.collaborative.browser.ModelBrowserEventProcessorFactory.PREFIX;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,12 +59,15 @@ import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;
 
 /**
- * This class is used to provide the description of the model browser tree.
+ * Registers the two default tree descriptions used by the model browser: one for containment references and another for
+ * non-containment references.
  *
  * @author pcdavid
  */
 @Service
-public class ModelBrowserDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+
+    public static final String MODEL_BROWSER_PREFIX = "modelBrowser://";
 
     public static final String CONTAINER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_container_tree_description".getBytes()).toString();
 
@@ -70,13 +75,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     public static final String REPRESENTATION_NAME = "Model Browser";
 
-    public static final String DOCUMENT_KIND = "siriusWeb://document";
-
-    public static final String PREFIX = "modelBrowser://";
-
-    public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
-
-    public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
+    private static final String DOCUMENT_KIND = "siriusWeb://document";
 
     private final IObjectService objectService;
 
@@ -92,7 +91,8 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private final IModelBrowserRootCandidateSearchProvider defaultCandidateProvider;
 
-    public ModelBrowserDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
+    public DefaultModelBrowsersTreeDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService,
+            List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -108,14 +108,16 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
             EClass referenceKind = this.resolveReferenceEClass(variableManager).orElse(null);
             return this.isContainerSelectable(variableManager, referenceKind);
         };
-        var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionIsSelectableProvider, this::getCreationScopeElements, MODEL_BROWSER_CONTAINER_PREFIX);
+        var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionIsSelectableProvider, this::getCreationScopeElements,
+                MODEL_BROWSER_PREFIX + "?treeDescriptionId=" + CONTAINER_DESCRIPTION_ID);
 
         Function<VariableManager, Boolean> referenceDescriptionIsSelectableProvider = variableManager -> {
             EClass targetType = this.resolveTargetType(variableManager).orElse(null);
             boolean isContainment = this.resolveIsContainment(variableManager);
             return this.isTypeSelectable(variableManager, targetType, isContainment);
         };
-        var referenceDescription = this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, referenceDescriptionIsSelectableProvider, this::getSearchScopeElements, MODEL_BROWSER_REFERENCE_PREFIX);
+        var referenceDescription = this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, referenceDescriptionIsSelectableProvider, this::getSearchScopeElements,
+                MODEL_BROWSER_PREFIX + "?treeDescriptionId=" + REFERENCE_DESCRIPTION_ID);
 
         return List.of(containerDescription, referenceDescription);
     }
@@ -330,13 +332,15 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
             String ownerId = parameters.get("ownerId").get(0);
-            var semanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId).get();
+            var optionalSemanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId);
 
-            return this.candidateProviders.stream()
-                    .filter(provider -> provider.canHandle(descriptionId))
-                    .findFirst()
-                    .orElse(this.defaultCandidateProvider)
-                    .getRootElementsForReference(semanticOwner, descriptionId, optionalEditingContext.get());
+            if (optionalSemanticOwner.isPresent()) {
+                return this.candidateProviders.stream()
+                        .filter(provider -> provider.canHandle(descriptionId))
+                        .findFirst()
+                        .orElse(this.defaultCandidateProvider)
+                        .getRootElementsForReference(optionalSemanticOwner.get(), descriptionId, optionalEditingContext.get());
+            }
         }
         return Collections.emptyList();
     }

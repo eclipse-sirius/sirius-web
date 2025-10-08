@@ -22,7 +22,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetBehaviorConverter;
+import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetModelBrowserTreeDescriptionIdProvider;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.Builder;
@@ -51,10 +54,13 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
 
     private final IOperationExecutor operationExecutor;
 
+    private final IReferenceWidgetModelBrowserTreeDescriptionIdProvider referenceWidgetModelBrowserTreeDescriptionIdProvider;
+
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ReferenceWidgetBehaviorConverter(IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService) {
+    public ReferenceWidgetBehaviorConverter(IOperationExecutor operationExecutor, IReferenceWidgetModelBrowserTreeDescriptionIdProvider referenceWidgetModelBrowserTreeDescriptionIdProvider, IFeedbackMessageService feedbackMessageService) {
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
+        this.referenceWidgetModelBrowserTreeDescriptionIdProvider = Objects.requireNonNull(referenceWidgetModelBrowserTreeDescriptionIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
@@ -67,6 +73,15 @@ public class ReferenceWidgetBehaviorConverter implements IReferenceWidgetBehavio
         if (viewReferenceWidgetDescription.getHelpExpression() != null && !viewReferenceWidgetDescription.getHelpExpression().isBlank()) {
             referenceWidgetDescriptionBuilder.helpTextProvider(new StringValueProvider(interpreter, Optional.ofNullable(viewReferenceWidgetDescription.getHelpExpression()).orElse("")));
         }
+        referenceWidgetDescriptionBuilder.modelBrowserTreeDescriptionIdProvider((variableManager) -> {
+            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+            var optionalControlDecriptionId = variableManager.get(FormComponent.CONTROL_DESCRIPTION_ID, String.class);
+            boolean isContainment = variableManager.get(ReferenceWidgetComponent.IS_CONTAINMENT_VARIABLE, Boolean.class).orElse(false);
+            if (optionalEditingContext.isPresent() && optionalControlDecriptionId.isPresent()) {
+                return this.referenceWidgetModelBrowserTreeDescriptionIdProvider.getModelBrowserTreeDescriptionId(optionalEditingContext.get(), optionalControlDecriptionId.get(), isContainment);
+            }
+            return null;
+        });
         if (viewReferenceWidgetDescription.getBody().isEmpty()) {
             referenceWidgetDescriptionBuilder.setHandlerProvider(variableManager -> this.handleSetReference(interpreter, variableManager, viewReferenceWidgetDescription));
             referenceWidgetDescriptionBuilder.addHandlerProvider(variableManager -> this.handleAddReference(interpreter, variableManager, viewReferenceWidgetDescription));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,8 @@ public final class ReferenceElementProps implements IProps {
     private ReferenceWidgetStyle style;
 
     private String ownerId;
+
+    private String modelBrowserTreeDescriptionId;
 
     private List<Element> children;
 
@@ -128,6 +130,10 @@ public final class ReferenceElementProps implements IProps {
         return this.descriptionId;
     }
 
+    public String getModelBrowserTreeDescriptionId() {
+        return this.modelBrowserTreeDescriptionId;
+    }
+
     public ReferenceWidgetStyle getStyle() {
         return this.style;
     }
@@ -176,7 +182,9 @@ public final class ReferenceElementProps implements IProps {
         private String label;
 
         private List<String> iconURL;
+
         private boolean readOnly;
+
         private Supplier<String> helpTextProvider;
 
         private List<ReferenceValue> values;
@@ -194,6 +202,8 @@ public final class ReferenceElementProps implements IProps {
         private ReferenceWidgetStyle style;
 
         private String ownerId;
+
+        private String modelBrowserTreeDescriptionId;
 
         private List<Element> children;
 
@@ -228,6 +238,12 @@ public final class ReferenceElementProps implements IProps {
 
         public Builder readOnly(boolean readOnly) {
             this.readOnly = readOnly;
+            return this;
+        }
+
+
+        public Builder modelBrowserTreeDescriptionId(String modelBrowserTreeDescriptionId) {
+            this.modelBrowserTreeDescriptionId = Objects.requireNonNull(modelBrowserTreeDescriptionId);
             return this;
         }
 
@@ -317,6 +333,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
+            referenceElementProps.modelBrowserTreeDescriptionId = Objects.requireNonNull(this.modelBrowserTreeDescriptionId);
             referenceElementProps.children = Objects.requireNonNull(this.children);
             referenceElementProps.clearHandler = this.clearHandler; // Optional on purpose
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose

@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.collaborative.browser.ModelBrowserEventProcessorFactory;
 import org.eclipse.sirius.components.tables.ColumnSort;
 import org.springframework.stereotype.Service;
 
@@ -64,11 +65,12 @@ public class RepresentationIdBuilder {
         return "relatedElements://?objectIds=[" + String.join(",", objectIds) + "]";
     }
 
-    public String buildModelBrowserRepresentationId(String type, String ownerKind, String targetType, String ownerId, String descriptionId, boolean isContainment, List<String> expandedObjects) {
-        StringBuilder treeId = new StringBuilder("modelBrowser://");
-        treeId.append(type);
+    public String buildModelBrowserRepresentationId(String treeDescriptionId, String ownerKind, String targetType, String ownerId, String descriptionId, boolean isContainment, List<String> expandedObjects) {
+        StringBuilder treeId = new StringBuilder(ModelBrowserEventProcessorFactory.PREFIX);
+        treeId.append("?treeDescriptionId=");
+        treeId.append(URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8));
 
-        treeId.append("?ownerKind=");
+        treeId.append("&ownerKind=");
         treeId.append(URLEncoder.encode(ownerKind, StandardCharsets.UTF_8));
 
         treeId.append("&targetType=");

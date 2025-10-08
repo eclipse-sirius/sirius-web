@@ -136,6 +136,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 The command has also been renamed _Blank project_ to reflect what it currently does (template and blank project creation haven't been unified yet).
 - https://github.com/eclipse-sirius/sirius-web/issues/5699[#5699] [table] Preserve column order and visibility during CSV export
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
@@ -163,6 +164,8 @@ Some part of each namespace may not be supported yet.
 Do not hesitate to read the ADR-214 for further understanding.
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [sirius-web] The EditingContext expose a new method `Map<String, IViewConversionData> getViewConversionData()`
 This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [forms] The _Reference_ widget can now provide an optional `modelBrowserId`.
+It can be used, in conjunction with `IModelBrowserMetadataProvider` on the backend, to use a custom `TreeDescription` to display the possible candidates in the modals used to edit the reference on the frontend.
 
 
 === Improvements
@@ -190,6 +193,7 @@ This will allow to integrate the command palette in other contexts than the work
 * Duplicate an object
 * Duplicate a representation
 As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
+
 
 
 == 2025.10.0
@@ -366,7 +370,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 
