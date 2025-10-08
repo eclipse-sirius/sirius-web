@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.compatibility;
+package org.eclipse.sirius.web.application.views.details.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +45,11 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
+import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesConfigurerService;
+import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.web.application.browser.DefaultModelBrowsersTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -209,6 +212,13 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, feature))
                 .addHandlerProvider(variableManager -> this.handleAddReferenceValues(variableManager, feature))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, feature))
+                .modelBrowserTreeDescriptionIdProvider((variableManager) -> {
+                    if (this.isContainment(variableManager, feature)) {
+                        return DefaultModelBrowsersTreeDescriptionProvider.CONTAINER_DESCRIPTION_ID;
+                    } else {
+                        return DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_DESCRIPTION_ID;
+                    }
+                })
                 .build();
     }
 

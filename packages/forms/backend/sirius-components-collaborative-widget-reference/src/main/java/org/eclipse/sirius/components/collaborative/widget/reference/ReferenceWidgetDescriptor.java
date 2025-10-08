@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,6 +84,7 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .many(props.isMany())
                     .referenceValues(props.getValues())
                     .referenceOptionsProvider(props.getOptionsProvider())
+                    .modelBrowserTreeDescriptionId(props.getModelBrowserTreeDescriptionId())
                     .ownerId(props.getOwnerId())
                     .clearHandler(props.getClearHandler())
                     .setHandler(props.getSetHandler())
@@ -94,6 +95,9 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
             }
             if (props.getStyle() != null) {
                 builder.style(props.getStyle());
+            }
+            if (props.getModelBrowserTreeDescriptionId() != null) {
+                builder.modelBrowserTreeDescriptionId(props.getModelBrowserTreeDescriptionId());
             }
             result = Optional.of(builder.build());
         }

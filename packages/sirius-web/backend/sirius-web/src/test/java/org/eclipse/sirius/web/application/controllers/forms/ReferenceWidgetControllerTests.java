@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.widget.reference.tests.assertions.ReferenceWidgetAssertions.assertThat;
 
@@ -44,6 +45,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -98,6 +100,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
             assertThat(referenceWidget)
                     .hasLabel("Super types")
+                    .hasHelpText("Specify the super-types of Human")
                     .hasValueWithLabel("NamedElement")
                     .isBold()
                     .isItalic()

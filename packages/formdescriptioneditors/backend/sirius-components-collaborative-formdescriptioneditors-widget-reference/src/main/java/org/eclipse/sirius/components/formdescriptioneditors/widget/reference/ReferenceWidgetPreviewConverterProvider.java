@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,10 +22,10 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetStyleProvider;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.view.widget.reference.util.ReferenceSwitch;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,7 +82,8 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .styleProvider(variableManager -> ReferenceWidgetPreviewConverterProvider.this.getWidgetStyle(referenceDescription, variableManager))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "");
+                .messageProvider(object -> "")
+                .modelBrowserTreeDescriptionIdProvider(variableManager -> "none");
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {
