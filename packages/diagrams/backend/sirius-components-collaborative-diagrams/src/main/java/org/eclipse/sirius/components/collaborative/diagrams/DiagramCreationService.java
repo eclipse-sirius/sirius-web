@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
@@ -154,9 +155,14 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .filter(DiagramNodeLayoutEvent.class::isInstance)
                 .map(DiagramNodeLayoutEvent.class::cast).toList();
 
+        List<DiagramLabelLayoutEvent> diagramLabelLayoutEvents = diagramEvents.stream()
+                .filter(DiagramLabelLayoutEvent.class::isInstance)
+                .map(DiagramLabelLayoutEvent.class::cast).toList();
+
         var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
 
         diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent -> newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), nodeLayoutDataEvent.nodeLayoutData()));
+        diagramLabelLayoutEvents.forEach(nodeLabelDataEvent -> newLayoutData.labelLayoutData().put(nodeLabelDataEvent.nodeId(), nodeLabelDataEvent.labelLayoutData()));
 
         newDiagram = Diagram.newDiagram(newDiagram)
                 .layoutData(newLayoutData)
