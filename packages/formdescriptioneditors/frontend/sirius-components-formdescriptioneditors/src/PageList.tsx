@@ -254,7 +254,7 @@ export const PageList = () => {
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    if (event.key === 'Delete' && state.selectedPage) {
+    if (event.code === 'Delete' && state.selectedPage) {
       const deletePageInput: GQLDeletePageInput = {
         id: crypto.randomUUID(),
         editingContextId,

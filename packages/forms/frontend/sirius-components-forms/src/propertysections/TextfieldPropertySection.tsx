@@ -214,7 +214,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   };
 
   const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if ('Enter' === event.key && !event.shiftKey) {
+    if (event.code === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       sendEditedValue();
     }
@@ -267,13 +267,13 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
   }, [proposalsLoading, proposalsData, proposalsError]);
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if ('Escape' === event.key) {
+    if (event.code === 'Escape') {
       setState((prevState) => ({
         ...prevState,
         completionRequest: null,
         proposals: null,
       }));
-    } else if (widget.supportsCompletion && event.ctrlKey && event.key === ' ') {
+    } else if (widget.supportsCompletion && event.ctrlKey && event.code === 'Space') {
       const cursorPosition = (event.target as HTMLInputElement).selectionStart ?? 0;
 
       const variables: GQLCompletionProposalsQueryVariables = {
