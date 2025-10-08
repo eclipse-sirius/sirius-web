@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.diagrams.layoutdata.HandleLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
-
-import java.util.List;
 
 /**
  * Input used to receive node layout data.
  *
  * @author sbegaudeau
  */
-public record NodeLayoutDataInput(String id, Position position, Size size, boolean resizedByUser, List<HandleLayoutData> handleLayoutData) {
+public record NodeLayoutDataInput(String id, Position position, Size size, boolean resizedByUser, boolean movedByUser, List<HandleLayoutData> handleLayoutData) {
+
 }

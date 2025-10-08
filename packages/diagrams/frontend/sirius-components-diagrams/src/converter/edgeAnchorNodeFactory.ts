@@ -58,6 +58,7 @@ export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: 
       connectionHandles,
       isNew: false,
       resizedByUser: false,
+      movedByUser: false,
       isListChild: false,
       isDraggedNode: false,
       isDropNodeTarget: false,
