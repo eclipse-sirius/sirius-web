@@ -24,6 +24,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5479[#5479] [explorer] Don't clear references to tree items drag-and-dropped in the model explorer
 
 
 === New Features
