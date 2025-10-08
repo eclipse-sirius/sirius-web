@@ -48,6 +48,7 @@ type NodeLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+  movedByUser: Boolean!
   handleLayoutData: [HandleLayoutData!]!
 }
 
@@ -715,6 +716,7 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+  movedByUser: Boolean!
   handleLayoutData: [HandleLayoutDataInput!]!
 }
 

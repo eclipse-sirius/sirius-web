@@ -16,7 +16,8 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] A new flag `movedByUser` has been added to the node data.
+This flag must be set in custom node converter, an example can be found in `EllipseNodeConverter.ts`.
 
 === Dependency update
 
@@ -36,7 +37,8 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] Add a new `movedByUser` flag to the node layout data.
 
 
 

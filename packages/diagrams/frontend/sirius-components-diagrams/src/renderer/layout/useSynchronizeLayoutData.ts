@@ -17,7 +17,7 @@ import { Node, Position } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeLabel, NodeData } from '../DiagramRenderer.types';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { RawDiagram } from './layout.types';
 import {
@@ -34,7 +34,6 @@ import {
   UseSynchronizeLayoutDataValue,
   GQLLabelLayoutData,
 } from './useSynchronizeLayoutData.types';
-import { EdgeLabel } from '../DiagramRenderer.types';
 
 const layoutDiagramMutation = gql`
   mutation layoutDiagram($input: LayoutDiagramInput!) {
@@ -97,7 +96,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         width,
         position: { x, y },
       } = node;
-      const { resizedByUser } = node.data;
+      const { resizedByUser, movedByUser } = node.data;
       if (height && width) {
         const handleLayoutDatas: GQLHandleLayoutData[] = [];
         node.data.connectionHandles.forEach((handle) => {
@@ -122,6 +121,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             width,
           },
           resizedByUser,
+          movedByUser,
           handleLayoutData: handleLayoutDatas,
         });
       }
