@@ -157,6 +157,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
                 .sourceDescriptions(sourceDescription)
                 .targetExpression("aql:self.entity1LinkedToEntity2")
                 .targetDescriptions(targetDescription)
+                .centerLabelExpression("")
                 .style(
                         new DiagramBuilders()
                                 .newEdgeStyle()

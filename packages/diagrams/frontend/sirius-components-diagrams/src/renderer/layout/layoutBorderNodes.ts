@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CoordinateExtent, Node, XYPosition } from '@xyflow/react';
+import { CoordinateExtent, Node, XYPosition, Position, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
+import { borderNodeOffset, borderNodeReferencePositionRatio, borderNodeGap } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
@@ -107,4 +108,97 @@ export const getNewlyAddedBorderNodePosition = (
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.SOUTH;
     }
   }
+};
+
+export const convertPositionToBorderNodePosition = (position: Position): BorderNodePosition => {
+  switch (position) {
+    case Position.Top:
+      return BorderNodePosition.NORTH;
+    case Position.Right:
+      return BorderNodePosition.EAST;
+    case Position.Bottom:
+      return BorderNodePosition.SOUTH;
+    case Position.Left:
+      return BorderNodePosition.WEST;
+    default:
+      return BorderNodePosition.EAST;
+  }
+};
+
+export const getBorderNodeParentIfExist = (
+  node: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): InternalNode<Node<NodeData>> => {
+  if (node && node.data.isBorderNode && node.parentId) {
+    const parentNode = nodeLookup.get(node.parentId);
+    if (parentNode) {
+      return parentNode;
+    }
+  }
+  return node;
+};
+
+export const computeBorderNodeXYPositionFromBorderNodePosition = (
+  node: Node<NodeData>,
+  nodes: Node<NodeData>[],
+  nodesBeingUpdated: Node<NodeData>[],
+  newBorderNodePosition: BorderNodePosition,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): XYPosition | null => {
+  if (node.data.borderNodePosition !== newBorderNodePosition) {
+    const parentNode = nodeLookup.get(node.parentId ?? '');
+    if (parentNode) {
+      const siblingNodes = nodes
+        .filter((n) => n.data.isBorderNode)
+        .filter((n) => n.parentId === parentNode.id)
+        .map((n) => {
+          const nodeBeingUpdated = nodesBeingUpdated.find((n2) => n2.id === n.id);
+          return nodeBeingUpdated ? nodeBeingUpdated : n;
+        })
+        .filter((n) => n.data.borderNodePosition === newBorderNodePosition);
+      switch (newBorderNodePosition) {
+        case BorderNodePosition.WEST:
+          return {
+            x: -(node.width ?? 0) - borderNodeOffset,
+            y: siblingNodes.reduce((posY, siblingNode) => {
+              if (siblingNode.position.y >= posY) {
+                return siblingNode.position.y + (siblingNode?.height ?? 0) + borderNodeGap;
+              }
+              return posY;
+            }, 0),
+          };
+        case BorderNodePosition.EAST:
+          return {
+            x: (parentNode.width ?? 0) - borderNodeOffset,
+            y: siblingNodes.reduce((posY, siblingNode) => {
+              if (siblingNode.position.y >= posY) {
+                return siblingNode.position.y + (siblingNode?.height ?? 0) + borderNodeGap;
+              }
+              return posY;
+            }, 0),
+          };
+        case BorderNodePosition.NORTH:
+          return {
+            x: siblingNodes.reduce((posX, siblingNode) => {
+              if (siblingNode.position.x >= posX) {
+                return siblingNode.position.x + (siblingNode?.width ?? 0) + borderNodeGap;
+              }
+              return posX;
+            }, 0),
+            y: -(node.height ?? 0) - borderNodeOffset,
+          };
+        case BorderNodePosition.SOUTH:
+          return {
+            x: siblingNodes.reduce((posX, siblingNode) => {
+              if (siblingNode.position.x >= posX) {
+                return siblingNode.position.x + (siblingNode?.width ?? 0) + borderNodeGap;
+              }
+              return posX;
+            }, 0),
+            y: (parentNode.height ?? 0) - borderNodeOffset,
+          };
+      }
+    }
+  }
+  return null;
 };

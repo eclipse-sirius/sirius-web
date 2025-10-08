@@ -14,12 +14,19 @@ import { Edge, Node, NodeChange, NodePositionChange, Position, getConnectedEdges
 import { useCallback } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
+  getEdgeParameters,
   getEdgeParametersWhileMoving,
   getHandlePositionFromNodeAndPath,
+  getUpdatedConnectionHandle,
   getUpdatedConnectionHandles,
 } from '../edge/EdgeLayout';
+import {
+  convertPositionToBorderNodePosition,
+  computeBorderNodeXYPositionFromBorderNodePosition,
+  getBorderNodeParentIfExist,
+} from '../layout/layoutBorderNodes';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
@@ -59,9 +66,45 @@ export const useHandleChange = (): UseHandleChangeValue => {
       nodes: Node<NodeData, DiagramNodeType>[]
     ): Node<NodeData, DiagramNodeType>[] => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
+      const borderNodeId2NewPosition = new Map<string, BorderNodePosition>();
+      const borderNodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id && !node.data.pinned);
         if (movingNode) {
+          const borderNodeChild = nodes.find((node) => node.data.isBorderNode && node.parentId === movingNode.id);
+          if (borderNodeChild) {
+            const connectedEdges = getConnectedEdges([borderNodeChild], getEdges());
+            connectedEdges.forEach((edge) => {
+              const { sourceHandle, targetHandle } = edge;
+              const sourceNode = nodeLookup.get(edge.source);
+              const targetNode = nodeLookup.get(edge.target);
+              if (sourceNode && targetNode && sourceHandle && targetHandle && edge.data && edge.data.bendingPoints) {
+                const sourceReferenceNode = getBorderNodeParentIfExist(sourceNode, nodeLookup);
+                const targetReferenceNode = getBorderNodeParentIfExist(targetNode, nodeLookup);
+                let { sourcePosition, targetPosition } = getEdgeParameters(
+                  sourceReferenceNode,
+                  targetReferenceNode,
+                  storeApi.getState().nodeLookup,
+                  diagramDescription.arrangeLayoutDirection,
+                  edge.data.bendingPoints
+                );
+                if (sourceNode?.data.isBorderNode && !sourceNode.data.movedByUser) {
+                  borderNodeId2ConnectionHandles.set(
+                    sourceNode.id,
+                    getUpdatedConnectionHandle(sourceNode, sourcePosition, sourceHandle, 'source')
+                  );
+                  borderNodeId2NewPosition.set(sourceNode.id, convertPositionToBorderNodePosition(sourcePosition));
+                }
+                if (targetNode?.data.isBorderNode && !targetNode.data.movedByUser) {
+                  borderNodeId2ConnectionHandles.set(
+                    targetNode.id,
+                    getUpdatedConnectionHandle(targetNode, targetPosition, targetHandle, 'target')
+                  );
+                  borderNodeId2NewPosition.set(targetNode.id, convertPositionToBorderNodePosition(targetPosition));
+                }
+              }
+            });
+          }
           const connectedEdges = getConnectedEdges([movingNode], getEdges());
           connectedEdges.forEach((edge) => {
             const { sourceHandle, targetHandle } = edge;
@@ -121,19 +164,46 @@ export const useHandleChange = (): UseHandleChangeValue => {
         }
       });
 
-      return nodes.map((node) => {
+      return nodes.reduce((updatedNodes: Node<NodeData>[], node: Node<NodeData>, _index, nodeArray) => {
         const connectionHandles = nodeId2ConnectionHandles.get(node.id);
         if (connectionHandles) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              connectionHandles: connectionHandles,
+          return [
+            ...updatedNodes,
+            {
+              ...node,
+              data: {
+                ...node.data,
+                connectionHandles: connectionHandles,
+              },
             },
-          };
+          ];
         }
-        return node;
-      });
+        const newBorderNodePosition = borderNodeId2NewPosition.get(node.id);
+        if (newBorderNodePosition !== undefined) {
+          const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+            node,
+            nodeArray,
+            updatedNodes,
+            newBorderNodePosition,
+            nodeLookup
+          );
+          if (newXYPosition) {
+            return [
+              ...updatedNodes,
+              {
+                ...node,
+                position: newXYPosition,
+                data: {
+                  ...node.data,
+                  connectionHandles: borderNodeId2ConnectionHandles.get(node.id) || node.data.connectionHandles,
+                  borderNodePosition: newBorderNodePosition,
+                },
+              },
+            ];
+          }
+        }
+        return [...updatedNodes, node];
+      }, []);
     },
     [getEdges]
   );

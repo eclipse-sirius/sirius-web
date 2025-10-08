@@ -28,3 +28,4 @@ export const horizontalHelperLinesSnapGap = 10;
 export const verticalLayoutDirectionGap = 50;
 export const horizontalLayoutDirectionGap = 50;
 export const edgeBendPointOffset = 25;
+export const borderNodeGap = 10;

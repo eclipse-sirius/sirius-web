@@ -19,7 +19,9 @@ import { PlaywrightNode } from '../helpers/PlaywrightNode';
 test.describe('diagram - arrange all', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
+      PlaywrightProject.FLOW_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/`);
@@ -79,7 +81,7 @@ test.describe('diagram - arrange all', () => {
     const sourceNode = new PlaywrightNode(page, 'source');
     const targetNode = new PlaywrightNode(page, 'target');
     const sourcePosition = await sourceNode.getReactFlowXYPosition();
-    const sourceSize = await sourceNode.getReactFlowSize(0, false);
+    const sourceSize = await sourceNode.getReactFlowSize(null, false);
     const targetPosition = await targetNode.getReactFlowXYPosition();
     expect(targetPosition.x).toBeGreaterThan(sourcePosition.x + sourceSize.width);
   });

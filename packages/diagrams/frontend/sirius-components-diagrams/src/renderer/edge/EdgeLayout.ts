@@ -24,10 +24,8 @@ import {
   GetHandleCoordinatesByPosition,
   GetHandlePositionWithOffSet,
   GetNodeCenter,
-  GetParameters,
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
-  Parameters,
   SegmentDirection,
 } from './EdgeLayout.types';
 
@@ -241,36 +239,38 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
   sourceHandle,
   targetHandle
 ) => {
-  const sourceConnectionHandles: ConnectionHandle[] = sourceNode.data.connectionHandles.map(
-    (nodeConnectionHandle: ConnectionHandle) => {
-      if (
-        nodeConnectionHandle.id === sourceHandle &&
-        nodeConnectionHandle.type === 'source' &&
-        !nodeConnectionHandle.XYPosition
-      ) {
-        nodeConnectionHandle.position = sourcePosition;
-      }
-      return nodeConnectionHandle;
-    }
+  const sourceConnectionHandles: ConnectionHandle[] = getUpdatedConnectionHandle(
+    sourceNode,
+    sourcePosition,
+    sourceHandle,
+    'source'
   );
 
-  const targetConnectionHandles: ConnectionHandle[] = targetNode.data.connectionHandles.map(
-    (nodeConnectionHandle: ConnectionHandle) => {
-      if (
-        nodeConnectionHandle.id === targetHandle &&
-        nodeConnectionHandle.type === 'target' &&
-        !nodeConnectionHandle.XYPosition
-      ) {
-        nodeConnectionHandle.position = targetPosition;
-      }
-      return nodeConnectionHandle;
-    }
+  const targetConnectionHandles: ConnectionHandle[] = getUpdatedConnectionHandle(
+    targetNode,
+    targetPosition,
+    targetHandle,
+    'target'
   );
 
   return {
     sourceConnectionHandles,
     targetConnectionHandles,
   };
+};
+
+export const getUpdatedConnectionHandle = (
+  node: Node<NodeData>,
+  position: Position,
+  handle: string,
+  type: 'source' | 'target'
+): ConnectionHandle[] => {
+  return node.data.connectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+    if (nodeConnectionHandle.id === handle && nodeConnectionHandle.type === type && !nodeConnectionHandle.XYPosition) {
+      nodeConnectionHandle.position = position;
+    }
+    return nodeConnectionHandle;
+  });
 };
 
 export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
@@ -280,8 +280,8 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   nodeLookup,
   layoutDirection
 ) => {
-  const { position: sourcePosition } = getParameters(movingNode, source, target, nodeLookup, layoutDirection);
-  const { position: targetPosition } = getParameters(movingNode, target, source, nodeLookup, layoutDirection);
+  const sourcePosition = getHandlePosition(movingNode, source, target, nodeLookup, layoutDirection);
+  const targetPosition = getHandlePosition(movingNode, target, source, nodeLookup, layoutDirection);
 
   return {
     sourcePosition,
@@ -293,26 +293,16 @@ export const getEdgeParameters: GetEdgeParameters = (source, target, nodeLookup,
   const firstBendingPoint = bendingPoints.length > 0 ? bendingPoints[0] : null;
   const lastBendingPoint = bendingPoints.length > 0 ? bendingPoints[bendingPoints.length - 1] : null;
   if (firstBendingPoint && lastBendingPoint) {
-    const { position: sourcePosition } = getHandlePositionFromBendingPoint(
-      source,
-      nodeLookup,
-      layoutDirection,
-      firstBendingPoint
-    );
-    const { position: targetPosition } = getHandlePositionFromBendingPoint(
-      target,
-      nodeLookup,
-      layoutDirection,
-      lastBendingPoint
-    );
+    const sourcePosition = getHandlePositionFromBendingPoint(source, nodeLookup, layoutDirection, firstBendingPoint);
+    const targetPosition = getHandlePositionFromBendingPoint(target, nodeLookup, layoutDirection, lastBendingPoint);
     return {
       sourcePosition,
       targetPosition,
     };
   }
 
-  const { position: sourcePosition } = getParameters(null, source, target, nodeLookup, layoutDirection);
-  const { position: targetPosition } = getParameters(null, target, source, nodeLookup, layoutDirection);
+  const sourcePosition = getHandlePosition(null, source, target, nodeLookup, layoutDirection);
+  const targetPosition = getHandlePosition(null, target, source, nodeLookup, layoutDirection);
   return {
     sourcePosition,
     targetPosition,
@@ -324,7 +314,7 @@ const getHandlePositionFromBendingPoint = (
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
   layoutDirection: string,
   bendingPointToUse: XYPosition
-): Parameters => {
+): Position => {
   const centerA = getNodeCenter(node, nodeLookup);
   const centerB = bendingPointToUse;
 
@@ -350,9 +340,7 @@ const getHandlePositionFromBendingPoint = (
       position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
     }
   }
-  return {
-    position,
-  };
+  return position;
 };
 
 const isVerticalLayoutDirection = (layoutDirection: string): boolean =>
@@ -378,12 +366,10 @@ const computeBorderNodeHandlePosition = (
   }
 };
 
-const getParameters: GetParameters = (nodePositionChange, nodeA, nodeB, nodeLookup, layoutDirection) => {
+const getHandlePosition = (nodePositionChange, nodeA, nodeB, nodeLookup, layoutDirection): Position => {
   if (nodeA.data.isBorderNode) {
     const isInside = isSiblingOrDescendantOf(nodeA, nodeB, nodeLookup);
-    return {
-      position: computeBorderNodeHandlePosition(nodeA.data.borderNodePosition, isInside),
-    };
+    return computeBorderNodeHandlePosition(nodeA.data.borderNodePosition, isInside);
   }
 
   let centerA: NodeCenter;
@@ -407,13 +393,21 @@ const getParameters: GetParameters = (nodePositionChange, nodeA, nodeB, nodeLook
   } else {
     centerB = getNodeCenter(nodeB, nodeLookup);
   }
-
-  const horizontalDifference = Math.abs(centerA.x - centerB.x);
-  const verticalDifference = Math.abs(centerA.y - centerB.y);
   const isDescendant = nodeA.data.isBorderNode
     ? isDescendantOf(nodeA, nodeB, nodeLookup)
     : isDescendantOf(nodeB, nodeA, nodeLookup);
+  return computeHandlePosition(centerA, centerB, isDescendant, layoutDirection);
+};
+
+export const computeHandlePosition = (
+  centerA: NodeCenter,
+  centerB: NodeCenter,
+  isDescendant: boolean,
+  layoutDirection: string
+): Position => {
   let position: Position;
+  const horizontalDifference = Math.abs(centerA.x - centerB.x);
+  const verticalDifference = Math.abs(centerA.y - centerB.y);
   if (isVerticalLayoutDirection(layoutDirection)) {
     if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
       position = centerA.x <= centerB.x ? Position.Right : Position.Left;
@@ -445,9 +439,7 @@ const getParameters: GetParameters = (nodePositionChange, nodeA, nodeB, nodeLook
       }
     }
   }
-  return {
-    position,
-  };
+  return position;
 };
 
 export const getNodeCenter: GetNodeCenter = (node, nodeLookUp) => {

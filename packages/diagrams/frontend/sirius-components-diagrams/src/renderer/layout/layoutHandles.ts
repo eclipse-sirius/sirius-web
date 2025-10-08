@@ -22,6 +22,11 @@ import {
 } from '../handles/useHandleChange.types';
 import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { RawDiagram } from './layout.types';
+import {
+  getBorderNodeParentIfExist,
+  convertPositionToBorderNodePosition,
+  computeBorderNodeXYPositionFromBorderNodePosition,
+} from './layoutBorderNodes';
 
 const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
@@ -158,9 +163,11 @@ const layoutHandlePosition = (
     const sourceNode = nodeLookup.get(sourceEdgeNode);
     const targetNode = nodeLookup.get(targetEdgeNode);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
+      const sourceReferenceNode = getBorderNodeParentIfExist(sourceNode, nodeLookup);
+      const targetReferenceNode = getBorderNodeParentIfExist(targetNode, nodeLookup);
       const { sourcePosition, targetPosition } = getEdgeParameters(
-        sourceNode,
-        targetNode,
+        sourceReferenceNode,
+        targetReferenceNode,
         nodeLookup,
         diagramDescription.arrangeLayoutDirection,
         edge.data?.bendingPoints ?? []
@@ -186,17 +193,48 @@ const layoutHandlePosition = (
           targetHandle
         );
 
-        diagram.nodes = diagram.nodes.map((node) => {
-          if (edge.source && edge.target) {
-            if (edge.source === node.id) {
-              node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
+        diagram.nodes = diagram.nodes.reduce(
+          (updatedNodes: Node<NodeData>[], node: Node<NodeData>, _index, nodeArray) => {
+            if (edge.source && edge.target) {
+              if (edge.source === node.id) {
+                if (node.data.isBorderNode && !node.data.movedByUser) {
+                  const newBorderNodePosition = convertPositionToBorderNodePosition(sourcePosition);
+                  const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                    node,
+                    nodeArray,
+                    updatedNodes,
+                    newBorderNodePosition,
+                    nodeLookup
+                  );
+                  if (newXYPosition) {
+                    node.position = newXYPosition;
+                  }
+                  node.data = { ...node.data, borderNodePosition: newBorderNodePosition };
+                }
+                node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
+              }
+              if (edge.target === node.id) {
+                if (node.data.isBorderNode && !node.data.movedByUser) {
+                  const newBorderNodePosition = convertPositionToBorderNodePosition(targetPosition);
+                  const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                    node,
+                    nodeArray,
+                    updatedNodes,
+                    newBorderNodePosition,
+                    nodeLookup
+                  );
+                  if (newXYPosition) {
+                    node.position = newXYPosition;
+                  }
+                  node.data = { ...node.data, borderNodePosition: convertPositionToBorderNodePosition(targetPosition) };
+                }
+                node.data = { ...node.data, connectionHandles: targetConnectionHandles };
+              }
             }
-            if (edge.target === node.id) {
-              node.data = { ...node.data, connectionHandles: targetConnectionHandles };
-            }
-          }
-          return node;
-        });
+            return [...updatedNodes, node];
+          },
+          []
+        );
       }
     }
   });

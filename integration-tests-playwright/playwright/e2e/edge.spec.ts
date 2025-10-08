@@ -224,3 +224,58 @@ test.describe('edge', () => {
     await playwrightEdge.closePalette();
   });
 });
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeOnBorderNode.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Others...');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagramEdgeOnBorderNode diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when moving the source node, then border nodes moved to simplify the edge path', async ({ page }) => {
+    const sourceNode = new PlaywrightNode(page, 'Entity1-source');
+    const sourceBorderNode = new PlaywrightNode(page, 'bordernode-source');
+    const targetNode = new PlaywrightNode(page, 'Entity1-target');
+    const targetBorderNode = new PlaywrightNode(page, 'bordernode-target');
+    const sourceSizeStep1 = await sourceNode.getReactFlowSize('Entity1-source');
+    const sourceBorderPositionStep1 = await sourceBorderNode.getReactFlowXYPosition('bordernode-source');
+    const targetBorderPositionStep1 = await targetBorderNode.getReactFlowXYPosition('bordernode-target');
+    const targetBorderNodeSizeStep1 = await targetBorderNode.getReactFlowSize('bordernode-target', false);
+
+    const borderNodeGap = 5;
+    // First position source node left of target node
+    expect(sourceBorderPositionStep1.x).toBe(sourceSizeStep1.width - borderNodeGap);
+    expect(targetBorderPositionStep1.x).toBe(-targetBorderNodeSizeStep1.width + borderNodeGap);
+
+    // Second position source node top of target node
+    await sourceNode.move({ x: 300, y: -125 });
+    await targetNode.move({ x: -150, y: 50 });
+    const sourceSizeStep2 = await sourceNode.getReactFlowSize('Entity1-source');
+    const sourceBorderPositionStep2 = await sourceBorderNode.getReactFlowXYPosition('bordernode-source');
+    const targetBorderPositionStep2 = await targetBorderNode.getReactFlowXYPosition('bordernode-target');
+    const targetBorderNodeSizeStep2 = await targetBorderNode.getReactFlowSize('bordernode-target', false);
+    expect(sourceBorderPositionStep2.y).toBe(sourceSizeStep2.height - borderNodeGap);
+    expect(targetBorderPositionStep2.y).toBe(-targetBorderNodeSizeStep2.height + borderNodeGap);
+
+    // third position source node right of target node
+    await targetNode.move({ x: 0, y: -50 });
+    await sourceNode.move({ x: 300, y: 10 });
+    const sourceBorderPositionStep3 = await sourceBorderNode.getReactFlowXYPosition('bordernode-source');
+    const sourceBorderNodeSizeStep3 = await sourceBorderNode.getReactFlowSize('bordernode-source', false);
+    const targetSizeStep3 = await targetNode.getReactFlowSize('Entity1-target');
+    const targetBorderPositionStep3 = await targetBorderNode.getReactFlowXYPosition('bordernode-target');
+    expect(sourceBorderPositionStep3.x).toBe(-sourceBorderNodeSizeStep3.width + borderNodeGap);
+    expect(targetBorderPositionStep3.x).toBe(targetSizeStep3.width - borderNodeGap);
+  });
+});
