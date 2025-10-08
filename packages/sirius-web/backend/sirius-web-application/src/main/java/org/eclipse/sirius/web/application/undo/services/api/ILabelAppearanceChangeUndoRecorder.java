@@ -12,22 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.api;
 
-import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Use to compute undo node appearance change.
+ * Use to compute undo label appearance change.
  *
  * @author mcharfadi
  */
-public interface INodeAppearanceChangeUndoRecorder {
+public interface ILabelAppearanceChangeUndoRecorder {
 
-    boolean canHandle(Node previousNode);
+    boolean canHandle(IDiagramElement diagramElement);
 
-    List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change);
+    List<IAppearanceChange> computeUndoLabelAppearanceChanges(IDiagramElement diagramElement, String labelId, Optional<ILabelAppearanceChange> change);
 
 }

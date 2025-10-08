@@ -116,26 +116,12 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
             edges: laidOutDiagram.edges,
           };
 
-          var id = crypto.randomUUID();
-          synchronizeLayoutData(id, 'layout', finalDiagram);
-          addUndoForLayout(id);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
         });
       }
     },
     [synchronizeLayoutData, getNodes]
   );
-
-  const addUndoForLayout = (mutationId: string) => {
-    var storedUndoStack = sessionStorage.getItem('undoStack');
-    var storedRedoStack = sessionStorage.getItem('redoStack');
-
-    if (storedUndoStack && storedRedoStack) {
-      var undoStack: String[] = JSON.parse(storedUndoStack);
-      if (!undoStack.find((id) => id === mutationId)) {
-        sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
-      }
-    }
-  };
 
   return { layoutOnBoundsChange };
 };

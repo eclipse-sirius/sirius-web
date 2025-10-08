@@ -213,6 +213,7 @@ In conjunction of the `workbenchViewContributionExtensionPoint` frontend extensi
 - https://github.com/eclipse-sirius/sirius-web/issues/5958[#5958] [diagram] Allow the execution of adjust size tool on a multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/5937[#5937] [diagram] Add support for bending points for oblique edges
 - https://github.com/eclipse-sirius/sirius-web/issues/5300[#5300] [diagram] Add undo redo for node layout
+- https://github.com/eclipse-sirius/sirius-web/issues/5651[#5651] [diagram] Add undo redo for label layout and appearance
 
 
 === Improvements

@@ -26,10 +26,12 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
@@ -39,7 +41,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.UndoRedoDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -72,7 +74,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private ExpandCollapseDiagramDescriptionProvider diagramDescriptionProvider;
+    private UndoRedoDiagramDescriptionProvider diagramDescriptionProvider;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -110,36 +112,33 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
+        var siriusWebApplicationOutsideLabelId =  new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            siriusWebApplicationOutsideLabelId.set(siriusWebApplicationNode.getOutsideLabels().get(0).id());
         });
 
         Runnable initialLayout = () -> {
-            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(20, 20), false, false, List.of(), new Size(20, 20));
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(), new Size(20, 20));
+            var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(10, 10), new Size(10, 10), false, false);
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get())).isNotNull();
-            var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get());
-            assertThat(nodeLayoutData.position().x()).isEqualTo(10);
-            assertThat(nodeLayoutData.position().y()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().width()).isEqualTo(20);
-            assertThat(nodeLayoutData.size().height()).isEqualTo(20);
-            assertThat(nodeLayoutData.resizedByUser()).isFalse();
-        });
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
+                this.assertInitialDiagramLayout(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationOutsideLabelId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable secondLayout = () -> {
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(20, 20), new Size(30, 30), true, true, List.of(), new Size(20, 20));
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(20, 20), new Size(30, 30), true, true);
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
             var input = new LayoutDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");
@@ -155,6 +154,14 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(nodeLayoutData.size().width()).isEqualTo(30);
             assertThat(nodeLayoutData.resizedByUser()).isTrue();
             assertThat(nodeLayoutData.movedByUser()).isTrue();
+
+            var labelLayoutData = diagram.getLayoutData().labelLayoutData().get(siriusWebApplicationOutsideLabelId.get());
+            assertThat(labelLayoutData.position().x()).isEqualTo(20);
+            assertThat(labelLayoutData.position().y()).isEqualTo(20);
+            assertThat(labelLayoutData.size().height()).isEqualTo(30);
+            assertThat(labelLayoutData.size().width()).isEqualTo(30);
+            assertThat(labelLayoutData.resizedByUser()).isTrue();
+            assertThat(labelLayoutData.movedByUser()).isTrue();
         });
 
         Runnable undoChanges = () -> {
@@ -199,32 +206,27 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
+        var siriusWebApplicationOutsideLabelId =  new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            siriusWebApplicationOutsideLabelId.set(siriusWebApplicationNode.getOutsideLabels().get(0).id());
         });
 
         Runnable initialLayout = () -> {
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(), new Size(10, 10));
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(10, 10), new Size(10, 10), false, false);
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get())).isNotNull();
-            var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get());
-            assertThat(nodeLayoutData.position().x()).isEqualTo(10);
-            assertThat(nodeLayoutData.position().y()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().width()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().height()).isEqualTo(10);
-            assertThat(nodeLayoutData.resizedByUser()).isFalse();
-            assertThat(nodeLayoutData.movedByUser()).isFalse();
-        });
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
+                this.assertInitialDiagramLayout(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationOutsideLabelId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
@@ -259,6 +261,25 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    public void assertInitialDiagramLayout(Diagram diagram, String nodeId, String labelId) {
+        assertThat(diagram.getLayoutData().nodeLayoutData().get(nodeId)).isNotNull();
+        var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(nodeId);
+        assertThat(nodeLayoutData.position().x()).isEqualTo(10);
+        assertThat(nodeLayoutData.position().y()).isEqualTo(10);
+        assertThat(nodeLayoutData.size().width()).isEqualTo(10);
+        assertThat(nodeLayoutData.size().height()).isEqualTo(10);
+        assertThat(nodeLayoutData.resizedByUser()).isFalse();
+        assertThat(nodeLayoutData.movedByUser()).isFalse();
+
+        var labelLayoutData = diagram.getLayoutData().labelLayoutData().get(labelId);
+        assertThat(labelLayoutData.position().x()).isEqualTo(10);
+        assertThat(labelLayoutData.position().y()).isEqualTo(10);
+        assertThat(labelLayoutData.size().width()).isEqualTo(10);
+        assertThat(labelLayoutData.size().height()).isEqualTo(10);
+        assertThat(labelLayoutData.resizedByUser()).isFalse();
+        assertThat(labelLayoutData.movedByUser()).isFalse();
     }
 
 }
