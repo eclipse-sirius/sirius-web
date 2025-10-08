@@ -29,6 +29,7 @@ import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
 import { ResetLabelPositionTool } from './ResetLabelPositionTool';
 import { ResetManuallyLaidOutHandlesTool } from './ResetManuallyLaidOutHandlesTool';
 import { Tool } from './Tool';
+import { ResetMovedByUserTool } from './ResetMovedByUserTool';
 
 const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
   return !!diagramElement.data && 'pinned' in diagramElement.data;
@@ -38,6 +39,9 @@ const isFadable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElem
 };
 const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Edge<EdgeData> => {
   return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
+};
+const isMovedByUser = (diagramElement: Node<NodeData> | Edge<EdgeData>): boolean => {
+  return !!diagramElement.data && 'movedByUser' in diagramElement.data && !!diagramElement.data.movedByUser;
 };
 const isPositionSet = (position: XYPosition | undefined) => position && position.x && position.y;
 const containsNodeOutsideLabels = (diagramElement: InternalNode<Node<NodeData>> | undefined) => {
@@ -111,6 +115,12 @@ export const PaletteQuickAccessToolBar = ({
     ) {
       quickAccessToolComponents.push(
         <ResetEditedEdgePathTool diagramElementId={diagramElementId} key="tool_resetEditedEdgePathTool" />
+      );
+    }
+
+    if (isMovedByUser(diagramElement) && diagramElement.data?.isBorderNode) {
+      quickAccessToolComponents.push(
+        <ResetMovedByUserTool diagramElementId={diagramElementId} key="tool_resetMovedByUser" />
       );
     }
 
