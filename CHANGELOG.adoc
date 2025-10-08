@@ -21,6 +21,7 @@
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.8[Spring Boot 3.5.8]
+- [releng] Switch to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
 
 
 === Bug fixes
