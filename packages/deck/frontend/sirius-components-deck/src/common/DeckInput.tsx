@@ -59,17 +59,17 @@ export const DeckInput = forwardRef(
     };
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key == 'Enter') {
+      if (e.code == 'Enter') {
         textInput.current?.blur();
         e.preventDefault();
       }
 
-      if (e.key == 'Escape') {
+      if (e.code == 'Escape') {
         setValue(value);
         textInput.current?.blur();
         e.preventDefault();
       }
-      if (e.key == 'Tab') {
+      if (e.code == 'Tab') {
         textInput.current?.blur();
       }
     };
