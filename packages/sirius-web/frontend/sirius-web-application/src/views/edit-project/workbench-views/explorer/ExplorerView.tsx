@@ -177,7 +177,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       const downHandler = (event) => {
         if (
           (event.ctrlKey === true || event.metaKey === true) &&
-          event.key === 'f' &&
+          event.code === 'KeyF' &&
           event.target.tagName !== 'INPUT'
         ) {
           event.preventDefault();

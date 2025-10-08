@@ -32,7 +32,7 @@ export const DuplicateObjectKeyboardShortcut = ({
   };
 
   const duplicateObjectKeyPressHandler = (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+    if ((e.ctrlKey || e.metaKey) && e.code === 'KeyD') {
       e.preventDefault();
       duplicateObjectModalOpen();
     }

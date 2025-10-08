@@ -122,7 +122,7 @@ export const DeckCard = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (titleInputRef.current) {
-      if (e.key === 'F2') {
+      if (e.code === 'F2') {
         titleInputRef.current.select();
       }
     }

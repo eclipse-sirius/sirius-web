@@ -81,7 +81,7 @@ export const SearchQueryInput = forwardRef<SearchQuery, SearchQueryInputProps>(
               onSearchQueryChange({ ...searchQuery, text: event.target.value });
             }}
             onKeyDown={(event) => {
-              if ('Enter' === event.key && (event.ctrlKey || event.metaKey)) {
+              if (event.code === 'Enter' && (event.ctrlKey || event.metaKey)) {
                 onLaunchSearch(searchQuery);
               }
             }}
