@@ -1,6 +1,6 @@
 = Changelog
 
-== 2025.10.0 (work in progress)
+== 2025.10.0
 
 === Shapes
 
@@ -125,6 +125,7 @@ This occured for the tree filter menu in the Explorer when a table was opened, a
 - https://github.com/eclipse-sirius/sirius-web/issues/4171[#4171] [sirius-web] Fix the display of tabs for representations with very long names, which could hide the "close tab" button (and the icon)
 - https://github.com/eclipse-sirius/sirius-web/issues/5614[#5614] [sirius-web] Add support for "pin/unpin" to all right side panels
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Add support for library capability check in controllers
@@ -171,6 +172,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
+
 
 === Improvements
 
