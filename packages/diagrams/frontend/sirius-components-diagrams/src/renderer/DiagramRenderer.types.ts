@@ -53,6 +53,7 @@ export interface NodeData extends Record<string, unknown> {
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
   resizedByUser: boolean;
+  movedByUser: boolean;
   isListChild: boolean;
   isDraggedNode: boolean;
   isDropNodeTarget: boolean;

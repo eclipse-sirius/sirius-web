@@ -36,6 +36,8 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] A new flag `movedByUser` has been added to the node data.
+This flag must be set in custom node converter, an example can be found in `EllipseNodeConverter.ts`.
 
 
 === Dependency update
@@ -78,6 +80,7 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5733[#5733] [sirius-web] Extract frontend project creation into a hook
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] Rename Settings menu and export action
+- https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] Add a new `movedByUser` flag to the node layout data.
 
 
 == 2025.10.0

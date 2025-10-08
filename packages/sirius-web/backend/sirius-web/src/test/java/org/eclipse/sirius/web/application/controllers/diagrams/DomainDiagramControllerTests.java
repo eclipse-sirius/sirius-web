@@ -153,7 +153,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {
-            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, List.of());
+            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, false, List.of());
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -180,7 +180,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable modifyDiagramLayout = () -> {
-            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, List.of());
+            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, false, List.of());
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
