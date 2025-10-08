@@ -57,6 +57,7 @@ const createEdgeAnchorNodeCreationHandles = (
       connectionHandles: [],
       isNew: false,
       resizedByUser: false,
+      movedByUser: false,
       isListChild: false,
       isDraggedNode: false,
       isDropNodeTarget: false,
