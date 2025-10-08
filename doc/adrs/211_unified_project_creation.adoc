@@ -1,0 +1,23 @@
+= ADR-211 - Unified project creation
+
+== Context
+
+We want to unify the project creation.
+In the frontend, whenever the user want to create a project, no matter if it is a blank project or a project initialized from a template, it goes to the same view.
+
+== Decision
+
+We will only keep the `CreateProjectInput` and add the `templateId` and `libraries`.
+
+We will no longer need for the `IProjectTemplateApplicationService` which is used to create the project then initialize the project content.
+The project content will be initialized thanks to a `@TransactionalEventListener` listening for the event emit when a project is created.
+
+== Status
+
+Proposed
+
+== Consequences
+
+- Downstream project that have provided their own implementation of `IProjectTemplateApplicationService` will need to listen to `ProjectCreatedEvent` instead.
+- We will temporarily not be able to open a representation directly after the creation of a project from a template.
+It will be fixed when we will add the support for the workbench configuration from the backend (see ADR 210).
