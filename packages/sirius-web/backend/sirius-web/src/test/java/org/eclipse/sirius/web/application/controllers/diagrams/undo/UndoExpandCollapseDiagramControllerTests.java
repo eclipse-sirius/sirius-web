@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.UndoRedoDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -67,7 +67,7 @@ public class UndoExpandCollapseDiagramControllerTests extends AbstractIntegratio
     private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
-    private ExpandCollapseDiagramDescriptionProvider expandCollapseDiagramDescriptionProvider;
+    private UndoRedoDiagramDescriptionProvider expandCollapseDiagramDescriptionProvider;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;

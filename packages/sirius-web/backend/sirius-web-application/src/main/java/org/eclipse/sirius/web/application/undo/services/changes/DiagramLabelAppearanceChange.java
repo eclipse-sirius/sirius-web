@@ -10,24 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.services.api;
+package org.eclipse.sirius.web.application.undo.services.changes;
 
-import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 /**
- * Use to compute undo node appearance change.
+ * Used to record changes made to the appearance of a diagram label.
  *
  * @author mcharfadi
  */
-public interface INodeAppearanceChangeUndoRecorder {
-
-    boolean canHandle(Node previousNode);
-
-    List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change);
-
+public record DiagramLabelAppearanceChange(UUID inputId, String representationId, List<IAppearanceChange> undoChanges, List<IAppearanceChange> redoChanges) implements IDiagramChange {
+  
 }

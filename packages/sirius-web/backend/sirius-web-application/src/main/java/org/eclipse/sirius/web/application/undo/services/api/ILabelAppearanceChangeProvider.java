@@ -12,22 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.api;
 
-import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 /**
- * Use to compute undo node appearance change.
+ * Use to provide new appearance changes from previous Label and previous Customized StyleProperties.
  *
  * @author mcharfadi
  */
-public interface INodeAppearanceChangeUndoRecorder {
+public interface ILabelAppearanceChangeProvider {
 
-    boolean canHandle(Node previousNode);
+    List<IAppearanceChange> getAppearanceChanges(ILabelAppearanceChange change, Set<String> previousCustomizedStyleProperties, LabelStyle previousLabelStyle);
 
-    List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change);
-
+    List<IAppearanceChange> getResetLabelAppearanceChange(String labelId, Set<String> previousCustomizedStyleProperties, LabelStyle previousLabelStyle);
 }

@@ -61,6 +61,18 @@ const isErrorPayload = (payload: GQLLayoutDiagramPayload): payload is GQLErrorPa
 const isSuccessPayload = (payload: GQLLayoutDiagramPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
+const addUndoForLayout = (mutationId: string) => {
+  var storedUndoStack = sessionStorage.getItem('undoStack');
+  var storedRedoStack = sessionStorage.getItem('redoStack');
+
+  if (storedUndoStack && storedRedoStack) {
+    var undoStack: String[] = JSON.parse(storedUndoStack);
+    if (!undoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
+    }
+  }
+};
+
 export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useSynchronizeLayoutData' });
   const { diagramId: representationId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
@@ -251,6 +263,11 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     };
 
     const variables: GQLLayoutDiagramVariables = { input };
+
+    if (cause === 'layout') {
+      addUndoForLayout(id);
+    }
+
     layoutDiagram({ variables });
   };
 

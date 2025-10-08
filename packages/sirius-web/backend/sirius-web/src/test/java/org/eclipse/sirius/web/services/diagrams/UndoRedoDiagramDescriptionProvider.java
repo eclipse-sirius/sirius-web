@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelD
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.OutsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
@@ -45,13 +46,13 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide a view based diagram description to test expand and collapse operations in diagrams.
+ * Used to provide a view based diagram description to test undo / redo operations in diagrams.
  *
  * @author sbegaudeau
  */
 @Service
 @Conditional(OnStudioTests.class)
-public class ExpandCollapseDiagramDescriptionProvider implements IEditingContextProcessor {
+public class UndoRedoDiagramDescriptionProvider implements IEditingContextProcessor {
 
     private final IDiagramIdProvider diagramIdProvider;
 
@@ -65,7 +66,7 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
 
     private DeleteTool deleteTool;
 
-    public ExpandCollapseDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
+    public UndoRedoDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.view = this.createView();
     }
@@ -102,9 +103,9 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("ExpandCollapseDiagramDescription".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("UndoRedoDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("ExpandCollapseDiagramDescription"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("UndoRedoDiagramDescription"));
         resource.getContents().add(expandCollapseView);
 
         return expandCollapseView;
@@ -120,6 +121,11 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        var outsideLabel = new OutsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createOutsideLabelStyle())
+                .build();
+
         this.expandNodeTool = new NodeToolBuilder()
                 .name("Expand")
                 .body(
@@ -128,6 +134,7 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                                 .build()
                 )
                 .build();
+
 
         this.collapseNodeTool = new NodeToolBuilder()
                 .name("Collapse")
@@ -157,15 +164,17 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
+                .outsideLabels(outsideLabel)
                 .style(nodeStyle)
                 .collapsible(true)
                 .isCollapsedByDefaultExpression("aql:self.name.endsWith('-domain')")
                 .palette(nodePalette)
                 .build();
 
+
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
-                .titleExpression("aql:'ExpandCollapseDiagram'")
+                .titleExpression("aql:'UndoRedoDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()

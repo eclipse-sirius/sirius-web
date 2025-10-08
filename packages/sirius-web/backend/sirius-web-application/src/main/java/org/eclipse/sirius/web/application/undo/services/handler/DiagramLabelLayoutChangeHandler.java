@@ -12,28 +12,28 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.handler;
 
-import java.util.Objects;
-import java.util.UUID;
-
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
-import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayoutChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelLayoutChange;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+import java.util.UUID;
+
 /**
- * Use to handle the undo/redo for the DiagramNodeLayoutChange.
+ * Use to handle the undo/redo for the DiagramLabelLayoutChange.
  *
  * @author mcharfadi
  */
 @Service
-public class DiagramNodeLayoutChangeHandler implements IRepresentationChangeHandler {
+public class DiagramLabelLayoutChangeHandler implements IRepresentationChangeHandler {
 
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
-    public DiagramNodeLayoutChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+    public DiagramLabelLayoutChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
     }
 
@@ -41,14 +41,14 @@ public class DiagramNodeLayoutChangeHandler implements IRepresentationChangeHand
     public boolean canHandle(UUID inputId, IEditingContext editingContext) {
         return editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChanges().get(inputId) != null &&
                 siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream()
-                .anyMatch(DiagramNodeLayoutChange.class::isInstance);
+                .anyMatch(DiagramLabelLayoutChange.class::isInstance);
     }
 
     @Override
     public void redo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramNodeLayoutChange.class::isInstance)
-                .map(DiagramNodeLayoutChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelLayoutChange.class::isInstance)
+                .map(DiagramLabelLayoutChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
@@ -62,13 +62,13 @@ public class DiagramNodeLayoutChangeHandler implements IRepresentationChangeHand
     @Override
     public void undo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramNodeLayoutChange.class::isInstance)
-                .map(DiagramNodeLayoutChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelLayoutChange.class::isInstance)
+                .map(DiagramLabelLayoutChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
                         var diagramContext = eventProcessor.getDiagramContext();
-                        diagramContext.diagramEvents().addAll(change.undoEvents());
+                        diagramContext.diagramEvents().addAll(change.undoChanges());
                     }
                 });
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,7 +102,7 @@ public class EditLabelAppearanceEventHandler implements IDiagramEventHandler {
                     for (String labelId : editAppearanceInput.labelIds()) {
                         if (node.getOutsideLabels().stream().map(OutsideLabel::id).toList().contains(labelId)) {
                             diagramElementIdToLabelId.put(diagramElementId, labelId);
-                        } else if (node.getInsideLabel().getId().equals(labelId)) {
+                        } else if (node.getInsideLabel() != null && node.getInsideLabel().getId().equals(labelId)) {
                             diagramElementIdToLabelId.put(diagramElementId, labelId);
                         }
                     }
