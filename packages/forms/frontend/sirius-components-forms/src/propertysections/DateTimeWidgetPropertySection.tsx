@@ -139,7 +139,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   useReporting(mutationEditDateTimeResult, (data: GQLEditDateTimeMutationData) => data?.editDateTime);
 
   const onKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if ('Enter' === event.key) {
+    if (event.code === 'Enter') {
       sendEditedValue();
     }
   };
