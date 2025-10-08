@@ -45,10 +45,10 @@ export const Tree = ({
   useEffect(() => {
     const downHandler = (event) => {
       if (
-        (event.key === 'ArrowLeft' ||
-          event.key === 'ArrowRight' ||
-          event.key === 'ArrowUp' ||
-          event.key === 'ArrowDown') &&
+        (event.code === 'ArrowLeft' ||
+          event.code === 'ArrowRight' ||
+          event.code === 'ArrowUp' ||
+          event.code === 'ArrowDown') &&
         event.target.tagName !== 'INPUT'
       ) {
         event.preventDefault();
@@ -63,7 +63,7 @@ export const Tree = ({
           const isExpanded = dataset.expanded === 'true';
           const depth: number = parseInt(dataset.depth ?? '0');
 
-          switch (event.key) {
+          switch (event.code) {
             case 'ArrowLeft':
               if (hasChildren && isExpanded) {
                 const newExpanded = [...expanded];

@@ -132,13 +132,13 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'ArrowUp') {
+      if (event.code === 'ArrowUp') {
         event.preventDefault();
         setSelectedIndex((prev) => (prev === 0 ? filteredToolList.length - 1 : prev - 1));
-      } else if (event.key === 'ArrowDown') {
+      } else if (event.code === 'ArrowDown') {
         event.preventDefault();
         setSelectedIndex((prev) => (prev === filteredToolList.length - 1 ? 0 : prev + 1));
-      } else if (event.key === 'Enter') {
+      } else if (event.code === 'Enter') {
         event.preventDefault();
         // Execute the tool
         const selectedTool = filteredToolList[selectedIndex];
