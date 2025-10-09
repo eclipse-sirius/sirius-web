@@ -21,7 +21,7 @@
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.6[Spring Boot 3.5.6]
-
+- [releng] Switch to elkjs 0.11.0
 
 === Bug fixes
 
@@ -36,7 +36,7 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 
 
 
