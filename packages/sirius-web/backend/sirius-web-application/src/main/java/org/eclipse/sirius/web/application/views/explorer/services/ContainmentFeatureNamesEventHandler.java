@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -30,8 +28,10 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.web.application.views.explorer.dto.ContainmentFeature;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextContainmentFeatureNamesPayload;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IContainmentFeatureProvider;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -53,12 +53,16 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
 
     private final Counter counter;
 
+    private final IContainmentFeatureProvider containmentFeatureNameProvider;
+
     public ContainmentFeatureNamesEventHandler(ICollaborativeMessageService messageService, IObjectService objectService,
-            MeterRegistry meterRegistry) {
+            MeterRegistry meterRegistry,
+            IContainmentFeatureProvider containmentFeatureNameProvider) {
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
+        this.containmentFeatureNameProvider = Objects.requireNonNull(containmentFeatureNameProvider);
     }
 
     @Override
@@ -76,20 +80,18 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
         IPayload payload = new ErrorPayload(input.id(), messages);
 
         if (input instanceof EditingContextContainmentFeatureNamesInput editingContextContainmentFeatureNamesInput) {
-            Optional<EObject> containerOpt = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containerId()).filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
-            Optional<EObject> containedObjectOpt = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containedObjectId()).filter(EObject.class::isInstance)
-                    .map(EObject.class::cast);
+            Optional<Object> optChild = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containedObjectId());
 
-            if (containedObjectOpt.isPresent()) {
-                List<String> containmentFeatureNames = new java.util.ArrayList<>();
-
-                containerOpt.ifPresent(eObject -> containmentFeatureNames.addAll(this.getContainmentFeatureNames(eObject, containedObjectOpt.get())));
+            if (optChild.isPresent()) {
+                Optional<Object> optContainer = this.objectService.getObject(editingContext, editingContextContainmentFeatureNamesInput.containerId());
+                List<ContainmentFeature> containmentFeatureNames = optContainer.map(container -> containmentFeatureNameProvider.getContainmentFeatures(optChild.get(), container))
+                        .orElse(List.of());
 
                 payload = new EditingContextContainmentFeatureNamesPayload(input.id(), containmentFeatureNames);
                 changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
             } else {
                 payload = new ErrorPayload(input.id(), List.of(new Message("Retrieving the candidate containment references failed", MessageLevel.ERROR)));
+
             }
         }
 
@@ -97,10 +99,4 @@ public class ContainmentFeatureNamesEventHandler implements IEditingContextEvent
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private List<String> getContainmentFeatureNames(EObject container, EObject containedObject) {
-        return container.eClass().getEAllContainments().stream()
-                .filter(eReference -> eReference.getEReferenceType().isInstance(containedObject))
-                .map(ENamedElement::getName)
-                .toList();
-    }
 }
