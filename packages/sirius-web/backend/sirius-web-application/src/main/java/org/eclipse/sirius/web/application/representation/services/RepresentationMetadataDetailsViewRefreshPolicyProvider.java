@@ -34,6 +34,7 @@ public class RepresentationMetadataDetailsViewRefreshPolicyProvider implements I
             ChangeKind.REPRESENTATION_DELETION,
             ChangeKind.REPRESENTATION_RENAMING,
             ChangeKind.REPRESENTATION_METADATA_UPDATE,
+            ChangeKind.UNDO_REDO_CHANGE,
             ChangeKind.SEMANTIC_CHANGE);
 
 
