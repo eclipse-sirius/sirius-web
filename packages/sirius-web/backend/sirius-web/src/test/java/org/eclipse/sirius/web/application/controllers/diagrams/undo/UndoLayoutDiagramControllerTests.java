@@ -16,10 +16,14 @@ import com.jayway.jsonpath.JsonPath;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.layoutdata.HandleLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.HandleType;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
@@ -29,7 +33,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.EdgeDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -70,7 +74,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private ExpandCollapseDiagramDescriptionProvider diagramDescriptionProvider;
+    private EdgeDiagramDescriptionProvider diagramDescriptionProvider;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -105,39 +109,40 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a diagram with no initial layout, when the diagram is layouted and undo redo is performed, then the diagram is correctly updated")
     public void givenDiagramWithNoInitialLayoutWhenWeLayoutAndUndoRedoThenDiagramIsUpdatedCorrectly() {
         var flux = this.givenSubscriptionToVisibilityDiagram();
-
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
+        var siriusWebApplicationEdgeId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            var siriusWebApplicationEdge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application -> sirius-web-domain").getEdge();
+            siriusWebApplicationEdgeId.set(siriusWebApplicationEdge.getId());
         });
 
         Runnable initialLayout = () -> {
-            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(20, 20), false, List.of());
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(10, 10), "top", HandleType.source);
+            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, List.of(handleLayoutData));
+            var bendingPoints = List.of(new Position(10, 10), new Position(20, 20), new Position(30, 30));
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result, "$.data.layoutDiagram.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get())).isNotNull();
-            var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get());
-            assertThat(nodeLayoutData.position().x()).isEqualTo(10);
-            assertThat(nodeLayoutData.position().y()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().width()).isEqualTo(20);
-            assertThat(nodeLayoutData.size().height()).isEqualTo(20);
-            assertThat(nodeLayoutData.resizedByUser()).isFalse();
-        });
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
+                assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable secondLayout = () -> {
-            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(20, 20), new Size(30, 30), true, List.of());
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(20, 20), "bottom", HandleType.source);
+            var bendingPoints = List.of(new Position(20, 20), new Position(30, 30), new Position(40, 40));
+            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(20, 20), new Size(30, 30), true, List.of(handleLayoutData));
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result, "$.data.layoutDiagram.__typename");
@@ -152,6 +157,12 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(nodeLayoutData.size().height()).isEqualTo(30);
             assertThat(nodeLayoutData.size().width()).isEqualTo(30);
             assertThat(nodeLayoutData.resizedByUser()).isTrue();
+            var handleLayoutData = nodeLayoutData.handleLayoutData();
+            assertThat(handleLayoutData.get(0)).isNotNull();
+            assertThat(handleLayoutData.get(0).handlePosition()).isEqualTo("bottom");
+            assertThat(handleLayoutData.get(0).position()).isEqualTo(new Position(20, 20));
+            var edgeLayoutData = diagram.getLayoutData().edgeLayoutData().get(siriusWebApplicationEdgeId.get());
+            assertThat(edgeLayoutData.bendingPoints()).contains(new Position(20, 20), new Position(30, 30), new Position(40, 40));
         });
 
         Runnable undoChanges = () -> {
@@ -163,7 +174,6 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
             this.undoMutationRunner.run(input);
         };
-
         Runnable redoChanges = () -> {
             var input = new RedoInput(
                     UUID.randomUUID(),
@@ -196,31 +206,30 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
+        var siriusWebApplicationEdgeId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+            var siriusWebApplicationEdge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application -> sirius-web-domain").getEdge();
+            siriusWebApplicationEdgeId.set(siriusWebApplicationEdge.getId());
         });
 
         Runnable initialLayout = () -> {
-            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, List.of());
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of());
+            var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(10, 10), "top", HandleType.source);
+            var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, List.of(handleLayoutData));
+            var bendingPoints = List.of(new Position(10, 10), new Position(20, 20), new Position(30, 30));
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result, "$.data.layoutDiagram.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get())).isNotNull();
-            var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId.get());
-            assertThat(nodeLayoutData.position().x()).isEqualTo(10);
-            assertThat(nodeLayoutData.position().y()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().width()).isEqualTo(10);
-            assertThat(nodeLayoutData.size().height()).isEqualTo(10);
-            assertThat(nodeLayoutData.resizedByUser()).isFalse();
-        });
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
+                assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
@@ -256,5 +265,21 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    private void assertUpdatedDiagram(Diagram diagram, String siriusWebApplicationNodeId, String siriusWebApplicationEdgeId) {
+        assertThat(diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId)).isNotNull();
+        var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().get(siriusWebApplicationNodeId);
+        assertThat(nodeLayoutData.position().x()).isEqualTo(10);
+        assertThat(nodeLayoutData.position().y()).isEqualTo(10);
+        assertThat(nodeLayoutData.size().width()).isEqualTo(10);
+        assertThat(nodeLayoutData.size().height()).isEqualTo(10);
+        assertThat(nodeLayoutData.resizedByUser()).isFalse();
+        var handleLayoutData = nodeLayoutData.handleLayoutData();
+        assertThat(handleLayoutData.get(0)).isNotNull();
+        assertThat(handleLayoutData.get(0).handlePosition()).isEqualTo("top");
+        assertThat(handleLayoutData.get(0).position()).isEqualTo(new Position(10, 10));
+        var edgeLayoutData = diagram.getLayoutData().edgeLayoutData().get(siriusWebApplicationEdgeId);
+        assertThat(edgeLayoutData.bendingPoints()).contains(new Position(10, 10), new Position(20, 20), new Position(30, 30));
+    };
 
 }
