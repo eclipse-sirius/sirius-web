@@ -416,11 +416,19 @@ type DiagramDescription implements RepresentationDescription {
   palette(diagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
-  connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
+  connectorTools(sourceDiagramElementId: ID!): [ConnectorTool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
+}
+
+type ConnectorTool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  dialogDescriptionId: String
+  candidateDescriptionIds: [String]!
 }
 
 enum ArrangeLayoutDirection {

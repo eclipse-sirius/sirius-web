@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,13 @@ import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
 
-  const { candidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { toolCandidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const style: React.CSSProperties = {};
   if (isNewConnection) {
     const isConnectionCompatibleNode = Boolean(
-      candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
+      toolCandidates.find((tool) => tool.candidateDescriptionIds.includes(descriptionId))
     );
     const isSelectedNode = hoveredNode?.id === nodeId;
     if (isConnectionCompatibleNode) {
@@ -46,7 +46,7 @@ export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): Us
 
   const memoizedStyle = useMemo(
     () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isNewConnection, hoveredNode?.id]
+    [toolCandidates.map((candidate) => candidate.id).join('-'), isNewConnection, hoveredNode?.id]
   );
 
   return { style: memoizedStyle };

@@ -16,7 +16,8 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] The GraphQL field `connectorTools` in `DiagramDescription` has been changed from `connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!` to `connectorTools(sourceDiagramElementId: ID!): [ConnectorTool!]!`.
+* This can now be used to retrieve both the available connection tools for a given source node and the available target candidates for a given tool.
 
 === Dependency update
 
@@ -37,7 +38,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] Improve `connectorTools` field in order to get all the information about a connector tool in one request
 
 
 == 2025.10.0
