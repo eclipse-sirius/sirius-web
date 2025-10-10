@@ -27,7 +27,7 @@ import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChan
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo for the label appearance changes.
+ * Used to record data needed to perform the undo for the label appearance changes.
  *
  * @author mcharfadi
  */

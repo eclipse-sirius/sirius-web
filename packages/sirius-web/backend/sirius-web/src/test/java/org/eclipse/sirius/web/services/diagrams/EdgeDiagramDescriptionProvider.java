@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -129,7 +130,26 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 )
                 .build();
 
+        var deleteEdgeTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
+        var deleteNodeTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
         var nodePalette = new DiagramBuilders().newNodePalette()
+                .deleteTool(deleteNodeTool)
                 .edgeTools(this.edgeTool)
                 .build();
 
@@ -150,6 +170,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
 
         var edgePalette = new DiagramBuilders().newEdgePalette()
                 .edgeReconnectionTools(this.sourceEdgeReconnectionTool(), this.targetEdgeReconnectionTool())
+                .deleteTool(deleteEdgeTool)
                 .build();
 
         var edgeDescription = new DiagramBuilders().newEdgeDescription()

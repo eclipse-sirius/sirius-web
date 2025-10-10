@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.services.api;
+package org.eclipse.sirius.web.application.undo.services.changes;
 
+import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
+
+import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-
 /**
- * Used to redo some representation changes.
+ * Used to record changes made to the appearance of a diagram node.
  *
  * @author mcharfadi
  */
-public interface IRepresentationChangeHandler {
-
-    boolean canHandle(UUID inputId, IEditingContext editingContext);
-
-    void redo(UUID inputId, IEditingContext editingContext);
-
-    void undo(UUID inputId, IEditingContext editingContext);
-
+public record DiagramEdgeAppearanceChange(UUID inputId, String representationId, List<IAppearanceChange> undoChanges, List<IAppearanceChange> redoChanges) implements IDiagramChange {
+  
 }

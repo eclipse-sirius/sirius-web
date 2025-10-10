@@ -50,7 +50,7 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElemen
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo/redo for the ViewCreationRequest and ViewDeletionRequest changes.
+ * Used to record data needed to perform the undo/redo for the ViewCreationRequest and ViewDeletionRequest changes.
  *
  * @author mcharfadi
  */

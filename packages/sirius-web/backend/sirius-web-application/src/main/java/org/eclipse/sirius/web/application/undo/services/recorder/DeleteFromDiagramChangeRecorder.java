@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayout
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.undo.services.api.IEdgeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramFadeElementChange;
@@ -48,7 +49,7 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElemen
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo for the appearance changes of a node after it was deleted.
+ * Used to record data needed to perform the undo for the appearance changes of a node after it was deleted.
  *
  * @author mcharfadi
  */
@@ -59,11 +60,14 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
 
     private final List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders;
 
+    private final IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder;
+
     private final List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders;
 
-    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
+    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders, IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
+        this.edgeAppearanceChangeUndoRecorder = Objects.requireNonNull(edgeAppearanceChangeUndoRecorder);
         this.labelAppearanceChangeUndoRecorders = Objects.requireNonNull(labelAppearanceChangeUndoRecorders);
     }
 
@@ -72,6 +76,10 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
         if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof DeleteFromDiagramInput deleteFromDiagramInput) {
             List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();
             List<IRepresentationChange> representationChanges = new ArrayList<>();
+
+            deleteFromDiagramInput.edgeIds().forEach(edgeId ->
+                this.diagramQueryService.findEdgeById(previousDiagram, edgeId).ifPresent(previousEdge ->
+                    undoAppearanceChanges.addAll(this.edgeAppearanceChangeUndoRecorder.computeEdgeAppearanceChanges(previousEdge, Optional.empty()))));
 
             deleteFromDiagramInput.nodeIds().forEach(nodeId -> {
                 Optional<Node> optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, nodeId);
@@ -135,9 +143,12 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
                         });
                 }
 
+            });
+
+            if (!undoAppearanceChanges.isEmpty()) {
                 var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), undoAppearanceChanges, List.of());
                 representationChanges.add(diagramNodeAppearanceChange);
-            });
+            }
 
             if (!representationChanges.isEmpty()) {
                 if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(deleteFromDiagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(deleteFromDiagramInput.id()).isEmpty()) {

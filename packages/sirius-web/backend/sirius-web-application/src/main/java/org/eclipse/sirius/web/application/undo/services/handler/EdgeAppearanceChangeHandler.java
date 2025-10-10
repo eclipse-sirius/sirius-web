@@ -21,20 +21,20 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
-import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramEdgeAppearanceChange;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to handle the undo/redo for the edition of the appearance of diagram labels.
+ * Used to handle the undo/redo for the edition of the appearance of diagram edges.
  *
  * @author mcharfadi
  */
 @Service
-public class LabelAppearanceChangeHandler implements IRepresentationChangeHandler {
+public class EdgeAppearanceChangeHandler implements IRepresentationChangeHandler {
 
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
-    public LabelAppearanceChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+    public EdgeAppearanceChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
     }
 
@@ -42,14 +42,14 @@ public class LabelAppearanceChangeHandler implements IRepresentationChangeHandle
     public boolean canHandle(UUID inputId, IEditingContext editingContext) {
         return editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChanges().get(inputId) != null &&
                 siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream()
-                .anyMatch(DiagramLabelAppearanceChange.class::isInstance);
+                .anyMatch(DiagramEdgeAppearanceChange.class::isInstance);
     }
 
     @Override
     public void undo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelAppearanceChange.class::isInstance)
-                .map(DiagramLabelAppearanceChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramEdgeAppearanceChange.class::isInstance)
+                .map(DiagramEdgeAppearanceChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
@@ -63,8 +63,8 @@ public class LabelAppearanceChangeHandler implements IRepresentationChangeHandle
     @Override
     public void redo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelAppearanceChange.class::isInstance)
-                .map(DiagramLabelAppearanceChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramEdgeAppearanceChange.class::isInstance)
+                .map(DiagramEdgeAppearanceChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
@@ -74,4 +74,5 @@ public class LabelAppearanceChangeHandler implements IRepresentationChangeHandle
                 });
         }
     }
+
 }

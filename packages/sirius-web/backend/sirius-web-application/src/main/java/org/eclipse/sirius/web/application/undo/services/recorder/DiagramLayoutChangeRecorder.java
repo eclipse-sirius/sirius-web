@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
@@ -25,19 +27,23 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramEdgeLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.HandleLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramEdgeLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayoutChange;
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo for the appearance changes of a node after it was deleted.
+ * Used to record data needed to perform the undo for layout changes.
  *
  * @author mcharfadi
  */
@@ -52,6 +58,8 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
             List<DiagramNodeLayoutEvent> redoNodeLayoutEvents = new ArrayList<>();
             List<DiagramLabelLayoutEvent> undoLabelLayoutEvents = new ArrayList<>();
             List<DiagramLabelLayoutEvent> redoLabelLayoutEvents = new ArrayList<>();
+            List<DiagramEdgeLayoutEvent> undoEdgeLayoutEvents = new ArrayList<>();
+            List<DiagramEdgeLayoutEvent> redoEdgeLayoutEvents = new ArrayList<>();
 
             var previousNodeLayout = previousDiagram.getLayoutData().nodeLayoutData();
             layoutDiagramInput.diagramLayoutData().nodeLayoutData()
@@ -79,6 +87,19 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
                         }
                     });
 
+            var previousEdgeLayout = previousDiagram.getLayoutData().edgeLayoutData();
+            layoutDiagramInput.diagramLayoutData().edgeLayoutData()
+                    .forEach(updatedEdgeLayoutInput -> {
+                        var previousEdgelLayoutData = previousEdgeLayout.get(updatedEdgeLayoutInput.id());
+                        if (previousEdgelLayoutData != null) {
+                            if (!isSameEdgeLayoutData(previousEdgelLayoutData, updatedEdgeLayoutInput)) {
+                                var updatedEdgeLayout = new EdgeLayoutData(updatedEdgeLayoutInput.id(), updatedEdgeLayoutInput.bendingPoints(), updatedEdgeLayoutInput.edgeAnchorLayoutData());
+                                undoEdgeLayoutEvents.add(new DiagramEdgeLayoutEvent(previousEdgelLayoutData.id(), previousEdgelLayoutData));
+                                redoEdgeLayoutEvents.add(new DiagramEdgeLayoutEvent(updatedEdgeLayoutInput.id(), updatedEdgeLayout));
+                            }
+                        }
+                    });
+
             if (!undoNodeLayoutEvents.isEmpty()) {
                 var nodeLayoutChange = new DiagramNodeLayoutChange(layoutDiagramInput.id(), layoutDiagramInput.representationId(), undoNodeLayoutEvents, redoNodeLayoutEvents);
                 representationChanges.add(nodeLayoutChange);
@@ -87,6 +108,11 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
             if (!undoLabelLayoutEvents.isEmpty()) {
                 var nodeLabelLayoutChange = new DiagramLabelLayoutChange(layoutDiagramInput.id(), layoutDiagramInput.representationId(), undoLabelLayoutEvents, redoLabelLayoutEvents);
                 representationChanges.add(nodeLabelLayoutChange);
+            }
+
+            if (!undoEdgeLayoutEvents.isEmpty()) {
+                var edgeLayoutChange = new DiagramEdgeLayoutChange(layoutDiagramInput.id(), layoutDiagramInput.representationId(), undoEdgeLayoutEvents, redoEdgeLayoutEvents);
+                representationChanges.add(edgeLayoutChange);
             }
 
             if (!representationChanges.isEmpty()) {
@@ -99,10 +125,26 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
         }
     }
 
+    private boolean isSameEdgeLayoutData(EdgeLayoutData previousLayout, EdgeLayoutDataInput updatedLayout) {
+        boolean isSame = previousLayout.bendingPoints().size() == updatedLayout.bendingPoints().size();
+        if (isSame) {
+            int count = 0;
+            for (Position previousPosition : previousLayout.bendingPoints()) {
+                if (!isSamePosition(previousPosition, updatedLayout.bendingPoints().get(count))) {
+                    return false;
+                } else {
+                    count++;
+                }
+            }
+        }
+        return isSame;
+    }
+
     private boolean isSameNodeLayoutData(NodeLayoutData previousLayout, NodeLayoutDataInput updatedLayout) {
         return isSamePosition(previousLayout.position(), updatedLayout.position())
                 && isSameSize(previousLayout.size(), updatedLayout.size())
-                && previousLayout.resizedByUser() == updatedLayout.resizedByUser();
+                && previousLayout.resizedByUser() == updatedLayout.resizedByUser()
+                && isSameHandleLayoutDatas(previousLayout.handleLayoutData(), updatedLayout.handleLayoutData());
     }
 
     private boolean isSamePosition(Position previousPosition, Position updatedPosition) {
@@ -111,6 +153,25 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
 
     private boolean isSameSize(Size previousSize, Size updatedSize) {
         return previousSize.height() == updatedSize.height() && previousSize.width() == updatedSize.width();
+    }
+
+    private boolean isSameLabelLayoutData(LabelLayoutData previousLayout, LabelLayoutDataInput updatedLayout) {
+        return isSamePosition(previousLayout.position(), updatedLayout.position());
+    }
+
+    private boolean isSameHandleLayoutDatas(List<HandleLayoutData> previousLayouts, List<HandleLayoutData> updatedLayouts) {
+        boolean isSame = previousLayouts.size() == updatedLayouts.size();
+        if (isSame) {
+            int count = 0;
+            for (HandleLayoutData previousLayout : previousLayouts) {
+                if (!isSamePosition(previousLayout.position(), updatedLayouts.get(count).position()) || !previousLayout.handlePosition().equals(updatedLayouts.get(count).handlePosition())) {
+                    return false;
+                } else {
+                    count++;
+                }
+            }
+        }
+        return isSame;
     }
 
 }
