@@ -11,15 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useViewport } from '@xyflow/react';
-import React from 'react';
+import React, { useContext } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { Label } from '../Label';
 import { useLabelMove } from '../move/useLabelMove';
 import { DraggableOutsideLabelProps } from './DraggableOutsideLabel.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 
 export const DraggableOutsideLabel = ({ id, label, faded, highlighted }: DraggableOutsideLabelProps) => {
   const { onNodeLabelMoveStop } = useLabelMove();
   const { zoom } = useViewport();
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const onStop = (_e, eventData: DraggableData) => {
     onNodeLabelMoveStop(eventData, id);
@@ -28,7 +31,7 @@ export const DraggableOutsideLabel = ({ id, label, faded, highlighted }: Draggab
   const nodeRef = React.useRef<HTMLInputElement | null>(null);
 
   return (
-    <Draggable position={label.position} onStop={onStop} scale={zoom} nodeRef={nodeRef}>
+    <Draggable position={label.position} onStop={onStop} scale={zoom} nodeRef={nodeRef} disabled={readOnly}>
       <div ref={nodeRef}>
         <Label diagramElementId={id} label={label} faded={faded} highlighted={highlighted} />
       </div>
