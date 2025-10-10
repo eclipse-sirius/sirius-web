@@ -35,6 +35,8 @@ import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks;
@@ -45,6 +47,7 @@ import reactor.core.publisher.Sinks;
  * @author mcharfadi
  */
 @Service
+@Order(value = Ordered.HIGHEST_PRECEDENCE)
 public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor {
     /**
      * Whitelist of input types that should not trigger undo/redo recording, either because it does not make sense
