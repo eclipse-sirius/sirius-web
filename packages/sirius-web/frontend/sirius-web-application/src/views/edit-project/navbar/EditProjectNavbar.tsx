@@ -51,7 +51,7 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 const isProjectRenamedEventPayload = (payload: GQLProjectEventPayload): payload is GQLProjectRenamedEventPayload =>
   payload.__typename === 'ProjectRenamedEventPayload';
 
-export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) => {
+export const EditProjectNavbar = ({ workbenchHandle, name }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const [state, setState] = useState<EditProjectNavbarState>({
     anchorEl: null,
@@ -118,6 +118,7 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
           anchorEl={state.anchorEl}
           onClose={onCloseContextMenu}
           workbenchHandle={workbenchHandle}
+          name={name}
         />
       ) : null}
     </>

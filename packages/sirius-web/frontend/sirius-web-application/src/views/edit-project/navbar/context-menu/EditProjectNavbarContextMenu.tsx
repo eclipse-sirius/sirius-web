@@ -36,6 +36,7 @@ export const EditProjectNavbarContextMenu = ({
   anchorEl,
   onClose,
   workbenchHandle,
+  name,
 }: EditProjectNavbarContextMenuProps) => {
   const [state, setState] = useState<EditProjectNavbarContextMenuState>({
     redirectUrl: null,
@@ -64,7 +65,9 @@ export const EditProjectNavbarContextMenu = ({
         {project.capabilities.canDuplicate ? (
           <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
         ) : null}
-        {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
+        {project.capabilities.canDownload ? (
+          <DownloadProjectMenuItem project={project} name={name} onClick={onClose} />
+        ) : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />
         ))}

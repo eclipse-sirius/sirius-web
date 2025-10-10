@@ -12,7 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.zip.ZipInputStream;
+
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.data.MultiEditingContextFlowIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -34,16 +45,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.zip.ZipInputStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Integration tests of the project download controllers.
@@ -82,35 +83,35 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
             assertThat(zipEntries).isNotEmpty().containsKey("Studio/manifest.json");
 
             String manifestContentExpected = """
-                    {
-                      "natures":[
-                        "siriusComponents://nature?kind=studio"
-                      ],
-                      "documentIdsToName":{
-                        "356e45e8-7d70-439e-b2dd-d0313cd65174":"Ellipse Diagram View",
-                        "f0e490c1-79f1-49a0-b1f2-3637f2958148":"Domain",
-                        "ed2a5355-991d-458f-87f1-ea3a18b1f104":"Form View",
-                        "fc1d7b23-2818-4874-bb30-8831ea287a44":"Diagram View"
-                      },
-                      "metamodels":[
-                        "domain://buck",
-                        "http://www.eclipse.org/emf/2002/Ecore",
-                        "http://www.eclipse.org/sirius-web/customcells",
-                        "http://www.eclipse.org/sirius-web/customnodes",
-                        "http://www.eclipse.org/sirius-web/deck",
-                        "http://www.eclipse.org/sirius-web/diagram",
-                        "http://www.eclipse.org/sirius-web/domain",
-                        "http://www.eclipse.org/sirius-web/form",
-                        "http://www.eclipse.org/sirius-web/gantt",
-                        "http://www.eclipse.org/sirius-web/table",
-                        "http://www.eclipse.org/sirius-web/tree",
-                        "http://www.eclipse.org/sirius-web/view",
-                        "https://www.eclipse.org/sirius/widgets/reference",
-                        "https://www.eclipse.org/sirius/widgets/tablewidget"
-                      ],
-                      "representations":{}
-                    }
-                    """;
+                {
+                  "natures":[
+                    "siriusComponents://nature?kind=studio"
+                  ],
+                  "documentIdsToName":{
+                    "356e45e8-7d70-439e-b2dd-d0313cd65174":"Ellipse Diagram View",
+                    "f0e490c1-79f1-49a0-b1f2-3637f2958148":"Domain",
+                    "ed2a5355-991d-458f-87f1-ea3a18b1f104":"Form View",
+                    "fc1d7b23-2818-4874-bb30-8831ea287a44":"Diagram View"
+                  },
+                  "metamodels":[
+                    "domain://buck",
+                    "http://www.eclipse.org/emf/2002/Ecore",
+                    "http://www.eclipse.org/sirius-web/customcells",
+                    "http://www.eclipse.org/sirius-web/customnodes",
+                    "http://www.eclipse.org/sirius-web/deck",
+                    "http://www.eclipse.org/sirius-web/diagram",
+                    "http://www.eclipse.org/sirius-web/domain",
+                    "http://www.eclipse.org/sirius-web/form",
+                    "http://www.eclipse.org/sirius-web/gantt",
+                    "http://www.eclipse.org/sirius-web/table",
+                    "http://www.eclipse.org/sirius-web/tree",
+                    "http://www.eclipse.org/sirius-web/view",
+                    "https://www.eclipse.org/sirius/widgets/reference",
+                    "https://www.eclipse.org/sirius/widgets/tablewidget"
+                  ],
+                  "representations":{}
+                }
+                """;
 
             String manifestContent = zipEntries.get("Studio/manifest.json").toString(StandardCharsets.UTF_8);
             var objectMapper = new ObjectMapper();
@@ -142,6 +143,48 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
             semanticDataContentExpected = this.getExpectedStudioViewDocumentData();
             semanticDataContent = zipEntries.get(viewDocumentPath).toString(StandardCharsets.UTF_8);
+            assertThat(objectMapper.readTree(semanticDataContentExpected)).isEqualTo(objectMapper.readTree(semanticDataContent));
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a Flow project with more than one editing context, when the download of the project is requested with a specific editing context id, then the correct semantic data are " +
+        "retrieved")
+    public void givenMultiContextFlowProjectWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
+        this.givenCommittedTransaction.commit();
+
+        // Test on the main editing context
+        var response = this.download(MultiEditingContextFlowIdentifiers.PROJECT_ID, "main");
+
+        try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
+            HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_SEMANTIC_DOCUMENT + ".json";
+            assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
+
+            var objectMapper = new ObjectMapper();
+
+            String semanticDataContentExpected = this.getExpectedMultiEditingContextFlowMainDocumentContent();
+            String semanticDataContent = zipEntries.get(domainDocumentPath).toString(StandardCharsets.UTF_8);
+            assertThat(objectMapper.readTree(semanticDataContentExpected)).isEqualTo(objectMapper.readTree(semanticDataContent));
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+
+        // Test on the second  editing context
+        var response2 = this.download(MultiEditingContextFlowIdentifiers.PROJECT_ID, "main2");
+
+        try (var inputStream = new ZipInputStream(response2.getBody().getInputStream())) {
+            HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_2_SEMANTIC_DOCUMENT + ".json";
+            assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
+
+            var objectMapper = new ObjectMapper();
+
+            String semanticDataContentExpected = this.getExpectedMultiEditingContextFlowMain2DocumentContent();
+            String semanticDataContent = zipEntries.get(domainDocumentPath).toString(StandardCharsets.UTF_8);
             assertThat(objectMapper.readTree(semanticDataContentExpected)).isEqualTo(objectMapper.readTree(semanticDataContent));
         } catch (IOException exception) {
             fail(exception.getMessage());
@@ -184,24 +227,24 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
             assertThat(zipEntries).isNotEmpty().containsKey("Ecore Sample/manifest.json");
 
             String manifestContentExpected = """
-                    {
-                      "natures": ["ecore"],
-                      "documentIdsToName": { "48dc942a-6b76-4133-bca5-5b29ebee133d": "Ecore" },
-                      "metamodels": ["domain://buck", "http://www.eclipse.org/emf/2002/Ecore"],
-                      "representations": {
-                        "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
-                          "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
-                          "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
-                        },
-                        "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
-                          "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
-                          "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
-                        }
-                      }
+                {
+                  "natures": ["ecore"],
+                  "documentIdsToName": { "48dc942a-6b76-4133-bca5-5b29ebee133d": "Ecore" },
+                  "metamodels": ["domain://buck", "http://www.eclipse.org/emf/2002/Ecore"],
+                  "representations": {
+                    "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
+                      "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                      "type": "siriusComponents://representation?type=Portal",
+                      "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
+                    },
+                    "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
+                      "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                      "type": "siriusComponents://representation?type=Portal",
+                      "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                     }
-                    """;
+                  }
+                }
+                """;
 
             String manifestContent = zipEntries.get("Ecore Sample/manifest.json").toString(StandardCharsets.UTF_8);
             var objectMapper = new ObjectMapper();
@@ -214,6 +257,19 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     private ResponseEntity<Resource> download(String projectId) {
         var uri = "http://localhost:" + this.port + "/api/projects/" + projectId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        return response;
+    }
+
+    private ResponseEntity<Resource> download(String projectId, String editingContextName) {
+        var uri = "http://localhost:" + this.port + "/api/projects/" + projectId + "/editing-context-name/" + editingContextName;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
@@ -248,374 +304,487 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     private String getExpectedStudioDomainDocumentData() {
         return """
-                    {
-                      "json":{
-                        "version":"1.0",
-                        "encoding":"utf-8"
-                      },
-                      "ns":{
-                        "domain":"http://www.eclipse.org/sirius-web/domain"
-                      },
-                      "content":[
-                        $CONTENT$
-                      ]
-                    }
-                """.replace("$CONTENT$", this.getExpectedStudioDomainDocumentDataContent());
+                {
+                  "json":{
+                    "version":"1.0",
+                    "encoding":"utf-8"
+                  },
+                  "ns":{
+                    "domain":"http://www.eclipse.org/sirius-web/domain"
+                  },
+                  "content":[
+                    $CONTENT$
+                  ]
+                }
+            """.replace("$CONTENT$", this.getExpectedStudioDomainDocumentDataContent());
+    }
+
+    private String getExpectedMultiEditingContextFlowMainDocumentContent() {
+        return """
+            {
+                 "json": { "version": "1.0", "encoding": "utf-8" },
+                 "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
+                 "content": [
+                   {
+                     "id": "ff66bbf7-be79-4b89-8c32-d1603c9966af",
+                     "eClass": "flow:System",
+                     "data": {
+                       "name": "NewSystem",
+                       "elements": [
+                         {
+                           "id": "89d67776-6687-436f-8469-88a685053638",
+                           "eClass": "flow:CompositeProcessor",
+                           "data": {
+                             "name": "CompositeProcessor1",
+                             "elements": [
+                               {
+                                 "id": "d5f4a659-904e-4135-9947-de298b0cbaf4",
+                                 "eClass": "flow:Processor",
+                                 "data": {
+                                   "incomingFlows": ["d4a7f861-c178-47f3-abfc-ed171398e1e7"],
+                                   "name": "Processor1"
+                                 }
+                               }
+                             ]
+                           }
+                         },
+                         {
+                           "id": "d0bc85f6-d597-4f36-bd1e-0980f7fb0fe4",
+                           "eClass": "flow:DataSource",
+                           "data": {
+                             "outgoingFlows": [
+                               {
+                                 "id": "d4a7f861-c178-47f3-abfc-ed171398e1e7",
+                                 "eClass": "flow:DataFlow",
+                                 "data": {
+                                   "usage": "standard",
+                                   "capacity": 6,
+                                   "load": 6,
+                                   "target": "d5f4a659-904e-4135-9947-de298b0cbaf4"
+                                 }
+                               }
+                             ],
+                             "name": "DataSource1",
+                             "volume": 6
+                           }
+                         }
+                       ]
+                     }
+                   }
+                 ]
+               }
+            """;
+    }
+
+    private String getExpectedMultiEditingContextFlowMain2DocumentContent() {
+        return """
+            {
+                 "json": { "version": "1.0", "encoding": "utf-8" },
+                 "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
+                 "content": [
+                   {
+                     "id": "f926f2ec-681b-434c-b3e6-0fda47388768",
+                     "eClass": "flow:System",
+                     "data": {
+                       "name": "NewSystem2",
+                       "elements": [
+                         {
+                           "id": "ed151a41-6f24-4aea-83a2-79ece2bcec4a",
+                           "eClass": "flow:CompositeProcessor",
+                           "data": {
+                             "name": "CompositeProcessor2",
+                             "elements": [
+                               {
+                                 "id": "dafeb7c5-de89-463e-8950-e322ec619b45",
+                                 "eClass": "flow:Processor",
+                                 "data": {
+                                   "incomingFlows": ["562e726e-207f-4c16-a2b4-e1f47828283c"],
+                                   "name": "Processor2"
+                                 }
+                               }
+                             ]
+                           }
+                         },
+                         {
+                           "id": "7fc90016-bb2e-428e-b99e-2fc813ca8a06",
+                           "eClass": "flow:DataSource",
+                           "data": {
+                             "outgoingFlows": [
+                               {
+                                 "id": "562e726e-207f-4c16-a2b4-e1f47828283c",
+                                 "eClass": "flow:DataFlow",
+                                 "data": {
+                                   "usage": "standard",
+                                   "capacity": 6,
+                                   "load": 6,
+                                   "target": "dafeb7c5-de89-463e-8950-e322ec619b45"
+                                 }
+                               }
+                             ],
+                             "name": "DataSource2",
+                             "volume": 6
+                           }
+                         }
+                       ]
+                     }
+                   }
+                 ]
+               }
+            """;
     }
 
     private String getExpectedStudioDomainDocumentDataContent() {
         return """
-                {
-                  "id":"f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf",
-                  "eClass":"domain:Domain",
-                  "data":{
-                    "name":"buck",
-                    "types":[
-                      {
-                        "id":"c341bf91-d315-4264-9787-c51b121a6375",
-                        "eClass":"domain:Entity",
-                        "data":{
-                          "name":"Root",
-                          "attributes":[
-                            {
-                              "id":"7ac92c9d-3cb6-4374-9774-11bb62962fe2",
-                              "eClass":"domain:Attribute",
-                              "data":{
-                                "name":"label"
-                              }
-                            },
-                           {
-                             "id":"d51d676c-0cb7-414b-8358-bacbc5d33942",
-                             "eClass":"domain:Attribute",
-                             "data":{
-                               "name":"description"
-                             }
-                           }
-                          ],
-                          "relations":[
-                            {
-                              "id":"f8fefc5d-4fee-4666-815e-94b24a95183f",
-                              "eClass":"domain:Relation",
-                              "data":{
-                                "name":"humans",
-                                "many":true,
-                                "containment":true,
-                                "targetType":"1731ffb5-bfb0-46f3-a23d-0c0650300005"
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id":"c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc",
-                        "eClass":"domain:Entity",
-                        "data":{
-                          "name":"NamedElement",
-                          "attributes":[
-                            {
-                              "id":"520bb7c9-5f28-40f7-bda0-b35dd593876d",
-                              "eClass":"domain:Attribute",
-                              "data":{
-                                "name":"name"
-                              }
-                            }
-                          ],
-                          "abstract":true
-                        }
-                      },
-                      {
-                        "id":"1731ffb5-bfb0-46f3-a23d-0c0650300005",
-                        "eClass":"domain:Entity",
-                        "data":{
-                          "name":"Human",
-                          "attributes":[
-                            {
-                              "id":"e86d3f45-d043-441e-b8ab-12e4b3f8915a",
-                              "eClass":"domain:Attribute",
-                              "data":{
-                                "name":"description"
-                              }
-                            },
-                            {
-                              "id":"703e6db4-a193-4da7-a872-6efba2b3a2c5",
-                              "eClass":"domain:Attribute",
-                              "data":{
-                                "name":"promoted",
-                                "type":"BOOLEAN"
-                              }
-                            },
-                            {
-                              "id":"a480dbc0-14b7-4f06-a4f7-4c86139a803a",
-                              "eClass":"domain:Attribute",
-                              "data":{
-                                "name":"birthDate"
-                              }
-                            }
-                          ],
-                          "superTypes":[
-                            "c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc"
-                          ]
-                        }
-                      }
-                    ]
-                  }
-                }
-                """;
-    }
-
-    private String getExpectedStudioViewDocumentData() {
-        return """
-                    {
-                      "json":{
-                        "version":"1.0",
-                        "encoding":"utf-8"
-                      },
-                      "ns":{
-                        "form":"http://www.eclipse.org/sirius-web/form",
-                        "table":"http://www.eclipse.org/sirius-web/table",
-                        "view":"http://www.eclipse.org/sirius-web/view"
-                      },
-                      "content":[
-                        $CONTENT$
-                      ]
-                    }
-                """.replace("$CONTENT$", this.getExpectedStudioViewDocumentDataContent());
-    }
-
-    private String getExpectedStudioViewDocumentDataContent() {
-        return """
-                {
-                  "id":"c4591605-8ea8-4e92-bb17-05c4538248f8",
-                  "eClass":"view:View",
-                  "data":{
-                    "descriptions":[
-                      {
-                        "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
-                        "eClass":"form:FormDescription",
-                        "data":{
-                          "name":"Human Form",
-                          "domainType":"buck::Human",
-                          "pages":[
-                            {
-                              "id":"b0c73654-6f1b-4be5-832d-b97f053b5196",
-                              "eClass":"form:PageDescription",
-                              "data":{
-                                "name":"Human",
-                                "labelExpression":"aql:self.name",
-                                "domainType":"buck::Human",
-                                "groups": $GROUP$
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      $TABLEDESCRIPTION$
-                    ]
-                  }
-                }
-                """.replace("$GROUP$", this.getGroups())
-                .replace("$TABLEDESCRIPTION$", this.getTableDescription());
-    }
-
-    private String getTableDescription() {
-        return """
-                {
-                 "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
-                 "eClass": "table:TableDescription",
-                 "data":
-                     {
-                   "name": "New Table Description",
-                   "domainType": "buck::Root",
-                   "titleExpression": "aql:New Table",
-                   "columnDescriptions": [
-                     {
-                       "id": "3db9745f-6da7-445a-b768-9d5480105eca",
-                       "eClass": "table:ColumnDescription",
-                       "data": {
-                         "name": "Column",
-                         "domainType": "buck::Root",
-                         "semanticCandidatesExpression": "aql:self",
-                         "headerLabelExpression": "aql:self.name"
-                       }
-                     }
-                   ],
-                   "rowDescription": {
-                     "id": "6c4c05cb-0e95-4556-adf5-54269fbf0843",
-                     "eClass": "table:RowDescription",
-                     "data": {
-                       "name": "Row",
-                       "semanticCandidatesExpression": "aql:self.eContents()->filter(buck::Human)->toPaginatedData(cursor,direction,size)"
-                     }
-                   },
-                    "cellDescriptions": [
-                     {
-                       "id": "5cf0f787-43dc-4b8d-b513-51296053a96e",
-                       "eClass": "table:CellDescription",
-                       "data": {
-                         "name": "Cell",
-                         "preconditionExpression": "aql:true",
-                         "valueExpression": "aql:self.name",
-                         "cellWidgetDescription": {
-                           "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
-                           "eClass": "table:CellLabelWidgetDescription"
+            {
+              "id":"f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf",
+              "eClass":"domain:Domain",
+              "data":{
+                "name":"buck",
+                "types":[
+                  {
+                    "id":"c341bf91-d315-4264-9787-c51b121a6375",
+                    "eClass":"domain:Entity",
+                    "data":{
+                      "name":"Root",
+                      "attributes":[
+                        {
+                          "id":"7ac92c9d-3cb6-4374-9774-11bb62962fe2",
+                          "eClass":"domain:Attribute",
+                          "data":{
+                            "name":"label"
+                          }
+                        },
+                       {
+                         "id":"d51d676c-0cb7-414b-8358-bacbc5d33942",
+                         "eClass":"domain:Attribute",
+                         "data":{
+                           "name":"description"
                          }
                        }
-                     }
-                   ]
-                  }
-                }
-                """;
-    }
-
-    private String getGroups() {
-        return """
-                [
+                      ],
+                      "relations":[
+                        {
+                          "id":"f8fefc5d-4fee-4666-815e-94b24a95183f",
+                          "eClass":"domain:Relation",
+                          "data":{
+                            "name":"humans",
+                            "many":true,
+                            "containment":true,
+                            "targetType":"1731ffb5-bfb0-46f3-a23d-0c0650300005"
+                          }
+                        }
+                      ]
+                    }
+                  },
                   {
-                    "id":"28d8d6de-7d6f-4434-9293-0ac4ef2461ac",
-                    "eClass":"form:GroupDescription",
+                    "id":"c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc",
+                    "eClass":"domain:Entity",
                     "data":{
-                      "name":"Properties",
-                      "labelExpression":"Properties",
-                      "children":[
-                        $WIDGETS$
+                      "name":"NamedElement",
+                      "attributes":[
+                        {
+                          "id":"520bb7c9-5f28-40f7-bda0-b35dd593876d",
+                          "eClass":"domain:Attribute",
+                          "data":{
+                            "name":"name"
+                          }
+                        }
+                      ],
+                      "abstract":true
+                    }
+                  },
+                  {
+                    "id":"1731ffb5-bfb0-46f3-a23d-0c0650300005",
+                    "eClass":"domain:Entity",
+                    "data":{
+                      "name":"Human",
+                      "attributes":[
+                        {
+                          "id":"e86d3f45-d043-441e-b8ab-12e4b3f8915a",
+                          "eClass":"domain:Attribute",
+                          "data":{
+                            "name":"description"
+                          }
+                        },
+                        {
+                          "id":"703e6db4-a193-4da7-a872-6efba2b3a2c5",
+                          "eClass":"domain:Attribute",
+                          "data":{
+                            "name":"promoted",
+                            "type":"BOOLEAN"
+                          }
+                        },
+                        {
+                          "id":"a480dbc0-14b7-4f06-a4f7-4c86139a803a",
+                          "eClass":"domain:Attribute",
+                          "data":{
+                            "name":"birthDate"
+                          }
+                        }
+                      ],
+                      "superTypes":[
+                        "c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc"
                       ]
                     }
                   }
                 ]
-                """.replace("$WIDGETS$", this.getWidgets());
+              }
+            }
+            """;
+    }
+
+    private String getExpectedStudioViewDocumentData() {
+        return """
+                {
+                  "json":{
+                    "version":"1.0",
+                    "encoding":"utf-8"
+                  },
+                  "ns":{
+                    "form":"http://www.eclipse.org/sirius-web/form",
+                    "table":"http://www.eclipse.org/sirius-web/table",
+                    "view":"http://www.eclipse.org/sirius-web/view"
+                  },
+                  "content":[
+                    $CONTENT$
+                  ]
+                }
+            """.replace("$CONTENT$", this.getExpectedStudioViewDocumentDataContent());
+    }
+
+    private String getExpectedStudioViewDocumentDataContent() {
+        return """
+            {
+              "id":"c4591605-8ea8-4e92-bb17-05c4538248f8",
+              "eClass":"view:View",
+              "data":{
+                "descriptions":[
+                  {
+                    "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
+                    "eClass":"form:FormDescription",
+                    "data":{
+                      "name":"Human Form",
+                      "domainType":"buck::Human",
+                      "pages":[
+                        {
+                          "id":"b0c73654-6f1b-4be5-832d-b97f053b5196",
+                          "eClass":"form:PageDescription",
+                          "data":{
+                            "name":"Human",
+                            "labelExpression":"aql:self.name",
+                            "domainType":"buck::Human",
+                            "groups": $GROUP$
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  $TABLEDESCRIPTION$
+                ]
+              }
+            }
+            """.replace("$GROUP$", this.getGroups()).replace("$TABLEDESCRIPTION$", this.getTableDescription());
+    }
+
+    private String getTableDescription() {
+        return """
+            {
+             "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
+             "eClass": "table:TableDescription",
+             "data":
+                 {
+               "name": "New Table Description",
+               "domainType": "buck::Root",
+               "titleExpression": "aql:New Table",
+               "columnDescriptions": [
+                 {
+                   "id": "3db9745f-6da7-445a-b768-9d5480105eca",
+                   "eClass": "table:ColumnDescription",
+                   "data": {
+                     "name": "Column",
+                     "domainType": "buck::Root",
+                     "semanticCandidatesExpression": "aql:self",
+                     "headerLabelExpression": "aql:self.name"
+                   }
+                 }
+               ],
+               "rowDescription": {
+                 "id": "6c4c05cb-0e95-4556-adf5-54269fbf0843",
+                 "eClass": "table:RowDescription",
+                 "data": {
+                   "name": "Row",
+                   "semanticCandidatesExpression": "aql:self.eContents()->filter(buck::Human)->toPaginatedData(cursor,direction,size)"
+                 }
+               },
+                "cellDescriptions": [
+                 {
+                   "id": "5cf0f787-43dc-4b8d-b513-51296053a96e",
+                   "eClass": "table:CellDescription",
+                   "data": {
+                     "name": "Cell",
+                     "preconditionExpression": "aql:true",
+                     "valueExpression": "aql:self.name",
+                     "cellWidgetDescription": {
+                       "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
+                       "eClass": "table:CellLabelWidgetDescription"
+                     }
+                   }
+                 }
+               ]
+              }
+            }
+            """;
+    }
+
+    private String getGroups() {
+        return """
+            [
+              {
+                "id":"28d8d6de-7d6f-4434-9293-0ac4ef2461ac",
+                "eClass":"form:GroupDescription",
+                "data":{
+                  "name":"Properties",
+                  "labelExpression":"Properties",
+                  "children":[
+                    $WIDGETS$
+                  ]
+                }
+              }
+            ]
+            """.replace("$WIDGETS$", this.getWidgets());
     }
 
     private String getWidgets() {
         return """
-                {
-                  "id":"b02b89b7-6c06-40f8-9366-83d5f885ada1",
-                  "eClass":"form:TextfieldDescription",
-                  "data":{
-                    "name":"Name",
-                    "labelExpression":"Name",
-                    "helpExpression":"The name of the human",
-                    "valueExpression":"aql:self.name",
-                    "body":[
-                      {
-                        "id":"ecdc23ff-fd4b-47a4-939d-1bc03e656d3d",
-                        "eClass":"view:ChangeContext",
-                        "data":{
-                          "children":[
-                            {
-                              "id":"a8b95d5b-833a-4b19-b783-3025225613de",
-                              "eClass":"view:SetValue",
-                              "data":{
-                                "featureName":"name",
-                                "valueExpression":"aql:newValue"
-                              }
-                            }
-                          ]
+            {
+              "id":"b02b89b7-6c06-40f8-9366-83d5f885ada1",
+              "eClass":"form:TextfieldDescription",
+              "data":{
+                "name":"Name",
+                "labelExpression":"Name",
+                "helpExpression":"The name of the human",
+                "valueExpression":"aql:self.name",
+                "body":[
+                  {
+                    "id":"ecdc23ff-fd4b-47a4-939d-1bc03e656d3d",
+                    "eClass":"view:ChangeContext",
+                    "data":{
+                      "children":[
+                        {
+                          "id":"a8b95d5b-833a-4b19-b783-3025225613de",
+                          "eClass":"view:SetValue",
+                          "data":{
+                            "featureName":"name",
+                            "valueExpression":"aql:newValue"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
-                },
-                {
-                  "id":"98e756a2-305f-4767-b75c-4130996ae6da",
-                  "eClass":"form:TextAreaDescription",
-                  "data":{
-                    "name":"Description",
-                    "labelExpression":"Description",
-                    "helpExpression":"The description of the human",
-                    "valueExpression":"aql:self.description",
-                    "body":[
-                      {
-                        "id":"59ea57d5-c365-4421-9648-f38a74644768",
-                        "eClass":"view:ChangeContext",
-                        "data":{
-                          "children":[
-                            {
-                              "id":"811bb719-ab53-49ea-9281-6558f7022ecc",
-                              "eClass":"view:SetValue",
-                              "data":{
-                                "featureName":"description",
-                                "valueExpression":"aql:newValue"
-                              }
-                            }
-                          ]
+                ]
+              }
+            },
+            {
+              "id":"98e756a2-305f-4767-b75c-4130996ae6da",
+              "eClass":"form:TextAreaDescription",
+              "data":{
+                "name":"Description",
+                "labelExpression":"Description",
+                "helpExpression":"The description of the human",
+                "valueExpression":"aql:self.description",
+                "body":[
+                  {
+                    "id":"59ea57d5-c365-4421-9648-f38a74644768",
+                    "eClass":"view:ChangeContext",
+                    "data":{
+                      "children":[
+                        {
+                          "id":"811bb719-ab53-49ea-9281-6558f7022ecc",
+                          "eClass":"view:SetValue",
+                          "data":{
+                            "featureName":"description",
+                            "valueExpression":"aql:newValue"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
-                },
-                {
-                  "id":"ba20babb-0e75-4f66-a382-a2f02bce904a",
-                  "eClass":"form:CheckboxDescription",
-                  "data":{
-                    "name":"Promoted",
-                    "labelExpression":"Promoted",
-                    "helpExpression":"Has this human been promoted?",
-                    "valueExpression":"aql:self.promoted",
-                    "body":[
-                      {
-                        "id":"afac13bd-71ac-4287-baf6-3669f23ac806",
-                        "eClass":"view:ChangeContext",
-                        "data":{
-                          "children":[
-                            {
-                              "id":"0eaeca64-ee2b-4f2c-9454-c528181d0d64",
-                              "eClass":"view:SetValue",
-                              "data":{
-                                "featureName":"promoted",
-                                "valueExpression":"aql:newValue"
-                              }
-                            }
-                          ]
+                ]
+              }
+            },
+            {
+              "id":"ba20babb-0e75-4f66-a382-a2f02bce904a",
+              "eClass":"form:CheckboxDescription",
+              "data":{
+                "name":"Promoted",
+                "labelExpression":"Promoted",
+                "helpExpression":"Has this human been promoted?",
+                "valueExpression":"aql:self.promoted",
+                "body":[
+                  {
+                    "id":"afac13bd-71ac-4287-baf6-3669f23ac806",
+                    "eClass":"view:ChangeContext",
+                    "data":{
+                      "children":[
+                        {
+                          "id":"0eaeca64-ee2b-4f2c-9454-c528181d0d64",
+                          "eClass":"view:SetValue",
+                          "data":{
+                            "featureName":"promoted",
+                            "valueExpression":"aql:newValue"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
-                },
-                {
-                  "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
-                  "eClass":"form:DateTimeDescription",
-                  "data":{
-                    "name":"BirthDate",
-                    "labelExpression":"Birth Date",
-                    "helpExpression":"The birth date of the human",
-                    "stringValueExpression":"aql:self.birthDate",
-                    "type":"DATE"
-                  }
-                }
-                """;
+                ]
+              }
+            },
+            {
+              "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
+              "eClass":"form:DateTimeDescription",
+              "data":{
+                "name":"BirthDate",
+                "labelExpression":"Birth Date",
+                "helpExpression":"The birth date of the human",
+                "stringValueExpression":"aql:self.birthDate",
+                "type":"DATE"
+              }
+            }
+            """;
     }
 
     private String getExpectedRepresentation() {
         return """
-                    {
-                      "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
-                      "projectId":"99d336a2-3049-439a-8853-b104ffb22653",
-                      "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
-                      "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
-                      "label":"EPackage Portal",
-                      "kind":"siriusComponents://representation?type=Portal",
-                      "representation":{
-                        "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
-                        "kind":"siriusComponents://representation?type=Portal",
-                        "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
-                        "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
-                        "views":[
-                          {
-                            "id":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
-                            "representationId":"05e44ccc-9363-443f-a816-25fc73e3e7f7"
-                          }
-                        ],
-                        "layoutData":[
-                          {
-                            "portalViewId":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
-                            "x":0,
-                            "y":0,
-                            "width":500,
-                            "height":200
-                          }
-                        ]
+                {
+                  "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
+                  "projectId":"99d336a2-3049-439a-8853-b104ffb22653",
+                  "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                  "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                  "label":"EPackage Portal",
+                  "kind":"siriusComponents://representation?type=Portal",
+                  "representation":{
+                    "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
+                    "kind":"siriusComponents://representation?type=Portal",
+                    "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                    "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                    "views":[
+                      {
+                        "id":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
+                        "representationId":"05e44ccc-9363-443f-a816-25fc73e3e7f7"
                       }
-                    }
-                """;
+                    ],
+                    "layoutData":[
+                      {
+                        "portalViewId":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
+                        "x":0,
+                        "y":0,
+                        "width":500,
+                        "height":200
+                      }
+                    ]
+                  }
+                }
+            """;
     }
 }

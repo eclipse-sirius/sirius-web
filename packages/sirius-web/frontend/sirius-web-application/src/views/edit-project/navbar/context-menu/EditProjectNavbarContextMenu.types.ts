@@ -17,6 +17,7 @@ export interface EditProjectNavbarContextMenuProps {
   anchorEl: HTMLElement;
   onClose: () => void;
   workbenchHandle: WorkbenchHandle;
+  name: string | null;
 }
 
 export interface EditProjectNavbarContextMenuState {
