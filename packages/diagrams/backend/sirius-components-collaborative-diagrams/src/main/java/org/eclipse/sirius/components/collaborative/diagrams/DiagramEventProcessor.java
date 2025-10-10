@@ -135,6 +135,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
             if (LayoutDiagramInput.CAUSE_LAYOUT.equals(layoutDiagramInput.cause()) || layoutDiagramInput.id().equals(this.currentRevisionId)) {
+                changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.LAYOUT, layoutDiagramInput.representationId(), layoutDiagramInput));
                 var diagram = this.diagramContext.diagram();
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
@@ -165,10 +166,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext = new DiagramContext(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
-
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
                 this.currentRevisionId = layoutDiagramInput.id();
-
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
             } else {
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
@@ -217,6 +216,24 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
                 ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
                 this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
+            }
+        } else if (changeDescription.getKind().equals(ChangeKind.LAYOUT)) {
+            this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
+        } else if (changeDescription.getKind().equals(ChangeKind.UNDO_REDO_CHANGE)) {
+            Optional<Diagram> reloadedDiagram = this.representationSearchService.findById(this.editingContext, this.diagramContext.diagram().getId(), Diagram.class);
+            if (reloadedDiagram.isPresent()) {
+                Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+                this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
+
+                if (refreshedDiagram != null) {
+                    this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
+                }
+
+                this.diagramContext = new DiagramContext(refreshedDiagram);
+                this.currentRevisionId = changeDescription.getInput().id();
+                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
+                this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
         }
     }

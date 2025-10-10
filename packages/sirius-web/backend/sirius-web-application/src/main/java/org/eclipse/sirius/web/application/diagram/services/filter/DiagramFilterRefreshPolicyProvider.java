@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ public class DiagramFilterRefreshPolicyProvider implements IRepresentationRefres
         return changeDescription -> {
             boolean shouldRefresh = false;
             shouldRefresh = shouldRefresh || ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+            shouldRefresh = shouldRefresh || ChangeKind.UNDO_REDO_CHANGE.equals(changeDescription.getKind());
             shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind());
             shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE.equals(changeDescription.getKind());
             shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE.equals(changeDescription.getKind());

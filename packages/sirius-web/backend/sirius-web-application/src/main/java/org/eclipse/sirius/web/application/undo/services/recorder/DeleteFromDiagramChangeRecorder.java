@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
@@ -31,11 +32,18 @@ import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramFadeElementChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramHideElementChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElementChange;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +59,12 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
 
     private final List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders;
 
-    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders) {
+    private final ILabelAppearanceChangeUndoRecorder labelAppearanceChangeUndoRecorder;
+
+    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders, ILabelAppearanceChangeUndoRecorder labelAppearanceChangeUndoRecorder) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
+        this.labelAppearanceChangeUndoRecorder = Objects.requireNonNull(labelAppearanceChangeUndoRecorder);
     }
 
     @Override
@@ -82,6 +93,36 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
                         var diagramHideElementChange = new DiagramHideElementChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), Set.of(previousNode.getId()), true, false);
                         representationChanges.add(diagramHideElementChange);
                     }
+
+                    var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
+                    if (previousNodeLayoutData.containsKey(previousNode.getId())) {
+                        var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
+                        var nodeLayoutChange = new DiagramNodeLayoutChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), List.of(undoPositionEvent), List.of());
+                        representationChanges.add(nodeLayoutChange);
+                    }
+
+                    previousNode.getOutsideLabels().forEach(label -> {
+                        var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                        if (previousLabelLayoutData.containsKey(label.id())) {
+                            var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), deleteFromDiagramInput);
+                            representationChanges.addAll(diagramLabelLayoutChange);
+                        }
+                        var undoLabelAppearanceChanges =  labelAppearanceChangeUndoRecorder.computeUndoNodeLabelAppearanceChanges(previousNode, label.id(), Optional.empty());
+                        var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), undoLabelAppearanceChanges, List.of());
+                        representationChanges.add(diagramNodeLabelAppearanceChange);
+                    });
+
+                    Optional.ofNullable(previousNode.getInsideLabel())
+                        .ifPresent(label -> {
+                            var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                            if (previousLabelLayoutData.containsKey(label.getId())) {
+                                var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()), deleteFromDiagramInput);
+                                representationChanges.addAll(diagramLabelLayoutChange);
+                            }
+                            var undoLabelAppearanceChanges =  labelAppearanceChangeUndoRecorder.computeUndoNodeLabelAppearanceChanges(previousNode, label.getId(), Optional.empty());
+                            var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), undoLabelAppearanceChanges, List.of());
+                            representationChanges.add(diagramNodeLabelAppearanceChange);
+                        });
                 }
 
                 var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), undoAppearanceChanges, List.of());
@@ -96,6 +137,14 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
                 }
             }
         }
+    }
+
+    private List<IRepresentationChange> getDiagramNodeLabelChange(String labelId, LabelLayoutData previousLabelLayoutData, DeleteFromDiagramInput input) {
+        List<IRepresentationChange> representationChanges = new ArrayList<>();
+        var undoPositionEvent = new DiagramLabelLayoutEvent(labelId, previousLabelLayoutData);
+        var nodeLayoutChange = new DiagramLabelLayoutChange(UUID.fromString(labelId), input.representationId(), List.of(undoPositionEvent), List.of());
+        representationChanges.add(nodeLayoutChange);
+        return representationChanges;
     }
 
 }
