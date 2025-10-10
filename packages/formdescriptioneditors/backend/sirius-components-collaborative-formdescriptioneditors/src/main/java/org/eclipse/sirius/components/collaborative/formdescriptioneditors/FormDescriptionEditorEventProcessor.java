@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -150,7 +150,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
-        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind()) || changeDescription.getKind().equals(ChangeKind.UNDO_REDO_CHANGE);
     }
 
     @Override

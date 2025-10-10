@@ -13,11 +13,11 @@
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import { DraggableData } from 'react-draggable';
-import { UseLabelMoveValue } from './useLabelMove.types';
-import { OutsideLabel, NodeData, EdgeData } from '../DiagramRenderer.types';
-import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { RawDiagram } from '../layout/layout.types';
+import { EdgeData, NodeData, OutsideLabel } from '../DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
+import { RawDiagram } from '../layout/layout.types';
+import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
+import { UseLabelMoveValue } from './useLabelMove.types';
 
 export const useLabelMove = (): UseLabelMoveValue => {
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -37,6 +37,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: nodes,
         edges: getEdges(),
       };
+
       synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
     [getNodes, synchronizeLayoutData]
@@ -67,6 +68,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: [...getNodes()],
         edges: edges,
       };
+
       synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
     [getEdges, synchronizeLayoutData]

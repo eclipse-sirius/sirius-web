@@ -246,7 +246,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
-        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+        return (changeDescription) -> ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind()) || changeDescription.getKind().equals(ChangeKind.UNDO_REDO_CHANGE);
     }
 
     private Form refreshForm() {

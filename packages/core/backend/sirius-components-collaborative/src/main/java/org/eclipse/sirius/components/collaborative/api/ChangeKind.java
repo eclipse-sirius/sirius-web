@@ -29,6 +29,10 @@ public final class ChangeKind {
 
     public static final String SEMANTIC_CHANGE = "SEMANTIC_CHANGE";
 
+    public static final String UNDO_REDO_CHANGE = "UNDO_REDO_CHANGE";
+
+    public static final String LAYOUT = "LAYOUT";
+
     public static final String RELOAD_REPRESENTATION = "RELOAD_REPRESENTATION";
 
     public static final String REPRESENTATION_METADATA_UPDATE = "REPRESENTATION_METADATA_UPDATE";

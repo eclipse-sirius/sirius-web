@@ -12,46 +12,47 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.recorder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
-import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
-import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeUndoRecorder;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelAppearanceChange;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 /**
- * Use to record data needed to perform the undo/redo for the node appearance changes.
+ * Use to record data needed to perform the undo/redo for the appearance changes.
  *
  * @author mcharfadi
  */
 @Service
-public class NodeAppearanceChangeRecorder implements IDiagramEventConsumer {
+public class LabelAppearanceChangeRecorder implements IDiagramEventConsumer {
 
     private final IDiagramQueryService diagramQueryService;
 
-    private final List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders;
+    private final ILabelAppearanceChangeUndoRecorder labelAppearanceChangeUndoRecorder;
 
-    public NodeAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders) {
+    public LabelAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, ILabelAppearanceChangeUndoRecorder labelAppearanceChangeUndoRecorder) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
+        this.labelAppearanceChangeUndoRecorder = Objects.requireNonNull(labelAppearanceChangeUndoRecorder);
     }
 
     @Override
@@ -66,15 +67,15 @@ public class NodeAppearanceChangeRecorder implements IDiagramEventConsumer {
                     .toList();
 
             var undoAppearanceChanges = editAppearanceChanges.stream()
-                    .filter(INodeAppearanceChange.class::isInstance)
-                    .map(INodeAppearanceChange.class::cast)
+                    .filter(ILabelAppearanceChange.class::isInstance)
+                    .map(ILabelAppearanceChange.class::cast)
                     .map(change -> this.computeAppearanceChanges(previousDiagram, change))
                     .flatMap(Collection::stream)
                     .toList();
 
             if (!undoAppearanceChanges.isEmpty()) {
                 List<IAppearanceChange> redoAppearanceChanges = new ArrayList<>(editAppearanceChanges);
-                var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
+                var diagramNodeAppearanceChange = new DiagramLabelAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
                 representationChanges.add(diagramNodeAppearanceChange);
                 if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
                     siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), representationChanges);
@@ -85,14 +86,12 @@ public class NodeAppearanceChangeRecorder implements IDiagramEventConsumer {
         }
     }
 
-    private List<IAppearanceChange> computeAppearanceChanges(Diagram previousDiagram, INodeAppearanceChange change) {
+    private List<IAppearanceChange> computeAppearanceChanges(Diagram previousDiagram, ILabelAppearanceChange change) {
         List<IAppearanceChange> appearanceChanges = new ArrayList<>();
-
-        Optional<Node> optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, change.nodeId());
-        optionalPreviousNode.ifPresent(previousNode -> nodeAppearanceChangeUndoRecorders.stream()
-                .filter(handler -> handler.canHandle(previousNode))
-                .forEach(handler -> appearanceChanges.addAll(handler.computeUndoNodeAppearanceChanges(previousNode, Optional.of(change)))));
-
+        Optional<Node> optionalPreviousNode = this.diagramQueryService.findNodeByLabelId(previousDiagram, change.labelId());
+        optionalPreviousNode.ifPresent(previousNode -> appearanceChanges.addAll(labelAppearanceChangeUndoRecorder.computeUndoNodeLabelAppearanceChanges(previousNode, change.labelId(), Optional.of(change))));
+        Optional<Edge> optionalPreviousEdge = this.diagramQueryService.findEdgeByLabelId(previousDiagram, change.labelId());
+        optionalPreviousEdge.ifPresent(previousEdge -> appearanceChanges.addAll(labelAppearanceChangeUndoRecorder.computeUndoEdgeLabelAppearanceChanges(previousEdge, change.labelId(), Optional.of(change))));
         return appearanceChanges;
     }
 

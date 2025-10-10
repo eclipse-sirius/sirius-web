@@ -17,7 +17,7 @@ import { Node, Position } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeLabel, NodeData } from '../DiagramRenderer.types';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { RawDiagram } from './layout.types';
 import {
@@ -25,6 +25,7 @@ import {
   GQLEdgeLayoutData,
   GQLErrorPayload,
   GQLHandleLayoutData,
+  GQLLabelLayoutData,
   GQLLayoutDiagramData,
   GQLLayoutDiagramInput,
   GQLLayoutDiagramPayload,
@@ -32,9 +33,19 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
-  GQLLabelLayoutData,
 } from './useSynchronizeLayoutData.types';
-import { EdgeLabel } from '../DiagramRenderer.types';
+
+const addUndoForLayout = (mutationId: string) => {
+  var storedUndoStack = sessionStorage.getItem('undoStack');
+  var storedRedoStack = sessionStorage.getItem('redoStack');
+
+  if (storedUndoStack && storedRedoStack) {
+    var undoStack: String[] = JSON.parse(storedUndoStack);
+    if (!undoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
+    }
+  }
+};
 
 const layoutDiagramMutation = gql`
   mutation layoutDiagram($input: LayoutDiagramInput!) {
@@ -221,6 +232,11 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     };
 
     const variables: GQLLayoutDiagramVariables = { input };
+
+    if (cause === 'layout') {
+      addUndoForLayout(id);
+    }
+
     layoutDiagram({ variables });
   };
 
