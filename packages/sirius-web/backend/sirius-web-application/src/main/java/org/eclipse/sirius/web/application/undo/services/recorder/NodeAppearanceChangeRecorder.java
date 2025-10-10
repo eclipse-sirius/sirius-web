@@ -38,7 +38,7 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppea
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo/redo for the node appearance changes.
+ * Used to record data needed to perform the undo/redo for the node appearance changes.
  *
  * @author mcharfadi
  */

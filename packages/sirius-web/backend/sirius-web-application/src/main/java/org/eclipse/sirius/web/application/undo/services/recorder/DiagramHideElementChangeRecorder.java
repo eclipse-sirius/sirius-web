@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramHideEleme
 import org.springframework.stereotype.Service;
 
 /**
- * Use to record data needed to perform the undo/redo for HideDiagramElementEvent.
+ * Used to record data needed to perform the undo/redo for HideDiagramElementEvent.
  *
  * @author mcharfadi
  */

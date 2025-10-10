@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.recorder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
@@ -32,12 +36,8 @@ import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceHandler;
 import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeProvider;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 /**
- * Use to provide new appearance changes from previous Label and previous Customized StyleProperties.
+ * Used to provide new appearance changes from previous Label and previous Customized StyleProperties.
  *
  * @author mcharfadi
  */

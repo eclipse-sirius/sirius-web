@@ -18,23 +18,22 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
-import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramEdgeLayoutChange;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to handle the undo/redo for the edition of the appearance of diagram labels.
+ * Used to handle the undo/redo for the DiagramEdgeLayoutChange.
  *
  * @author mcharfadi
  */
 @Service
-public class LabelAppearanceChangeHandler implements IRepresentationChangeHandler {
+public class DiagramEdgeLayoutChangeHandler implements IRepresentationChangeHandler {
 
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
-    public LabelAppearanceChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
+    public DiagramEdgeLayoutChangeHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
     }
 
@@ -42,34 +41,34 @@ public class LabelAppearanceChangeHandler implements IRepresentationChangeHandle
     public boolean canHandle(UUID inputId, IEditingContext editingContext) {
         return editingContext instanceof EditingContext siriusEditingContext && siriusEditingContext.getInputId2RepresentationChanges().get(inputId) != null &&
                 siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream()
-                .anyMatch(DiagramLabelAppearanceChange.class::isInstance);
+                .anyMatch(DiagramEdgeLayoutChange.class::isInstance);
     }
 
     @Override
-    public void undo(UUID inputId, IEditingContext editingContext) {
+    public void redo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelAppearanceChange.class::isInstance)
-                .map(DiagramLabelAppearanceChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramEdgeLayoutChange.class::isInstance)
+                .map(DiagramEdgeLayoutChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
                         var diagramContext = eventProcessor.getDiagramContext();
-                        diagramContext.diagramEvents().add(new EditAppearanceEvent(change.undoChanges()));
+                        diagramContext.diagramEvents().addAll(change.redoChanges());
                     }
                 });
         }
     }
 
     @Override
-    public void redo(UUID inputId, IEditingContext editingContext) {
+    public void undo(UUID inputId, IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusEditingContext) {
-            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramLabelAppearanceChange.class::isInstance)
-                .map(DiagramLabelAppearanceChange.class::cast)
+            siriusEditingContext.getInputId2RepresentationChanges().get(inputId).stream().filter(DiagramEdgeLayoutChange.class::isInstance)
+                .map(DiagramEdgeLayoutChange.class::cast)
                 .forEach(change -> {
                     var representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), change.representationId());
                     if (representationEventProcessorEntry != null && representationEventProcessorEntry.getRepresentationEventProcessor() instanceof DiagramEventProcessor eventProcessor) {
                         var diagramContext = eventProcessor.getDiagramContext();
-                        diagramContext.diagramEvents().add(new EditAppearanceEvent(change.redoChanges()));
+                        diagramContext.diagramEvents().addAll(change.undoChanges());
                     }
                 });
         }

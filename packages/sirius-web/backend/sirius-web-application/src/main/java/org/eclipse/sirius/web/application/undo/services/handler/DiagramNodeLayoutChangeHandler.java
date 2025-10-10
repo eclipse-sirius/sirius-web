@@ -24,7 +24,7 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayou
 import org.springframework.stereotype.Service;
 
 /**
- * Use to handle the undo/redo for the DiagramNodeLayoutChange.
+ * Used to handle the undo/redo for the DiagramNodeLayoutChange.
  *
  * @author mcharfadi
  */

@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.recorder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -22,13 +27,8 @@ import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChan
 import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeUndoRecorder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 /**
- * Use to record data needed to perform the undo for the label appearance changes.
+ * Used to record data needed to perform the undo for the label appearance changes.
  *
  * @author mcharfadi
  */

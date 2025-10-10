@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.recorder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.RectangularNodeAppearanceHandler;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -26,13 +31,8 @@ import org.eclipse.sirius.web.application.project.services.api.IDiagramImporterN
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 /**
- * Use to record undo appearance changes of an ellipse node style when it is deleted or a node appearance change is performed.
+ * Used to record undo appearance changes of an ellipse node style when it is deleted or a node appearance change is performed.
  *
  * @author mcharfadi
  */

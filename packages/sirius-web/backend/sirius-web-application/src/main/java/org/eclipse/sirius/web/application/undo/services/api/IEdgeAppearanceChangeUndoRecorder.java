@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,20 +13,19 @@
 package org.eclipse.sirius.web.application.undo.services.api;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
-import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 
 /**
- * Used to provide new appearance changes from previous Label and previous Customized StyleProperties.
+ * Used to compute undo edge appearance change.
  *
  * @author mcharfadi
  */
-public interface ILabelAppearanceChangeProvider {
+public interface IEdgeAppearanceChangeUndoRecorder {
 
-    List<IAppearanceChange> getAppearanceChanges(ILabelAppearanceChange change, Set<String> previousCustomizedStyleProperties, LabelStyle previousLabelStyle);
+    List<IAppearanceChange> computeEdgeAppearanceChanges(Edge previousEdge, Optional<IEdgeAppearanceChange> change);
 
-    List<IAppearanceChange> getResetLabelAppearanceChange(String labelId, Set<String> previousCustomizedStyleProperties, LabelStyle previousLabelStyle);
 }

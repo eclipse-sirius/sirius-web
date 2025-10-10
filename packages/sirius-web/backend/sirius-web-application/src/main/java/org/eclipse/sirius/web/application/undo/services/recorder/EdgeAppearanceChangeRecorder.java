@@ -30,27 +30,27 @@ import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.undo.services.api.ILabelAppearanceChangeUndoRecorder;
-import org.eclipse.sirius.web.application.undo.services.changes.DiagramLabelAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.api.IEdgeAppearanceChangeUndoRecorder;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramEdgeAppearanceChange;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to record data needed to perform the undo/redo for the label appearance changes.
+ * Used to record data needed to perform the undo/redo for the edge appearance changes.
  *
  * @author mcharfadi
  */
 @Service
-public class LabelAppearanceChangeRecorder implements IDiagramEventConsumer {
+public class EdgeAppearanceChangeRecorder implements IDiagramEventConsumer {
 
     private final IDiagramQueryService diagramQueryService;
 
-    private final List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders;
+    private final IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder;
 
-    public LabelAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
+    public EdgeAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.labelAppearanceChangeUndoRecorders = Objects.requireNonNull(labelAppearanceChangeUndoRecorders);
+        this.edgeAppearanceChangeUndoRecorder = Objects.requireNonNull(edgeAppearanceChangeUndoRecorder);
     }
 
     @Override
@@ -65,16 +65,16 @@ public class LabelAppearanceChangeRecorder implements IDiagramEventConsumer {
                     .toList();
 
             var undoAppearanceChanges = editAppearanceChanges.stream()
-                    .filter(ILabelAppearanceChange.class::isInstance)
-                    .map(ILabelAppearanceChange.class::cast)
+                    .filter(IEdgeAppearanceChange.class::isInstance)
+                    .map(IEdgeAppearanceChange.class::cast)
                     .map(change -> this.computeAppearanceChanges(previousDiagram, change))
                     .flatMap(Collection::stream)
                     .toList();
 
             if (!undoAppearanceChanges.isEmpty()) {
                 List<IAppearanceChange> redoAppearanceChanges = new ArrayList<>(editAppearanceChanges);
-                var diagramNodeAppearanceChange = new DiagramLabelAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
-                representationChanges.add(diagramNodeAppearanceChange);
+                var diagramEdgeAppearanceChange = new DiagramEdgeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, redoAppearanceChanges);
+                representationChanges.add(diagramEdgeAppearanceChange);
                 if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(diagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(diagramInput.id()).isEmpty()) {
                     siriusEditingContext.getInputId2RepresentationChanges().put(diagramInput.id(), representationChanges);
                 } else {
@@ -84,24 +84,10 @@ public class LabelAppearanceChangeRecorder implements IDiagramEventConsumer {
         }
     }
 
-    private List<IAppearanceChange> computeAppearanceChanges(Diagram previousDiagram, ILabelAppearanceChange change) {
+    private List<IAppearanceChange> computeAppearanceChanges(Diagram previousDiagram, IEdgeAppearanceChange change) {
         List<IAppearanceChange> appearanceChanges = new ArrayList<>();
-        this.diagramQueryService.findNodeByLabelId(previousDiagram, change.labelId())
-            .ifPresent(previousNode ->
-                this.labelAppearanceChangeUndoRecorders.stream()
-                    .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousNode))
-                    .findFirst()
-                    .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousNode, change.labelId(), Optional.of(change)))
-                    .map(appearanceChanges::addAll)
-            );
-        this.diagramQueryService.findEdgeByLabelId(previousDiagram, change.labelId())
-            .ifPresent(previousEdge ->
-                this.labelAppearanceChangeUndoRecorders.stream()
-                    .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousEdge))
-                    .findFirst()
-                    .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousEdge, change.labelId(), Optional.of(change)))
-                    .map(appearanceChanges::addAll)
-            );
+        this.diagramQueryService.findEdgeById(previousDiagram, change.edgeId())
+                .ifPresent(previousEdge -> appearanceChanges.addAll(this.edgeAppearanceChangeUndoRecorder.computeEdgeAppearanceChanges(previousEdge, Optional.of(change))));
         return appearanceChanges;
     }
 

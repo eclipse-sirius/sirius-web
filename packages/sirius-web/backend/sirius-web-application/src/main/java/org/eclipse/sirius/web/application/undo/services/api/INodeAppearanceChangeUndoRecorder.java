@@ -12,15 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.api;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 
-import java.util.List;
-import java.util.Optional;
-
 /**
- * Use to compute undo node appearance change.
+ * Used to compute undo node appearance change.
  *
  * @author mcharfadi
  */
