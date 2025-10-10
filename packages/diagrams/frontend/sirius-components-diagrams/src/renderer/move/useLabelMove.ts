@@ -19,18 +19,6 @@ import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { UseLabelMoveValue } from './useLabelMove.types';
 
-const addUndoForLayout = (mutationId: string) => {
-  var storedUndoStack = sessionStorage.getItem('undoStack');
-  var storedRedoStack = sessionStorage.getItem('redoStack');
-
-  if (storedUndoStack && storedRedoStack) {
-    var undoStack: String[] = JSON.parse(storedUndoStack);
-    if (!undoStack.find((id) => id === mutationId)) {
-      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
-    }
-  }
-};
-
 export const useLabelMove = (): UseLabelMoveValue => {
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
@@ -50,9 +38,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         edges: getEdges(),
       };
 
-      var id = crypto.randomUUID();
-      synchronizeLayoutData(id, 'layout', finalDiagram);
-      addUndoForLayout(id);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
     [getNodes, synchronizeLayoutData]
   );
@@ -83,9 +69,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         edges: edges,
       };
 
-      var id = crypto.randomUUID();
-      synchronizeLayoutData(id, 'layout', finalDiagram);
-      addUndoForLayout(id);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
     [getEdges, synchronizeLayoutData]
   );
