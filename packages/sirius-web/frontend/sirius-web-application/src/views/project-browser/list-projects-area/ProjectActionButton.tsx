@@ -88,7 +88,9 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         {project.capabilities.canDuplicate ? (
           <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
         ) : null}
-        {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
+        {project.capabilities.canDownload ? (
+          <DownloadProjectMenuItem project={project} name={null} onClick={onClose} />
+        ) : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} project={project} onChange={onChange} onClose={onClose} />
         ))}

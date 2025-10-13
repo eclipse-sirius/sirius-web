@@ -137,7 +137,7 @@ export const EditProjectView = () => {
     const initialSelection: Selection = { entries };
 
     content = (
-      <ProjectContext.Provider value={{ project: state.project }}>
+      <ProjectContext.Provider value={{ project: state.project, name }}>
         <SelectionContextProvider initialSelection={initialSelection}>
           <SelectionSynchronizer>
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>

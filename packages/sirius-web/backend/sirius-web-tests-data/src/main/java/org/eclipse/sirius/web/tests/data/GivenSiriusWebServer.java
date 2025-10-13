@@ -37,6 +37,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
         "/sirius-web-scripts/papaya.sql",
         "/sirius-web-scripts/studio.sql",
         "/sirius-web-scripts/flow.sql",
+        "/sirius-web-scripts/multi-editing-context-project.sql",
         "/sirius-web-scripts/migration.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED)),
 

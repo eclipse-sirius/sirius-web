@@ -13,6 +13,7 @@
 
 export interface DownloadProjectMenuItemProps {
   project: Project;
+  name: string | null;
   onClick: () => void;
 }
 

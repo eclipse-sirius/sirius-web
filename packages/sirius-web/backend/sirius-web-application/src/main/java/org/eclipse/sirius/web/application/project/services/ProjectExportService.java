@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,13 +53,13 @@ public class ProjectExportService implements IProjectExportService {
 
     @Override
     @Transactional(readOnly = true)
-    public byte[] export(Project project) {
+    public byte[] export(Project project, String editingContextId) {
         byte[] zip = new byte[0];
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (var zipOutputStream = new ZipOutputStream(outputStream)) {
             var manifestEntries = this.projectExportParticipants.stream()
-                    .map(projectExportParticipant -> projectExportParticipant.exportData(project, zipOutputStream))
+                    .map(projectExportParticipant -> projectExportParticipant.exportData(project, editingContextId, zipOutputStream))
                     .map(Map::entrySet)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

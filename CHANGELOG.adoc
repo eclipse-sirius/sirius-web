@@ -30,7 +30,7 @@ The project duplication feature has been implemented as an export of the project
 The code responsible for the import has been refactor with:
 * `IProjectImportService` has been renamed in `IProjectImportApplicationService`.
 * `ProjectImporter` no longer exist. Its code has been split among `IProjectContentImportParticipant`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] [sirius-web] `IProjectExportService` and `IProjectExportParticipant` now takes the id of the _EditingContext_ to export as a parameter.
 
 
 === Dependency update
@@ -48,6 +48,7 @@ This also includes an update from ANTLR 4.10.1 to 4.13.2.
 - https://github.com/eclipse-sirius/sirius-web/issues/5617[#5617] [sirius-web] Fix duplication of an element to a mono valued containment feature while updating incoming reference.
 - https://github.com/eclipse-sirius/sirius-web/issues/4134[#4134] [core] Our custom `EditingContextCrossReferenceAdapter` has been removed and replaced by EMF's default `ECrossReferenceAdapter`.
 Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] Ensure that the project download uses the proper editing context
 
 
 === New Features
@@ -236,6 +237,7 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
+
 
 === Improvements
 
