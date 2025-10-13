@@ -19,16 +19,14 @@ import MenuItem from '@mui/material/MenuItem';
 import { useContext } from 'react';
 import { DownloadProjectMenuItemProps } from './DownloadProjectMenuItem.types';
 
-export const DownloadProjectMenuItem = ({ project, onClick }: DownloadProjectMenuItemProps) => {
+export const DownloadProjectMenuItem = ({ project, name, onClick }: DownloadProjectMenuItemProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
+  var href = name
+    ? `${httpOrigin}/api/projects/${project.id}?name=${name}`
+    : `${httpOrigin}/api/projects/${project.id}`;
   return (
-    <MenuItem
-      component="a"
-      href={`${httpOrigin}/api/projects/${project.id}`}
-      type="application/octet-stream"
-      onClick={onClick}
-      data-testid="download-link">
+    <MenuItem component="a" href={href} type="application/octet-stream" onClick={onClick} data-testid="download-link">
       <ListItemIcon>
         <GetAppIcon />
       </ListItemIcon>

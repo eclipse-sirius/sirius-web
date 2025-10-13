@@ -15,6 +15,7 @@ import React from 'react';
 import { ProjectContextValue } from './ProjectContext.types';
 
 const value: ProjectContextValue = {
+  name: '',
   project: {
     id: '',
     name: '',

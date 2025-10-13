@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.project.dto.DuplicateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DuplicateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectDuplicationApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -55,16 +56,19 @@ public class ProjectDuplicationApplicationService implements IProjectDuplication
 
     private final IProjectSearchService projectSearchService;
 
+    private final IProjectEditingContextService projectEditingContextService;
+
     private final IMessageService messageService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectDuplicationApplicationService.class);
 
-    public ProjectDuplicationApplicationService(IProjectExportService exportService, ProjectZipContentProvider projectZipContentProvider, IProjectCreationService projectCreationService, IProjectMapper projectMapper, IProjectSearchService projectSearchService, IMessageService messageService) {
+    public ProjectDuplicationApplicationService(IProjectExportService exportService, ProjectZipContentProvider projectZipContentProvider, IProjectCreationService projectCreationService, IProjectMapper projectMapper, IProjectSearchService projectSearchService, IProjectEditingContextService projectEditingContextService, IMessageService messageService) {
         this.exportService = Objects.requireNonNull(exportService);
         this.projectZipContentProvider = Objects.requireNonNull(projectZipContentProvider);
         this.projectCreationService = Objects.requireNonNull(projectCreationService);
         this.projectMapper = Objects.requireNonNull(projectMapper);
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -73,10 +77,12 @@ public class ProjectDuplicationApplicationService implements IProjectDuplication
     public IPayload duplicateProject(DuplicateProjectInput input) {
         IPayload payload = new ErrorPayload(input.id(), "");
         var optionalProject = this.projectSearchService.findById(input.projectId());
-        if (optionalProject.isPresent()) {
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(input.projectId());
+        if (optionalProject.isPresent() && optionalEditingContextId.isPresent()) {
             Project project = optionalProject.get();
+            var editingContextId = optionalEditingContextId.get();
 
-            byte[] content = this.exportService.export(project);
+            byte[] content = this.exportService.export(project, editingContextId);
             UploadFile zipFile = new UploadFile(project.getName() + ".zip", new ByteArrayInputStream(content));
 
             Optional<ProjectZipContent> optionalProjectZipContent = this.projectZipContentProvider.buildFromZip(zipFile.getInputStream());

@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -61,38 +61,37 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final IRepresentationContentMigrationService representationContentMigrationService;
 
-    private final IProjectEditingContextService projectEditingContextService;
-
     private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataExportParticipant.class);
 
-    public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
-                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, IProjectEditingContextService projectEditingContextService) {
+    public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService,
+            IRepresentationMetadataSearchService representationMetadataSearchService,
+            IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.representationContentMigrationService = Objects.requireNonNull(representationContentMigrationService);
-        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @Override
-    public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
+    public Map<String, Object> exportData(Project project, String editingContextId, ZipOutputStream outputStream) {
         Map<String, Map<String, String>> representationManifests = new HashMap<>();
 
-        var optionalEditingContext = this.projectEditingContextService.getEditingContextId(project.getId())
-                .flatMap(this.editingContextSearchService::findById)
+        var optionalEditingContext = editingContextSearchService.findById(editingContextId)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast);
 
         if (optionalEditingContext.isPresent()) {
             var editingContext = optionalEditingContext.get();
-            var allRepresentationMetadata = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
-                .map(ProjectSemanticData::getSemanticData)
-                .map(this.representationMetadataSearchService::findAllRepresentationMetadataBySemanticData)
-                .orElse(List.of());
 
-            for (var representationMetadata: allRepresentationMetadata) {
+            var allRepresentationMetadata = new UUIDParser().parse(editingContextId)
+                    .flatMap(id -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(id)))
+                    .map(ProjectSemanticData::getSemanticData)
+                    .map(this.representationMetadataSearchService::findAllRepresentationMetadataBySemanticData)
+                    .orElse(List.of());
+
+            for (var representationMetadata : allRepresentationMetadata) {
                 var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(representationMetadata.getId())
                         .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent));
 

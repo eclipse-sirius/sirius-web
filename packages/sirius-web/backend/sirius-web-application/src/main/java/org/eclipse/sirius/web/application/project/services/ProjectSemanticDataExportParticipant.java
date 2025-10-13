@@ -72,10 +72,11 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
     }
 
     @Override
-    public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
+    public Map<String, Object> exportData(Project project, String editingContextId, ZipOutputStream outputStream) {
         Map<String, Object> manifestEntries = new HashMap<>();
 
-        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
+        var optionalEditingContext = new UUIDParser().parse(editingContextId)
+                .flatMap(id -> projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(id)))
                 .map(ProjectSemanticData::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(UUID::toString)
@@ -89,8 +90,8 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
             List<String> metamodels = this.getMetamodels(editingContext);
             Map<String, String> id2DocumentName = this.exportSemanticData(editingContext, project.getName(), outputStream);
             List<String> natures = project.getNatures().stream()
-                        .map(Nature::name)
-                        .toList();
+                    .map(Nature::name)
+                    .toList();
 
             manifestEntries.put("metamodels", metamodels);
             manifestEntries.put("documentIdsToName", id2DocumentName);
@@ -114,7 +115,7 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
 
         List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
                 .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource))).toList();
-        for (var resource: resources) {
+        for (var resource : resources) {
             var resourceId = this.identityService.getId(resource);
             var optionalDocumentId = new UUIDParser().parse(resourceId);
 

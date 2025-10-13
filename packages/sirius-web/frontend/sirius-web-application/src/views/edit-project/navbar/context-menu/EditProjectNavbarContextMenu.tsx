@@ -46,7 +46,7 @@ export const EditProjectNavbarContextMenu = ({
     editProjectNavbarMenuEntryExtensionPoint
   );
 
-  const { project } = useCurrentProject();
+  const { project, name } = useCurrentProject();
 
   const onProjectDeleted = () => setState((prevState) => ({ ...prevState, redirectUrl: '/projects' }));
 
@@ -64,7 +64,9 @@ export const EditProjectNavbarContextMenu = ({
         {project.capabilities.canDuplicate ? (
           <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
         ) : null}
-        {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
+        {project.capabilities.canDownload ? (
+          <DownloadProjectMenuItem project={project} name={name} onClick={onClose} />
+        ) : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
           <ProjectContextMenuItem key={index} projectId={project.id} onCloseContextMenu={onClose} />
         ))}

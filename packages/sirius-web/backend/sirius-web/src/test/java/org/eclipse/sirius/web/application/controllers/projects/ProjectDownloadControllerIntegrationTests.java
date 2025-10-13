@@ -12,11 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.zip.ZipInputStream;
+
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.data.MultiEditingContextFlowIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,16 +45,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.zip.ZipInputStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
 /**
  * Integration tests of the project download controllers.
  *
@@ -61,9 +61,6 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -73,9 +70,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of the project is requested, then the manifest is exported")
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheManifestIsExported() {
-        this.givenCommittedTransaction.commit();
-
-        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT);
+        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, null);
 
         try (ZipInputStream inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
@@ -124,9 +119,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of the project is requested, then the semantic data are retrieved")
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
-        this.givenCommittedTransaction.commit();
-
-        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT);
+        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, null);
 
         try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
@@ -150,11 +143,49 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a project, when the download of the project is requested, then the representation data are retrieved")
-    public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved2() {
-        this.givenCommittedTransaction.commit();
+    @DisplayName("Given a Flow project with more than one editing context, when the download of the project is requested with a specific editing context id, then the correct semantic data are " +
+            "retrieved")
+    public void givenMultiContextFlowProjectWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
+        // Test the main editing context
+        var response = this.download(MultiEditingContextFlowIdentifiers.PROJECT_ID, "main");
 
-        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
+            HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_SEMANTIC_DOCUMENT + ".json";
+            assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
+
+            var objectMapper = new ObjectMapper();
+
+            String semanticDataContentExpected = this.getExpectedMultiEditingContextFlowMainDocumentContent();
+            String semanticDataContent = zipEntries.get(domainDocumentPath).toString(StandardCharsets.UTF_8);
+            assertThat(objectMapper.readTree(semanticDataContentExpected)).isEqualTo(objectMapper.readTree(semanticDataContent));
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+
+        // Test on second editing context
+        var response2 = this.download(MultiEditingContextFlowIdentifiers.PROJECT_ID, "main2");
+
+        try (var inputStream = new ZipInputStream(response2.getBody().getInputStream())) {
+            HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_2_SEMANTIC_DOCUMENT + ".json";
+            assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
+
+            var objectMapper = new ObjectMapper();
+
+            String semanticDataContentExpected = this.getExpectedMultiEditingContextFlowMain2DocumentContent();
+            String semanticDataContent = zipEntries.get(domainDocumentPath).toString(StandardCharsets.UTF_8);
+            assertThat(objectMapper.readTree(semanticDataContentExpected)).isEqualTo(objectMapper.readTree(semanticDataContent));
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when the download of the project is requested, then the representation data are retrieved")
+    public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved() {
+        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT, null);
 
         try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             var zipEntries = this.toZipEntries(inputStream);
@@ -175,9 +206,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     @GivenSiriusWebServer
     @DisplayName("Given a project with representations, when the download of the project is requested, then the manifest is exported")
     public void givenProjectWithRepresentationsWhenTheDownloadOfProjectIsRequestedThenTheManifestIsExported() {
-        this.givenCommittedTransaction.commit();
-
-        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT, null);
 
         try (ZipInputStream inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
@@ -205,15 +234,18 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
             String manifestContent = zipEntries.get("Ecore Sample/manifest.json").toString(StandardCharsets.UTF_8);
             var objectMapper = new ObjectMapper();
-            System.out.println(objectMapper.readTree(manifestContent));
+
             assertThat(objectMapper.readTree(manifestContent)).isEqualTo(objectMapper.readTree(manifestContentExpected));
         } catch (IOException exception) {
             fail(exception.getMessage());
         }
     }
 
-    private ResponseEntity<Resource> download(String projectId) {
+    private ResponseEntity<Resource> download(String projectId, String name) {
         var uri = "http://localhost:" + this.port + "/api/projects/" + projectId;
+        if (name != null) {
+            uri += "?name=" + name;
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
@@ -261,6 +293,120 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                       ]
                     }
                 """.replace("$CONTENT$", this.getExpectedStudioDomainDocumentDataContent());
+    }
+
+    private String getExpectedMultiEditingContextFlowMainDocumentContent() {
+        return """
+                {
+                     "json": { "version": "1.0", "encoding": "utf-8" },
+                     "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
+                     "content": [
+                       {
+                         "id": "ff66bbf7-be79-4b89-8c32-d1603c9966af",
+                         "eClass": "flow:System",
+                         "data": {
+                           "name": "NewSystem",
+                           "elements": [
+                             {
+                               "id": "89d67776-6687-436f-8469-88a685053638",
+                               "eClass": "flow:CompositeProcessor",
+                               "data": {
+                                 "name": "CompositeProcessor1",
+                                 "elements": [
+                                   {
+                                     "id": "d5f4a659-904e-4135-9947-de298b0cbaf4",
+                                     "eClass": "flow:Processor",
+                                     "data": {
+                                       "incomingFlows": ["d4a7f861-c178-47f3-abfc-ed171398e1e7"],
+                                       "name": "Processor1"
+                                     }
+                                   }
+                                 ]
+                               }
+                             },
+                             {
+                               "id": "d0bc85f6-d597-4f36-bd1e-0980f7fb0fe4",
+                               "eClass": "flow:DataSource",
+                               "data": {
+                                 "outgoingFlows": [
+                                   {
+                                     "id": "d4a7f861-c178-47f3-abfc-ed171398e1e7",
+                                     "eClass": "flow:DataFlow",
+                                     "data": {
+                                       "usage": "standard",
+                                       "capacity": 6,
+                                       "load": 6,
+                                       "target": "d5f4a659-904e-4135-9947-de298b0cbaf4"
+                                     }
+                                   }
+                                 ],
+                                 "name": "DataSource1",
+                                 "volume": 6
+                               }
+                             }
+                           ]
+                         }
+                       }
+                     ]
+                   }
+                """;
+    }
+
+    private String getExpectedMultiEditingContextFlowMain2DocumentContent() {
+        return """
+                {
+                     "json": { "version": "1.0", "encoding": "utf-8" },
+                     "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
+                     "content": [
+                       {
+                         "id": "f926f2ec-681b-434c-b3e6-0fda47388768",
+                         "eClass": "flow:System",
+                         "data": {
+                           "name": "NewSystem2",
+                           "elements": [
+                             {
+                               "id": "ed151a41-6f24-4aea-83a2-79ece2bcec4a",
+                               "eClass": "flow:CompositeProcessor",
+                               "data": {
+                                 "name": "CompositeProcessor2",
+                                 "elements": [
+                                   {
+                                     "id": "dafeb7c5-de89-463e-8950-e322ec619b45",
+                                     "eClass": "flow:Processor",
+                                     "data": {
+                                       "incomingFlows": ["562e726e-207f-4c16-a2b4-e1f47828283c"],
+                                       "name": "Processor2"
+                                     }
+                                   }
+                                 ]
+                               }
+                             },
+                             {
+                               "id": "7fc90016-bb2e-428e-b99e-2fc813ca8a06",
+                               "eClass": "flow:DataSource",
+                               "data": {
+                                 "outgoingFlows": [
+                                   {
+                                     "id": "562e726e-207f-4c16-a2b4-e1f47828283c",
+                                     "eClass": "flow:DataFlow",
+                                     "data": {
+                                       "usage": "standard",
+                                       "capacity": 6,
+                                       "load": 6,
+                                       "target": "dafeb7c5-de89-463e-8950-e322ec619b45"
+                                     }
+                                   }
+                                 ],
+                                 "name": "DataSource2",
+                                 "volume": 6
+                               }
+                             }
+                           ]
+                         }
+                       }
+                     ]
+                   }
+                """;
     }
 
     private String getExpectedStudioDomainDocumentDataContent() {
