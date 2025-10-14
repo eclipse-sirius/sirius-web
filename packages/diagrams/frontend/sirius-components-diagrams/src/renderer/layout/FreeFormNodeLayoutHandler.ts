@@ -145,7 +145,8 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       borderWidth * 2;
 
     // WARN: the label is not used for the height because children are already position under the label
-    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + footerHeightFootprint;
+    const directChildrenAwareNodeHeight =
+      childrenContentBox.y + childrenContentBox.height + footerHeightFootprint + rectangularNodePadding;
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
 
