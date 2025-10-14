@@ -10,16 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useViewport } from '@xyflow/react';
+import { ReactFlowState, useStore } from '@xyflow/react';
 import React from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { Label } from '../Label';
 import { useLabelMove } from '../move/useLabelMove';
 import { DraggableOutsideLabelProps } from './DraggableOutsideLabel.types';
 
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
+
 export const DraggableOutsideLabel = ({ id, label, faded, highlighted }: DraggableOutsideLabelProps) => {
   const { onNodeLabelMoveStop } = useLabelMove();
-  const { zoom } = useViewport();
+  const zoom = useStore(zoomSelector);
 
   const onStop = (_e, eventData: DraggableData) => {
     onNodeLabelMoveStop(eventData, id);
