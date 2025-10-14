@@ -1,0 +1,46 @@
+= ADR-209 - Decouple the command palette from the editing context
+
+== Context
+
+For now the command palette is only used in the project workbench, and is tightly coupled to the editing context and the selection.
+We want to reuse the command palette in other contexts, including contexts where there is no editing context nor selection (e.g. the `projects` page).
+
+== Decision
+
+Remove the `editingContextId` from the `Omnibox` and `OmniboxProvider` and add function parameters to retrieve and execute commands.
+Remove the `useSelection` hook from the `Omnibox`.
+
+The properties of the `Omnibox` will be changed as follows:
+
+[source, typescript]
+----
+export interface OmniboxProps {
+  open: boolean;
+  loading: boolean;
+  commands: OmniboxCommand[] | null;
+  onQuery: (query: string, mode: OmniboxMode) => void;
+  onCommandClick: (commandId: string) => void;
+  onClose: () => void;
+}
+
+export type OmniboxMode = 'Command' | 'Search';
+----
+
+These new parameters will be added in other classes/functions to ensure they are correctly forwarded to the Omnibox.
+Specifically, the `OmniboxProvider#openOmnibox` function will require these parameters to let client code open an command palette with the appropriate `getCommands` and `executeCommand` functions.
+
+Sirius Web will provide these functions for the command palette that is displayed in the project workbench.
+These functions will rely on existing hooks to get the editing context (e.g. `useCurrentProject()`) and the selection (`useSelection()`), and will perform the same operation as they do now.
+
+Currently, the command palette has 2 modes: _commands_ and _search_. 
+While the modes should be provided as parameters of the command palette, a first implementation will keep them hardcoded, leaving this refactoring as future work.
+
+
+== Consequences
+
+It will be possible to integrate the command palette in contexts that do not provide an `editingContextId` nor a `selection` by providing custom implementations of the `getCommands` and `executeCommand` functions.
+This can be leveraged to add a command palette in the `projects` page and propose commands adapted to this context to the end user.
+
+== Status
+
+Proposed.

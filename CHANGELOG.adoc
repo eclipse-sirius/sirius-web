@@ -4,10 +4,12 @@
 
 === Shapes
 
+- Add command palette on projects page
 
 
 === Architectural decision records
 
+- [ADR-209] Decouple the command palette from the editing context
 
 
 === Deprecation warning
