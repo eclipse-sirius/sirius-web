@@ -36,8 +36,8 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5558[#5558] [diagram] Prevent the node from overlapping its edge bend points
 
 
 == 2025.10.0
@@ -281,7 +281,6 @@ This new low level API is quite new and may be changed heavily in the near futur
 - https://github.com/eclipse-sirius/sirius-web/issues/5285[#5285] [core] Extract additional concerns from the `EditingContextEventProcessor` thanks to the introduction of new services.
 We have added the `IRepresentationEventProcessorProvider` in order to either retrieve an `IRepresentationEventProcessor` from the `IRepresentationEventProcessorRegistry` or create an initialize a new instance thanks to the `IRepresentationEventProcessorComposedFactory`.
 We have also added the `IInputDispatcher` which is in charge of dispatching an input to its proper handler.
-
 
 
 == v2025.8.0

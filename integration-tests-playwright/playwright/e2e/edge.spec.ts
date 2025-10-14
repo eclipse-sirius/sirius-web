@@ -14,8 +14,9 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 
-test.describe('edge', () => {
+test.describe('edge with flow', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     await page.addInitScript(() => {
@@ -128,5 +129,64 @@ test.describe('edge', () => {
       { expectedTopValue: topValueBefore },
       { timeout: 2000 }
     );
+  });
+});
+
+test.describe('edge with edge studio', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+    const project = await new PlaywrightProject(request).createProject('edge');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a node overlap a bend point, then the edge path is reset', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramSimpleEdge.xml');
+    await playwrightExplorer.expand('diagramSimpleEdge.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+
+    const playwrightNode = new PlaywrightNode(page, 'Entity2');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 250, y: 200 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.click();
+
+    const firstBendingPoint = page.locator(`[data-testid="bend-point-0"]`).first();
+    const firstBendingPointBox = (await firstBendingPoint.boundingBox())!;
+    await firstBendingPoint.hover();
+    await page.mouse.down();
+    await page.mouse.move(firstBendingPointBox.x + 50, firstBendingPointBox.y + 50, { steps: 2 });
+    await page.mouse.up();
+
+    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
+    const lastBendingPointBox = (await lastBendingPoint.boundingBox())!;
+    await lastBendingPoint.hover();
+    await page.mouse.down();
+    await page.mouse.move(lastBendingPointBox.x + 75, lastBendingPointBox.y + 50, { steps: 2 });
+    await page.mouse.up();
+
+    playwrightEdge.openPalette();
+    expect(page.getByTestId('Reset-path')).toBeAttached();
+    expect(page.getByTestId('Reset-handles')).toBeAttached();
+    playwrightEdge.closePalette();
+
+    await playwrightNode.click();
+    await playwrightNode.move({ x: -75, y: 25 });
+
+    playwrightEdge.openPalette();
+    expect(page.getByTestId('Reset-path')).not.toBeAttached();
+    expect(page.getByTestId('Reset-handles')).not.toBeAttached();
+    playwrightEdge.closePalette();
   });
 });

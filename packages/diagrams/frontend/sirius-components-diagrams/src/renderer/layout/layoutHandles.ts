@@ -26,6 +26,17 @@ const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
   return node.data.connectionHandles.map((handle) => handle.id).filter((handleId): handleId is string => !!handleId);
 };
 
+const isOverlap = (point: XYPosition, targetNode: Node<NodeData>): boolean => {
+  const { position, width, height } = targetNode;
+
+  return (
+    point.x >= position.x &&
+    point.x <= position.x + (width ?? 0) &&
+    point.y >= position.y &&
+    point.y <= position.y + (height ?? 0)
+  );
+};
+
 const getUpdatedConnectionHandlesIndexByPosition: GetUpdatedConnectionHandlesIndexByPosition = (
   node,
   nodeConnectionHandle,
@@ -186,11 +197,49 @@ const layoutHandlePosition = (
   });
 };
 
+const resetEdgePathWhenOverlapping = (diagram: RawDiagram) => {
+  const nodes = diagram.nodes;
+  diagram.edges.map((edge) => {
+    const targetNode = nodes.find((node) => node.id === edge.target);
+    const sourceNode = nodes.find((node) => node.id === edge.source);
+    if (targetNode && sourceNode && (edge.data?.bendingPoints?.length ?? 0) > 0) {
+      if (
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, targetNode)) ||
+        edge.data?.bendingPoints?.some((point) => isOverlap(point, sourceNode))
+      ) {
+        targetNode.data.connectionHandles = targetNode.data.connectionHandles.map((handle) => {
+          if (edge.id === handle.edgeId) {
+            return {
+              ...handle,
+              XYPosition: null,
+            };
+          } else {
+            return handle;
+          }
+        });
+        sourceNode.data.connectionHandles = sourceNode.data.connectionHandles.map((handle) => {
+          if (edge.id === handle.edgeId) {
+            return {
+              ...handle,
+              XYPosition: null,
+            };
+          } else {
+            return handle;
+          }
+        });
+        edge.data.bendingPoints = [];
+      }
+    }
+    return edge;
+  });
+};
+
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
+  resetEdgePathWhenOverlapping(diagram);
   layoutHandlePosition(diagram, diagramDescription, nodeLookup);
   layoutHandleIndex(diagram, nodeLookup);
 };
