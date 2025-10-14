@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<papaya:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:papaya="https://www.eclipse.org/sirius-web/papaya" name="Project">
+  <elements xmi:type="papaya:ApplicationConcern">
+    <controllers/>
+  </elements>
+</papaya:Project>
