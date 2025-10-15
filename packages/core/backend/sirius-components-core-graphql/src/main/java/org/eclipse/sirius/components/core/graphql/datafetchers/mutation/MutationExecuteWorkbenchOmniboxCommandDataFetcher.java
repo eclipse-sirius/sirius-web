@@ -17,38 +17,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandExecutor;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandExecutor;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for the field Mutation#executeOmniboxCommand.
+ * Data fetcher for the field Mutation#executeWorkbenchOmniboxCommand.
  *
  * @author gdaniel
  */
-@MutationDataFetcher(type = "Mutation", field = "executeOmniboxCommand")
-public class MutationExecuteOmniboxCommandDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
+@MutationDataFetcher(type = "Mutation", field = "executeWorkbenchOmniboxCommand")
+public class MutationExecuteWorkbenchOmniboxCommandDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
     private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
-    private final IOmniboxCommandExecutor omniboxCommandExecutor;
+    private final IWorkbenchOmniboxCommandExecutor workbenchOmniboxCommandExecutor;
 
-    public MutationExecuteOmniboxCommandDataFetcher(ObjectMapper objectMapper, IOmniboxCommandExecutor omniboxCommandExecutor) {
+    public MutationExecuteWorkbenchOmniboxCommandDataFetcher(ObjectMapper objectMapper, IWorkbenchOmniboxCommandExecutor workbenchOmniboxCommandExecutor) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.omniboxCommandExecutor = Objects.requireNonNull(omniboxCommandExecutor);
+        this.workbenchOmniboxCommandExecutor = Objects.requireNonNull(workbenchOmniboxCommandExecutor);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, ExecuteOmniboxCommandInput.class);
+        var input = this.objectMapper.convertValue(argument, ExecuteWorkbenchOmniboxCommandInput.class);
 
-        return this.omniboxCommandExecutor.execute(input);
+        return this.workbenchOmniboxCommandExecutor.execute(input);
     }
 
 }

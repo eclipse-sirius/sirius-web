@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class CreateRepresentationCommandProvider implements IOmniboxCommandProvider {
+public class CreateRepresentationCommandProvider implements IWorkbenchOmniboxCommandProvider {
 
     public static final String ACTION_PREFIX = "create-representation#";
 

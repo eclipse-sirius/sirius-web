@@ -25,11 +25,13 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchInput;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchOmniboxSearchInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchOmniboxSearchPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -48,16 +50,19 @@ import reactor.core.publisher.Sinks;
  * @author gdaniel
  */
 @Service
-public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
+public class WorkbenchOmniboxSearchEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeMessageService messageService;
+
+    private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
     private final Counter counter;
 
-    public OmniboxSearchEventHandler(ICollaborativeMessageService messageService, ILabelService labelService, MeterRegistry meterRegistry) {
+    public WorkbenchOmniboxSearchEventHandler(ICollaborativeMessageService messageService, IIdentityService identityService, ILabelService labelService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -66,7 +71,7 @@ public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
-        return editingContext instanceof IEMFEditingContext && input instanceof OmniboxSearchInput;
+        return editingContext instanceof IEMFEditingContext && input instanceof WorkbenchOmniboxSearchInput;
     }
 
     @Override
@@ -78,12 +83,13 @@ public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         IPayload payload = null;
 
-        if (input instanceof OmniboxSearchInput omniboxSearchInput) {
-            List<Object> objects = this.getAllEditingContextContentByLabel(editingContext, omniboxSearchInput.query()).stream()
-                    .sorted(Comparator.comparingInt(object -> this.labelService.getStyledLabel(object).toString().length()))
+        if (input instanceof WorkbenchOmniboxSearchInput workbenchOmniboxSearchInput) {
+            List<OmniboxCommand> commands = this.getAllEditingContextContentByLabel(editingContext, workbenchOmniboxSearchInput.query()).stream()
+                    .map(this::toOmniboxCommand)
+                    .sorted(Comparator.comparingInt(command -> command.label().length()))
                     .toList();
 
-            payload = new OmniboxSearchPayload(input.id(), objects);
+            payload = new WorkbenchOmniboxSearchPayload(input.id(), commands);
         }
 
         if (payload == null) {
@@ -92,6 +98,13 @@ public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+
+    private OmniboxCommand toOmniboxCommand(Object object) {
+        var id = this.identityService.getId(object);
+        var label = this.labelService.getStyledLabel(object).toString();
+        var iconURL = this.labelService.getImagePaths(object);
+        return new OmniboxCommand(id, label, iconURL, "Click to select the element");
     }
 
     private List<Object> getAllEditingContextContentByLabel(IEditingContext editingContext, String query) {

@@ -36,6 +36,31 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the command palette from the workbench
+The `omnibox.graphqls` schema has been changed to make explicit the fact that the current APIs are aimed at the integration of the command palette in the workbench:
+
+[source, graphqls]
+----
+extend type Viewer {
+  workbenchOmniboxSearch(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
+  workbenchOmniboxCommands(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
+}
+----
+
+Most of the backend/frontend code that manipulate omnibox commands have been renamed to reflect this change.
+
+The signature of the `Omnibox` component has been changed to make it configurable:
+[source, typescript]
+----
+export interface OmniboxProps {
+  open: boolean;
+  loading: boolean;
+  commands: GQLOmniboxCommand[] | null;
+  onQuery: (query: string, mode: OmniboxMode) => void;
+  onCommandClick: (command: GQLOmniboxCommand, mode: OmniboxMode) => void;
+  onClose: () => void;
+}
+----
 
 
 === Dependency update
@@ -74,6 +99,9 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the command palette from the workbench
+The command palette can now be configured with the commands to display, and functions to trigger when the user enters a query or selects a command.
+This will allow to integrate the command palette in other contexts than the workbench.
 
 
 == 2025.10.0

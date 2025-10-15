@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.omnibox.api;
+import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
+import { GQLOmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
 
-import java.util.List;
+export interface WorkbenchOmniboxProps {
+  editingContextId: string;
+  workbenchHandle: WorkbenchHandle;
+  children: React.ReactNode;
+}
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
-
-/**
- * Provides commands for the omnibox.
- *
- * @author gdaniel
- */
-public interface IOmniboxCommandProvider {
-
-    List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query);
-
+export interface WorkbenchOmniboxState {
+  open: boolean;
+  commands: GQLOmniboxCommand[] | null;
 }

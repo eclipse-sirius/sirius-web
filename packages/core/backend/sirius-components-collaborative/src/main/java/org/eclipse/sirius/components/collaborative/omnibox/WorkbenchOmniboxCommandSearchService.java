@@ -16,31 +16,31 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandSeachService;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandSearchService;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to find omnibox commands.
+ * Used to find workbench omnibox commands.
  *
  * @author sbegaudeau
  */
 @Service
-public class OmniboxCommandSearchService implements IOmniboxCommandSeachService {
+public class WorkbenchOmniboxCommandSearchService implements IWorkbenchOmniboxCommandSearchService {
 
-    private final List<IOmniboxCommandProvider> omniboxCommandProviders;
+    private final List<IWorkbenchOmniboxCommandProvider> workbenchOmniboxCommandProviders;
 
     private final List<IOmniboxCommandOrderer> omniboxCommandOrderers;
 
-    public OmniboxCommandSearchService(List<IOmniboxCommandProvider> omniboxCommandProviders, List<IOmniboxCommandOrderer> omniboxCommandOrderers) {
-        this.omniboxCommandProviders = Objects.requireNonNull(omniboxCommandProviders);
+    public WorkbenchOmniboxCommandSearchService(List<IWorkbenchOmniboxCommandProvider> workbenchOmniboxCommandProviders, List<IOmniboxCommandOrderer> omniboxCommandOrderers) {
+        this.workbenchOmniboxCommandProviders = Objects.requireNonNull(workbenchOmniboxCommandProviders);
         this.omniboxCommandOrderers = Objects.requireNonNull(omniboxCommandOrderers);
     }
 
     @Override
     public List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query) {
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandProviders.stream()
+        List<OmniboxCommand> omniboxCommands = this.workbenchOmniboxCommandProviders.stream()
                 .flatMap(provider -> provider.getCommands(editingContextId, selectedObjectIds, query).stream())
                 .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
                 .toList();

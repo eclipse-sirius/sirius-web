@@ -14,8 +14,8 @@ package org.eclipse.sirius.web.papaya.omnibox;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandHandler;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class PapayaCreateSampleProjectCommandHandler implements IOmniboxCommandHandler {
+public class PapayaCreateSampleProjectCommandHandler implements IWorkbenchOmniboxCommandHandler {
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
@@ -35,12 +35,12 @@ public class PapayaCreateSampleProjectCommandHandler implements IOmniboxCommandH
     }
 
     @Override
-    public boolean canHandle(ExecuteOmniboxCommandInput input) {
+    public boolean canHandle(ExecuteWorkbenchOmniboxCommandInput input) {
         return Objects.equals(input.commandId(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID);
     }
 
     @Override
-    public IPayload handle(ExecuteOmniboxCommandInput input) {
+    public IPayload handle(ExecuteWorkbenchOmniboxCommandInput input) {
         var editingContextDispatcherInput = new PapayaCreateSampleProjectInput(input.id());
         return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), editingContextDispatcherInput).block();
     }

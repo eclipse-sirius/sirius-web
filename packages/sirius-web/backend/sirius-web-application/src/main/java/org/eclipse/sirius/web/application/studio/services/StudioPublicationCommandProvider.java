@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class StudioPublicationCommandProvider implements IOmniboxCommandProvider {
+public class StudioPublicationCommandProvider implements IWorkbenchOmniboxCommandProvider {
 
     public static final String PUBLISH_STUDIO_COMMAND_ID = "publishStudio";
 
