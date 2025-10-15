@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.graphql.tests;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class ExecuteOmniboxCommandMutationRunner implements IMutationRunner<ExecuteOmniboxCommandInput> {
+public class ExecuteOmniboxCommandMutationRunner implements IMutationRunner<ExecuteWorkbenchOmniboxCommandInput> {
 
     private static final String EXECUTE_OMNIBOX_COMMAND = """
             mutation executeOmniboxCommand($input: ExecuteOmniboxCommandInput!) {
@@ -42,7 +42,7 @@ public class ExecuteOmniboxCommandMutationRunner implements IMutationRunner<Exec
     }
 
     @Override
-    public String run(ExecuteOmniboxCommandInput input) {
+    public String run(ExecuteWorkbenchOmniboxCommandInput input) {
         return this.graphQLRequestor.execute(EXECUTE_OMNIBOX_COMMAND, input);
     }
 

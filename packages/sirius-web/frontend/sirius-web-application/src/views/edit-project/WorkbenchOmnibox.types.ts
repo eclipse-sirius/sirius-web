@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLGetOmniboxSearchResultsQueryData } from './useOmniboxSearch.types';
+import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
+import { GQLOmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
 
-export interface OmniboxObjectListProps {
-  loading: boolean;
-  data: GQLGetOmniboxSearchResultsQueryData | null;
-  onClose: () => void;
+export interface WorkbenchOmniboxProps {
+  editingContextId: string;
+  workbenchHandle: WorkbenchHandle;
+  children: React.ReactNode;
 }
 
-export interface ObjectAction {
-  id: string;
-  icon: JSX.Element;
-  kind: string;
-  label: string;
+export interface WorkbenchOmniboxState {
+  open: boolean;
+  commands: GQLOmniboxCommand[] | null;
 }

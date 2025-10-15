@@ -18,8 +18,9 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchCommand;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class CreateRepresentationCommandProvider implements IOmniboxCommandProvi
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
+    public List<? extends IOmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
         if (!selectedObjectIds.isEmpty()) {
             var input = new EditingContextRepresentationDescriptionsInput(UUID.randomUUID(), editingContextId, selectedObjectIds.get(0));
             return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
@@ -58,9 +59,9 @@ public class CreateRepresentationCommandProvider implements IOmniboxCommandProvi
         return List.of();
     }
 
-    private List<OmniboxCommand> toCommands(EditingContextRepresentationDescriptionsPayload payload) {
+    private List<? extends IOmniboxCommand> toCommands(EditingContextRepresentationDescriptionsPayload payload) {
         return payload.representationDescriptions().stream()
-                .map(representationDescriptionMetadata -> new OmniboxCommand(ACTION_PREFIX + representationDescriptionMetadata.getId(), "Create a new " + representationDescriptionMetadata.getLabel(), List.of("/omnibox/create.svg"), ""))
+                .map(representationDescriptionMetadata -> new WorkbenchCommand(ACTION_PREFIX + representationDescriptionMetadata.getId(), "Create a new " + representationDescriptionMetadata.getLabel(), List.of("/omnibox/create.svg"), ""))
                 .toList();
     }
 }

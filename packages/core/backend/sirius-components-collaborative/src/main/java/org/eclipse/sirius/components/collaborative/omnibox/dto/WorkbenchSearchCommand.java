@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,21 +14,21 @@ package org.eclipse.sirius.components.collaborative.omnibox.dto;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 
 /**
- * The input object of the execute command mutation.
- *
+ * A search command that can be executed in the context of a workbench.
  * @author gdaniel
  */
-public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, List<String> selectedObjectIds, String commandId) implements IInput {
+//GH comment: move to sirius web? Not sure the concept of workbench is pertinent in sirius-components-core.
+public record WorkbenchSearchCommand(String id, String label, List<String> iconURLs, String description) implements IOmniboxCommand {
 
-    public ExecuteOmniboxCommandInput {
+    public WorkbenchSearchCommand {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(editingContextId);
-        Objects.requireNonNull(selectedObjectIds);
-        Objects.requireNonNull(commandId);
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(iconURLs);
+        Objects.requireNonNull(description);
     }
+
 }

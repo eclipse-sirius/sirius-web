@@ -15,10 +15,10 @@ package org.eclipse.sirius.components.collaborative.omnibox;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandSeachService;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,8 +39,8 @@ public class OmniboxCommandSearchService implements IOmniboxCommandSeachService 
     }
 
     @Override
-    public List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query) {
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandProviders.stream()
+    public List<? extends IOmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query) {
+        List<? extends IOmniboxCommand> omniboxCommands = this.omniboxCommandProviders.stream()
                 .flatMap(provider -> provider.getCommands(editingContextId, selectedObjectIds, query).stream())
                 .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
                 .toList();

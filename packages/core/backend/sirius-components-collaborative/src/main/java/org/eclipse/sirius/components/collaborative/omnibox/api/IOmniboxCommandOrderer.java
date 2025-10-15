@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.collaborative.omnibox.api;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
-
 /**
  * Sorts omnibox commands.
  *
@@ -23,6 +21,6 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
  */
 public interface IOmniboxCommandOrderer {
 
-    List<OmniboxCommand> order(List<OmniboxCommand> omniboxCommands);
+    List<? extends IOmniboxCommand> order(List<? extends IOmniboxCommand> omniboxCommands);
 
 }

@@ -24,8 +24,8 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandSuccessPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -131,9 +131,9 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given an omnibox command id, when the mutation is performed, then the command is executed")
     public void givenAnOmniboxCommandIdWhenTheMutationIsPerformedThenTheCommandIsExecuted() {
-        var result = this.executeOmniboxCommandMutationRunner.run(new ExecuteOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
+        var result = this.executeOmniboxCommandMutationRunner.run(new ExecuteWorkbenchOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
         String typename = JsonPath.read(result, "$.data.executeOmniboxCommand.__typename");
-        assertThat(typename).isEqualTo(ExecuteOmniboxCommandSuccessPayload.class.getSimpleName());
+        assertThat(typename).isEqualTo(ExecuteWorkbenchOmniboxCommandSuccessPayload.class.getSimpleName());
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {

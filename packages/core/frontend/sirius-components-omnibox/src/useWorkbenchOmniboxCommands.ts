@@ -11,19 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+// TODO rename to getWorkbenchOmniboxCommands or something like that
 import { gql, useLazyQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  GQLGetOmniboxCommandsQueryData,
-  GQLGetOmniboxCommandsQueryVariables,
-  UseOmniboxCommandsValue,
-} from './useOmniboxCommands.types';
+  GQLGetWorkbenchOmniboxCommandsQueryData,
+  GQLGetWorkbenchOmniboxCommandsQueryVariables,
+  UseWorkbenchOmniboxCommandsValue,
+} from './useWorkbenchOmniboxCommands.types';
 
-const getOmniboxCommandsQuery = gql`
-  query getOmniboxCommands($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
+const getWorkbenchOmniboxCommandsQuery = gql`
+  query getWorkbenchOmniboxCommands($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
     viewer {
-      omniboxCommands(editingContextId: $editingContextId, selectedObjectIds: $selectedObjectIds, query: $query) {
+      workbenchOmniboxCommands(
+        editingContextId: $editingContextId
+        selectedObjectIds: $selectedObjectIds
+        query: $query
+      ) {
         edges {
           node {
             id
@@ -41,11 +46,11 @@ const getOmniboxCommandsQuery = gql`
   }
 `;
 
-export const useOmniboxCommands = (): UseOmniboxCommandsValue => {
-  const [getOmniboxCommands, { loading, data, error }] = useLazyQuery<
-    GQLGetOmniboxCommandsQueryData,
-    GQLGetOmniboxCommandsQueryVariables
-  >(getOmniboxCommandsQuery);
+export const useWorkbenchOmniboxCommands = (): UseWorkbenchOmniboxCommandsValue => {
+  const [getWorkbenchOmniboxCommands, { loading, data, error }] = useLazyQuery<
+    GQLGetWorkbenchOmniboxCommandsQueryData,
+    GQLGetWorkbenchOmniboxCommandsQueryVariables
+  >(getWorkbenchOmniboxCommandsQuery);
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
@@ -55,7 +60,7 @@ export const useOmniboxCommands = (): UseOmniboxCommandsValue => {
   }, [error]);
 
   return {
-    getOmniboxCommands,
+    getWorkbenchOmniboxCommands,
     loading,
     data: data ?? null,
   };
