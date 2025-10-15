@@ -23,11 +23,8 @@ import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { PaletteAppearanceSectionContributionProps } from '../appearance/extensions/PaletteAppearanceSectionContribution.types';
-import { paletteAppearanceSectionExtensionPoint } from '../appearance/extensions/PaletteAppearanceSectionExtensionPoints';
-import { EdgeAppearanceSection } from './edge/EdgeAppearanceSection';
-import { ImageNodeAppearanceSection } from './ImageNodeAppearanceSection';
-import { RectangularNodeAppearanceSection } from './RectangularNodeAppearanceSection';
+import { PaletteAppearanceSectionContributionProps } from './extensions/PaletteAppearanceSectionContribution.types';
+import { paletteAppearanceSectionExtensionPoint } from './extensions/PaletteAppearanceSectionExtensionPoints';
 
 const useStyle = makeStyles()((theme) => ({
   toolListItemButton: {
@@ -75,28 +72,15 @@ export const PaletteAppearanceSection = ({
     paletteAppearanceSectionExtensionPoint
   );
 
-  const paletteAppearanceSectionComponents: JSX.Element[] = [];
-  if (nodeElement) {
-    paletteAppearanceSectionData.data
-      .filter((data) => data.canHandle(nodeElement))
-      .map((data) => data.component)
-      .forEach((PaletteAppearanceSectionComponent, index) =>
-        paletteAppearanceSectionComponents.push(
-          <PaletteAppearanceSectionComponent
-            elementId={diagramElementId}
-            key={'paletteAppearanceSectionComponents_' + index.toString()}
-          />
-        )
-      );
-    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
-      paletteAppearanceSectionComponents.push(<RectangularNodeAppearanceSection diagramElementId={nodeElement.id} />);
-    }
-    if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
-      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={nodeElement.id} />);
-    }
-  } else if (edgeElement) {
-    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={edgeElement.id} />);
-  }
+  const paletteAppearanceSectionComponents: JSX.Element[] = paletteAppearanceSectionData.data
+    .filter((data) => data.canHandle(nodeElement, edgeElement))
+    .map((data) => data.component)
+    .map((PaletteAppearanceSectionComponent, index) => (
+      <PaletteAppearanceSectionComponent
+        elementId={diagramElementId}
+        key={'paletteAppearanceSectionComponents_' + index.toString()}
+      />
+    ));
 
   return (
     <List className={classes.toolList} component="nav">
