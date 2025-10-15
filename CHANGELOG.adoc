@@ -6,6 +6,7 @@
 
 - Add command palette on projects page
 - Add support for indexing models
+- Add initial support for in-project search
 
 
 === Architectural decision records

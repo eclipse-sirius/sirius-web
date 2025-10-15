@@ -1,0 +1,53 @@
+= (S) Add initial support for in-project search
+
+== Problem
+
+In large projects with many semantic elements, it can be difficult to find specific elements.
+The Omnibox has some support for searching element by name, but it is limited.
+
+The only other alternative currently available is to hunt for the element(s) of interest inside the _Explorer_ view, which quickly becomes impossible if the project is large and the user does not know already where in the model hierarchy the elements are located.
+
+== Key Result
+
+* It should be possible to search for elements by name, and to see the results in a dedicated view.
+* Once a search is performed, it should be possible to see the results, and to select the matched elements to reveal them in the other views.
+
+In this shape we will focus on a first, basic version of the feature, which should already improve the user experience.
+It will be extended in future shapes to add more advanced features.
+
+== Solution
+
+We will add a new lef-side panel named "Search".
+
+Its UI will be organised in two main parts:
+
+1. At the top:
+  - a text field to input the search terms;
+  - some toggles to control the search options (match case, match whole word, use regular expressions, search in attributes);
+  - a button to actually launch the search.
+2. Below, a part to display the results once they are received.
+In this initial version the search results will be displayed as a flat list of matching elements (similar to what is done in the _Query_ view).
+
+A search will only be launched on explicit request by the user (with the "Search" button).
+The result of a search will not be a live representation but a fixed snapshot corresponding to the result at the time of the search.
+
+The search implemented in the backend will be a simple in-memory search through all the elements of the editing context, looking for matches in the default label of the elements, and optionally in (the string representation of) their attributes.
+
+It will return a flat list of matching elements, without any pagination or advanced sorting/ranking, nor with details about where the match was found (e.g. in the label or in a specific attribute).
+These advanced features will be considered in future shapes.
+
+=== Scenario
+
+1. The user opens the "Search" panel.
+It is initially empty, with only the search input field and options visible.
+2. The user inputs a search term in the text field, and configures the search options as desired.
+3. The user clicks the "Search" button.
+4. The search query is launched.
+The search panel shows a loading indicator while waiting for the results.
+5. Once the results are received, they are displayed in the lower part of the panel as a flat list of matching elements.
+Each element is displayed with its default label and an icon representing its type.
+6. The user can scroll through the list of results and click on any element to select it and reveal it in the other views (e.g. _Explorer_, _Diagram_).
+
+=== Cutting backs
+
+None for this initial version, as it is designed on purpose to be a basic but usable version to build upon in future shapes.
