@@ -57,6 +57,7 @@ Updates the GraphQL schema and frontend hooks accordingly.
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
+- https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add a dependency to `spring-boot-starter-data-elasticsearch` in `sirius-web-infrastructure`
 
 
 === Bug fixes
@@ -85,6 +86,10 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748] [sirius-web] Add support for choosing libraries to import when creating a project
 - https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Add support for importing libraries when creating a project.
 This will use a transactional event listener to add the dependency to the libraries in the project created.
+- https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add support for indexing models in Elasticsearch.
+Models are asynchronously indexed in Elasticsearch, which will allow advanced and cross-project search in the future.
+This feature is opt-in: Sirius Web won't try to index models if it is not configured to do so.
+You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure Sirius Web with Elasticsearch
 
 
 === Improvements

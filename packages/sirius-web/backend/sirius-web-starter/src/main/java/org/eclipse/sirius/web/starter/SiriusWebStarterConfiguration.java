@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -64,6 +65,7 @@ import reactor.core.scheduler.Schedulers;
     "org.eclipse.sirius.web.infrastructure",
     "org.eclipse.sirius.web.starter"
 })
+@EnableAsync
 public class SiriusWebStarterConfiguration {
 
     @Bean
