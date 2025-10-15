@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.graphql.tests;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class ExecuteOmniboxCommandMutationRunner implements IMutationRunner<ExecuteOmniboxCommandInput> {
+public class ExecuteWorkbenchOmniboxCommandMutationRunner implements IMutationRunner<ExecuteWorkbenchOmniboxCommandInput> {
 
-    private static final String EXECUTE_OMNIBOX_COMMAND = """
-            mutation executeOmniboxCommand($input: ExecuteOmniboxCommandInput!) {
-              executeOmniboxCommand(input: $input) {
+    private static final String EXECUTE_WORKBENCH_OMNIBOX_COMMAND = """
+            mutation executeWorkbenchOmniboxCommand($input: ExecuteWorkbenchOmniboxCommandInput!) {
+              executeWorkbenchOmniboxCommand(input: $input) {
                 __typename
               }
             }
@@ -37,13 +37,13 @@ public class ExecuteOmniboxCommandMutationRunner implements IMutationRunner<Exec
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ExecuteOmniboxCommandMutationRunner(IGraphQLRequestor graphQLRequestor) {
+    public ExecuteWorkbenchOmniboxCommandMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public String run(ExecuteOmniboxCommandInput input) {
-        return this.graphQLRequestor.execute(EXECUTE_OMNIBOX_COMMAND, input);
+    public String run(ExecuteWorkbenchOmniboxCommandInput input) {
+        return this.graphQLRequestor.execute(EXECUTE_WORKBENCH_OMNIBOX_COMMAND, input);
     }
 
 }

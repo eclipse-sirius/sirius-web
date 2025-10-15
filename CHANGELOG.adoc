@@ -52,6 +52,31 @@ Updates the GraphQL schema and frontend hooks accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] The extension point for adding global actions to a table has been renamed from `settingButtonMenuEntryExtensionPoint` to `toolsButtonMenuEntryExtensionPoint`
 - https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Change the input to create a project and update the GraphQL schema accordingly.
 - [core] Update the signature of `IconOverlay` by renaming the props `iconURL` to `iconURLs` to highlight the fact that a collection of URLs is expected.
+- https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the omnibox from the workbench
+The `omnibox.graphqls` schema has been changed to make explicit the fact that the current APIs are aimed at the integration of the omnibox in the workbench:
+
+[source, graphqls]
+----
+extend type Viewer {
+  workbenchOmniboxSearch(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
+  workbenchOmniboxCommands(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
+}
+----
+
+Most of the backend/frontend code that manipulate omnibox commands have been renamed to reflect this change.
+
+The signature of the `Omnibox` component has been changed to make it configurable:
+[source, typescript]
+----
+export interface OmniboxProps {
+  open: boolean;
+  loading: boolean;
+  commands: GQLOmniboxCommand[] | null;
+  onQuery: (query: string, mode: OmniboxMode) => void;
+  onCommandClick: (command: GQLOmniboxCommand, mode: OmniboxMode) => void;
+  onClose: () => void;
+}
+----
 
 
 === Dependency update
@@ -110,6 +135,10 @@ A new module `sirius-components-datatree` has been created to:
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] Rename Settings menu and export action
 - https://github.com/eclipse-sirius/sirius-web/issues/5640[#5640] [diagram] Add a new `movedByUser` flag to the node layout data.
 - https://github.com/eclipse-sirius/sirius-web/issues/5621[#5621] [diagram] Make it easier to remove all bend points by aligning the edges
+- https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the command palette from the workbench
+The command palette can now be configured with the commands to display, and functions to trigger when the user enters a query or selects a command.
+This will allow to integrate the command palette in other contexts than the workbench.
+
 
 == 2025.10.0
 

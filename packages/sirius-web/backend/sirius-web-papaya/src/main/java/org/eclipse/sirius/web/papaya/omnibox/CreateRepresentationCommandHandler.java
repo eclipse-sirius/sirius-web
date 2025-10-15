@@ -17,9 +17,9 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandSuccessPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandHandler;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class CreateRepresentationCommandHandler implements IOmniboxCommandHandler {
+public class CreateRepresentationCommandHandler implements IWorkbenchOmniboxCommandHandler {
 
     private final IMessageService messageService;
 
@@ -46,12 +46,12 @@ public class CreateRepresentationCommandHandler implements IOmniboxCommandHandle
     }
 
     @Override
-    public boolean canHandle(ExecuteOmniboxCommandInput input) {
+    public boolean canHandle(ExecuteWorkbenchOmniboxCommandInput input) {
         return input.commandId().startsWith(CreateRepresentationCommandProvider.ACTION_PREFIX) && !input.selectedObjectIds().isEmpty();
     }
 
     @Override
-    public IPayload handle(ExecuteOmniboxCommandInput input) {
+    public IPayload handle(ExecuteWorkbenchOmniboxCommandInput input) {
         if (input.commandId().length() > CreateRepresentationCommandProvider.ACTION_PREFIX.length() && !input.selectedObjectIds().isEmpty()) {
             var representationDescriptionId = input.commandId().substring(CreateRepresentationCommandProvider.ACTION_PREFIX.length());
             var objectId = input.selectedObjectIds().get(0);
@@ -64,7 +64,7 @@ public class CreateRepresentationCommandHandler implements IOmniboxCommandHandle
                                     new WorkbenchSelectionEntry(createRepresentationSuccessPayload.representation().id(), createRepresentationSuccessPayload.representation().kind())
                             );
                             var workbenchSelection = new WorkbenchSelection(entries);
-                            return new ExecuteOmniboxCommandSuccessPayload(createRepresentationSuccessPayload.id(), workbenchSelection, List.of());
+                            return new ExecuteWorkbenchOmniboxCommandSuccessPayload(createRepresentationSuccessPayload.id(), workbenchSelection, List.of());
                         }
                         return new ErrorPayload(payload.id(), this.messageService.unexpectedError());
                     }).block();

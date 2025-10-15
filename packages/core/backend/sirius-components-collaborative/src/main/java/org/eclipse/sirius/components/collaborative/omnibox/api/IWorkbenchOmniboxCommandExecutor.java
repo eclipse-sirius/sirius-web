@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * Used to execute omnibox commands.
+ * Used to execute workbench omnibox commands.
  *
  * @author sbegaudeau
  */
-public interface IOmniboxCommandExecutor {
-    IPayload execute(ExecuteOmniboxCommandInput input);
+public interface IWorkbenchOmniboxCommandExecutor {
+    IPayload execute(ExecuteWorkbenchOmniboxCommandInput input);
 }

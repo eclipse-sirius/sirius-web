@@ -16,18 +16,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * The input object for the omnibox search.
+ * The payload object for the omnibox search support.
  *
  * @author gdaniel
  */
-public record OmniboxSearchInput(UUID id, String editingContextId, List<String> selectedObjectIds, String query) implements IInput {
-    public OmniboxSearchInput {
+public record WorkbenchOmniboxSearchPayload(UUID id, List<OmniboxCommand> commands) implements IPayload {
+
+    public WorkbenchOmniboxSearchPayload {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(editingContextId);
-        Objects.requireNonNull(selectedObjectIds);
-        Objects.requireNonNull(query);
+        Objects.requireNonNull(commands);
     }
 }

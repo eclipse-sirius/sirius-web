@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.components.core.graphql.datafetchers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,12 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandSeachService;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchOmniboxSearchInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchOmniboxSearchPayload;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -33,14 +36,15 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
+import reactor.core.publisher.Mono;
 
 /**
- * Data fetcher for the field Viewer#omniboxCommands.
+ * Data fetcher for the field Viewer#workbenchOmniboxSearch.
  *
- * @author gcoutable
+ * @author gdaniel
  */
-@QueryDataFetcher(type = "Viewer", field = "omniboxCommands")
-public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<OmniboxCommand>> {
+@QueryDataFetcher(type = "Viewer", field = "workbenchOmniboxSearch")
+public class ViewerWorkbenchOmniboxSearchDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<OmniboxCommand>>> {
 
     private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 
@@ -48,25 +52,31 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String QUERY_ARGUMENT = "query";
 
-    private final IOmniboxCommandSeachService omniboxCommandSeachService;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
     private final ObjectMapper objectMapper;
 
-    public ViewerOmniboxCommandsDataFetcher(IOmniboxCommandSeachService omniboxCommandSeachService, ObjectMapper objectMapper) {
-        this.omniboxCommandSeachService = Objects.requireNonNull(omniboxCommandSeachService);
+    public ViewerWorkbenchOmniboxSearchDataFetcher(IEditingContextDispatcher editingContextDispatcher, ObjectMapper objectMapper) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
-    public Connection<OmniboxCommand> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<Connection<OmniboxCommand>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
         Object argument = environment.getArgument(SELECTED_OBJECT_IDS_ARGUMENT);
         List<String> selectedObjectIds = this.objectMapper.convertValue(argument, new TypeReference<>() { });
         String query = environment.getArgument(QUERY_ARGUMENT);
 
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, selectedObjectIds, query);
+        var input = new WorkbenchOmniboxSearchInput(UUID.randomUUID(), editingContextId, selectedObjectIds, query);
 
-        return this.toConnection(omniboxCommands);
+        return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
+                .filter(WorkbenchOmniboxSearchPayload.class::isInstance)
+                .map(WorkbenchOmniboxSearchPayload.class::cast)
+                .map(WorkbenchOmniboxSearchPayload::commands)
+                .map(this::toConnection)
+                .switchIfEmpty(Mono.just(new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0))))
+                .toFuture();
     }
 
     private Connection<OmniboxCommand> toConnection(List<OmniboxCommand> omniboxCommands) {

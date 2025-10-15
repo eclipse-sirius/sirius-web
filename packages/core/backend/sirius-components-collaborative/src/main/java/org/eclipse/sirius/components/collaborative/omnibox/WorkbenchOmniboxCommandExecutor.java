@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandExecutor;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandExecutor;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandHandler;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.Message;
@@ -29,34 +29,34 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to execute omnibox commands.
+ * Used to execute workbench omnibox commands.
  *
  * @author sbegaudeau
  */
 @Service
-public class OmniboxCommandExecutor implements IOmniboxCommandExecutor {
+public class WorkbenchOmniboxCommandExecutor implements IWorkbenchOmniboxCommandExecutor {
 
-    private final List<IOmniboxCommandHandler> omniboxCommandHandlers;
+    private final List<IWorkbenchOmniboxCommandHandler> workbenchOmniboxCommandHandlers;
 
     private final ICollaborativeMessageService collaborativeMessageService;
 
-    private final Logger logger = LoggerFactory.getLogger(OmniboxCommandExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(WorkbenchOmniboxCommandExecutor.class);
 
-    public OmniboxCommandExecutor(List<IOmniboxCommandHandler> omniboxCommandHandlers, ICollaborativeMessageService collaborativeMessageService) {
-        this.omniboxCommandHandlers = Objects.requireNonNull(omniboxCommandHandlers);
+    public WorkbenchOmniboxCommandExecutor(List<IWorkbenchOmniboxCommandHandler> workbenchOmniboxCommandHandlers, ICollaborativeMessageService collaborativeMessageService) {
+        this.workbenchOmniboxCommandHandlers = Objects.requireNonNull(workbenchOmniboxCommandHandlers);
         this.collaborativeMessageService = Objects.requireNonNull(collaborativeMessageService);
     }
 
     @Override
-    public IPayload execute(ExecuteOmniboxCommandInput input) {
-        Optional<IOmniboxCommandHandler> optionalOmniboxCommandHandler = this.omniboxCommandHandlers.stream()
+    public IPayload execute(ExecuteWorkbenchOmniboxCommandInput input) {
+        Optional<IWorkbenchOmniboxCommandHandler> optionalOmniboxCommandHandler = this.workbenchOmniboxCommandHandlers.stream()
                 .filter(handler -> handler.canHandle(input))
                 .findFirst();
 
         IPayload payload = null;
         if (optionalOmniboxCommandHandler.isPresent()) {
-            IOmniboxCommandHandler omniboxCommandHandler = optionalOmniboxCommandHandler.get();
-            payload = omniboxCommandHandler.handle(input);
+            IWorkbenchOmniboxCommandHandler workbenchOmniboxCommandHandler = optionalOmniboxCommandHandler.get();
+            payload = workbenchOmniboxCommandHandler.handle(input);
         } else {
             this.logger.warn("No handler found for event: {}", input);
             payload = new ErrorPayload(input.id(), List.of(new Message(this.collaborativeMessageService.notFound(), MessageLevel.ERROR)));

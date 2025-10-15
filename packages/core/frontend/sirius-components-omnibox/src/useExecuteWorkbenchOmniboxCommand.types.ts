@@ -13,36 +13,36 @@
 
 import { GQLMessage, Selection } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseExecuteOmniboxCommandValue {
-  executeOmniboxCommand: (editingContextId: string, selectedObjectIds: string[], commandId: string) => void;
+export interface UseExecuteWorkbenchOmniboxCommandValue {
+  executeWorkbenchOmniboxCommand: (editingContextId: string, selectedObjectIds: string[], commandId: string) => void;
   loading: boolean;
-  data: GQLExecuteOmniboxCommandData | null;
+  data: GQLExecuteWorkbenchOmniboxCommandData | null;
 }
 
-export interface GQLExecuteOmniboxCommandVariables {
-  input: GQLExecuteOmniboxInput;
+export interface GQLExecuteWorkbenchOmniboxCommandVariables {
+  input: GQLExecuteWorkbenchOmniboxInput;
 }
 
-export interface GQLExecuteOmniboxInput {
+export interface GQLExecuteWorkbenchOmniboxInput {
   id: string;
   editingContextId: string;
   selectedObjectIds: string[];
   commandId: string;
 }
 
-export interface GQLExecuteOmniboxCommandData {
-  executeOmniboxCommand: GQLExecuteOmniboxCommandPayload;
+export interface GQLExecuteWorkbenchOmniboxCommandData {
+  executeWorkbenchOmniboxCommand: GQLExecuteWorkbenchOmniboxCommandPayload;
 }
 
-export interface GQLExecuteOmniboxCommandPayload {
+export interface GQLExecuteWorkbenchOmniboxCommandPayload {
   __typename: string;
 }
 
-export interface GQLExecuteOmniboxCommandSuccessPayload extends GQLExecuteOmniboxCommandPayload {
+export interface GQLExecuteWorkbenchOmniboxCommandSuccessPayload extends GQLExecuteWorkbenchOmniboxCommandPayload {
   newSelection: Selection | null;
   messages: GQLMessage[];
 }
 
-export interface GQLErrorPayload extends GQLExecuteOmniboxCommandPayload {
+export interface GQLErrorPayload extends GQLExecuteWorkbenchOmniboxCommandPayload {
   messages: GQLMessage[];
 }

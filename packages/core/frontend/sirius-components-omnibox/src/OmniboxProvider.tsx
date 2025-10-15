@@ -11,44 +11,58 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Omnibox } from './Omnibox';
 import { OmniboxContext } from './OmniboxContext';
 import { OmniboxContextValue } from './OmniboxContext.types';
-import { OmniboxProviderProps, OmniboxProviderState } from './OmniboxProvider.types';
+import { OmniboxProviderProps } from './OmniboxProvider.types';
 
-export const OmniboxProvider = ({ editingContextId, workbenchHandle, children }: OmniboxProviderProps) => {
-  const [state, setState] = useState<OmniboxProviderState>({
-    open: false,
-  });
-
-  const openOmnibox = () => setState((prevState) => ({ ...prevState, open: true }));
-  const closeOmnibox = () => setState((prevState) => ({ ...prevState, open: false }));
-
+export const OmniboxProvider = ({
+  open,
+  onOpen,
+  onClose,
+  loading,
+  commands,
+  onQuery,
+  onCommandClick,
+  children,
+}: OmniboxProviderProps) => {
   useEffect(() => {
     const keyDownEventListener = (event: KeyboardEvent) => {
       if (event.key === 'k' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
-        setState((prevState) => ({ ...prevState, open: !prevState.open }));
+        if (open) {
+          onClose();
+        } else {
+          onOpen();
+        }
       } else if (event.key === 'Esc') {
         event.preventDefault();
-        setState((prevState) => ({ ...prevState, open: false }));
+        onClose();
       }
     };
 
     document.addEventListener('keydown', keyDownEventListener);
     return () => document.removeEventListener('keydown', keyDownEventListener);
-  }, []);
+  }, [open]);
 
   const omniboxContextValue: OmniboxContextValue = {
-    openOmnibox,
-    applySelection: workbenchHandle ? workbenchHandle.applySelection : () => {},
+    openOmnibox: onOpen,
   };
 
   return (
     <OmniboxContext.Provider value={omniboxContextValue}>
       {children}
-      {state.open ? <Omnibox open={state.open} editingContextId={editingContextId} onClose={closeOmnibox} /> : null}
+      {open ? (
+        <Omnibox
+          open={open}
+          loading={loading}
+          commands={commands}
+          onQuery={onQuery}
+          onCommandClick={onCommandClick}
+          onClose={onClose}
+        />
+      ) : null}
     </OmniboxContext.Provider>
   );
 };
