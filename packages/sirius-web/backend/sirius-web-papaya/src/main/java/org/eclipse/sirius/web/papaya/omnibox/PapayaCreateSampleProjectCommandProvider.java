@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.papaya.omnibox;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class PapayaCreateSampleProjectCommandProvider implements IOmniboxCommandProvider {
+public class PapayaCreateSampleProjectCommandProvider implements IWorkbenchOmniboxCommandProvider {
 
     public static final String CREATE_SAMPLE_PROJECT_COMMAND_ID = "create_papaya_sample_project";
 

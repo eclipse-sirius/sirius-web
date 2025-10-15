@@ -21,7 +21,6 @@ import {
   WorkbenchConfiguration,
   WorkbenchHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import {
   TreeToolBarContext,
   TreeToolBarContextValue,
@@ -39,6 +38,7 @@ import { UploadDocumentModalContribution } from './TreeToolBarContributions/Uplo
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
+import { WorkbenchOmnibox } from './WorkbenchOmnibox';
 
 const PROJECT_ID_SEPARATOR = '@';
 
@@ -141,7 +141,7 @@ export const EditProjectView = () => {
         <SelectionContextProvider initialSelection={initialSelection}>
           <SelectionSynchronizer>
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <OmniboxProvider
+              <WorkbenchOmnibox
                 editingContextId={state.project.currentEditingContext.id}
                 workbenchHandle={refWorkbenchHandle.current}>
                 <UndoRedo>
@@ -157,7 +157,7 @@ export const EditProjectView = () => {
                     />
                   </TreeToolBarProvider>
                 </UndoRedo>
-              </OmniboxProvider>
+              </WorkbenchOmnibox>
             </RepresentationPathContext.Provider>
           </SelectionSynchronizer>
         </SelectionContextProvider>

@@ -21,12 +21,12 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 
 /**
- * Used to indicate that a command has been successfully executed.
+ * Used to indicate that a workbench command has been successfully executed.
  *
  * @author sbegaudeau
  */
-public record ExecuteOmniboxCommandSuccessPayload(UUID id, WorkbenchSelection newSelection, List<Message> messages) implements IPayload {
-    public ExecuteOmniboxCommandSuccessPayload {
+public record ExecuteWorkbenchOmniboxCommandSuccessPayload(UUID id, WorkbenchSelection newSelection, List<Message> messages) implements IPayload {
+    public ExecuteWorkbenchOmniboxCommandSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(messages);
     }

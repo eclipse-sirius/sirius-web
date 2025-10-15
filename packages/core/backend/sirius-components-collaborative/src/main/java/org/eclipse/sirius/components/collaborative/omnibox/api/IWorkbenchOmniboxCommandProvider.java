@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
-import org.eclipse.sirius.components.core.api.IPayload;
+import java.util.List;
+
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 
 /**
- * Processes the input omnibox command.
+ * Provides workbench commands for the omnibox.
  *
  * @author gdaniel
  */
-public interface IOmniboxCommandHandler {
+public interface IWorkbenchOmniboxCommandProvider {
 
-    boolean canHandle(ExecuteOmniboxCommandInput input);
+    List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query);
 
-    IPayload handle(ExecuteOmniboxCommandInput input);
 }

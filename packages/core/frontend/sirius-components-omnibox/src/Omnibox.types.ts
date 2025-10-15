@@ -11,9 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+
 export interface OmniboxProps {
-  editingContextId: string;
   open: boolean;
+  loading: boolean;
+  commands: GQLOmniboxCommand[] | null;
+  onQuery: (query: string, mode: OmniboxMode) => void;
+  onCommandClick: (command: GQLOmniboxCommand, mode: OmniboxMode) => void;
   onClose: () => void;
 }
 

@@ -14,17 +14,17 @@ package org.eclipse.sirius.components.collaborative.omnibox;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**
- * Provides the search command in the omnibox.
+ * Provides the workbench search command in the omnibox.
  *
  * @author gdaniel
  */
 @Service
-public class OmniboxSearchCommandProvider implements IOmniboxCommandProvider {
+public class WorkbenchOmniboxSearchCommandProvider implements IWorkbenchOmniboxCommandProvider {
 
     public static final String SEARCH_COMMAND_ID = "search";
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 
 export interface OmniboxCommandOverrideContribution {
   canHandle: (action: GQLOmniboxCommand) => boolean;

@@ -16,5 +16,4 @@ import { OmniboxContextValue } from './OmniboxContext.types';
 
 export const OmniboxContext = React.createContext<OmniboxContextValue>({
   openOmnibox: () => {},
-  applySelection: () => {},
 });

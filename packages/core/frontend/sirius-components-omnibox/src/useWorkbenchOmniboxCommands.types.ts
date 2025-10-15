@@ -13,24 +13,27 @@
 
 import { LazyQueryExecFunction } from '@apollo/client';
 
-export interface UseOmniboxCommandsValue {
-  getOmniboxCommands: LazyQueryExecFunction<GQLGetOmniboxCommandsQueryData, GQLGetOmniboxCommandsQueryVariables>;
+export interface UseWorkbenchOmniboxCommandsValue {
+  getWorkbenchOmniboxCommands: LazyQueryExecFunction<
+    GQLGetWorkbenchOmniboxCommandsQueryData,
+    GQLGetWorkbenchOmniboxCommandsQueryVariables
+  >;
   loading: boolean;
-  data: GQLGetOmniboxCommandsQueryData | null;
+  data: GQLGetWorkbenchOmniboxCommandsQueryData | null;
 }
 
-export interface GQLGetOmniboxCommandsQueryVariables {
+export interface GQLGetWorkbenchOmniboxCommandsQueryVariables {
   editingContextId: string;
   selectedObjectIds: string[];
   query: string;
 }
 
-export interface GQLGetOmniboxCommandsQueryData {
+export interface GQLGetWorkbenchOmniboxCommandsQueryData {
   viewer: GQLViewer;
 }
 
 export interface GQLViewer {
-  omniboxCommands: GQLViewerOmniboxCommandsConnection;
+  workbenchOmniboxCommands: GQLViewerOmniboxCommandsConnection;
 }
 
 export interface GQLViewerOmniboxCommandsConnection {

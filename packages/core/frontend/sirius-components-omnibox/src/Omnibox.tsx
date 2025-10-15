@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -24,11 +23,7 @@ import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
-import { OmniboxObjectList } from './OmniboxObjectList';
-import { useOmniboxCommands } from './useOmniboxCommands';
-import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
-import { useOmniboxSearch } from './useOmniboxSearch';
-import { GQLGetOmniboxSearchResultsQueryVariables } from './useOmniboxSearch.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -65,25 +60,14 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
+export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
   });
 
-  const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
-  const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
-
-  const { selection } = useSelection();
-  const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
-
   useEffect(() => {
-    const variables: GQLGetOmniboxCommandsQueryVariables = {
-      editingContextId,
-      selectedObjectIds,
-      query: '',
-    };
-    getOmniboxCommands({ variables });
+    onQuery('', 'Command');
   }, []);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -97,21 +81,7 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
 
   const sendQuery = (query: string) => {
     setState((prevState) => ({ ...prevState, queryHasChanged: false }));
-    if (state.mode === 'Search') {
-      const variables: GQLGetOmniboxSearchResultsQueryVariables = {
-        editingContextId,
-        selectedObjectIds,
-        query,
-      };
-      getOmniboxSearchResults({ variables });
-    } else {
-      const variables: GQLGetOmniboxCommandsQueryVariables = {
-        editingContextId,
-        selectedObjectIds,
-        query,
-      };
-      getOmniboxCommands({ variables });
-    }
+    onQuery(query, state.mode);
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
@@ -146,24 +116,9 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
     inputRef.current?.focus();
   };
 
-  let omniboxResult: JSX.Element | null = null;
-  if (state.mode === 'Command') {
-    omniboxResult = (
-      <OmniboxCommandList
-        loading={commandLoading}
-        data={commandData}
-        editingContextId={editingContextId}
-        onClose={onClose}
-        onModeChanged={onModeChanged}
-        ref={listRef}
-      />
-    );
-  }
-  if (state.mode === 'Search') {
-    omniboxResult = (
-      <OmniboxObjectList loading={searchResultsLoading} data={searchResultsData} onClose={onClose} ref={listRef} />
-    );
-  }
+  const handleCommandClick = (command: GQLOmniboxCommand) => {
+    onCommandClick(command, state.mode);
+  };
 
   const { classes } = useOmniboxStyles();
 
@@ -196,19 +151,18 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
           data-testid="submit-query-button"
           color="primary"
           disabled={!state.queryHasChanged}>
-          {commandLoading || searchResultsLoading ? (
-            <CircularProgress size="24px" color="inherit" />
-          ) : (
-            <SubdirectoryArrowLeftIcon color="inherit" />
-          )}
+          {loading ? <CircularProgress size="24px" color="inherit" /> : <SubdirectoryArrowLeftIcon color="inherit" />}
         </IconButton>
       </DialogTitle>
-      <DialogContent
-        dividers={
-          (state.mode === 'Command' && commandData !== null) || (state.mode === 'Search' && searchResultsData !== null)
-        }
-        className={classes.omniboxResultArea}>
-        {omniboxResult}
+      <DialogContent dividers={state.mode === 'Command' && commands !== null} className={classes.omniboxResultArea}>
+        <OmniboxCommandList
+          loading={loading}
+          commands={commands}
+          onClose={onClose}
+          onModeChanged={onModeChanged}
+          onCommandClick={handleCommandClick}
+          ref={listRef}
+        />
       </DialogContent>
     </>
   );

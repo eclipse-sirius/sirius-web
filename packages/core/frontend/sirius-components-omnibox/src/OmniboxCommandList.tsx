@@ -10,35 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useData } from '@eclipse-sirius/sirius-components-core';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 import { OmniboxCommandListProps } from './OmniboxCommandList.types';
 import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
 import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
-import { isExecuteOmniboxCommandSuccessPayload, useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 
 export const OmniboxCommandList = forwardRef(
   (
-    { loading, data, editingContextId, onClose, onModeChanged }: OmniboxCommandListProps,
+    { loading, commands, onClose, onModeChanged, onCommandClick }: OmniboxCommandListProps,
     ref: React.ForwardedRef<HTMLUListElement>
   ) => {
-    const { executeOmniboxCommand, data: executeOmniboxCommandData } = useExecuteOmniboxCommand();
-
-    useEffect(() => {
-      if (
-        executeOmniboxCommandData &&
-        isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommandData.executeOmniboxCommand)
-      ) {
-        onClose();
-      }
-    }, [executeOmniboxCommandData]);
-
     const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
       if (event.key === 'ArrowDown') {
         const nextListItemButton = event.currentTarget.nextSibling;
@@ -53,15 +41,11 @@ export const OmniboxCommandList = forwardRef(
       }
     };
 
-    const { selection } = useSelection();
-    const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
-
     const handleOnActionClick = (command: GQLOmniboxCommand) => {
       if (command.id === 'search') {
         onModeChanged('Search');
-      } else {
-        executeOmniboxCommand(editingContextId, selectedObjectIds, command.id);
       }
+      onCommandClick(command);
     };
 
     let listItems: JSX.Element[] = [];
@@ -79,8 +63,7 @@ export const OmniboxCommandList = forwardRef(
       omniboxCommandOverrideContributionExtensionPoint
     );
 
-    if (!loading && data) {
-      const commands = data.viewer.omniboxCommands.edges.map((edge) => edge.node);
+    if (!loading && commands) {
       if (commands.length > 0) {
         listItems = commands.map((command) => {
           const CommandOverride = omniboxCommandOverrideContributions

@@ -19,16 +19,15 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * The input object of the execute command mutation.
+ * The input object for the omnibox search.
  *
  * @author gdaniel
  */
-public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, List<String> selectedObjectIds, String commandId) implements IInput {
-
-    public ExecuteOmniboxCommandInput {
+public record WorkbenchOmniboxSearchInput(UUID id, String editingContextId, List<String> selectedObjectIds, String query) implements IInput {
+    public WorkbenchOmniboxSearchInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
         Objects.requireNonNull(selectedObjectIds);
-        Objects.requireNonNull(commandId);
+        Objects.requireNonNull(query);
     }
 }

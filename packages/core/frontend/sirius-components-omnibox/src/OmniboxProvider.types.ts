@@ -11,14 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
+import { OmniboxMode } from './Omnibox.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 
 export interface OmniboxProviderProps {
-  editingContextId: string;
-  workbenchHandle: WorkbenchHandle;
-  children: React.ReactNode;
-}
-
-export interface OmniboxProviderState {
   open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  loading: boolean;
+  commands: GQLOmniboxCommand[] | null;
+  onQuery: (query: string, mode: OmniboxMode) => void;
+  onCommandClick(command: GQLOmniboxCommand, mode: OmniboxMode);
+  children: React.ReactNode;
 }
