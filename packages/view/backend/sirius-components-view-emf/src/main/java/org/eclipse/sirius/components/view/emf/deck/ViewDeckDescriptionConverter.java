@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -31,6 +30,7 @@ import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
@@ -84,7 +84,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.deck.DeckDescription viewDeckDescription = (org.eclipse.sirius.components.view.deck.DeckDescription) viewRepresentationDescription;
 
         List<LaneDescription> laneDescriptions = viewDeckDescription.getLaneDescriptions().stream().map(laneDescription -> this.convert(laneDescription, interpreter)).toList();
@@ -112,7 +112,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
             return new DeckStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        return new org.eclipse.sirius.components.deck.description.DeckDescription(
+        return new ViewConverterResult(new org.eclipse.sirius.components.deck.description.DeckDescription(
                 id,
                 label,
                 idProvider,
@@ -122,7 +122,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
                 laneDescriptions,
                 dropLaneProvider,
                 styleProvider,
-                new ViewIconURLsProvider(interpreter, viewDeckDescription.getIconExpression()));
+                new ViewIconURLsProvider(interpreter, viewDeckDescription.getIconExpression())), Optional.empty());
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {
