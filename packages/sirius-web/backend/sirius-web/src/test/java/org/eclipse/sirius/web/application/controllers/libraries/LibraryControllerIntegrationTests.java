@@ -21,11 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil.UnresolvedProxyCrossReferencer;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -42,6 +44,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
@@ -51,8 +54,10 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.I
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.SingleClickTreeItemContextMenuEntryMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.UpdateLibraryMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -91,6 +96,9 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     @Autowired
+    private SingleClickTreeItemContextMenuEntryMutationRunner singleClickTreeItemContextMenuEntryMutationRunner;
+
+    @Autowired
     private ILibrarySearchService librarySearchService;
 
     @Autowired
@@ -98,6 +106,9 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
     private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
@@ -269,6 +280,93 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         StepVerifier.create(flux)
             .then(checkInitialEditingContext)
             .then(updateLibrary)
+            .then(checkUpdatedEditingContext)
+            .thenCancel()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with dependencies, when a dependency is removed, then the editing context does not contain the dependency's resources")
+    public void givenProjectWithDependenciesWhenDependencyIsRemovedThenTheEditingContextDoesNotContainTheDependencysResources() {
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "2.0.0");
+        assertThat(optionalLibrary).isPresent();
+
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+
+        AtomicReference<Integer> initialResourceCount = new AtomicReference<>();
+
+        BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                initialResourceCount.set(emfEditingContext.getDomain().getResourceSet().getResources().size());
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                assertThat(abstractTestInterface.getAnnotations())
+                    .hasSize(1)
+                    .allMatch(annotation -> !annotation.eIsProxy()
+                            && annotation.eResource() != null
+                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        Runnable checkInitialEditingContext = () -> {
+            var checkInitialEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkInitialEditingContextFunction);
+            var checkInitialEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkInitialEditingContextInput).block();
+            assertThat(checkInitialEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        };
+
+        var representationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
+
+        Runnable removeLibrary = () -> {
+            var input = new InvokeSingleClickTreeItemContextMenuEntryInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    representationId,
+                    PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT.toString(),
+                    "removeLibrary");
+            this.singleClickTreeItemContextMenuEntryMutationRunner.run(input);
+        };
+
+        BiFunction<IEditingContext, IInput, IPayload> checkUpdatedEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources().size()).isEqualTo(initialResourceCount.get() - 1);
+                Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                // The annotation should be removed during the removal, since the target object doesn't exist anymore in the resource set.
+                assertThat(abstractTestInterface.getAnnotations())
+                    .hasSize(0);
+
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        Runnable checkUpdatedEditingContext = () -> {
+            var checkUpdatedEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkUpdatedEditingContextFunction);
+            var checkUpdatedEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkUpdatedEditingContextInput).block();
+            assertThat(checkUpdatedEditingContextPayload).isInstanceOf(SuccessPayload.class);
+        };
+
+        StepVerifier.create(flux)
+            .then(checkInitialEditingContext)
+            .then(removeLibrary)
             .then(checkUpdatedEditingContext)
             .thenCancel()
             .verify(Duration.ofSeconds(10));
