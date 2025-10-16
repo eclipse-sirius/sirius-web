@@ -7,6 +7,7 @@
 - Add command palette on projects page
 - Add support for indexing models
 - Add initial support for in-project search
+- Add support for tree presentation of impact analysis reports
 
 
 === Architectural decision records
