@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf;
+package org.eclipse.sirius.components.view.emf.api;
 
-import java.util.List;
-
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.View;
 
 /**
- * Interface for {@link RepresentationDescription} converters.
+ * Get an AQL interpreter correctly initialized.
  *
- * @author fbarbin
+ * @author mcharfadi
  */
-public interface IRepresentationDescriptionConverter {
+public interface IViewInterpreterProvider {
 
-    boolean canConvert(RepresentationDescription representationDescription);
+    AQLInterpreter createInterpreter(IEMFEditingContext editingContext, View view);
 
-    ViewConverterResult convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter);
 }
