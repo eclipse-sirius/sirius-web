@@ -34,11 +34,11 @@ import org.eclipse.sirius.components.gantt.description.GanttDescription;
 import org.eclipse.sirius.components.gantt.description.TaskDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
@@ -85,7 +85,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.gantt.GanttDescription viewGanttDescription = (org.eclipse.sirius.components.view.gantt.GanttDescription) viewRepresentationDescription;
 
         Map<org.eclipse.sirius.components.view.gantt.TaskDescription, String> taskDescription2Ids = new LinkedHashMap<>();
@@ -96,7 +96,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .map(taskDescription -> this.convert(taskDescription, interpreter, taskDescription2Ids))
                 .toList();
 
-        return GanttDescription.newGanttDescription(this.ganttIdProvider.getId(viewGanttDescription))
+        var ganttDescription = GanttDescription.newGanttDescription(this.ganttIdProvider.getId(viewGanttDescription))
                 .label(Optional.ofNullable(viewGanttDescription.getName()).orElse(DEFAULT_GANTT_DESCRIPTION_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .canCreatePredicate(variableManager -> this.canCreate(viewGanttDescription.getDomainType(), viewGanttDescription.getPreconditionExpression(), variableManager, interpreter))
@@ -120,6 +120,8 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .dateRoundingProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getDateRoundingExpression()))
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewGanttDescription.getIconExpression()))
                 .build();
+
+        return new ViewConverterResult(ganttDescription, null);
     }
 
     private void computeTaskDescription2Ids(List<org.eclipse.sirius.components.view.gantt.TaskDescription> taskDescriptions,

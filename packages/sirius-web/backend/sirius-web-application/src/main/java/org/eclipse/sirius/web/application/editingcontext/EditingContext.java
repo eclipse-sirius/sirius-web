@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.representations.change.IRepre
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.IViewConversionData;
 
 /**
  * Implementation of the editing context.
@@ -44,6 +45,8 @@ public class EditingContext implements IEMFEditingContext {
     private final Map<UUID, ChangeDescription> inputId2change = new HashMap<>();
 
     private final Map<UUID, List<IRepresentationChange>> inputId2RepresentationChanges = new HashMap<>();
+
+    private final Map<String, IViewConversionData> viewConversionData = new HashMap<>();
 
     private final ChangeRecorder changeRecorder;
 
@@ -82,6 +85,10 @@ public class EditingContext implements IEMFEditingContext {
 
     public Map<UUID, List<IRepresentationChange>> getInputId2RepresentationChanges() {
         return this.inputId2RepresentationChanges;
+    }
+
+    public Map<String, IViewConversionData> getViewConversionData() {
+        return this.viewConversionData;
     }
 
     @Override

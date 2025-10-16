@@ -27,10 +27,10 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.api.IPageDescriptionConverter;
@@ -69,7 +69,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()
@@ -91,7 +91,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
             return variableManager;
         };
 
-        return FormDescription.newFormDescription(this.formIdProvider.getId(viewFormDescription))
+        var formDescription = FormDescription.newFormDescription(this.formIdProvider.getId(viewFormDescription))
                 .label(Optional.ofNullable(viewFormDescription.getName()).orElse(DEFAULT_FORM_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
@@ -101,6 +101,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .variableManagerInitializer(variableManagerInitializer)
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewFormDescription.getIconExpression()))
                 .build();
+        return new ViewConverterResult(formDescription, null);
     }
 
     private String computeFormLabel(org.eclipse.sirius.components.view.form.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {

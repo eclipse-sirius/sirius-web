@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.web.papaya.views.details.api.IFormDescriptionConverter;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class FormDescriptionConverter implements IFormDescriptionConverter {
     }
 
     @Override
-    public List<FormDescription> convert(org.eclipse.sirius.components.view.View view) {
+    public List<ViewConverterResult> convert(org.eclipse.sirius.components.view.View view) {
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///papaya_details");
         Resource resource = new XMIResourceImpl(uri);
@@ -61,11 +62,8 @@ public class FormDescriptionConverter implements IFormDescriptionConverter {
         return view.getDescriptions().stream()
                 .filter(org.eclipse.sirius.components.view.form.FormDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.form.FormDescription.class::cast)
-                .map(viewFormDescription -> {
-                    return this.converter.convert(viewFormDescription, List.of(), interpreter);
-                })
-                .filter(FormDescription.class::isInstance)
-                .map(FormDescription.class::cast)
+                .map(viewFormDescription -> this.converter.convert(viewFormDescription, List.of(), interpreter))
+                .filter(viewConverterResult -> viewConverterResult.representationDescription() instanceof FormDescription)
                 .toList();
     }
 }
