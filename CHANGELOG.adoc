@@ -86,12 +86,15 @@ The following files have been moved from the frontend module `sirius-components-
 
 The `ImpactAnalysisReport` GraphQL type has been updated to contain `impactTree: DataTree!`, the corresponding query hooks and backend code has been updated to consume and provide this new value.
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] `DiagramElementPalette` is no longer exported, when using custom nodes, the palette will still be opened when right clicking an element.
-
 - https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] `RectangularNodeAppearanceSection`, `ImageNodeAppearanceSection` and `EdgeAppearanceSection` are no longer hard-coded in the frontend, but contribute via the  `paletteAppearanceSectionExtensionPoint`.
 If you are not contributing custom appearance sections, no action is required.
 Otherwise, you may need to add a merge strategy to merge the two contributions.
 The extension point signature has also changed to take edges into account: `canHandle: (node: Node<NodeData> | undefined, edge: Edge<EdgeData> | undefined) => boolean;`.
 And the props of `PaletteAppearanceSectionContributionComponentProps` has been renamed from `elementId` to `diagramElementId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
+`ViewConverterResult` contains the converted `IRepresentationDescription`.
+The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+
 
 === Dependency update
 
@@ -149,6 +152,8 @@ Sirius Web will maintain `en_EN` and `fr_FR` for the following namespaces: siriu
 Downstream projects can provide new languages and new namespaces in `src/main/resources/i18n/{language}/{namespace}.json`.
 Some part of each namespace may not be supported yet.
 Do not hesitate to read the ADR-214 for further understanding.
+- https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [sirius-web] The EditingContext expose a new method `Map<String, IViewConversionData> getViewConversionData()`
+This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
 
 
 === Improvements

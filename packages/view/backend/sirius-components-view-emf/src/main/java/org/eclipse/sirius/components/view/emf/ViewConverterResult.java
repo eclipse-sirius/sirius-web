@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.views.details.api;
+package org.eclipse.sirius.components.view.emf;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.view.emf.ViewConverterResult;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
- * Used to convert the view form description.
+ * Data resulting of the view transformation with IViewConverter.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface IFormDescriptionConverter {
-    List<ViewConverterResult> convert(org.eclipse.sirius.components.view.View view);
+public record ViewConverterResult(IRepresentationDescription representationDescription, IViewConversionData viewConversionData) {
 }

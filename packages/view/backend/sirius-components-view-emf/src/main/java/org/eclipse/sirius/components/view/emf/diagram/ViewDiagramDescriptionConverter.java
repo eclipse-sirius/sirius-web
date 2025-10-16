@@ -80,6 +80,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IToolConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
@@ -133,7 +134,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         final org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.diagram.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
         StylesFactory stylesFactory = new StylesFactory(this.nodeStyleProviders, this.labelService, interpreter);
@@ -177,7 +178,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
         });
 
-        return builder.build();
+        return new ViewConverterResult(builder.build(), new ViewDiagramConversionData(converterContext.getConvertedNodes(), converterContext.getConvertedEdges()));
     }
 
     /**

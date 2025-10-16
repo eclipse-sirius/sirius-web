@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
@@ -37,6 +36,7 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +68,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         var viewTreeDescription = (org.eclipse.sirius.components.view.tree.TreeDescription) representationDescription;
         var descriptionId = this.treeIdProvider.getId(viewTreeDescription);
         var label = Optional.ofNullable(viewTreeDescription.getName()).orElse(DEFAULT_TREE_DESCRIPTION_LABEL);
@@ -96,7 +96,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .renameHandler(this::getRenameHandler)
                 ;
 
-        return builder.build();
+        return new ViewConverterResult(builder.build(), null);
     }
 
     private String getTreeId(VariableManager variableManager, String descriptionId) {

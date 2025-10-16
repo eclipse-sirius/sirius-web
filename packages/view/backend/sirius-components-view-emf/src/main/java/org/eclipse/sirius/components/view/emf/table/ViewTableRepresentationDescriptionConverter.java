@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.springframework.stereotype.Service;
@@ -71,7 +71,7 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
     }
 
     @Override
-    public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
+    public ViewConverterResult convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.table.TableDescription viewTableDescription = (org.eclipse.sirius.components.view.table.TableDescription) representationDescription;
 
         Predicate<VariableManager> isStripeRowPredicate = variableManager -> {
@@ -101,7 +101,7 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
             return 0;
         };
 
-        return TableDescription.newTableDescription(this.tableIdProvider.getId(viewTableDescription))
+        var tableDescription = TableDescription.newTableDescription(this.tableIdProvider.getId(viewTableDescription))
                 .label(Optional.ofNullable(viewTableDescription.getName()).orElse(DEFAULT_TABLE_LABEL))
                 .labelProvider(variableManager -> this.computeTableLabel(viewTableDescription, variableManager, interpreter))
                 .canCreatePredicate(variableManager -> this.canCreate(viewTableDescription.getDomainType(), viewTableDescription.getPreconditionExpression(), variableManager, interpreter))
@@ -119,6 +119,8 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
                 .pageSizeOptionsProvider(pageSizeOptionsProvider)
                 .defaultPageSizeIndexProvider(defaultPageSizeIndexProvider)
                 .build();
+
+        return new ViewConverterResult(tableDescription, null);
     }
 
     private String computeTableLabel(org.eclipse.sirius.components.view.table.TableDescription viewTableDescription, VariableManager variableManager, AQLInterpreter interpreter) {
