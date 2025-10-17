@@ -82,6 +82,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "siriusComponents://nature?kind=studio"
                       ],
                       "documentIdsToName":{
+                        "5a2ec092-0b05-410e-bdc2-0d56c0368165":"Unsynchronized Diagram View",
                         "356e45e8-7d70-439e-b2dd-d0313cd65174":"Ellipse Diagram View",
                         "f0e490c1-79f1-49a0-b1f2-3637f2958148":"Domain",
                         "ed2a5355-991d-458f-87f1-ea3a18b1f104":"Form View",
