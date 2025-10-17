@@ -65,13 +65,17 @@ export class PlaywrightProject {
     this.request = request;
   }
 
-  async createProjectFromTemplate(name: string, templateId: string, natures: string[]): Promise<{ projectId: string; representationId: string }> {
+  async createProjectFromTemplate(
+    name: string,
+    templateId: string,
+    natures: string[]
+  ): Promise<{ projectId: string; representationId: string }> {
     const variables = {
       input: {
         id: crypto.randomUUID(),
         name,
         templateId,
-        natures
+        natures,
       },
     };
     const response = await this.request.post('http://localhost:8080/api/graphql', {
@@ -96,7 +100,7 @@ export class PlaywrightProject {
         id: crypto.randomUUID(),
         name: projectName,
         natures: [],
-        libraryIds: []
+        libraryIds: [],
       },
     };
     const response = await this.request.post('http://localhost:8080/api/graphql', {

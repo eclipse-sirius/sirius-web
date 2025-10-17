@@ -103,6 +103,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5755[#5755] [diagram] Fix an issue where EdgeCreationHandle was not rendered after an edge creation
 - https://github.com/eclipse-sirius/sirius-web/issues/5679[#5679] [sirius-web] Fix import of diagram representations with child node descriptions
 - https://github.com/eclipse-sirius/sirius-web/issues/5697[#5697] [diagram] Prevent `arrangeAll` from failing on diagrams with specific edge-node configurations
+- https://github.com/eclipse-sirius/sirius-web/issues/5671[#5671] [diagram] Prevent "Make Same Size" action from breaking list layout
 
 
 === New Features

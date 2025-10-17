@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,10 @@ export const useOverlap = (): UseOverlapValue => {
     nodes: Node<NodeData>[],
     direction: 'horizontal' | 'vertical' = 'horizontal'
   ): void => {
-    getIntersectingNodes(movingNode, nodes).forEach((node) => {
+    getIntersectingNodes(
+      movingNode,
+      nodes.filter((node) => !node.hidden)
+    ).forEach((node) => {
       const overlapNode = nodes.find((n) => n.id === node.id);
       if (overlapNode) {
         if (overlapNode.data.pinned) {
@@ -77,7 +80,9 @@ export const useOverlap = (): UseOverlapValue => {
   const resolveNodeOverlap = useCallback(
     (nodes: Node<NodeData>[], direction: 'horizontal' | 'vertical'): Node<NodeData>[] => {
       if (enabled) {
-        nodes.filter((node) => !node.data.pinned).forEach((node) => applyOverlap(node, nodes, direction));
+        nodes
+          .filter((node) => !node.data.pinned && !node.hidden)
+          .forEach((node) => applyOverlap(node, nodes, direction));
       }
       return nodes;
     },
