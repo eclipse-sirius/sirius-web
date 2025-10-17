@@ -46,19 +46,22 @@ export class PlaywrightNode {
     return (await this.nodeLocator.boundingBox())!;
   }
 
-  async getReactFlowXYPosition(index = 0, withClick = true) {
+  async getReactFlowXYPosition(label: string | null = null, withClick = true) {
     if (withClick) {
       await this.nodeLocator.click({ position: { x: 10, y: 10 } });
     }
-    const nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`).nth(index);
+    let nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`);
+    if (label) {
+      nodePanel = nodePanel.filter({ hasText: `Label : ${label}` });
+    }
 
     const xSpan = nodePanel.locator('span:has-text("x :")');
     const xText = await xSpan.textContent();
-    const xValue = Number(xText?.split(':')[1].trim());
+    const xValue = Number(xText?.split(':')[1]?.trim());
 
     const ySpan = nodePanel.locator('span:has-text("y :")');
     const yText = await ySpan.textContent();
-    const yValue = Number(yText?.split(':')[1].trim());
+    const yValue = Number(yText?.split(':')[1]?.trim());
 
     return {
       x: xValue,
@@ -66,19 +69,22 @@ export class PlaywrightNode {
     };
   }
 
-  async getReactFlowSize(index = 0, withClick = true) {
+  async getReactFlowSize(label: string | null = null, withClick = true) {
     if (withClick) {
       await this.nodeLocator.click({ position: { x: 10, y: 10 } });
     }
-    const nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`).nth(index);
+    let nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`);
+    if (label) {
+      nodePanel = nodePanel.filter({ hasText: `Label : ${label}` });
+    }
 
     const heightSpan = nodePanel.locator('span:has-text("Height :")');
     const heightText = await heightSpan.textContent();
-    const heightValue = Number(heightText?.split(':')[1].trim());
+    const heightValue = Number(heightText?.split(':')[1]?.trim());
 
     const widthSpan = nodePanel.locator('span:has-text("Width :")');
     const widthText = await widthSpan.textContent();
-    const widthValue = Number(widthText?.split(':')[1].trim());
+    const widthValue = Number(widthText?.split(':')[1]?.trim());
 
     return {
       height: heightValue,
