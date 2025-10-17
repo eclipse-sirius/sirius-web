@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -79,7 +80,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).hasSize(5);
+            assertThat(tree.getChildren()).hasSize(6);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
 
             treeId.set(tree.getId());
@@ -115,7 +116,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren()).hasSize(5);
+            assertThat(tree.getChildren()).hasSize(6);
             assertThat(tree.getChildren().get(0).isExpanded()).isTrue();
             assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
 
