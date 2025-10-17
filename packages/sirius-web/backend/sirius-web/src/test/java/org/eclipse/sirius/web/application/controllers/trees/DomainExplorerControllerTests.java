@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -86,14 +87,14 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given an explorer representation, when we subscribe to its event, then the representation data are received")
     public void givenAnExplorerRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
+        var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
         var defaultTreeId = new AtomicReference<String>();
 
         Consumer<Object> initialDefaultExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getDescriptionId()).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
-            assertThat(tree.getChildren()).hasSize(5);
+            assertThat(tree.getChildren()).hasSize(6);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
 
             defaultTreeId.set(tree.getId());
@@ -105,7 +106,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -123,7 +124,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "treeId", treeId.get(),
                     "treeItemId", StudioIdentifiers.DOMAIN_DOCUMENT.toString()
             );
@@ -141,7 +142,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds.get(), List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         var settingId = new AtomicReference<String>();
@@ -161,7 +162,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePathFromSetting = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "treeId", treeId.get(),
                     "treeItemId", settingId.get()
             );
@@ -185,14 +186,14 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         this.givenCreatedDiagramSubscription.createAndSubscribe(createRepresentationInput);
 
         List<String> treeItemIds = new ArrayList<>();
         treeItemIds.add(StudioIdentifiers.DOMAIN_DOCUMENT.toString());
         treeItemIds.add(StudioIdentifiers.DOMAIN_OBJECT.toString());
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds, List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> expandedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {

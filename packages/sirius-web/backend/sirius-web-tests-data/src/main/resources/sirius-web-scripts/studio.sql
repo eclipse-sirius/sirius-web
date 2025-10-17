@@ -798,3 +798,98 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on)
+VALUES (
+  '5a2ec092-0b05-410e-bdc2-0d56c0368165',
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  'Unsynchronized Diagram View',
+  '{
+    "json": {
+      "version": "1.0",
+      "encoding": "utf-8"
+    },
+    "ns": {
+      "diagram": "http://www.eclipse.org/sirius-web/diagram",
+      "view": "http://www.eclipse.org/sirius-web/view"
+    },
+    "migration": {
+      "lastMigrationPerformed": "NodeDescriptionLayoutStrategyMigrationParticipant",
+      "migrationVersion": "2025.6.0-202506011000"
+    },
+    "content": [
+      {
+        "id": "507ff474-a06f-45fb-af35-f7858851d42c",
+        "eClass": "view:View",
+        "data": {
+          "descriptions": [
+            {
+              "id": "e42c06d3-3d01-40bf-871a-73495ea767c8",
+              "eClass": "diagram:DiagramDescription",
+              "data": {
+                "name": "Unsynchronized Root Description",
+                "domainType": "buck::Root",
+                "titleExpression": "Unsynchronized Root Description",
+                "nodeDescriptions": [
+                  {
+                    "id": "92cc1d59-487f-4e0a-8864-983915b562c8",
+                    "eClass": "diagram:NodeDescription",
+                    "data": {
+                      "name": "Root Node",
+                      "domainType": "buck::Root",
+                      "semanticCandidatesExpression": "aql:self",
+                      "synchronizationPolicy": "UNSYNCHRONIZED",
+                      "style": {
+                        "id": "c98d8b26-0aa7-4ab7-8d64-16a806f2629a",
+                        "eClass": "diagram:RectangularNodeStyleDescription",
+                        "data": {
+                          "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                          "childrenLayoutStrategy": {
+                            "id": "9a38cf8c-6720-407a-a558-50b47a9764b0",
+                            "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                          },
+                          "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#0afc1183-89e0-4854-8578-884dccce74b7"
+                        }
+                      },
+                      "childrenDescriptions": [
+                        {
+                          "id": "2c363d7d-b5ed-45b5-8f73-c7c3bb02493b",
+                          "eClass": "diagram:NodeDescription",
+                          "data": {
+                            "name": "Human Sub-node",
+                            "domainType": "buck::Human",
+                            "synchronizationPolicy": "UNSYNCHRONIZED",
+                            "style": {
+                              "id": "bede80a5-0007-4e48-a9d0-0e8821ab1592",
+                              "eClass": "diagram:RectangularNodeStyleDescription",
+                              "data": {
+                                "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                                "childrenLayoutStrategy": {
+                                  "id": "550fd875-d7b7-40bb-845d-73e4bb30aa3b",
+                                  "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                                },
+                                "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#11d3f786-9d85-4a3e-995a-78a40df68221"
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  false,
+  '2025-10-17 15:34:38.323502 +00:00',
+  '2025-10-17 15:34:38.323502 +00:00');
