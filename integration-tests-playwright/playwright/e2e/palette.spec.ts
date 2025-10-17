@@ -41,10 +41,10 @@ test.describe('diagram - palette', () => {
     await page.getByTestId('GroupPalette').getByTestId('expand').click();
     await expect(page.getByTestId('GroupPalette').getByTestId('Align bottom')).toBeAttached();
     await page.getByTestId('GroupPalette').getByTestId('Align bottom').click();
-    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition(0, false);
-    const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition(1, false);
-    const playwrightNodeSize = await playwrightNode.getReactFlowSize(0, false);
-    const playwrightNode2Size = await playwrightNode2.getReactFlowSize(1, false);
+    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('undefined', false);
+    const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
+    const playwrightNodeSize = await playwrightNode.getReactFlowSize('undefined', false);
+    const playwrightNode2Size = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
     expect(playwrightNodeXYPosition.y + playwrightNodeSize.height).toBe(
       playwrightNode2XYPosition.y + playwrightNode2Size.height
     );
