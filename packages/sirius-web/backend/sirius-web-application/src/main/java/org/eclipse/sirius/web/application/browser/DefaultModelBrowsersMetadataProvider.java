@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,23 +26,23 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class ModelBrowserMetadataProvider implements IRepresentationMetadataProvider {
+public class DefaultModelBrowsersMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         RepresentationMetadata representationMetadata = null;
-        if (representationId.startsWith(ModelBrowserDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
+        if (representationId.startsWith(DefaultModelBrowsersTreeDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
             representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Tree.KIND)
-                    .label(ModelBrowserDescriptionProvider.REPRESENTATION_NAME)
-                    .descriptionId(ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID)
+                    .label(DefaultModelBrowsersTreeDescriptionProvider.REPRESENTATION_NAME)
+                    .descriptionId(DefaultModelBrowsersTreeDescriptionProvider.CONTAINER_DESCRIPTION_ID)
                     .iconURLs(List.of())
                     .build();
-        } else if (representationId.startsWith(ModelBrowserDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX)) {
+        } else if (representationId.startsWith(DefaultModelBrowsersTreeDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX)) {
             representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Tree.KIND)
-                    .label(ModelBrowserDescriptionProvider.REPRESENTATION_NAME)
-                    .descriptionId(ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+                    .label(DefaultModelBrowsersTreeDescriptionProvider.REPRESENTATION_NAME)
+                    .descriptionId(DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_DESCRIPTION_ID)
                     .iconURLs(List.of())
                     .build();
         }
