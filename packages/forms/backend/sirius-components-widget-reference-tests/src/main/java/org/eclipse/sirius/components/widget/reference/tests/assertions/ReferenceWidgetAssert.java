@@ -47,6 +47,12 @@ public class ReferenceWidgetAssert extends AbstractAssert<ReferenceWidgetAssert,
         return this;
     }
 
+    public ReferenceWidgetAssert hasHelpText(String helpText) {
+        assertThat(this.actual.getHelpTextProvider()).isNotNull();
+        assertThat(this.actual.getHelpTextProvider().get()).isEqualTo(helpText);
+        return this;
+    }
+
     public ReferenceWidgetAssert isBold() {
         assertThat(this.actual.getStyle().isBold())
                 .withFailMessage("Expecting the reference widget to be bold but was not bold instead")

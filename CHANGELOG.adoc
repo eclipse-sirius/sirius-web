@@ -165,11 +165,12 @@ Some part of each namespace may not be supported yet.
 Do not hesitate to read the ADR-214 for further understanding.
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [sirius-web] The EditingContext expose a new method `Map<String, IViewConversionData> getViewConversionData()`
 This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [browser] Add support for overriding the tree description to use for a specific model browser.
+In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
@@ -194,6 +195,7 @@ This will allow to integrate the command palette in other contexts than the work
 As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5702[#5702] [table] Improve the rendering of components used in table cells
 - https://github.com/eclipse-sirius/sirius-web/issues/5788[#5788] [sirius-web] Add resource changes in the impact analysis tree.
+
 
 
 

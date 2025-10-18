@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserTreeDescriptionIdProvider;
 import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
@@ -40,6 +41,9 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 @Service
 public class ModelBrowserEventProcessorFactory implements IRepresentationEventProcessorFactory {
+    public static final String PREFIX = "modelBrowser://";
+
+    private static final String EXPANDED_IDS = "expandedIds";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -53,39 +57,33 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
 
     private final IURLParser urlParser;
 
+    private final IModelBrowserTreeDescriptionIdProvider modelBrowserTreeDescriptionIdProvider;
+
     public ModelBrowserEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, List<ITreeEventHandler> treeEventHandlers, ITreeService treeService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory, IURLParser urlParser) {
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory, IURLParser urlParser,
+            IModelBrowserTreeDescriptionIdProvider modelBrowserTreeDescriptionIdProvider) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.modelBrowserTreeDescriptionIdProvider = Objects.requireNonNull(modelBrowserTreeDescriptionIdProvider);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return representationId.startsWith("modelBrowser://");
+        return representationId.startsWith(PREFIX);
     }
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        String descriptionId;
-        if (representationId.startsWith(ModelBrowserDescriptionProvider.MODEL_BROWSER_CONTAINER_PREFIX)) {
-            descriptionId = ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID;
-        } else {
-            descriptionId = ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID;
-        }
-
-        Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
-                .findById(editingContext, descriptionId)
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast);
+        Optional<TreeDescription> optionalTreeDescription = this.findModelBrowserTreeDescription(editingContext, representationId);
         if (optionalTreeDescription.isPresent()) {
             var treeDescription = optionalTreeDescription.get();
 
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
-            String expandedIdsParam = parameters.get("expandedIds").get(0);
+            String expandedIdsParam = parameters.get(EXPANDED_IDS).get(0);
 
             var expanded = this.urlParser.getParameterEntries(expandedIdsParam);
 
@@ -104,4 +102,10 @@ public class ModelBrowserEventProcessorFactory implements IRepresentationEventPr
         return Optional.empty();
     }
 
+    private Optional<TreeDescription> findModelBrowserTreeDescription(IEditingContext editingContext, String representationId) {
+        return Optional.ofNullable(this.modelBrowserTreeDescriptionIdProvider.getModelBrowserTreeDescriptionId(editingContext, representationId))
+                .flatMap(treeDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, treeDescriptionId))
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast);
+    }
 }

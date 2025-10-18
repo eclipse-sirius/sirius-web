@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -37,20 +37,20 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class ModelBrowserTreePathProvider implements ITreePathProvider {
+public class DefaultModelBrowsersTreePathProvider implements ITreePathProvider {
 
     private final IIdentityService identityService;
 
     private final IObjectSearchService objectSearchService;
 
-    public ModelBrowserTreePathProvider(IIdentityService identityService, IObjectSearchService objectSearchService) {
+    public DefaultModelBrowsersTreePathProvider(IIdentityService identityService, IObjectSearchService objectSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree != null && List.of(ModelBrowserDescriptionProvider.CONTAINER_DESCRIPTION_ID, ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+        return tree != null && List.of(DefaultModelBrowsersTreeDescriptionProvider.CONTAINER_DESCRIPTION_ID, DefaultModelBrowsersTreeDescriptionProvider.REFERENCE_DESCRIPTION_ID)
                 .contains(tree.getDescriptionId());
     }
 
