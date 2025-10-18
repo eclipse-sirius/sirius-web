@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.collaborative.browser.dto.ModelBrowserEvent
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.services.browser.CustomModelBrowserTreeDescriptionIdProviderDelegate;
+import org.eclipse.sirius.web.services.browser.CustomTreeDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.modelbrowser.ModelBrowserEventSubscriptionRunner;
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -87,6 +90,51 @@ public class ModelBrowserControllerTests extends AbstractIntegrationTests {
                             StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString(),
                             StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()
                     ));
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a model browser customizer, when we ask for the model browser for a reference, then its content computed from the corresponding custom tree description")
+    public void givenModelBrowserCustomizerWhenAskingModelBrowserThenContentComputedFromCustomTreeDescription() {
+        var representationId = this.representationIdBuilder.buildModelBrowserRepresentationId("container",
+                "siriusComponents://semantic?domain=domain&entity=Entity",
+                "siriusComponents://semantic?domain=domain&entity=Entity",
+                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
+                CustomModelBrowserTreeDescriptionIdProviderDelegate.CUSTOM_REFERENCE_WIDGET,
+                false,
+                List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString()));
+        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
+        var flux = this.treeEventSubscriptionRunner.run(input);
+
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).isNotEmpty();
+
+            assertThat(tree.getChildren()).allMatch(treeItem -> treeItem.getLabel().toString().startsWith(CustomTreeDescriptionProvider.CUSTOM_PREFIX));
+
+            var documentTreeItem = tree.getChildren().stream()
+                    .filter(treeItem -> treeItem.getId().equals(StudioIdentifiers.DOMAIN_DOCUMENT.toString()))
+                    .findFirst()
+                    .orElse(null);
+            assertThat(documentTreeItem.getChildren()).hasSize(1);
+            assertThat(documentTreeItem.getChildren()).allMatch(treeItem -> treeItem.getLabel().toString().startsWith(CustomTreeDescriptionProvider.CUSTOM_PREFIX));
+
+            var domainTreeItem = documentTreeItem.getChildren().get(0);
+            assertThat(domainTreeItem.getId()).isEqualTo(StudioIdentifiers.DOMAIN_OBJECT.toString());
+            assertThat(domainTreeItem.getChildren().stream().map(TreeItem::getId))
+                    .hasSize(3)
+                    .containsAll(List.of(
+                            StudioIdentifiers.ROOT_ENTITY_OBJECT.toString(),
+                            StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString(),
+                            StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()
+                    ));
+            assertThat(domainTreeItem.getChildren()).allMatch(treeItem -> treeItem.getLabel().toString().startsWith(CustomTreeDescriptionProvider.CUSTOM_PREFIX));
         });
 
         StepVerifier.create(flux)

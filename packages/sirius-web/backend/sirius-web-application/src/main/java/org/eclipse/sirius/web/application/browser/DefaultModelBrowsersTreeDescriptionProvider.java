@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.browser;
+package org.eclipse.sirius.web.application.browser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.collaborative.browser.ModelBrowserEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -57,12 +58,17 @@ import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;
 
 /**
- * This class is used to provide the description of the model browser tree.
+ * Registers the two default tree descriptions used by the model browser: one for containment references and another for
+ * non-containment references.
  *
  * @author pcdavid
  */
 @Service
-public class ModelBrowserDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+
+    public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
+
+    public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
 
     public static final String CONTAINER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_container_tree_description".getBytes()).toString();
 
@@ -70,13 +76,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     public static final String REPRESENTATION_NAME = "Model Browser";
 
-    public static final String DOCUMENT_KIND = "siriusWeb://document";
-
-    public static final String PREFIX = "modelBrowser://";
-
-    public static final String MODEL_BROWSER_CONTAINER_PREFIX = "modelBrowser://container";
-
-    public static final String MODEL_BROWSER_REFERENCE_PREFIX = "modelBrowser://reference";
+    private static final String DOCUMENT_KIND = "siriusWeb://document";
 
     private final IObjectService objectService;
 
@@ -92,7 +92,8 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private final IModelBrowserRootCandidateSearchProvider defaultCandidateProvider;
 
-    public ModelBrowserDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
+    public DefaultModelBrowsersTreeDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService,
+            List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -184,7 +185,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
     private Optional<EObject> resolveOwnerEObject(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
 
@@ -199,7 +200,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
     private Optional<EClass> resolveReferenceEClass(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String refContainer = parameters.get("ownerKind").get(0);
@@ -219,7 +220,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
     private Optional<EClass> resolveTargetType(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String kind = parameters.get("targetType").get(0);
@@ -238,7 +239,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private boolean resolveIsContainment(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX)) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX)) {
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String isContainment = parameters.get("isContainment").get(0);
             return Boolean.parseBoolean(isContainment);
@@ -326,17 +327,19 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
     private List<? extends Object> getSearchScopeElements(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
             String ownerId = parameters.get("ownerId").get(0);
-            var semanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId).get();
+            var optionalSemanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId);
 
-            return this.candidateProviders.stream()
-                    .filter(provider -> provider.canHandle(descriptionId))
-                    .findFirst()
-                    .orElse(this.defaultCandidateProvider)
-                    .getRootElementsForReference(semanticOwner, descriptionId, optionalEditingContext.get());
+            if (optionalSemanticOwner.isPresent()) {
+                return this.candidateProviders.stream()
+                        .filter(provider -> provider.canHandle(descriptionId))
+                        .findFirst()
+                        .orElse(this.defaultCandidateProvider)
+                        .getRootElementsForReference(optionalSemanticOwner.get(), descriptionId, optionalEditingContext.get());
+            }
         }
         return Collections.emptyList();
     }
