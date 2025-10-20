@@ -21,7 +21,6 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.annotations.PublicApi;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
-import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -75,8 +74,6 @@ public final class DiagramDescription implements IRepresentationDescription {
     private Predicate<VariableManager> canCreatePredicate;
 
     private Function<VariableManager, String> labelProvider;
-
-    private List<Palette> palettes;
 
     private List<NodeDescription> nodeDescriptions;
 
@@ -181,20 +178,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      */
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
-    }
-
-    /**
-     * Provides the list of the palettes and tools of the diagram.
-     *
-     * @return The palette of the diagram.
-     *
-     * @technical-debt The concept of palette is useless to render a diagram and thus not used during the rendering. On
-     * top of that, the computation of a palette can be highly dynamic with tools that are only available under some
-     * circumstances. As a result, this method and the types it references should be deleted since they cannot fulfill
-     * our expectations efficiently.
-     */
-    public List<Palette> getPalettes() {
-        return this.palettes;
     }
 
     /**
@@ -322,8 +305,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private List<Palette> palettes;
-
         private List<NodeDescription> nodeDescriptions;
 
         private List<EdgeDescription> edgeDescriptions;
@@ -346,7 +327,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.targetObjectIdProvider = diagramDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = diagramDescription.getCanCreatePredicate();
             this.labelProvider = diagramDescription.getLabelProvider();
-            this.palettes = diagramDescription.getPalettes();
             this.nodeDescriptions = diagramDescription.getNodeDescriptions();
             this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
             this.dropHandler = diagramDescription.getDropHandler();
@@ -384,11 +364,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder palettes(List<Palette> palettes) {
-            this.palettes = Objects.requireNonNull(palettes);
-            return this;
-        }
-
         public Builder nodeDescriptions(List<NodeDescription> nodeDescriptions) {
             this.nodeDescriptions = Objects.requireNonNull(nodeDescriptions);
             return this;
@@ -423,7 +398,6 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             diagramDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            diagramDescription.palettes = Objects.requireNonNull(this.palettes);
             diagramDescription.nodeDescriptions = Objects.requireNonNull(this.nodeDescriptions);
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);

@@ -20,19 +20,20 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewConversionData;
+import org.eclipse.sirius.components.view.emf.editingcontext.api.IViewEditingContext;
 
 /**
  * Implementation of the editing context.
  *
  * @author sbegaudeau
  */
-public class EditingContext implements IEMFEditingContext {
+public class EditingContext implements IViewEditingContext {
 
     private final String id;
 
@@ -94,7 +95,7 @@ public class EditingContext implements IEMFEditingContext {
     @Override
     public void dispose() {
         this.changeRecorder.dispose();
-        IEMFEditingContext.super.dispose();
+        this.getDomain().getResourceSet().getResources().forEach(Resource::unload);
     }
 
 }

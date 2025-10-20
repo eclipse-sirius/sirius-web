@@ -27,8 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
-import org.eclipse.sirius.components.collaborative.diagrams.services.IToolDiagramExecutor;
-import org.eclipse.sirius.components.collaborative.diagrams.services.ToolDiagramExecutor;
+import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnOneDiagramElementHandler;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -51,19 +50,24 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
+    public static final String VIEW_CREATION_REQUESTS = "viewCreationRequests";
+
+    public static final String VIEW_DELETION_REQUESTS = "viewDeletionRequests";
+
+    public static final String DIAGRAM_EVENTS = "diagramEvents";
+
     private final ICollaborativeDiagramMessageService messageService;
 
-    private final IToolDiagramExecutor toolDiagramExecutor;
+    private final List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandlers;
 
     private final Counter counter;
 
-    public InvokeSingleClickOnDiagramElementToolEventHandler(ICollaborativeDiagramMessageService messageService, IToolDiagramExecutor toolDiagramExecutor, MeterRegistry meterRegistry) {
+    public InvokeSingleClickOnDiagramElementToolEventHandler(ICollaborativeDiagramMessageService messageService, List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandlers, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.toolDiagramExecutor = Objects.requireNonNull(toolDiagramExecutor);
-
+        this.singleClickOnOneDiagramElementHandlers = Objects.requireNonNull(singleClickOnOneDiagramElementHandlers);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
-                .tag(Monitoring.NAME, this.getClass().getSimpleName())
-                .register(meterRegistry);
+            .tag(Monitoring.NAME, this.getClass().getSimpleName())
+            .register(meterRegistry);
     }
 
     @Override
@@ -80,22 +84,27 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            IStatus status = this.toolDiagramExecutor.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId(), input.variables());
+            IStatus status = this.singleClickOnOneDiagramElementHandlers.stream()
+                    .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId()))
+                    .findFirst()
+                    .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId(), input.variables()))
+                    .orElse(new Failure(this.messageService.handlerNotFound()));
+
             if (status instanceof Success success) {
                 WorkbenchSelection newSelection = null;
                 Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
                 if (newSelectionParameter instanceof WorkbenchSelection workbenchSelection) {
                     newSelection = workbenchSelection;
                 }
-                Object viewCreationRequestsParameter = success.getParameters().get(ToolDiagramExecutor.VIEW_CREATION_REQUESTS);
+                Object viewCreationRequestsParameter = success.getParameters().get(VIEW_CREATION_REQUESTS);
                 if (viewCreationRequestsParameter instanceof List<?> viewCreationRequests && viewCreationRequests.stream().allMatch(ViewCreationRequest.class::isInstance)) {
                     diagramContext.viewCreationRequests().addAll((Collection<? extends ViewCreationRequest>) viewCreationRequests);
                 }
-                Object viewDeletionRequestsParameter = success.getParameters().get(ToolDiagramExecutor.VIEW_DELETION_REQUESTS);
+                Object viewDeletionRequestsParameter = success.getParameters().get(VIEW_DELETION_REQUESTS);
                 if (viewDeletionRequestsParameter instanceof List<?> viewDeletionRequests && viewDeletionRequests.stream().allMatch(ViewDeletionRequest.class::isInstance)) {
                     diagramContext.viewDeletionRequests().addAll((Collection<? extends ViewDeletionRequest>) viewDeletionRequests);
                 }
-                Object diagramEventsParameter = success.getParameters().get(ToolDiagramExecutor.DIAGRAM_EVENTS);
+                Object diagramEventsParameter = success.getParameters().get(DIAGRAM_EVENTS);
                 if (diagramEventsParameter instanceof List<?> diagramEvents && diagramEvents.stream().allMatch(IDiagramEvent.class::isInstance)) {
                     diagramContext.diagramEvents().addAll((Collection<? extends IDiagramEvent>) diagramEvents);
                 }

@@ -82,7 +82,6 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
-import org.eclipse.sirius.components.view.emf.diagram.api.IToolConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 import org.springframework.stereotype.Service;
 
@@ -102,8 +101,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final ILabelService labelService;
 
-    private final IToolConverter toolConverter;
-
     private final IToolExecutor toolExecutor;
 
     private final IDiagramIdProvider diagramIdProvider;
@@ -116,10 +113,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final List<INodeStyleProvider> nodeStyleProviders;
 
-    public ViewDiagramDescriptionConverter(IIdentityService identityService, ILabelService labelService, IToolConverter toolConverter, IToolExecutor toolExecutor, List<INodeStyleProvider> nodeStyleProviders, IDiagramIdProvider diagramIdProvider) {
+    public ViewDiagramDescriptionConverter(IIdentityService identityService, ILabelService labelService, IToolExecutor toolExecutor, List<INodeStyleProvider> nodeStyleProviders, IDiagramIdProvider diagramIdProvider) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.toolConverter = Objects.requireNonNull(toolConverter);
         this.toolExecutor = Objects.requireNonNull(toolExecutor);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.nodeStyleProviders = Objects.requireNonNull(nodeStyleProviders);
@@ -170,7 +166,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .palettes(this.toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewDiagramDescription.getIconExpression()));
 
