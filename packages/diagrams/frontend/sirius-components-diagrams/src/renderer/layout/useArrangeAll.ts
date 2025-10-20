@@ -188,6 +188,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     };
     console.log('[arrangeAll] ELK graph children sample', graph.children?.slice(0, 5));
     try {
+      console.log('[arrangeAll] ELK input (JSON)', graph);
       const layoutedGraph = await elk.layout(graph);
       console.log(
         '[arrangeAll] ELK layout result',
