@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,5 +24,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author gcoutable
  */
 public interface IRepresentationContentCreationService {
-    IResult<RepresentationContent> create(ICause cause, UUID representationId, String content, String lastMigrationPerformed, String migrationVersion);
+    IResult<RepresentationContent> create(ICause cause, UUID representationId, UUID semanticDataId, String content, String lastMigrationPerformed, String migrationVersion);
 }

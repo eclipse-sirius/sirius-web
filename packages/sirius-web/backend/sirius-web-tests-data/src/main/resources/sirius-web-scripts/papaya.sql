@@ -536,6 +536,7 @@ INSERT INTO representation_metadata (
 
 INSERT INTO representation_content (
     id,
+    semantic_data_id,
     content,
     last_migration_performed,
     migration_version,
@@ -543,6 +544,7 @@ INSERT INTO representation_content (
     last_modified_on
 ) VALUES (
     'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
+    'cc89c500-c27e-4968-9c67-15cf767c6ef0',
     '{
          "id": "dd0080f8-430d-441f-99a4-f46c7d9b28ef",
          "kind": "siriusComponents://representation?type=Table",

@@ -36,7 +36,9 @@
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5502[#5502] [sirius-web] Relax the constraints on the primary keys of `representation_metadata` and `representation_content`.
+As a result, the id of the `semantic_data` is required for `representation_content` as it was the case for `representation_metadata`.
 
 
 

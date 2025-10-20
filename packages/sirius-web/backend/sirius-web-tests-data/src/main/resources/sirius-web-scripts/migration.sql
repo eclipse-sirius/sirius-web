@@ -316,6 +316,7 @@ INSERT INTO representation_metadata (
 );
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -323,6 +324,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   '{
     "id": "35f1cd7b-e5bb-443d-95ef-bab372a92b0f",
     "descriptionId": "siriusComponents://representation?type=TreeMap",
@@ -524,6 +526,7 @@ INSERT INTO representation_metadata (
 );
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -531,6 +534,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   '9698833e-ffd4-435a-9aec-765622ce524e',
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   '{
     "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93",
     "edges": [

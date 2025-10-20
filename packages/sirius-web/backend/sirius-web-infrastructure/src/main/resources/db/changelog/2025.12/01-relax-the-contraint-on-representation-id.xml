@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Copyright (c) 2025 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-relax-the-contraint-on-representation-id" author="sbegaudeau">
+        <addColumn tableName="representation_content">
+            <column name="semantic_data_id" type="UUID">
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE representation_content
+            SET semantic_data_id = representationMetadata.semantic_data_id
+            FROM representation_metadata representationMetadata
+            WHERE representation_content.id = representationMetadata.id
+        </sql>
+        <addForeignKeyConstraint baseTableName="representation_content" baseColumnNames="semantic_data_id" constraintName="fk_representation_content_semantic_data_id" referencedTableName="semantic_data" referencedColumnNames="id" onDelete="CASCADE"/>
+        <addNotNullConstraint tableName="representation_content" columnName="semantic_data_id" />
+
+        <dropPrimaryKey tableName="representation_metadata" constraintName="representation_data_pkey" />
+        <addPrimaryKey tableName="representation_metadata" columnNames="id, semantic_data_id" />
+
+        <dropPrimaryKey tableName="representation_content" constraintName="representation_content_pkey" />
+        <addPrimaryKey tableName="representation_content" columnNames="id, semantic_data_id" />
+
+        <dropForeignKeyConstraint baseTableName="representation_content" constraintName="fk_representation_content_id" />
+        <addForeignKeyConstraint baseTableName="representation_content" baseColumnNames="id, semantic_data_id" constraintName="fk_representation_content_id_semantic_data_id" referencedTableName="representation_metadata" referencedColumnNames="id, semantic_data_id" />
+    </changeSet>
+
+
+</databaseChangeLog>
