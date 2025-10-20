@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,21 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 
+import java.util.Optional;
+
 /**
- * Provides tools for the connector tool.
+ * Use to retrieve tool handlers.
  *
- * @author nvannier
+ * @author mcharfadi
  */
-public interface IConnectorToolsProvider {
+public interface IToolHandlerProvider {
 
-    boolean canHandle(DiagramDescription diagramDescription);
+    boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, String diagramElementDescriptionId, String toolId);
 
-    List<ITool> getConnectorTools(Object sourceDiagramElement, Object targetDiagramElement, Diagram diagram, IEditingContext editingContext);
+    Optional<IToolHandler> getToolHandler(IEditingContext editingContext, DiagramDescription diagramDescription, String diagramElementDescriptionId, String toolId);
+
 }

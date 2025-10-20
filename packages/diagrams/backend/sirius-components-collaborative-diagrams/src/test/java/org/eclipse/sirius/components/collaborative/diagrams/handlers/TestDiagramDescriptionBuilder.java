@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
@@ -47,8 +46,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TestDiagramDescriptionBuilder {
 
-    public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions,
-            List<Palette> palettes) {
+    public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
                 .label("")
                 .canCreatePredicate(variableManager -> Boolean.TRUE)
@@ -56,7 +54,6 @@ public class TestDiagramDescriptionBuilder {
                 .labelProvider(variableManager -> "Diagram")
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .palettes(palettes)
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
@@ -66,20 +63,17 @@ public class TestDiagramDescriptionBuilder {
         Function<VariableManager, List<Element>> sourceProvider = variableManager -> List.of();
         Function<VariableManager, List<Element>> targetProvider = variableManager -> List.of();
 
-        Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager -> {
-            return EdgeStyle.newEdgeStyle()
-                    .size(2)
-                    .lineStyle(LineStyle.Dash_Dot)
-                    .sourceArrow(ArrowStyle.InputArrowWithDiamond)
-                    .targetArrow(ArrowStyle.None)
-                    .color("rgb(1, 2, 3)")
-                    .edgeType(EdgeType.Manhattan)
-                    .build();
-        };
+        Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager ->
+            EdgeStyle.newEdgeStyle()
+                .size(2)
+                .lineStyle(LineStyle.Dash_Dot)
+                .sourceArrow(ArrowStyle.InputArrowWithDiamond)
+                .targetArrow(ArrowStyle.None)
+                .color("rgb(1, 2, 3)")
+                .edgeType(EdgeType.Manhattan)
+                .build();
 
-        Function<VariableManager, String> idProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, String.class).orElse(null);
-        };
+        Function<VariableManager, String> idProvider = variableManager -> variableManager.get(VariableManager.SELF, String.class).orElse(null);
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)
                 .semanticElementsProvider(variableManager -> List.of())

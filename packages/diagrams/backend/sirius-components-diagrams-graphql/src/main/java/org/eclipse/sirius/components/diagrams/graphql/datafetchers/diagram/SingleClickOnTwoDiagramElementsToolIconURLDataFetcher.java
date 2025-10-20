@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 
@@ -34,8 +35,8 @@ public class SingleClickOnTwoDiagramElementsToolIconURLDataFetcher implements ID
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         List<String> iconURL = new ArrayList<>();
         Object source = environment.getSource();
-        if (source instanceof org.eclipse.sirius.components.diagrams.tools.ITool tool) {
-            iconURL = tool.getIconURL();
+        if (source instanceof SingleClickOnTwoDiagramElementsTool tool) {
+            iconURL = tool.iconURL();
         } else if (source instanceof ITool tool) {
             iconURL = tool.iconURL();
         }

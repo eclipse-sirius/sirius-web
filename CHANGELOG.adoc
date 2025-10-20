@@ -39,6 +39,7 @@ The code responsible for the import has been refactor with:
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] `IRepresentationDescriptionConverter` and `IViewConverter` `convert method` now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
 The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] //TODO
 
 
 === Dependency update
@@ -72,6 +73,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [sirius-web] The EditingContext expose a new attribute `Map<String, IViewConversionData> representationDescriptionIdToConverterResult`
 This can be use to retrieve a `ViewDiagramConversionData` that contains a `ViewDiagramDescriptionConverterContext` representing the mapping between `view IDiagramElementDescription` and `programmatic IDiagramElementDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] //TODO
 
 
 === Improvements
