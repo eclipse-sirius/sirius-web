@@ -24,7 +24,9 @@ import org.eclipse.sirius.components.representations.IStatus;
  *
  * @author frouene
  */
-public interface IToolDiagramExecutor {
+public interface ISingleClickOnOneDiagramElementHandler {
+
+    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId);
 
     IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables);
 }

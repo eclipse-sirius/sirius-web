@@ -66,8 +66,8 @@ public class GetNodeDescriptionsEventHandlerTests {
                 .reusedChildNodeDescriptionIds(List.of(REUSED_CHILD_NODE_DESCRIPTION_ID))
                 .build();
 
-        var diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(DIAGRAM_DESCRIPTION_ID, List.of(nodeDescription), List.of(), List.of());
-        var anotherDiagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(ANOTHER_DIAGRAM_DESCRIPTION_ID, List.of(reusedBorderNodeDescription, reusedChildNodeDescription), List.of(), List.of());
+        var diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(DIAGRAM_DESCRIPTION_ID, List.of(nodeDescription), List.of());
+        var anotherDiagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(ANOTHER_DIAGRAM_DESCRIPTION_ID, List.of(reusedBorderNodeDescription, reusedChildNodeDescription), List.of());
 
         var representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override

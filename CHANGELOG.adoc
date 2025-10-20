@@ -16,6 +16,11 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `IToolService`, `org.eclipse.sirius.components.diagrams.tools` and `ToolConverter` have been removed.
+Tools are no longer converted with the diagram.
+You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
+`IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
+
 
 
 === Dependency update
@@ -34,6 +39,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 
 
 
