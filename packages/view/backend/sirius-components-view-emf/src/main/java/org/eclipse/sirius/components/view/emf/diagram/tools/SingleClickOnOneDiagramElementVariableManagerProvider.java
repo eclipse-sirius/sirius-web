@@ -1,0 +1,118 @@
+/*******************************************************************************
+ * Copyright (c) 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.components.view.emf.diagram.tools;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.core.api.Environment;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramConversionData;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.ISingleClickOnOneDiagramElementVariableManagerProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolVariableHandler;
+import org.eclipse.sirius.components.view.emf.editingcontext.api.IViewEditingContext;
+import org.springframework.stereotype.Service;
+
+/**
+ * Used to provide the variable manager used to evaluate single click on one diagram element tools.
+ *
+ * @author sbegaudeau
+ */
+@Service
+public class SingleClickOnOneDiagramElementVariableManagerProvider implements ISingleClickOnOneDiagramElementVariableManagerProvider {
+
+    private final IObjectSearchService objectSearchService;
+
+    private final IDiagramQueryService diagramQueryService;
+
+    private final IToolVariableHandler toolVariableHandler;
+
+    public SingleClickOnOneDiagramElementVariableManagerProvider(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolVariableHandler toolVariableHandler) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+        this.toolVariableHandler = Objects.requireNonNull(toolVariableHandler);
+    }
+
+    @Override
+    public Optional<VariableManager> getVariableManager(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, List<ToolVariable> variables) {
+        Optional<IDiagramElement> optionalDiagramElement = this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElementId)
+                .filter(IDiagramElement.class::isInstance)
+                .map(IDiagramElement.class::cast)
+                .or(() -> this.diagramQueryService.findEdgeById(diagramContext.diagram(), diagramElementId));
+
+        Optional<Object> optionalSelf = this.getSelf(editingContext, diagramContext.diagram(), diagramElementId, optionalDiagramElement);
+        if (optionalSelf.isPresent()) {
+            var self = optionalSelf.get();
+
+            var optionalNode = optionalDiagramElement.filter(Node.class::isInstance).map(Node.class::cast);
+            var optionalEdge = optionalDiagramElement.filter(Edge.class::isInstance).map(Edge.class::cast);
+
+            VariableManager variableManager = new VariableManager();
+            variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
+            variableManager.put(VariableManager.SELF, self);
+            variableManager.put(Node.SELECTED_NODE, optionalNode.orElse(null));
+            variableManager.put(Edge.SELECTED_EDGE, optionalEdge.orElse(null));
+
+            this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
+
+            this.toolVariableHandler.addToolVariablesInVariableManager(editingContext, variableManager, variables);
+
+            return Optional.of(variableManager);
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Object> getSelf(IEditingContext editingContext, Diagram diagram, String diagramElementId, Optional<IDiagramElement> optionalDiagramElement) {
+        Optional<Object> self = Optional.empty();
+
+        var optionalNode = optionalDiagramElement.filter(Node.class::isInstance).map(Node.class::cast);
+        var optionalEdge = optionalDiagramElement.filter(Edge.class::isInstance).map(Edge.class::cast);
+
+        if (optionalNode.isPresent()) {
+            self = this.objectSearchService.getObject(editingContext, optionalNode.get().getTargetObjectId());
+        } else if (optionalEdge.isPresent()) {
+            self = this.objectSearchService.getObject(editingContext, optionalEdge.get().getTargetObjectId());
+        } else if (Objects.equals(diagram.getId(), diagramElementId)) {
+            self = this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId());
+        }
+        return self;
+    }
+
+    private Optional<ViewDiagramConversionData> getViewDiagramConversionData(IEditingContext editingContext, String diagramDescriptionId) {
+        return Optional.of(editingContext)
+                .filter(IViewEditingContext.class::isInstance)
+                .map(IViewEditingContext.class::cast)
+                .map(IViewEditingContext::getViewConversionData)
+                .map(viewConversionData -> viewConversionData.get(diagramDescriptionId))
+                .filter(Objects::nonNull)
+                .filter(ViewDiagramConversionData.class::isInstance)
+                .map(ViewDiagramConversionData.class::cast);
+    }
+}

@@ -101,7 +101,7 @@ public class DropNodeEventHandlerTests {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
         @Override
         public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
-            var baseDiagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of());
+            var baseDiagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of());
             return Optional.of(DiagramDescription.newDiagramDescription(baseDiagramDescription).dropNodeHandler(DropNodeEventHandlerTests.this.dropNodeHandler).build());
         }
     };

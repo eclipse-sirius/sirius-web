@@ -10,20 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-package org.eclipse.sirius.components.view.emf.diagram.api;
+package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.diagrams.tools.Palette;
-import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverterContext;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Convert View-based tool definitions into ITools.
+ * Used to contribute tool variables in a variable manager.
  *
- * @author pcdavid
+ * @author sbegaudeau
  */
-public interface IToolConverter {
-
-    List<Palette> createPaletteBasedToolSections(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, ViewDiagramDescriptionConverterContext converterContext);
+public interface IToolVariableHandler {
+    void addToolVariablesInVariableManager(IEditingContext editingContext, VariableManager variableManager, List<ToolVariable> toolvariables);
 }

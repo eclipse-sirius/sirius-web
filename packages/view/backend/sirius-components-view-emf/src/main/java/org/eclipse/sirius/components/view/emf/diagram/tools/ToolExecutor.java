@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IPostExecutionToolCustomizer;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
@@ -48,11 +49,14 @@ public class ToolExecutor implements IToolExecutor {
 
     private final IOperationExecutor operationExecutor;
 
+    private final List<IPostExecutionToolCustomizer> handlerPostExecutionProviders;
+
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ToolExecutor(IIdentityService identityService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService) {
+    public ToolExecutor(IIdentityService identityService, IOperationExecutor operationExecutor, List<IPostExecutionToolCustomizer> handlerPostExecutionProviders, IFeedbackMessageService feedbackMessageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
+        this.handlerPostExecutionProviders = Objects.requireNonNull(handlerPostExecutionProviders);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
@@ -75,6 +79,14 @@ public class ToolExecutor implements IToolExecutor {
                 Success.NEW_SELECTION, new WorkbenchSelection(selectionEntries),
                 NAMED_INSTANCES, result.newInstances()
         );
-        return new Success("", parameters, this.feedbackMessageService.getFeedbackMessages());
+
+        IStatus status = new Success("", parameters, this.feedbackMessageService.getFeedbackMessages());
+        for (IPostExecutionToolCustomizer toolPostExecutionProvider : this.handlerPostExecutionProviders) {
+            if (toolPostExecutionProvider.canHandle(status, interpreter, variableManager, tool)) {
+                status = toolPostExecutionProvider.handle(status, interpreter, variableManager, tool);
+            }
+        }
+
+        return status;
     }
 }

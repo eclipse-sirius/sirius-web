@@ -24,7 +24,11 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
@@ -93,10 +97,16 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                     .noneMatch(node -> node.getInsideLabel().getText().equals("c"));
         });
 
+        var consumedWorkbenchSelection = new AtomicReference<WorkbenchSelection>();
+        var expectedNodeSelected = new AtomicReference<Node>();
+
         Runnable createNode = () -> {
             this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
                     .isSuccess()
-                    .hasSelection(workbenchSelection -> assertThat(workbenchSelection.getEntries()).hasSize(1));
+                    .hasSelection(workbenchSelection -> {
+                        assertThat(workbenchSelection.getEntries()).hasSize(1);
+                        consumedWorkbenchSelection.set(workbenchSelection);
+                    });
         };
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
@@ -104,12 +114,21 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                     .anyMatch(node -> node.getInsideLabel().getText().equals("a"))
                     .noneMatch(node -> node.getInsideLabel().getText().equals("b"))
                     .anyMatch(node -> node.getInsideLabel().getText().equals("c"));
+            var diagramNavigator = new DiagramNavigator(diagram);
+            var selectedNodeA = diagramNavigator.nodeWithLabel("c");
+            expectedNodeSelected.set(selectedNodeA.getNode());
         });
+
+        Runnable assertSelection = () -> {
+            var consumedSelection = new WorkbenchSelection(List.of(new WorkbenchSelectionEntry(expectedNodeSelected.get().getTargetObjectId(), "")));
+            assertThat(consumedSelection).isEqualTo(consumedWorkbenchSelection.get());
+        };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNode)
                 .consumeNextWith(updatedDiagramContentMatcher)
+                .then(assertSelection)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

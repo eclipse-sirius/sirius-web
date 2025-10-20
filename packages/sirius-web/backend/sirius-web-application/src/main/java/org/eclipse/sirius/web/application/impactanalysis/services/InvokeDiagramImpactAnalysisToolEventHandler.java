@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeDiagramImpactAnalysisToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.services.IToolDiagramExecutor;
+import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnOneDiagramElementHandler;
 import org.eclipse.sirius.components.collaborative.dto.ImpactAnalysisReport;
 import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -57,16 +57,16 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
     private final IMessageService messageService;
 
-    private final IToolDiagramExecutor toolDiagramExecutor;
+    private final ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler;
 
     private final IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider;
 
     private final Counter counter;
 
-    public InvokeDiagramImpactAnalysisToolEventHandler(IResourceLoader resourceLoader, IResourceToDocumentService resourceToDocumentService, IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService, IToolDiagramExecutor toolDiagramExecutor, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
+    public InvokeDiagramImpactAnalysisToolEventHandler(IResourceLoader resourceLoader, IResourceToDocumentService resourceToDocumentService, IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService, ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.toolDiagramExecutor = Objects.requireNonNull(toolDiagramExecutor);
+        this.singleClickOnOneDiagramElementHandler = Objects.requireNonNull(singleClickOnOneDiagramElementHandler);
         this.diagramImpactAnalysisReportProvider = Objects.requireNonNull(diagramImpactAnalysisReportProvider);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -94,7 +94,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
                 changeRecorder.beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
 
-                IStatus toolExecutionResult = this.toolDiagramExecutor.execute(editingContext, diagramContext.diagram(), invokeImpactAnalysisToolInput.toolId(),
+                IStatus toolExecutionResult = this.singleClickOnOneDiagramElementHandler.execute(editingContext, diagramContext.diagram(), invokeImpactAnalysisToolInput.toolId(),
                         invokeImpactAnalysisToolInput.diagramElementId(), invokeImpactAnalysisToolInput.variables());
 
                 var diff = siriusEditingContext.getChangeRecorder().summarize();

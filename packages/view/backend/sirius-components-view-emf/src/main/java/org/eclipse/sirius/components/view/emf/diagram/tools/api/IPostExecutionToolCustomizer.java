@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,30 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.tools;
+package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
-import java.util.List;
-import java.util.function.Function;
-
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.diagram.Tool;
 
 /**
- * Interface implemented by all tools.
+ * Used to inject some data in result of a tool handler.
  *
- * @technical-debt This class and its related concepts such as {@link ToolSection} and {@link Palette} should be deleted.
- * See the documentation of {@link Palette} for additional details.
- *
- * @author hmarchadour
- * @since v0.1.0
+ * @author mcharfadi
  */
-public interface ITool {
+public interface IPostExecutionToolCustomizer {
 
-    String getId();
+    boolean canHandle(IStatus result, AQLInterpreter interpreter, VariableManager variableManager, Tool tool);
 
-    String getLabel();
+    IStatus handle(IStatus result, AQLInterpreter interpreter, VariableManager variableManager, Tool tool);
 
-    Function<VariableManager, IStatus> getHandler();
-
-    List<String> getIconURL();
 }

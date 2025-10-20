@@ -105,6 +105,10 @@ This mechanisms was previously used to provide the menu entry to update/remove a
 The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
 An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Any locales contributed by downstream projects should take account the renamed keys
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `IToolService`, `org.eclipse.sirius.components.diagrams.tools` and `ToolConverter` have been removed.
+Tools are no longer converted with the diagram.
+You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
+`IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 
 
 === Dependency update
@@ -178,6 +182,7 @@ This can be used to retrieve a `ViewDiagramConversionData` that contains the map
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
+- https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 
 
 === Improvements

@@ -60,7 +60,6 @@ public class CreateDiagramEventHandlerTests {
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .edgeDescriptions(new ArrayList<>())
                         .labelProvider(variableManager -> "label")
-                        .palettes(List.of())
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))

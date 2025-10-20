@@ -26,6 +26,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -46,13 +49,8 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.Palette;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.Success;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -136,31 +134,6 @@ public class GetConnectorToolsEventHandlerTests {
     @Test
     public void testGetConnectorTools() {
         NodeDescription nodeDescription = new TestDiagramDescriptionBuilder().getNodeDescription(NODE_DESCRIPTION_ID, variableManager -> List.of());
-
-        SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                .sources(List.of(nodeDescription))
-                .targets(List.of(nodeDescription))
-                .build();
-
-        SingleClickOnTwoDiagramElementsTool connectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(CONNECTOR_TOOL_ID)
-                .candidates(List.of(candidates))
-                .handler(variableManager -> new Success())
-                .label(CONNECTOR_TOOL_LABEL)
-                .iconURL(List.of())
-                .build();
-
-        SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID)
-                .candidates(List.of(candidates))
-                .handler(variableManager -> new Success())
-                .label(NOT_CONNECTOR_TOOL_LABEL)
-                .iconURL(List.of())
-                .build();
-
-        Palette palette = Palette.newPalette(TOOLSECTION_ID)
-                .tools(List.of(connectorTool, notConnectorTool))
-                .toolSections(List.of())
-                .build();
-
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID.toString())
                 .label("")
                 .canCreatePredicate(variableManager -> true)
@@ -168,7 +141,6 @@ public class GetConnectorToolsEventHandlerTests {
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
-                .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
@@ -189,7 +161,17 @@ public class GetConnectorToolsEventHandlerTests {
         IConnectorToolsProvider connectorToolsProvider = new IConnectorToolsProvider() {
 
             @Override
-            public List<ITool> getConnectorTools(Object sourceDiagramElement, Object targetDiagramElement, Diagram diagram, IEditingContext editingContext) {
+            public List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement, Object targetDiagramElement) {
+                SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+                        .sources(List.of(nodeDescription))
+                        .targets(List.of(nodeDescription))
+                        .build();
+
+                SingleClickOnTwoDiagramElementsTool connectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(CONNECTOR_TOOL_ID)
+                        .candidates(List.of(candidates))
+                        .label(CONNECTOR_TOOL_LABEL)
+                        .iconURL(List.of())
+                        .build();
                 return List.of(connectorTool);
             }
 
@@ -218,7 +200,6 @@ public class GetConnectorToolsEventHandlerTests {
         assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);
         List<ITool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).connectorTools();
         assertThat(connectorTools.size()).isEqualTo(1);
-        assertThat(connectorTools.get(0)).isEqualTo(connectorTool);
     }
 
     private Diagram getDiagram(String id, List<Node> nodes) {

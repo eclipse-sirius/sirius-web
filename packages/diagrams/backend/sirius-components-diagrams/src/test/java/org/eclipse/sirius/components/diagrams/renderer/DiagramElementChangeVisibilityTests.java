@@ -193,7 +193,6 @@ public class DiagramElementChangeVisibilityTests {
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
