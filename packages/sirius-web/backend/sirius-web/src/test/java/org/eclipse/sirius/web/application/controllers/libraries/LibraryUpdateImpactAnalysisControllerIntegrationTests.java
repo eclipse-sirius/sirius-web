@@ -44,6 +44,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EditingContextUpdateLibraryImpactAnalysisReportQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,8 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends AbstractIntegrationTests {
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
     private ILibrarySearchService librarySearchService;
@@ -77,6 +81,10 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer
