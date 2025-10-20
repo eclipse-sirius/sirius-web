@@ -22,6 +22,7 @@
 - [ADR-213] Add edit capabilities on representation
 - [ADR-214] Add the support for i18n
 - [ADR-215] Add support for displaying data trees
+- [ADR-216] Lower the coupling between Palette and DiagramDescription
 
 
 === Deprecation warning

@@ -1,0 +1,79 @@
+= ADR-216 - Lower coupling between Palette and DiagramDescription
+
+== Context
+
+The DiagramDescription contains a list of Palette.
+
+But the concept of Palette is useless to render a diagram and thus not used during the rendering.
+
+On top of that, the computation of a palette can be highly dynamic with tools that are only available under some circumstances.
+
+As a result, this method and the types it references should be deleted since they cannot fulfill our expectations efficiently.
+
+== Decision
+
+We will remove the package `org.eclipse.sirius.components.diagrams.tools` that contains :
+- EdgeReconnectionTool
+- ITool
+- Palette
+- SingleClickOnDiagramElementTool
+- SingleClickOnTwoDiagramElementsCandidate
+- ToolSection
+
+Since we will loose the ability to retrieve a tool and its handler directly from the `DiagramDescription` we will need to expose a new API in order to contribute new tools for programmatically declared `DiagramDescription`.
+
+=== Palette
+
+This existing `IPaletteProvider` will be used to provide the palette of a diagram.
+
+The implementation `ViewPaletteProvider` will still be used to get the palette from a view DSL model.
+
+It's possible to add an implementation of `IPaletteProvider` to handle diagram declared programmatically. 
+
+The `IPaletteToolsProvider` can still be used to inject more tools declaration in a model declared with the view DSL.
+
+=== Tool Handler
+
+`ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` will be use to execute a tool after receiving a `InvokeSingleClickOnDiagramElementToolInput` or `InvokeSingleClickOnTwoDiagramElementToolInput` 
+
+[source, java]
+----
+public interface ISingleClickOnOneDiagramElementHandler {
+
+    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId);
+
+    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables);
+}
+----
+
+[source, java]
+----
+public interface ISingleClickOnTwoDiagramElementHandler {
+
+    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId);
+
+    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String sourceDiagramElementId, String targetDiagramElementId, List<ToolVariable> variables);
+}
+----
+
+An interface `IViewToolFinder` will be added to retrieve a node tool or edge tool from the view dsl.
+
+[source, java]
+----
+public interface IViewToolFinder {
+
+    Optional<NodeTool> findNodeTool(IEditingContext editingContext, String diagramDescriptionId, String diagramElementDescriptionId, String toolId);
+
+    Optional<EdgeTool> findEdgeTool(IEditingContext editingContext, String diagramDescriptionId, String diagramElementDescriptionId, String toolId);
+}
+----
+
+== Rabbit holes
+
+
+== Consequences
+
+Every tools declared programmatically will need to implement an `ISingleClickOnTwoDiagramElementHandler` or `ISingleClickOnOneDiagramElementHandler`.
+
+
+== Cutting backs
