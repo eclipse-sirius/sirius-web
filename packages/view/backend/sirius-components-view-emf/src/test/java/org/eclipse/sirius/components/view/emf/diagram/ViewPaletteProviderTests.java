@@ -258,7 +258,6 @@ public class ViewPaletteProviderTests {
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .canCreatePredicate(variableManager -> true)
                 .labelProvider(variableManager -> "Diagram")
-                .palettes(List.of())
                 .nodeDescriptions(List.of())
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
