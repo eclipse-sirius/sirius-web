@@ -127,6 +127,22 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
 
   const elk = new ELK();
 
+  const getDimension = (value: unknown, fallback?: number | null): number => {
+    if (typeof value === 'number' && !Number.isNaN(value)) {
+      return value;
+    }
+    if (typeof value === 'string') {
+      const parsed = parseFloat(value);
+      if (!Number.isNaN(parsed)) {
+        return parsed;
+      }
+    }
+    if (typeof fallback === 'number' && !Number.isNaN(fallback)) {
+      return fallback;
+    }
+    return 0;
+  };
+
   const getELKLayout = async (
     nodes,
     edges,
@@ -138,14 +154,45 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     const graph: ElkNode = {
       id: parentNodeId,
       layoutOptions: options,
-      children: nodes.map((node) => ({
-        labels: computeLabels(node, zoom, reactFlowWrapper),
-        ...node,
-      })),
+      children: nodes.map((node) => {
+        const width = getDimension(node.width, node.data.defaultWidth);
+        const height = getDimension(node.height, node.data.defaultHeight);
+
+        const childLayoutOptions: LayoutOptions | undefined = node.data.resizedByUser
+          ? {
+              'org.eclipse.elk.nodeSize.constraints': 'FIXED',
+              'org.eclipse.elk.nodeSize.minimum': `${Math.max(width, 1)}, ${Math.max(height, 1)}`,
+              'org.eclipse.elk.nodeSize.maximum': `${Math.max(width, 1)}, ${Math.max(height, 1)}`,
+            }
+          : undefined;
+
+        if (node.data.resizedByUser) {
+          console.log('[arrangeAll] node marked resizedByUser', {
+            id: node.id,
+            descriptionId: node.data.descriptionId,
+            width,
+            height,
+            layoutOptions: childLayoutOptions,
+          });
+        }
+
+        return {
+          ...node,
+          width,
+          height,
+          labels: computeLabels(node, zoom, reactFlowWrapper),
+          ...(childLayoutOptions ? { layoutOptions: childLayoutOptions } : {}),
+        };
+      }),
       edges,
     };
+    console.log('[arrangeAll] ELK graph children sample', graph.children?.slice(0, 5));
     try {
       const layoutedGraph = await elk.layout(graph);
+      console.log(
+        '[arrangeAll] ELK layout result',
+        layoutedGraph?.children?.map((child) => ({ id: child.id, width: child.width, height: child.height })).slice(0, 5)
+      );
       return {
         nodes:
           layoutedGraph?.children?.map((node) => {
@@ -212,9 +259,30 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         const parentNode = allNodes.find((node) => node.id === parentNodeId);
         if (layoutReturn) {
           if (parentNode) {
-            parentNode.width = layoutReturn.width;
-            parentNode.height = layoutReturn.height + headerVerticalFootprint;
-            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+            const existingWidth = getDimension(parentNode.width, parentNode.data.defaultWidth);
+            const existingHeight = getDimension(parentNode.height, parentNode.data.defaultHeight);
+            const layoutWidth = getDimension(layoutReturn.width, existingWidth);
+            const layoutHeight = getDimension(layoutReturn.height, existingHeight);
+
+            if (parentNode.data.resizedByUser) {
+              parentNode.width = existingWidth > 0 ? existingWidth : layoutWidth;
+              parentNode.height = Math.max(existingHeight, layoutHeight + headerVerticalFootprint);
+              console.log('[arrangeAll] preserving parent size', {
+                id: parentNode.id,
+                width: parentNode.width,
+                existingWidth,
+                layoutWidth,
+              });
+            } else {
+              parentNode.width = layoutWidth;
+              parentNode.height = layoutHeight + headerVerticalFootprint;
+            }
+
+            parentNode.style = {
+              ...parentNode.style,
+              width: `${parentNode.width}px`,
+              height: `${parentNode.height}px`,
+            };
             parentNodeWithNewSize.push(parentNode);
           }
           layoutedAllNodes = [
