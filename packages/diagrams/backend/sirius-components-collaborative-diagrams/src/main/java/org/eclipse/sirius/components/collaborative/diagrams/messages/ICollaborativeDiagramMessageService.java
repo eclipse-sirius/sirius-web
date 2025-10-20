@@ -47,6 +47,8 @@ public interface ICollaborativeDiagramMessageService {
 
     String diagramElementNotFound(String id);
 
+    String handlerNotFound();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -121,6 +123,11 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String diagramElementNotFound(String id) {
+            return "";
+        }
+
+        @Override
+        public String handlerNotFound() {
             return "";
         }
     }

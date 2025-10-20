@@ -15,8 +15,12 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
@@ -45,6 +49,11 @@ import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
  * @author pcdavid
  */
 public class ToolFinder {
+
+    private final Function<EObject, UUID> idProvider = (eObject) -> {
+        // DiagramElementDescription should have a proper id.
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
+    };
 
     public Optional<DropTool> findDropTool(DiagramDescription diagramDescription) {
         return Optional.ofNullable(diagramDescription).map(DiagramDescription::getPalette).map(DiagramPalette::getDropTool);
@@ -181,5 +190,77 @@ public class ToolFinder {
             }
         }
         return edgeReconnectionTools;
+    }
+
+    public Optional<NodeTool> getNodeToolByIdFromNodeDescription(NodeDescription viewNodeDescription, String toolId) {
+        if (viewNodeDescription.getPalette() != null) {
+            return viewNodeDescription.getPalette().getToolSections().stream()
+                .flatMap(nodeToolSection -> nodeToolSection.getNodeTools().stream())
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst()
+                .or(() -> viewNodeDescription.getPalette().getQuickAccessTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst())
+                .or(() -> viewNodeDescription.getPalette().getNodeTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<NodeTool> getNodeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
+        if (viewEdgeDescription.getPalette() != null) {
+            return viewEdgeDescription.getPalette().getToolSections().stream()
+                .flatMap(edgeToolSection -> edgeToolSection.getNodeTools().stream())
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst()
+                .or(() -> viewEdgeDescription.getPalette().getQuickAccessTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst())
+                .or(() -> viewEdgeDescription.getPalette().getNodeTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst());
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<NodeTool> getNodeToolByIdFromDiagramDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String toolId) {
+        if (diagramDescription.getPalette() != null) {
+            return diagramDescription.getPalette().getToolSections().stream()
+                .flatMap(diagramToolSection -> diagramToolSection.getNodeTools().stream())
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst()
+                .or(() -> diagramDescription.getPalette().getQuickAccessTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst())
+                .or(() -> diagramDescription.getPalette().getNodeTools().stream()
+                        .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                        .findFirst());
+        }   else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<EdgeTool> getEdgeToolByIdFromNodeDescription(NodeDescription viewNodeDescription, String toolId) {
+        if (viewNodeDescription.getPalette() != null) {
+            return viewNodeDescription.getPalette().getEdgeTools().stream()
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst();
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<EdgeTool> getEdgeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
+        if (viewEdgeDescription.getPalette() != null) {
+            return viewEdgeDescription.getPalette().getEdgeTools().stream()
+                .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                .findFirst();
+        } else {
+            return Optional.empty();
+        }
     }
 }

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -35,7 +36,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -81,8 +81,7 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
         IPayload payload = null;
 
-        if (diagramInput instanceof GetConnectorToolsInput) {
-            GetConnectorToolsInput connectorToolsInput = (GetConnectorToolsInput) diagramInput;
+        if (diagramInput instanceof GetConnectorToolsInput connectorToolsInput) {
             Diagram diagram = diagramContext.diagram();
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
@@ -97,17 +96,17 @@ public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
                     String sourceDiagramElementId = connectorToolsInput.sourceDiagramElementId();
                     String targetDiagramElementId = connectorToolsInput.targetDiagramElementId();
 
-                    var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceDiagramElementId);
-                    var targetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, targetDiagramElementId);
+                    var optionalSourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceDiagramElementId);
+                    var optionalTargetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, targetDiagramElementId);
 
                     List<ITool> connectorTools = new ArrayList<>();
 
-                    if (sourceDiagramElement.isPresent() && targetDiagramElement.isPresent()) {
-                        compatibleConnectorToolsProviders.stream()
-                            .map(provider -> provider.getConnectorTools(sourceDiagramElement.get(), targetDiagramElement.get(), diagram, editingContext))
+                    if (optionalSourceDiagramElement.isPresent() && optionalTargetDiagramElement.isPresent()) {
+                        connectorTools = compatibleConnectorToolsProviders.stream()
+                            .map(provider -> provider.getConnectorTools(editingContext, diagram, optionalSourceDiagramElement.get(), optionalTargetDiagramElement.get()))
                             .flatMap(List::stream)
                             .distinct()
-                            .forEach(connectorTools::add);
+                            .toList();
                     }
 
                     payload = new GetConnectorToolsSuccessPayload(diagramInput.id(), connectorTools);

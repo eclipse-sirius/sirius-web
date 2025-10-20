@@ -38,8 +38,6 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.representations.Success;
 
 /**
  * Utility class used to help build diagrams for unit tests.
@@ -145,15 +143,6 @@ public class TestDiagramBuilder {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .customizedStyleProperties(new HashSet<>())
-                .build();
-    }
-
-    public SingleClickOnDiagramElementTool getNodeTool(String id) {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
-                .label(TOOL_LABEL)
-                .iconURL(List.of(TOOL_IMAGE_URL))
-                .handler(variableManager -> new Success())
-                .targetDescriptions(List.of())
                 .build();
     }
 }

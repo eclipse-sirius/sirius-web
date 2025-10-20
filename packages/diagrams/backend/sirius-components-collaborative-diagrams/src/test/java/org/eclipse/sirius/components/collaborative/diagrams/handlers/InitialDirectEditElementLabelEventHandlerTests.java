@@ -65,7 +65,7 @@ public class InitialDirectEditElementLabelEventHandlerTests {
         UUID diagramDescriptionId = UUID.randomUUID();
         this.editingContextId = UUID.randomUUID();
 
-        DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(diagramDescriptionId.toString(), List.of(), List.of(), List.of());
+        DiagramDescription diagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(diagramDescriptionId.toString(), List.of(), List.of());
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {

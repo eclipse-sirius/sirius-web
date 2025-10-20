@@ -101,4 +101,9 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     public String diagramElementNotFound(String id) {
         return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_ELEMENT_NOT_FOUND, new Object[] { id });
     }
+
+    @Override
+    public String handlerNotFound() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.HANDLER_NOT_FOUND, new Object[] { });
+    }
 }
