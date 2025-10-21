@@ -137,7 +137,7 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
             this.representationMetadataCreationService.create(duplicatedRepresentationMetadata);
 
             var duplicatedContent = representationContentToDuplicate.getContent().replace(representationId, duplicatedRepresentationId.toString());
-            this.representationContentCreationService.create(duplicateRepresentationInput, duplicatedRepresentationId, duplicatedContent, representationContentToDuplicate.getLastMigrationPerformed(), representationContentToDuplicate.getMigrationVersion());
+            this.representationContentCreationService.create(duplicateRepresentationInput, duplicatedRepresentationId, representationMetadataToDuplicate.getSemanticData().getId(), duplicatedContent, representationContentToDuplicate.getLastMigrationPerformed(), representationContentToDuplicate.getMigrationVersion());
 
             var iconURLs = duplicatedRepresentationMetadata.getIconURLs().stream()
                     .map(RepresentationIconURL::url)
