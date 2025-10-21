@@ -1,0 +1,68 @@
+= ADR-209 - Lower coupling between Palette and DiagramDescription
+
+== Context
+
+The DiagramDescription contains a list of Palette.
+
+But the concept of Palette is useless to render a diagram and thus not used during the rendering.
+
+On top of that, the computation of a palette can be highly dynamic with tools that are only available under some circumstances.
+
+As a result, this method and the types it references should be deleted since they cannot fulfill our expectations efficiently.
+
+== Decision
+
+We will remove the package `org.eclipse.sirius.components.diagrams.tools` that contains :
+- EdgeReconnectionTool
+- ITool
+- Palette
+- SingleClickOnDiagramElementTool
+- SingleClickOnTwoDiagramElementsCandidate
+- ToolSection
+
+Since we will loose the ability to retrieve a tool and its handler directly from the `DiagramDescription` we will need to expose a new API in order to contribute new tools for programmatically declared `DiagramDescription`.
+
+=== Palette
+
+This existing `IPaletteProvider` will be used to provide the palette of a diagram.
+
+The implementation `ViewPaletteProvider` will still be used to get the palette from a view DSL model.
+
+It's possible to add an implementation of `IPaletteProvider` to handle diagram declared programmatically. 
+
+The `IPaletteToolsProvider` can still be used to inject more tools declaration in a model declared with the view DSL.
+
+=== Tool Handler
+
+A new interface `IToolHandler` containing the necessary information to execute a tool will be added in `org.eclipse.sirius.components.collaborative.diagrams.api`
+
+For example a `SingleClickOnDiagramElementTool` we will use this record 
+
+[source, java]
+----
+record SingleClickOnDiagramElementToolHandler(Function<VariableManager, IStatus> handler, Optional<String> dialogDescriptionId) implements IToolHandler
+----
+
+In order to retrieve the correct handler when executing a tool, a new interface will be implemented
+
+[source, java]
+----
+boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, String diagramElementDescriptionId, String toolId);
+
+IToolHandler getToolHandler(IEditingContext editingContext, DiagramDescription diagramDescription, String diagramElementDescriptionId, String toolId);
+----
+
+An implementation to retrieve the tools declared from in a view dsl will be added in `sirius-web-application` named `ViewToolHandlerProvider`
+
+If a tool was not declared with the view dsl then a custom implementation of `IToolHandler` will be needed to retrieve a correct handler.
+
+
+== Rabbit holes
+
+
+== Consequences
+
+Every tools declared programmatically will need to implement an `IToolHandler`.
+
+
+== Cutting backs
