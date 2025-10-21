@@ -35,12 +35,14 @@ function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
 
+// Constants below are tuned around the diagram auto-layout heuristics: nodes keep a 50px gap,
+// so we stay within that corridor to avoid hitting obstacles while still fanning edges apart.
 const AUTO_LAYOUT_NODE_GAP = 50;
-const MIN_TARGET_OFFSET = 12;
+const MIN_TARGET_OFFSET = 12; // keeps a visible elbow without touching the node border
 const MAX_TARGET_OFFSET = AUTO_LAYOUT_NODE_GAP - 10;
 const MAX_PERPENDICULAR_OFFSET = AUTO_LAYOUT_NODE_GAP - MIN_TARGET_OFFSET;
-const PERPENDICULAR_STEP = 12;
-const STRAIGHT_AXIS_TOLERANCE = 14;
+const PERPENDICULAR_STEP = 12; // spacing between parallel edges on the same side
+const STRAIGHT_AXIS_TOLERANCE = 14; // treat paths within 14px as visually straight
 
 const clamp = (value: number, lower: number, upper: number): number => Math.max(lower, Math.min(upper, value));
 
@@ -105,6 +107,7 @@ const computeTargetOffset = (
   const normalizedHandleId = targetHandleId ?? '';
   const edgesWithTarget = edges as PositionAwareEdge[];
 
+  // Keep only edges that enter through the same side; the other sides can overlap safely.
   const sameSideEdges = edgesWithTarget.filter(
     (edge) => edge.target === targetId && (edge.targetPosition ?? targetPosition) === targetPosition
   );
@@ -116,6 +119,7 @@ const computeTargetOffset = (
     return { offset: MIN_TARGET_OFFSET, index: 0, count: 1 };
   }
 
+  // Prefer grouping by exact handle when several edges share it, otherwise fan out all edges on the side.
   const handleEdges = edgesForTarget.filter((edge) => (edge.targetHandle ?? '') === normalizedHandleId);
   const candidateEdges = handleEdges.length > 1 ? handleEdges : edgesForTarget;
 
@@ -172,6 +176,8 @@ const computeTargetOffset = (
   }
 
   const step = (MAX_TARGET_OFFSET - MIN_TARGET_OFFSET) / (sideCount - 1);
+  // For edges on the “positive” side (right or bottom) flip the index so
+  // the outermost edge stays closest to the node, reducing crossings.
   const orientedIndex = currentSide > 0 && sideCount > 1 ? sideCount - 1 - effectiveIndex : effectiveIndex;
   const offset = MIN_TARGET_OFFSET + orientedIndex * step;
 
@@ -203,6 +209,8 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
   const perEdgeStep = count > 1 ? Math.min(PERPENDICULAR_STEP, maxSpread / (count - 1)) : 0;
   const perpendicularShift = clamp(directionSign * perEdgeStep * index, -maxSpread, maxSpread);
 
+  // Tail points define the last two turns right before the node. We shift them per edge so parallel edges
+  // don’t overlap, but we always finish exactly on the handle to stay rectilinear.
   const tailPoints: XYPosition[] = isHorizontalPosition(targetPosition)
     ? perpendicularShift !== 0
       ? [
@@ -439,6 +447,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         const xSpan = Math.max(...xValues) - Math.min(...xValues);
         const ySpan = Math.max(...yValues) - Math.min(...yValues);
 
+        // SmoothStep occasionally adds tiny detours: if the resulting points almost form a straight line,
+        // collapse them to a true straight segment instead of displaying a micro zig-zag.
         if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
           const alignX = Math.round((sourceX + targetX) / 2);
           sourceX = alignX;
