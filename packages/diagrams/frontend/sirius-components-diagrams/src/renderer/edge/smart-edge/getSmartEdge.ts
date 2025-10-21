@@ -273,7 +273,30 @@ export const gridToGraphPoint = (
   return { x, y };
 };
 
-export const getSmartEdge = ({ nodes, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }) => {
+export interface SmartEdgeResult {
+  svgPathString: string;
+  edgeCenterX: number;
+  edgeCenterY: number;
+  pathPoints: XYPosition[];
+}
+
+export const getSmartEdge = ({
+  nodes,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+}: {
+  nodes: InternalNode<Node<NodeData>>[];
+  sourceX: number;
+  sourceY: number;
+  targetX: number;
+  targetY: number;
+  sourcePosition: Position;
+  targetPosition: Position;
+}): SmartEdgeResult | null => {
   const { graphBox, nodeBoxes } = getBoundingBoxes(nodes);
   const gridRatio: number = 10;
 
@@ -299,13 +322,13 @@ export const getSmartEdge = ({ nodes, sourceX, sourceY, targetX, targetY, source
 
   const { fullPath, smoothedPath } = generatePathResult;
 
-  const graphPath = smoothedPath.map((gridPoint) => {
+  const graphPathCoordinates: [number, number][] = smoothedPath.map((gridPoint): [number, number] => {
     const [x, y] = gridPoint;
     const graphPoint = gridToGraphPoint({ x: x ?? 0, y: y ?? 0 }, graphBox.xMin, graphBox.yMin, gridRatio);
     return [graphPoint.x, graphPoint.y];
   });
 
-  const svgPathString = svgDrawStraightLinePath(source, target, graphPath);
+  const svgPathString = svgDrawStraightLinePath(source, target, graphPathCoordinates);
 
   const index = Math.floor(fullPath.length / 2);
   const middlePoint = fullPath[index];
@@ -317,5 +340,7 @@ export const getSmartEdge = ({ nodes, sourceX, sourceY, targetX, targetY, source
     gridRatio
   );
 
-  return { svgPathString, edgeCenterX, edgeCenterY };
+  const pathPoints: XYPosition[] = graphPathCoordinates.map(([x, y]) => ({ x, y }));
+
+  return { svgPathString, edgeCenterX, edgeCenterY, pathPoints };
 };
