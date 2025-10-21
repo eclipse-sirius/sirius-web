@@ -24,8 +24,8 @@ import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useStore } from '../../representation/useStore';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
@@ -40,6 +40,7 @@ const MIN_TARGET_OFFSET = 12;
 const MAX_TARGET_OFFSET = AUTO_LAYOUT_NODE_GAP - 10;
 const MAX_PERPENDICULAR_OFFSET = AUTO_LAYOUT_NODE_GAP - MIN_TARGET_OFFSET;
 const PERPENDICULAR_STEP = 12;
+const STRAIGHT_AXIS_TOLERANCE = 14;
 
 const clamp = (value: number, lower: number, upper: number): number => Math.max(lower, Math.min(upper, value));
 
@@ -105,7 +106,7 @@ const computeTargetOffset = (
   const edgesWithTarget = edges as PositionAwareEdge[];
 
   const sameSideEdges = edgesWithTarget.filter(
-    (edge) => edge.target === targetId && ((edge.targetPosition ?? targetPosition) === targetPosition)
+    (edge) => edge.target === targetId && (edge.targetPosition ?? targetPosition) === targetPosition
   );
 
   const targetEdgesFallback = edgesWithTarget.filter((edge) => edge.target === targetId);
@@ -120,16 +121,14 @@ const computeTargetOffset = (
 
   const targetAxis: 'x' | 'y' = isHorizontalPosition(targetPosition) ? 'y' : 'x';
 
-  const sortedEdges = candidateEdges
-    .slice()
-    .sort((edgeA, edgeB) => {
-      const coordA = getNodeCenterCoordinate(getNode(edgeA.source), targetAxis);
-      const coordB = getNodeCenterCoordinate(getNode(edgeB.source), targetAxis);
-      if (coordA !== coordB) {
-        return coordA - coordB;
-      }
-      return edgeA.id.localeCompare(edgeB.id);
-    });
+  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
+    const coordA = getNodeCenterCoordinate(getNode(edgeA.source), targetAxis);
+    const coordB = getNodeCenterCoordinate(getNode(edgeB.source), targetAxis);
+    if (coordA !== coordB) {
+      return coordA - coordB;
+    }
+    return edgeA.id.localeCompare(edgeB.id);
+  });
 
   const targetNode = getNode(targetId);
   const targetAxisCoordinate = getNodeCenterCoordinate(targetNode, targetAxis);
@@ -147,7 +146,8 @@ const computeTargetOffset = (
     return 0;
   };
 
-  const currentEdge = sortedEdges.find((edge) => edge.id === edgeId) ?? candidateEdges.find((edge) => edge.id === edgeId);
+  const currentEdge =
+    sortedEdges.find((edge) => edge.id === edgeId) ?? candidateEdges.find((edge) => edge.id === edgeId);
   const currentSide = currentEdge ? categorizeEdgeSide(currentEdge) : 0;
 
   const edgesSameSide = sortedEdges.filter((edge) => {
@@ -200,8 +200,7 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
   const deltaFromTarget = isHorizontalPosition(targetPosition) ? sourceY - targetY : sourceX - targetX;
   const directionSign = deltaFromTarget === 0 ? 1 : Math.sign(deltaFromTarget);
   const maxSpread = MAX_PERPENDICULAR_OFFSET;
-  const perEdgeStep =
-    count > 1 ? Math.min(PERPENDICULAR_STEP, maxSpread / (count - 1)) : 0;
+  const perEdgeStep = count > 1 ? Math.min(PERPENDICULAR_STEP, maxSpread / (count - 1)) : 0;
   const perpendicularShift = clamp(directionSign * perEdgeStep * index, -maxSpread, maxSpread);
 
   const tailPoints: XYPosition[] = isHorizontalPosition(targetPosition)
@@ -212,11 +211,11 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
         ]
       : [{ x: approachPoint.x, y: targetY }]
     : perpendicularShift !== 0
-      ? [
-          { x: targetX + perpendicularShift, y: approachPoint.y },
-          { x: targetX, y: approachPoint.y },
-        ]
-      : [{ x: targetX, y: approachPoint.y }];
+    ? [
+        { x: targetX + perpendicularShift, y: approachPoint.y },
+        { x: targetX, y: approachPoint.y },
+      ]
+    : [{ x: targetX, y: approachPoint.y }];
 
   if (rawPoints.length <= 2) {
     const basePoints: XYPosition[] = [];
@@ -250,6 +249,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { getEdges, getNode } = useStore();
+  const hasCustomBendPoints = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
 
   const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
   const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
@@ -314,18 +314,15 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   let bendingPoints: XYPosition[] = [];
-  if (data && data.bendingPoints && data.bendingPoints.length > 0) {
+  if (hasCustomBendPoints && data?.bendingPoints) {
     bendingPoints = data.bendingPoints;
   } else {
     const edges = getEdges();
-    const { offset: computedOffset, index: targetEdgeIndex, count: targetEdgeCount } = computeTargetOffset(
-      edges,
-      id,
-      target,
-      targetHandleId,
-      targetPosition,
-      getNode
-    );
+    const {
+      offset: computedOffset,
+      index: targetEdgeIndex,
+      count: targetEdgeCount,
+    } = computeTargetOffset(edges, id, target, targetHandleId, targetPosition, getNode);
 
     const [smoothEdgePath] = getSmoothStepPath({
       sourceX,
@@ -413,6 +410,37 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }
   }
 
+  if (!hasCustomBendPoints) {
+    const pathPoints: XYPosition[] = [{ x: sourceX, y: sourceY }, ...bendingPoints, { x: targetX, y: targetY }];
+    if (pathPoints.length >= 2) {
+      const xValues = pathPoints.map((point) => point.x);
+      const yValues = pathPoints.map((point) => point.y);
+
+      const xSpan = Math.max(...xValues) - Math.min(...xValues);
+      const ySpan = Math.max(...yValues) - Math.min(...yValues);
+
+      if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
+        const alignX = Math.round((sourceX + targetX) / 2);
+        sourceX = alignX;
+        targetX = alignX;
+        bendingPoints = [];
+      } else if (ySpan <= STRAIGHT_AXIS_TOLERANCE && xSpan > STRAIGHT_AXIS_TOLERANCE) {
+        const alignY = Math.round((sourceY + targetY) / 2);
+        sourceY = alignY;
+        targetY = alignY;
+        bendingPoints = [];
+      } else if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan <= STRAIGHT_AXIS_TOLERANCE) {
+        const alignX = Math.round((sourceX + targetX) / 2);
+        const alignY = Math.round((sourceY + targetY) / 2);
+        sourceX = alignX;
+        targetX = alignX;
+        sourceY = alignY;
+        targetY = alignY;
+        bendingPoints = [];
+      }
+    }
+  }
+
   return (
     <MultiLabelRectilinearEditableEdge
       {...props}
@@ -421,7 +449,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetX={targetX}
       targetY={targetY}
       bendingPoints={bendingPoints}
-      customEdge={!!(data && data.bendingPoints && data.bendingPoints.length > 0)}
+      customEdge={hasCustomBendPoints}
       sourceNode={sourceNode}
       targetNode={targetNode}
     />
