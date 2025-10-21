@@ -155,7 +155,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         long updatedLibraryCount = this.librarySearchService.findAll(PageRequest.of(1, 1)).getTotalElements();
-        assertThat(updatedLibraryCount).isEqualTo(initialLibraryCount + 6);
+        assertThat(updatedLibraryCount).isEqualTo(initialLibraryCount + 7);
 
         Optional<Library> optionalSharedComponentsLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "shared_components", version);
         assertThat(optionalSharedComponentsLibrary).isPresent();
@@ -205,19 +205,19 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
                 assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
-                    .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
-                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                        .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                                && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
                 Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
-                    .isPresent()
-                    .get()
-                    .isInstanceOf(Interface.class);
+                        .isPresent()
+                        .get()
+                        .isInstanceOf(Interface.class);
                 Interface abstractTestInterface = (Interface) optAbstractTest.get();
                 assertThat(abstractTestInterface.getAnnotations())
-                    .hasSize(1)
-                    .allMatch(annotation -> !annotation.eIsProxy()
-                            && annotation.eResource() != null
-                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
+                        .hasSize(1)
+                        .allMatch(annotation -> !annotation.eIsProxy()
+                                && annotation.eResource() != null
+                                && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
                 return new SuccessPayload(executeEditingContextFunctionInput.id());
             }
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
@@ -239,21 +239,21 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         BiFunction<IEditingContext, IInput, IPayload> checkUpdatedEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
                 assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
-                    .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
-                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "2.0.0"))
-                    .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
-                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                        .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                                && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "2.0.0"))
+                        .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                                && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
                 Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
-                    .isPresent()
-                    .get()
-                    .isInstanceOf(Interface.class);
+                        .isPresent()
+                        .get()
+                        .isInstanceOf(Interface.class);
                 Interface abstractTestInterface = (Interface) optAbstractTest.get();
                 assertThat(abstractTestInterface.getAnnotations())
-                    .hasSize(1)
-                    .allMatch(annotation -> !annotation.eIsProxy()
-                            && annotation.eResource() != null
-                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "2.0.0"));
+                        .hasSize(1)
+                        .allMatch(annotation -> !annotation.eIsProxy()
+                                && annotation.eResource() != null
+                                && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "2.0.0"));
 
                 return new SuccessPayload(executeEditingContextFunctionInput.id());
             }
@@ -267,11 +267,11 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         };
 
         StepVerifier.create(flux)
-            .then(checkInitialEditingContext)
-            .then(updateLibrary)
-            .then(checkUpdatedEditingContext)
-            .thenCancel()
-            .verify(Duration.ofSeconds(10));
+                .then(checkInitialEditingContext)
+                .then(updateLibrary)
+                .then(checkUpdatedEditingContext)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
@@ -290,15 +290,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                 assertThat(unresolvedProxies).isEmpty();
                 Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
-                    .isPresent()
-                    .get()
-                    .isInstanceOf(Interface.class);
+                        .isPresent()
+                        .get()
+                        .isInstanceOf(Interface.class);
                 Interface abstractTestInterface = (Interface) optAbstractTest.get();
                 assertThat(abstractTestInterface.getAnnotations())
-                    .hasSize(1)
-                    .allMatch(annotation -> !annotation.eIsProxy()
-                            && annotation.eResource() != null
-                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
+                        .hasSize(1)
+                        .allMatch(annotation -> !annotation.eIsProxy()
+                                && annotation.eResource() != null
+                                && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
                 return new SuccessPayload(executeEditingContextFunctionInput.id());
             }
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
@@ -323,13 +323,13 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                 assertThat(unresolvedProxies).isEmpty();
                 Optional<Object> optAbstractTest = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
                 assertThat(optAbstractTest)
-                    .isPresent()
-                    .get()
-                    .isInstanceOf(Interface.class);
+                        .isPresent()
+                        .get()
+                        .isInstanceOf(Interface.class);
                 Interface abstractTestInterface = (Interface) optAbstractTest.get();
                 // The annotation should be removed during the update, since the target object doesn't exist anymore in the resource set.
                 assertThat(abstractTestInterface.getAnnotations())
-                    .isEmpty();
+                        .isEmpty();
                 return new SuccessPayload(executeEditingContextFunctionInput.id());
             }
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
@@ -342,11 +342,11 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         };
 
         StepVerifier.create(flux)
-            .then(checkInitialEditingContext)
-            .then(updateLibrary)
-            .then(checkUpdatedEditingContext)
-            .thenCancel()
-            .verify(Duration.ofSeconds(10));
+                .then(checkInitialEditingContext)
+                .then(updateLibrary)
+                .then(checkUpdatedEditingContext)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
 
     }
 
