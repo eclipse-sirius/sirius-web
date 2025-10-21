@@ -411,32 +411,53 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   if (!hasCustomBendPoints) {
-    const pathPoints: XYPosition[] = [{ x: sourceX, y: sourceY }, ...bendingPoints, { x: targetX, y: targetY }];
-    if (pathPoints.length >= 2) {
-      const xValues = pathPoints.map((point) => point.x);
-      const yValues = pathPoints.map((point) => point.y);
+    const deltaX = Math.abs(sourceX - targetX);
+    const deltaY = Math.abs(sourceY - targetY);
 
-      const xSpan = Math.max(...xValues) - Math.min(...xValues);
-      const ySpan = Math.max(...yValues) - Math.min(...yValues);
+    const alignVertical = deltaX <= STRAIGHT_AXIS_TOLERANCE && deltaY > STRAIGHT_AXIS_TOLERANCE;
+    const alignHorizontal = deltaY <= STRAIGHT_AXIS_TOLERANCE && deltaX > STRAIGHT_AXIS_TOLERANCE;
+    const alignPoint = deltaX <= STRAIGHT_AXIS_TOLERANCE && deltaY <= STRAIGHT_AXIS_TOLERANCE;
 
-      if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
+    if (alignVertical || alignHorizontal || alignPoint) {
+      if (alignVertical || alignPoint) {
         const alignX = Math.round((sourceX + targetX) / 2);
         sourceX = alignX;
         targetX = alignX;
-        bendingPoints = [];
-      } else if (ySpan <= STRAIGHT_AXIS_TOLERANCE && xSpan > STRAIGHT_AXIS_TOLERANCE) {
+      }
+      if (alignHorizontal || alignPoint) {
         const alignY = Math.round((sourceY + targetY) / 2);
         sourceY = alignY;
         targetY = alignY;
-        bendingPoints = [];
-      } else if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan <= STRAIGHT_AXIS_TOLERANCE) {
-        const alignX = Math.round((sourceX + targetX) / 2);
-        const alignY = Math.round((sourceY + targetY) / 2);
-        sourceX = alignX;
-        targetX = alignX;
-        sourceY = alignY;
-        targetY = alignY;
-        bendingPoints = [];
+      }
+      bendingPoints = [];
+    } else {
+      const pathPoints: XYPosition[] = [{ x: sourceX, y: sourceY }, ...bendingPoints, { x: targetX, y: targetY }];
+      if (pathPoints.length >= 2) {
+        const xValues = pathPoints.map((point) => point.x);
+        const yValues = pathPoints.map((point) => point.y);
+
+        const xSpan = Math.max(...xValues) - Math.min(...xValues);
+        const ySpan = Math.max(...yValues) - Math.min(...yValues);
+
+        if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
+          const alignX = Math.round((sourceX + targetX) / 2);
+          sourceX = alignX;
+          targetX = alignX;
+          bendingPoints = [];
+        } else if (ySpan <= STRAIGHT_AXIS_TOLERANCE && xSpan > STRAIGHT_AXIS_TOLERANCE) {
+          const alignY = Math.round((sourceY + targetY) / 2);
+          sourceY = alignY;
+          targetY = alignY;
+          bendingPoints = [];
+        } else if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan <= STRAIGHT_AXIS_TOLERANCE) {
+          const alignX = Math.round((sourceX + targetX) / 2);
+          const alignY = Math.round((sourceY + targetY) / 2);
+          sourceX = alignX;
+          targetX = alignX;
+          sourceY = alignY;
+          targetY = alignY;
+          bendingPoints = [];
+        }
       }
     }
   }
