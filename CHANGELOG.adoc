@@ -8,6 +8,7 @@
 
 === Architectural decision records
 
+- [ADR-208] Add support for executing group palette tools
 
 
 === Deprecation warning

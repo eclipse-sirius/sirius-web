@@ -1,0 +1,138 @@
+= ADR-208 - Add support for executing group palette tools
+
+== Context
+
+We have a really limited group palette that is currently offering hard coded tools on the frontend.
+
+Also, the UI is not the same as the others palettes.
+
+
+== Decision
+
+We will allow the declaration of GroupPalette in the view dsl.
+
+We will allow the execution of tools that target several representation elements.
+
+We will change the API used to request a palette for a given representation element to be able to request a palette for a list of representation elements.
+
+=== View dsl
+
+A Diagram view Description will contain a `list of GroupPalette`.
+
+This `GroupPalette` will contain a `list of NodeTools, EdgeTools, QuickAccessTools and Tool Sections`.
+
+=== GraphQL schema
+
+[source]
+----
+type DiagramDescription implements RepresentationDescription {
+  palette(diagramElementsId: [ID!]): Palette!
+}
+----
+
+We will now pass a list of diagramElement ids.
+
+Since a list is ordered we don't need to have a field for the last selected element.
+
+=== Back-End API changes
+
+All API methods that use a single element id will be updated to use a list instead.
+
+[source, java]
+----
+public interface IPaletteToolsProvider {
+
+    List<ToolSection> createExtraToolSections(List<Object> diagramElementDescription, List<Object> diagramElement);
+
+    List<ITool> createQuickAccessTools(List<Object> diagramElementDescription, List<Object> diagramElement);
+}
+----
+
+[source, java]
+----
+public interface IPaletteProvider {
+
+    boolean canHandle(DiagramDescription diagramDescription);
+
+    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElementDescription, List<Object> diagramElement, List<Object> targetElement);
+}
+----
+
+We need to make sure to keep the list ordered.
+
+It might be easier to have a dedicated field for the last selected element but more complex tools could rely on the first and the last or the 2 last elements to have complex logics ...
+
+=== Front-End API changes
+
+==== Selection
+
+We can greatly improve how the `GroupPalette` is displayed by removing the existing coupling with the global selection since it's no longer relevant.
+
+We can also use `store.getState().userSelectionActive` instead of the custom hook `useShiftSelection`.
+
+Finally it would be more efficient to store the current selection in a custom hook that would only be used in `DiagramRenderer` (like the current useShiftSelection) instead of parsing all nodes and edges to deduce what are the ones selected. 
+
+Having this hook `useDiagramSelection` will also ensure that the list of selected elements is properly ordered since both the `XYFlow hook useOnSelectionChange` and the callback of the `prop onSelectionChange` does not return the selected elements in the order they have been selected.
+
+We also currently have 2 `useOnSelectionChange` hooks, one in the current `useDiagramSelection` and another in `GroupPalette`, it would be more efficient to add a state to store the current selection in the current `useDiagramSelection` and pass the value to the `GroupPalette`.
+
+This would look like this in DiagramRenderer
+
+[source, typescript]
+----
+const { diagramSelection, onSelectionChange } = useDiagramSelection()
+
+let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
+  ...
+    onSelectionChange: onSelectionChange,
+}
+
+<GroupPalette
+  xyPosition={xyPalettePosition}
+  isOpened={isGroupPaletteOpened}
+  diagramSelection={diagramSelection}
+  close={hideGroupPalette}
+/>
+
+const onSelectionChange = useCallback(({ nodes, edges }) => {
+    //setDiagramSelection will keep the list odored 
+    setDiagramSelection([nodes.map((node) => node.id), nodes.map((node) => node.id)]);
+    //This is the current behavior to be able to change the selection in other representations
+    setGlobalSelection([...nodes, ...edges]);
+}, []);
+----
+
+==== Others improvements 
+
+This section is not planned.
+
+Since we already have the `GroupPalette` and the `DiagramPalette` rendered in `DiagramRender`, it might also be more practical to also render the `DiagramElementPalette` there.
+
+This would allow us to only have one palette, one context and one custom hook to handle its logic.
+
+[source, typescript]
+----
+const {
+    setIsPaletteOpened: setIsPaletteOpened,
+    position: xyPalettePosition,
+    isOpened: isPaletteOpened,
+  } = useGroupPalette();
+
+<Palette
+  xyPosition={xyPalettePosition}
+  isOpened={isPaletteOpened}
+  diagramSelection={diagramSelection}
+/>
+----
+
+This would make things easier if we later want to pin the palette (since we will not have to close a palette to open another one).
+
+Also this could also make things easier if we wanted to open several palettes.
+
+== Consequences
+
+Most API related to the palette will be broken but current implementations will be able to migrate easily since current behavior will not change.
+
+== Status
+
+Proposed.
