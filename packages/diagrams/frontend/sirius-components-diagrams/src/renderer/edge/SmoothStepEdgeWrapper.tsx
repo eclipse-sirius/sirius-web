@@ -152,8 +152,41 @@ const getNodeRectangle = (
 const isPointInsideRect = (point: XYPosition, rect: Rectangle): boolean =>
   point.x > rect.left && point.x < rect.right && point.y > rect.top && point.y < rect.bottom;
 
-const doPointsOverlapNodes = (
-  points: XYPosition[],
+const doesSegmentOverlapRect = (start: XYPosition, end: XYPosition, rect: Rectangle): boolean => {
+  if (start.x === end.x && start.y === end.y) {
+    return isPointInsideRect(start, rect);
+  }
+
+  if (start.y === end.y) {
+    const segmentY = start.y;
+    if (segmentY <= rect.top || segmentY >= rect.bottom) {
+      return false;
+    }
+    const segMinX = Math.min(start.x, end.x);
+    const segMaxX = Math.max(start.x, end.x);
+    return segMaxX > rect.left && segMinX < rect.right;
+  }
+
+  if (start.x === end.x) {
+    const segmentX = start.x;
+    if (segmentX <= rect.left || segmentX >= rect.right) {
+      return false;
+    }
+    const segMinY = Math.min(start.y, end.y);
+    const segMaxY = Math.max(start.y, end.y);
+    return segMaxY > rect.top && segMinY < rect.bottom;
+  }
+
+  // Diagonal segments should not occur for rectilinear edges; fall back to a conservative overlap check.
+  const segLeft = Math.min(start.x, end.x);
+  const segRight = Math.max(start.x, end.x);
+  const segTop = Math.min(start.y, end.y);
+  const segBottom = Math.max(start.y, end.y);
+  return segRight > rect.left && segLeft < rect.right && segBottom > rect.top && segTop < rect.bottom;
+};
+
+const doesPathOverlapNodes = (
+  pathPoints: XYPosition[],
   nodes: Node<NodeData>[],
   nodeMap: Map<string, Node<NodeData>>,
   ignoredNodeIds: Set<string>,
@@ -161,17 +194,29 @@ const doPointsOverlapNodes = (
   edgeId: string
 ): boolean => {
   const absolutePositionCache = new Map<string, XYPosition>();
-  for (const point of points) {
-    for (const node of nodes) {
-      if (ignoredNodeIds.has(node.id)) {
-        continue;
-      }
+  const collidableNodes = nodes
+    .filter((node) => !ignoredNodeIds.has(node.id))
+    .map((node) => {
       const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
-      if (!rect) {
-        continue;
-      }
-      if (isPointInsideRect(point, rect)) {
-        console.debug('auto-route overlap', { edgeId, anchor, point, nodeId: node.id, rect });
+      return rect ? { node, rect } : null;
+    })
+    .filter((entry): entry is { node: Node<NodeData>; rect: Rectangle } => entry !== null);
+
+  for (let index = 0; index < pathPoints.length - 1; index++) {
+    const segmentStart = pathPoints[index];
+    const segmentEnd = pathPoints[index + 1];
+
+    if (!segmentStart || !segmentEnd) {
+      continue;
+    }
+
+    if (segmentStart.x === segmentEnd.x && segmentStart.y === segmentEnd.y) {
+      continue;
+    }
+
+    for (const { node, rect } of collidableNodes) {
+      if (doesSegmentOverlapRect(segmentStart, segmentEnd, rect)) {
+        console.debug('auto-route overlap', { edgeId, anchor, segmentStart, segmentEnd, nodeId: node.id, rect });
         return true;
       }
     }
@@ -594,7 +639,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         count: targetEdgeCount,
         anchor,
       });
-      if (!doPointsOverlapNodes(candidatePoints, nodes, nodeMap, ignoredNodeIds, anchor, id)) {
+      const pathPoints = dedupeConsecutivePoints([
+        { x: sourceX, y: sourceY },
+        ...candidatePoints,
+        { x: targetX, y: targetY },
+      ]);
+      if (!doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id)) {
         selectedBendingPoints = candidatePoints;
         break;
       }
