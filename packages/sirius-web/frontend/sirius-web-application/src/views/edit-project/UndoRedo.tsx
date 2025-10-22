@@ -135,13 +135,13 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
   }, [redoData]);
 
   const undoKeyPressHandler = (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+    if ((e.ctrlKey || e.metaKey) && e.code === 'KeyZ') {
       undoLastAction();
     }
   };
 
   const redoKeyPressHandler = (e) => {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))) {
+    if ((e.ctrlKey || e.metaKey) && (e.code === 'KeyY' || (e.shiftKey && e.code === 'KeyZ'))) {
       redoLastAction();
     }
   };

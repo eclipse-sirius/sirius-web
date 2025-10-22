@@ -231,7 +231,7 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    if (event.key === 'Delete') {
+    if (event.code === 'Delete') {
       const deleteWidgetInput: GQLDeleteWidgetInput = {
         id: crypto.randomUUID(),
         editingContextId,

@@ -27,10 +27,10 @@ export const OmniboxProvider = ({ editingContextId, workbenchHandle, children }:
 
   useEffect(() => {
     const keyDownEventListener = (event: KeyboardEvent) => {
-      if (event.key === 'k' && (event.ctrlKey || event.metaKey)) {
+      if (event.code === 'KeyK' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
         setState((prevState) => ({ ...prevState, open: !prevState.open }));
-      } else if (event.key === 'Esc') {
+      } else if (event.code === 'Escape') {
         event.preventDefault();
         setState((prevState) => ({ ...prevState, open: false }));
       }

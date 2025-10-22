@@ -37,7 +37,7 @@ export const TextfieldCell = ({ editingContextId, representationId, tableId, cel
   };
 
   const handleEnterKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.code === 'Enter' && !event.shiftKey) {
       editTextfieldCell(state.value);
     }
   };
