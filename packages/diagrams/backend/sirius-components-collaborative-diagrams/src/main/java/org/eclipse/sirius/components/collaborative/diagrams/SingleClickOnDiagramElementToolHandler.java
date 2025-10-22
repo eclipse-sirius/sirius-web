@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,30 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.tools;
+package org.eclipse.sirius.components.collaborative.diagrams;
 
-import java.util.List;
-import java.util.function.Function;
-
+import org.eclipse.sirius.components.collaborative.diagrams.api.IToolHandler;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 /**
- * Interface implemented by all tools.
+ * Tool handler for SingleClickOnDiagramElementTool.
  *
- * @technical-debt This class and its related concepts such as {@link ToolSection} and {@link Palette} should be deleted.
- * See the documentation of {@link Palette} for additional details.
- *
- * @author hmarchadour
- * @since v0.1.0
+ * @author mcharfadi
  */
-public interface ITool {
-
-    String getId();
-
-    String getLabel();
-
-    Function<VariableManager, IStatus> getHandler();
-
-    List<String> getIconURL();
+public record SingleClickOnDiagramElementToolHandler(Function<VariableManager, IStatus> handler, Optional<String> dialogDescriptionId) implements IToolHandler {
 }

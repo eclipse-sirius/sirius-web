@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
-import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 
@@ -40,7 +40,7 @@ public class DeleteToolIconURLDataFetcher implements IDataFetcherWithFieldCoordi
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         ITool tool = environment.getSource();
-        return tool.getIconURL().stream()
+        return tool.iconURL().stream()
                 .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
                 .toList();
     }

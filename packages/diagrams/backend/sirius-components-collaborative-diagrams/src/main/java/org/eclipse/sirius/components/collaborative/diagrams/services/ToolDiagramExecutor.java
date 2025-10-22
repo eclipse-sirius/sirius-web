@@ -18,17 +18,19 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.SingleClickOnDiagramElementToolHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IToolHandlerProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -53,34 +55,46 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
 
     private final Logger logger = LoggerFactory.getLogger(ToolDiagramExecutor.class);
 
-    private final IToolService toolService;
-
     private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
-    public ToolDiagramExecutor(IToolService toolService, IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService) {
-        this.toolService = Objects.requireNonNull(toolService);
+    private final List<IToolHandlerProvider> toolHandlerProviders;
+
+    private final IRepresentationDescriptionSearchService diagramDescriptionService;
+
+    public ToolDiagramExecutor(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, List<IToolHandlerProvider> toolHandlerProviders, IRepresentationDescriptionSearchService diagramDescriptionService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+        this.toolHandlerProviders = Objects.requireNonNull(toolHandlerProviders);
+        this.diagramDescriptionService = diagramDescriptionService;
     }
 
     @Override
     public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables) {
         DiagramContext diagramContext = new DiagramContext(diagram);
+        Optional<String> optionalDiagramElementDescriptionId = Optional.of(diagramElementId)
+            .filter(elementId -> diagramElementId.equals(diagram.getId()))
+            .map(elementId -> diagram.getDescriptionId())
+            .or(() -> this.diagramQueryService.findNodeById(diagram, diagramElementId).map(Node::getDescriptionId))
+            .or(() -> this.diagramQueryService.findEdgeById(diagram, diagramElementId).map(Edge::getDescriptionId));
 
-        var optionalTool = this.toolService.findToolById(editingContext, diagram, toolId)
-                .filter(SingleClickOnDiagramElementTool.class::isInstance)
-                .map(SingleClickOnDiagramElementTool.class::cast);
+        var optionalDiagramDescription = this.diagramDescriptionService.findById(editingContext, diagram.getDescriptionId());
+        if (optionalDiagramDescription.isPresent() && optionalDiagramDescription.get() instanceof DiagramDescription diagramDescription && optionalDiagramElementDescriptionId.isPresent()) {
+            var diagramElementDescriptionId = optionalDiagramElementDescriptionId.get();
+            var optionalToolHandler = this.toolHandlerProviders.stream()
+                .filter(toolHandlerProvider -> toolHandlerProvider.canHandle(editingContext, diagramDescription, diagramElementDescriptionId, toolId))
+                .findFirst()
+                .flatMap(toolHandlerProvider -> toolHandlerProvider.getToolHandler(editingContext, diagramDescription, diagramElementDescriptionId, toolId));
 
-        if (optionalTool.isPresent()) {
-            return this.executeTool(editingContext, diagramContext, diagramElementId, optionalTool.get(), variables);
+            if (optionalToolHandler.isPresent() && optionalToolHandler.get() instanceof SingleClickOnDiagramElementToolHandler toolHandler) {
+                return this.executeTool(editingContext, diagramContext, diagramElementId, toolHandler, variables, toolId);
+            }
         }
-
         return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
     }
 
-    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, List<ToolVariable> variables) {
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementToolHandler toolHandler, List<ToolVariable> variables, String toolId) {
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.diagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
@@ -89,18 +103,18 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
             // may be the tool applies on an Edge
             edge = this.diagramQueryService.findEdgeById(diagram, diagramElementId);
         }
-        Optional<Object> self = this.getCurrentContext(editingContext, diagramElementId, tool, diagram, node, edge);
+        Optional<Object> self = this.getCurrentContext(editingContext, diagramElementId, diagram, node, edge, toolId);
 
         // Else, cannot find the node with the given optionalDiagramElementId
         if (self.isPresent()) {
             VariableManager variableManager = this.populateVariableManager(editingContext, diagramContext, node, edge, self);
-            var dialogDescriptionId = tool.getDialogDescriptionId();
             variables.forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
 
             //We do not apply the tool if a dialog is defined but no variables have been provided
-            if (dialogDescriptionId == null || !variables.isEmpty()) {
-                result = tool.getHandler().apply(variableManager);
+            if (toolHandler.dialogDescriptionId().isEmpty() || !variables.isEmpty()) {
+                result = toolHandler.handler().apply(variableManager);
             }
+
         }
         if (result instanceof Success success) {
             success.getParameters().put(VIEW_CREATION_REQUESTS, diagramContext.viewCreationRequests());
@@ -132,8 +146,8 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
         }
     }
 
-    private Optional<Object> getCurrentContext(IEditingContext editingContext, String diagramElementId, SingleClickOnDiagramElementTool tool, Diagram diagram, Optional<Node> node,
-            Optional<Edge> edge) {
+    private Optional<Object> getCurrentContext(IEditingContext editingContext, String diagramElementId, Diagram diagram, Optional<Node> node,
+            Optional<Edge> edge, String toolId) {
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
             self = this.objectSearchService.getObject(editingContext, node.get().getTargetObjectId());
@@ -142,7 +156,7 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
         } else if (Objects.equals(diagram.getId(), diagramElementId)) {
             self = this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId());
         } else {
-            this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId());
+            this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", toolId, diagram.getId(), editingContext.getId());
         }
         return self;
     }
