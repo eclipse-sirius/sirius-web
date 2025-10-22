@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteSearchField, PaletteSearchResult } from '@eclipse-sirius/sirius-components-palette';
+import { PaletteSearchField, PaletteSearchResult, PaletteToolList } from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -39,7 +39,6 @@ import {
   PaletteState,
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
-import { PaletteToolList } from './tool-list/PaletteToolList';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
@@ -89,8 +88,10 @@ export const Palette = ({
   const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
 
   const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
-  const { setLastToolInvoked } = useDiagramPalette();
+  const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
+
+  const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
 
   const handleToolClick = (tool: GQLTool) => {
     onClose();
@@ -220,6 +221,7 @@ export const Palette = ({
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
+                lastToolInvoked={lastToolInvoked}
                 diagramElementId={diagramElementId}>
                 {children}
               </PaletteToolList>
