@@ -369,6 +369,7 @@ type AutoBendPointContext = {
   sourceY: number;
   targetX: number;
   targetY: number;
+  sourcePosition: Position;
   targetPosition: Position;
   offset: number;
   index: number;
@@ -384,9 +385,21 @@ const resolveAutoBendAnchor = (): 'source' | 'target' | 'midpoint' => {
 };
 
 const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointContext): XYPosition[] => {
-  const { sourceX, sourceY, targetX, targetY, targetPosition, offset, index, count, anchor } = context;
+  const {
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    sourcePosition,
+    targetPosition,
+    offset,
+    index,
+    count,
+    anchor,
+  } = context;
   const approachOffset = clamp(offset, MIN_TARGET_OFFSET, MAX_TARGET_OFFSET);
   const approachPoint = getApproachPoint(targetX, targetY, targetPosition, approachOffset);
+  const sourceApproachPoint = getApproachPoint(sourceX, sourceY, sourcePosition, approachOffset);
   const deltaFromTarget = isHorizontalPosition(targetPosition) ? sourceY - targetY : sourceX - targetX;
   const directionSign = deltaFromTarget === 0 ? 1 : Math.sign(deltaFromTarget);
   const maxSpread = MAX_PERPENDICULAR_OFFSET;
@@ -417,34 +430,36 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
 
   // Tail points define the last two turns right before the node. We shift them per edge so parallel edges
   // don’t overlap, but we always finish exactly on the handle to stay rectilinear.
-  const tailPoints: XYPosition[] =
-    anchor === 'target'
-      ? isHorizontalPosition(targetPosition)
-        ? perpendicularShift !== 0
-          ? [
-              { x: approachPoint.x, y: targetY + perpendicularShift },
-              { x: approachPoint.x, y: targetY },
-            ]
-          : [{ x: approachPoint.x, y: targetY }]
-        : perpendicularShift !== 0
-        ? [
-            { x: targetX + perpendicularShift, y: approachPoint.y },
-            { x: targetX, y: approachPoint.y },
-          ]
-        : [{ x: targetX, y: approachPoint.y }]
-      : isHorizontalPosition(targetPosition)
+  let tailPoints: XYPosition[];
+  if (anchor === 'target') {
+    tailPoints = isHorizontalPosition(targetPosition)
       ? perpendicularShift !== 0
         ? [
-            { x: sourceX, y: sourceY + perpendicularShift },
-            { x: sourceX, y: sourceY },
+            { x: approachPoint.x, y: targetY + perpendicularShift },
+            { x: approachPoint.x, y: targetY },
           ]
-        : [{ x: sourceX, y: sourceY }]
+        : [{ x: approachPoint.x, y: targetY }]
       : perpendicularShift !== 0
       ? [
-          { x: sourceX + perpendicularShift, y: sourceY },
-          { x: sourceX, y: sourceY },
+          { x: targetX + perpendicularShift, y: approachPoint.y },
+          { x: targetX, y: approachPoint.y },
         ]
-      : [{ x: sourceX, y: sourceY }];
+      : [{ x: targetX, y: approachPoint.y }];
+  } else {
+    tailPoints = isHorizontalPosition(sourcePosition)
+      ? perpendicularShift !== 0
+        ? [
+            { x: sourceApproachPoint.x, y: sourceY },
+            { x: sourceApproachPoint.x, y: sourceY + perpendicularShift },
+          ]
+        : [{ x: sourceApproachPoint.x, y: sourceY }]
+      : perpendicularShift !== 0
+      ? [
+          { x: sourceX, y: sourceApproachPoint.y },
+          { x: sourceX + perpendicularShift, y: sourceApproachPoint.y },
+        ]
+      : [{ x: sourceX, y: sourceApproachPoint.y }];
+  }
 
   if (rawPoints.length <= 2) {
     const basePoints: XYPosition[] = [];
@@ -457,9 +472,9 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
       return dedupeConsecutivePoints([...basePoints, ...tailPoints]);
     } else {
       if (isHorizontalPosition(targetPosition)) {
-        basePoints.push({ x: sourceX, y: targetY });
+        basePoints.push({ x: sourceApproachPoint.x, y: targetY });
       } else {
-        basePoints.push({ x: targetX, y: sourceY });
+        basePoints.push({ x: targetX, y: sourceApproachPoint.y });
       }
       return dedupeConsecutivePoints([...tailPoints, ...basePoints]);
     }
@@ -633,6 +648,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         sourceY,
         targetX,
         targetY,
+        sourcePosition,
         targetPosition,
         offset: computedOffset,
         index: targetEdgeIndex,
