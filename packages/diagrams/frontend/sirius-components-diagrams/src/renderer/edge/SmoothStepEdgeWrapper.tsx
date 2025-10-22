@@ -27,6 +27,7 @@ import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { edgeBendPointOffset } from '../layout/layoutParams';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -43,6 +44,7 @@ const MAX_TARGET_OFFSET = AUTO_LAYOUT_NODE_GAP - 10;
 const MAX_PERPENDICULAR_OFFSET = AUTO_LAYOUT_NODE_GAP - MIN_TARGET_OFFSET;
 const PERPENDICULAR_STEP = 12; // spacing between parallel edges on the same side
 const STRAIGHT_AXIS_TOLERANCE = 14; // treat paths within 14px as visually straight
+const MAX_AUTO_ROUTE_DETOUR_ITERATIONS = 8;
 
 type AutoBendAnchor = 'source' | 'target' | 'midpoint';
 const ANCHOR_PREFERENCE_ORDER: AutoBendAnchor[] = ['target', 'midpoint', 'source'];
@@ -81,12 +83,36 @@ const dedupeConsecutivePoints = (points: XYPosition[]): XYPosition[] => {
   return deduped;
 };
 
+const arePointsEqual = (a: XYPosition, b: XYPosition): boolean => a.x === b.x && a.y === b.y;
+
+const arePathsEqual = (pathA: XYPosition[], pathB: XYPosition[]): boolean => {
+  if (pathA.length !== pathB.length) {
+    return false;
+  }
+  for (let i = 0; i < pathA.length; i++) {
+    const pointA = pathA[i];
+    const pointB = pathB[i];
+    if (!pointA || !pointB || !arePointsEqual(pointA, pointB)) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const getAnchorPreferenceOrder = (preferredAnchor: AutoBendAnchor): AutoBendAnchor[] => [
   preferredAnchor,
   ...ANCHOR_PREFERENCE_ORDER.filter((anchor) => anchor !== preferredAnchor),
 ];
 
 type Rectangle = { left: number; right: number; top: number; bottom: number };
+type PathCollision = {
+  node: Node<NodeData>;
+  rect: Rectangle;
+  segmentStart: XYPosition;
+  segmentEnd: XYPosition;
+  segmentIndex: number;
+};
+type PathOverlapResult = { overlaps: boolean; collision?: PathCollision };
 
 const getNodeAbsolutePosition = (
   node: Node<NodeData>,
@@ -192,7 +218,7 @@ const doesPathOverlapNodes = (
   ignoredNodeIds: Set<string>,
   anchor: AutoBendAnchor,
   edgeId: string
-): boolean => {
+): PathOverlapResult => {
   const absolutePositionCache = new Map<string, XYPosition>();
   const collidableNodes = nodes
     .filter((node) => !ignoredNodeIds.has(node.id))
@@ -217,11 +243,109 @@ const doesPathOverlapNodes = (
     for (const { node, rect } of collidableNodes) {
       if (doesSegmentOverlapRect(segmentStart, segmentEnd, rect)) {
         console.debug('auto-route overlap', { edgeId, anchor, segmentStart, segmentEnd, nodeId: node.id, rect });
-        return true;
+        return {
+          overlaps: true,
+          collision: { node, rect, segmentStart, segmentEnd, segmentIndex: index },
+        };
       }
     }
   }
-  return false;
+  return { overlaps: false };
+};
+
+const tryBuildDetourAroundCollision = (
+  pathPoints: XYPosition[],
+  collision: PathCollision | undefined
+): XYPosition[] | undefined => {
+  if (!collision) {
+    return undefined;
+  }
+
+  const { segmentStart, segmentEnd, segmentIndex, rect } = collision;
+  if (!segmentStart || !segmentEnd) {
+    return undefined;
+  }
+
+  const prefix = pathPoints.slice(0, segmentIndex + 1);
+  const suffix = pathPoints.slice(segmentIndex + 1);
+  const clearance = edgeBendPointOffset;
+  const candidatePaths: XYPosition[][] = [];
+
+  if (segmentStart.y === segmentEnd.y) {
+    const segmentY = segmentStart.y;
+    const segmentMinX = Math.min(segmentStart.x, segmentEnd.x);
+    const segmentMaxX = Math.max(segmentStart.x, segmentEnd.x);
+    const direction = segmentEnd.x >= segmentStart.x ? 1 : -1;
+    const entryX = direction >= 0
+      ? Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX))
+      : Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX));
+    const exitX = direction >= 0
+      ? Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX))
+      : Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX));
+
+    if ((direction >= 0 && entryX >= exitX) || (direction < 0 && entryX <= exitX)) {
+      return undefined;
+    }
+
+    const detourCandidates = [
+      Math.round(rect.top - clearance),
+      Math.round(rect.bottom + clearance),
+    ].filter((detourY) => detourY !== segmentY);
+
+    for (const detourY of detourCandidates) {
+      const entryPoint: XYPosition = { x: entryX, y: segmentY };
+      const exitPoint: XYPosition = { x: exitX, y: segmentY };
+      const detourPath = dedupeConsecutivePoints([
+        ...prefix,
+        entryPoint,
+        { x: entryPoint.x, y: detourY },
+        { x: exitPoint.x, y: detourY },
+        exitPoint,
+        ...suffix,
+      ]);
+      if (!arePathsEqual(detourPath, pathPoints)) {
+        candidatePaths.push(detourPath);
+      }
+    }
+  } else if (segmentStart.x === segmentEnd.x) {
+    const segmentX = segmentStart.x;
+    const segmentMinY = Math.min(segmentStart.y, segmentEnd.y);
+    const segmentMaxY = Math.max(segmentStart.y, segmentEnd.y);
+    const direction = segmentEnd.y >= segmentStart.y ? 1 : -1;
+    const entryY = direction >= 0
+      ? Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY))
+      : Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY));
+    const exitY = direction >= 0
+      ? Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY))
+      : Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY));
+
+    if ((direction >= 0 && entryY >= exitY) || (direction < 0 && entryY <= exitY)) {
+      return undefined;
+    }
+
+    const detourCandidates = [
+      Math.round(rect.left - clearance),
+      Math.round(rect.right + clearance),
+    ].filter((detourX) => detourX !== segmentX);
+
+    for (const detourX of detourCandidates) {
+      const entryPoint: XYPosition = { x: segmentX, y: entryY };
+      const exitPoint: XYPosition = { x: segmentX, y: exitY };
+      const detourPath = dedupeConsecutivePoints([
+        ...prefix,
+        entryPoint,
+        { x: detourX, y: entryPoint.y },
+        { x: detourX, y: exitPoint.y },
+        exitPoint,
+        ...suffix,
+      ]);
+      if (!arePathsEqual(detourPath, pathPoints)) {
+        candidatePaths.push(detourPath);
+      }
+    }
+  }
+
+  return candidatePaths[0];
 };
 
 const getParentId = (node: Node<NodeData> | undefined): string | undefined => {
@@ -655,16 +779,29 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         count: targetEdgeCount,
         anchor,
       });
-      const pathPoints = dedupeConsecutivePoints([
+      let pathPoints = dedupeConsecutivePoints([
         { x: sourceX, y: sourceY },
         ...candidatePoints,
         { x: targetX, y: targetY },
       ]);
-      if (!doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id)) {
-        selectedBendingPoints = candidatePoints;
+      let overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id);
+      let detourIterations = 0;
+      while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
+        const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision);
+        if (!detouredPath || arePathsEqual(detouredPath, pathPoints)) {
+          break;
+        }
+        pathPoints = detouredPath;
+        overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id);
+        detourIterations++;
+      }
+
+      if (!overlapResult.overlaps) {
+        selectedBendingPoints = pathPoints.slice(1, pathPoints.length - 1);
         break;
       }
-      fallbackBendingPoints = candidatePoints;
+
+      fallbackBendingPoints = pathPoints.slice(1, pathPoints.length - 1);
     }
 
     bendingPoints = selectedBendingPoints ?? fallbackBendingPoints;
