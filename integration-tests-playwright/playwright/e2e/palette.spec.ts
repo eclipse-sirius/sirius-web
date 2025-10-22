@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
+import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
@@ -53,6 +54,22 @@ test.describe('diagram - palette', () => {
     await expect(page.getByTestId('GroupPalette')).toBeAttached();
     await expect(page.getByTestId('GroupPalette').getByTestId('Align left')).not.toBeAttached();
     await expect(page.getByTestId('GroupPalette').getByTestId('Align bottom')).toBeAttached();
+  });
+
+  test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({
+    page,
+  }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightNode.click();
+    await playwrightEdge.controlClick();
+    await playwrightEdge.openPalette();
+    await expect(page.getByTestId('GroupPalette')).toBeAttached();
+    await page.getByTestId('GroupPalette').getByTestId('Fade elements').click();
+    const edgeStyle = await playwrightEdge.getEdgeStyle();
+    await expect(edgeStyle).toHaveCSS('opacity', '0.4');
+    await expect(playwrightNode.nodeStyle).toHaveCSS('opacity', '0.4');
   });
 });
 

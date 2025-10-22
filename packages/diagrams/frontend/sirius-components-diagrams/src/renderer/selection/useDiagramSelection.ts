@@ -12,47 +12,65 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useOnSelectionChange, useStoreApi } from '@xyflow/react';
-import { useCallback, useEffect, useState } from 'react';
+import { Edge, Node, OnSelectionChangeFunc } from '@xyflow/react';
+import { useCallback, useContext, useState } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-
-// Compute a deterministic key from a selection
-const selectionKey = (entries: SelectionEntry[]) => {
-  return JSON.stringify(
-    entries.map((selectionEntry) => selectionEntry.id).sort((id1: string, id2: string) => id1.localeCompare(id2))
-  );
-};
-
+import { UseDiagramSelectionValue } from './useDiagramSelection.types';
 /**
  * Configures React Flow so that when the selection changes on the diagram, the global selection is updated.
  */
-export const useDiagramSelection = (onShiftSelection: boolean): void => {
-  const { selection, setSelection } = useSelection();
-  const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+export const useDiagramSelection = (): UseDiagramSelectionValue => {
+  const { setSelection } = useSelection();
+  const [selectedElementsIds, setSelectedElementsIds] = useState<string[]>([]);
+  const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const onChange = useCallback(
-    ({ nodes, edges }) => {
-      const entries: SelectionEntry[] = [...nodes, ...edges].map((diagramElement) => ({
-        id: diagramElement.data.targetObjectId,
-      }));
-      if (selectionKey(entries) !== selectionKey(selection.entries)) {
-        if (onShiftSelection) {
-          setShiftSelection(entries);
-        } else {
-          setSelection({ entries });
-        }
-      }
-    },
-    [selection, onShiftSelection, store]
-  );
-
-  useOnSelectionChange({ onChange });
-
-  useEffect(() => {
-    if (shiftSelection.length > 0 && !onShiftSelection) {
-      setSelection({ entries: shiftSelection });
-      setShiftSelection([]);
+  const setSelectedElementsIdsInTheCorrectOrder = (
+    previousSelectedElementsIds: string[],
+    newSelectedElementId: string[]
+  ) => {
+    if (newSelectedElementId.length === 0) {
+      return [];
+    } else {
+      return previousSelectedElementsIds
+        .filter((id) => newSelectedElementId.includes(id))
+        .concat(newSelectedElementId.filter((id) => !previousSelectedElementsIds.includes(id)));
     }
-  }, [onShiftSelection]);
+  };
+
+  //The dependency array must stay empty, otherwise XYFlow will call this function if one dependency changes.
+  const onSelectionChange: OnSelectionChangeFunc<Node<NodeData>, Edge<EdgeData>> = useCallback(({ nodes, edges }) => {
+    const newSelectedElementsIds: string[] = [];
+    let entries: SelectionEntry[] = [];
+
+    nodes.forEach((node) => {
+      entries.push({ id: node.data.targetObjectId });
+      newSelectedElementsIds.push(node.id);
+    });
+    edges.forEach((edge) => {
+      if (edge.data) {
+        entries.push({ id: edge.data.targetObjectId });
+      }
+      newSelectedElementsIds.push(edge.id);
+    });
+
+    if (entries.length === 0) {
+      entries = [
+        {
+          id: diagramId,
+        },
+      ];
+    }
+
+    setSelectedElementsIds((previousSelectedElementsIds) =>
+      setSelectedElementsIdsInTheCorrectOrder(previousSelectedElementsIds, newSelectedElementsIds)
+    );
+    setSelection({ entries });
+  }, []);
+
+  return {
+    onSelectionChange,
+    selectedElementsIds,
+  };
 };
