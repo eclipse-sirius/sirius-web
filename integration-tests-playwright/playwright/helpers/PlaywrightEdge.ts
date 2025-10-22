@@ -25,6 +25,10 @@ export class PlaywrightEdge {
     await this.edgeLocator.click();
   }
 
+  async controlClick() {
+    await this.edgeLocator.click({ modifiers: ['ControlOrMeta'] });
+  }
+
   async isSelected() {
     await expect(this.edgeLocator).toHaveClass(/selected/);
   }

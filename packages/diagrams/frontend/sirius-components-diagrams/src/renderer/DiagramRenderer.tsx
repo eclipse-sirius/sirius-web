@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useData } from '@eclipse-sirius/sirius-components-core';
 import {
   Background,
   BackgroundVariant,
@@ -71,15 +71,13 @@ import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
-import { useGroupPalette } from './palette/group-tool/useGroupPalette';
-import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
-import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
-import { useShiftSelection } from './selection/useShiftSelection';
+import { useOnRightClickElement } from './selection/useOnRightClickElement';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
@@ -95,17 +93,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { onDiagramBackgroundContextMenu } = useDiagramPalette();
-  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu } = useDiagramElementPalette();
-
-  const {
-    onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
-    hideGroupPalette,
-    position: groupPalettePosition,
-    isOpened: isGroupPaletteOpened,
-    refElementId: groupPaletteRefElementId,
-  } = useGroupPalette();
-
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
@@ -114,8 +101,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
-
-  const { selection, setSelection } = useSelection();
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
@@ -290,8 +275,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected && !readOnly })));
   }, [edges.map((edge) => edge.id + edge.selected).join(), readOnly]);
 
-  const { onShiftSelection, setShiftSelection } = useShiftSelection();
-  useDiagramSelection(onShiftSelection);
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -352,95 +335,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [onEdgesChange]
   );
 
-  const handlePaneContextMenu = useCallback(
-    (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
-      if (!event.shiftKey) {
-        const {
-          diagram: { id },
-        } = diagramRefreshedEventPayload;
-        const selection: Selection = {
-          entries: [
-            {
-              id,
-            },
-          ],
-        };
-        setSelection(selection);
-        onDiagramBackgroundContextMenu(event);
-      }
-    },
-    [setSelection]
-  );
-
   const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
   }, []);
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
-
-  const handleNodeContextMenu = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData>) => {
-      const selectedElements = [...store.getState().nodes, ...store.getState().edges].filter(
-        (element) => element.selected
-      );
-      if (
-        (selectedElements.length <= 1 ||
-          (selectedElements.length > 1 &&
-            !selectedElements.find((selectedElements) => selectedElements.id === element.id))) &&
-        !event.shiftKey
-      ) {
-        const rightClickAndSelect: Selection = {
-          entries: [
-            {
-              id: element.data?.targetObjectId || '',
-            },
-          ],
-        };
-        store.getState().addSelectedNodes([element.id]);
-        setSelection(rightClickAndSelect);
-        elementPaletteOnDiagramElementContextMenu(event, element);
-      } else if (!event.shiftKey) {
-        groupPaletteOnDiagramElementContextMenu(event, element);
-      }
-    },
-    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
-  );
-
-  const handleEdgeContextMenu = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>, element: Edge<EdgeData>) => {
-      if (selection.entries.length <= 1 && !event.shiftKey) {
-        const rightClickAndSelect: Selection = {
-          entries: [
-            {
-              id: element.data?.targetObjectId || '',
-            },
-          ],
-        };
-        store.getState().addSelectedEdges([element.id]);
-        setSelection(rightClickAndSelect);
-        elementPaletteOnDiagramElementContextMenu(event, element);
-      } else if (!event.shiftKey) {
-        groupPaletteOnDiagramElementContextMenu(event, element);
-      }
-    },
-    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
-  );
-
-  const handleSelectionStart = useCallback(() => {
-    setShiftSelection(true);
-  }, [setShiftSelection]);
-
-  const handleSelectionEnd = useCallback(() => {
-    setShiftSelection(false);
-  }, [setShiftSelection]);
-
-  const handleSelectionContextMenu = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>) => {
-      groupPaletteOnDiagramElementContextMenu(event, null);
-    },
-    [groupPaletteOnDiagramElementContextMenu]
-  );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
@@ -453,6 +353,18 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   );
 
   const { nodesDraggable } = useNodesDraggable();
+
+  const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
+  const {
+    onEdgeContextMenu,
+    onNodeContextMenu,
+    onPaneContextMenu,
+    onSelectionContextMenu,
+    groupPalettePosition,
+    groupPaletteRefElementId,
+    hideGroupPalette,
+    isGroupPaletteOpened,
+  } = useOnRightClickElement(selectedElementsIds);
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
@@ -471,9 +383,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onPaneContextMenu: handlePaneContextMenu,
-    onEdgeContextMenu: handleEdgeContextMenu,
-    onNodeContextMenu: handleNodeContextMenu,
+    onPaneContextMenu: onPaneContextMenu,
+    onEdgeContextMenu: onEdgeContextMenu,
+    onNodeContextMenu: onNodeContextMenu,
+    onSelectionContextMenu: onSelectionContextMenu,
     nodeDragThreshold: 1,
     onDrop: onDrop,
     onDragOver: onDragOver,
@@ -484,9 +397,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onNodeMouseLeave: onNodeMouseLeave,
     onEdgeMouseEnter: onEdgeMouseEnter,
     onEdgeMouseLeave: onEdgeMouseLeave,
-    onSelectionStart: handleSelectionStart,
-    onSelectionEnd: handleSelectionEnd,
-    onSelectionContextMenu: handleSelectionContextMenu,
+    onSelectionChange: onSelectionChange,
     maxZoom: 40,
     minZoom: 0.1,
     snapToGrid: snapToGrid,
