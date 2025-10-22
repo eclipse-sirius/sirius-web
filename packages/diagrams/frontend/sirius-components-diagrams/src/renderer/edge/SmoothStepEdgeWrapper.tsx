@@ -44,6 +44,9 @@ const MAX_PERPENDICULAR_OFFSET = AUTO_LAYOUT_NODE_GAP - MIN_TARGET_OFFSET;
 const PERPENDICULAR_STEP = 12; // spacing between parallel edges on the same side
 const STRAIGHT_AXIS_TOLERANCE = 14; // treat paths within 14px as visually straight
 
+type AutoBendAnchor = 'source' | 'target' | 'midpoint';
+const ANCHOR_PREFERENCE_ORDER: AutoBendAnchor[] = ['target', 'midpoint', 'source'];
+
 const clamp = (value: number, lower: number, upper: number): number => Math.max(lower, Math.min(upper, value));
 
 const isHorizontalPosition = (position: Position): boolean => position === Position.Left || position === Position.Right;
@@ -76,6 +79,134 @@ const dedupeConsecutivePoints = (points: XYPosition[]): XYPosition[] => {
     }
   }
   return deduped;
+};
+
+const getAnchorPreferenceOrder = (preferredAnchor: AutoBendAnchor): AutoBendAnchor[] => [
+  preferredAnchor,
+  ...ANCHOR_PREFERENCE_ORDER.filter((anchor) => anchor !== preferredAnchor),
+];
+
+type Rectangle = { left: number; right: number; top: number; bottom: number };
+
+const getNodeAbsolutePosition = (
+  node: Node<NodeData>,
+  nodeMap: Map<string, Node<NodeData>>,
+  cache: Map<string, XYPosition>
+): XYPosition => {
+  const cachedPosition = cache.get(node.id);
+  if (cachedPosition) {
+    return cachedPosition;
+  }
+
+  const positionAbsolute = (node as Partial<{ positionAbsolute?: XYPosition }>).positionAbsolute;
+  if (positionAbsolute) {
+    cache.set(node.id, positionAbsolute);
+    return positionAbsolute;
+  }
+
+  const parentId = getParentId(node);
+  if (!parentId) {
+    const absolutePosition = { x: node.position.x, y: node.position.y };
+    cache.set(node.id, absolutePosition);
+    return absolutePosition;
+  }
+
+  const parentNode = nodeMap.get(parentId);
+  if (!parentNode) {
+    const absolutePosition = { x: node.position.x, y: node.position.y };
+    cache.set(node.id, absolutePosition);
+    return absolutePosition;
+  }
+
+  const parentAbsolute = getNodeAbsolutePosition(parentNode, nodeMap, cache);
+  const absolutePosition = {
+    x: parentAbsolute.x + node.position.x,
+    y: parentAbsolute.y + node.position.y,
+  };
+  cache.set(node.id, absolutePosition);
+  return absolutePosition;
+};
+
+const getNodeRectangle = (
+  node: Node<NodeData>,
+  nodeMap: Map<string, Node<NodeData>>,
+  cache: Map<string, XYPosition>
+): Rectangle | null => {
+  const width = node.width ?? 0;
+  const height = node.height ?? 0;
+
+  if (width <= 0 || height <= 0) {
+    return null;
+  }
+
+  const absolutePosition = getNodeAbsolutePosition(node, nodeMap, cache);
+
+  return {
+    left: absolutePosition.x,
+    right: absolutePosition.x + width,
+    top: absolutePosition.y,
+    bottom: absolutePosition.y + height,
+  };
+};
+
+const isPointInsideRect = (point: XYPosition, rect: Rectangle): boolean =>
+  point.x > rect.left && point.x < rect.right && point.y > rect.top && point.y < rect.bottom;
+
+const doPointsOverlapNodes = (
+  points: XYPosition[],
+  nodes: Node<NodeData>[],
+  nodeMap: Map<string, Node<NodeData>>,
+  ignoredNodeIds: Set<string>,
+  anchor: AutoBendAnchor,
+  edgeId: string
+): boolean => {
+  const absolutePositionCache = new Map<string, XYPosition>();
+  for (const point of points) {
+    for (const node of nodes) {
+      if (ignoredNodeIds.has(node.id)) {
+        continue;
+      }
+      const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
+      if (!rect) {
+        continue;
+      }
+      if (isPointInsideRect(point, rect)) {
+        console.debug('auto-route overlap', { edgeId, anchor, point, nodeId: node.id, rect });
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+const getParentId = (node: Node<NodeData> | undefined): string | undefined => {
+  if (!node) {
+    return undefined;
+  }
+  const parentNode = (node as Partial<Node<NodeData>> & { parentNode?: string }).parentNode;
+  if (typeof parentNode === 'string') {
+    return parentNode;
+  }
+  const parentId = (node as Partial<{ parentId?: string }>).parentId;
+  if (typeof parentId === 'string') {
+    return parentId;
+  }
+  return undefined;
+};
+
+const collectAncestorIds = (nodeId: string, nodeMap: Map<string, Node<NodeData>>): Set<string> => {
+  const ancestors = new Set<string>();
+  let currentId: string | undefined = nodeId;
+  while (currentId) {
+    const node = nodeMap.get(currentId);
+    const parentId = getParentId(node);
+    if (!parentId || ancestors.has(parentId)) {
+      break;
+    }
+    ancestors.add(parentId);
+    currentId = parentId;
+  }
+  return ancestors;
 };
 
 const getNodeCenterCoordinate = (node: Node<NodeData> | undefined, axis: 'x' | 'y'): number => {
@@ -291,9 +422,7 @@ const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointC
 
   const adjustedPoints = rawPoints.map((point) => ({ ...point }));
   const stablePoints =
-    anchor === 'target'
-      ? adjustedPoints.slice(0, Math.max(0, adjustedPoints.length - 2))
-      : adjustedPoints.slice(2);
+    anchor === 'target' ? adjustedPoints.slice(0, Math.max(0, adjustedPoints.length - 2)) : adjustedPoints.slice(2);
   const resultPoints: XYPosition[] =
     anchor === 'target' ? [...stablePoints, ...tailPoints] : [...tailPoints, ...stablePoints];
 
@@ -314,7 +443,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     data,
   } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { getEdges, getNode } = useStore();
+  const { getEdges, getNode, getNodes } = useStore();
   const hasCustomBendPoints = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
 
   const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
@@ -404,68 +533,57 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       y: number;
     }[] = smoothEdgePath.includes('NaN') ? [] : parse(smoothEdgePath).filter((segment) => segment.code === 'Q');
 
+    const autoRawPoints: XYPosition[] = [];
     if (quadraticCurvePoints.length > 0) {
       const firstPoint = quadraticCurvePoints[0];
       if (firstPoint) {
         switch (sourcePosition) {
           case Position.Right:
           case Position.Left:
-            bendingPoints.push({ x: firstPoint.x, y: sourceY });
+            autoRawPoints.push({ x: firstPoint.x, y: sourceY });
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
               if (currentPoint && previousPoint) {
                 if (isMultipleOfTwo(i)) {
-                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                  autoRawPoints.push({ x: currentPoint.x, y: previousPoint.y });
                 } else {
-                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                  autoRawPoints.push({ x: previousPoint.x, y: currentPoint.y });
                 }
               }
             }
             break;
           case Position.Top:
           case Position.Bottom:
-            bendingPoints.push({ x: sourceX, y: firstPoint.y });
+            autoRawPoints.push({ x: sourceX, y: firstPoint.y });
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
               if (currentPoint && previousPoint) {
                 if (isMultipleOfTwo(i)) {
-                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                  autoRawPoints.push({ x: previousPoint.x, y: currentPoint.y });
                 } else {
-                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                  autoRawPoints.push({ x: currentPoint.x, y: previousPoint.y });
                 }
               }
             }
             break;
         }
-
-        bendingPoints = buildAutoBendingPoints(bendingPoints, {
-          sourceX,
-          sourceY,
-          targetX,
-          targetY,
-          targetPosition,
-          offset: computedOffset,
-          index: targetEdgeIndex,
-          count: targetEdgeCount,
-          anchor: resolveAutoBendAnchor(),
-        });
-      } else {
-        bendingPoints = buildAutoBendingPoints([], {
-          sourceX,
-          sourceY,
-          targetX,
-          targetY,
-          targetPosition,
-          offset: computedOffset,
-          index: targetEdgeIndex,
-          count: targetEdgeCount,
-          anchor: resolveAutoBendAnchor(),
-        });
       }
-    } else {
-      bendingPoints = buildAutoBendingPoints([], {
+    }
+
+    const nodes: Node<NodeData>[] = getNodes() ?? [];
+    const nodeEntries: Array<[string, Node<NodeData>]> = nodes.map((node) => [node.id, node]);
+    const nodeMap = new Map<string, Node<NodeData>>(nodeEntries);
+    const ignoredNodeIds = new Set<string>([source, target]);
+    collectAncestorIds(source, nodeMap).forEach((ancestorId) => ignoredNodeIds.add(ancestorId));
+    collectAncestorIds(target, nodeMap).forEach((ancestorId) => ignoredNodeIds.add(ancestorId));
+    const anchorPreference = getAnchorPreferenceOrder(resolveAutoBendAnchor());
+    let fallbackBendingPoints: XYPosition[] = [];
+    let selectedBendingPoints: XYPosition[] | undefined;
+
+    for (const anchor of anchorPreference) {
+      const candidatePoints = buildAutoBendingPoints(autoRawPoints, {
         sourceX,
         sourceY,
         targetX,
@@ -474,9 +592,16 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         offset: computedOffset,
         index: targetEdgeIndex,
         count: targetEdgeCount,
-        anchor: resolveAutoBendAnchor(),
+        anchor,
       });
+      if (!doPointsOverlapNodes(candidatePoints, nodes, nodeMap, ignoredNodeIds, anchor, id)) {
+        selectedBendingPoints = candidatePoints;
+        break;
+      }
+      fallbackBendingPoints = candidatePoints;
     }
+
+    bendingPoints = selectedBendingPoints ?? fallbackBendingPoints;
   }
 
   if (!hasCustomBendPoints) {
