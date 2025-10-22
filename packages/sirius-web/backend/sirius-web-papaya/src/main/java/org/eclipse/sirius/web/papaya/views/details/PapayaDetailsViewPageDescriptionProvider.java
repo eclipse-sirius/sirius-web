@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.DefaultColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.web.papaya.views.details.api.IFormDescriptionConverter;
 import org.eclipse.sirius.web.papaya.views.details.api.IPageDescriptionProvider;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,9 @@ public class PapayaDetailsViewPageDescriptionProvider implements IPropertiesDesc
         viewFormDescription.getPages().addAll(pages);
 
         this.formDescriptionConverter.convert(view).stream()
+                .map(ViewConverterResult::representationDescription)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast)
                 .map(FormDescription::getPageDescriptions)
                 .flatMap(Collection::stream)
                 .forEach(registry::add);

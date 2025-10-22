@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.view.emf;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 
@@ -28,7 +28,7 @@ public interface IViewConverter {
     /**
      * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models.
      */
-    List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages);
+    List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -38,7 +38,7 @@ public interface IViewConverter {
     class NoOp implements IViewConverter {
 
         @Override
-        public List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages) {
+        public List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views) {
             return List.of();
         }
     }
