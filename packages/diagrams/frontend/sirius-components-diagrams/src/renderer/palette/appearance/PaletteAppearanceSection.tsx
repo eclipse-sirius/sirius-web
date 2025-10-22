@@ -89,13 +89,17 @@ export const PaletteAppearanceSection = ({
         )
       );
     if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle') {
-      paletteAppearanceSectionComponents.push(<RectangularNodeAppearanceSection diagramElementId={nodeElement.id} />);
+      paletteAppearanceSectionComponents.push(
+        <RectangularNodeAppearanceSection key="rectangularNode" diagramElementId={nodeElement.id} />
+      );
     }
     if (nodeElement.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle') {
-      paletteAppearanceSectionComponents.push(<ImageNodeAppearanceSection diagramElementId={nodeElement.id} />);
+      paletteAppearanceSectionComponents.push(
+        <ImageNodeAppearanceSection key="imageNode" diagramElementId={nodeElement.id} />
+      );
     }
   } else if (edgeElement) {
-    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection diagramElementId={edgeElement.id} />);
+    paletteAppearanceSectionComponents.push(<EdgeAppearanceSection key="edge" diagramElementId={edgeElement.id} />);
   }
 
   return (

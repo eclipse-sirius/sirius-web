@@ -70,11 +70,18 @@ export const DiagramElementPalette = memo(
           component={PaletteAppearanceSection}
           title="Appearance"
           id="appearance"
+          key="appearance"
           onClose={() => {}}
         />
       );
       sectionComponents.push(
-        <PaletteExtensionSection component={ShowInSection} title="Show in" id="show_in" onClose={onClose} />
+        <PaletteExtensionSection
+          component={ShowInSection}
+          title="Show in"
+          id="show_in"
+          key="show_in"
+          onClose={onClose}
+        />
       );
 
       return sectionComponents;
