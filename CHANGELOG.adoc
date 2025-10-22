@@ -29,6 +29,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/5491[#5491] [test] Add missing module in tsconfig for the playwright package
 - https://github.com/eclipse-sirius/sirius-web/issues/5627[#5627] [sirius-web] Fix the duplication of an element with incoming non changeable references
 - https://github.com/eclipse-sirius/sirius-web/issues/5617[#5617] [sirius-web] Fix duplication of an element to a mono valued containment feature while updating incoming reference.
+- https://github.com/eclipse-sirius/sirius-web/issues/5644[#5644] [core] Fix cross-reference adapter for restored model objects
 
 
 === New Features
