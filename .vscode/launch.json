@@ -69,6 +69,20 @@
       ],
       "smartStep": true,
       "console": "integratedTerminal"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Sirius Web (Chrome)",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.vscode/vscode-chrome-profile",
+      "runtimeArgs": ["--auto-open-devtools-for-tabs"],
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "vite:///*": "${workspaceFolder}/*",
+        "/@fs/*": "/*"
+      }
     }
   ]
 }

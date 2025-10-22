@@ -292,6 +292,77 @@ Turbo halts if any file deviates from the Prettier rules, so you can fix issues 
 - **TypeScript errors missing from VS Code** – Make sure the updated watch task is running (see section 7). Alternatively, run `npx tsc --project packages/sirius-web/frontend/sirius-web/tsconfig.json --watch` in a terminal.
 - **Backend authentication error** – Verify Docker published port `5433` is free. If not, change both the Docker run command and the backend `--spring.datasource.url` to another open port.
 
----
+## 15. Might Watch for Turbo
 
-Following these steps keeps your frontend workflow aligned with the project’s tooling so you can focus on building features instead of fighting your environment.
+```sh
+  npm run build --workspace @eclipse-sirius/sirius-components-diagrams
+```
+
+## 16. How to Debug Frontend Code
+
+This walkthrough focuses on debugging code inside shared packages such as `@eclipse-sirius/sirius-components-diagrams`, but the same workflow applies to the other frontend workspaces.
+
+### 16.1 Regenerate bundles with source maps
+
+Vite only serves the built bundles that live under each package’s `dist/` folder. Run a build in watch mode so the compiled code stays in sync with your changes and keep source maps enabled for debugger support:
+
+```sh
+npx vite --config packages/diagrams/frontend/sirius-components-diagrams/vite.config.js build --mode development --sourcemap --watch
+```
+
+Optional, but handy when you edit types: run TypeScript in parallel to keep `.d.ts` output fresh.
+
+```sh
+npx tsc --project packages/diagrams/frontend/sirius-components-diagrams/tsconfig.json --watch
+```
+
+Leave those terminals running while you debug. Every save triggers a rebuild and Vite hot-refreshes the consuming app.
+
+### 16.2 Start the application you inspect
+
+Ensure the backend is running (Docker PostgreSQL + `sirius-web.jar`, or an equivalent instance), then launch the frontend playground:
+
+```sh
+npm run start --workspace @eclipse-sirius/sirius-web
+```
+
+Navigate to `http://localhost:5173` in Chrome; HMR keeps the page up to date as you iterate.
+
+### 16.3 Configure VS Code debugging
+
+Add a Chrome launcher to `.vscode/launch.json` so breakpoints in your TypeScript source map correctly when the browser runs.
+
+```json
+{
+  "type": "chrome",
+  "request": "launch",
+  "name": "Sirius Web (Chrome)",
+  "url": "http://localhost:5173",
+  "webRoot": "${workspaceFolder}",
+  "userDataDir": "${workspaceFolder}/.vscode/vscode-chrome-profile",
+  "runtimeArgs": ["--auto-open-devtools-for-tabs"],
+  "sourceMaps": true,
+  "sourceMapPathOverrides": {
+    "vite:///*": "${workspaceFolder}/*",
+    "/@fs/*": "/*"
+  }
+}
+```
+
+If you want this permanently, set `"sourcemap": true` in the Vite config (`packages/diagrams/frontend/sirius-components-diagrams/vite.config.js`) instead of passing `--sourcemap` on the command line.
+
+To debug:
+
+1. Press `F5` in VS Code and pick “Sirius Web (Chrome)”. VS Code launches Chrome and attaches automatically.
+2. Open `packages/diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmoothStepEdgeWrapper.tsx` and drop a breakpoint (for example inside `doPointsOverlapNodes`).
+3. Exercise the UI until the breakpoint hits. Locals and watch expressions show up in the Debug sidebar. Stepping follows your TypeScript source thanks to the generated source maps.
+
+### 16.4 Chrome DevTools only
+
+Prefer debugging directly in the browser? With the same watcher running:
+
+1. Open DevTools (`Ctrl+Shift+I`), go to the **Sources** panel, and press `Ctrl+P`.
+2. Search for the TypeScript file (e.g., `SmoothStepEdgeWrapper.tsx`). Vite’s source map exposes it under `vite:///@fs/.../packages/.../src/...`.
+3. Set breakpoints or insert `debugger;` statements. The browser pauses when the code executes, showing the bundled variables mapped back to your source.
+
+Stop the watchers with `Ctrl+C` and clear any temporary `debugger` statements before committing changes.

@@ -8,6 +8,13 @@ export default defineConfig(() => {
     plugins: [peerDepsExternal(), react()],
     build: {
       minify: false,
+      sourcemap: true,
+      rollupOptions: {
+        output: {
+          sourcemap: true,
+          sourcemapExcludeSources: false,
+        },
+      },
       lib: {
         name: 'sirius-components-diagrams',
         entry: path.resolve(__dirname, 'src/index.ts'),
