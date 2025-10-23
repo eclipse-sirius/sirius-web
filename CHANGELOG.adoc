@@ -40,7 +40,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4590[#4590] [diagram] It is now possible to repeat the last tool invoked in a particular context on a diagram with a single _Alt-left click_.
 
 === Improvements
 
@@ -998,8 +998,6 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
-
-
 
 == v2025.2.0
 

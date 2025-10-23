@@ -31,7 +31,16 @@ import {
   useStoreApi,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  MouseEvent as ReactMouseEvent,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -70,6 +79,7 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { GQLTool } from './palette/Palette.types';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
@@ -80,7 +90,41 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+import { useInvokePaletteTool } from './tools/useInvokePaletteTool';
+
 const GRID_STEP: number = 10;
+
+/**
+ * Helper to keep track of the state of the "Alt" key used to trigger the "repeat last tool"
+ * behavior.
+ */
+const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement | null>) => {
+  const [isKeyPressed, setKeyPressed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey) {
+        setKeyPressed(true);
+      }
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (!event.altKey) {
+        setKeyPressed(false);
+      }
+    };
+
+    refDomNode.current?.addEventListener('keydown', onKeyDown);
+    refDomNode.current?.addEventListener('keyup', onKeyUp);
+
+    return () => {
+      refDomNode.current?.removeEventListener('keydown', onKeyDown);
+      refDomNode.current?.removeEventListener('keyup', onKeyUp);
+    };
+  }, [refDomNode]);
+
+  return isKeyPressed;
+};
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly, consumePostToolSelection, toolSelections } = useContext<DiagramContextValue>(DiagramContext);
@@ -93,10 +137,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const isAltKeyDown = useAltKeyPressedStatus(ref);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { onDiagramBackgroundContextMenu } = useDiagramPalette();
+  const { onDiagramBackgroundContextMenu, getLastToolInvoked } = useDiagramPalette();
   const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu } = useDiagramElementPalette();
+  const { invokeTool } = useInvokePaletteTool();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -119,7 +165,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
-  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNode, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
@@ -442,6 +488,22 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [groupPaletteOnDiagramElementContextMenu]
   );
 
+  const handleClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData> | null) => {
+      if (isAltKeyDown) {
+        const elementDescriptionId = node ? node.data.descriptionId : diagramDescription.id;
+        const lastToolInvoked: GQLTool | null = getLastToolInvoked(elementDescriptionId);
+        if (lastToolInvoked) {
+          const { x, y } = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+          const diagramElementId = node ? node.id : diagramRefreshedEventPayload.diagram.id;
+          const targetObjectId = node ? node.data.targetObjectId : diagramRefreshedEventPayload.diagram.targetObjectId;
+          invokeTool(x, y, diagramElementId, targetObjectId, () => {}, lastToolInvoked);
+        }
+      }
+    },
+    [isAltKeyDown, getLastToolInvoked, invokeTool]
+  );
+
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
 
@@ -455,6 +517,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
+    className: isAltKeyDown ? 'cursor-crosshair' : '',
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
@@ -462,6 +525,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
+    onPaneClick: (e) => handleClick(e, null),
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
@@ -477,6 +541,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     nodeDragThreshold: 1,
     onDrop: onDrop,
     onDragOver: onDragOver,
+    onNodeClick: handleClick,
     onNodeDrag: handleNodeDrag,
     onNodeDragStart: onNodeDragStart,
     onNodeDragStop: onNodeDragStop,
@@ -534,6 +599,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         />
         <DiagramPalette
           diagramElementId={diagramRefreshedEventPayload.diagram.id}
+          elementDescriptionId={diagramDescription.id}
           targetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
         />
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}

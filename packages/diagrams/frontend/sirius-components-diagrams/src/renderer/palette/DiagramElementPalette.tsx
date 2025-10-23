@@ -26,7 +26,7 @@ import { ShowInSection } from './ShowInSection';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
 export const DiagramElementPalette = memo(
-  ({ diagramElementId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
+  ({ diagramElementId, elementDescriptionId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
     const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
@@ -91,6 +91,7 @@ export const DiagramElementPalette = memo(
             x={x}
             y={y}
             diagramElementId={diagramElementId}
+            elementDescriptionId={elementDescriptionId}
             targetObjectId={targetObjectId}
             onDirectEditClick={handleDirectEditClick}
             onClose={onClose}>

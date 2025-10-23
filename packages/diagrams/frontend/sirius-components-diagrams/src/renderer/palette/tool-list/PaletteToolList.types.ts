@@ -20,6 +20,7 @@ export interface PaletteToolListProps {
   onBackToMainList: () => void;
   onClose: () => void;
   diagramElementId: string;
+  elementDescriptionId: string;
   children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 

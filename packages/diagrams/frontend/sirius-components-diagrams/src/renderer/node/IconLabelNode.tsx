@@ -68,6 +68,7 @@ export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
         {selected ? (
           <DiagramElementPalette
             diagramElementId={id}
+            elementDescriptionId={data.descriptionId}
             targetObjectId={data.targetObjectId}
             labelId={data?.insideLabel?.id ?? null}
           />
