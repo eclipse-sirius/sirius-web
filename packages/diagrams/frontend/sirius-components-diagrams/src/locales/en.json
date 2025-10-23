@@ -1,0 +1,48 @@
+{
+  "siriusComponentsDiagrams": {
+    "edit": {
+      "enterNewValue": "Enter the new value"
+    },
+    "panel": {
+      "exitFullScreen": "Exit full screen mode",
+      "toggleFullScreen": "Toggle full screen mode",
+      "fitToScreen": "Fit to screen",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "shareDiagram": "Share diagram",
+      "exportDiagram": "Export the diagram as an image",
+      "exitSnapToGrid": "Exit snap to grid mode",
+      "toggleSnapToGrid": "Toggle snap to grid mode",
+      "hideHelperLines": "Hide helper lines",
+      "showHelperLines": "Show helper lines",
+      "arrangeAll": "Arrange all elements",
+      "revealHidden": "Reveal hidden elements",
+      "revealFaded": "Reveal faded elements",
+      "unpinAll": "Unpin all elements",
+      "filter": "Filter elements"
+    },
+    "palette": {
+      "unpin": "Unpin element",
+      "pin": "Pin element",
+      "adjustSize": "Adjust size",
+      "fade": "Fade element",
+      "alignLeft": "Align left",
+      "alignCenter": "Align center",
+      "alignRight": "Align right",
+      "alignTop": "Align top",
+      "alignMiddle": "Align middle",
+      "alignBottom": "Align bottom",
+      "arrangeInRow": "Arrange in row",
+      "arrangeInColumn": "Arrange in column",
+      "arrangeInGrid": "Arrange in grid",
+      "distributeHorizontal": "Distribute horizontal spacing",
+      "distributeVertical": "Distribute vertical spacing",
+      "justifyHorizontally": "Justify horizontally",
+      "justifyVertically": "Justify vertically",
+      "makeSameSize": "Make same size",
+      "hideElements": "Hide elements",
+      "fadeElements": "Fade elements",
+      "pinElements": "Pin elements"
+    }
+  }
+}

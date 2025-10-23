@@ -21,6 +21,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useExperimentalSvgExport } from './experimental-svg-export/useExperimentalSvgExport';
 import { useExportToImage } from './useExportToImage';
 
@@ -40,6 +41,8 @@ export const ExportImageButton = () => {
 
   const { exportToSVG, exportToPNG } = useExportToImage();
   const { experimentalExportToSvg: protoExportToSvg } = useExperimentalSvgExport();
+
+  const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'panel' });
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {
@@ -76,7 +79,7 @@ export const ExportImageButton = () => {
 
   return (
     <>
-      <Tooltip title="Export the diagram as an image">
+      <Tooltip title={t('exportDiagram')}>
         <IconButton
           size="small"
           aria-label="export to image"

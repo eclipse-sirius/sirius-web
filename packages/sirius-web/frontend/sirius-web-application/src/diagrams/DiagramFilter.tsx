@@ -22,6 +22,7 @@ import {
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Menu from '@mui/material/Menu';
 import { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramFilterForm } from './DiagramFilterForm';
 
 export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
@@ -32,15 +33,17 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
+  const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'panel' });
+
   return (
     <>
-      <Tooltip title="Filter elements" ref={anchorRef}>
+      <Tooltip title={t('filter')} ref={anchorRef}>
         <span>
           <IconButton
             size="small"
-            aria-label="Filter elements"
+            aria-label={t('filter')}
             onClick={handlePanel}
-            data-testid="Filter elements"
+            data-testid="filter-elements"
             disabled={readOnly}>
             <FilterListIcon />
           </IconButton>
