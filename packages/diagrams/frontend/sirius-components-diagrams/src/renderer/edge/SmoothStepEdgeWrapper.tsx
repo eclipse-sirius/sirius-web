@@ -215,9 +215,7 @@ const doesPathOverlapNodes = (
   pathPoints: XYPosition[],
   nodes: Node<NodeData>[],
   nodeMap: Map<string, Node<NodeData>>,
-  ignoredNodeIds: Set<string>,
-  anchor: AutoBendAnchor,
-  edgeId: string
+  ignoredNodeIds: Set<string>
 ): PathOverlapResult => {
   const absolutePositionCache = new Map<string, XYPosition>();
   const collidableNodes = nodes
@@ -864,7 +862,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         ...candidatePoints,
         { x: targetX, y: targetY },
       ]);
-      let overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id);
+      let overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
       let detourIterations = 0;
       while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
         const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision, {
@@ -875,7 +873,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           break;
         }
         pathPoints = detouredPath;
-        overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id);
+        overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
         detourIterations++;
       }
 
