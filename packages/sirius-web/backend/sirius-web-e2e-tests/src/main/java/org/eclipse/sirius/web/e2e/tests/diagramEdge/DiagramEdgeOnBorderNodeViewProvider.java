@@ -77,10 +77,10 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
     private DiagramDescription createDiagramDescription(IColorProvider colorProvider) {
         var nodeDescription1 = this.getNodeDescription(colorProvider, "Entity1");
         var nodeDescription2 = this.getNodeDescription(colorProvider, "Entity2");
-        nodeDescription1.getReusedBorderNodeDescriptions().add(nodeDescription1);
+        nodeDescription1.getReusedChildNodeDescriptions().add(nodeDescription1);
         nodeDescription1.getReusedBorderNodeDescriptions().add(nodeDescription2);
 
-        var edgeDescription1 = this.getEdgeDescription(colorProvider, nodeDescription1, nodeDescription2);
+        var edgeDescription1 = this.getEdgeDescription(colorProvider, nodeDescription2, nodeDescription2);
 
 
         return new DiagramBuilders()
@@ -116,7 +116,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .insideLabel(

@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightWorkbench } from '../helpers/PlaywrightWorkbench';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
 
 test.describe('diagram - arrange all', () => {
   let projectId;
@@ -46,5 +47,54 @@ test.describe('diagram - arrange all', () => {
     await page.getByTestId('arrange-all').click();
 
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+  });
+});
+
+test.describe('diagram - arrange all', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectArrangeAllWithBorderNode.zip');
+    await expect(page.locator('[data-testid^="explorer://"]')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a arrange all is triggered on a digram with edge on border node, then the layout applied takes into account edge direction', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('arrange-direction');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all').click();
+
+    const sourceNode = new PlaywrightNode(page, 'source');
+    const targetNode = new PlaywrightNode(page, 'target');
+    const sourcePosition = await sourceNode.getReactFlowXYPosition();
+    const sourceSize = await sourceNode.getReactFlowSize(0, false);
+    const targetPosition = await targetNode.getReactFlowXYPosition();
+    expect(targetPosition.x).toBeGreaterThan(sourcePosition.x + sourceSize.width);
+  });
+
+  test('when a arrange all is triggered on a digram with edge between child on parent node, then the layout applied without error', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('arrange-fail');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
   });
 });
