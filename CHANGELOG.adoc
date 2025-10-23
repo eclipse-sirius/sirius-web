@@ -28,7 +28,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 
 === Dependency update
 
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.6[Spring Boot 3.5.6]
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.7[Spring Boot 3.5.7]
 - [releng] Remove the dependency to xstate
 
 
