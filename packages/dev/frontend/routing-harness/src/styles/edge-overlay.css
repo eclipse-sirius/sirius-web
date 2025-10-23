@@ -12,3 +12,12 @@
 .react-flow__edge-path::after {
   content: '';
 }
+
+.harness-diagram-wrapper .react-flow__edges {
+  /* Keep routing lines visible on top of node bodies for harness inspection */
+  z-index: 3;
+}
+
+.harness-diagram-wrapper .react-flow__nodes {
+  z-index: 2;
+}
