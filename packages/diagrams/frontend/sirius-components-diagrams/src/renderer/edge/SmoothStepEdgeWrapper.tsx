@@ -809,6 +809,10 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       break;
   }
 
+  let collisionNodes: Node<NodeData>[] = [];
+  let collisionNodeMap: Map<string, Node<NodeData>> = new Map();
+  let collisionIgnoredNodeIds: Set<string> = new Set([source, target]);
+
   let bendingPoints: XYPosition[] = [];
   if (hasCustomBendPoints && data?.bendingPoints) {
     bendingPoints = data.bendingPoints;
@@ -873,12 +877,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       }
     }
 
-    const nodes: Node<NodeData>[] = getNodes() ?? [];
-    const nodeEntries: Array<[string, Node<NodeData>]> = nodes.map((node) => [node.id, node]);
-    const nodeMap = new Map<string, Node<NodeData>>(nodeEntries);
-    const ignoredNodeIds = new Set<string>([source, target]);
-    collectAncestorIds(source, nodeMap).forEach((ancestorId) => ignoredNodeIds.add(ancestorId));
-    collectAncestorIds(target, nodeMap).forEach((ancestorId) => ignoredNodeIds.add(ancestorId));
+    collisionNodes = getNodes() ?? [];
+    const nodeEntries: Array<[string, Node<NodeData>]> = collisionNodes.map((node) => [node.id, node]);
+    collisionNodeMap = new Map<string, Node<NodeData>>(nodeEntries);
+    collisionIgnoredNodeIds = new Set<string>([source, target]);
+    collectAncestorIds(source, collisionNodeMap).forEach((ancestorId) => collisionIgnoredNodeIds.add(ancestorId));
+    collectAncestorIds(target, collisionNodeMap).forEach((ancestorId) => collisionIgnoredNodeIds.add(ancestorId));
     const anchorPreference = getAnchorPreferenceOrder(resolveAutoBendAnchor());
     let fallbackBendingPoints: XYPosition[] = [];
     let selectedBendingPoints: XYPosition[] | undefined;
@@ -902,7 +906,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         { x: targetX, y: targetY },
       ]);
       const originalPathPoints = pathPoints;
-      const originalOverlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
+      const originalOverlapResult = doesPathOverlapNodes(
+        pathPoints,
+        collisionNodes,
+        collisionNodeMap,
+        collisionIgnoredNodeIds
+      );
       let overlapResult = originalOverlapResult;
       let detourIterations = 0;
       while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
@@ -914,7 +923,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           break;
         }
         pathPoints = detouredPath;
-        overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
+        overlapResult = doesPathOverlapNodes(pathPoints, collisionNodes, collisionNodeMap, collisionIgnoredNodeIds);
         detourIterations++;
       }
 
@@ -933,6 +942,39 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   if (!hasCustomBendPoints) {
+    // When collapsing an auto-routed edge into a straight segment, recheck for collisions so we
+    // avoid "fixing" the path into a line that still passes through another node.
+    const attemptStraightAlignment = (applyAlignment: () => void) => {
+      const previousSourceX = sourceX;
+      const previousSourceY = sourceY;
+      const previousTargetX = targetX;
+      const previousTargetY = targetY;
+      const previousBendingPoints = bendingPoints.map((point) => ({ ...point }));
+
+      applyAlignment();
+      bendingPoints = [];
+
+      const collisionCheckPath = dedupeConsecutivePoints([
+        { x: sourceX, y: sourceY },
+        ...bendingPoints,
+        { x: targetX, y: targetY },
+      ]);
+      const collisionCheck = doesPathOverlapNodes(
+        collisionCheckPath,
+        collisionNodes,
+        collisionNodeMap,
+        collisionIgnoredNodeIds
+      );
+
+      if (collisionCheck.overlaps) {
+        sourceX = previousSourceX;
+        sourceY = previousSourceY;
+        targetX = previousTargetX;
+        targetY = previousTargetY;
+        bendingPoints = previousBendingPoints;
+      }
+    };
+
     const deltaX = Math.abs(sourceX - targetX);
     const deltaY = Math.abs(sourceY - targetY);
 
@@ -941,17 +983,18 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     const alignPoint = deltaX <= STRAIGHT_AXIS_TOLERANCE && deltaY <= STRAIGHT_AXIS_TOLERANCE;
 
     if (alignVertical || alignHorizontal || alignPoint) {
-      if (alignVertical || alignPoint) {
-        const alignX = Math.round((sourceX + targetX) / 2);
-        sourceX = alignX;
-        targetX = alignX;
-      }
-      if (alignHorizontal || alignPoint) {
-        const alignY = Math.round((sourceY + targetY) / 2);
-        sourceY = alignY;
-        targetY = alignY;
-      }
-      bendingPoints = [];
+      attemptStraightAlignment(() => {
+        if (alignVertical || alignPoint) {
+          const alignX = Math.round((sourceX + targetX) / 2);
+          sourceX = alignX;
+          targetX = alignX;
+        }
+        if (alignHorizontal || alignPoint) {
+          const alignY = Math.round((sourceY + targetY) / 2);
+          sourceY = alignY;
+          targetY = alignY;
+        }
+      });
     } else {
       const pathPoints: XYPosition[] = [{ x: sourceX, y: sourceY }, ...bendingPoints, { x: targetX, y: targetY }];
       if (pathPoints.length >= 2) {
@@ -964,23 +1007,26 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         // SmoothStep occasionally adds tiny detours: if the resulting points almost form a straight line,
         // collapse them to a true straight segment instead of displaying a micro zig-zag.
         if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
-          const alignX = Math.round((sourceX + targetX) / 2);
-          sourceX = alignX;
-          targetX = alignX;
-          bendingPoints = [];
+          attemptStraightAlignment(() => {
+            const alignX = Math.round((sourceX + targetX) / 2);
+            sourceX = alignX;
+            targetX = alignX;
+          });
         } else if (ySpan <= STRAIGHT_AXIS_TOLERANCE && xSpan > STRAIGHT_AXIS_TOLERANCE) {
-          const alignY = Math.round((sourceY + targetY) / 2);
-          sourceY = alignY;
-          targetY = alignY;
-          bendingPoints = [];
+          attemptStraightAlignment(() => {
+            const alignY = Math.round((sourceY + targetY) / 2);
+            sourceY = alignY;
+            targetY = alignY;
+          });
         } else if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan <= STRAIGHT_AXIS_TOLERANCE) {
-          const alignX = Math.round((sourceX + targetX) / 2);
-          const alignY = Math.round((sourceY + targetY) / 2);
-          sourceX = alignX;
-          targetX = alignX;
-          sourceY = alignY;
-          targetY = alignY;
-          bendingPoints = [];
+          attemptStraightAlignment(() => {
+            const alignX = Math.round((sourceX + targetX) / 2);
+            const alignY = Math.round((sourceY + targetY) / 2);
+            sourceX = alignX;
+            targetX = alignX;
+            sourceY = alignY;
+            targetY = alignY;
+          });
         }
       }
     }
