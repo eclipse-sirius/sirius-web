@@ -901,7 +901,9 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         ...candidatePoints,
         { x: targetX, y: targetY },
       ]);
-      let overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
+      const originalPathPoints = pathPoints;
+      const originalOverlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds);
+      let overlapResult = originalOverlapResult;
       let detourIterations = 0;
       while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
         const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision, {
@@ -921,7 +923,10 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         break;
       }
 
-      fallbackBendingPoints = pathPoints.slice(1, pathPoints.length - 1);
+      // Detours that still collide often add more clutter; revert to the original path when they fail.
+      fallbackBendingPoints = originalOverlapResult.overlaps
+        ? originalPathPoints.slice(1, originalPathPoints.length - 1)
+        : pathPoints.slice(1, pathPoints.length - 1);
     }
 
     bendingPoints = selectedBendingPoints ?? fallbackBendingPoints;
