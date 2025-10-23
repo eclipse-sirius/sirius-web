@@ -12,20 +12,10 @@
  *******************************************************************************/
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { TextareaCellProps, TextareaCellState } from './TextareaCell.types';
 import { useEditTextareaCell } from './useEditTextareaCell';
 
-const useTextareaCellStyles = makeStyles()(() => ({
-  wrapper: {
-    overflow: 'auto',
-    width: '100%',
-    height: '100%',
-  },
-}));
-
 export const TextareaCell = ({ editingContextId, representationId, tableId, cell, disabled }: TextareaCellProps) => {
-  const { classes } = useTextareaCellStyles();
   const [state, setState] = useState<TextareaCellState>({
     value: cell.stringValue,
   });
@@ -46,29 +36,31 @@ export const TextareaCell = ({ editingContextId, representationId, tableId, cell
   };
 
   return (
-    <div className={classes.wrapper}>
-      <TextField
-        multiline
-        value={state.value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        disabled={disabled || loading}
-        size="small"
-        fullWidth
-        variant="standard"
-        InputProps={{
+    <TextField
+      multiline
+      value={state.value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      disabled={disabled || loading}
+      size="small"
+      fullWidth
+      variant="standard"
+      sx={{
+        height: '100%',
+        overflow: 'auto',
+      }}
+      slotProps={{
+        input: {
           disableUnderline: true,
-          sx: {
-            marginBottom: 0,
-            padding: '0px',
+          sx: { height: '100%' },
+          inputProps: {
+            sx: {
+              maxHeight: '100%',
+              overflow: 'auto !important',
+            },
           },
-        }}
-        inputProps={{
-          sx: {
-            padding: '0px',
-          },
-        }}
-      />
-    </div>
+        },
+      }}
+    />
   );
 };
