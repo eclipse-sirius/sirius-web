@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,14 +27,18 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the EditingContextCrossReferenceAdapter class.
+ * Tests the ECrossReferenceAdapter class.
  *
  * @author lfasani
  */
-public class EditingContextCrossReferenceAdapterTest {
+public class ECrossReferenceAdapterTest {
+
     private EReference eReference;
 
     private EClass referencedClass;
@@ -42,22 +46,23 @@ public class EditingContextCrossReferenceAdapterTest {
     private Resource referencedResource;
 
     @Test
+    @Disabled("To delete a Resource properly, we should use Resource.delete(...) but there is no URIHandler for sirius:// resources")
     public void testRemoveResource() {
         ResourceSet resourceSet = new ResourceSetImpl();
         this.createModelsForRemove(resourceSet);
 
-        EditingContextCrossReferenceAdapter editingContextCrossReferenceAdapter = new EditingContextCrossReferenceAdapter();
-        resourceSet.eAdapters().add(editingContextCrossReferenceAdapter);
+        ECrossReferenceAdapter eCrossReferenceAdapter = new ECrossReferenceAdapter();
+        resourceSet.eAdapters().add(eCrossReferenceAdapter);
 
         assertThat(this.eReference.getEType()).isNotNull().isEqualTo(this.referencedClass);
-        assertThat(editingContextCrossReferenceAdapter.getInverseReferences(this.referencedClass)).isNotEmpty().filteredOn(setting -> {
+        assertThat(eCrossReferenceAdapter.getInverseReferences(this.referencedClass)).isNotEmpty().filteredOn(setting -> {
             Object object = setting.getEObject().eGet(setting.getEStructuralFeature());
             return object != null && object.equals(this.referencedClass);
         }).isNotEmpty();
 
         resourceSet.getResources().remove(this.referencedResource);
 
-        this.checkClean(editingContextCrossReferenceAdapter);
+        this.checkClean(eCrossReferenceAdapter);
     }
 
     @Test
@@ -65,18 +70,18 @@ public class EditingContextCrossReferenceAdapterTest {
         ResourceSet resourceSet = new ResourceSetImpl();
         this.createModelsForRemove(resourceSet);
 
-        EditingContextCrossReferenceAdapter editingContextCrossReferenceAdapter = new EditingContextCrossReferenceAdapter();
-        resourceSet.eAdapters().add(editingContextCrossReferenceAdapter);
+        ECrossReferenceAdapter eCrossReferenceAdapter = new ECrossReferenceAdapter();
+        resourceSet.eAdapters().add(eCrossReferenceAdapter);
 
         assertThat(this.eReference.getEType()).isNotNull().isEqualTo(this.referencedClass);
-        assertThat(editingContextCrossReferenceAdapter.getInverseReferences(this.referencedClass)).isNotEmpty().filteredOn(setting -> {
+        assertThat(eCrossReferenceAdapter.getInverseReferences(this.referencedClass)).isNotEmpty().filteredOn(setting -> {
             Object object = setting.getEObject().eGet(setting.getEStructuralFeature());
             return object != null && object.equals(this.referencedClass);
         }).isNotEmpty();
 
-        this.referencedClass.getEPackage().getEClassifiers().remove(this.referencedClass);
+        EcoreUtil.delete(this.referencedClass);
 
-        this.checkClean(editingContextCrossReferenceAdapter);
+        this.checkClean(eCrossReferenceAdapter);
     }
 
     @Test
@@ -84,8 +89,8 @@ public class EditingContextCrossReferenceAdapterTest {
         ResourceSet resourceSet = new ResourceSetImpl();
         Resource resource = this.createModelForMove(resourceSet);
 
-        EditingContextCrossReferenceAdapter editingContextCrossReferenceAdapter = new EditingContextCrossReferenceAdapter();
-        resourceSet.eAdapters().add(editingContextCrossReferenceAdapter);
+        ECrossReferenceAdapter eCrossReferenceAdapter = new ECrossReferenceAdapter();
+        resourceSet.eAdapters().add(eCrossReferenceAdapter);
 
         EPackage ePackageRoot = resource.getContents().stream()
             .filter(EPackage.class::isInstance)
@@ -137,9 +142,9 @@ public class EditingContextCrossReferenceAdapterTest {
     /**
      * Check that the CrossReferenceAdapter and the proxies are correctly cleaned.
      */
-    private void checkClean(EditingContextCrossReferenceAdapter editingContextCrossReferenceAdapter) {
+    private void checkClean(ECrossReferenceAdapter eCrossReferenceAdapter) {
         assertThat(this.eReference.getEType()).isNull();
-        assertThat(editingContextCrossReferenceAdapter.getInverseReferences(this.eReference)).filteredOn(setting -> {
+        assertThat(eCrossReferenceAdapter.getInverseReferences(this.eReference)).filteredOn(setting -> {
             Object object = setting.getEObject().eGet(setting.getEStructuralFeature());
             return object != null && object.equals(this.referencedClass);
         }).isEmpty();

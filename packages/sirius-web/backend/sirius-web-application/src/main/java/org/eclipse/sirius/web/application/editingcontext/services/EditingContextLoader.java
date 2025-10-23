@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -106,7 +106,7 @@ public class EditingContextLoader implements IEditingContextLoader {
 
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references
-        resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
+        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContext.getId());
     }
