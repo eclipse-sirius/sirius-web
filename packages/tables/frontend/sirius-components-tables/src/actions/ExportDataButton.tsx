@@ -57,13 +57,21 @@ const csvConfig = mkConfig({
   useKeysAsHeaders: true,
 });
 
-export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) => string) => {
+const handleExportData = (table: GQLTable) => {
+  const visibleColumns = table.columns.filter((column) => !column.hidden);
+  const visibleColumnIds = new Set(visibleColumns.map((col) => col.id));
+  const columnOrder = {};
+  visibleColumns.forEach((column, index) => (columnOrder[column.id] = index));
+
   const columnIdToLabel = {};
-  table.columns.forEach((column) => (columnIdToLabel[column.id] = column.headerLabel));
+  visibleColumns.forEach((column) => (columnIdToLabel[column.id] = column.headerLabel));
 
   const csvData: CsvData[] = table.lines.map((line) => {
     const csvDatum: CsvData = { ['_row_header_']: `${line.headerIndexLabel} ${line.headerLabel}` };
-    line.cells.forEach((cell) => (csvDatum[columnIdToLabel[cell.columnId]] = getCellLabel(cell)));
+    const sortedVisibleCells = [...line.cells]
+      .filter((cell) => visibleColumnIds.has(cell.columnId))
+      .sort((a, b) => columnOrder[a.columnId] - columnOrder[b.columnId]);
+    sortedVisibleCells.forEach((cell) => (csvDatum[columnIdToLabel[cell.columnId]] = getCellLabel(cell)));
     return csvDatum;
   });
 
@@ -73,7 +81,7 @@ export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) 
 
 export const ExportDataButton = ({ table }: ExportDataButtonProps) => {
   return (
-    <MenuItem onClick={() => handleExportData(table, getCellLabel)}>
+    <MenuItem onClick={() => handleExportData(table)}>
       <ListItemIcon>
         <FileDownloadIcon fontSize="small" />
       </ListItemIcon>
