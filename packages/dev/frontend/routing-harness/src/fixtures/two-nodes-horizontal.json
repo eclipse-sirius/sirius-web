@@ -2,6 +2,7 @@
   "id": "two-nodes-horizontal",
   "name": "Two Nodes Horizontal",
   "description": "Basic horizontal link to verify straightening heuristics.",
+  "categories": ["basics"],
   "nodes": [
     {
       "id": "source",

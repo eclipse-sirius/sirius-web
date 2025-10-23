@@ -59,6 +59,7 @@
   flex-direction: column;
   padding: 16px;
   gap: 16px;
+  min-width: 0;
 }
 
 .app__status {
@@ -79,6 +80,7 @@
 .app__viewer {
   flex: 1;
   min-height: 0;
+  width: 100%;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 12px 32px rgba(13, 19, 33, 0.12);

@@ -2,6 +2,7 @@
   "id": "fan-in-target",
   "name": "Fan-In Target",
   "description": "Multiple sources converging into a single target to exercise offset spacing.",
+  "categories": ["stress"],
   "nodes": [
     {
       "id": "source-north",

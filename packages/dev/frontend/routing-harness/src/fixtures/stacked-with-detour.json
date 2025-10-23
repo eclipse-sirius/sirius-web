@@ -2,6 +2,7 @@
   "id": "stacked-with-detour",
   "name": "Stacked With Detour",
   "description": "Vertical edge forced to bend around a middle obstacle.",
+  "categories": ["obstacle"],
   "nodes": [
     {
       "id": "top",

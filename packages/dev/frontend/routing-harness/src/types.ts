@@ -17,6 +17,7 @@ export interface FixtureNode {
     width: number;
     height: number;
   };
+  handles?: FixtureHandle[];
 }
 
 export interface FixtureEdge {
@@ -28,12 +29,25 @@ export interface FixtureEdge {
   targetPosition?: FixtureHandlePosition;
   sourceHandleId?: string;
   targetHandleId?: string;
+  sourcePoint?: XYPosition;
+  targetPoint?: XYPosition;
+}
+
+export interface FixtureHandle {
+  id: string;
+  type: 'source' | 'target';
+  position: FixtureHandlePosition;
+  x?: number;
+  y?: number;
+  isHidden?: boolean;
+  isVirtualHandle?: boolean;
 }
 
 export interface DiagramFixture {
   id: string;
   name: string;
   description?: string;
+  categories?: string[];
   nodes: FixtureNode[];
   edges: FixtureEdge[];
 }

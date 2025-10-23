@@ -19,7 +19,7 @@ const toPositionEnum = (position?: FixtureHandlePosition): Position => {
   }
 };
 
-const buildConnectionHandles = (nodeId: string): ConnectionHandle[] => {
+const buildFallbackHandles = (nodeId: string): ConnectionHandle[] => {
   const baseHandles: Array<{ id: string; position: Position }> = [
     { id: 'top', position: Position.Top },
     { id: 'right', position: Position.Right },
@@ -61,6 +61,37 @@ const buildConnectionHandles = (nodeId: string): ConnectionHandle[] => {
   ]);
 };
 
+const buildConnectionHandles = (node: FixtureNode): ConnectionHandle[] => {
+  if (!node.handles || node.handles.length === 0) {
+    return buildFallbackHandles(node.id);
+  }
+
+  return node.handles.map((handle, index) => {
+    const position = toPositionEnum(handle.position);
+    return {
+      id: handle.id,
+      nodeId: node.id,
+      type: handle.type,
+      position,
+      XYPosition:
+        typeof handle.x === 'number' || typeof handle.y === 'number'
+          ? {
+              x: handle.x ?? 0,
+              y: handle.y ?? 0,
+            }
+          : null,
+      isHidden: handle.isHidden ?? false,
+      isVirtualHandle: handle.isVirtualHandle ?? false,
+      isConnectable: true,
+      isValidTargetPos: true,
+      x: handle.x ?? 0,
+      y: handle.y ?? 0,
+      edgeId: '',
+      index,
+    } as ConnectionHandle;
+  });
+};
+
 const buildNodeData = (node: FixtureNode): NodeData => {
   return {
     targetObjectId: node.id,
@@ -78,7 +109,7 @@ const buildNodeData = (node: FixtureNode): NodeData => {
     borderNodePosition: null,
     labelEditable: false,
     style: {},
-    connectionHandles: buildConnectionHandles(node.id),
+    connectionHandles: buildConnectionHandles(node),
     isNew: false,
     resizedByUser: false,
     isListChild: false,
@@ -140,6 +171,8 @@ export const convertFixtureToDiagram = (
   const edges: Edge<EdgeData>[] = fixture.edges.map((edge) => {
     const sourcePosition = toPositionEnum(edge.sourcePosition);
     const targetPosition = toPositionEnum(edge.targetPosition);
+    const sourcePoint = edge.sourcePoint;
+    const targetPoint = edge.targetPoint;
     return {
       id: edge.id,
       source: edge.source,
@@ -150,6 +183,14 @@ export const convertFixtureToDiagram = (
       sourceHandle: resolveHandleId('source', edge, edge.sourcePosition ?? 'right'),
       targetHandle: resolveHandleId('target', edge, edge.targetPosition ?? 'left'),
       data: buildEdgeData(edge),
+      sourceX: sourcePoint?.x,
+      sourceY: sourcePoint?.y,
+      targetX: targetPoint?.x,
+      targetY: targetPoint?.y,
+      style: {
+        stroke: '#0f0f0f',
+        strokeWidth: 2,
+      },
       selectable: false,
     };
   });

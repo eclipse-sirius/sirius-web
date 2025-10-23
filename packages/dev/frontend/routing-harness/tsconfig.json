@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "references": [

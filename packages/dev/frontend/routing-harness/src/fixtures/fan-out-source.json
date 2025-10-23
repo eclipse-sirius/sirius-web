@@ -2,6 +2,7 @@
   "id": "fan-out-source",
   "name": "Fan-Out Source",
   "description": "Single source splitting into several targets to inspect anchor selection.",
+  "categories": ["stress"],
   "nodes": [
     {
       "id": "source",

@@ -2,6 +2,7 @@
   "id": "grid-crossing",
   "name": "Grid Crossing",
   "description": "Dense arrangement that forces several detours and straightening checks.",
+  "categories": ["density"],
   "nodes": [
     {
       "id": "a",
