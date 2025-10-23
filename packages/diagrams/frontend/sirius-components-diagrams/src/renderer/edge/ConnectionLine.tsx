@@ -58,7 +58,7 @@ export const ConnectionLine = memo(
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-    const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+    const { toolCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
     const { diagramDescription } = useDiagramDescription();
     const { setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
@@ -134,7 +134,9 @@ export const ConnectionLine = memo(
       let isNodeCandidate = false;
 
       while (!isNodeCandidate && !!candidate) {
-        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+        isNodeCandidate = toolCandidates
+          .flatMap((tool) => tool.candidateDescriptionIds)
+          .includes(candidate.data.descriptionId);
         if (isNodeCandidate && candidate && candidate.width && candidate.height) {
           const pointToSnap = getNearestPointInPerimeter(
             candidate.internals.positionAbsolute.x,
