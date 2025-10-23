@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -108,7 +108,6 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
             List<ICompletionProposal> proposals = aqlProposals.stream().toList();
 
             List<CompletionProposal> allProposals = proposals.stream()
-                    .filter(proposal -> currentText.substring(AQL_PREFIX.length(), cursorPosition).endsWith(proposal.getProposal().substring(0, completionResult.getReplacementLength())))
                     .sorted(Comparator.comparing(ICompletionProposal::getProposal))
                     .map(proposal -> {
                         return new CompletionProposal(proposal.getDescription(), proposal.getProposal(), completionResult.getReplacementLength());
