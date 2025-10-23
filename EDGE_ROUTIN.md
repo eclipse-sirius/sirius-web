@@ -41,6 +41,20 @@
 - `useEditableEdgePath.ts` exposes `synchronizeEdgeLayoutData`, which packages nodes + edges into a `RawDiagram` and calls `synchronizeLayoutData`. Both `useBendingPoints` and `useTemporaryLines` invoke this after edits so the backend captures the updated rectilinear path.
 - The `removeEdgeLayoutData` helper clears `edge.data.bendingPoints` when resetting to auto-layout.
 
+## Routing Harness & Regression Tests
+- **Harness location**: `packages/dev/frontend/routing-harness` (Vite app) renders curated fixtures through the production edge wrappers. Fixture definitions sit in `public/fixtures`.
+- **Manual loop**:
+  1. `cd packages/dev/frontend/routing-harness`
+  2. `npm install` (first run)
+  3. `npm run dev`
+  4. Open `http://localhost:5173`, pick a fixture, tweak routing code, refresh to inspect results.
+- **Visual regression**:
+  1. `cd integration-tests-playwright`
+  2. `npm install`
+  3. `npm run routing:update` to regenerate baseline screenshots after intentional routing changes.
+  4. `npm run routing` to compare the current output with committed baselines.
+- **Extending coverage**: Drop new fixture JSON files under `public/fixtures` and register them in `manifest.json`. They appear automatically in the harness and the Playwright sweep.
+
 ## Related Behaviours
 - `EdgeLayout.ts` utilities are shared between rectilinear routing and reconnection/auto-layout. Notably, `getNodesUpdatedWithHandles` stores anchored handle positions back on the node data, and `getEdgeParameters` decides which side (top/bottom/left/right) a handle should attach to when no bend points exist.
 - `useReconnectEdge.tsx` leverages `getNewPointToGoAroundNode` to keep rerouted edges rectilinear when reconnecting to a new target or source.

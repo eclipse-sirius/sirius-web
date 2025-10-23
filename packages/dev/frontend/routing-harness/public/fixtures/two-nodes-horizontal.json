@@ -1,0 +1,29 @@
+{
+  "id": "two-nodes-horizontal",
+  "name": "Two Nodes Horizontal",
+  "description": "Basic horizontal link to verify straightening heuristics.",
+  "nodes": [
+    {
+      "id": "source",
+      "label": "Source",
+      "position": { "x": 120, "y": 180 },
+      "size": { "width": 160, "height": 80 }
+    },
+    {
+      "id": "target",
+      "label": "Target",
+      "position": { "x": 460, "y": 180 },
+      "size": { "width": 160, "height": 80 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "source": "source",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    }
+  ]
+}
