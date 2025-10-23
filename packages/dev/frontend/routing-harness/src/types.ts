@@ -31,6 +31,7 @@ export interface FixtureEdge {
   targetHandleId?: string;
   sourcePoint?: XYPosition;
   targetPoint?: XYPosition;
+  bendingPoints?: XYPosition[];
 }
 
 export interface FixtureHandle {

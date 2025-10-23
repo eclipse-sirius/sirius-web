@@ -3,6 +3,7 @@ import { DiagramViewer } from './components/DiagramViewer';
 import { loadFixture, loadManifest } from './lib/fixtureLoader';
 import type { DiagramFixture, FixtureManifestEntry, RoutingMetrics } from './types';
 import './styles/app.css';
+import './styles/edge-overlay.css';
 
 const getInitialFixtureId = (manifest: FixtureManifestEntry[]): string | null => {
   const searchParams = new URLSearchParams(window.location.search);

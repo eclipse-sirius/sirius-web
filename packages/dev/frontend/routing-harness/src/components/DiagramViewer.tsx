@@ -10,6 +10,7 @@ import type { DiagramFixture, RoutingMetrics } from '../types';
 import { convertFixtureToDiagram } from '../lib/diagramConversion';
 import { computeRoutingMetrics } from '../lib/metrics';
 import { HarnessNode } from './HarnessNode';
+import { BendpointOverlay } from './BendpointOverlay';
 
 const nodeContextValue: NodeTypeContextValue = {
   nodeConverters: [],
@@ -46,23 +47,26 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange }: DiagramViewerProps) =
   }, [edges, fixture.id, onMetricsChange]);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      nodesDraggable={false}
-      nodesConnectable={false}
-      edgesFocusable={false}
-      fitView
-      fitViewOptions={{ padding: 0.2 }}
-      proOptions={{ hideAttribution: true }}
-      panOnDrag={true}
-      zoomOnScroll={true}>
-      <Background gap={12} />
-    </ReactFlow>
+    <div className="harness-diagram-wrapper">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        edgesFocusable={false}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
+        proOptions={{ hideAttribution: true }}
+        panOnDrag={true}
+        zoomOnScroll={true}>
+        <Background gap={12} />
+      </ReactFlow>
+      <BendpointOverlay edges={edges} />
+    </div>
   );
 });
 

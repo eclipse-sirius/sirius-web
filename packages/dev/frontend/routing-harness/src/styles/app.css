@@ -86,6 +86,13 @@
   box-shadow: 0 12px 32px rgba(13, 19, 33, 0.12);
   overflow: hidden;
   display: flex;
+  position: relative;
+}
+
+.harness-diagram-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .app__metrics-panel {

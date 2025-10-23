@@ -135,7 +135,7 @@ const buildEdgeData = (edge: FixtureEdge): EdgeData => {
     label: null,
     faded: false,
     centerLabelEditable: false,
-    bendingPoints: null,
+    bendingPoints: edge.bendingPoints ?? null,
     isHovered: false,
     edgeAppearanceData: {
       customizedStyleProperties: [],
