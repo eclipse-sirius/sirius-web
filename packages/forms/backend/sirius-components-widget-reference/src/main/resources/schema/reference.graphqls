@@ -17,6 +17,7 @@ type ReferenceWidget implements Widget {
   readOnly: Boolean!
   reference: Reference!
   referenceValues: [ReferenceValue!]!
+  modelBrowserTreeDescriptionId: String!
   style: ReferenceWidgetStyle
   ownerId: ID!
 }

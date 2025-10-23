@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,14 @@ const ownerIdField: SelectionNode = {
   name: {
     kind: Kind.NAME,
     value: 'ownerId',
+  },
+};
+
+const modelBrowserTreeDescriptionField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'modelBrowserTreeDescriptionId',
   },
 };
 
@@ -210,6 +218,7 @@ export const referenceWidgetDocumentTransform = new DocumentTransform((document)
               labelField,
               iconURLField,
               ownerIdField,
+              modelBrowserTreeDescriptionField,
               descriptionIdField,
               referenceField,
               referenceValuesField,

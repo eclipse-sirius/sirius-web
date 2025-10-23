@@ -98,6 +98,7 @@ public class FormWithReferenceWidgetDescriptionProvider implements IEditingConte
                 .labelExpression("Super types")
                 .referenceNameExpression("superTypes")
                 .referenceOwnerExpression("aql:self")
+                .helpExpression("aql:'Specify the super-types of ' + self.name")
                 .style(superTypesReferenceStyle)
                 .build();
 

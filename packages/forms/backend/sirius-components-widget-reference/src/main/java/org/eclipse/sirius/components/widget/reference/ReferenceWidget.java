@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private String ownerId;
 
+    private String modelBrowserTreeDescriptionId;
+
     private Supplier<IStatus> clearHandler;
 
     private Function<Object, IStatus> setHandler;
@@ -72,6 +74,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public Supplier<List<ReferenceValue>> getReferenceOptionsProvider() {
         return this.referenceOptionsProvider;
+    }
+
+    public String getModelBrowserTreeDescriptionId() {
+        return this.modelBrowserTreeDescriptionId;
     }
 
     public String getDescriptionId() {
@@ -158,6 +164,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
         private String ownerId;
 
+        private String modelBrowserTreeDescriptionId;
+
         private Supplier<IStatus> clearHandler;
 
         private Function<Object, IStatus> setHandler;
@@ -237,6 +245,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder modelBrowserTreeDescriptionId(String modelBrowserTreeDescriptionId) {
+            this.modelBrowserTreeDescriptionId = Objects.requireNonNull(modelBrowserTreeDescriptionId);
+            return this;
+        }
+
         public Builder clearHandler(Supplier<IStatus> clearHandler) {
             this.clearHandler = Objects.requireNonNull(clearHandler);
             return this;
@@ -279,6 +292,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
+            referenceWidget.modelBrowserTreeDescriptionId = Objects.requireNonNull(this.modelBrowserTreeDescriptionId);
             referenceWidget.clearHandler = this.clearHandler; // Optional on purpose
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.addHandler = this.addHandler; // Optional on purpose

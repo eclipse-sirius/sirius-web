@@ -40,7 +40,8 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [forms] The _Reference_ widget can now provide an optional `modelBrowserId`.
+It can be used, in conjunction with `IModelBrowserMetadataProvider` on the backend, to use a custom `TreeDescription` to display the possible candidates in the modals used to edit the reference on the frontend.
 
 === Improvements
 
@@ -221,7 +222,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 
