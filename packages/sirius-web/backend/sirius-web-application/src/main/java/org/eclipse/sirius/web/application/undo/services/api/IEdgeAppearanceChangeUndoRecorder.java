@@ -12,22 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.api;
 
-import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Use to compute undo node appearance change.
+ * Use to compute undo edge appearance change.
  *
  * @author mcharfadi
  */
-public interface INodeAppearanceChangeUndoRecorder {
+public interface IEdgeAppearanceChangeUndoRecorder {
 
-    boolean canHandle(Node previousNode);
-
-    List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change);
+    List<IAppearanceChange> computeEdgeAppearanceChanges(Edge previousEdge, Optional<IEdgeAppearanceChange> change);
 
 }
