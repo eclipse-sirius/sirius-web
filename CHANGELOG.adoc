@@ -215,7 +215,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5821[#5821] [sirius-web] Provide a way to customize the tree displayed in the object duplication modal.
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Rename the key of i18n keys to reflect the frontend modularity better
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5704[#5704] [table] Display row resizer only on hover
 
 
 == 2025.10.0
