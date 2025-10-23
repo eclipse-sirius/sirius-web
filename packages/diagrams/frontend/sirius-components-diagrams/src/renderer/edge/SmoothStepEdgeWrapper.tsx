@@ -104,6 +104,43 @@ const getAnchorPreferenceOrder = (preferredAnchor: AutoBendAnchor): AutoBendAnch
   ...ANCHOR_PREFERENCE_ORDER.filter((anchor) => anchor !== preferredAnchor),
 ];
 
+const removeRedundantBendPoints = (points: XYPosition[], start: XYPosition, end: XYPosition): XYPosition[] => {
+  if (points.length === 0) {
+    return points;
+  }
+
+  const path = [start, ...points, end];
+  const cleaned: XYPosition[] = [];
+
+  for (let index = 1; index < path.length - 1; index++) {
+    const previous = path[index - 1];
+    const current = path[index];
+    const next = path[index + 1];
+
+    if (!previous || !current || !next) {
+      continue;
+    }
+
+    const isDuplicate =
+      (current.x === previous.x && current.y === previous.y) ||
+      (current.x === next.x && current.y === next.y);
+    if (isDuplicate) {
+      continue;
+    }
+
+    const isColinear =
+      (previous.x === current.x && current.x === next.x) ||
+      (previous.y === current.y && current.y === next.y);
+    if (isColinear) {
+      continue;
+    }
+
+    cleaned.push(current);
+  }
+
+  return cleaned;
+};
+
 type Rectangle = { left: number; right: number; top: number; bottom: number };
 type PathCollision = {
   node: Node<NodeData>;
@@ -940,6 +977,14 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         }
       }
     }
+  }
+
+  if (!hasCustomBendPoints && bendingPoints.length > 0) {
+    bendingPoints = removeRedundantBendPoints(
+      bendingPoints,
+      { x: sourceX, y: sourceY },
+      { x: targetX, y: targetY }
+    );
   }
 
   return (
