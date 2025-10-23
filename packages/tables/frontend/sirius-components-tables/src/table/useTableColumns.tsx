@@ -27,6 +27,9 @@ const useStyles = makeStyles()((theme) => ({
     flex: '1',
     height: '100%',
     cursor: 'pointer',
+    '&:hover div[class$="handler"]': {
+      display: 'inline',
+    },
   },
 }));
 
