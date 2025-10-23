@@ -42,7 +42,7 @@
 - The `removeEdgeLayoutData` helper clears `edge.data.bendingPoints` when resetting to auto-layout.
 
 ## Routing Harness & Regression Tests
-- **Harness location**: `packages/dev/frontend/routing-harness` (Vite app) renders curated fixtures through the production edge wrappers. Fixture definitions sit in `public/fixtures`.
+- **Harness location**: `packages/dev/frontend/routing-harness` (Vite app) renders curated fixtures through the production edge wrappers. Fixture definitions sit in `src/fixtures`.
 - **Manual loop**:
   1. `cd packages/dev/frontend/routing-harness`
   2. `npm install` (first run)
@@ -53,7 +53,13 @@
   2. `npm install`
   3. `npm run routing:update` to regenerate baseline screenshots after intentional routing changes.
   4. `npm run routing` to compare the current output with committed baselines.
-- **Extending coverage**: Drop new fixture JSON files under `public/fixtures` and register them in `manifest.json`. They appear automatically in the harness and the Playwright sweep.
+- **Extending coverage**: Drop new fixture JSON files under `src/fixtures` (each file includes `id`, `name`, optional `description`/`categories`, plus `handles` and per-edge `sourcePoint`/`targetPoint` if you exported via the browser helper). The harness sidebar and Playwright sweep pick them up automatically.
+- **Exporting fixtures from Sirius Web**:
+  1. Open any Sirius Web diagram in the browser.
+  2. In the devtools console run `window.__SIRIUS_ROUTING_HARNESS__.downloadFixture({ id: 'my-diagram', name: 'My Diagram', description: 'Optional notes', categories: ['stress'] })`.
+  3. A `<id>.json` file downloads locally; move it into `packages/dev/frontend/routing-harness/src/fixtures/`.
+  4. Use `window.__SIRIUS_ROUTING_HARNESS__.copyFixture({...})` instead if you prefer to paste the JSON manually.
+- **Absolute coordinates**: The exporter resolves absolute node positions by combining the store snapshot with React Flow internals (`getNodes`, `getNode`). If a node (e.g., label anchor) only reports relative offsets and has no resolvable parent, it is skipped so fixtures never contain misleading `(0,0)` positions.
 
 ## Related Behaviours
 - `EdgeLayout.ts` utilities are shared between rectilinear routing and reconnection/auto-layout. Notably, `getNodesUpdatedWithHandles` stores anchored handle positions back on the node data, and `getEdgeParameters` decides which side (top/bottom/left/right) a handle should attach to when no bend points exist.

@@ -256,12 +256,14 @@ const doesPathOverlapNodes = (
 ): PathOverlapResult => {
   const absolutePositionCache = new Map<string, XYPosition>();
   const collidableNodes = nodes
-    .filter((node) => !ignoredNodeIds.has(node.id))
-    .map((node) => {
+    .filter((node) => {
+      if (ignoredNodeIds.has(node.id)) {
+        return false;
+      }
       const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
-      return rect ? { node, rect } : null;
+      return rect !== null;
     })
-    .filter((entry): entry is { node: Node<NodeData>; rect: Rectangle } => entry !== null);
+    .map((node) => ({ node, rect: getNodeRectangle(node, nodeMap, absolutePositionCache)! }));
 
   for (let index = 0; index < pathPoints.length - 1; index++) {
     const segmentStart = pathPoints[index];
