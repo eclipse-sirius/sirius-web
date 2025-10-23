@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,9 @@ const useStyles = makeStyles()(() => ({
     left: '15px',
     cursor: 'row-resize',
   },
+  handlerHidden: {
+    visibility: 'hidden',
+  },
 }));
 
 export const resizeRowMutation = gql`
@@ -58,7 +61,15 @@ export const resizeRowMutation = gql`
 `;
 
 export const ResizeRowHandler = memo(
-  ({ editingContextId, representationId, table, readOnly, row, onRowHeightChanged }: ResizeRowHandlerProps) => {
+  ({
+    editingContextId,
+    representationId,
+    table,
+    readOnly,
+    row,
+    onRowHeightChanged,
+    isRowHovered,
+  }: ResizeRowHandlerProps) => {
     const { classes } = useStyles();
 
     const [mutationResizeRow, mutationResizeRowResult] = useMutation<GQLResizeRowData, GQLResizeRowVariables>(
@@ -110,6 +121,11 @@ export const ResizeRowHandler = memo(
       document.addEventListener('mouseup', handleMouseUp);
     };
 
-    return !readOnly && row.isResizable ? <div className={classes.handler} onMouseDown={handleMouseDown} /> : null;
+    return !readOnly && row.isResizable ? (
+      <div
+        className={`${classes.handler} ${!isRowHovered ? classes.handlerHidden : ''}`}
+        onMouseDown={handleMouseDown}
+      />
+    ) : null;
   }
 );

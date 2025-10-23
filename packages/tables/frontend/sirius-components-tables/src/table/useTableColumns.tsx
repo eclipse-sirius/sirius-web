@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Selection, theme, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnDef } from 'material-react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
@@ -94,39 +94,45 @@ export const useTableColumns = (
           },
         },
       },
-      Cell: ({ row }) => (
-        <div
-          className={classes.cell}
-          onClick={() => {
-            if (enableSelectionSynchronization) {
-              const newSelection: Selection = {
-                entries: [
-                  {
-                    id: row.original.targetObjectId,
-                  },
-                ],
-              };
-              setSelection(newSelection);
-            }
-          }}>
-          <RowHeader
-            row={row.original}
-            enableSubRows={table.enableSubRows}
-            isExpanded={expandedRowIds.includes(row.original.targetObjectId)}
-            onClick={onExpandedElement}
-          />
-          {enableRowSizing ? (
-            <ResizeRowHandler
-              editingContextId={editingContextId}
-              representationId={representationId}
-              table={table}
-              readOnly={readOnly}
+      Cell: ({ row }) => {
+        const [isRowHovered, setIsRowHovered] = useState<boolean>(false);
+        return (
+          <div
+            className={classes.cell}
+            onClick={() => {
+              if (enableSelectionSynchronization) {
+                const newSelection: Selection = {
+                  entries: [
+                    {
+                      id: row.original.targetObjectId,
+                    },
+                  ],
+                };
+                setSelection(newSelection);
+              }
+            }}
+            onMouseEnter={() => setIsRowHovered(true)}
+            onMouseLeave={() => setIsRowHovered(false)}>
+            <RowHeader
               row={row.original}
-              onRowHeightChanged={handleRowHeightChange}
+              enableSubRows={table.enableSubRows}
+              isExpanded={expandedRowIds.includes(row.original.targetObjectId)}
+              onClick={onExpandedElement}
             />
-          ) : null}
-        </div>
-      ),
+            {enableRowSizing ? (
+              <ResizeRowHandler
+                editingContextId={editingContextId}
+                representationId={representationId}
+                table={table}
+                readOnly={readOnly}
+                row={row.original}
+                onRowHeightChanged={handleRowHeightChange}
+                isRowHovered={isRowHovered}
+              />
+            ) : null}
+          </div>
+        );
+      },
     };
     return [rowHeaderColumn, ...columnDefs];
   }, [table, expandedRowIds]);
