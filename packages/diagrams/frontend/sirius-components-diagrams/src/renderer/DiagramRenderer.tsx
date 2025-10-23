@@ -80,6 +80,7 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {

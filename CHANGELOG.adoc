@@ -19,6 +19,9 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] `IPaletteToolsProvider` signature method has been changed to `List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);` `DiagramContext` has been added.
+
+
 
 
 === Dependency update
@@ -41,6 +44,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
 
 
 

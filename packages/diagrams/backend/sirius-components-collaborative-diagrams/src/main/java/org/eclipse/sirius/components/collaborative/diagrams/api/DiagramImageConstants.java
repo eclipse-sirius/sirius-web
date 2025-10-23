@@ -37,6 +37,14 @@ public final class DiagramImageConstants {
 
     public static final String REVEAL_FADED_ELEMENTS_SVG = IMAGES_ROOT_FOLDER + "/reveal-faded-elements.svg";
 
+    public static final String ADJUST_SVG = IMAGES_ROOT_FOLDER + "/adjust.svg";
+
+    public static final String DIRECTIONS_OFF = IMAGES_ROOT_FOLDER + "/directions_off.svg";
+
+    public static final String LABEL_OFF = IMAGES_ROOT_FOLDER + "/label_off.svg";
+
+    public static final String SWIPE_RIGHT_ALT = IMAGES_ROOT_FOLDER + "/swipe_right_alt.svg";
+
     private DiagramImageConstants() {
         // Prevent instantiation
     }
