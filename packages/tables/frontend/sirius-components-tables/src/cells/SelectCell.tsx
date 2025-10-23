@@ -25,7 +25,15 @@ export const SelectCell = ({ editingContextId, representationId, tableId, cell, 
   };
 
   return (
-    <Select value={cell.value} onChange={handleChange} disabled={disabled || loading} size="small" fullWidth>
+    <Select
+      value={cell.value}
+      onChange={handleChange}
+      disabled={disabled || loading}
+      size="small"
+      fullWidth
+      disableUnderline={true}
+      variant="standard"
+      sx={{ height: '100%' }}>
       {cell.options.map((option) => {
         return (
           <MenuItem key={option.id} value={option.id}>

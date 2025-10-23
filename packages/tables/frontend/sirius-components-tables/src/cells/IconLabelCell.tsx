@@ -20,7 +20,7 @@ export const IconLabelCell = ({ cell }: IconLabelCellProps) => {
   const theme = useTheme();
 
   return (
-    <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
+    <Box display="flex" alignItems="center" gap={theme.spacing(1)} sx={{ height: '100%' }}>
       <IconOverlay iconURLs={cell.iconURLs} alt={cell.label} />
       {cell.label}
     </Box>

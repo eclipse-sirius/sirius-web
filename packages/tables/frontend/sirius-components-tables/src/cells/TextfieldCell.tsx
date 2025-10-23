@@ -53,18 +53,14 @@ export const TextfieldCell = ({ editingContextId, representationId, tableId, cel
       fullWidth
       variant="standard"
       sx={{ height: '100%' }}
-      InputProps={{
-        disableUnderline: true,
-        sx: {
-          marginBottom: 0,
-          padding: '0px',
-          height: '100%',
-        },
-      }}
-      inputProps={{
-        sx: {
-          padding: '0px',
-          height: '100%',
+      slotProps={{
+        input: {
+          disableUnderline: true,
+          sx: {
+            marginBottom: 0,
+            padding: '0px',
+            height: '100%',
+          },
         },
       }}
     />
