@@ -15,6 +15,7 @@
   - Rectangular “temporary moving lines” between consecutive points to enable dragging entire segments and inserting new points.
   - Both read the zoom level from `useViewport` and disappear in read-only diagrams.
 - **Auto pathing**: When an edge has no persisted bend points, `SmoothStepEdgeWrapper.tsx` now tries `getSmartEdge` to obtain a collision-free Manhattan route. The resulting intermediate points are passed to the rectilinear editor, and the legacy `getSmoothStepPath` fallback still kicks in when the smart solver cannot find a viable path.
+- **Last-resort detour spacing**: The emergency “dent” built by `tryBuildDetourAroundCollision` now reuses the parallel-edge index computed for approach offsets so each detouring wire keeps its transverse gap. When several edges wiggle around the same obstacle they receive staggered top/bottom (or left/right) offsets, and both the horizontal plateau and its entry/exit ladders slide just enough to preserve edge ordering and avoid unnecessary crossings.
 
 ## Rectilinear Constraints Helpers
 - `RectilinearEdgeCalculation.ts` keeps geometry orthogonal:

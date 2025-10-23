@@ -26,8 +26,8 @@ import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { edgeBendPointOffset } from '../layout/layoutParams';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -242,7 +242,6 @@ const doesPathOverlapNodes = (
 
     for (const { node, rect } of collidableNodes) {
       if (doesSegmentOverlapRect(segmentStart, segmentEnd, rect)) {
-        console.debug('auto-route overlap', { edgeId, anchor, segmentStart, segmentEnd, nodeId: node.id, rect });
         return {
           overlaps: true,
           collision: { node, rect, segmentStart, segmentEnd, segmentIndex: index },
@@ -253,9 +252,59 @@ const doesPathOverlapNodes = (
   return { overlaps: false };
 };
 
+type DetourSpacingContext = {
+  index: number;
+  count: number;
+};
+
+const adjustDetourLegPositions = (
+  entry: number,
+  exit: number,
+  segmentMin: number,
+  segmentMax: number,
+  direction: number,
+  laneShift: number
+): { entry: number; exit: number } => {
+  if (laneShift <= 0) {
+    return { entry, exit };
+  }
+
+  let adjustedEntry = entry;
+  let adjustedExit = exit;
+
+  if (direction >= 0) {
+    const entryCapacity = Math.max(0, segmentMax - entry);
+    const exitCapacity = Math.max(0, exit - segmentMin);
+    const entryShift = Math.min(laneShift, entryCapacity);
+    const exitShift = Math.min(laneShift, exitCapacity);
+    adjustedEntry = clamp(entry + entryShift, segmentMin, segmentMax);
+    adjustedExit = clamp(exit - exitShift, segmentMin, segmentMax);
+    if (adjustedEntry > adjustedExit) {
+      const midpoint = (adjustedEntry + adjustedExit) / 2;
+      adjustedEntry = midpoint;
+      adjustedExit = midpoint;
+    }
+  } else {
+    const entryCapacity = Math.max(0, entry - segmentMin);
+    const exitCapacity = Math.max(0, segmentMax - exit);
+    const entryShift = Math.min(laneShift, entryCapacity);
+    const exitShift = Math.min(laneShift, exitCapacity);
+    adjustedEntry = clamp(entry - entryShift, segmentMin, segmentMax);
+    adjustedExit = clamp(exit + exitShift, segmentMin, segmentMax);
+    if (adjustedEntry < adjustedExit) {
+      const midpoint = (adjustedEntry + adjustedExit) / 2;
+      adjustedEntry = midpoint;
+      adjustedExit = midpoint;
+    }
+  }
+
+  return { entry: adjustedEntry, exit: adjustedExit };
+};
+
 const tryBuildDetourAroundCollision = (
   pathPoints: XYPosition[],
-  collision: PathCollision | undefined
+  collision: PathCollision | undefined,
+  spacingContext?: DetourSpacingContext
 ): XYPosition[] | undefined => {
   if (!collision) {
     return undefined;
@@ -270,31 +319,59 @@ const tryBuildDetourAroundCollision = (
   const suffix = pathPoints.slice(segmentIndex + 1);
   const clearance = edgeBendPointOffset;
   const candidatePaths: XYPosition[][] = [];
+  const count = spacingContext?.count ?? 1;
+  const index = clamp(spacingContext?.index ?? 0, 0, Math.max(0, count - 1));
+  const spacingStep =
+    count > 1 ? Math.min(PERPENDICULAR_STEP, MAX_PERPENDICULAR_OFFSET / Math.max(1, count - 1)) : 0;
+
+  const adjustCoordinateForSpacing = (base: number, direction: 'negative' | 'positive'): number => {
+    if (spacingStep <= 0) {
+      return base;
+    }
+    if (direction === 'negative') {
+      return base - (Math.max(0, count - 1 - index) * spacingStep);
+    }
+    return base + index * spacingStep;
+  };
 
   if (segmentStart.y === segmentEnd.y) {
     const segmentY = segmentStart.y;
     const segmentMinX = Math.min(segmentStart.x, segmentEnd.x);
     const segmentMaxX = Math.max(segmentStart.x, segmentEnd.x);
     const direction = segmentEnd.x >= segmentStart.x ? 1 : -1;
-    const entryX = direction >= 0
-      ? Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX))
-      : Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX));
-    const exitX = direction >= 0
-      ? Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX))
-      : Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX));
+    const entryX =
+      direction >= 0
+        ? Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX))
+        : Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX));
+    const exitX =
+      direction >= 0
+        ? Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX))
+        : Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX));
 
     if ((direction >= 0 && entryX >= exitX) || (direction < 0 && entryX <= exitX)) {
       return undefined;
     }
 
     const detourCandidates = [
-      Math.round(rect.top - clearance),
-      Math.round(rect.bottom + clearance),
-    ].filter((detourY) => detourY !== segmentY);
+      { coordinate: Math.round(rect.top - clearance), direction: 'negative' as const },
+      { coordinate: Math.round(rect.bottom + clearance), direction: 'positive' as const },
+    ].filter((candidate) => candidate.coordinate !== segmentY);
 
-    for (const detourY of detourCandidates) {
-      const entryPoint: XYPosition = { x: entryX, y: segmentY };
-      const exitPoint: XYPosition = { x: exitX, y: segmentY };
+    let entryXWithSpacing = entryX;
+    let exitXWithSpacing = exitX;
+    if (spacingStep > 0 && count > 1) {
+      const laneShift = spacingStep * index;
+      if (laneShift !== 0) {
+        const adjusted = adjustDetourLegPositions(entryX, exitX, segmentMinX, segmentMaxX, direction, laneShift);
+        entryXWithSpacing = adjusted.entry;
+        exitXWithSpacing = adjusted.exit;
+      }
+    }
+
+    for (const candidate of detourCandidates) {
+      const detourY = Math.round(adjustCoordinateForSpacing(candidate.coordinate, candidate.direction));
+      const entryPoint: XYPosition = { x: entryXWithSpacing, y: segmentY };
+      const exitPoint: XYPosition = { x: exitXWithSpacing, y: segmentY };
       const detourPath = dedupeConsecutivePoints([
         ...prefix,
         entryPoint,
@@ -312,25 +389,39 @@ const tryBuildDetourAroundCollision = (
     const segmentMinY = Math.min(segmentStart.y, segmentEnd.y);
     const segmentMaxY = Math.max(segmentStart.y, segmentEnd.y);
     const direction = segmentEnd.y >= segmentStart.y ? 1 : -1;
-    const entryY = direction >= 0
-      ? Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY))
-      : Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY));
-    const exitY = direction >= 0
-      ? Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY))
-      : Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY));
+    const entryY =
+      direction >= 0
+        ? Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY))
+        : Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY));
+    const exitY =
+      direction >= 0
+        ? Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY))
+        : Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY));
 
     if ((direction >= 0 && entryY >= exitY) || (direction < 0 && entryY <= exitY)) {
       return undefined;
     }
 
     const detourCandidates = [
-      Math.round(rect.left - clearance),
-      Math.round(rect.right + clearance),
-    ].filter((detourX) => detourX !== segmentX);
+      { coordinate: Math.round(rect.left - clearance), direction: 'negative' as const },
+      { coordinate: Math.round(rect.right + clearance), direction: 'positive' as const },
+    ].filter((candidate) => candidate.coordinate !== segmentX);
 
-    for (const detourX of detourCandidates) {
-      const entryPoint: XYPosition = { x: segmentX, y: entryY };
-      const exitPoint: XYPosition = { x: segmentX, y: exitY };
+    let entryYWithSpacing = entryY;
+    let exitYWithSpacing = exitY;
+    if (spacingStep > 0 && count > 1) {
+      const laneShift = spacingStep * index;
+      if (laneShift !== 0) {
+        const adjusted = adjustDetourLegPositions(entryY, exitY, segmentMinY, segmentMaxY, direction, laneShift);
+        entryYWithSpacing = adjusted.entry;
+        exitYWithSpacing = adjusted.exit;
+      }
+    }
+
+    for (const candidate of detourCandidates) {
+      const detourX = Math.round(adjustCoordinateForSpacing(candidate.coordinate, candidate.direction));
+      const entryPoint: XYPosition = { x: segmentX, y: entryYWithSpacing };
+      const exitPoint: XYPosition = { x: segmentX, y: exitYWithSpacing };
       const detourPath = dedupeConsecutivePoints([
         ...prefix,
         entryPoint,
@@ -509,18 +600,7 @@ const resolveAutoBendAnchor = (): 'source' | 'target' | 'midpoint' => {
 };
 
 const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointContext): XYPosition[] => {
-  const {
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    offset,
-    index,
-    count,
-    anchor,
-  } = context;
+  const { sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, offset, index, count, anchor } = context;
   const approachOffset = clamp(offset, MIN_TARGET_OFFSET, MAX_TARGET_OFFSET);
   const approachPoint = getApproachPoint(targetX, targetY, targetPosition, approachOffset);
   const sourceApproachPoint = getApproachPoint(sourceX, sourceY, sourcePosition, approachOffset);
@@ -787,7 +867,10 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       let overlapResult = doesPathOverlapNodes(pathPoints, nodes, nodeMap, ignoredNodeIds, anchor, id);
       let detourIterations = 0;
       while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
-        const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision);
+        const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision, {
+          index: targetEdgeIndex,
+          count: targetEdgeCount,
+        });
         if (!detouredPath || arePathsEqual(detouredPath, pathPoints)) {
           break;
         }
