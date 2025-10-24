@@ -11,55 +11,38 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { PaletteSearchField, PaletteSearchResult } from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import { Theme, useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
+import { Edge, Node, useStoreApi, useViewport } from '@xyflow/react';
+import React, { useContext, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
-import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
+import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import {
   GQLPalette,
   GQLPaletteDivider,
   GQLPaletteEntry,
   GQLSingleClickOnDiagramElementTool,
+  GQLTool,
   GQLToolSection,
   PaletteProps,
   PaletteState,
-  PaletteStyleProps,
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
-import { PaletteSearchField } from './search/PaletteSearchField';
-import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
-import { usePalette } from './usePalette';
-
-const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
-  palette: {
-    display: 'grid',
-    gridAutoRows: `fit-content(100%)`,
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '10px',
-    zIndex: 5,
-    position: 'fixed',
-    width: props.paletteWidth,
-    height: props.paletteHeight,
-  },
-  paletteHeader: {
-    cursor: 'move',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: `${theme.palette.secondary.main}08`,
-  },
-}));
+import { useDiagramPalette } from './useDiagramPalette';
+import { usePaletteContents } from './usePaletteContents';
+import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
@@ -69,15 +52,9 @@ export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection =
 export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSection =>
   entry.__typename === 'PaletteDivider';
 
-const computeDraggableBounds = (bounds?: DOMRect): XYPosition => {
-  return {
-    x: bounds?.width ?? 0,
-    y: bounds?.height ?? 0,
-  };
-};
+export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
 
 const paletteWidth = 200;
-const paletteHeight = 275;
 
 const getPaletteToolCount = (palette: GQLPalette): number => {
   return (
@@ -89,18 +66,6 @@ const getPaletteToolCount = (palette: GQLPalette): number => {
   );
 };
 
-const computePaletteLocation = (
-  paletteX: number,
-  paletteY: number,
-  viewportWidth: number,
-  viewportHeight: number
-): XYPosition => {
-  return {
-    x: paletteX + paletteWidth < viewportWidth ? paletteX : viewportWidth - paletteWidth,
-    y: paletteY + paletteHeight < viewportHeight ? paletteY : viewportHeight - paletteHeight,
-  };
-};
-
 export const Palette = ({
   x: paletteX,
   y: paletteY,
@@ -108,34 +73,68 @@ export const Palette = ({
   targetObjectId,
   onDirectEditClick,
   onClose,
+  children,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
+  const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  const nodeRef = React.useRef<HTMLDivElement>(null);
+  const theme: Theme = useTheme();
 
   const [state, setState] = useState<PaletteState>({
     searchToolValue: '',
-    controlledPosition: { x: 0, y: 0 },
+    controlledPosition: { x: paletteX, y: paletteY },
   });
 
   const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
 
-  let x: number = 0;
-  let y: number = 0;
-  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
-  if (viewportZoom !== 0 && paletteX && paletteY) {
-    x = (paletteX - viewportX) / viewportZoom;
-    y = (paletteY - viewportY) / viewportZoom;
-  }
-  const { handleToolClick, palette } = usePalette({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
+  const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
+  const { setLastToolInvoked } = useDiagramPalette();
+  const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
 
-  useEffect(() => {
-    const paletteLocation: XYPosition = computePaletteLocation(paletteX, paletteY, viewportWidth, viewportHeight);
-    setState((prevState) => ({ ...prevState, controlledPosition: paletteLocation }));
-  }, [paletteX, paletteY, viewportWidth, viewportHeight]);
+  const handleToolClick = (tool: GQLTool) => {
+    onClose();
+    domNode?.focus();
+    let x: number = 0;
+    let y: number = 0;
+    if (viewportZoom !== 0 && paletteX && paletteY) {
+      x = (paletteX - viewportX) / viewportZoom;
+      y = (paletteY - viewportY) / viewportZoom;
+    }
+    executeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
+    if (palette) {
+      setLastToolInvoked(palette.id, tool);
+    }
+    const position = getUpdatedModalPosition({ x: state.controlledPosition.x, y: state.controlledPosition.y }, nodeRef);
+    setState((prevState) => {
+      return { ...prevState, controlledPosition: position };
+    });
+  };
 
-  const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
+  useEffect(() => {}, []);
 
   const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
+
+  useEffect(() => {
+    if (!nodeRef.current) return;
+    // If the palette size changes when opening a section then update the position of the modal
+    const resizeObserver = new ResizeObserver(() => {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          controlledPosition: getUpdatedModalPosition(
+            { x: prevState.controlledPosition.x, y: prevState.controlledPosition.y },
+            nodeRef
+          ),
+        };
+      });
+    });
+    resizeObserver.observe(nodeRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [shouldRender]);
+
+  const draggableBounds = getUpdatedBounds(nodeRef);
 
   if (!shouldRender) {
     return null;
@@ -143,14 +142,6 @@ export const Palette = ({
 
   const onPaletteDragStop = (_event, data: DraggableData) => {
     setState((prevState) => ({ ...prevState, controlledPosition: data }));
-  };
-
-  const nodeRef = React.createRef<HTMLDivElement>();
-  const draggableBounds = {
-    left: 0,
-    top: 0,
-    bottom: viewportHeight - paletteHeight,
-    right: viewportWidth - paletteWidth,
   };
 
   const onSearchFieldValueChanged = (newValue: string): void => {
@@ -166,43 +157,75 @@ export const Palette = ({
   return (
     <Draggable
       nodeRef={nodeRef}
-      bounds={draggableBounds}
       handle="#tool-palette-header"
+      bounds={draggableBounds}
       position={state.controlledPosition}
       onStop={onPaletteDragStop}>
       <Paper
         ref={nodeRef}
-        className={classes.palette}
         data-testid="Palette"
         elevation={3}
         onClick={(event) => event.stopPropagation()}
-        tabIndex={0}>
-        <Box id="tool-palette-header" className={classes.paletteHeader}>
-          <DragIndicatorIcon />
-          <Tooltip title="Close">
-            <IconButton size="small" aria-label="close" color="inherit" data-testid="Close-palette" onClick={onClose}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Divider />
-        <PaletteQuickAccessToolBar
-          diagramElementId={diagramElementId}
-          onToolClick={handleToolClick}
-          quickAccessTools={palette.quickAccessTools}
-          x={x}
-          y={y}
-        />
-        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
-        {state.searchToolValue.length > 0 ? (
-          <PaletteSearchResult
-            searchToolValue={state.searchToolValue}
-            palette={palette}
-            onToolClick={handleToolClick}
-          />
-        ) : (
-          <PaletteToolList palette={palette} onToolClick={handleToolClick} onBackToMainList={handleBackToMainList} />
-        )}
+        tabIndex={0}
+        sx={{
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '10px',
+          zIndex: 5,
+          position: 'fixed',
+          width: paletteWidth,
+        }}>
+        <ClickAwayListener mouseEvent="onPointerDown" onClickAway={onClose}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', maxHeight: 280 }}>
+            <Box
+              id="tool-palette-header"
+              sx={{
+                cursor: 'move',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: `${theme.palette.secondary.main}08`,
+              }}>
+              <DragIndicatorIcon />
+              <Tooltip title="Close">
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  data-testid="Close-palette"
+                  onClick={onClose}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Divider />
+            <PaletteQuickAccessToolBar
+              diagramElementId={diagramElementId}
+              onToolClick={handleToolClick}
+              quickAccessTools={palette.quickAccessTools}
+              x={paletteX}
+              y={paletteY}
+            />
+            <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
+            {state.searchToolValue.length > 0 ? (
+              <PaletteSearchResult
+                searchToolValue={state.searchToolValue}
+                palette={palette}
+                onToolClick={handleToolClick}
+              />
+            ) : (
+              <PaletteToolList
+                palette={palette}
+                onToolClick={handleToolClick}
+                onBackToMainList={handleBackToMainList}
+                onClose={onClose}
+                diagramElementId={diagramElementId}>
+                {children}
+              </PaletteToolList>
+            )}
+          </Box>
+        </ClickAwayListener>
       </Paper>
     </Draggable>
   );

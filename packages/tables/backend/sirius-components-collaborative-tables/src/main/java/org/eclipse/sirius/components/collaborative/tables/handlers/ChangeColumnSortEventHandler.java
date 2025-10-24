@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnSortInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -64,7 +63,7 @@ public class ChangeColumnSortEventHandler implements ITableEventHandler {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditTextfieldCellInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), ChangeColumnSortInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ChangeColumnSortInput changeColumnSortInput) {

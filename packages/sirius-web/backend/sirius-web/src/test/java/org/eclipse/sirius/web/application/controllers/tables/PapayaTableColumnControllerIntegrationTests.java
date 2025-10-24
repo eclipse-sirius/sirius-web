@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.tables;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -21,13 +21,11 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeTableColumnVisibilityInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ColumnVisibility;
 import org.eclipse.sirius.components.collaborative.tables.dto.ReorderTableColumnsInput;
@@ -48,7 +46,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -61,8 +58,6 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String MISSING_TABLE = "Missing table";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -105,17 +100,13 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         var columnRef = new AtomicReference<Column>();
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    columnRef.set(table.getColumns().get(1));
-                    assertThat(table.getColumns().get(1).getWidth()).isEqualTo(180);
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            columnRef.set(table.getColumns().get(1));
+            assertThat(table.getColumns().get(1).getWidth()).isEqualTo(180);
+            tableId.set(table.getId());
+        });
 
         Runnable resizeColumn = () -> {
             var columnToChange = columnRef.get();
@@ -130,15 +121,11 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         };
 
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getColumns().get(1).getWidth()).isEqualTo(50);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getColumns().get(1).getWidth()).isEqualTo(50);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -159,22 +146,20 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         var columnAnnotationRef = new AtomicReference<Column>();
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    columnNameRef.set(table.getColumns().get(0));
-                    columnDescRef.set(table.getColumns().get(1));
-                    columnAnnotationRef.set(table.getColumns().get(2));
-                    assertThat(table.getColumns().get(0).isHidden()).isFalse();
-                    assertThat(table.getColumns().get(1).isHidden()).isFalse();
-                    assertThat(table.getColumns().get(2).isHidden()).isFalse();
-                    assertThat(table.getColumns().get(3).isHidden()).isFalse();
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+
+            columnNameRef.set(table.getColumns().get(0));
+            columnDescRef.set(table.getColumns().get(1));
+            columnAnnotationRef.set(table.getColumns().get(2));
+
+            assertThat(table.getColumns().get(0).isHidden()).isFalse();
+            assertThat(table.getColumns().get(1).isHidden()).isFalse();
+            assertThat(table.getColumns().get(2).isHidden()).isFalse();
+            assertThat(table.getColumns().get(3).isHidden()).isFalse();
+            tableId.set(table.getId());
+        });
 
         Runnable changeColumnVisibility = () -> {
             var changeTableColumnVisibilityInput = new ChangeTableColumnVisibilityInput(
@@ -192,18 +177,14 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         };
 
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getColumns().get(0).isHidden()).isTrue();
-                    assertThat(table.getColumns().get(1).isHidden()).isFalse();
-                    assertThat(table.getColumns().get(2).isHidden()).isTrue();
-                    assertThat(table.getColumns().get(3).isHidden()).isFalse();
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getColumns().get(0).isHidden()).isTrue();
+            assertThat(table.getColumns().get(1).isHidden()).isFalse();
+            assertThat(table.getColumns().get(2).isHidden()).isTrue();
+            assertThat(table.getColumns().get(3).isHidden()).isFalse();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -222,19 +203,17 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         var columnIdsRef = new AtomicReference<List<String>>();
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    table.getColumns().forEach(col -> assertThat(col.getIndex()).isEqualTo(0));
-                    assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Icon");
-                    assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Name");
-                    columnIdsRef.set(table.getColumns().stream().map(Column::getId).map(UUID::toString).toList());
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+
+            table.getColumns().forEach(col -> assertThat(col.getIndex()).isEqualTo(0));
+            assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Icon");
+            assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Name");
+
+            columnIdsRef.set(table.getColumns().stream().map(Column::getId).map(UUID::toString).toList());
+            tableId.set(table.getId());
+        });
 
         Runnable changeColumnsOrder = () -> {
             List<String> ids = new ArrayList<>(columnIdsRef.get());
@@ -252,19 +231,15 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    for (int i = 0; i < 5; i++) {
-                        assertThat(table.getColumns().get(i).getIndex()).isEqualTo(i);
-                    }
-                    assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
-                    assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Icon");
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            for (int i = 0; i < 5; i++) {
+                assertThat(table.getColumns().get(i).getIndex()).isEqualTo(i);
+            }
+            assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
+            assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Icon");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ public final class TextfieldCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, String> cellValueProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private TextfieldCellDescription() {
         // Prevent instantiation
     }
@@ -67,6 +69,9 @@ public final class TextfieldCellDescription implements ICellDescription {
         return this.cellValueProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
 
     public static Builder newTextfieldCellDescription(String id) {
         return new Builder(id);
@@ -96,6 +101,7 @@ public final class TextfieldCellDescription implements ICellDescription {
 
         private BiFunction<VariableManager, Object, String> cellValueProvider;
 
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -121,6 +127,11 @@ public final class TextfieldCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
+
 
         public TextfieldCellDescription build() {
             TextfieldCellDescription textfieldCellDescription = new TextfieldCellDescription();
@@ -129,6 +140,7 @@ public final class TextfieldCellDescription implements ICellDescription {
             textfieldCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             textfieldCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             textfieldCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            textfieldCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return textfieldCellDescription;
         }
     }

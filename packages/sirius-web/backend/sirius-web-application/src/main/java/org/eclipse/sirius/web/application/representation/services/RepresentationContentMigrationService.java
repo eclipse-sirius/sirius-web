@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -51,7 +52,7 @@ public class RepresentationContentMigrationService implements IRepresentationCon
     }
 
     @Override
-    public Optional<ObjectNode> getMigratedContent(RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+    public Optional<ObjectNode> getMigratedContent(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
         Optional<ObjectNode> optionalObjectNode = Optional.empty();
         try {
             JsonNode rootJsonNode = this.objectMapper.readTree(representationContent.getContent());
@@ -59,7 +60,7 @@ public class RepresentationContentMigrationService implements IRepresentationCon
 
                 List<IRepresentationMigrationParticipant> applicableParticipants = this.getApplicableMigrationParticipants(representationMetadata.getKind(), representationContent);
                 if (!applicableParticipants.isEmpty()) {
-                    var migrationService = new RepresentationMigrationService(applicableParticipants, objectNode);
+                    var migrationService = new RepresentationMigrationService(editingContext, applicableParticipants, objectNode);
                     migrationService.parseProperties(objectNode, this.objectMapper);
                 }
 

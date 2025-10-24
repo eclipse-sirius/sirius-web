@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Handles all of the input events and emit output events of a specific project.
+ * Handles all the input events and emit output events of a specific project.
  *
  * @author sbegaudeau
+ * @since v0.1.2
  */
 public interface IEditingContextEventProcessor extends IDisposablePublisher {
     String getEditingContextId();
@@ -63,6 +64,7 @@ public interface IEditingContextEventProcessor extends IDisposablePublisher {
             return Optional.empty();
         }
 
+        @Deprecated(forRemoval = true)
         @Override
         public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
             return List.of();

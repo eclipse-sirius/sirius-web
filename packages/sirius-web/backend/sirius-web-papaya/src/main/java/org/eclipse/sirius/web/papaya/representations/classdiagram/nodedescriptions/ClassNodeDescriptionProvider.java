@@ -75,14 +75,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
-        var classNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
-                .borderSize(1)
-                .borderRadius(0)
-                .borderLineStyle(LineStyle.SOLID)
-                .build();
-
         var constructorsNodeDescription = this.constructorsNodeDescription();
         var attributesNodeDescription = this.attributesNodeDescription();
         var operationsNodeDescription = this.operationsNodeDescription();
@@ -95,20 +87,29 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .build();
 
+        var classNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
+                .borderSize(1)
+                .borderRadius(0)
+                .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
+                .build();
+
         var newAttributeAction = new DiagramBuilders().newAction()
-                    .body(new ViewBuilders().newChangeContext()
-                            .expression("aql:self")
-                            .children(
-                                    new ViewBuilders().newCreateInstance()
-                                            .typeName("papaya:Attribute")
-                                            .referenceName("attributes")
-                                            .build()
-                            )
-                            .build())
-                    .iconURLsExpression("aql:'/icons/papaya/full/obj16/Attribute.svg'")
-                    .tooltipExpression("New attribute")
-                    .name("New Attribute Action")
-                    .build();
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:self")
+                        .children(
+                                new ViewBuilders().newCreateInstance()
+                                        .typeName("papaya:Attribute")
+                                        .referenceName("attributes")
+                                        .build()
+                        )
+                        .build())
+                .iconURLsExpression("aql:'/icons/papaya/full/obj16/Attribute.svg'")
+                .tooltipExpression("New attribute")
+                .name("New Attribute Action")
+                .build();
 
         var newOperationAction = new DiagramBuilders().newAction()
                 .body(new ViewBuilders().newChangeContext()
@@ -132,7 +133,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(classNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(
                         constructorsNodeDescription,
                         attributesNodeDescription,
@@ -158,19 +158,20 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(insideLabelStyle)
                 .build();
 
+        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("aql:false")
+                .build();
+
         var constructorsNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         var constructorNodeDescription = this.constructorNodeDescription();
-
-        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("aql:false")
-                .build();
 
         return new DiagramBuilders().newNodeDescription()
                 .name(CONSTRUCTORS_NAME)
@@ -180,7 +181,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(constructorsNodeStyle)
                 .isHiddenByDefaultExpression("aql:true")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(constructorNodeDescription)
                 .build();
     }
@@ -230,19 +230,20 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(insideLabelStyle)
                 .build();
 
+        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("aql:false")
+                .build();
+
         var attributesNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         var attributeNodeDescription = this.attributeNodeDescription();
-
-        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("aql:false")
-                .build();
 
         return new DiagramBuilders().newNodeDescription()
                 .name(ATTRIBUTES_NAME)
@@ -251,7 +252,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(attributesNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(attributeNodeDescription)
                 .build();
     }
@@ -301,19 +301,20 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(insideLabelStyle)
                 .build();
 
+        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("aql:false")
+                .build();
+
         var operationsNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         var operationNodeDescription = this.operationNodeDescription();
-
-        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("aql:false")
-                .build();
 
         return new DiagramBuilders().newNodeDescription()
                 .name(OPERATIONS_NAME)
@@ -322,7 +323,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(operationsNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(operationNodeDescription)
                 .build();
     }

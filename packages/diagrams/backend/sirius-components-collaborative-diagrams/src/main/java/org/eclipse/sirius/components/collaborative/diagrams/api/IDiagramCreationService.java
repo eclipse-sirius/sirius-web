@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -53,7 +54,7 @@ public interface IDiagramCreationService {
      *            The diagram context
      * @return An updated diagram if we have been able to refresh it.
      */
-    Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext);
+    Optional<Diagram> refresh(IEditingContext editingContext, DiagramContext diagramContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -68,7 +69,7 @@ public interface IDiagramCreationService {
         }
 
         @Override
-        public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
+        public Optional<Diagram> refresh(IEditingContext editingContext, DiagramContext diagramContext) {
             return Optional.empty();
         }
     }

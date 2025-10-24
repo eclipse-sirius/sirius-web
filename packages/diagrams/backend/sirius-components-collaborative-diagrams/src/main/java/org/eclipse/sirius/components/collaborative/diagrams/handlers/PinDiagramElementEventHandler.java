@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
@@ -37,9 +39,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -72,7 +71,7 @@ public class PinDiagramElementEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         if (diagramInput instanceof PinDiagramElementInput pinInput) {
@@ -87,13 +86,13 @@ public class PinDiagramElementEventHandler implements IDiagramEventHandler {
         }
     }
 
-    private void handlePinDiagramElement(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IDiagramContext diagramContext, PinDiagramElementInput diagramInput) {
+    private void handlePinDiagramElement(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, DiagramContext diagramContext, PinDiagramElementInput diagramInput) {
         List<String> errors = new ArrayList<>(diagramInput.elementIds().size());
         Set<String> resolvedIds = new HashSet<>();
 
         for (String id : diagramInput.elementIds()) {
-            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.getDiagram(), id);
-            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), id);
+            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), id);
+            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), id);
 
             if (optionalEdge.isPresent() || optionalNode.isPresent()) {
                 resolvedIds.add(id);
@@ -104,7 +103,7 @@ public class PinDiagramElementEventHandler implements IDiagramEventHandler {
         }
 
         if (!resolvedIds.isEmpty()) {
-            diagramContext.getDiagramEvents().add(new PinDiagramElementEvent(resolvedIds, diagramInput.pinned()));
+            diagramContext.diagramEvents().add(new PinDiagramElementEvent(resolvedIds, diagramInput.pinned()));
         }
 
         this.sendResponse(payloadSink, changeDescriptionSink, errors, !resolvedIds.isEmpty(), diagramInput);

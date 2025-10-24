@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
+import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 
 export interface TreeProps {
   editingContextId: string;
   tree: GQLTree;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  expanded: string[];
+  maxDepth: number;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;
@@ -25,5 +26,6 @@ export interface TreeProps {
   children?: React.ReactElement<any, any>;
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public class DiagramServices implements IDiagramServices {
     @Override
     public Object collapse(IDiagramService diagramService, List<Node> nodes) {
         nodes.stream().map(Node::getId).forEach(nodeId -> {
-            diagramService.getDiagramContext().getDiagramEvents().add(new UpdateCollapsingStateEvent(nodeId, CollapsingState.COLLAPSED));
+            diagramService.getDiagramContext().diagramEvents().add(new UpdateCollapsingStateEvent(nodeId, CollapsingState.COLLAPSED));
         });
         return nodes;
     }
@@ -48,7 +48,7 @@ public class DiagramServices implements IDiagramServices {
     @Override
     public Object expand(IDiagramService diagramService, List<Node> nodes) {
         nodes.stream().map(Node::getId).forEach(nodeId -> {
-            diagramService.getDiagramContext().getDiagramEvents().add(new UpdateCollapsingStateEvent(nodeId, CollapsingState.EXPANDED));
+            diagramService.getDiagramContext().diagramEvents().add(new UpdateCollapsingStateEvent(nodeId, CollapsingState.EXPANDED));
         });
         return nodes;
     }
@@ -56,35 +56,35 @@ public class DiagramServices implements IDiagramServices {
     @Override
     public Object hide(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(diagramElementIds, true));
+        diagramService.getDiagramContext().diagramEvents().add(new HideDiagramElementEvent(diagramElementIds, true));
         return diagramElements;
     }
 
     @Override
     public Object reveal(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new HideDiagramElementEvent(diagramElementIds, false));
+        diagramService.getDiagramContext().diagramEvents().add(new HideDiagramElementEvent(diagramElementIds, false));
         return diagramElements;
     }
 
     @Override
     public Object fade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, true));
+        diagramService.getDiagramContext().diagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, true));
         return diagramElements;
     }
 
     @Override
     public Object unfade(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, false));
+        diagramService.getDiagramContext().diagramEvents().add(new FadeDiagramElementEvent(diagramElementIds, false));
         return diagramElements;
     }
 
     @Override
     public Object resetViewModifiers(IDiagramService diagramService, List<? extends IDiagramElement> diagramElements) {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
-        diagramService.getDiagramContext().getDiagramEvents().add(new ResetViewModifiersEvent(diagramElementIds));
+        diagramService.getDiagramContext().diagramEvents().add(new ResetViewModifiersEvent(diagramElementIds));
         return diagramElementIds;
     }
 

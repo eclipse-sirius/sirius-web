@@ -1,6 +1,773 @@
 = Changelog
 
-== v2025.4.0 (work in progress)
+== 2025.12.0 (work in progress)
+
+=== Shapes
+
+- Add command palette on projects page
+- Add support for indexing models
+- Add initial support for in-project search
+- Add support for tree presentation of impact analysis reports
+- Add support for workbench configuration with the backend
+
+
+=== Architectural decision records
+
+- [ADR-209] Decouple the command palette from the editing context
+- [ADR-210] Add the support for backend workbench configuration
+
+
+=== Deprecation warning
+
+
+
+=== Breaking changes
+
+
+
+=== Dependency update
+
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.6[Spring Boot 3.5.6]
+- [releng] Remove the dependency to xstate
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5491[#5491] [test] Add missing module in tsconfig for the playwright package
+- https://github.com/eclipse-sirius/sirius-web/issues/5627[#5627] [sirius-web] Fix the duplication of an element with incoming non changeable references
+- https://github.com/eclipse-sirius/sirius-web/issues/5617[#5617] [sirius-web] Fix duplication of an element to a mono valued containment feature while updating incoming reference.
+
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
+
+
+
+== 2025.10.0
+
+=== Shapes
+
+- Add support for exporting query result
+- Add support for search history
+- Rework the management of the selection in the workbench and in various representations
+
+=== Architectural decision records
+
+- [ADR-204] Make object duplication behavior customizable
+- [ADR-205] Add support for exporting query result
+- [ADR-206] Add support for importing documents with read-only permissions
+- [ADR-207] Make React contexts extensible
+- [ADR-208] Support edge type in edge style
+
+
+=== Deprecation warning
+
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Fix the capability name to list librairies to `Library:list`.
+The capability name `view` should be used when one element is requested.
+- https://github.com/eclipse-sirius/sirius-web/issues/5344[#5344] [diagram] The data structure `DiagramContext` is now immutable.
+As a result, the methods `IDiagramContext#reset()` and `IDiagramContext#update(...)` have been removed.
+The interface `IDiagramContext` is now deprecated and it will be removed soon.
+All usage of `IDiagramContext` within Sirius Web have been replaced by `DiagramContext` for example in `IDiagramEventHandler#handle`.
+The record `DiagramContext` is still implementing `IDiagramContext` for the moment and it still provides methods like `getDiagram()` or `getDiagramEvents()` but consumers of Sirius Web should switch to the new methods like `diagram()` or `diagramEvents()` as soon as possible.
+- https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Update the `ProjectSearchRepositoryDelegate` to include natures along with the returned projects for `#findAll(Before|After)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] The capability for the project settings images tab has change from `images` to `ProjectSettings#images`.
+The GraphQL API still only require the ID of the contribution to the `projectSettingsTabExtensionPoint` extension point, but the data fetcher will add `ProjectSettings#` has prefix for the capability type.
+Thus, any tab contributed by a downstream project will have as capability type `ProjectSettings#${tabId}`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] The main Sirius Web JAR no longer includes EMF CodeGen dependencies,
+including:
+* `ecj-3.42.0.jar`
+* `org.eclipse.core.commands-3.12.300.jar`
+* `org.eclipse.core.variables-3.6.500.jar`
+* `org.eclipse.debug.core-3.23.0.jar`
+* `org.eclipse.emf.codegen-2.24.0.jar`
+* `org.eclipse.emf.codegen.ecore-2.39.0.jar`
+* `org.eclipse.jdt.core-3.42.0.jar`
+* `org.eclipse.jdt.debug-3.23.0.jar`
+* `org.eclipse.jdt.launching-3.23.300.jar`
+* `org.eclipse.jdt.launching.macosx-3.6.300.jar`
+* `org.eclipse.text-3.14.300.jar`
++
+Downstream applications which had implicit dependencies to some of these may need to add new explicit dependencies.
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [diagram] The class `SelectionDialogTreeDescriptionBuilder;` was available in two different locations with exactly the same code, the version located in `org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder` has been removed and only `org.eclipse.sirius.components.view.builder.generated.diagram.SelectionDialogTreeDescriptionBuilder` should be used.
+- https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] An implementation of `IEditingContextDispatcher` and `IEventProcessorSubscriptionProvider` are now provided by default.
+Downstream projects should stop provide their own implementations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] The _data-testid_ value for the project and library navigation bars have been renamed to `navbar-title`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* `ResourceLoader#toResource` now requires an additional parameter `isReadOnly` specifying whether the loaded resource should be read-only
+* `ResourceMetadataAdapter` has a new constructor `ResourceMetadataAdapter(String name, boolean isReadOnly)`, the constructor with only the `name` parameter still exists, and will set the `isReadOnly` attribute to `false`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+`UploadDocumentInput` now requires a mandatory `readOnly` boolean parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] An implementation of `ICustomNodeStyleDeserializer` is required to correctly upload a diagram  with custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5433[#5433] [core] Replace the use of the attribute `kind` to compute the child creation descriptions by the container ID.
+Instead of creating an EObject instance of the EClass in the EPackage previously provided by the attribute `kind` to compute child descriptors, use the `ObjectSearchService` with the container ID to retrieve that EObject.
+- https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] `org.eclipse.sirius.components.diagrams.Label` is now a record
+- https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] To avoid edge blinking when refreshing the diagram, you need to set the property measured.height and measured.width with the value of the node layout data when converting a custom node accordingly to the xyflow https://reactflow.dev/learn/advanced-use/ssr-ssg-configuration#node-dimensions[documentation].
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] The _boolean_ `isDraggedNode` has been added to `NodeData`.
+This value must be initialized to _false_ in custom node converters like in `EllipseNodeConverter.ts`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] The prop `isDisabled` of the `appearance widgets` has been renamed to `disabled` to match the name of the prop used by the underlying input.
+* `element` of `PaletteAppearanceSectionContributionComponentProps` has been `removed`, you can use the hook https://reactflow.dev/api-reference/hooks/use-store-api[`useStoreApi`] or https://reactflow.dev/api-reference/hooks/use-react-flow[`useReactFlow`] from `XYFlow` in order to get the element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5570[#5570] [tree] Tree items context menu entries now take an additional `selectTreeItems: (selectedTreeItemIds: string[]) => void` prop which must be used if the action's effect should modify the selection inside the tree (instead of or in staddition to the workbench selection).
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the parameters `EditingContextEventProcessor#REPRESENTATION_ID` and `EditingContextEventProcessor#REPRESENTATION_LABEL` which were supposed to be used as the key for some change description parameters in favor of a dedicated class holding those keys `ChangeDescriptionParameters`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the change kind `ChangeKind#FOCUS_CHANGE` since it has not been used in months.
+- https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] In order to handle undo on node appearance events you need to implement a `INodeAppearanceChangeUndoRecorder` the method `List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change)` is used to determine the list of `IAppearanceChange` that will be applied after an undo operation in order to get the previous style after a style change or if the node was deleted.
+
+
+=== Dependency update
+
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.5[Spring Boot 3.5.5]
+- [releng] Switch to vite 7.1.1 and @vitejs/plugin-react 5.0.0
+- [releng] Switch to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
+- [releng] Switch to @types/node 22.16.0 to match the version of node that we are using
+- [releng] Remove the dependency to Google Guava, which was only used in a single location in `sirius-components-interpreter`.
+The code in question now use `com.github.ben-manes.caffeine` instead, the alternative https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/cache/CacheBuilder.html[recommended by Guava themselves].
+- [releng] Remove the dependency to @rollup/plugin-image
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5335[#5335] [sirius-web] Fix the missing libraries menu in the navigation bar menu
+- https://github.com/eclipse-sirius/sirius-web/issues/5312[#5312] [diagram] Fix an issue where a relation-based edge could be displayed twice in the diagram.
+- https://github.com/eclipse-sirius/sirius-web/issues/4921[#4921] [releng] Fix the license and URL of our maven modules in the SBOM
+- https://github.com/eclipse-sirius/sirius-web/issues/4924[#4924] [tree] Fix graphical glitch in Chrome with tree items background not being properly reset during drag'n'drop.
+- https://github.com/eclipse-sirius/sirius-web/issues/5277[#5277] [sirius-web] Fix an issue where the project natures were not returned with its owning project using `IProjectSearchService#findAll(Before|After)`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5356[#5356] [diagram] Fix React error on non-unique keys for palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5240[#5240] [sirius-web] Ensure that the editing context does not contain proxies after a library update
+- https://github.com/eclipse-sirius/sirius-web/issues/5352[#5352] [diagram] Fix tooltips for disabled buttons
+- https://github.com/eclipse-sirius/sirius-web/issues/5351[#5351] [diagram] Fix an issue where the border color of a list node was not set correctly
+- https://github.com/eclipse-sirius/sirius-web/issues/5392[#5392] [releng] Fix an issue caused by two maven modules using the same artifactId
+- https://github.com/eclipse-sirius/sirius-web/issues/5402[#5402] [sirius-web] Add missing line breaks on library impact analysis report
+- https://github.com/eclipse-sirius/sirius-web/issues/5310[#5310] [diagram] Prevent edge center label to blink during node moves
+- https://github.com/eclipse-sirius/sirius-web/issues/4994[#4994] [table] Fix rendering issue when a row menu entry has missing or invalid icon URL
+- https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Fix a lifecycle issue on diagram with nodes change event
+- https://github.com/eclipse-sirius/sirius-web/issues/5429[#5429] [diagram] Fix edge deletion by keyboard
+- https://github.com/eclipse-sirius/sirius-web/issues/5449[#5449] [core] Fix an issue preventing a representation from being re-opened once closed
+- https://github.com/eclipse-sirius/sirius-web/issues/5424[#5424] [diagram] Fix an issue where quickAccessToolBar was displayed with a wrong size
+- https://github.com/eclipse-sirius/sirius-web/issues/5467[#5467] [diagram] Fix an issue with the initialization of nodes that could cause edges or the edge palette to blink when refreshing the diagram
+- https://github.com/eclipse-sirius/sirius-web/issues/3971[#3971] [diagram] Enforce minimum width for diagram label direct edit input
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent node to be dropped on the diagram during a move inside its parent
+- https://github.com/eclipse-sirius/sirius-web/issues/5404[#5404] [diagram] Fix an issue where resetting an appearance was not updating the corresponding input
+- https://github.com/eclipse-sirius/sirius-web/issues/5160[#5160] [diagram] Revert the fix 5160 related to the lifecycle of the diagram because of instability issues
+- https://github.com/eclipse-sirius/sirius-web/issues/3029[#3029] [diagram] Fix drop position to match node feedback instead of cursor position
+- https://github.com/eclipse-sirius/sirius-web/issues/5516[#5516] [diagram] Fix an issue where a node style was not updated after canceling a connection
+- https://github.com/eclipse-sirius/sirius-web/issues/5457[#5457] [explorer, diagram] Fix a rendering issue where some menus could be partially obscured.
+This occured for the tree filter menu in the Explorer when a table was opened, and with the diagram filters menu which could be obscured by the right-side panel.
+- https://github.com/eclipse-sirius/sirius-web/issues/5519[#5519] [diagram] Fix an issue where ending a connection on a creation handle could make it impossible to start a new connection
+- https://github.com/eclipse-sirius/sirius-web/issues/5540[#5540] [diagram] Preserve label positions when importing a diagram
+- https://github.com/eclipse-sirius/sirius-web/issues/5547[#5547] [diagram] Fix an issue where the internal handle of a node could be out of sync with the displayed handle after moving an edge segment.
+- https://github.com/eclipse-sirius/sirius-web/issues/5535[#5535] [diagram] Prevent node style to be faded after drag and drop
+- https://github.com/eclipse-sirius/sirius-web/issues/5222[#5222] [sirius-web] Fix the 'Share Project' and 'Share Representation' actions to always provide the right URL
+- https://github.com/eclipse-sirius/sirius-web/issues/5568[#5568] [diagram] Prevent empty labels to be highlighted
+- https://github.com/eclipse-sirius/sirius-web/issues/5570[#5580] [explorer] Make sure newly created elements are automatically selected in the _Explorer_
+- https://github.com/eclipse-sirius/sirius-web/issues/5588[#5588] [diagram] Fix an issue where the collapsed state of the diagram filter modal was lost when refreshing the modal
+- https://github.com/eclipse-sirius/sirius-web/issues/5591[#5591] [sirius-web] Do not block project upload if some of the representations to import can not be created
+- https://github.com/eclipse-sirius/sirius-web/issues/5581[#5581] [diagram] Prevent node header to overlap its children
+- https://github.com/eclipse-sirius/sirius-web/issues/5590[#5590] [diagram] Fix filter modal menu not rendering correctly
+- https://github.com/eclipse-sirius/sirius-web/issues/5593[#5593] [diagram] Restore position dependant rotation for `imageNodeStyle`
+- https://github.com/eclipse-sirius/sirius-web/issues/4171[#4171] [sirius-web] Fix the display of tabs for representations with very long names, which could hide the "close tab" button (and the icon)
+- https://github.com/eclipse-sirius/sirius-web/issues/5614[#5614] [sirius-web] Add support for "pin/unpin" to all right side panels
+
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5334[#5334] [sirius-web] Add support for library capability check in controllers
+- https://github.com/eclipse-sirius/sirius-web/issues/5338[#5338] [sirius-web] Add support for capability check prior to retrieve project templates.
+To retrieve project templates, you will need the `Project:create` capability.
+- https://github.com/eclipse-sirius/sirius-web/issues/5341[#5341] [sirius-web] Add support for `Project:list` and `Project:view` project capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5325[#5325] [sirius-web] Add support for capability check on GraphQL and controllers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5376[#5376] [sirius-web] Add support for capability check for the editing context whether it is a project or a library.
+Queries and subscriptions rely on `Project:view` or `Library:view` whether the editing context is a project or a library.
+Mutations rely on `Project:edit` since we forbid to change the content of a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/5008[#5008] [sirius-web] Add support for exporting query results as CSV
+A new button is displayed to export the results when a query returns one or multiple objects.
+- https://github.com/eclipse-sirius/sirius-web/issues/5406[#5406] [core] Add the ability to view multiple workbench views at once
+- https://github.com/eclipse-sirius/sirius-web/issues/5140[#5140] [diagram] Add support for the management of the appearance of custom nodes with the extension point, `PaletteAppearanceSectionContribution`, an exemple is available on ellipse node.
+* `DiagramImporterEllipseNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with nodes that have custom appearance
+* `EditEllipseNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation
+* `EllipseNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`
+* A GraphQL mutation is also added `editEllipseNodeAppearance`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5057[#5057] [sirius-web] It is now possible to customize the behavior of the _Duplicate object_ operation on the backend using the new `org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicatorDelegate` API.
+- https://github.com/eclipse-sirius/sirius-web/issues/5420[#5420] [sirius-web] The scheduler for `IEventProcessorSubscriptionProvider` can now be customized.
+Downstream projects can provide their own scheduler providing an implementation of `IEventProcessorSubscriptionSchedulerProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5440[#5440] [sirius-web] Add support for a navigation bar menu header.
+Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible contribution of a header of the navigation bar menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/5015[#5015] [sirius-web] Provide the frontend to duplicate projects.
+- https://github.com/eclipse-sirius/sirius-web/issues/5427[#5427] [diagram] Add ICustomNodeStyleDeserializer API to correctly deserialize custom node style
+- https://github.com/eclipse-sirius/sirius-web/issues/5283[#5283] [diagram] Add support for the management of the appearance of outside labels
+- https://github.com/eclipse-sirius/sirius-web/issues/5045[#5045] [diagram] Add support for the management of the appearance of all properties for image nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5047[#5047] [diagram] Add support for the management of the appearance of all properties for edges
+- https://github.com/eclipse-sirius/sirius-web/issues/4065[#4065] [diagram] Make outside and edge labels draggable in diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] Add support for the management of the appearance of edge labels
+- https://github.com/eclipse-sirius/sirius-web/issues/5447[#5447] [diagram] Removed some unncessary animations on the diagram, which no longer zooms/pans on newly created or selected node if they are already fully visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/4374[#4374] [diagram] Add support for border node initial position
+- https://github.com/eclipse-sirius/sirius-web/issues/4214[#4214] [sirius-web] The Explorer's local selection is not updated automatically on workbench selection change anymore.
+In the _Explorer_ view, replace "Synchronize with representation" mode with an explicit "Reveal selection" action button.
+We will display the labels of the elements about to be selected in the tooltip of the button.
+- https://github.com/eclipse-sirius/sirius-web/issues/5512[#5512] [diagram] The nodes/edges selected inside a diagram no longer automatically follow the global workbench selection.
+Instead, a new button available in the diagram's toolbar can be used to trigger a "one-shot" update the diagram's selection according to the current global selection.
+- https://github.com/eclipse-sirius/sirius-web/issues/5458[#5458] [diagram] Add support for oblique edge type in view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/5499[#5499] [diagram] Add support for edge type in the appearance palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5463[#5463] [diagram] Add visibility field in the style of a label to be able to hide a label from the appearance palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/5526[#5526] [core] Add support for "Show in ..." actions to "push" the local selection from a representation or view into another one (provided it supports it).
+- https://github.com/eclipse-sirius/sirius-web/issues/5580[#5580] [diagram] Fix an issue that could cause label to be layout with a smaller width
+- https://github.com/eclipse-sirius/sirius-web/issues/5527[#5527] [sirius-web] The _Details_ view can now be pinned to keep showing the details of the same element even if others are selected in other parts of the UI.
+While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
+- https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
+- https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
+
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5220[#5220] [diagram] The palette now has a maximum size but not a minimum one.
+Improve how the palette is closed and how it is placed on the viewport after resizing the window.
+- https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [core] Improve the initial fix.
+Stop the propagation on the dialog instead of the input.
+- https://github.com/eclipse-sirius/sirius-web/issues/4865[#4865] [releng] Remove the use of Google Guava.
+- https://github.com/eclipse-sirius/sirius-web/issues/5321[#5321] [view] Add `IEditingContext.EDITING_CONTEXT` and `IDiagramContext.DIAGRAM_CONTEXT` variables to `ViewPaletteProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5007[#5007] [query] Add support for alternative interpreters in the query view.
+- https://github.com/eclipse-sirius/sirius-web/issues/5343[#5343] [core] `IRepresentationApplicationService.findRepresentationMetadataById()` can now resolve metadata for transient representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5359[#5359] [sirius-web] Add context to the images project settings tab capability.
+- https://github.com/eclipse-sirius/sirius-web/issues/5354[#5354] [diagram][tree] Add unicode support for direct edit input
+- https://github.com/eclipse-sirius/sirius-web/issues/5147[#5147] [sirius-web] Add impact analysis before performing a library update.
+The impact analysis report displays the following information:
+* References that will be broken by the update (new proxies that won't be resolved and will be deleted after the update)
+- https://github.com/eclipse-sirius/sirius-web/issues/4681[#4681] [view] Split the View builder generator and its dependencies in a separate module.
+This means the main Sirius Web JAR no longer includes EMF CodeGen dependencies (including the Eclipse Java compiler).
+The resulting JAR is smaller and has a reduced attack surface.
+- https://github.com/eclipse-sirius/sirius-web/issues/5398[#5398] [core] Add the ability to retrieve data from the workbench
+- https://github.com/eclipse-sirius/sirius-web/issues/5387[#5387] [sirius-web] Add support for read-only documents.
+* The document table contains a new `is_read_only` column storing whether a document is read-only.
+* Existing documents will be migrated as follow: `is_read_only = TRUE` for library documents, `is_read_only = FALSE` for all the other documents.
+* This information can be retrieved via `ResourceMetadataAdapter#isReadOnly()`.
+* Read-only resources are only persisted the first time we see them, they are not persisted later on to ensure they are actually read-only, and potential modifications on them aren't stored.
+- https://github.com/eclipse-sirius/sirius-web/issues/5400[#5400] [sirius-web] Ensure that updating a library doesn't look for proxies in non-persisted resources.
+This includes any resource that is not persisted, not only the libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/5093[#5093] [sirius-web] Remove state machine from TextfieldPropertySection in favor of useState
+- https://github.com/eclipse-sirius/sirius-web/issues/5384[#5384] [sirius-web] Add support for uploading documents with read-only permission.
+* The _Upload new model_ dialog now contains a split button to let user import with read-write or read-only permissions.
+- https://github.com/eclipse-sirius/sirius-web/issues/5270[#5270] [diagram] Export these stateful components `AppearanceColorPicker`, `AppearanceNumberTextfield ` and `AppearanceSelect` to use in custom node appearance section
+- https://github.com/eclipse-sirius/sirius-web/issues/5063[#5063] [diagram] Modify the custom edge algorithm to create new bending points only when the source or target handle would change position (top, left, ...).
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [test] Add Cypress tests for the 'Share' action of a project, and for the resolution of a URL with search parameter `workbenchConfiguration`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5091[#5091] [sirius-web] Remove state machine from used to manage project images
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Remove the `workbenchConfiguration` query parameter from the URL after loading the workbench.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add in the shared URL for a project which representations are opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/5431[#5431] [core] Support EObject-typed containments
+- https://github.com/eclipse-sirius/sirius-web/issues/5433[#5433] [core] Calculate child creation descriptions based on container object
+- https://github.com/eclipse-sirius/sirius-web/issues/5450[#5450] [sirius-web] Default implementation of `IRewriteProxiesResourceFilter` now relies on `IReadOnlyObjectPredicate` instead of always returning `true`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5414[#5414] [diagram] Create a dedicated package for the palette component
+- https://github.com/eclipse-sirius/sirius-web/issues/5394[#5394] [diagram] Position new bend points in the middle rather than on a node side
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Update the API used by workbench views to contribute additional information
+- https://github.com/eclipse-sirius/sirius-web/issues/5487[#5487] [diagram] Use the mouse position instead of the dragged node one to compute the drop position.
+- https://github.com/eclipse-sirius/sirius-web/issues/5504[#5504] [diagram] Reduce the size of the creation handles when creating an edge from another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/5439[#5439] [diagram] Support edge type by its style
+- https://github.com/eclipse-sirius/sirius-web/issues/5524[#5524] [sirius-web] Export `OnBoardArea` children components
+- https://github.com/eclipse-sirius/sirius-web/issues/5550[#5550] [sirius-web] Add the ability to abstain from a capability vote using `CapabilityVote.ABSTAIN`
+- https://github.com/eclipse-sirius/sirius-web/issues/5582[#5582] [diagram] Perform a fit to screen after arrangeAll
+- https://github.com/eclipse-sirius/sirius-web/issues/5556[#5556] [sirius-web] In the onboard area, update `NewRepresentationArea`'s entries labels from displaying only the `defaultName` to displaying both the `defaultName` and the `diagramDescriptionName` to make it more clear which representation description will be used when creating a new representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/5021[#5021] [diagram] When a tool asks for the selection of a given semantic element, at most one corresponding node/edge will be selected, even if the semantic element has multiple graphical elements associated to it.
+The priority order to identify the graphical element to select in this case is: nodes before edges, parent (container) nodes before their children (sub-nodes and border nodes), and finally the order in which the node descriptions are defined in the diagram description.
+When the user _explictly_ asks to synchronize the diagram's selection with the workbench (through the new diagram panel button) or from a another view (e.g. _Show in_ action from the Explorer), if a semantic element to select appears multiple times on a diagram, they are all selected unless their ancestors (direct or indirect parent/ancestor node) represents the same semantic element.
+In other words, all top-level nodes corresponding to a semantic element to select are selected, but not their sub-nodes which target the same semantic element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5545[#5545] [diagram] Reduce the size and opacity of the Minimap
+- https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Add a new interface named `IChangeDescriptionListener` used to react to change descriptions sent within the `EditingContextEventProcessor`.
+There should be only one instance of said interface in order to provide some orchestration for the various consumers of change descriptions.
+We cannot rely on Spring ApplicationEventPublisher here so we need to manually provide some lifecycle steps for consumers.
+As a result, another interface named `IChangeDescriptionConsumer` has been added for those who want to add some behavior once a change description is received by the editing context event processor.
+Those consumers can trigger some behavior during one of three steps `preAccept`, `accept` or `postAccept`.
+Default behaviors of Sirius Components and Sirius Web will be attached to those various steps.
+For example, the disposal or deletion of outdated objects such as the representation event processors of deleted representations will be done in the `preAccept` step.
+The refresh of all the representation event processors will be done in the `accept` phase.
+The persistence of the editing context will be done in the `postAccept` phase.
+This new low level API is quite new and may be changed heavily in the near future but it should provide a new way for downstream consumers of Sirius Web to hook their code in our lifecycle.
+- https://github.com/eclipse-sirius/sirius-web/issues/5285[#5285] [core] Extract additional concerns from the `EditingContextEventProcessor` thanks to the introduction of new services.
+We have added the `IRepresentationEventProcessorProvider` in order to either retrieve an `IRepresentationEventProcessor` from the `IRepresentationEventProcessorRegistry` or create an initialize a new instance thanks to the `IRepresentationEventProcessorComposedFactory`.
+We have also added the `IInputDispatcher` which is in charge of dispatching an input to its proper handler.
+
+
+
+== v2025.8.0
+
+=== Shapes
+
+- Add support for diagram customization
+- Add the ability to share the workbench state
+- Add selected project setting tab to the URL
+- Add impact analysis before tool execution in trees
+- Provide a backend-only API to retrieve a diagram as PNG or SVG file
+- Add support for project duplication
+- Add support for multiple query languages
+
+=== Architectural decision records
+
+- [ADR-197] Add support for backend-driven diagram customization
+- [ADR-198] Add the ability to share a URL containing the views of the workbench
+- [ADR-199] Add the ability to control the capabilities of the frontend from the backend
+- [ADR-200] Add configurable render variables to TreeDescription
+- [ADR-201] Add impact analysis for contextual menu actions of trees
+- [ADR-202] Add support for project duplication
+- [ADR-203] Add support for multiple query interpreters
+
+=== Deprecation warning
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] In Sirius Web v2024.3.0, we introduced smaller core services and indicated that `IObjectService` may be deprecated in the future.
+You can now consider that it is deprecated and will be removed soon.
+- https://github.com/eclipse-sirius/sirius-web/issues/5114[#5114] [sirius-web] The properties `targetObjectKind` and `targetObjectLabel` will soon be removed from the various representations were they have been used.
+Those are some remnants of some previous technical debt from the management of the selection on the frontend.
+We have improved the management of the selection to remove this issue so now we can clean those remaining parts.
+- https://github.com/eclipse-sirius/sirius-web/issues/5141[#5141] [core] `getRepresentationEventProcessors` from `IEditingContextEventProcessor` will be removed.
+Add IRepresentationEventProcessorRegistry, it can be use to retrieve any `RepresentationEventProcessor`
+
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Specific concerns from the Sirius Web explorer have been removed from core services, as such the following methods have been removed:
+* `ILabelService#getFullLabel`
+* `ILabelService#getLabelField`
+* `ILabelService#isLabelEditable`
+* `ILabelServiceDelegate#getFullLabel`
+* `ILabelServiceDelegate#getLabelField`
+* `ILabelServiceDelegate#isLabelEditable`
+* `IDefaultLabelService#getFullLabel`
+* `IDefaultLabelService#getLabelField`
+* `IDefaultLabelService#isLabelEditable`
+* `IEditService#editLabel`
+* `IEditServiceDelegate#editLabel`
+* `IDefaultEditService#editLabel`
+* `IObjectService#getFullLabel`
+* `IObjectService#getLabelField`
+* `IObjectService#isLabelEditable`
+* `IEditService#editLabel`
+* `IEditServiceDelegate#editLabel`
+* `IDefaultEditService#editLabel`
+The method `ILabelService#getImagePath` has also been renamed `ILabelService#getImagePaths` given that it returns a list of image paths.
+It has also been removed from `IObjectService`.
+The multiple methods available to compute a label (`ILabelService#getFullLabel`, `ILabelService#getLabel` and `ILabelService#getStyledLabel`) have thus been replaced with only `ILabelService#getStyledLabel` remaining.
+It will encourage the adoption of `StyledString` in various parts of the application and will provide one and only one entry point for specifiers who need to change the label of an object.
+For those who want to build a representation tightly coupled with the behavior of the Sirius Web explorer with regard to labels, new services have been introduced:
+* `o.e.s.w.application.views.explorer.services.api.IExplorerLabelService`
+* `o.e.s.w.application.views.explorer.services.api.IDefaultExplorerLabelService`
+* `o.e.s.w.application.views.explorer.services.api.IExplorerLabelServiceDelegate`
+Those services will replace the management of label which was tightly coupled with other concerns of the explorer in `IExplorerServices`.
+The following methods have also been removed:
+* `IExplorerServices#isEditable` which is replaced with `IExplorerLabelService#isEditable`
+* `IExplorerServices#getLabel` which is replaced with `ILabelService#getStyledLabel`
+The edition of the label of the explorer, which was previously done thanks to `IEditService#editLabel` is now performed thanks to `IExplorerLabelService#editLabel`.
+Specifiers who are relying on EMF based objects can customize the behavior of this specific part by implementing an instance of `IEMFLabelServiceDelegate`.
+This new API reduce the amount of code that needs to be written to change the label of EMF based objects in the explorer and other views (query, related elements, details, etc).
+Using the `IStyledStringConverter`, one can add support for EMF `IItemStyledLabelProvider` fairly easily.
+This support is not active by default for all metamodels because EMF uses both the name of the EClass and the value of the label feature by default.
+The name of the EClass being a bit redundant it was decided a long time ago in Sirius Web not to display it (this is the behavior of `DefaultEMFLabelService`).
+If your EMF based objects do not have a feature that can be used as a label, consider providing an `IEMFLabelServiceDelegate` to compute a proper label.
+This type of customization was not possible previously.
+Additional concerns will be removed in the future from `IObjectService` until we can remove this class entirely.
+- The backend modules `sirius-components-graphiql` and `sirius-components-graphql-voyager` and the frontend module `sirius-components-specification-layout` have been removed.
+They were unused and out of date.
+- [table] Remove the useless parameters `ITableIdProvider` and `IObjectService` in `ICustomCellConverter#convert` since both can be retrieved by the Spring dependency injection for implementations of this interface which need them
+- [core] Move read only related services located in `sirius-web-application` to `sirius-components-core`.
+As a result, `org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate` can now be used by Sirius Components modules and `org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate` can be implemented by downstream consumers of Sirius Components.
+- [core] Move default implementation of core services in `sirius-web-application`.
+Previously those implementation were located in various modules such as `sirius-components-emf`.
+Now all the default assumptions on the way Sirius Web works are consolidated in `org.eclipse.sirius.web.application.object.services`.
+In this package, you can now find the following default implementations:
+* `DefaultContentService`
+* `DefaultEditService`
+* `DefaultIdentityService`
+* `DefaultLabelService`
+* `DefaultObjectSearchService`
+* `DefaultReadOnlyObjectPredicate`
+- https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] The `idProvider` has been removed from `InsideLabelDescription`, `OutsideLabelDescription` and `LabelDescription`.
+`LabelIdProvider` is now used to calculate a label's id.
+Note that the `OWNER_ID` variable has also been removed.
+- [test] Subscription runners used in the tests are now returning a flux of payloads instead of the flux of data fetcher results.
+As a result, the difference in behavior between the tests subscribing to existing representations and those which started by the creation of a new representation has been removed.
+As a result, most instances of `flux.filter(DataFetcherResult.class::isInstance).map(DataFetcherResult.class::cast).map(DataFetcherResult::getData)` can be removed.
+Utility classes to help create assertions on those flux have been introduced to write tests more easily such as `DiagramEventPayloadConsumer`, `FormEventPayloadConsumer` or `TreeEventPayloadConsumer` among others.
+- https://github.com/eclipse-sirius/sirius-web/issues/5152[#5152] [emf] Update the following methods in `IMigrationParticipant`, by adding a new `JsonResource` parameter:
+* `void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject)`
+* `Object getValue(JsonResource resource, EObject eObject, EStructuralFeature feature, Object value)`
+* `String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri)`
+Those changes reflect the update of `IJsonResourceProcessor` in EMF-JSON 2.5.3.
+See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v253[the Sirius EMF JSON changelog] for details.
+- [sirius-web] Update the signature of the representation migration participants to provide the editing context.
+* Add new `IEditingContext` parameter in the method `IRepresentationMigrationParticipant#replaceJsonNode`
+* Add new `IEditingContext` parameter in the method `IRepresentationContentMigrationService#getMigratedContent`
+* Add new `IEditingContext` parameter in the constructor `RepresentationMigrationService`
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] The impact analysis dialog is not in charge of retrieving the impact analysis report anymore, and has been moved to `sirius-components-core`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] `SingleClickTreeItemContextMenuEntry` has a new field `withImpactAnalysis` that needs to be filled by the backend.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] The decision to display the frontend card to create a blank project, upload a project, and browse all template is now made by the backend.
+These cards are not contributed to the `createProjectAreaCardExtensionPoint` extension point anymore.
+They will be displayed if a project template with one of the following specific ID is returned: `create-project`, `upload-project`, or `browse-all-project-templates`.
+Thus, downstream projects that would want to hide these cards, will not be able to do it by not contributing them to the `createProjectAreaCardExtensionPoint` extension point, but by providing a `ICapabilityVoter`.
+Another consequence is that the `projectTemplates` graphql query now requires the `context` parameter.
+A new "demo" profile is now available to start Sirius Web as a demo instance.
+- https://github.com/eclipse-sirius/sirius-web/issues/5185[#5185] [sirius-web] The two project download buttons have been removed from their extension point contribution `projectContextMenuEntryExtensionPoint` and `ProjectDownloadMenuItemExtension` to become a standard button.
+They were contributed by extension points in order to let downstream projects disable them using a custom `ExtensionRegistryMergeStrategy`.
+Downstream projects are now able to disable the project download frontend support by contributing a `ICapabilityVoter` that disables the `download` capability on project.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Remove `readonly` props from `EditProjectNavbar` since this props was only used to enable or disable the project rename button.
+This purpose can be achieved with the `rename` capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [sirius-web] Remove the `editProjectViewReadOnlyPredicateExtensionPoint` that was use to define whether the edit project view should be read-only or not.
+This purpose can be achieve with the `edit` project capabilities by contributing a `ICapabilityVoter`:
+[source,java]
+----
+@Service
+public class CanEditProjectCapabilityVoter implements ICapabilityVoter {
+
+  public CapabilityVote vote(String type, String identifier, String capability) {
+    if ("Project".equals(type) && "edit".equals(capability) && identifier != null) {
+      if (projectCanBeEdited(identifier)) {
+        return CapabilityVote.GRANTED;
+      }
+    }
+
+    return CapabilityVote.DENIED;
+  }
+
+}
+----
+- https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Remove the contribution that contribute the link to libraries to the `navigationBarMenuEntryExtensionPoint` extension point.
+The link to libraries has become a standard menu item which can be hidden providing a `ICapabilityVoter` with the type `Library` and the capability `view`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] Custom nodes should use `useConnectionLineNodeStyle` in order to get the correct style feedback when creating a connection near the border of a node, this can be use like `connectionFeedbackStyle or dropFeedbackStyle`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] In the frontend, `WorkbenchViewContribution` now need to have an ID. This ID is used to share the workbench state through shareable URLs.
+
+=== Dependency update
+
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0].
+- [releng] Switch to Sirius EMF Json 2.5.3
+- [releng] Update to https://github.com/nodejs/node/releases/tag/v22.16.0[node.js 22.16.0] and https://docs.npmjs.com/cli/v10/using-npm/changelog#1092-2024-12-04[npm 10.9.2]
+- [releng] Update to https://github.com/KevinVandy/material-react-table/releases/tag/v3.2.1[Material React Table 3.2.1]
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5107[#5107] [explorer] Provide the new `existingRepresentations` variable to the _Domain explorer by DSL_ explorer description.
+- https://github.com/eclipse-sirius/sirius-web/issues/5080[#5080] [diagram] Prevent border nodes from being resized during their parent resizing
+- https://github.com/eclipse-sirius/sirius-web/issues/5065[#5065] [diagram] Prevent adding bendpoints on a simple click
+- https://github.com/eclipse-sirius/sirius-web/issues/5116[#5116] [diagram] Prevent custom appearances from being lost after exporting/importing a project
+- https://github.com/eclipse-sirius/sirius-web/issues/4966[#4966] [diagram] Fix an issue where an edge connection could fail if hovering an outside node label
+- https://github.com/eclipse-sirius/sirius-web/issues/2024[#2024] [explorer] Ensure the _Explorer_'s toolbar is always visible even when scrolling
+- https://github.com/eclipse-sirius/sirius-web/issues/5084[#5084] [diagram] Prevent growable nodes from being ignored on node creation
+- https://github.com/eclipse-sirius/sirius-web/issues/5165[#5165] [sirius-web] Fix an issue that prevent import of projects exported before version 2025.6.0
+- https://github.com/eclipse-sirius/sirius-web/issues/5070[#5070] [diagram] Prevent nodes from dropping onto the diagram background instead of its target node
+- https://github.com/eclipse-sirius/sirius-web/issues/5164[#5164] [diagram] Remove unwanted space between list node header and its first child
+- https://github.com/eclipse-sirius/sirius-web/issues/5207[#5207] [diagram] Fix an issue that prevented palette tools to open dialogs
+- https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Fix an issue where the edges were not correctly centered on the handle
+- https://github.com/eclipse-sirius/sirius-web/issues/5225[#5225] [diagram] Fix an issue where `synchronizeLayoutData` was called twice when moving the handle of a manually layouted edge
+- https://github.com/eclipse-sirius/sirius-web/issues/5197[#5197] [diagram] Include edges connected to border nodes in ELK input for improved automatic layout
+- https://github.com/eclipse-sirius/sirius-web/issues/5230[#5230] [sirius-web] Prevent the rename project modal to lose focus while typing.
+It occurred when we were trying to type the first letter of any menu item of the project browser action menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/5228[#5228] [sirius-web] Hide the modal to browser project templates when no template are provided
+- https://github.com/eclipse-sirius/sirius-web/issues/5249[#5249] [sirius-web] Fix an issue where the papaya table description was missing some unique ids
+- https://github.com/eclipse-sirius/sirius-web/issues/5251[#5251] [diagram] Support for resizing border nodes is not available at this time.
+Removing resizing anchors for border nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5241[#5241] [diagram] Fix an issue where expand/collapse action causes the application to crash
+- https://github.com/eclipse-sirius/sirius-web/issues/4217[#4217] [sirius-web] Fix the project rename with invalid project name.
+Prevent the mutation to be send if the name is invalid.
+Fix how error messages are handled.
+- https://github.com/eclipse-sirius/sirius-web/issues/5248[#5248] [diagram] Fix an issue where the diagram was in an incorrect state after moving a node that was inside a list node
+- https://github.com/eclipse-sirius/sirius-web/issues/5267[#5267] [diagram] Fix an issue where the handle style is not updated correctly during reconnect
+- https://github.com/eclipse-sirius/sirius-web/issues/5275[#5275] [portal] Fix an issue where the portal representation was not working if a representation was removed from the editing context while present in the portal representation.
+
+=== New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5126[#5126] [core] Add support for capabilities.
++ Providing one or many ICapabilityVoter, downstream projects will be able to remove some frontend components to prevent their users to use them.
++ Mutations disablement to completely deactivate a feature will be done later.
+- https://github.com/eclipse-sirius/sirius-web/issues/5181[#5181] [sirius-web] Add support for libraries capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/5156[#5156] [diagram] Align the UI and behavior of the reconnect handles with the one of the bending points
+- https://github.com/eclipse-sirius/sirius-web/issues/5183[#5183] [sirius-web] Add support for project settings capabilities.
+- [releng] The default Sirius Web application is now available as a Docker image https://hub.docker.com/orgs/eclipsesirius/:[on Docker Hub] as `eclipsesirius/sirius-web`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5178[#5178] [sirius-web] Add experimental server to fetch and return SVG or PNG images from existing diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] If the connection line is hovering the border of a node, then the handle is placed manually on the current position.
+If the connection line is hovering the middle of a node, then the handle is placed automatically using the layout algorithm.
+- https://github.com/eclipse-sirius/sirius-web/issues/5202[#5202] [sirius-web] Add support for project settings tab capabilities.
+Make the project image settings view contribution rely on the project tab capabilities.
+The extension point contribution ID is used as the _type_ for the `ICapabilityVoter#vote`
+
+[source,java]
+----
+public class ImageProjectSettingsTabCapabilityVoter implements ICapabilityVoter {
+
+    public CapabilityVote vote(String type, String identifier, String capability) {
+        // We are testing the type with "images" because it is the ID of the frontend contribution to the `projectSettingsTabExtensionPoint` extension point.
+        if (type.equals("images") && ...) {
+
+        }
+        return CapabilityVote.GRANTED;
+    }
+}
+----
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5227[#5227] [sirius-web] Add support for capability check on create and delete project mutations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Add an action, when editing a project, in the project contextual menu, to create a shareable URL.
++ This URL includes the current workbench selection and the current workbench state.
++ For now the only workbench state that is shareable is: the active views on the left and right panels.
++ Reversely, upon resolving a URL specifying a workbench state, that state is used to set up the initial state of the workbench components.
+- https://github.com/eclipse-sirius/sirius-web/issues/5295[#5295] [core] Add an API to contribute undo redo handlers for graphical events
+
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
+- https://github.com/eclipse-sirius/sirius-web/issues/5067[#5067] [diagram] Improve the organization of the code of the appearance support
+- https://github.com/eclipse-sirius/sirius-web/issues/5069[#5069] [diagram] Improve the appearance section of the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [sirius-web] Ensure that read only objects cannot be edited in the details view
+- https://github.com/eclipse-sirius/sirius-web/issues/5073[#5073] [view] Ensure that forms based on the view DSL do not allow the edition of read only objects
+- https://github.com/eclipse-sirius/sirius-web/issues/5099[#5099] [formdescriptioneditor] Remove state machine from formdescriptioneditor
+- https://github.com/eclipse-sirius/sirius-web/issues/5103[#5103] [sirius-web] Make `ExpandAllTreeItemContextMenuContribution` reusable by downstream applications
+- https://github.com/eclipse-sirius/sirius-web/issues/5089[#5089] [diagram] Add new `ancestors` variable to Nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5097[#5097] [sirius-web] Remove state machine from widget reference
+- https://github.com/eclipse-sirius/sirius-web/issues/422[#422] [diagram] Remove `idProvider` from label descriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/5011[#5011] [diagram] Improve feedback for nodes with list layout strategy when resizing and moving in the same action
+- [sirius-web] Payloads sent by subscriptions are now published to a dedicated thread before being sent to the frontend.
+As a result, it is now possible to re-enter the thread of the editing context event processor to ask for additional information in the body of a GraphQL subscription.
+While very small, this change is being made in a very important part of the code.
+In case of issue with this change, it may have a performance impact and also be the cause of some regressions.
+- https://github.com/eclipse-sirius/sirius-web/issues/4513[#4513] [core] Add `descriptionId` in frontend `RepresentationMetadata`
+- https://github.com/eclipse-sirius/sirius-web/issues/5064[#5064] [diagram] Increase the interaction radius of bendpoints, they are now easier to move
+- https://github.com/eclipse-sirius/sirius-web/issues/4899[#4899] [sirius-web] Synchronize the active project setting tab with the URL.
+The route entry of the setting page has been updated to "/projects/:projectId/settings/:tabId?".
+In `ProjectSettingsView`, we will now rely on the `tabId` from the URL to identify the setting tab that should be opened, and update the URL whenever the selected tab changes.
+The page will now redirect to a 404 if the `tabId` in the URL is not a known tab.
+- https://github.com/eclipse-sirius/sirius-web/issues/5161[#5161] [core] Keep the same order for the payloads of the subscriptions
+- https://github.com/eclipse-sirius/sirius-web/issues/5141[#5141] [core] Lower coupling in the EditingContextEventProcessor thanks to a dedicated service to manage representations
+- https://github.com/eclipse-sirius/sirius-web/issues/5095[#5095] [sirius-web] Remove state machine from modals used by the explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/5101[#5101] [core] Remove state machine from Workbench and EditProjectView
+- https://github.com/eclipse-sirius/sirius-web/issues/5060[#5060] [diagram] Decouple diagram tool invocation from the palette.
+Tools are now invoked in the `DiagramToolExecutor` context, which ensures that tools aren't invoked on an unmounted component.
+- https://github.com/eclipse-sirius/sirius-web/issues/5046[#5046] [diagram] Add missing properties for inside labels custom appearance
+- https://github.com/eclipse-sirius/sirius-web/issues/5039[#5039] [diagram] Decouple the impact analysis dialog from diagrams.
+The dialog can now display an impact analysis report, but isn't in charge of retrieving it.
+- https://github.com/eclipse-sirius/sirius-web/issues/5044[#5044] [diagram] Add missing properties for rectangular nodes custom appearance
+- https://github.com/eclipse-sirius/sirius-web/issues/5118[#5118] [tree] Add support for impact analysis in tree item contextual menu actions.
+- https://github.com/eclipse-sirius/sirius-web/issues/5123[#5123] [tree] Add support for tree item context menu action impact analysis in the view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/5185[#5185] [sirius-web] Hide the download button instead of disabling it when the download capability is disabled.
+- https://github.com/eclipse-sirius/sirius-web/issues/5171[#5171] [core] Rename representations in one event instead of two in `EditingContextEventProcessor` by directly renaming the representation in the concerned handlers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] [core] Delete representations in one event instead of two in `EditingContextEventProcessor` by directly deleting the representation in the concerned handlers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5013[#5013] [diagram] Improve edge path for source and target segments
+- https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] The shareable URL now includes the open/closed state of the left and right panels.
+
+
+
+== v2025.6.0
+
+=== Shapes
+
+- Control the views available in a workbench
+
+
+=== Architectural decision records
+
+- [ADR-192] Improve table representation lifecycle
+- [ADR-193] Leverage React router for nested routes
+- [ADR-194] Add the ability to contribute new actions to manage the visibility
+- [ADR-195] Control the views available in a workbench
+- [ADR-196] Add the ability to contribute custom actions on graphical deletion
+
+
+=== Deprecation warning
+
+
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] The API used to provide custom form widgets for the view DLS has been updated to use a service based approach instead of an EMF based switch.
+Implementations of the interface `org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider` should now switch to `org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter`.
+During this refactoring some concepts have been moved and their package have been updated such as `IFormIdProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4893[#4893] [compatibility] The support for odesign files from Sirius Desktop has been removed now that the support for the View DSL provides all the features that were supported in the odesign part.
+- https://github.com/eclipse-sirius/sirius-web/issues/4909[#4909] [sirius-web] The class `CreateForkedStudioMutationRuner` as been moved in `sirius-web-tests` and renamed to `CreateForkedStudioMutationRunner` to let downstream applications use it.
+- Sirius Web now uses Sirius EMF JSON 2.5.0, which includes breaking changes (and much improved performance).
+Of particular note: projects which create View-based, in-memory, representation description programatically and rely on `EcoreUtil.getURI()` to derive a stable object id should either:
+* Make sure they invoke `EcoreUtil.getURI()` *before* their objects are moved inside a `JsonResourceImpl` (see https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-papaya/src/main/java/org/eclipse/sirius/web/papaya/services/PapayaViewProvider.java[`PapayaViewProvider`] for an example).
+* Create the JSON resource they use for their View models with the new option `JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION` set:
++
+[source,java]
+----
+Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
+JsonResource resource = jsonResourceFactory.createResource(uri, this.customOptions);
+----
++
+See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
+- https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add a new `updateTargetObjectId` method to `IRepresentationMetadataUpdateService`.
+Every implementation of `IRepresentationMetadataUpdateService` should add its own implementation of `updateTargetObjectId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4933[#4933] [emf] Add the ability to know all the migration participants executed on a given resource through `ResourceMetadataAdapter`
+* `MigrationData getMigrationData()` method has been renamed to `MigrationData getLastMigrationData()`.
+* `void setMigrationData()` method has been renamed/changed to `boolean addMigrationData()`.
+* A new method `List<MigrationData> getAllMigrationData()` method has been added.
+* https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] The `hasChildren()` and `getDefaultChildren()` of the [`IExplorerServices`](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-application/src/main/java/org/eclipse/sirius/web/application/views/explorer/services/api/IExplorerServices.java) interface now expect an additional `List<RepresentationMetadata> existingRepresentations` argument with the list of all the representations to consider when rendering explorer items.
+In the default implementation (in `ExplorerChildrenProvider`) its value comes from the new variable `existingRepresentations` injected by `ExplorerRenderVariablesCustomizer`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] The `Delete from diagram` tool is no longer automatically added to the palette from a node with an unsynchronized
+layout.
+It is up to the specifier whether to create a tool to perform this action.
+Note that a migration participant adds this tool for existing diagram descriptions.
+- https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] `childrenLayoutStrategy` feature has been moved from `NodeDescription` to `NodeStyleDescription`.
+All custom node style descriptions must be regenerated to add the new `childrenLayoutStrategy` feature from `NodeStyleDescription`.
+- All the `ParametricSVG` related code has been removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] `onExpand` and `onExpandAll` is removed from `Tree` and all the tree components props.
+It is now possible to expand a tree item by using `onExpandedElementChange`.
+The "expand all" contextual menu entry (and its implementation) has been moved to Sirius Web as a contribution.
+
+
+=== Dependency update
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4820[#4820] [releng] Switch to EMFJson 2.4.1.
+The following dependencies have been updated:
+* `org.eclipse.emf.ecore.xmi` from `2.16.0` to `2.38.0`
+* `org.eclipse.emf.common` from `2.21.0` to `2.31.0`
+* `org.eclipse.emf.ecore` from `2.23.0` to `2.37.0`
+* `org.eclipse.emf.edit` from `2.16.0` to `2.22.0`
+* `org.eclipse.emf.ecore.edit` from `2.13.0` to `2.15.0`
+* `org.eclipse.emf.codegen` from `2.23.0` to `2.24.0`
+* `org.eclipse.emf.codegen.ecore` from `2.25.0` to `2.39.0`
+* `guava` from `32.0.0-jre` to `33.4.8-jre`
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
+- https://github.com/eclipse-sirius/sirius-web/issues/4895[4895] [releng] Remove the dependency to Sirius Desktop
+- [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
+- [releng] Switch `@mui/material` to `7.0.2`
+- [releng] Switch `@mui/icons-material` to `7.0.2`
+- [releng] Switch `tss-react` to `4.9.16`
+- [releng] Switch to Sirius EMF JSON 2.5.1
+- [releng] Switch to `@mui/x-tree-view` to `7.29.1`
+- [releng] Switch to xyflow 12.6.0
+- https://github.com/eclipse-sirius/sirius-web/issues/4183[4183] [workbench] Add a dependency to `react-resizable-panels 3.0.2`
+
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4823[#4823] [sirius-web] Fix a potential ConcurrentModificationException when saving project's contents
+- https://github.com/eclipse-sirius/sirius-web/issues/4787[#4787] [sirius-web] Prevent flow action to be available without the flow nature
+- https://github.com/eclipse-sirius/sirius-web/issues/4878[#4878] [diagram] Fix an issue where edge paths could lose their rectilinearity
+- https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
+- https://github.com/eclipse-sirius/sirius-web/issues/4944[#4944] [sirius-web] Fix a bug in inter-object references when uploading models introduced with the switch to Sirius EMF JSON 2.5.0 (in 2025.4.2)
+- https://github.com/eclipse-sirius/sirius-web/issues/4731[#4731] [sirius-web] Ensure that the project context menu is closed when an action is triggered
+- https://github.com/eclipse-sirius/sirius-web/issues/4958[#4958] [tree] Fix state access in `useEffect` modifying the state
+These `useEffect` now read the state value from `prevState` instead of `state`, which may not be reflecting the modifications performed by other `useEffect`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4967[#4967] [sirius-web] Fix representation creation when uploading whole projects
+- https://github.com/eclipse-sirius/sirius-web/issues/4979[#4977] [sirius-web] Fix a bug introduced with #4183 where collapsed views were still rendered (and updated by the backend)
+- https://github.com/eclipse-sirius/sirius-web/issues/3917[#3917] [diagram] Disable edge path customization when diagram is in read-only mode
+- https://github.com/eclipse-sirius/sirius-web/issues/3917[#3917] [diagram] Disable node actions when diagram is in read-only mode
+- https://github.com/eclipse-sirius/sirius-web/issues/3917[#3917] [diagram] Disable edge reconnections when diagram is in read-only mode
+- https://github.com/eclipse-sirius/sirius-web/issues/4723[#4723] [core] Restore the proper behavior of the share representation dialog
+- https://github.com/eclipse-sirius/sirius-web/issues/5018[#5018] [sirius-web] Fix a bug that remove node layout strategy after fork a representation
+- https://github.com/eclipse-sirius/sirius-web/issues/5003[#5003] [diagram] Fix an issue with the position of smart edges when having an edge on another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/5000[#5000] [sirius-web] Fix a crash when importing an unsynchronized diagram if the targetObject of a node was from a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/5023[#5000] [sirius-web] Keep the view state modifier (hidden, faded, normal) of the nodes when importing an unsynchronized diagram.
+- https://github.com/eclipse-sirius/sirius-web/issues/5204[#5204] [explorer] Fix regression in the Explorer layout when the filter bar is visible
+- https://github.com/eclipse-sirius/sirius-web/issues/5203[#5203] [diagram] When exporting a diagram as an image, hidden nodes are now ignored when computing the area to export.
+This avoid possibly large blank areas in the resulting images where invisible nodes are.
+
+=== New Features
+
+- [releng] The integration tests from the main `sirius-web` module are now exported in a https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html[test JAR].
+Downstream projects can get access to them in their own test code by adding the following dependency:
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.sirius</groupId>
+  <artifactId>sirius-web</artifactId>
+  <classifier>tests</classifier>
+  <type>test-jar</type>
+  <version>${sirius-web.version}</version>
+  <scope>test</scope>
+</dependency>
+----
+- https://github.com/eclipse-sirius/sirius-web/issues/4887[#4887] [diagram] Allow to override the default behavior of node actions.
+The `diagramNodeActionOverrideContributionExtensionPoint` extension point can be used to contribute components to use when a node action is available
+- https://github.com/eclipse-sirius/sirius-web/issues/4940[#4940] [diagram] Add the ability to open the image viewer for a diagram using the SVG support instead of the PNG one.
+For that, one should simply use the parameter `mode=svg-viewer`
+- https://github.com/eclipse-sirius/sirius-web/issues/4941[#4941] [diagram] Add the ability to perform an arrange all before displaying the diagram in the image viewer.
+For that, one should use the parameter `arrangeAll=true`
+- https://github.com/eclipse-sirius/sirius-web/issues/4918[#4918] [diagram] Add a node action to manage visibility of children
+- https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] A new interface, `IRepresentationRenderVariableCustomizer`, can now be used to customize the set of variables available when rendering a Tree.
+In particular it can be used to add new variables which are costly to compute so that they can be set *once* per tree render, and then used from any expression in the tree definition.
+This mechanism is currently provisional and only available for `TreeDescription` but will probably be generalized (maybe in an updated form) for other representations in the future.
+- https://github.com/eclipse-sirius/sirius-web/issues/4927[#4927] [diagram] Add `IManageVisibilityMenuActionsHandler` and `IManageVisibilityMenuActionsProvider` to add menu items to the manage visibility modal
+- https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] Remove auto-generated tool `Delete from diagram` for unsynchronized nodes to let specifiers provide one with their desired behavior
+- https://github.com/eclipse-sirius/sirius-web/issues/4756[#4756] [diagram] Add first implementation of customized appearance on rectangular nodes
+
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4308[#4308] [diagram] Handles now take bending points into account
+- https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customization
+- https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
+- [sirius-web] Avoid a database access if not necessary.
+Refactor the test to leverage boolean expression shortcut and avoid an unnecessary call to this.semanticDataSearchService.findById() if we already know we are inside a studio or a papaya project.
+- https://github.com/eclipse-sirius/sirius-web/issues/4827[#4827] [diagram] Add default quick access tool for deletable and editable edges
+- https://github.com/eclipse-sirius/sirius-web/issues/4098[#4098] [interpreter] Cache the AQL services for a given `EPackage`.
+This improves the time needed to open a project and other scenarios where we create new AQL interpreters.
+The improvement on project opening will be proportional to the size/complexity of the metamodels and the number of View-based representations available in the project.
+- https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] Switch to a service based approach to convert forms
+- https://github.com/eclipse-sirius/sirius-web/issues/4835[#4835] [view] Order Node/Edge palette's tools/tools sections the same way.
+- https://github.com/eclipse-sirius/sirius-web/issues/4861[#4861] [diagram] Keep the specified target position of the handle when creating an edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4877[#4877] [diagram] Change handle position after dragging first/last segment on node borders
+- https://github.com/eclipse-sirius/sirius-web/issues/4879[#4879] [diagram] Prevents an edge segment from being parallel to node borders
+- https://github.com/eclipse-sirius/sirius-web/issues/4867[#4867] [diagram] When creating a new connection, use the parent as candidate if possible
+- https://github.com/eclipse-sirius/sirius-web/issues/4840[#4850] [sirius-web] Reduce the amount of data fetched from the DB on project opening.
+`StudioCapableEditingContextPredicate` (called several times on projet open) now avoids fetching the documents content, which it does not need.
+On large projects this can significantly reduce the amount of data fetched from the DB and not actually used.
+- [sirius-web] The switch to Sirius EMF JSON 2.5.0 should greatly improve the performance of loading and saving semantic data.
+This is mostly visible when cold-opening projects with large documents (load performance), and when saving semantic data after edition operations.
+Note that the improvements will only be visible for projects created or modified after the update; existing semantic data which has not been modified will continue to be "slow" to load/read until it is modified at least once and saved in the new, improved format.
+- [releng] Switch to Sirius EMF JSON 2.5.1 and thus add the ability for a migration participant to change the URI used by a proxy during a migration.
+- https://github.com/eclipse-sirius/sirius-web/issues/4866[#4866] [diagram] Disable the last executed tool when opening the palette, if it is not available in the current state, it is still displayed for information.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Create the bytes array for the original contents only once
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Move proxy validation into `DocumentSanitizedJsonContentProvider`.
+We need the actual Resource to perform the validation, so do this inside `DocumentSanitizedJsonContentProvider` so that we can cleanup after ourself and remove the resource used to obtain the initial JSON content from the resource set.
+This is a first step to ensure that we do not have unintended side-effects on the ResourceSet used, so that later on we can perform all the upload-related operations inside the already existing EditingContext's ResourceSet and avoid creating a new only (at great cost).
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Cleanup temporary resources in `DocumentSanitizedJsonContentProvider`.
+This has a non-trivial cost for medium to large models as removing the resources triggers `oes.components.emf.services.EditingContextCrossReferenceAdapter.clearReferencesTo(EObject)`, which can be quite costly. But it is required to avoid unintended side-effects if we want to be able to perform the whole upload operation directly inside the already active EditingContext's ResourceSet.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Consider only non-derived refrences when testing for proxies.
+In the case of UML for example, which includes *many* derived references, this can have a significant impact.
+It is safe to only look for proxies in "plain" (non-derived) references: if none is found there, there is no (sane) way for a derived reference to produce one.
+In all strictness, it *is* possible for the Java code inside a derived reference to produce a proxy object, but that is highly non-standard behavior, and given the performance benefit of ignoring these references it seems a good default.
+If we really want to support "pathological" metamodels maybe we could introduce some flags and/or other mechanism as a possible but non-default behavior.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Use low-level code for performance-critical ProxyValidator
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Upload new models directly into the existing ResourceSet.
+This can be disabled with a system property for easy testing/comparison and if some applications decide that it is too risky in their context and accept the additional cost of re-creating a whole temporary editing context for the upload operation.
+- https://github.com/eclipse-sirius/sirius-web/issues/4875[#4875] [table] Improve table representation lifecycle
+- https://github.com/eclipse-sirius/sirius-web/issues/4825[#4825] [table] Add support for tooltip on table cells
+- https://github.com/eclipse-sirius/sirius-web/issues/4332[#4332] [table] Remove table dependency in `sirius-components-form`
+- https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add the ability to change programmatically the object to which a representation is attached.
+For that the service `IRepresentationMetadataUpdateService` has a new method named `updateTargetObjectId`.
+By itself, it will not be enough, one would also have to update the content of the representation too but `IRepresentationContentUpdateService` already support that.
+- https://github.com/eclipse-sirius/sirius-web/issues/4933[#4933] [emf] Add the ability to know all the migration participants executed on a given resource through `ResourceMetadataAdapter`
+- https://github.com/eclipse-sirius/sirius-web/issues/4932[#4932] [core] Add a pre/post processor mechanism to `EditingContextEventProcessorRegistry`.
+Thanks to this mechanism one can trigger some behavior after the entire loading of the editing context and before the creation of the `IEditingContextEventProcessor` or just after the creation of the `IEditingContextEventProcessor`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4935[#4935] [sirius-web] Add loading indicator when uploading a project or document.
+- https://github.com/eclipse-sirius/sirius-web/issues/4946[#4946] [sirius-web] Add loading indicator in dialogs used to publish, import or update a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Improve handles placement on edges during connection or when the EdgeAnchorNode is rerendered
+- https://github.com/eclipse-sirius/sirius-web/issues/4822[#4822] [core] Allow the retrieval of all the representations.
+The onboard area can now display all the representations created in the project and it is not limited to the first 20 representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4963[#4963] [core] Avoid change recording overhead for some well-known read-only operations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] Rendering the contents of the _Explorer_ now uses much less accesses to the database, for faster results.
+The number of database queries used is now independent on the number of items to render.
+This is done thanks to the addition of a fast-path in `ExplorerServices#getTreeItemObject`.
+This avoids one DB query per tree item in most cases where the `IDefaultObjectSearchService` knows how to find the element.
+This changes the behavior if there are delegates which *override* the default response from `IDefaultObjectSearchService` instead of simply adding support for elements not handled at all by `IDefaultObjectSearchService`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4183[#4183] [workbench] Use `react-resizable-panels package` to layout the workbench
+- https://github.com/eclipse-sirius/sirius-web/issues/4667[#4667] [table] Add cell edit handler for table as form widget
+- https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] Move View DSL node layout strategy from node description to node style.
+This modification will enable a conditional style with a different layout strategy.
+- https://github.com/eclipse-sirius/sirius-web/issues/667[#667] [sirius-web] Restore layout and unsynchronized nodes when importing a project with a diagram
+- https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reactivity of the explorer rendering when hovering on a tree with many items are expanded/visible
+Handle the recursive part of the tree rendering in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independent of how many of its descendants are expanded/visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
+Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.
+- https://github.com/eclipse-sirius/sirius-web/issues/5017[#5017] [sirius-web] Improve the consistency and documentation of the extension points of the frontend
+- https://github.com/eclipse-sirius/sirius-web/issues/3180[#3180] [diagram] Preserve the position of border nodes when resizing the parent
+- https://github.com/eclipse-sirius/sirius-web/issues/5137[#5137] [diagram] Improve feedback on growable nodes when resizing the parent
+
+
+== v2025.4.0
 
 === Shapes
 
@@ -51,7 +818,7 @@ There is no more need for a specific serializer for this `RestDataVersion#payloa
 The `Map<String, Object>` is handled by the default serializer/deserializer.
 `RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
 The `Map<String, Object>` is handled by the default serializer/deserializer.
-- [releng] We now use Sirius EMF JSON 2.4.0 (from 2.3.2 before), which changed its Mave `groupId` from `org.eclipse.sirius.emfjson` to `org.eclipse.sirius` to match all other Maven artifacts produced in Eclipse Sirius.
+- [releng] We now use Sirius EMF JSON 2.4.0 (from 2.3.2 before), which changed its Maven `groupId` from `org.eclipse.sirius.emfjson` to `org.eclipse.sirius` to match all other Maven artifacts produced in Eclipse Sirius.
 The new GAV is `org.eclipse.sirius:org.eclipse.sirius.emfjson:2.4.0-SNAPSHOT`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4679[#4679] [tree] `TreeView` no longer handles selection.
 The parent component is now responsible for this.
@@ -86,8 +853,9 @@ This means that all checkbox cell classes have been moved into sirius-web-applic
 * CheckboxCellDescription
 * CheckboxCellElementProps
 * EditCheckboxCellInput
-
 They are now in `org.eclipse.sirius.web.application.views.table.customcells` package.
+
+
 
 === Dependency update
 
@@ -128,6 +896,10 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4793[#4793] [diagram] Handle 'transparent' background color in SVG Export
 - https://github.com/eclipse-sirius/sirius-web/issues/4783[#4783] [diagram] Fix an issue where the labels of graphical nodes were not wrapped or had ellipsis anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/4660[#4660] [sirius-web] Fix the use of project image as a shape of image node style
+- https://github.com/eclipse-sirius/sirius-web/issues/4807[#4807] [table] Table CSV export does not export the content of a LabelCell
+- https://github.com/eclipse-sirius/sirius-web/issues/4831[#4831] [sirius-web] Fix the computation of the previous / next page and the ordering of the projects in the project browser
+
+
 
 === New Features
 
@@ -186,7 +958,6 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
@@ -226,6 +997,8 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
+- https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
+
 
 
 == v2025.2.0
@@ -430,7 +1203,6 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
-
 
 == v2025.1.0
 
@@ -921,7 +1693,7 @@ More existing APIs will be migrated to this new common pattern.
  * `public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(IRepresentationConfiguration configuration, IInput input)`;
  * `Flux<IPayload> getSubscription(String editingContextId, IRepresentationConfiguration representationConfiguration, IInput input);`
  - https://github.com/eclipse-sirius/sirius-web/issues/3623[#3623] [form] Remove `IWidgetSubscriptionManagerFactory`
- - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retreived by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
+ - https://github.com/eclipse-sirius/sirius-web/issues/3634[#3634] [sirius-web] Remove `GraphQLNodeStyleFragment` from `NodeTypeRegistry`, you can specify additional fields to be retrieved by the subscription using the `DocumentTransform` GraphQL API and the `apolloClientOptionsConfigurersExtensionPoint` extension point
  - https://github.com/eclipse-sirius/sirius-web/issues/3641[#3641] [core] `IRepresentationMetadataProvider` now defined a single method `Optional<RepresentationMetadata> getMetadata(String representationId)` instead of separate `canHandle` and `handle` methods.
  - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Remove the existing mechanisms used to contribute instances of `FormConverter` and `TreeConverter`
  - https://github.com/eclipse-sirius/sirius-web/issues/3859[#3859] [view] View builders has been grouped in dedicated packages

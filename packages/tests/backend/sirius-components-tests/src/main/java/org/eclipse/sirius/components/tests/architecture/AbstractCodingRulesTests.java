@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,33 +44,7 @@ public abstract class AbstractCodingRulesTests {
 
     private static final String GRAPHQL_GUAVA = "graphql.com.google..";
 
-    private static final String GUAVA_ANNOTATIONS = "com.google.common.annotations..";
-
-    private static final String GUAVA_BASE = "com.google.common.base..";
-
-    private static final String GUAVA_COLLECT = "com.google.common.collect..";
-
-    private static final String GUAVA_ESCAPE = "com.google.common.escape..";
-
-    private static final String GUAVA_EVENTBUS = "com.google.common.eventbus..";
-
-    private static final String GUAVA_HASH = "com.google.common.hash..";
-
-    private static final String GUAVA_HTML = "com.google.common.html..";
-
-    private static final String GUAVA_IO = "com.google.common.io..";
-
-    private static final String GUAVA_MATH = "com.google.common.math..";
-
-    private static final String GUAVA_NET = "com.google.common.net..";
-
-    private static final String GUAVA_PRIMITIVES = "com.google.common.primitives..";
-
-    private static final String GUAVA_REFLECT = "com.google.common.reflect..";
-
-    private static final String GUAVA_UTIL = "com.google.common.util..";
-
-    private static final String GUAVA_XML = "com.google.common.xml..";
+    private static final String GUAVA = "com.google.common..";
 
     private static final String GUAVA_THIRDPARTY = "com.google.thirdparty..";
 
@@ -115,20 +89,7 @@ public abstract class AbstractCodingRulesTests {
                 .should()
                 .dependOnClassesThat()
                 .resideInAnyPackage(
-                        GUAVA_ANNOTATIONS,
-                        GUAVA_BASE,
-                        GUAVA_COLLECT,
-                        GUAVA_ESCAPE,
-                        GUAVA_EVENTBUS,
-                        GUAVA_HASH,
-                        GUAVA_HTML,
-                        GUAVA_IO,
-                        GUAVA_MATH,
-                        GUAVA_NET,
-                        GUAVA_PRIMITIVES,
-                        GUAVA_REFLECT,
-                        GUAVA_UTIL,
-                        GUAVA_XML,
+                        GUAVA,
                         GUAVA_THIRDPARTY
                 )
                 .allowEmptyShould(true);

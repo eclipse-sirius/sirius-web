@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Selection } from '@eclipse-sirius/sirius-components-core';
 import React from 'react';
 import { DiagramContextValue } from './DiagramContext.types';
 
@@ -17,6 +18,9 @@ const value: DiagramContextValue = {
   editingContextId: '',
   diagramId: '',
   readOnly: false,
+  registerPostToolSelection: () => {},
+  consumePostToolSelection: () => null,
+  toolSelections: new Map<string, Selection>(),
 };
 
 export const DiagramContext = React.createContext<DiagramContextValue>(value);

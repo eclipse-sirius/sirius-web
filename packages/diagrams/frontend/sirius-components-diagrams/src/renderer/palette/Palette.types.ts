@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { XYPosition } from '@xyflow/react';
 
 export interface ContextualPaletteStyleProps {
@@ -39,6 +40,7 @@ export interface PaletteProps {
   targetObjectId: string;
   onDirectEditClick: () => void;
   onClose: () => void;
+  children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteState {

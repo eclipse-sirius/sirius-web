@@ -1,0 +1,37 @@
+= (S) Control the views available in a workbench
+
+== Problem
+
+The workbench views available in the workbench are hardcoded in the entire application, they are always the same in all workbenches.
+
+
+== Key Result
+
+We want to be able to provide a specific set of workbench views per workbench.
+
+
+=== Acceptance Criteria
+
+One should be able to contribute a workbench view for a specific project.
+Integration tests will be provided
+
+
+== Solution
+
+A new query will be available to fetch the configuration of the workbench views when the project is opened.
+The API of the `Workbench` component will also be updated to leverage a workbench configuration.
+
+
+=== Breadboarding
+
+
+=== Cutting backs
+
+- This will not be dynamically refreshed to automatically open views
+- This will not manipulate the internal state of the workbench views
+
+
+== Rabbit holes
+
+
+== No-go

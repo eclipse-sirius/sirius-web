@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,13 +23,7 @@ import { useState } from 'react';
 import { useFullscreen } from '../hooks/useFullScreen';
 import { PortalToolbarProps, PortalToolbarState } from './PortalToolbar.types';
 
-export const PortalToolbar = ({
-  editingContextId,
-  representationId,
-  fullscreenNode,
-  portalMode,
-  setPortalMode,
-}: PortalToolbarProps) => {
+export const PortalToolbar = ({ representationId, fullscreenNode, portalMode, setPortalMode }: PortalToolbarProps) => {
   const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
   const [state, setState] = useState<PortalToolbarState>({ modal: null });
 
@@ -38,13 +32,7 @@ export const PortalToolbar = ({
 
   let modalElement: React.ReactElement | null = null;
   if (state.modal === 'share') {
-    modalElement = (
-      <ShareRepresentationModal
-        editingContextId={editingContextId}
-        representationId={representationId}
-        onClose={closeModal}
-      />
-    );
+    modalElement = <ShareRepresentationModal representationId={representationId} onClose={closeModal} />;
   }
 
   return (

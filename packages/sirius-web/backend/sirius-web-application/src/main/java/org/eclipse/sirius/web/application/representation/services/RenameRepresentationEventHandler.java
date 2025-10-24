@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,11 @@ package org.eclipse.sirius.web.application.representation.services;
 
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
@@ -29,9 +32,6 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -77,6 +77,8 @@ public class RenameRepresentationEventHandler implements IEditingContextEventHan
                 if (result instanceof Success<Void>) {
                     payload = new SuccessPayload(renameRepresentationInput.id());
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), renameRepresentationInput);
+                    changeDescription.getParameters().put(ChangeDescriptionParameters.REPRESENTATION_ID, renameRepresentationInput.representationId());
+                    changeDescription.getParameters().put(ChangeDescriptionParameters.REPRESENTATION_LABEL, renameRepresentationInput.newLabel());
                 }
             }
         }

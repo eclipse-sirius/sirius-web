@@ -12,22 +12,84 @@
  *******************************************************************************/
 
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { Handle } from '@xyflow/system';
+import { Handle, NodeLookup } from '@xyflow/system';
+import parse from 'svg-path-parser';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
-import { borderLeftAndRight, horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
+import { horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
 import {
   GetEdgeParameters,
   GetEdgeParametersWhileMoving,
   GetHandleCoordinatesByPosition,
+  GetHandlePositionWithOffSet,
   GetNodeCenter,
   GetParameters,
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
+  Parameters,
+  SegmentDirection,
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
+export const HANDLE_OFFSET = 3;
+
+export const getUpdatedHandleForNode = (
+  node: InternalNode<Node<NodeData>>,
+  edgeId: string,
+  handleId: string,
+  XYPosition: XYPosition,
+  position: Position
+): ConnectionHandle[] => {
+  if (node.height && node.width) {
+    //Get the position of the handle relative to the parent node
+    XYPosition = {
+      x: XYPosition.x - node.internals.positionAbsolute.x,
+      y: XYPosition.y - node.internals.positionAbsolute.y,
+    };
+
+    //Take the size of the handle and its position into account
+    if (position === Position.Top) {
+      XYPosition = {
+        x: XYPosition.x - HANDLE_OFFSET,
+        y: 0,
+      };
+    }
+
+    if (position === Position.Bottom) {
+      XYPosition = {
+        x: XYPosition.x - HANDLE_OFFSET,
+        y: -DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Right) {
+      XYPosition = {
+        y: XYPosition.y - HANDLE_OFFSET,
+        x: -DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Left) {
+      XYPosition = {
+        x: 0,
+        y: XYPosition.y - HANDLE_OFFSET,
+      };
+    }
+  }
+
+  return node.data.connectionHandles.map((handle) => {
+    if (handle.id === handleId) {
+      return {
+        ...handle,
+        edgeId,
+        XYPosition,
+        position,
+      };
+    }
+    return handle;
+  });
+};
 
 export const getNodesUpdatedWithHandles = (
   nodes: Node<NodeData>[],
@@ -37,48 +99,16 @@ export const getNodesUpdatedWithHandles = (
   XYPosition: XYPosition,
   position: Position
 ): Node<NodeData>[] => {
-  if (node.height && node.width) {
-    //Take the size of the handle and its position into account
-    XYPosition = {
-      x: XYPosition.x - node.internals.positionAbsolute.x,
-      y: XYPosition.y - node.internals.positionAbsolute.y,
-    };
-
-    if (position === Position.Bottom) {
-      XYPosition = {
-        ...XYPosition,
-        y: XYPosition.y - node.height - DEFAULT_HANDLE_SIZE,
-      };
-    }
-
-    if (position === Position.Right) {
-      XYPosition = {
-        ...XYPosition,
-        x: XYPosition.x - node.width - DEFAULT_HANDLE_SIZE,
-      };
-    }
-  }
+  const updatedHandle = getUpdatedHandleForNode(node, edgeId, handleId, XYPosition, position);
 
   const nodeId = node.id;
   return nodes.map((node) => {
     if (nodeId === node.id) {
-      const handles = node.data.connectionHandles.map((handle) => {
-        if (handle.id === handleId) {
-          return {
-            ...handle,
-            edgeId,
-            XYPosition,
-            position,
-          };
-        }
-        return handle;
-      });
-
       return {
         ...node,
         data: {
           ...node.data,
-          connectionHandles: handles,
+          connectionHandles: updatedHandle,
         },
       };
     }
@@ -87,6 +117,90 @@ export const getNodesUpdatedWithHandles = (
 };
 
 const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
+
+export const getHandlePositionFromNodeAndPath = (
+  edgePath: string,
+  xyPosition: XYPosition,
+  fromNode: InternalNode<Node<NodeData>> | Node<NodeData>
+): Position => {
+  let position = Position.Right;
+  if (getSegmentDirection(edgePath, xyPosition) === 'x') {
+    if (fromNode.position.y > xyPosition.y) {
+      position = Position.Bottom;
+    } else {
+      position = Position.Top;
+    }
+  } else {
+    if (fromNode.position.x > xyPosition.x) {
+      position = Position.Right;
+    } else {
+      position = Position.Left;
+    }
+  }
+
+  return position;
+};
+
+const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
+  const pathPoints = parse(edgePath);
+  let segmentDirection: SegmentDirection = 'y';
+  const { x, y } = xyPosition;
+  for (let i = 1; i < pathPoints.length; i++) {
+    const p1 = pathPoints[i - 1];
+    const p2 = pathPoints[i];
+    if (p1 && p2) {
+      const isVertical: boolean = p1.y === p2.y;
+      const isHorizontal: boolean = p1.x === p2.x;
+      const isOnVerticalSegment = isHorizontal && Math.round(x) === Math.round(p1.x);
+      const isOnHorizontalSegment = isVertical && Math.round(y) === Math.round(p1.y);
+
+      if (isOnVerticalSegment || isOnHorizontalSegment) {
+        return isHorizontal ? 'y' : 'x';
+      } else {
+      }
+    }
+  }
+
+  return segmentDirection;
+};
+export const getNearestPointInPath = (
+  x: number,
+  y: number,
+  edgePath: string,
+  fromNode: InternalNode<Node<NodeData>>
+): { position: XYPosition; handlePosition: Position; positionRatio: number } => {
+  var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  svgPath.setAttribute('d', edgePath);
+  const pathLength = svgPath.getTotalLength();
+  let closestPoint: XYPosition = { x: 0, y: 0 };
+  let minDistance = Infinity;
+  let positionRatio = 0.5;
+  let pointAtLength = 0;
+
+  for (let i = 0; i <= pathLength; i += 5) {
+    const testPoint = svgPath.getPointAtLength(i);
+
+    const dx = testPoint.x - x;
+    const dy = testPoint.y - y;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestPoint = testPoint;
+      pointAtLength = i;
+    }
+  }
+
+  positionRatio = pointAtLength / pathLength;
+
+  const handlePosition = getHandlePositionFromNodeAndPath(edgePath, closestPoint, fromNode);
+
+  return {
+    position: closestPoint,
+    positionRatio: positionRatio,
+    handlePosition: handlePosition,
+  };
+};
 
 export const getNearestPointInPerimeter = (
   rectX: number,
@@ -175,13 +289,69 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   };
 };
 
-export const getEdgeParameters: GetEdgeParameters = (source, target, nodeLookup, layoutDirection) => {
+export const getEdgeParameters: GetEdgeParameters = (source, target, nodeLookup, layoutDirection, bendingPoints) => {
+  const firstBendingPoint = bendingPoints.length > 0 ? bendingPoints[0] : null;
+  const lastBendingPoint = bendingPoints.length > 0 ? bendingPoints[bendingPoints.length - 1] : null;
+  if (firstBendingPoint && lastBendingPoint) {
+    const { position: sourcePosition } = getHandlePositionFromBendingPoint(
+      source,
+      nodeLookup,
+      layoutDirection,
+      firstBendingPoint
+    );
+    const { position: targetPosition } = getHandlePositionFromBendingPoint(
+      target,
+      nodeLookup,
+      layoutDirection,
+      lastBendingPoint
+    );
+    return {
+      sourcePosition,
+      targetPosition,
+    };
+  }
+
   const { position: sourcePosition } = getParameters(null, source, target, nodeLookup, layoutDirection);
   const { position: targetPosition } = getParameters(null, target, source, nodeLookup, layoutDirection);
-
   return {
     sourcePosition,
     targetPosition,
+  };
+};
+
+const getHandlePositionFromBendingPoint = (
+  node: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+  layoutDirection: string,
+  bendingPointToUse: XYPosition
+): Parameters => {
+  const centerA = getNodeCenter(node, nodeLookup);
+  const centerB = bendingPointToUse;
+
+  const horizontalDifference = Math.abs(centerA.x - centerB.x);
+  const verticalDifference = Math.abs(centerA.y - centerB.y);
+  let position: Position;
+  if (isVerticalLayoutDirection(layoutDirection)) {
+    if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
+      position = centerA.x <= centerB.x ? Position.Right : Position.Left;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
+  } else if (isHorizontalLayoutDirection(layoutDirection)) {
+    if (Math.abs(centerA.x - centerB.x) < horizontalLayoutDirectionGap) {
+      position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
+    } else {
+      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    }
+  } else {
+    if (horizontalDifference > verticalDifference) {
+      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
+  }
+  return {
+    position,
   };
 };
 
@@ -308,6 +478,23 @@ export const getNodeCenter: GetNodeCenter = (node, nodeLookUp) => {
   }
 };
 
+export const getHandlePositionWithOffSet: GetHandlePositionWithOffSet = (handleXYPosition, handlePosition) => {
+  // The offeset is equal to the size of the node divided per 2 to center the edge on the handle
+  // And one extra pixel is added/removed to point to the border of the handle
+  const { x, y } = handleXYPosition;
+  if (handlePosition === Position.Left || handlePosition === Position.Right) {
+    return {
+      x: handlePosition === Position.Left ? x + DEFAULT_HANDLE_SIZE / 2 - 1 : x + DEFAULT_HANDLE_SIZE / 2 + 1,
+      y: y + DEFAULT_HANDLE_SIZE / 2,
+    };
+  } else {
+    return {
+      x: x + DEFAULT_HANDLE_SIZE / 2,
+      y: handlePosition === Position.Top ? y + DEFAULT_HANDLE_SIZE / 2 - 1 : y + DEFAULT_HANDLE_SIZE / 2 + 1,
+    };
+  }
+};
+
 export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
   node,
   handlePosition,
@@ -324,19 +511,7 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
     if (calculateCustomNodeEdgeHandlePosition) {
       handleXYPosition = calculateCustomNodeEdgeHandlePosition(node, handlePosition, handle);
     } else {
-      let offsetX = handle.width / 2 + borderLeftAndRight / 2;
-      let offsetY = handle.height / 2 + borderLeftAndRight / 2;
-
-      if (handlePosition === Position.Left) {
-        offsetX = handle.width - offsetX;
-      } else if (handlePosition === Position.Top) {
-        offsetY = handle.height - offsetY;
-      }
-
-      handleXYPosition = {
-        x: handle.x + offsetX,
-        y: handle.y + offsetY,
-      };
+      handleXYPosition = getHandlePositionWithOffSet({ x: handle.x, y: handle.y }, handlePosition);
     }
   }
 
@@ -344,4 +519,18 @@ export const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (
     x: (node.internals.positionAbsolute.x ?? 0) + handleXYPosition.x,
     y: (node.internals.positionAbsolute.y ?? 0) + handleXYPosition.y,
   };
+};
+
+export const isCursorNearCenterOfTheNode = (node: InternalNode<Node<NodeData>>, position: XYPosition): boolean => {
+  if (node.width && node.height) {
+    const offsetX = 5;
+    const offSetY = 5;
+    const x = node.internals.positionAbsolute.x + offsetX;
+    const y = node.internals.positionAbsolute.y + offSetY;
+    const right = node.internals.positionAbsolute.x + node.width - offsetX;
+    const bottom = node.internals.positionAbsolute.y + node.height - offSetY;
+
+    return position.x > x && position.x < right && position.y > y && position.y < bottom;
+  }
+  return false;
 };

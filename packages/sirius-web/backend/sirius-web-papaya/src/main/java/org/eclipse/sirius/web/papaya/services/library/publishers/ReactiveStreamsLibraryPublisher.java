@@ -106,7 +106,7 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
         var reactiveStreamsProject = PapayaFactory.eINSTANCE.createProject();
         reactiveStreamsProject.setName("Reactive Streams");
-        reactiveStreamsProject.getComponents().add(reactiveStreamsComponent);
+        reactiveStreamsProject.getElements().add(reactiveStreamsComponent);
 
         reactiveStreamsProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -117,7 +117,7 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactive Streams");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactive Streams", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 

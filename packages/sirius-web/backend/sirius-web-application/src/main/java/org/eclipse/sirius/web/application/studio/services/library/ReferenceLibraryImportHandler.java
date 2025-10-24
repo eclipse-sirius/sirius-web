@@ -117,13 +117,24 @@ public class ReferenceLibraryImportHandler implements IEditingContextEventHandle
                         }
                     }
 
-                    var semanticDataDependencies = newLibraries.stream()
+                    var dependenciesSemanticDataIds = newLibraries.stream()
                             .map(Library::getSemanticData)
                             .toList();
-                    this.semanticDataUpdateService.addDependencies(input, AggregateReference.to(editingContextSemanticData.getId()), semanticDataDependencies);
-                }
+                    this.semanticDataUpdateService.addDependencies(input, AggregateReference.to(editingContextSemanticData.getId()), dependenciesSemanticDataIds);
 
-                this.editingContextDependencyLoader.loadDependencies(editingContext);
+                    // Retrieve all the recursive dependencies of the libraries added as dependency of the editing
+                    // context to ensure they are loaded with the library resources.
+                    List<SemanticData> dependenciesSemanticData = new ArrayList<>();
+                    dependenciesSemanticDataIds.forEach(dependencySemanticDataId -> {
+                        this.semanticDataSearchService.findById(dependencySemanticDataId.getId())
+                                .ifPresent(dependencySemanticData -> {
+                                    dependenciesSemanticData.add(dependencySemanticData);
+                                    dependenciesSemanticData.addAll(this.semanticDataSearchService.findAllDependenciesRecursivelyById(dependencySemanticData.getId()));
+                                });
+                    });
+
+                    this.editingContextDependencyLoader.loadDependencies(editingContext, dependenciesSemanticData);
+                }
 
                 payload = new SuccessPayload(input.id(), List.of(new Message("Libraries imported", MessageLevel.SUCCESS)));
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);

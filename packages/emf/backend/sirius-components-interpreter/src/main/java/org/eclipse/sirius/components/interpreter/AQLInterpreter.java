@@ -12,16 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.interpreter;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
+
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
@@ -34,6 +36,7 @@ import org.eclipse.acceleo.query.runtime.QueryCompletion;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -41,6 +44,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.eclipse.sirius.components.interpreter.api.IInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +53,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sbegaudeau
  */
-public class AQLInterpreter {
+public class AQLInterpreter implements IInterpreter {
 
     /**
      * The prefix used by AQL expressions.
@@ -106,9 +110,52 @@ public class AQLInterpreter {
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
 
-        ePackages.stream().filter(this::isValidEPackage).forEach(this.queryEnvironment::registerEPackage);
+        ePackages.stream().filter(this::isValidEPackage).forEach(ePackage -> {
+            String nsURI = ePackage.getNsURI();
+            long start = System.nanoTime();
+            boolean cacheHit = this.registerEPackage(ePackage);
+
+            Duration duration = Duration.ofNanos(System.nanoTime() - start);
+            this.logger.atDebug()
+                .setMessage("Registered {} in {}ms ({})")
+                .addArgument(nsURI)
+                .addArgument(duration.toMillis())
+                .addArgument(() -> {
+                    if (cacheHit) {
+                        return "cache hit";
+                    }
+                    return "cache miss";
+                })
+                .log();
+        });
 
         this.initExpressionsCache();
+    }
+
+    private boolean registerEPackage(EPackage ePackage) {
+        boolean cacheHit = false;
+
+        if (this.queryEnvironment.getEPackageProvider() instanceof EPackageProvider ePackageProvider) {
+            EPackage registeredEPackage = ePackageProvider.registerPackage(ePackage);
+            if (registeredEPackage != null) {
+                var optionalCachedServices = ePackage.eAdapters().stream()
+                        .filter(AQLServicesAdapter.class::isInstance)
+                        .map(AQLServicesAdapter.class::cast)
+                        .map(AQLServicesAdapter::getServices)
+                        .findFirst();
+                if (optionalCachedServices.isPresent()) {
+                    cacheHit = true;
+                    ServiceUtils.registerServices(this.queryEnvironment, optionalCachedServices.get());
+                } else {
+                    var services = ServiceUtils.getServices(registeredEPackage);
+                    var cache = new AQLServicesAdapter(services);
+                    registeredEPackage.eAdapters().add(cache);
+                    ServiceUtils.registerServices(this.queryEnvironment, services);
+                }
+            }
+        }
+
+        return cacheHit;
     }
 
     private boolean isValidEPackage(EPackage ePackage) {
@@ -119,48 +166,44 @@ public class AQLInterpreter {
      * Initializes the cache of the expressions.
      */
     private void initExpressionsCache() {
-        IQueryBuilderEngine builder = QueryParsing.newBuilder(this.queryEnvironment);
+        IQueryBuilderEngine builder = QueryParsing.newBuilder();
         int maxCacheSize = 500;
-        this.parsedExpressions = CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(CacheLoader.from(builder::build));
+        this.parsedExpressions = Caffeine.newBuilder().maximumSize(maxCacheSize).build(builder::build);
     }
 
+    @Override
     public Result evaluateExpression(Map<String, Object> variables, String expressionBody) {
         String expression = new ExpressionConverter().convertExpression(expressionBody);
         if (expression.startsWith(AQL_PREFIX)) {
             expression = expression.substring(AQL_PREFIX.length());
         }
 
-        try {
-            long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
-            AstResult build = this.parsedExpressions.get(expression);
-            IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(this.queryEnvironment);
-            EvaluationResult evalResult = evaluationEngine.eval(build, variables);
+        AstResult build = this.parsedExpressions.get(expression);
+        IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(this.queryEnvironment);
+        EvaluationResult evalResult = evaluationEngine.eval(build, variables);
 
-            BasicDiagnostic diagnostic = new BasicDiagnostic();
-            if (Diagnostic.OK != build.getDiagnostic().getSeverity()) {
-                diagnostic.merge(build.getDiagnostic());
-            }
-            if (Diagnostic.OK != evalResult.getDiagnostic().getSeverity()) {
-                diagnostic.merge(evalResult.getDiagnostic());
-            }
-
-            this.log(expressionBody, diagnostic);
-
-            long end = System.currentTimeMillis();
-            if (end - start > 200) {
-                this.logger.atDebug()
-                        .setMessage("{}ms to execute the expression {}")
-                        .addArgument(end - start)
-                        .addArgument(expressionBody)
-                        .log();
-            }
-
-            return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
-        } catch (ExecutionException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+        BasicDiagnostic diagnostic = new BasicDiagnostic();
+        if (Diagnostic.OK != build.getDiagnostic().getSeverity()) {
+            diagnostic.merge(build.getDiagnostic());
         }
-        return new Result(Optional.empty(), Status.ERROR);
+        if (Diagnostic.OK != evalResult.getDiagnostic().getSeverity()) {
+            diagnostic.merge(evalResult.getDiagnostic());
+        }
+
+        this.log(expressionBody, diagnostic);
+
+        long end = System.currentTimeMillis();
+        if (end - start > 200) {
+            this.logger.atDebug()
+                    .setMessage("{}ms to execute the expression {}")
+                    .addArgument(end - start)
+                    .addArgument(expressionBody)
+                    .log();
+        }
+
+        return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
     }
 
     private void log(String expression, Diagnostic diagnostic) {

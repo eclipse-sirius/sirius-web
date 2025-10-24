@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -39,7 +41,9 @@ public class EditingContext implements IEMFEditingContext {
 
     private final List<View> views;
 
-    private final Map<String, ChangeDescription> inputId2change = new HashMap<>();
+    private final Map<UUID, ChangeDescription> inputId2change = new HashMap<>();
+
+    private final Map<UUID, List<IRepresentationChange>> inputId2RepresentationChanges = new HashMap<>();
 
     private final ChangeRecorder changeRecorder;
 
@@ -68,13 +72,22 @@ public class EditingContext implements IEMFEditingContext {
     public List<View> getViews() {
         return this.views;
     }
-
     public ChangeRecorder getChangeRecorder() {
-        return changeRecorder;
+        return this.changeRecorder;
     }
 
-    public Map<String, ChangeDescription> getInputId2change() {
-        return inputId2change;
+    public Map<UUID, ChangeDescription> getInputId2change() {
+        return this.inputId2change;
+    }
+
+    public Map<UUID, List<IRepresentationChange>> getInputId2RepresentationChanges() {
+        return this.inputId2RepresentationChanges;
+    }
+
+    @Override
+    public void dispose() {
+        this.changeRecorder.dispose();
+        IEMFEditingContext.super.dispose();
     }
 
 }

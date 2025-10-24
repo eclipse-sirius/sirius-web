@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.form.FormDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.GroupDescriptionBuilder;
@@ -28,7 +29,8 @@ import org.eclipse.sirius.components.view.builder.generated.form.PageDescription
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tablewidget.TableWidgetBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -120,18 +122,29 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
                 .isResizableExpression("false")
                 .initialWidthExpression("-1")
                 .build();
+
         var rowDescription = new TableBuilders().newRowDescription()
                 .name("TypesRow")
                 .semanticCandidatesExpression("aql:self.types->toPaginatedData()")
                 .isResizableExpression("false")
                 .initialHeightExpression("-1")
                 .build();
+
+        SetValue setValue = new ViewBuilders().newSetValue()
+                .featureName("name")
+                .valueExpression("aql:newValue")
+                .build();
+
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("TypeCell")
                 .preconditionExpression("true")
-                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .cellWidgetDescription(new TableBuilders()
+                        .newCellTextfieldWidgetDescription()
+                        .body(setValue)
+                        .build())
                 .valueExpression("aql:self.name")
                 .build();
+
         return new TableWidgetBuilders().newTableWidgetDescription()
                 .name("Types")
                 .labelExpression("Types")

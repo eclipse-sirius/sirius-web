@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,15 +26,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class LabelDescription {
-    /**
-     * The name of the variable passed to a label id provider so that the label's own id can include the id of it's
-     * owner/parent diagram element.
-     */
-    public static final String OWNER_ID = "ownerId";
 
     private String id;
-
-    private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> textProvider;
 
@@ -46,10 +39,6 @@ public final class LabelDescription {
 
     public String getId() {
         return this.id;
-    }
-
-    public Function<VariableManager, String> getIdProvider() {
-        return this.idProvider;
     }
 
     public Function<VariableManager, String> getTextProvider() {
@@ -77,9 +66,8 @@ public final class LabelDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private Function<VariableManager, String> idProvider;
+        private final String id;
 
         private Function<VariableManager, String> textProvider;
 
@@ -87,11 +75,6 @@ public final class LabelDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder idProvider(Function<VariableManager, String> idProvider) {
-            this.idProvider = Objects.requireNonNull(idProvider);
-            return this;
         }
 
         public Builder textProvider(Function<VariableManager, String> textProvider) {
@@ -107,7 +90,6 @@ public final class LabelDescription {
         public LabelDescription build() {
             LabelDescription labelDescription = new LabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
-            labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
             return labelDescription;

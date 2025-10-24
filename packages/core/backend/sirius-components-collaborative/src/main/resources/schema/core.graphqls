@@ -16,10 +16,9 @@ type EditingContext {
   id: ID!
   domains(rootDomainsOnly: Boolean!): [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
-  representations(representationIds: [ID!]): EditingContextRepresentationConnection!
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
-  childCreationDescriptions(kind: ID!, referenceKind: String): [ChildCreationDescription!]!
+  childCreationDescriptions(containerId: ID!, referenceKind: String): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
   queryBasedBoolean(query: String!): Boolean
@@ -27,6 +26,7 @@ type EditingContext {
   queryBasedObjects(query: String!, variableName: String): [Object]
   actions: EditingContextActionsConnection!
   object(objectId: ID!): Object
+  objects(objectIds: [ID!]!): [Object!]!
 }
 
 type Domain {
@@ -56,15 +56,6 @@ type ChildCreationDescription {
   id: ID!
   label: String!
   iconURL: [String!]!
-}
-
-type EditingContextRepresentationConnection {
-  edges: [EditingContextRepresentationEdge!]!
-  pageInfo: PageInfo!
-}
-
-type EditingContextRepresentationEdge {
-  node: RepresentationMetadata!
 }
 
 type EditingContextRepresentationDescriptionConnection {
@@ -164,8 +155,6 @@ type Mutation {
   createChild(input: CreateChildInput!): CreateChildPayload!
   createRepresentation(input: CreateRepresentationInput!): CreateRepresentationPayload!
   createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
-  deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
-  renameObject(input: RenameObjectInput!): RenameObjectPayload!
   invokeEditingContextAction(input: InvokeEditingContextActionInput!): InvokeEditingContextActionPayload!
 }
 

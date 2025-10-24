@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,16 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 
 /**
- * A group of tools and toolSections.
+ * A group of tools and tool sections.
+ *
+ * @technical-debt This class and its related concepts, such as {@link ITool} or {@link ToolSection} should be deleted.
+ * Those concepts have no reason to exists in the code related to the rendering of the diagram since they should be
+ * requested dynamically. Specifiers can indeed need to make tools available conditionally. Concepts such as these
+ * surrounding the diagram but not strictly used during the rendering should be removed from sirius-components-diagrams.
+ * These classes are not to be improved or connected to additional pieces of code.
  *
  * @author frouene
+ * @since v2023.10.0
  */
 @Immutable
 public final class Palette {

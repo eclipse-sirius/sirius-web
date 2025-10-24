@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.factories.services;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Objects;
@@ -87,6 +90,7 @@ public class EObjectInitializer implements IEObjectInitializer {
         return visibility;
     }
 
+    @SuppressWarnings("checkstyle:IllegalCatch")
     private void initialize(java.lang.Class<?> javaClass, Class aClass) {
         aClass.setAbstract(Modifier.isAbstract(javaClass.getModifiers()));
         aClass.setFinal(Modifier.isFinal(javaClass.getModifiers()));
@@ -111,7 +115,13 @@ public class EObjectInitializer implements IEObjectInitializer {
                 })
                 .forEach(aClass.getTypeParameters()::add);
 
-        Arrays.stream(javaClass.getDeclaredConstructors())
+        Constructor<?>[] declaredConstructors = new Constructor<?>[0];
+        try {
+            declaredConstructors = javaClass.getDeclaredConstructors();
+        } catch (Throwable throwable) {
+            // Do nothing
+        }
+        Arrays.stream(declaredConstructors)
                 .filter(javaConstructor -> !javaConstructor.isSynthetic())
                 .map(javaConstructor -> {
                     var constructor = PapayaFactory.eINSTANCE.createConstructor();
@@ -130,7 +140,14 @@ public class EObjectInitializer implements IEObjectInitializer {
                 })
                 .forEach(aClass.getConstructors()::add);
 
-        Arrays.stream(javaClass.getDeclaredFields())
+
+        Field[] fields = new Field[0];
+        try {
+            fields = javaClass.getDeclaredFields();
+        } catch (Throwable throwable) {
+            // Do nothing
+        }
+        Arrays.stream(fields)
                 .filter(javaField -> !javaField.isSynthetic())
                 .map(javaField -> {
                     var attribute = PapayaFactory.eINSTANCE.createAttribute();
@@ -143,7 +160,13 @@ public class EObjectInitializer implements IEObjectInitializer {
                 })
                 .forEach(aClass.getAttributes()::add);
 
-        Arrays.stream(javaClass.getDeclaredMethods())
+        Method[] methods = new Method[0];
+        try {
+            methods = javaClass.getDeclaredMethods();
+        } catch (Throwable throwable) {
+            // Do nothing
+        }
+        Arrays.stream(methods)
                 .filter(javaMethod -> !javaMethod.isSynthetic())
                 .filter(javaMethod -> !javaMethod.isBridge())
                 .map(javaMethod -> {

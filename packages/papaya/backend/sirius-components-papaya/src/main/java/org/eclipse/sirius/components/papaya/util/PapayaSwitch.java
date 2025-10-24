@@ -27,22 +27,33 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
+import org.eclipse.sirius.components.papaya.Container;
+import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
+import org.eclipse.sirius.components.papaya.FolderElement;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
+import org.eclipse.sirius.components.papaya.Link;
 import org.eclipse.sirius.components.papaya.Message;
 import org.eclipse.sirius.components.papaya.MessageEmitter;
 import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.Operation;
+import org.eclipse.sirius.components.papaya.OperationalActivity;
+import org.eclipse.sirius.components.papaya.OperationalActor;
+import org.eclipse.sirius.components.papaya.OperationalCapability;
+import org.eclipse.sirius.components.papaya.OperationalEntity;
+import org.eclipse.sirius.components.papaya.OperationalInteraction;
+import org.eclipse.sirius.components.papaya.OperationalProcess;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Project;
@@ -50,6 +61,7 @@ import org.eclipse.sirius.components.papaya.ProvidedService;
 import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.ReferencingLink;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
@@ -125,11 +137,63 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapayaPackage.LINK: {
+                Link link = (Link) theEObject;
+                T result = this.caseLink(link);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.REFERENCING_LINK: {
+                ReferencingLink referencingLink = (ReferencingLink) theEObject;
+                T result = this.caseReferencingLink(referencingLink);
+                if (result == null)
+                    result = this.caseLink(referencingLink);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.CONTAINING_LINK: {
+                ContainingLink containingLink = (ContainingLink) theEObject;
+                T result = this.caseContainingLink(containingLink);
+                if (result == null)
+                    result = this.caseLink(containingLink);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case PapayaPackage.NAMED_ELEMENT: {
                 NamedElement namedElement = (NamedElement) theEObject;
                 T result = this.caseNamedElement(namedElement);
                 if (result == null)
                     result = this.caseModelElement(namedElement);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.CONTAINER: {
+                Container container = (Container) theEObject;
+                T result = this.caseContainer(container);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.FOLDER: {
+                Folder folder = (Folder) theEObject;
+                T result = this.caseFolder(folder);
+                if (result == null)
+                    result = this.caseNamedElement(folder);
+                if (result == null)
+                    result = this.caseContainer(folder);
+                if (result == null)
+                    result = this.caseModelElement(folder);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.FOLDER_ELEMENT: {
+                FolderElement folderElement = (FolderElement) theEObject;
+                T result = this.caseFolderElement(folderElement);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -140,7 +204,85 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(project);
                 if (result == null)
+                    result = this.caseContainer(project);
+                if (result == null)
                     result = this.caseModelElement(project);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_CAPABILITY: {
+                OperationalCapability operationalCapability = (OperationalCapability) theEObject;
+                T result = this.caseOperationalCapability(operationalCapability);
+                if (result == null)
+                    result = this.caseNamedElement(operationalCapability);
+                if (result == null)
+                    result = this.caseFolderElement(operationalCapability);
+                if (result == null)
+                    result = this.caseModelElement(operationalCapability);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_ENTITY: {
+                OperationalEntity operationalEntity = (OperationalEntity) theEObject;
+                T result = this.caseOperationalEntity(operationalEntity);
+                if (result == null)
+                    result = this.caseNamedElement(operationalEntity);
+                if (result == null)
+                    result = this.caseFolderElement(operationalEntity);
+                if (result == null)
+                    result = this.caseModelElement(operationalEntity);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_ACTOR: {
+                OperationalActor operationalActor = (OperationalActor) theEObject;
+                T result = this.caseOperationalActor(operationalActor);
+                if (result == null)
+                    result = this.caseNamedElement(operationalActor);
+                if (result == null)
+                    result = this.caseFolderElement(operationalActor);
+                if (result == null)
+                    result = this.caseModelElement(operationalActor);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_PROCESS: {
+                OperationalProcess operationalProcess = (OperationalProcess) theEObject;
+                T result = this.caseOperationalProcess(operationalProcess);
+                if (result == null)
+                    result = this.caseNamedElement(operationalProcess);
+                if (result == null)
+                    result = this.caseFolderElement(operationalProcess);
+                if (result == null)
+                    result = this.caseModelElement(operationalProcess);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_ACTIVITY: {
+                OperationalActivity operationalActivity = (OperationalActivity) theEObject;
+                T result = this.caseOperationalActivity(operationalActivity);
+                if (result == null)
+                    result = this.caseNamedElement(operationalActivity);
+                if (result == null)
+                    result = this.caseFolderElement(operationalActivity);
+                if (result == null)
+                    result = this.caseModelElement(operationalActivity);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.OPERATIONAL_INTERACTION: {
+                OperationalInteraction operationalInteraction = (OperationalInteraction) theEObject;
+                T result = this.caseOperationalInteraction(operationalInteraction);
+                if (result == null)
+                    result = this.caseNamedElement(operationalInteraction);
+                if (result == null)
+                    result = this.caseModelElement(operationalInteraction);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -150,6 +292,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseIteration(iteration);
                 if (result == null)
                     result = this.caseNamedElement(iteration);
+                if (result == null)
+                    result = this.caseFolderElement(iteration);
                 if (result == null)
                     result = this.caseModelElement(iteration);
                 if (result == null)
@@ -162,6 +306,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(task);
                 if (result == null)
+                    result = this.caseFolderElement(task);
+                if (result == null)
                     result = this.caseModelElement(task);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -173,6 +319,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(contribution);
                 if (result == null)
+                    result = this.caseFolderElement(contribution);
+                if (result == null)
                     result = this.caseModelElement(contribution);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -183,6 +331,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseComponent(component);
                 if (result == null)
                     result = this.caseNamedElement(component);
+                if (result == null)
+                    result = this.caseFolderElement(component);
                 if (result == null)
                     result = this.caseModelElement(component);
                 if (result == null)
@@ -247,6 +397,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.caseNamedElement(package_);
                 if (result == null)
                     result = this.caseAnnotableElement(package_);
+                if (result == null)
+                    result = this.caseFolderElement(package_);
                 if (result == null)
                     result = this.caseModelElement(package_);
                 if (result == null)
@@ -526,6 +678,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(applicationConcern);
                 if (result == null)
+                    result = this.caseFolderElement(applicationConcern);
+                if (result == null)
                     result = this.caseModelElement(applicationConcern);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -551,6 +705,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseDomain(domain);
                 if (result == null)
                     result = this.caseNamedElement(domain);
+                if (result == null)
+                    result = this.caseFolderElement(domain);
                 if (result == null)
                     result = this.caseModelElement(domain);
                 if (result == null)
@@ -653,6 +809,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(channel);
                 if (result == null)
+                    result = this.caseFolderElement(channel);
+                if (result == null)
                     result = this.caseModelElement(channel);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -706,6 +864,50 @@ public class PapayaSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Link</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Link</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLink(Link object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Referencing Link</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Referencing Link</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferencingLink(ReferencingLink object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Containing Link</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Containing Link</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContainingLink(ContainingLink object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -720,6 +922,49 @@ public class PapayaSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Container</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Container</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContainer(Container object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Folder</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Folder</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFolder(Folder object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Folder Element</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Folder Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFolderElement(FolderElement object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Project</em>'. <!-- begin-user-doc --> This
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -730,6 +975,96 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseProject(Project object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Capability</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Capability</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalCapability(OperationalCapability object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Entity</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Entity</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalEntity(OperationalEntity object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Actor</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Actor</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalActor(OperationalActor object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Process</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Process</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalProcess(OperationalProcess object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Activity</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Activity</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalActivity(OperationalActivity object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Operational Interaction</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Operational Interaction</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOperationalInteraction(OperationalInteraction object) {
         return null;
     }
 

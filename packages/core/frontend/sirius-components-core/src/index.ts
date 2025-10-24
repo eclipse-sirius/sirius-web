@@ -10,11 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-// It should be the first import
-// Otherwise the following error will be thrown: styled_default is not a function
-// https://github.com/vitejs/vite/issues/12423#issuecomment-2080351394
-import '@mui/material/styles/styled';
-
 export * from './color/getCSSColor';
 export * from './contexts/RepresentationPathContext';
 export type * from './contexts/RepresentationPathContext.types';
@@ -48,19 +43,27 @@ export * from './modals/confirmation/useConfirmationDialog';
 export type * from './modals/confirmation/useConfirmationDialog.types';
 export * from './modals/impact-analysis/ImpactAnalysisDialog';
 export type * from './modals/impact-analysis/ImpactAnalysisDialog.types';
+export * from './modals/impact-analysis/useImpactAnalysisDialog';
+export type * from './modals/impact-analysis/useImpactAnalysisDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
+export * from './objectslabels/useObjectsLabels';
+export type * from './objectslabels/useObjectsLabels.types';
 export * from './progress/RepresentationLoadingIndicator';
 export * from './representationmetadata/useRepresentationMetadata';
 export * from './selection/SelectionContext';
 export type * from './selection/SelectionContext.types';
 export * from './selection/useSelection';
 export type * from './selection/useSelection.types';
+export * from './selection/useSelectionTargets';
+export type * from './selection/useSelectionTargets.types';
 export * from './theme';
 export * from './toast/MultiToast';
 export * from './toast/Toast';
 export * from './toast/useReporting';
 export * from './workbench/Panels';
+export { useWorkbench } from './workbench/useWorkbench';
+export { type UseWorkbenchValue } from './workbench/useWorkbench.types';
 export * from './workbench/Workbench';
 export type * from './workbench/Workbench.types';
 export * from './workbench/WorkbenchExtensionPoints';

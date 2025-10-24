@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -40,47 +43,56 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides the default description of the widget to use to support non-containment reference.
  *
  * @author frouene
  */
-public class NonContainmentReferenceIfDescriptionProvider {
+@Service
+public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfDescriptionProvider {
+
+    public static final String IF_DESCRIPTION_ID = "NonContainment Reference";
 
     private static final String REFERENCE_WIDGET_DESCRIPTION_ID = "NonContainmentReferenceIfDescriptionProvider.ReferenceWidget";
 
-    private static final String ID_DESCRIPTION_ID = "NonContainment Reference";
-
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final ILabelService labelService;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
-
-    private final Function<VariableManager, String> semanticTargetIdProvider;
 
     private final IEMFKindService emfKindService;
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, IEMFKindService emfKindService,
-            IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
+                                                        IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
-    public IfDescription getIfDescription() {
-        return IfDescription.newIfDescription(ID_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    @Override
+    public List<IfDescription> getIfDescriptions() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
+        return List.of(IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getReferenceWidgetDescription()))
-                .build();
+                .build());
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
@@ -91,8 +103,12 @@ public class NonContainmentReferenceIfDescriptionProvider {
     }
 
     private ReferenceWidgetDescription getReferenceWidgetDescription() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
         return ReferenceWidgetDescription.newReferenceWidgetDescription(REFERENCE_WIDGET_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .optionsProvider(this.getOptionsProvider())
@@ -116,14 +132,8 @@ public class NonContainmentReferenceIfDescriptionProvider {
                 .setHandlerProvider(this::handleSetReference)
                 .addHandlerProvider(this::handleAddReferenceValues)
                 .moveHandlerProvider(this::handleMoveReferenceValue)
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EStructuralFeature.class)
-                .map(eStructuralFeature -> !eStructuralFeature.isChangeable())
-                .orElse(false);
     }
 
     private List<?> getReferenceValue(VariableManager variableManager) {
@@ -162,23 +172,23 @@ public class NonContainmentReferenceIfDescriptionProvider {
     }
 
     private String getItemLabel(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
+        return this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse("");
     }
 
     private List<String> getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
+        return this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getKind).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getKind).orElse("");
     }
 
     private String getItemId(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getId).orElse("");
+        return this.getItem(variableManager).map(this.identityService::getId).orElse("");
     }
 
     private String getOwnerId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse("");
+        return variableManager.get(VariableManager.SELF, EObject.class).map(this.identityService::getId).orElse("");
     }
 
     private Function<VariableManager, String> getLabelProvider() {

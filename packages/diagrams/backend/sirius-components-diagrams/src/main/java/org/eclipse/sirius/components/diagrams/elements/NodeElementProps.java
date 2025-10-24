@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,9 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -49,6 +49,8 @@ public final class NodeElementProps implements IProps {
 
     private boolean borderNode;
 
+    private BorderNodePosition initialBorderNodePosition;
+
     private Set<ViewModifier> modifiers;
 
     private ViewModifier state;
@@ -56,8 +58,6 @@ public final class NodeElementProps implements IProps {
     private CollapsingState collapsingState;
 
     private INodeStyle style;
-
-    private ILayoutStrategy childrenLayoutStrategy;
 
     private Integer defaultWidth;
 
@@ -68,6 +68,8 @@ public final class NodeElementProps implements IProps {
     private boolean labelEditable;
 
     private boolean pinned;
+
+    private Set<String> customizedStyleProperties;
 
     private NodeElementProps() {
         // Prevent instantiation
@@ -105,6 +107,10 @@ public final class NodeElementProps implements IProps {
         return this.borderNode;
     }
 
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
+    }
+
     public Set<ViewModifier> getModifiers() {
         return this.modifiers;
     }
@@ -119,10 +125,6 @@ public final class NodeElementProps implements IProps {
 
     public INodeStyle getStyle() {
         return this.style;
-    }
-
-    public ILayoutStrategy getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
     }
 
     public Integer getDefaultWidth() {
@@ -144,6 +146,10 @@ public final class NodeElementProps implements IProps {
 
     public boolean isPinned() {
         return this.pinned;
+    }
+
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
     }
 
     @Override
@@ -174,6 +180,8 @@ public final class NodeElementProps implements IProps {
 
         private boolean borderNode;
 
+        private BorderNodePosition initialBorderNodePosition;
+
         private Set<ViewModifier> modifiers;
 
         private ViewModifier state;
@@ -181,8 +189,6 @@ public final class NodeElementProps implements IProps {
         private CollapsingState collapsingState;
 
         private INodeStyle style;
-
-        private ILayoutStrategy childrenLayoutStrategy;
 
         private Integer defaultWidth;
 
@@ -193,6 +199,8 @@ public final class NodeElementProps implements IProps {
         private boolean labelEditable;
 
         private boolean pinned;
+
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -228,6 +236,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = Objects.requireNonNull(initialBorderNodePosition);
+            return this;
+        }
+
         public Builder modifiers(Set<ViewModifier> modifiers) {
             this.modifiers = Objects.requireNonNull(modifiers);
             return this;
@@ -245,11 +258,6 @@ public final class NodeElementProps implements IProps {
 
         public Builder style(INodeStyle style) {
             this.style = Objects.requireNonNull(style);
-            return this;
-        }
-
-        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
-            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
             return this;
         }
 
@@ -278,6 +286,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public NodeElementProps build() {
             NodeElementProps nodeElementProps = new NodeElementProps();
             nodeElementProps.id = Objects.requireNonNull(this.id);
@@ -287,16 +300,17 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             nodeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             nodeElementProps.borderNode = this.borderNode;
+            nodeElementProps.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             nodeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
             nodeElementProps.state = Objects.requireNonNull(this.state);
             nodeElementProps.collapsingState = Objects.requireNonNull(this.collapsingState);
             nodeElementProps.style = Objects.requireNonNull(this.style);
-            nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             nodeElementProps.pinned = this.pinned;
+            nodeElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return nodeElementProps;
         }
     }

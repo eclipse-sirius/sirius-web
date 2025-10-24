@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,9 @@ fragment nodeFragment on Node {
       borderStyle
       borderSize
       borderRadius
+      childrenLayoutStrategy {
+        ...childrenLayoutStrategyFragment
+      }
     }
     ... on ImageNodeStyle {
       imageURL
@@ -43,26 +46,35 @@ fragment nodeFragment on Node {
       borderSize
       borderRadius
       positionDependentRotation
+      childrenLayoutStrategy {
+        ...childrenLayoutStrategyFragment
+      }
     }
     ... on IconLabelNodeStyle {
       background
-    }
-  }
-  childrenLayoutStrategy {
-    __typename
-    ... on ListLayoutStrategy {
-      kind
-      areChildNodesDraggable
-      topGap
-      bottomGap
-      growableNodeIds
-    }
-    ... on FreeFormLayoutStrategy {
-      kind
+      childrenLayoutStrategy {
+        ...childrenLayoutStrategyFragment
+      }
     }
   }
   defaultWidth
   defaultHeight
   labelEditable
+  customizedStyleProperties
+  initialBorderNodePosition
+}
+
+fragment childrenLayoutStrategyFragment on ILayoutStrategy {
+  __typename
+  ... on ListLayoutStrategy {
+    kind
+    areChildNodesDraggable
+    topGap
+    bottomGap
+    growableNodeIds
+  }
+  ... on FreeFormLayoutStrategy {
+    kind
+  }
 }
 `;

@@ -16,11 +16,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import gql from 'graphql-tag';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -44,18 +43,18 @@ const useStyle = makeStyles<ButtonStyleProps>()(
     style: {
       backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
       color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       paddingTop: theme.spacing(0.5),
       paddingBottom: theme.spacing(0.5),
       '&:hover': {
         backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
         color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
       '&.Mui-disabled': {
@@ -167,15 +166,17 @@ export const SplitButtonPropertySection = ({
   }, [error, data]);
 
   const handleClick = () => {
-    const button: GQLButton = widget.actions[state.selectedIndex];
-    const input: GQLPushButtonInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: formId,
-      buttonId: button.id,
-    };
-    const variables: GQLPushButtonMutationVariables = { input };
-    pushButton({ variables });
+    const button: GQLButton | null = widget.actions[state.selectedIndex] ?? null;
+    if (button) {
+      const input: GQLPushButtonInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        buttonId: button.id,
+      };
+      const variables: GQLPushButtonMutationVariables = { input };
+      pushButton({ variables });
+    }
   };
 
   const handleMenuItemClick = (_event, index) => {
@@ -207,16 +208,16 @@ export const SplitButtonPropertySection = ({
           variant="contained"
           color="primary"
           onClick={handleClick}
-          disabled={readOnly || widget.readOnly || widget.actions[state.selectedIndex].readOnly}
-          classes={{ root: classes[state.selectedIndex].style }}>
-          {widget.actions[state.selectedIndex].imageURL?.length > 0 ? (
+          disabled={readOnly || widget.readOnly || widget.actions[state.selectedIndex]?.readOnly}
+          classes={{ root: classes[state.selectedIndex]?.style }}>
+          {widget.actions[state.selectedIndex]?.imageURL?.length ?? 0 > 0 ? (
             <img
-              className={classes[state.selectedIndex].icon}
-              alt={widget.actions[state.selectedIndex].label}
-              src={httpOrigin + widget.actions[state.selectedIndex].imageURL}
+              className={classes[state.selectedIndex]?.icon}
+              alt={widget.actions[state.selectedIndex]?.label}
+              src={httpOrigin + widget.actions[state.selectedIndex]?.imageURL}
             />
           ) : null}
-          {widget.actions[state.selectedIndex].buttonLabel}
+          {widget.actions[state.selectedIndex]?.buttonLabel}
         </Button>
         <Button
           color="primary"
@@ -228,40 +229,32 @@ export const SplitButtonPropertySection = ({
           role={'show-actions'}
           disabled={readOnly || widget.readOnly}
           onClick={handleToggle}
-          classes={{ root: classes[state.selectedIndex].style }}>
+          classes={{ root: classes[state.selectedIndex]?.style }}>
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
       <LoadingIndicator loading={loading} />
-      <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu">
-                  {widget.actions.map((option, index) => (
-                    <MenuItem
-                      key={index}
-                      selected={index === state.selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                      classes={{ root: classes[index].style }}
-                      disabled={readOnly || widget.readOnly || widget.actions[index].readOnly}>
-                      {option.imageURL?.length > 0 ? (
-                        <img className={classes[index].icon} alt={option.label} src={httpOrigin + option.imageURL} />
-                      ) : null}
-                      {option.buttonLabel}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+      <Menu anchorEl={buttonGroupRef.current} open={state.open} onClose={handleClose}>
+        <Paper>
+          <ClickAwayListener onClickAway={handleClose}>
+            <MenuList id="split-button-menu">
+              {widget.actions.map((option, index) => (
+                <MenuItem
+                  key={index}
+                  selected={index === state.selectedIndex}
+                  onClick={(event) => handleMenuItemClick(event, index)}
+                  classes={{ root: classes[index]?.style }}
+                  disabled={readOnly || widget.readOnly || widget.actions[index]?.readOnly}>
+                  {option.imageURL?.length ?? 0 > 0 ? (
+                    <img className={classes[index]?.icon} alt={option.label} src={httpOrigin + option.imageURL} />
+                  ) : null}
+                  {option.buttonLabel}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </ClickAwayListener>
+        </Paper>
+      </Menu>
     </div>
   );
 };

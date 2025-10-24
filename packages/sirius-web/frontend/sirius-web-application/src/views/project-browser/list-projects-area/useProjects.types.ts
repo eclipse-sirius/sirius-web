@@ -56,6 +56,14 @@ export interface GQLViewerProjectEdge {
 export interface GQLProject {
   id: string;
   name: string;
+  capabilities: GQLProjectCapabilities;
+}
+
+export interface GQLProjectCapabilities {
+  canDownload: boolean;
+  canRename: boolean;
+  canDelete: boolean;
+  canDuplicate: boolean;
 }
 
 export interface GQLPageInfo {

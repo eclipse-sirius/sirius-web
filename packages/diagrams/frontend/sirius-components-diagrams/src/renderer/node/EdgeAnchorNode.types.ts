@@ -10,7 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 export interface EdgeAnchorNodeData extends NodeData {
   edgeId: string;
+  positionRatio: number;
+  isLayouted: boolean;
 }
+
+export const isEdgeAnchorNode = (node: Node<NodeData>): node is Node<EdgeAnchorNodeData> =>
+  node.type === 'edgeAnchorNode';

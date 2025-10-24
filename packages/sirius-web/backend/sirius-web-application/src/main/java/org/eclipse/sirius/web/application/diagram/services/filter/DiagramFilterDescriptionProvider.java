@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcesso
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -79,14 +80,17 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders;
 
     private final IDiagramFilterHelper diagramFilterHelper;
 
-    public DiagramFilterDescriptionProvider(IObjectService objectService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper) {
+    public DiagramFilterDescriptionProvider(IObjectService objectService, ILabelService labelService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.diagramFilterActionContributionProviders = Objects.requireNonNull(diagramFilterActionContributionProviders);
         this.diagramFilterHelper = Objects.requireNonNull(diagramFilterHelper);
@@ -148,7 +152,8 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .orElseGet(() -> UUID.randomUUID().toString());
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse("");
 
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
@@ -193,7 +198,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private CheckboxDescription createTreeCheckboxDescription() {
         return CheckboxDescription.newCheckboxDescription("diagram-filter/tree-checkbox")
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .idProvider(new WidgetIdProvider())
+                .idProvider(variableManager -> "TreeCheckBox")
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
                     String element = "element";
@@ -207,8 +212,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .valueProvider(variableManager -> this.diagramFilterHelper.getSelectedElementIds(variableManager).size() > 0)
                 .newValueHandler((variableManager, newValue) -> {
                     Map<String, Boolean> checkMap = variableManager.get(SELECTED_TREE_NODES, Map.class).get();
-                    checkMap.entrySet().stream()
-                        .forEach(entry -> entry.setValue(newValue));
+                    checkMap.entrySet().forEach(entry -> entry.setValue(newValue));
                     return new Success();
                 })
                 .diagnosticsProvider(variableManager -> List.of())
@@ -231,7 +235,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .nodeIconURLProvider(vm -> List.of())
                 .nodeEndIconsURLProvider(this::computeNodeEndIcons)
                 .nodeKindProvider(vm -> "")
-                .nodeSelectableProvider(vm -> true)
+                .nodeSelectableProvider(vm -> false)
                 .childrenProvider(this::getNodeChildren)
                 .expandedNodeIdsProvider(vm -> List.of())
                 .isCheckableProvider(variableManager -> true)
@@ -247,7 +251,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private SplitButtonDescription createSplitButtonDescription() {
         return SplitButtonDescription.newSplitButtonDescription("diagram-filter/split-button")
-                .idProvider(new WidgetIdProvider())
+                .idProvider(variableManager -> "TreeSplitButton")
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();

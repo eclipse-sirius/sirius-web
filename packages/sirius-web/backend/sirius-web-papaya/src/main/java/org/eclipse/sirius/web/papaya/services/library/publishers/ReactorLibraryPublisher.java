@@ -106,7 +106,7 @@ public class ReactorLibraryPublisher implements IPapayaLibraryPublisher {
 
         var reactorProject = PapayaFactory.eINSTANCE.createProject();
         reactorProject.setName("Reactor");
-        reactorProject.getComponents().add(reactorComponent);
+        reactorProject.getElements().add(reactorComponent);
 
         reactorProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -117,7 +117,7 @@ public class ReactorLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactor");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Reactor", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 

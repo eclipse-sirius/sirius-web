@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
+import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -44,10 +45,7 @@ const listNodeStyle = (
     opacity: faded ? '0.4' : '',
     ...style,
     background: getCSSColor(String(style.background), theme),
-    borderTopColor: getCSSColor(String(style.borderTopColor), theme),
-    borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
-    borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
-    borderRightColor: getCSSColor(String(style.borderRightColor), theme),
+    borderColor: getCSSColor(String(style.borderColor), theme),
   };
   if (selected || hovered) {
     listNodeStyle.outline = `${theme.palette.selected} solid 1px`;
@@ -75,6 +73,8 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
+
     const nodeStyle = useMemo(
       () => listNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, selected, data.isHovered, data.faded]
@@ -99,8 +99,9 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             ...nodeStyle,
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
+            ...connectionLineActiveNodeStyle,
           }}
-          data-svg="rect"
+          data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>

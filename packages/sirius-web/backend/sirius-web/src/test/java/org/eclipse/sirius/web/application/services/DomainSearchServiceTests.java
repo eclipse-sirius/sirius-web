@@ -51,7 +51,7 @@ public class DomainSearchServiceTests extends AbstractIntegrationTests {
         var domains = this.domainSearchService.findAllByEditingContext(editingContext);
         assertThat(domains).isNotEmpty();
 
-        var hasEcore = domains.stream().anyMatch(domain -> domain.getId().equals(EcorePackage.eNS_URI));
+        var hasEcore = domains.stream().anyMatch(domain -> domain.id().equals(EcorePackage.eNS_URI));
         assertThat(hasEcore).isTrue();
     }
 
@@ -66,7 +66,7 @@ public class DomainSearchServiceTests extends AbstractIntegrationTests {
         var rootDomains = this.domainSearchService.findRootDomainsByEditingContext(editingContext);
         assertThat(rootDomains).isNotEmpty();
 
-        var hasEcore = rootDomains.stream().anyMatch(domain -> domain.getId().equals(EcorePackage.eNS_URI));
+        var hasEcore = rootDomains.stream().anyMatch(domain -> domain.id().equals(EcorePackage.eNS_URI));
         assertThat(hasEcore).isTrue();
     }
 }

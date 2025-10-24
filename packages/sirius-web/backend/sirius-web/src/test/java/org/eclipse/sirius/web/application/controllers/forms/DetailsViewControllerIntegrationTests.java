@@ -12,13 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
+
 import java.time.Duration;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -32,8 +40,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -69,14 +75,34 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .isPresent();
 
         StepVerifier.create(flux)
                 .expectNextMatches(formContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a read only object, when we subscribe to its details view, then the widget of the form are read only")
+    public void givenReadOnlyObjectWhenWeSubscribreToItsDetailsViewThenTheWidgetOfTheFormAreReadOnly() {
+        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input);
+
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            var allWidgets = form.getPages().stream()
+                    .map(Page::getGroups)
+                    .flatMap(Collection::stream)
+                    .map(Group::getWidgets)
+                    .flatMap(Collection::stream);
+            assertThat(allWidgets).allMatch(AbstractWidget::isReadOnly);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(formContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

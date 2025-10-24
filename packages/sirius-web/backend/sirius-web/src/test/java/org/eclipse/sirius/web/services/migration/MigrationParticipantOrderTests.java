@@ -145,7 +145,7 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
                     .findFirst();
             assertThat(optionalResourceMetadataAdapter).isPresent();
             var resourceMetadataAdapter = optionalResourceMetadataAdapter.get();
-            var migrationData = resourceMetadataAdapter.getMigrationData();
+            var migrationData = resourceMetadataAdapter.getLastMigrationData();
             assertThat(migrationData.migrationVersion()).isEqualTo("9999.12.99-300012310901");
             // The name is empty because we registered an anonymous migration participant.
             assertThat(migrationData.lastMigrationPerformed()).isEqualTo("");

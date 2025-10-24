@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,16 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.customnodes.EllipseNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -89,10 +95,29 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                 .borderLineStyle(LineStyle.SOLID)
                 .build();
 
+        var insideLabel = new InsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.MIDDLE_CENTER)
+                .build();
+
+        var deleteTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
+                .palette(new NodePaletteBuilder()
+                        .deleteTool(deleteTool)
+                        .build())
+                .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .build();
 

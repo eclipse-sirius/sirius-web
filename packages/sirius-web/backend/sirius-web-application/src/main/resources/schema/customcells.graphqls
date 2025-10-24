@@ -2,8 +2,9 @@ type CheckboxCell implements Cell {
   id: ID!
   columnId: ID!
   targetObjectId: ID!
-  targetObjectKind: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   value: Boolean!
+  tooltipValue: String!
 }
 
 extend type Mutation {

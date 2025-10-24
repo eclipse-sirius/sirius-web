@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2019, 2023 Obeo.
+ Copyright (c) 2019, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -16,34 +16,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.eclipse.sirius</groupId>
+		<artifactId>sirius-web-parent</artifactId>
+		<version>2025.10.0</version>
+		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
+
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams</artifactId>
-	<version>2025.2.10</version>
+	<version>2025.10.0</version>
 	<name>sirius-components-diagrams</name>
 	<description>Sirius Components Diagrams</description>
-
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -83,7 +72,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.13</version>
 				<executions>
 					<execution>
 						<goals>

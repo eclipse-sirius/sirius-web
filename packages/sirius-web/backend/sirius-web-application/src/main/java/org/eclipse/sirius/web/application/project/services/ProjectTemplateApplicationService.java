@@ -12,16 +12,23 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
@@ -49,22 +56,55 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
 
     private final ITemplateBasedProjectInitializer templateBasedProjectInitializer;
 
+    private final ICapabilityEvaluator capabilityEvaluator;
+
     private final IMessageService messageService;
 
-    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, IProjectApplicationService projectApplicationService, ITemplateBasedProjectInitializer templateBasedProjectInitializer, IMessageService messageService) {
+    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, IProjectApplicationService projectApplicationService, ITemplateBasedProjectInitializer templateBasedProjectInitializer,
+                                             List<ICapabilityVoter> capabilityVoters, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.projectTemplateProviders = Objects.requireNonNull(projectTemplateProviders);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.templateBasedProjectInitializer = Objects.requireNonNull(templateBasedProjectInitializer);
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public Page<ProjectTemplateDTO> findAll(Pageable pageable) {
-        var projectTemplates = this.projectTemplateProviders.stream()
+    public Page<ProjectTemplateDTO> findAll(Pageable pageable, String context) {
+        return switch (context) {
+            case ProjectTemplateContext.PROJECT_BROWSER -> this.handleProjectBrowser(pageable);
+            case ProjectTemplateContext.PROJECT_TEMPLATE_MODAL -> this.handleProjectTemplateModal(pageable);
+            default -> this.handleProjectTemplateModal(pageable);
+        };
+    }
+
+    private List<ProjectTemplate> getProjectTemplatesSortedByName() {
+        return this.projectTemplateProviders.stream()
                 .map(IProjectTemplateProvider::getProjectTemplates)
                 .flatMap(List::stream)
                 .sorted(Comparator.comparing(ProjectTemplate::label))
                 .toList();
+    }
+
+    private Page<ProjectTemplateDTO> handleProjectBrowser(Pageable pageable) {
+        var projectTemplates = this.getProjectTemplatesSortedByName();
+
+        List<ProjectTemplate> siriusWebProjectTemplate = new ArrayList<>();
+        siriusWebProjectTemplate.add(new ProjectTemplate("create-project", "", "", List.of()));
+        this.getUploadProject().ifPresent(siriusWebProjectTemplate::add);
+        this.getBrowseAllProjectTemplates().ifPresent(siriusWebProjectTemplate::add);
+
+        int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
+        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size() + siriusWebProjectTemplate.size());
+        var projectTemplateDTOs = Stream.concat(projectTemplates.subList(startIndex, endIndex - siriusWebProjectTemplate.size()).stream(), siriusWebProjectTemplate.stream())
+                .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL()))
+                .toList();
+
+        return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
+    }
+
+    private Page<ProjectTemplateDTO> handleProjectTemplateModal(Pageable pageable) {
+        var projectTemplates = this.getProjectTemplatesSortedByName();
 
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size());
@@ -75,6 +115,23 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
     }
 
+    private Optional<ProjectTemplate> getUploadProject() {
+        Optional<ProjectTemplate> result = Optional.empty();
+        var canCreate = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
+        if (canCreate) {
+            result = Optional.of(new ProjectTemplate("upload-project", "", "", List.of()));
+        }
+        return  result;
+    }
+
+    private Optional<ProjectTemplate> getBrowseAllProjectTemplates() {
+        Optional<ProjectTemplate> result = Optional.empty();
+        var aTemplateExists = this.projectTemplateProviders.stream().mapToLong(providers -> providers.getProjectTemplates().size()).sum() > 0;
+        if (aTemplateExists) {
+            result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
+        }
+        return  result;
+    }
 
     @Override
     public IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input) {

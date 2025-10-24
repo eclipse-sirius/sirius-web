@@ -44,6 +44,7 @@ import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './Diagram
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
+import { useResetXYFlowConnection } from './connector/useResetXYFlowConnection';
 import { DebugPanel } from './debug/DebugPanel';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
@@ -53,7 +54,7 @@ import { useDropDiagramStyle } from './dropNode/useDropDiagramStyle';
 import { useDropNode } from './dropNode/useDropNode';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
-import { useEdgeType } from './edge/useEdgeType';
+import { useSelectEdgeChange } from './edgeChange/useSelectEdgeChange';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
@@ -79,11 +80,10 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
-
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { readOnly, consumePostToolSelection, toolSelections } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
@@ -95,13 +95,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const {
-    onDiagramBackgroundContextMenu,
-    onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
-    hideDiagramPalette,
-  } = useDiagramPalette();
-  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
-    useDiagramElementPalette();
+  const { onDiagramBackgroundContextMenu } = useDiagramPalette();
+  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu } = useDiagramElementPalette();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -112,7 +107,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
-  const { reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
+  const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
@@ -121,20 +116,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const { selection, setSelection } = useSelection();
-  const { edgeType, setEdgeType } = useEdgeType();
 
-  useInitialFitToScreen();
-
+  useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
+  useResetXYFlowConnection();
   const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
-    const { diagram, cause } = diagramRefreshedEventPayload;
+    const { id, diagram, cause, referencePosition } = diagramRefreshedEventPayload;
+    const selectionFromTool = consumePostToolSelection(id);
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
+      referencePosition,
       nodeConverters,
       diagramDescription,
-      edgeType,
       store.getState()
     );
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
@@ -156,65 +151,49 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       }
     });
 
+    const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
-      const diagramElementIds: string[] = [
-        ...getNodes().map((node) => node.data.targetObjectId),
-        ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
-      ];
-
-      const selectionDiagramEntryIds = selection.entries
-        .map((entry) => entry.id)
-        .filter((id) => diagramElementIds.includes(id))
-        .sort((id1: string, id2: string) => id1.localeCompare(id2));
-      const selectedDiagramElementIds = [
-        ...new Set(
-          [...getNodes(), ...getEdges()]
-            .filter((element) => element.selected)
-            .map((element) => element.data?.targetObjectId ?? '')
-        ),
-      ];
-      selectedDiagramElementIds.sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-      const semanticElementsViews: Map<string, string[]> = new Map();
-      [...getNodes(), ...getEdges()].forEach((element) => {
-        const viewId = element.id;
-        const semanticElementId = element.data?.targetObjectId ?? '';
-        if (!semanticElementsViews.has(semanticElementId)) {
-          semanticElementsViews.set(semanticElementId, [viewId]);
-        } else {
-          semanticElementsViews.get(semanticElementId)?.push(viewId);
+      // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
+      const semanticElementsSelected: Set<string> = new Set();
+      const shouldSelectNode = (node: Node<NodeData>) => {
+        const result =
+          !node.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === node.data.targetObjectId && !semanticElementsSelected.has(node.data.targetObjectId)
+              )
+            : nodeLookup.get(node.id)?.selected);
+        if (selectionFromTool && result) {
+          // If we "auto-select" a node because it matches what a previous tool invocation
+          // asked, we only select the first matching diagram element we find and ignore the rest,
+          // even if the new diagram shows the requested semantic element through multiple
+          // nodes.
+          semanticElementsSelected.add(node.data.targetObjectId);
         }
-      });
-
-      // For each selected semantic element which appears on the diagram,
-      // determine which of its views should be selected.
-      const viewsToSelect: Map<string, string[]> = new Map();
-      const previouslySelectedViews = [...getNodes(), ...getEdges()].filter((element) => element.selected);
-      for (var semanticElementId of selectionDiagramEntryIds) {
-        const allRelatedViews = semanticElementsViews.get(semanticElementId) || [];
-        const alreadySelectedViews = allRelatedViews.filter(
-          (viewId) => !!previouslySelectedViews.find((view: Node<NodeData> | Edge<EdgeData>) => view.id === viewId)
-        );
-        if (alreadySelectedViews.length > 0) {
-          // Keep the previous graphical selection if there was one that is still valid
-          viewsToSelect.set(semanticElementId, alreadySelectedViews);
-        } else if (allRelatedViews.length > 0 && allRelatedViews[0]) {
-          // Otherwise select a single view among the candidates.
-          // Given the order we receive the views from the backend, if there
-          // are multiple candidates in the same view hierarchy, the parent
-          // will appear first, and it's the "main" view we want to select.
-          viewsToSelect.set(semanticElementId, [allRelatedViews[0]]);
+        return result;
+      };
+      const shouldSelectEdge = (edge: Edge<EdgeData>) => {
+        const result =
+          !edge.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data.targetObjectId)
+              )
+            : edgeLookup.get(edge.id)?.selected);
+        if (selectionFromTool && result && edge.data?.targetObjectId) {
+          semanticElementsSelected.add(edge.data.targetObjectId);
         }
-      }
-
-      // Apply the new graphical selection
+        return result;
+      };
       convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
         ...node,
-        selected: viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id),
+        selected: shouldSelectNode(node),
       }));
       convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
         ...edge,
-        selected: !!(edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)),
+        selected: shouldSelectEdge(edge),
       }));
 
       setEdges(convertedDiagram.edges);
@@ -225,8 +204,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         edges,
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
-        const { nodeLookup, edgeLookup } = store.getState();
-
         laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
           if (nodeLookup.get(node.id)) {
             return {
@@ -249,18 +226,69 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         setEdges(laidOutDiagram.edges);
         setNodes(laidOutDiagram.nodes);
-        hideAllPalettes();
 
         if (!readOnly) {
           synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
         }
       });
     }
-  }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
+  }, [diagramRefreshedEventPayload, diagramDescription]);
 
   useEffect(() => {
-    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected })));
-  }, [edges.map((edge) => edge.id + edge.selected).join()]);
+    if (toolSelections.has(diagramRefreshedEventPayload.id)) {
+      const { nodeLookup, edgeLookup } = store.getState();
+      const selectionFromTool = toolSelections.get(diagramRefreshedEventPayload.id);
+      // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
+      const semanticElementsSelected: Set<string> = new Set();
+      const shouldSelectNode = (node: Node<NodeData>) => {
+        const result =
+          !node.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === node.data.targetObjectId && !semanticElementsSelected.has(node.data.targetObjectId)
+              )
+            : nodeLookup.get(node.id)?.selected);
+        if (selectionFromTool && result) {
+          // If we "auto-select" a node because it matches what a previous tool invocation
+          // asked, we only select the first matching diagram element we find and ignore the rest,
+          // even if the new diagram shows the requested semantic element through multiple
+          // nodes.
+          semanticElementsSelected.add(node.data.targetObjectId);
+        }
+        return result;
+      };
+      const shouldSelectEdge = (edge: Edge<EdgeData>) => {
+        const result =
+          !edge.hidden &&
+          (selectionFromTool
+            ? selectionFromTool.entries.some(
+                (entry) =>
+                  entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data.targetObjectId)
+              )
+            : edgeLookup.get(edge.id)?.selected);
+        if (selectionFromTool && result && edge.data?.targetObjectId) {
+          semanticElementsSelected.add(edge.data.targetObjectId);
+        }
+        return result;
+      };
+      const newNodes = getNodes().map((node) => ({
+        ...node,
+        selected: shouldSelectNode(node),
+      }));
+      const newEdges = getEdges().map((edge) => ({
+        ...edge,
+        selected: shouldSelectEdge(edge),
+      }));
+      setEdges(newEdges);
+      setNodes(newNodes);
+      toolSelections.delete(diagramRefreshedEventPayload.id);
+    }
+  }, [toolSelections]);
+
+  useEffect(() => {
+    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected && !readOnly })));
+  }, [edges.map((edge) => edge.id + edge.selected).join(), readOnly]);
 
   const { onShiftSelection, setShiftSelection } = useShiftSelection();
   useDiagramSelection(onShiftSelection);
@@ -284,8 +312,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
       const isResetChange = changes.find((change) => change.type === 'replace');
+      const isSelectChange = changes.find((change) => change.type === 'select');
+
       if (
         isResetChange ||
+        isSelectChange ||
         (noReadOnlyChanges.length === 1 &&
           noReadOnlyChanges[0]?.type === 'dimensions' &&
           typeof noReadOnlyChanges[0].resizing !== 'boolean')
@@ -295,8 +326,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         resetHelperLines(changes);
         let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
-        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
 
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
@@ -305,14 +336,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
+
         setNodes(newNodes);
       }
     },
     [layoutOnBoundsChange, getNodes, getEdges]
   );
 
+  const { onEdgeSelectedChange } = useSelectEdgeChange();
   const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
     (changes: EdgeChange<Edge<EdgeData>>[]) => {
+      onEdgeSelectedChange(changes);
       onEdgesChange(changes);
     },
     [onEdgesChange]
@@ -345,15 +379,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
-  const hideAllPalettes = useCallback(() => {
-    hideDiagramPalette();
-    hideDiagramElementPalette();
-    hideGroupPalette();
-  }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
-
   const handleNodeContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData>) => {
-      if (selection.entries.length <= 1 && !event.shiftKey) {
+      const selectedElements = [...store.getState().nodes, ...store.getState().edges].filter(
+        (element) => element.selected
+      );
+      if (
+        (selectedElements.length <= 1 ||
+          (selectedElements.length > 1 &&
+            !selectedElements.find((selectedElements) => selectedElements.id === element.id))) &&
+        !event.shiftKey
+      ) {
         const rightClickAndSelect: Selection = {
           entries: [
             {
@@ -363,18 +399,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         };
         store.getState().addSelectedNodes([element.id]);
         setSelection(rightClickAndSelect);
-        diagramPaletteOnDiagramElementContextMenu();
         elementPaletteOnDiagramElementContextMenu(event, element);
       } else if (!event.shiftKey) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       }
     },
-    [
-      setSelection,
-      elementPaletteOnDiagramElementContextMenu,
-      diagramPaletteOnDiagramElementContextMenu,
-      groupPaletteOnDiagramElementContextMenu,
-    ]
+    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
   );
 
   const handleEdgeContextMenu = useCallback(
@@ -389,24 +419,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         };
         store.getState().addSelectedEdges([element.id]);
         setSelection(rightClickAndSelect);
-        diagramPaletteOnDiagramElementContextMenu();
         elementPaletteOnDiagramElementContextMenu(event, element);
       } else if (!event.shiftKey) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       }
     },
-    [
-      setSelection,
-      elementPaletteOnDiagramElementContextMenu,
-      diagramPaletteOnDiagramElementContextMenu,
-      groupPaletteOnDiagramElementContextMenu,
-    ]
+    [elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
   );
 
   const handleSelectionStart = useCallback(() => {
-    hideAllPalettes();
     setShiftSelection(true);
-  }, [hideAllPalettes, setShiftSelection]);
+  }, [setShiftSelection]);
 
   const handleSelectionEnd = useCallback(() => {
     setShiftSelection(false);
@@ -419,22 +442,14 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [groupPaletteOnDiagramElementContextMenu]
   );
 
-  const onClick = useCallback(
-    (_: React.MouseEvent<Element, MouseEvent>) => {
-      hideAllPalettes();
-    },
-    [hideAllPalettes]
-  );
-
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
 
   const handleNodeDrag = useCallback(
     (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
       onNodeDrag(event, node, nodes);
-      hideAllPalettes();
     },
-    [onNodeDrag, hideAllPalettes]
+    [onNodeDrag]
   );
 
   const { nodesDraggable } = useNodesDraggable();
@@ -443,20 +458,19 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
-    onMoveStart: hideAllPalettes,
     edges: edges,
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
-    onClick: onClick,
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
+    onReconnectStart: onReconnectEdgeStart,
+    onReconnect: reconnectEdge,
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onReconnect: reconnectEdge,
     onPaneContextMenu: handlePaneContextMenu,
     onEdgeContextMenu: handleEdgeContextMenu,
     onNodeContextMenu: handleNodeContextMenu,
@@ -510,8 +524,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           helperLines={helperLinesEnabled}
           onHelperLines={setHelperLinesEnabled}
           reactFlowWrapper={ref}
-          edgeType={edgeType}
-          onEdgeType={setEdgeType}
         />
         <GroupPalette
           x={groupPalettePosition?.x}
@@ -527,7 +539,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-        <MiniMap pannable zoomable zoomStep={2} />
+        <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
       </>
     ),
   };

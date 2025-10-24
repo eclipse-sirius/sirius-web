@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -81,22 +83,19 @@ public class DiagramElementChangeVisibilityTests {
 
     private static final List<String> OBJECT_IDS = List.of("First", "Second", "Third", "Fourth");
 
-    private static final Function<VariableManager, INodeStyle> STYLE_PROVIDER = variableManager -> {
-        return ImageNodeStyle.newImageNodeStyle()
-                .imageURL("test")
-                .scalingFactor(1)
-                .build();
-    };
+    private static final Function<VariableManager, INodeStyle> STYLE_PROVIDER = variableManager -> ImageNodeStyle.newImageNodeStyle()
+            .imageURL("test")
+            .scalingFactor(1)
+            .childrenLayoutStrategy(new FreeFormLayoutStrategy())
+            .build();
 
-    private static final Function<VariableManager, EdgeStyle> STYLE_EDGE_PROVIDER = variableManager -> {
-        return EdgeStyle.newEdgeStyle()
-                .color(COLOR)
-                .lineStyle(LineStyle.Dash)
-                .sourceArrow(ArrowStyle.Diamond)
-                .targetArrow(ArrowStyle.Diamond)
-                .build();
-
-    };
+    private static final Function<VariableManager, EdgeStyle> STYLE_EDGE_PROVIDER = variableManager -> EdgeStyle.newEdgeStyle()
+            .color(COLOR)
+            .lineStyle(LineStyle.Dash)
+            .sourceArrow(ArrowStyle.Diamond)
+            .targetArrow(ArrowStyle.Diamond)
+            .edgeType(EdgeType.Manhattan)
+            .build();
 
     private NodeDescription createNodeDescription(String elementId, List<NodeDescription> borderNodes, List<NodeDescription> children) {
         String id = UUID.randomUUID().toString();
@@ -123,10 +122,10 @@ public class DiagramElementChangeVisibilityTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
-                .idProvider(variableManager -> INSIDE_LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
@@ -143,11 +142,11 @@ public class DiagramElementChangeVisibilityTests {
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription).styleProvider(STYLE_PROVIDER)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(borderNodes)
                 .childNodeDescriptions(children)
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
         return nodeDescription;
     }
@@ -158,7 +157,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             return objectToNodes.get(sourceObjectId).stream()
-                    .filter(node -> isFromDescription(node, sourceDescription))
+                    .filter(node -> this.isFromDescription(node, sourceDescription))
                     .toList();
         };
 
@@ -167,7 +166,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             return objectToNodes.get(targetObjectId).stream()
-                    .filter(node -> isFromDescription(node, targetDescription))
+                    .filter(node -> this.isFromDescription(node, targetDescription))
                     .toList();
         };
 
@@ -212,6 +211,8 @@ public class DiagramElementChangeVisibilityTests {
                 .previousDiagram(previousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
+                .edgeAppearanceHandlers(List.of())
                 .build();
 
         Element element = new Element(DiagramComponent.class, props);
@@ -293,7 +294,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram.getNodes()).filteredOn(n -> n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram.getNodes()).filteredOn(n -> !n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram.getEdges()).filteredOn(e -> e.getSourceId().equals(modifiedNodeId) || e.getTargetId().equals(modifiedNodeId)).extracting(Edge::getState)
-        .allMatch(s -> s == ViewModifier.Hidden);
+                .allMatch(s -> s == ViewModifier.Hidden);
 
         var node2 = Node.newNode(diagram.getNodes().get(1))
                 .modifiers(Set.of(ViewModifier.Hidden))

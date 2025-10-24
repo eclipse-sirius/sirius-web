@@ -16,10 +16,10 @@ import {
   SelectionEntry,
   useSelection,
   WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   FilterBar,
-  GQLGetExpandAllTreePathVariables,
   GQLGetTreePathVariables,
   GQLTreeItem,
   TreeFilter,
@@ -27,28 +27,32 @@ import {
   TreeToolBarContext,
   TreeToolBarContextValue,
   TreeView,
-  useExpandAllTreePath,
   useTreeFilters,
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
-import { ExplorerViewState } from './ExplorerView.types';
+import { ExplorerViewConfiguration, ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
+import { useExplorerViewHandle } from './useExplorerViewHandle';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridTemplateRows: 'auto auto 1fr',
+    justifyItems: 'stretch',
+    overflow: 'auto',
+  },
+  treeFilter: {
+    paddingTop: theme.spacing(1),
   },
   treeContent: {
-    paddingTop: theme.spacing(1),
-    flexGrow: 1,
     overflow: 'auto',
   },
 }));
@@ -56,319 +60,338 @@ const useStyles = makeStyles()((theme: Theme) => ({
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload && payload.__typename === 'TreeRefreshedEventPayload';
 
-export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const { classes: styles } = useStyles();
+export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+  (
+    { editingContextId, id, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
+    const { classes: styles } = useStyles();
 
-  const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
-    filterBar: false,
-    filterBarText: '',
-    filterBarTreeFiltering: false,
-    treeFilters: [],
-    activeTreeDescriptionId: null,
-    expanded: {},
-    maxDepth: {},
-    tree: null,
-    singleTreeItemSelected: null,
-  };
-  const [state, setState] = useState<ExplorerViewState>(initialState);
-  const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
-    (contribution) => contribution.props.component
-  );
-  const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+    const initialExplorerViewConfiguration: ExplorerViewConfiguration =
+      initialConfiguration as unknown as ExplorerViewConfiguration;
+    const [state, setState] = useState<ExplorerViewState>({
+      filterBar: false,
+      filterBarText: '',
+      filterBarTreeFiltering: false,
+      treeFilters: initialExplorerViewConfiguration?.activeTreeFilters ?? [],
+      activeTreeDescriptionId: initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null,
+      expanded: {},
+      maxDepth: {},
+      tree: null,
+      selectedTreeItemIds: [],
+      singleTreeItemSelected: null,
+    });
 
-  const { selection, setSelection } = useSelection();
+    // If we are requested to reveal the global selection, we need to compute the tree path to expand
+    const { getTreePath, data: treePathData } = useTreePath();
 
-  const { payload } = useExplorerSubscription(
-    editingContextId,
-    state.activeTreeDescriptionId,
-    activeTreeFilterIds,
-    state.expanded[state.activeTreeDescriptionId] ?? [],
-    state.maxDepth[state.activeTreeDescriptionId] ?? 1
-  );
-
-  useEffect(() => {
-    if (isTreeRefreshedEventPayload(payload)) {
-      setState((prevState) => ({ ...prevState, tree: payload.tree }));
-    }
-  }, [payload]);
-
-  const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
-
-  const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
-
-  useEffect(() => {
-    if (explorerDescriptions && explorerDescriptions.length > 0) {
-      const expandedInitiated: { [key: string]: string[] } = {};
-      const maxDepthInitiated: { [key: string]: number } = {};
-      explorerDescriptions.forEach((explorerDescription) => {
-        expandedInitiated[explorerDescription.id] = [];
-        maxDepthInitiated[explorerDescription.id] = 1;
-      });
-
+    const applySelection = (selection: Selection) => {
+      const newSelectedTreeItemIds = selection.entries.map((entry) => entry.id);
       setState((prevState) => ({
         ...prevState,
-        activeTreeDescriptionId: explorerDescriptions[0].id,
-        expanded: expandedInitiated,
-        maxDepth: maxDepthInitiated,
+        selectedTreeItemIds: newSelectedTreeItemIds,
       }));
-    }
-  }, [explorerDescriptions]);
 
-  useEffect(() => {
-    if (!loading) {
-      const allFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
-        id: gqlTreeFilter.id,
-        label: gqlTreeFilter.label,
-        state: gqlTreeFilter.defaultState,
-      }));
-      setState((prevState) => ({ ...prevState, treeFilters: allFilters }));
-    }
-  }, [loading, treeFilters]);
-
-  const treeElement = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const downHandler = (event) => {
-      if ((event.ctrlKey === true || event.metaKey === true) && event.key === 'f' && event.target.tagName !== 'INPUT') {
-        event.preventDefault();
-        setState((prevState) => {
-          return { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false };
-        });
+      if (state.tree && newSelectedTreeItemIds.length > 0) {
+        const variables: GQLGetTreePathVariables = {
+          editingContextId,
+          treeId: state.tree.id,
+          selectionEntryIds: newSelectedTreeItemIds,
+        };
+        getTreePath({ variables });
       }
     };
-    const element = treeElement?.current;
-    if (element) {
-      element.addEventListener('keydown', downHandler);
 
-      return () => {
-        element.removeEventListener('keydown', downHandler);
-      };
-    }
-    return null;
-  }, [treeElement]);
+    useExplorerViewHandle(id, state.treeFilters, state.activeTreeDescriptionId, applySelection, ref);
 
-  const { getTreePath, data: treePathData } = useTreePath();
+    const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
+      (contribution) => contribution.props.component
+    );
+    const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
-  // If we should auto-expand to reveal the selection, we need to compute the tree path to expand
-  const selectionKey: string = selection?.entries
-    .map((entry) => entry.id)
-    .sort()
-    .join(':');
-  useEffect(() => {
-    if (state.synchronizedWithSelection && state.tree) {
-      const variables: GQLGetTreePathVariables = {
-        editingContextId,
-        treeId: state.tree.id,
-        selectionEntryIds: selection.entries.map((entry) => entry.id),
-      };
-      getTreePath({ variables });
-    }
-  }, [editingContextId, selectionKey, state.synchronizedWithSelection, state.tree, getTreePath]);
+    const { payload } = useExplorerSubscription(
+      editingContextId,
+      state.activeTreeDescriptionId,
+      activeTreeFilterIds,
+      state.expanded[state.activeTreeDescriptionId] ?? [],
+      state.maxDepth[state.activeTreeDescriptionId] ?? 1
+    );
 
-  useEffect(() => {
-    if (treePathData && treePathData.viewer?.editingContext?.treePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
-      const newExpanded: string[] = [...expanded[state.activeTreeDescriptionId]];
+    useEffect(() => {
+      if (isTreeRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, tree: payload.tree }));
+      }
+    }, [payload]);
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded[state.activeTreeDescriptionId].includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
-      });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(expandedMaxDepth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    }
-  }, [treePathData]);
+    const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
 
-  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
-  useEffect(() => {
-    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-      const newExpanded: string[] = [...expanded[state.activeTreeDescriptionId]];
+    useEffect(() => {
+      if (explorerDescriptions && explorerDescriptions.length > 0) {
+        const expandedInitiated: { [key: string]: string[] } = {};
+        const maxDepthInitiated: { [key: string]: number } = {};
+        explorerDescriptions.forEach((explorerDescription) => {
+          expandedInitiated[explorerDescription.id] = [];
+          maxDepthInitiated[explorerDescription.id] = 1;
+        });
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded[state.activeTreeDescriptionId].includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
-      });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(expandedMaxDepth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    }
-  }, [expandAllTreePathData]);
+        setState((prevState) => ({
+          ...prevState,
+          activeTreeDescriptionId: state.activeTreeDescriptionId ?? explorerDescriptions[0].id,
+          expanded: expandedInitiated,
+          maxDepth: maxDepthInitiated,
+        }));
+      }
+    }, [explorerDescriptions]);
 
-  let filterBar: JSX.Element;
-  if (state.filterBar) {
-    filterBar = (
-      <FilterBar
-        onTextChange={(event) => {
-          const {
-            target: { value },
-          } = event;
+    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+
+    useEffect(() => {
+      if (!loading) {
+        const allAvailableFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
+          id: gqlTreeFilter.id,
+          label: gqlTreeFilter.label,
+          state: gqlTreeFilter.defaultState,
+        }));
+        setState((prevState) => ({
+          ...prevState,
+          treeFilters: allAvailableFilters.map((availableFilter) => {
+            const existingFilter: TreeFilter = state.treeFilters.find((filter) => filter.id === availableFilter.id);
+            if (existingFilter) {
+              return {
+                ...availableFilter,
+                state: existingFilter.state,
+              };
+            } else {
+              return availableFilter;
+            }
+          }),
+        }));
+      }
+    }, [loading, treeFilters]);
+
+    const treeElement = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+      const downHandler = (event) => {
+        if (
+          (event.ctrlKey === true || event.metaKey === true) &&
+          event.key === 'f' &&
+          event.target.tagName !== 'INPUT'
+        ) {
+          event.preventDefault();
           setState((prevState) => {
-            return { ...prevState, filterBarText: value };
+            return { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false };
           });
-        }}
-        onFilterButtonClick={(enabled) =>
+        }
+      };
+      const element = treeElement?.current;
+      if (element) {
+        element.addEventListener('keydown', downHandler);
+
+        return () => {
+          element.removeEventListener('keydown', downHandler);
+        };
+      }
+      return null;
+    }, [treeElement]);
+
+    const { selection, setSelection } = useSelection();
+
+    const selectionKey: string = selection?.entries
+      .map((entry) => entry.id)
+      .sort()
+      .join(':');
+
+    const revealSelection = useCallback(() => {
+      if (state.tree && selection.entries.length > 0) {
+        const variables: GQLGetTreePathVariables = {
+          editingContextId,
+          treeId: state.tree.id,
+          selectionEntryIds: selection.entries.map((entry) => entry.id),
+        };
+        getTreePath({ variables });
+      }
+    }, [editingContextId, selectionKey, state.tree, getTreePath]);
+
+    useEffect(() => {
+      if (treePathData && treePathData.viewer?.editingContext?.treePath) {
+        setState((prevState) => {
+          const { expanded, maxDepth } = prevState;
+          const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+          const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
+
+          treeItemIdsToExpand?.forEach((itemToExpand) => {
+            if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
+              newExpanded.push(itemToExpand);
+            }
+          });
+          return {
+            ...prevState,
+            selectedTreeItemIds: selection.entries.map((entry) => entry.id),
+            expanded: {
+              ...prevState.expanded,
+              [prevState.activeTreeDescriptionId]: newExpanded,
+            },
+            maxDepth: {
+              ...prevState.maxDepth,
+              [prevState.activeTreeDescriptionId]: Math.max(
+                expandedMaxDepth,
+                maxDepth[prevState.activeTreeDescriptionId]
+              ),
+            },
+          };
+        });
+      }
+    }, [treePathData]);
+
+    const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+      setState((prevState) => ({
+        ...prevState,
+        expanded: {
+          ...prevState.expanded,
+          [prevState.activeTreeDescriptionId]: newExpandedIds,
+        },
+        maxDepth: {
+          ...prevState.maxDepth,
+          [prevState.activeTreeDescriptionId]: Math.max(
+            newMaxDepth,
+            prevState.maxDepth[prevState.activeTreeDescriptionId]
+          ),
+        },
+      }));
+    };
+
+    let filterBar: JSX.Element = <div />;
+    if (state.filterBar) {
+      filterBar = (
+        <div className={styles.treeFilter}>
+          <FilterBar
+            onTextChange={(event) => {
+              const {
+                target: { value },
+              } = event;
+              setState((prevState) => {
+                return { ...prevState, filterBarText: value };
+              });
+            }}
+            onFilterButtonClick={(enabled) =>
+              setState((prevState) => ({
+                ...prevState,
+                filterBarTreeFiltering: enabled,
+              }))
+            }
+            onClose={() =>
+              setState((prevState) => {
+                return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+              })
+            }
+          />
+        </div>
+      );
+    }
+
+    const onTreeItemClick = (event, item: GQLTreeItem) => {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        // Update the global selection
+        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+        if (isItemInSelection) {
+          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+          setSelection(newSelection);
+        } else {
+          const { id } = item;
+          const newEntry: SelectionEntry = { id };
+          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+          setSelection(newSelection);
+        }
+        // Update the local selection
+        const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
+        if (isItemInLocalSelection) {
+          const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
+          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+        } else {
+          const { id } = item;
+          const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
+          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+        }
+        setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
+      } else {
+        const { id } = item;
+        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [id], singleTreeItemSelected: item }));
+        setSelection({ entries: [{ id }] });
+      }
+    };
+
+    const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
+      <TreeDescriptionsMenu
+        treeDescriptions={explorerDescriptions}
+        activeTreeDescriptionId={state.activeTreeDescriptionId}
+        onTreeDescriptionChange={(treeDescription) =>
           setState((prevState) => ({
             ...prevState,
-            filterBarTreeFiltering: enabled,
+            activeTreeDescriptionId: treeDescription.id,
+            tree: null,
           }))
-        }
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-          })
         }
       />
     );
-  }
-  const onExpand = (id: string, depth: number) => {
-    const { expanded, maxDepth } = state;
-    if (expanded[state.activeTreeDescriptionId].includes(id)) {
-      const newExpanded = [...expanded[state.activeTreeDescriptionId]];
-      newExpanded.splice(newExpanded.indexOf(id), 1);
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(depth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    } else {
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: [...prevState.expanded[prevState.activeTreeDescriptionId], id],
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(depth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    }
-  };
 
-  const onTreeItemClick = (event, item: GQLTreeItem) => {
-    if (event.ctrlKey || event.metaKey) {
-      event.stopPropagation();
-      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-      if (isItemInSelection) {
-        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-        setSelection(newSelection);
-      } else {
-        const { id } = item;
-        const newEntry: SelectionEntry = { id };
-        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-        setSelection(newSelection);
-      }
-      setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
-    } else {
-      const { id } = item;
-      setSelection({ entries: [{ id }] });
-      setState((prevState) => ({ ...prevState, singleTreeItemSelected: item }));
+    if (!state.tree || loading) {
+      return (
+        <div className={styles.treeView} ref={treeElement}>
+          <RepresentationLoadingIndicator />
+        </div>
+      );
     }
-  };
 
-  const onExpandAll = (treeItem: GQLTreeItem) => {
-    if (state.tree?.id) {
-      const variables: GQLGetExpandAllTreePathVariables = {
-        editingContextId,
-        treeId: state.tree.id,
-        treeItemId: treeItem.id,
-      };
-      getExpandAllTreePath({ variables });
-    }
-  };
-  const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
-    <TreeDescriptionsMenu
-      treeDescriptions={explorerDescriptions}
-      activeTreeDescriptionId={state.activeTreeDescriptionId}
-      onTreeDescriptionChange={(treeDescription) =>
-        setState((prevState) => ({
-          ...prevState,
-          activeTreeDescriptionId: treeDescription.id,
-          tree: null,
-        }))
-      }
-    />
-  );
-
-  if (!state.tree || loading) {
     return (
       <div className={styles.treeView} ref={treeElement}>
-        <RepresentationLoadingIndicator />
+        <TreeToolBar
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          treeFilters={state.treeFilters}
+          onRevealSelection={revealSelection}
+          onTreeFilterMenuItemClick={(treeFilters) =>
+            setState((prevState) => {
+              return { ...prevState, treeFilters };
+            })
+          }
+          treeToolBarContributionComponents={treeToolBarContributionComponents}>
+          {treeDescriptionSelector}
+        </TreeToolBar>
+        <DuplicateObjectKeyboardShortcut
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          selectedTreeItem={state.singleTreeItemSelected}
+          selectTreeItems={(selectedTreeItemIds: string[]) =>
+            setState((prevState) => {
+              return { ...prevState, selectedTreeItemIds };
+            })
+          }>
+          {filterBar}
+          <div className={styles.treeContent}>
+            {state.tree !== null ? (
+              <TreeView
+                editingContextId={editingContextId}
+                readOnly={readOnly}
+                treeId={'explorer://'}
+                tree={state.tree}
+                textToHighlight={state.filterBarText}
+                textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                onExpandedElementChange={onExpandedElementChange}
+                expanded={state.expanded[state.activeTreeDescriptionId]}
+                maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
+                onTreeItemClick={onTreeItemClick}
+                selectTreeItems={(selectedTreeItemIds: string[]) =>
+                  setState((prevState) => {
+                    return { ...prevState, selectedTreeItemIds };
+                  })
+                }
+                selectedTreeItemIds={state.selectedTreeItemIds}
+              />
+            ) : null}
+          </div>
+        </DuplicateObjectKeyboardShortcut>
       </div>
     );
   }
-
-  return (
-    <div className={styles.treeView} ref={treeElement}>
-      <TreeToolBar
-        editingContextId={editingContextId}
-        readOnly={readOnly}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
-        treeFilters={state.treeFilters}
-        onTreeFilterMenuItemClick={(treeFilters) =>
-          setState((prevState) => {
-            return { ...prevState, treeFilters };
-          })
-        }
-        treeToolBarContributionComponents={treeToolBarContributionComponents}>
-        {treeDescriptionSelector}
-      </TreeToolBar>
-      <DuplicateObjectKeyboardShortcut
-        editingContextId={editingContextId}
-        readOnly={readOnly}
-        selectedTreeItem={state.singleTreeItemSelected}>
-        <div className={styles.treeContent}>
-          {filterBar}
-          {state.tree !== null ? (
-            <TreeView
-              editingContextId={editingContextId}
-              readOnly={readOnly}
-              treeId={'explorer://'}
-              tree={state.tree}
-              textToHighlight={state.filterBarText}
-              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpand={onExpand}
-              onExpandAll={onExpandAll}
-              onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
-            />
-          ) : null}
-        </div>
-      </DuplicateObjectKeyboardShortcut>
-    </div>
-  );
-};
+);

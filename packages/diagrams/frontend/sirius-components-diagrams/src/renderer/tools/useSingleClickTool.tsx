@@ -11,9 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, useImpactAnalysisDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect, useState } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
-import { useImpactAnalysisDialog } from '../palette/impact-analysis/useImpactAnalysisDialog';
+import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
+import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
@@ -22,6 +26,7 @@ import {
   GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
   GQLToolVariable,
+  UseSingleClickToolState,
   UseSingleClickToolValue,
 } from './useSingleClickTool.types';
 
@@ -30,6 +35,7 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
     invokeSingleClickOnDiagramElementTool(input: $input) {
       __typename
       ... on InvokeSingleClickOnDiagramElementToolSuccessPayload {
+        id
         newSelection {
           entries {
             id
@@ -62,30 +68,36 @@ const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClic
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const useSingleClickTool = (): UseSingleClickToolValue => {
+  const { registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const { addMessages, addErrorMessage } = useMultiToast();
-  const { setSelection } = useSelection();
   const { showDialog } = useDialog();
   const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
 
-  const [invokeSingleClickOnDiagramElementTool, { loading, data }] = useMutation<
+  const [invokeSingleClickOnDiagramElementTool, { loading, data, error }] = useMutation<
     GQLInvokeSingleClickOnDiagramElementToolData,
     GQLInvokeSingleClickOnDiagramElementToolVariables
-  >(invokeSingleClickOnDiagramElementToolMutation, {
-    onCompleted(data) {
-      const { invokeSingleClickOnDiagramElementTool } = data;
-      if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-        const { newSelection } = invokeSingleClickOnDiagramElementTool;
-        if (newSelection?.entries.length ?? 0 > 0) {
-          setSelection(newSelection);
+  >(invokeSingleClickOnDiagramElementToolMutation);
+
+  useEffect(() => {
+    if (!loading) {
+      if (data) {
+        const { invokeSingleClickOnDiagramElementTool } = data;
+        if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+          const { id, newSelection } = invokeSingleClickOnDiagramElementTool;
+          if (newSelection?.entries.length ?? 0 > 0) {
+            registerPostToolSelection(id, newSelection);
+          }
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
         }
-        addMessages(invokeSingleClickOnDiagramElementTool.messages);
+        if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
+        }
       }
-      if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
-        addMessages(invokeSingleClickOnDiagramElementTool.messages);
+      if (error) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
-    },
-    onError: () => addErrorMessage('An unexpected error has occurred, please refresh the page'),
-  });
+    }
+  }, [loading, data, error]);
 
   const invokeTool = (
     editingContextId: string,
@@ -113,6 +125,41 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
     });
   };
 
+  const { getImpactAnalysisReport, loading: impactAnalysisLoading, impactAnalysisReport } = useInvokeImpactAnalysis();
+
+  const [state, setState] = useState<UseSingleClickToolState>({
+    currentTool: null,
+    onToolExecution: () => {},
+  });
+
+  useEffect(() => {
+    if (state.currentTool && (impactAnalysisLoading || impactAnalysisReport)) {
+      showImpactAnalysisDialog(
+        impactAnalysisReport,
+        impactAnalysisLoading,
+        state.currentTool.label,
+        state.onToolExecution
+      );
+    }
+  }, [impactAnalysisLoading, impactAnalysisReport, state.currentTool]);
+
+  const invokeGetDiagramAnalysisReport = (
+    editingContextId: string,
+    representationId: string,
+    toolId: string,
+    diagramElementId: string,
+    variables: GQLToolVariable[]
+  ) => {
+    const getImpactAnalysisVariables: GQLInvokeImpactAnalysisToolVariables = {
+      editingContextId,
+      representationId,
+      toolId,
+      diagramElementId,
+      variables,
+    };
+    getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+  };
+
   const invokeSingleClickTool = (
     editingContextId: string,
     diagramId: string,
@@ -128,10 +175,10 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
 
       let executeProcess: (variables: GQLToolVariable[]) => void = executeTool;
       if (tool.withImpactAnalysis) {
-        const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) =>
-          showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, variables, () =>
-            executeTool(variables)
-          );
+        const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) => {
+          setState((prevState) => ({ ...prevState, currentTool: tool, onToolExecution: () => executeTool(variables) }));
+          invokeGetDiagramAnalysisReport(editingContextId, diagramId, tool.id, diagramElementId, variables);
+        };
         executeProcess = executeToolWithImpactAnalysis;
 
         if (tool.dialogDescriptionId) {

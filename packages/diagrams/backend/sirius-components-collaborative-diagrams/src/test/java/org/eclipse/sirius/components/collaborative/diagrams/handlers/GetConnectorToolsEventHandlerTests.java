@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
@@ -32,17 +32,18 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
@@ -101,6 +102,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .borderColor("black")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
         InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .text("text")
@@ -110,6 +112,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         return Node.newNode(id)
@@ -120,12 +123,13 @@ public class GetConnectorToolsEventHandlerTests {
                 .descriptionId(NODE_DESCRIPTION_ID)
                 .insideLabel(insideLabel)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST)
                 .build();
     }
 
@@ -182,13 +186,6 @@ public class GetConnectorToolsEventHandlerTests {
 
         ICollaborativeMessageService messageService = new ICollaborativeMessageService.NoOp();
 
-        IDiagramContext diagramContext = new IDiagramContext.NoOp() {
-            @Override
-            public Diagram getDiagram() {
-                return diagram;
-            }
-        };
-
         IConnectorToolsProvider connectorToolsProvider = new IConnectorToolsProvider() {
 
             @Override
@@ -215,7 +212,7 @@ public class GetConnectorToolsEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
-        handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
+        handler.handle(payloadSink, changeDescriptionSink, editingContext, new DiagramContext(diagram), input);
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);

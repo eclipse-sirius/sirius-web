@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -37,10 +38,13 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
+import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -55,6 +59,8 @@ import reactor.core.publisher.Sinks;
 @Service
 public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
+    private final IIdentityService identityService;
+
     private final IEditingContextSearchService editingContextSearchService;
 
     private final List<IUploadDocumentReportProvider> uploadDocumentReportProviders;
@@ -63,15 +69,18 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final IUploadFileLoader uploadDocumentLoader;
 
+    private final boolean reuseActiveResourceSet;
+
     private final Counter counter;
 
-
-    public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
-            IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry) {
+    public UploadDocumentEventHandler(IIdentityService identityService, IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
+                                      IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.messageService = Objects.requireNonNull(messageService);
         this.uploadDocumentLoader = Objects.requireNonNull(uploadDocumentLoader);
+        this.reuseActiveResourceSet = reuseActiveResourceSet;
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -89,15 +98,20 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        var optionalResourceSet = this.createResourceSet(editingContext.getId());
+        Optional<ResourceSet> optionalResourceSet;
+        if (this.reuseActiveResourceSet && editingContext instanceof IEMFEditingContext emfEditingContext) {
+            optionalResourceSet = Optional.of(emfEditingContext.getDomain().getResourceSet());
+        } else {
+            optionalResourceSet = this.createResourceSet(editingContext.getId());
+        }
         if (input instanceof UploadDocumentInput uploadDocumentInput && editingContext instanceof IEMFEditingContext emfEditingContext && optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
 
-            var result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file());
-            if (result instanceof Success<Resource> success) {
-                var newResource = success.data();
+            IResult<UploadedResource> result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file(), uploadDocumentInput.readOnly());
+            if (result instanceof Success<UploadedResource> success) {
+                var newResource = success.data().resource();
 
-                var optionalId = new UUIDParser().parse(newResource.getURI().path().substring(1));
+                var optionalId = new UUIDParser().parse(this.identityService.getId(newResource));
 
                 var optionalName = newResource.eAdapters().stream()
                         .filter(ResourceMetadataAdapter.class::isInstance)
@@ -110,11 +124,11 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     var name = optionalName.get();
 
                     String report = this.getReport(newResource);
-                    payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report);
+                    payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report, success.data().idMapping());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
 
-            } else if (result instanceof Failure<Resource> failure) {
+            } else if (result instanceof Failure<UploadedResource> failure) {
                 payload = new ErrorPayload(input.id(), failure.message());
             }
         }

@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record CheckboxCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, boolean value) implements IProps {
+public record CheckboxCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, boolean value, String tooltipValue) implements IProps {
 
     public static final String TYPE = "CheckboxCell";
 
@@ -32,5 +32,6 @@ public record CheckboxCellElementProps(UUID id, String descriptionId, String tar
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(columnId);
+        Objects.requireNonNull(tooltipValue);
     }
 }

@@ -1,0 +1,73 @@
+= ADR-201 - Add impact analysis for contextual menu actions of trees
+
+== Context
+
+A tree contextual menu action can trigger an impact analysis to let the user decide whether they want to execute the tool.
+
+== Decision
+
+We will add an API to run impact analysis on trees and factorize common code between diagram and tree impact analysis.
+
+
+=== Frontend
+
+We will move the following types from `sirius-components-diagrams` to `sirius-components-core` to make the impact analysis dialog reusable in non-diagram contexts:
+
+* ImpactAnalysisDialogContext
+* ImpactAnalysisDialogContext.types
+* useImpactAnalysisDialog
+* useImpactAnalysisDialog.types
+
+Some refactoring will be required to decouple these types from diagram-specific concepts like tools.
+
+We will move the `ImpactAnalysisDialogContext` in the hierarchy to make it visible for diagrams as well as trees.
+We will update the code related to `TreeItemContextMenu` to retrieve whether an action requires impact analysis, and pass it down to the rendered items.
+The rendering of the items will use the (now common) `useImpactAnalysisDialog` hook to render the impact analysis dialog when needed.
+
+
+=== GraphQL shema
+
+We will rename the type `DiagramImpactAnalysisReport` to `ImpactAnalysisReport` and move it to `impact-analysis.graphqls`.
+We will be able to retrieve it from tree description type
+
+----
+type TreeDescription implements RepresentationDescription {
+  // [...]
+  treeImpactAnalysisReport(treeItemId: ID!, menuEntryId: ID!): ImpactAnalysisReport!
+}
+----
+
+We will add a field in `SingleClickTreeItemContextMenuEntry` to specify that a tool should be executed with impact analysis
+
+----
+type SingleClickTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
+  // [...]
+  withImpactAnalysis: Boolean!
+}
+----
+
+
+=== Backend
+
+We will rename `InvokeDiagramImpactAnalysisToolSuccessPayload` to `InvokeImpactAnalysisToolSuccessPayload` and move it to `sirius-components-collaborative`.
+We will rename `DiagramImpactAnalysisReport` to `ImpactAnalysisReport` and move it to `sirius-components-collaborative`.
+
+We will extract the code responsible for the execution of a tree item action in a new class `ToolTreeExecutor`, and we will leverage this class the same way it is done for diagrams to be able to both execute the tool and compute the analysis report.
+The datafetchers and handlers will mimic what has been done for diagrams.
+The tree metamodel will be updated to let specifier define tools that require impact analysis.
+
+
+== Rabbit holes
+
+None.
+
+
+== Consequences
+
+The renamed/moved types will produce API breaks.
+Existing `TreeItemContextMenuContributions` should be updated to take into account the need for impact analysis (when applicable).
+
+
+== Cutting backs
+
+Tree item actions defined in the frontend won't support impact analysis.

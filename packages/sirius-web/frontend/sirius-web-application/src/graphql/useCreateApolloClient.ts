@@ -29,6 +29,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { useMemo } from 'react';
 import { EditingContextStereotypesFragment, StereotypeFragment } from '../modals/new-document/useStereotypes.fragments';
+import { ViewerFragment } from '../viewer/useViewer.fragment';
 import { ProjectAndRepresentationFragment } from '../views/edit-project/useProjectAndRepresentationMetadata.fragment';
 import { LibraryFragment, ViewerLibrariesFragment } from '../views/library-browser/useLibraries.fragments';
 import {
@@ -72,7 +73,8 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
     LibraryFragment,
     ProjectAndRepresentationFragment,
     EditingContextStereotypesFragment,
-    StereotypeFragment
+    StereotypeFragment,
+    ViewerFragment
   );
 
   let cacheOptions: InMemoryCacheConfig = {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,14 @@ public final class ImageNodeStyle implements INodeStyle {
 
     private boolean positionDependentRotation;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private ImageNodeStyle() {
         // Prevent instantiation
+    }
+
+    public static ImageNodeStyle.Builder newImageNodeStyle(ImageNodeStyle sourceImageNodeStyle) {
+        return new ImageNodeStyle.Builder(sourceImageNodeStyle);
     }
 
     public static Builder newImageNodeStyle() {
@@ -77,8 +83,13 @@ public final class ImageNodeStyle implements INodeStyle {
     }
 
     @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    @Override
     public String toString() {
-        String pattern = "{0} '{'imageURL: {1}', border: '{' size: {2}, color: {3}, style: {4} '}'}'";
+        String pattern = "{0} '{'imageURL: {1}, border: '{' size: {2}, color: {3}, style: {4} '}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.imageURL, this.borderSize, this.borderColor, this.borderStyle);
     }
 
@@ -104,8 +115,21 @@ public final class ImageNodeStyle implements INodeStyle {
 
         private boolean positionDependentRotation;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(ImageNodeStyle sourceImageNodeStyle) {
+            this.borderColor = sourceImageNodeStyle.getBorderColor();
+            this.borderSize = sourceImageNodeStyle.getBorderSize();
+            this.borderRadius = sourceImageNodeStyle.getBorderRadius();
+            this.borderStyle = sourceImageNodeStyle.getBorderStyle();
+            this.scalingFactor = sourceImageNodeStyle.getScalingFactor();
+            this.imageURL = sourceImageNodeStyle.getImageURL();
+            this.positionDependentRotation = sourceImageNodeStyle.isPositionDependentRotation();
+            this.childrenLayoutStrategy = sourceImageNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder imageURL(String imageURL) {
@@ -143,6 +167,11 @@ public final class ImageNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public ImageNodeStyle build() {
             ImageNodeStyle style = new ImageNodeStyle();
             style.imageURL = Objects.requireNonNull(this.imageURL);
@@ -152,6 +181,7 @@ public final class ImageNodeStyle implements INodeStyle {
             style.borderRadius = this.borderRadius;
             style.borderStyle = Objects.requireNonNull(this.borderStyle);
             style.positionDependentRotation = this.positionDependentRotation;
+            style.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return style;
         }
     }

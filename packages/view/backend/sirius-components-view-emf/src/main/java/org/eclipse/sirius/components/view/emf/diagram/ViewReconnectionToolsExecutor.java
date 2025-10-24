@@ -93,7 +93,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData, IEditingContext editingContext) {
         VariableManager variableManager = new VariableManager();
-        variableManager.put("diagram", toolInterpreterData.getDiagramContext().getDiagram());
+        variableManager.put("diagram", toolInterpreterData.getDiagramContext().diagram());
         variableManager.put("semanticReconnectionSource", toolInterpreterData.getSemanticReconnectionSource());
         variableManager.put("reconnectionSourceView", toolInterpreterData.getReconnectionSourceView());
         variableManager.put("semanticReconnectionTarget", toolInterpreterData.getSemanticReconnectionTarget());

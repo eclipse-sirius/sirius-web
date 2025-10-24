@@ -15,17 +15,25 @@ package org.eclipse.sirius.web.application.controllers.libraries;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.services.forms.FormWithViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gdaniel
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -50,6 +58,15 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    @Autowired
+    private FormWithViewTableDescriptionProvider formWithViewTableDescriptionProvider;
+
+    @Autowired
+    private CreateRepresentationMutationRunner createRepresentationMutationRunner;
+
+    @Autowired
+    private IMessageService messageService;
 
     @Test
     @GivenSiriusWebServer
@@ -88,6 +105,25 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
         } else {
             fail("Invalid editing context");
         }
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a library, when a mutation to create a representation is executed, then it returns an error payload")
+    public void givenLibraryWhenMutationToCreateRepresentationIsExecutedThenItReturnsAnErrorPayload() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID.toString(),
+                this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.PAPAYA_LIBRARY_JAVA_PACKAGE_ID.toString(),
+                "FormWithViewTable");
+        var result = this.createRepresentationMutationRunner.run(input);
+
+        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+
+        var errorMessage = JsonPath.read(result, "$.data.createRepresentation.message");
+        assertThat(errorMessage).isEqualTo(this.messageService.unauthorized());
     }
 
 }

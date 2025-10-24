@@ -15,18 +15,29 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCurrentProject } from '../../../../useCurrentProject';
 import { UpdateLibraryModalProps, UpdateLibraryModalState } from './UpdateLibraryModal.types';
 import { UpdateLibraryTable } from './UpdateLibraryTable';
 import { useUpdateLibrary } from './useUpdateLibrary';
+import { useInvokeImpactAnalysis } from './useUpdateLibraryImpactAnalysis';
+import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
+import { GQLInvokeImpactAnalysisVariables } from './useUpdateLibraryImpactAnalysis.types';
 
-export const UpdateLibraryModal = ({ open, title, namespace, name, version, onClose }: UpdateLibraryModalProps) => {
+export const UpdateLibraryModal = ({
+  open,
+  title,
+  namespace,
+  name,
+  version,
+  withImpactAnalysis,
+  onClose,
+}: UpdateLibraryModalProps) => {
   const [state, setState] = useState<UpdateLibraryModalState>({
     selectedLibraryId: null,
   });
 
-  const { updateLibrary, data } = useUpdateLibrary();
+  const { updateLibrary, loading, data } = useUpdateLibrary();
   useEffect(() => {
     if (data) {
       onClose();
@@ -48,6 +59,28 @@ export const UpdateLibraryModal = ({ open, title, namespace, name, version, onCl
     }
   };
 
+  const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
+
+  const {
+    getImpactAnalysisReport,
+    loading: impactAnalysisReportLoading,
+    impactAnalysisReport,
+  } = useInvokeImpactAnalysis();
+
+  useEffect(() => {
+    if (impactAnalysisReport || impactAnalysisReportLoading) {
+      showImpactAnalysisDialog(impactAnalysisReport, impactAnalysisReportLoading, title, () => handleUpdateLibrary());
+    }
+  }, [impactAnalysisReportLoading, impactAnalysisReport]);
+
+  const invokeGetTreeAnalysisReport = () => {
+    const getImpactAnalysisVariables: GQLInvokeImpactAnalysisVariables = {
+      editingContextId: project.currentEditingContext.id,
+      libraryId: state.selectedLibraryId,
+    };
+    getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+  };
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg" scroll="paper" data-testid="update-library">
       <DialogTitle>{title}</DialogTitle>
@@ -63,9 +96,10 @@ export const UpdateLibraryModal = ({ open, title, namespace, name, version, onCl
         <Button
           variant="contained"
           disabled={state.selectedLibraryId === null}
-          data-testid="update-library"
+          loading={loading}
+          data-testid="submit-update-library"
           color="primary"
-          onClick={handleUpdateLibrary}>
+          onClick={withImpactAnalysis ? invokeGetTreeAnalysisReport : handleUpdateLibrary}>
           Update
         </Button>
       </DialogActions>

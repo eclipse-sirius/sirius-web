@@ -27,6 +27,29 @@ export interface UseSingleClickToolValue {
   data: GQLInvokeSingleClickOnDiagramElementToolData | null;
 }
 
+/**
+ * The state used for the execution of a single click tool on a diagram element.
+ *
+ * @since v2025.8.0
+ */
+export interface UseSingleClickToolState {
+  /**
+   * The tool that is currently being executed.
+   *
+   * This tool is kept in the state to be able to give it to the impact analysis dialog
+   * when the user clicks on the confirmation button.
+   */
+  currentTool: GQLTool | null;
+
+  /**
+   * The behavior to execute when the tool is invoked.
+   *
+   * This behavior can be kept in the state in order to be able to execute it later,
+   * for example when the user clicks on the confirmation button of the impact analysis dialog.
+   */
+  onToolExecution: () => void;
+}
+
 export interface GQLInvokeSingleClickOnDiagramElementToolData {
   invokeSingleClickOnDiagramElementTool: GQLInvokeSingleClickOnDiagramElementToolPayload;
 }
@@ -65,10 +88,23 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   variables: GQLToolVariable[];
 }
 
+/**
+ * A variable that can be added by the frontend to a tool invocation.
+ *
+ * It is used by various dialogs to add additional information to the tool invocation.
+ * For example, the selection dialog adds the selected object(s) to the tool invocation.
+ *
+ * @since v2024.9.0
+ */
 export interface GQLToolVariable {
   name: string;
   value: string;
   type: GQLToolVariableType;
 }
 
+/**
+ * Used to represent the type of a tool variable.
+ *
+ * @since v2024.9.0
+ */
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';

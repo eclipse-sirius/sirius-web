@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 
 /**
  * Loads dependencies into the editing context.
@@ -21,6 +24,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public interface IEditingContextDependencyLoader {
 
-    void loadDependencies(IEditingContext editingContext);
+    void loadDependencies(IEditingContext editingContext, List<SemanticData> dependenciesSemanticData);
 
 }

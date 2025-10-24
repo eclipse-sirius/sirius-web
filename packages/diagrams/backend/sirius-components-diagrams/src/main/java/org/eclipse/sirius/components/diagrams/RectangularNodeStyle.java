@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,12 +35,18 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private RectangularNodeStyle() {
         // Prevent instantiation
     }
 
     public static Builder newRectangularNodeStyle() {
         return new Builder();
+    }
+
+    public static Builder newRectangularNodeStyle(RectangularNodeStyle sourceRectangularNodeStyle) {
+        return new Builder(sourceRectangularNodeStyle);
     }
 
     public String getBackground() {
@@ -61,6 +67,11 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     public LineStyle getBorderStyle() {
         return this.borderStyle;
+    }
+
+    @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     @Override
@@ -87,8 +98,19 @@ public final class RectangularNodeStyle implements INodeStyle {
 
         private LineStyle borderStyle;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(RectangularNodeStyle sourceRectangularNodeStyle) {
+            this.background = sourceRectangularNodeStyle.getBackground();
+            this.borderColor = sourceRectangularNodeStyle.getBorderColor();
+            this.borderSize = sourceRectangularNodeStyle.getBorderSize();
+            this.borderRadius = sourceRectangularNodeStyle.getBorderRadius();
+            this.borderStyle = sourceRectangularNodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = sourceRectangularNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder background(String background) {
@@ -116,6 +138,11 @@ public final class RectangularNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public RectangularNodeStyle build() {
             RectangularNodeStyle nodeStyleDescription = new RectangularNodeStyle();
             nodeStyleDescription.background = Objects.requireNonNull(this.background);
@@ -123,6 +150,7 @@ public final class RectangularNodeStyle implements INodeStyle {
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;
         }
     }

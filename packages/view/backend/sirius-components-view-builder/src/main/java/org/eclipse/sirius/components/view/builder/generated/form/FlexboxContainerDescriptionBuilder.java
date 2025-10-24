@@ -78,7 +78,6 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for Children.
      *

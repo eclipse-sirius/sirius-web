@@ -13,9 +13,11 @@
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
 
@@ -39,14 +41,26 @@ export const ProjectBrowserView = () => {
   const { classes } = useProjectBrowserViewStyles();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
+  const {
+    viewer: {
+      capabilities: {
+        projects: { canCreate, canList },
+      },
+    },
+  } = useCurrentViewer();
+
+  if (!canList) {
+    return <Navigate to="/errors/404" replace />;
+  }
+
   return (
     <div className={classes.projectsView}>
       <NavigationBar />
       <Container maxWidth="xl">
         <Grid container justifyContent="center">
-          <Grid item xs={8}>
+          <Grid size={{ xs: 8 }}>
             <main className={classes.main}>
-              <CreateProjectArea />
+              {canCreate ? <CreateProjectArea /> : null}
               <ListProjectsArea />
             </main>
           </Grid>

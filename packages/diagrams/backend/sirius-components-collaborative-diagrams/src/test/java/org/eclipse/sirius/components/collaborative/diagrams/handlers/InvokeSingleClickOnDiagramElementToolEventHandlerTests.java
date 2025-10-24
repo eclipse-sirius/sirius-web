@@ -25,7 +25,6 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
@@ -43,7 +42,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -51,10 +50,12 @@ import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -146,7 +147,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -198,7 +199,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -268,7 +269,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -324,7 +325,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -391,7 +392,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -450,7 +451,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
 
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(DIAGRAM_ID));
         handler.handle(payloadSink, changeDescriptionSink, editingContext, diagramContext, input);
 
         ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
@@ -484,6 +485,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderColor(BLACK_COLOR_NAME)
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
         var label = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .text("text")
@@ -493,6 +495,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         return Node.newNode(nodeId)
@@ -503,12 +506,13 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .descriptionId(nodeDescriptionId)
                 .insideLabel(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST)
                 .build();
     }
 
@@ -527,10 +531,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
 
         var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")
-                .idProvider(vm -> "")
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
                 .isHeaderProvider(vm -> false)
@@ -543,7 +547,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         return NodeDescription.newNodeDescription(nodeDescriptionId)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
-                .childrenLayoutStrategyProvider(vm -> new FreeFormLayoutStrategy())
                 .deleteHandler(vm -> new Success())
                 .insideLabelDescription(insideLabelDescription)
                 .labelEditHandler((vm, newLabel) -> new Success())
@@ -555,6 +558,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectKindProvider(vm -> "")
                 .targetObjectLabelProvider(vm -> "")
                 .typeProvider(vm -> "")
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 
@@ -567,13 +571,10 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .borderColor(BLACK_COLOR_NAME)
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
 
-        var label = Label.newLabel(UUID.randomUUID().toString())
-                .style(labelStyle)
-                .text("text")
-                .type("labelType")
-                .build();
+        var label = new Label(UUID.randomUUID().toString(), "text", "labelType", labelStyle, Set.of());
 
         var edgeStyle = EdgeStyle.newEdgeStyle()
                 .color("#000000")
@@ -581,6 +582,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .size(1)
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return Edge.newEdge(edgeId)
@@ -597,6 +599,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectLabel("")
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 
@@ -606,6 +609,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .lineStyle(LineStyle.Dash)
                 .sourceArrow(ArrowStyle.Diamond)
                 .targetArrow(ArrowStyle.Diamond)
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)

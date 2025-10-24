@@ -78,7 +78,6 @@ public class SelectDescriptionBuilder {
         this.getSelectDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

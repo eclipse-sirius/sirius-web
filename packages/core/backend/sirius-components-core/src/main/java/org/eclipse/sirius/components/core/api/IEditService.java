@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,15 +25,13 @@ public interface IEditService {
 
     List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind);
 
-    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind);
+    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 
     Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId);
 
     void delete(Object object);
-
-    void editLabel(Object object, String labelField, String newValue);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -64,10 +62,6 @@ public interface IEditService {
 
         @Override
         public void delete(Object object) {
-        }
-
-        @Override
-        public void editLabel(Object object, String labelField, String newValue) {
         }
 
     }

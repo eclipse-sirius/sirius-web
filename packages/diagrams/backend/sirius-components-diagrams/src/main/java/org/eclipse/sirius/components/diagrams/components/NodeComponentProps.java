@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -59,6 +60,10 @@ public final class NodeComponentProps implements IProps {
     private IOperationValidator operationValidator;
 
     private List<IDiagramEvent> diagramEvents;
+
+    private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+    private BorderNodePosition initialBorderNodePosition;
 
     private NodeComponentProps() {
         // Prevent instantiation
@@ -116,6 +121,14 @@ public final class NodeComponentProps implements IProps {
         return this.operationValidator;
     }
 
+    public List<INodeAppearanceHandler> getNodeAppearanceHandlers() {
+        return this.nodeAppearanceHandlers;
+    }
+
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
+    }
+
     public static Builder newNodeComponentProps() {
         return new Builder();
     }
@@ -127,6 +140,7 @@ public final class NodeComponentProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private VariableManager variableManager;
 
         private NodeDescription nodeDescription;
@@ -152,6 +166,10 @@ public final class NodeComponentProps implements IProps {
         private IOperationValidator operationValidator;
 
         private List<IDiagramEvent> diagramEvents;
+
+        private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+        private BorderNodePosition initialBorderNodePosition;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -218,6 +236,16 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder nodeAppearanceHandlers(List<INodeAppearanceHandler> nodeAppearanceHandlers) {
+            this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
+            return this;
+        }
+
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = Objects.requireNonNull(initialBorderNodePosition);
+            return this;
+        }
+
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -233,6 +261,8 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.diagramEvents = Objects.requireNonNull(this.diagramEvents);
             nodeComponentProps.operationValidator = Objects.requireNonNull(this.operationValidator);
             nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
+            nodeComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
+            nodeComponentProps.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             return nodeComponentProps;
         }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
  * Used to provide a default color palette builder already containing some colors.
  *
  * <p>
- *     color_dark, color_blue, color_green, border_blue, border_green and color_transparent.
+ * color_dark, color_blue, color_green, border_blue, border_green and color_transparent.
  * </p>
  *
  * @author gcoutable
@@ -38,6 +38,14 @@ public class SiriusWebE2EColorPaletteBuilderProvider {
     public static final String BORDER_GREEN = "border_green";
 
     public static final String COLOR_TRANSPARENT = "color_transparent";
+
+    public static final String COLOR_RED = "color_red";
+
+    public static final String COLOR_PINK = "color_pink";
+
+    public static final String COLOR_YELLOW = "color_yellow";
+
+    public static final String COLOR_ORANGE = "color_orange";
 
     public ColorPaletteBuilder getColorPaletteBuilder() {
         var colorDark = new ViewBuilders().newFixedColor()
@@ -70,15 +78,39 @@ public class SiriusWebE2EColorPaletteBuilderProvider {
                 .value("transparent")
                 .build();
 
+        var colorRed = new ViewBuilders().newFixedColor()
+                .name(COLOR_RED)
+                .value("red")
+                .build();
+
+        var colorPink = new ViewBuilders().newFixedColor()
+                .name(COLOR_PINK)
+                .value("pink")
+                .build();
+
+        var colorYellow = new ViewBuilders().newFixedColor()
+                .name(COLOR_YELLOW)
+                .value("yellow")
+                .build();
+
+        var colorOrange = new ViewBuilders().newFixedColor()
+                .name(COLOR_ORANGE)
+                .value("orange")
+                .build();
+
         return new ViewBuilders().newColorPalette()
                 .name("Color Palette")
                 .colors(
-                  colorDark,
-                  colorBlue,
-                  colorGreen,
-                  borderBlue,
-                  borderGreen,
-                  colorTransparent
+                        colorDark,
+                        colorBlue,
+                        colorGreen,
+                        borderBlue,
+                        borderGreen,
+                        colorTransparent,
+                        colorRed,
+                        colorPink,
+                        colorYellow,
+                        colorOrange
                 );
     }
 }

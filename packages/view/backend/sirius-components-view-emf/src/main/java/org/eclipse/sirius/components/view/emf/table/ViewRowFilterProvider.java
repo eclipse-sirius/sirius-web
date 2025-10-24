@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.tables.api.IRowFilterProvider;
 import org.eclipse.sirius.components.collaborative.tables.api.RowFilter;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -73,7 +72,7 @@ public class ViewRowFilterProvider implements IRowFilterProvider {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 variableManager.put("descriptionId", tableDescription.getId());
-                variableManager.put(EditingContextEventProcessor.REPRESENTATION_ID, representationId);
+                variableManager.put("representationId", representationId);
                 result = viewTableDescription.getRowFilters().stream()
                         .map(filterDescription -> this.convertRowFilterDescription(filterDescription, interpreter, variableManager))
                         .toList();

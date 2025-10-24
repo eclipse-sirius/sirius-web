@@ -13,29 +13,40 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  GITHUB_EVENT_NAME: ${{ github.event_name }}
+  GITHUB_EVENT_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  GITHUB_REF: ${{ github.ref }}
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
+        if: env.GITHUB_EVENT_NAME != 'pull_request'
         with:
           fetch-depth: 0
 
       - name: Checkout
         uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
+        if: env.GITHUB_EVENT_NAME == 'pull_request'
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
+          persist-credentials: false
 
       - name: Setup Node SDK
         uses: actions/setup-node@v4
         with:
-          node-version: 18.7
+          node-version: 22.16
           registry-url: https://npm.pkg.github.com/
 
       - name: Cache Node.js modules
@@ -166,33 +177,80 @@ jobs:
         run: jshell scripts/check-coverage.jsh
 
       - name: Publish the backend
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: mvn -B deploy -f packages/pom.xml
 
       - name: Publish the frontend packages
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         run: |
           npm publish --workspaces
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build the Docker image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: sirius-web
-          IMAGE_TAG: ${{ env.git_describe }}
-        run: |
-          docker build -t siriusweb packages/sirius-web/backend/sirius-web
-      - name: Check the integration test code
+      - name: Extract metadata (tags, labels) for main Docker image
+        id: extract-metadata
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+        with:
+          images: eclipsesirius/sirius-web
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+
+      - name: Set up Docker Buildx to use cache feature
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: packages/sirius-web/backend/sirius-web
+          load: true
+          tags: ${{ steps.extract-metadata.outputs.tags }}
+          labels: ${{ steps.extract-metadata.outputs.labels }}
+
+      - name: Check the Playwright integration test code
         run: |
           npm ci
           npm run eslint
-        working-directory: integration-tests
+        working-directory: integration-tests-playwright
 
-      - name: Run end to end tests against the sirius-web application
-        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
+      - name: Install Playwright Browsers
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: npx playwright install --with-deps
+        working-directory: integration-tests-playwright
+
+      - name: Run Playwright tests against the sirius-web application
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: |
+          docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
+          docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+          npx wait-on -t 180000 http://localhost:8080
+          npx playwright test
+        working-directory: integration-tests-playwright
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: sirius-web
+          IMAGE_TAG: eclipsesirius/sirius-web:${{ steps.extract-metadata.outputs.version }}
+
+      - name: Store Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: integration-tests-playwright/playwright-report/
+          retention-days: 5
+
+      - name: Check the Cypress integration test code
+        run: |
+          npm ci
+          npm run eslint
+        working-directory: integration-tests-cypress
+
+      - name: Run Cypress end to end tests against the sirius-web application
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
         uses: cypress-io/github-action@v6
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
@@ -201,12 +259,12 @@ jobs:
             docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml logs
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
-          working-directory: integration-tests
+          working-directory: integration-tests-cypress
           record: false
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: sirius-web
-          IMAGE_TAG: ${{ env.git_describe }}
+          IMAGE_TAG: eclipsesirius/sirius-web:${{ steps.extract-metadata.outputs.version }}
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Store Cypress screenshots
@@ -214,5 +272,56 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
-          path: integration-tests/target/screenshots/**/*.png
+          path: integration-tests-cypress/target/screenshots/**/*.png
           retention-days: 5
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        if: env.GITHUB_EVENT_NAME == 'push' && (env.GITHUB_REF == 'refs/heads/master' || startsWith(env.GITHUB_REF, 'refs/tags/v'))
+        with:
+          username: ${{ env.DOCKER_HUB_USER }}
+          password: ${{ env.DOCKER_HUB_TOKEN }}
+        env:
+          DOCKER_HUB_USER: ${{ secrets.ORG_DOCKER_HUB_USER }}
+          DOCKER_HUB_TOKEN: ${{ secrets.ORG_DOCKER_HUB_TOKEN }}
+
+      - name: Push Docker image
+        if: env.GITHUB_EVENT_NAME == 'push' && (env.GITHUB_REF == 'refs/heads/master' || startsWith(env.GITHUB_REF, 'refs/tags/v'))
+        id: push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: packages/sirius-web/backend/sirius-web
+          push: true
+          tags: ${{ steps.extract-metadata.outputs.tags }}
+          labels: ${{ steps.extract-metadata.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for diagram image server Docker image
+        id: extract-metadata-image-server
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        with:
+          images: eclipsesirius/sirius-web-diagram-image-server
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+
+      - name: Build the diagram image server Docker image
+        id: build-image-server
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        with:
+          context: diagram-image-server
+          load: true
+          tags: ${{ steps.extract-metadata-image-server.outputs.tags }}
+          labels: ${{ steps.extract-metadata-image-server.outputs.labels }}
+
+      - name: Push diagram image server Docker image
+        if: env.GITHUB_EVENT_NAME == 'push' && startsWith(env.GITHUB_REF, 'refs/tags/v')
+        id: push-image-server
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: diagram-image-server
+          push: true
+          tags: ${{ steps.extract-metadata-image-server.outputs.tags }}
+          labels: ${{ steps.extract-metadata-image-server.outputs.labels }}

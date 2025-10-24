@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { PaletteToolSectionList, ToolListItem } from '@eclipse-sirius/sirius-components-palette';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -20,12 +21,10 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
+import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
-import { PaletteToolSectionList } from './PaletteToolSectionList';
 
 const useStyle = makeStyles()((theme) => ({
   container: {
@@ -65,9 +64,26 @@ const useStyle = makeStyles()((theme) => ({
 
 const defaultStateValue: PaletteToolListStateValue = {
   toolSection: null,
+  extensionSection: null,
 };
 
-export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: PaletteToolListProps) => {
+const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
+  const containsTool = (tools: GQLTool[]) => tools.some((tool) => tool.id === toolId);
+  return (
+    containsTool(palette.quickAccessTools) ||
+    containsTool(palette.paletteEntries.filter(isTool)) ||
+    palette.paletteEntries.filter(isToolSection).find((section) => containsTool(section.tools))
+  );
+};
+
+export const PaletteToolList = ({
+  palette,
+  onToolClick,
+  onBackToMainList,
+  diagramElementId,
+  onClose,
+  children,
+}: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
@@ -77,11 +93,19 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
 
   const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
     event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection }));
+    setState((prevState) => ({ ...prevState, toolSection, extensionSection: null }));
+  };
+
+  const handleExtensionSectionClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    extensionSectionId: string
+  ) => {
+    event.stopPropagation();
+    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: extensionSectionId }));
   };
 
   const handleBackToMainList = () => {
-    setState((prevState) => ({ ...prevState, toolSection: null }));
+    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
     onBackToMainList();
   };
 
@@ -91,11 +115,12 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
         <ToolListItem
           onToolClick={onToolClick}
           tool={paletteEntry}
+          disabled={false}
           key={'toolItem_' + paletteEntry.id}
           data-testid={`paletteEntry-${paletteEntry.label}`}
         />
       );
-    } else if (isToolSection(paletteEntry)) {
+    } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
           <ListItemButton
@@ -113,9 +138,26 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
     return [];
   });
 
+  children.forEach((extensionSection) => {
+    const extensionSectionId = extensionSection.props.id;
+    const extensionSectionTitle = extensionSection.props.title;
+    listItemsRendered.push(
+      <Tooltip key={`tooltip_${extensionSectionId}`} title={extensionSectionTitle} placement="right">
+        <ListItemButton
+          className={classes.listItemButton}
+          onClick={(event) => handleExtensionSectionClick(event, extensionSectionId)}
+          data-testid={`toolSection-${extensionSectionTitle}`}>
+          <ListItemText primary={extensionSectionTitle} className={classes.listItemText} />
+          <NavigateNextIcon />
+        </ListItemButton>
+      </Tooltip>
+    );
+  });
+
+  const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
-      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} />
+      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
       <Divider />
     </>
   ) : null;
@@ -142,9 +184,32 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
             </div>
           </Slide>
         ))}
+
+        {children.map((extensionSection) => {
+          const extensionSectionId = extensionSection.props.id;
+          const SectionComponent = extensionSection.props.component;
+          return (
+            <Slide
+              key={'extension_' + extensionSectionId}
+              direction={'left'}
+              in={state.extensionSection === extensionSectionId}
+              container={containerRef.current}
+              unmountOnExit
+              mountOnEnter>
+              <div className={classes.toolList}>
+                <SectionComponent
+                  onBackToMainList={handleBackToMainList}
+                  diagramElementId={diagramElementId}
+                  onClose={onClose}
+                />
+              </div>
+            </Slide>
+          );
+        })}
+
         <Slide
           direction={'right'}
-          in={state.toolSection === null}
+          in={state.toolSection === null && state.extensionSection === null}
           container={containerRef.current}
           appear={false}
           unmountOnExit

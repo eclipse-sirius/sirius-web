@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -104,6 +104,15 @@ public interface CustomnodesPackage extends EPackage {
      * @ordered
      */
     int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DiagramPackage.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->

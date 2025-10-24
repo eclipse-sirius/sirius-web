@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,11 @@ import { UseNodeHoverValue } from './useNodeHover.types';
 
 export const useNodeHover = (): UseNodeHoverValue => {
   const { setNodes } = useStore();
-  const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
+  const { dragging } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const onNodeMouseEnter: NodeMouseHandler<Node<NodeData>> = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
-      if (!draggedNodeId) {
+      if (!dragging) {
         setNodes((nds) =>
           nds.map((n) => {
             if (n.id === node.id) {
@@ -44,11 +44,11 @@ export const useNodeHover = (): UseNodeHoverValue => {
         );
       }
     },
-    [setNodes, draggedNodeId]
+    [setNodes, dragging]
   );
 
   const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
-    if (!draggedNodeId) {
+    if (!dragging) {
       setNodes((nds) =>
         nds.map((n) => {
           if (n.data.isHovered) {
@@ -57,6 +57,7 @@ export const useNodeHover = (): UseNodeHoverValue => {
               data: {
                 ...n.data,
                 isHovered: false,
+                connectionLinePositionOnNode: 'none',
               },
             };
           }
@@ -64,7 +65,7 @@ export const useNodeHover = (): UseNodeHoverValue => {
         })
       );
     }
-  }, [setNodes, draggedNodeId]);
+  }, [setNodes, dragging]);
 
   return {
     onNodeMouseEnter,

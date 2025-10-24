@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,10 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.forms.DateTimeType;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.DateTimeDescription;
@@ -32,36 +35,45 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides the default description of the widget to use to support DataType feature of type java.time.LocalDate.
  *
  * @author lfasani
  */
-public class LocalDateIfDescriptionProvider {
+@Service
+public class LocalDateIfDescriptionProvider implements IEMFFormIfDescriptionProvider {
 
-    private static final String IF_DESCRIPTION_ID = "java.time.LocalDate";
+    public static final String IF_DESCRIPTION_ID = "java.time.LocalDate";
 
     private static final String DATE_DESCRIPTION_ID = "Date";
+
+    private final IIdentityService identityService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
+    private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public LocalDateIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public LocalDateIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
-    public IfDescription getIfDescription() {
-        return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    public List<IfDescription> getIfDescriptions() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
+        return List.of(IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getDateTimeDescription()))
-                .build();
+                .build());
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
@@ -75,9 +87,13 @@ public class LocalDateIfDescriptionProvider {
     }
 
     private DateTimeDescription getDateTimeDescription() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
         return DateTimeDescription.newDateTimeDescription(DATE_DESCRIPTION_ID)
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .labelProvider(this.getLabelProvider())
                 .stringValueProvider(this.getValueProvider())
                 .newValueHandler(this.getNewValueHandler())
@@ -85,14 +101,8 @@ public class LocalDateIfDescriptionProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .type(DateTimeType.DATE)
-                .isReadOnlyProvider(this.getIsReadOnlyProvider())
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .build();
-    }
-
-    private Function<VariableManager, Boolean> getIsReadOnlyProvider() {
-        return variableManager -> variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class)
-                .map(eAttribute -> !eAttribute.isChangeable())
-                .orElse(false);
     }
 
     private Function<VariableManager, String> getLabelProvider() {

@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.project.controllers;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.core.io.ByteArrayResource;
@@ -46,11 +48,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/projects")
 public class ProjectDownloadController {
 
+    private final ICapabilityEvaluator capabilityEvaluator;
+
     private final IProjectSearchService projectSearchService;
 
     private final IProjectExportService projectExportService;
 
-    public ProjectDownloadController(IProjectSearchService projectSearchService, IProjectExportService projectExportService) {
+    public ProjectDownloadController(ICapabilityEvaluator capabilityEvaluator, IProjectSearchService projectSearchService, IProjectExportService projectExportService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectExportService = Objects.requireNonNull(projectExportService);
     }
@@ -58,8 +63,12 @@ public class ProjectDownloadController {
     @ResponseBody
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<Resource> downloadProject(@PathVariable String projectId) {
+        ResponseEntity<Resource> response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.DOWNLOAD);
+
         var optionalProject = this.projectSearchService.findById(projectId);
-        if (optionalProject.isPresent()) {
+        if (hasCapability && optionalProject.isPresent()) {
             var project = optionalProject.get();
             byte[] content = this.projectExportService.export(project);
 
@@ -73,8 +82,8 @@ public class ProjectDownloadController {
             headers.setContentLength(content.length);
             var resource = new ByteArrayResource(content);
 
-            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return response;
     }
 }

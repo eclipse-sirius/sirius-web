@@ -1,0 +1,41 @@
+extend type Viewer {
+  capabilities: ViewerCapabilities!
+}
+
+type ViewerCapabilities {
+  projects: ProjectsCapabilities!
+  libraries: LibrariesCapabilities!
+}
+
+type ProjectsCapabilities {
+  canList: Boolean!
+  canCreate: Boolean!
+  canUpload: Boolean!
+}
+
+type LibrariesCapabilities {
+  canList: Boolean!
+}
+
+extend type Project {
+  capabilities: ProjectCapabilities!
+}
+
+type ProjectCapabilities {
+  canDownload: Boolean!
+  canRename: Boolean!
+  canDelete: Boolean!
+  canDuplicate: Boolean!
+  canEdit: Boolean!
+  settings: ProjectSettingsCapabilities!
+}
+
+type ProjectSettingsCapabilities {
+  canView: Boolean!
+  tabs(tabIds: [ID!]!): [ProjectSettingsTabCapabilities!]!
+}
+
+type ProjectSettingsTabCapabilities {
+  tabId: ID!
+  canView: Boolean!
+}

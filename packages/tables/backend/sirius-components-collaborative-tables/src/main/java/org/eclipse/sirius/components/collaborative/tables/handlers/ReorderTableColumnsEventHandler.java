@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.tables.TableChangeKind;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ReorderTableColumnsInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -65,7 +64,7 @@ public class ReorderTableColumnsEventHandler implements ITableEventHandler {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditTextfieldCellInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), ReorderTableColumnsInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ReorderTableColumnsInput reorderTableColumnsInput) {

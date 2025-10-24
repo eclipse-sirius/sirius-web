@@ -21,8 +21,9 @@ export interface ConnectionHandle extends HandleProps {
   nodeId: string;
   edgeId: string;
   index: number;
-  hidden: boolean;
-  XYPosition?: XYPosition;
+  isVirtualHandle: boolean;
+  isHidden: boolean;
+  XYPosition: XYPosition | null;
 }
 export interface ConnectionHandlesState {
   selectedHandles: string[];

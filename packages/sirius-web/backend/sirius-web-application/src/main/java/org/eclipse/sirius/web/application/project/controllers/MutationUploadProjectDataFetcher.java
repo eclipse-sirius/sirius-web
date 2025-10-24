@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,16 +17,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-
-import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#uploadProject.
@@ -42,35 +43,46 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String FILE = "file";
 
+    private final ICapabilityEvaluator capabilityEvaluator;
+
     private final IProjectImportService projectImportService;
 
     private final IMessageService messageService;
 
-    public MutationUploadProjectDataFetcher(IProjectImportService projectImportService, IMessageService messageService) {
+    public MutationUploadProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectImportService projectImportService, IMessageService messageService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectImportService = Objects.requireNonNull(projectImportService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
+        IPayload payload = new ErrorPayload(UUID.randomUUID(), this.messageService.unexpectedError());
         Map<Object, Object> input = environment.getArgument(INPUT_ARGUMENT);
 
-        var optionalId = Optional.ofNullable(input.get(ID))
+        var optionalId = Optional.ofNullable(input)
+                .map(map -> map.get(ID))
                 .map(Object::toString)
                 .flatMap(new UUIDParser()::parse);
 
-        var optionalFile = Optional.ofNullable(input.get(FILE))
+        var optionalFile = Optional.ofNullable(input)
+                .map(map -> map.get(FILE))
                 .filter(UploadFile.class::isInstance)
                 .map(UploadFile.class::cast);
 
         if (optionalId.isPresent() && optionalFile.isPresent()) {
-            var id = optionalId.get();
-            var uploadFile = optionalFile.get();
-            return this.projectImportService.importProject(id, uploadFile);
+            var inputId = optionalId.get();
+            var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
+
+            if (hasCapability) {
+                payload = this.projectImportService.importProject(inputId, optionalFile.get());
+            } else {
+                payload = new ErrorPayload(inputId, this.messageService.unauthorized());
+            }
         }
 
-        return new ErrorPayload(optionalId.orElse(UUID.randomUUID()), this.messageService.unexpectedError());
 
+        return payload;
     }
 
 }

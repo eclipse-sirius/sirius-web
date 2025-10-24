@@ -14,6 +14,9 @@
 import { Edge, Node, ReactFlowProps, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLEdgeStyle } from '../graphql/subscription/edgeFragment.types';
+import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
+import { GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -51,9 +54,24 @@ export interface NodeData extends Record<string, unknown> {
   isNew: boolean;
   resizedByUser: boolean;
   isListChild: boolean;
+  isDraggedNode: boolean;
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  connectionLinePositionOnNode: ConnectionLinePositionOnNode;
+  nodeAppearanceData: NodeAppearanceData;
+}
+
+export type ConnectionLinePositionOnNode = 'none' | 'center' | 'border';
+
+export interface NodeAppearanceData {
+  customizedStyleProperties: string[];
+  gqlStyle: GQLNodeStyle;
+}
+
+export interface LabelAppearanceData {
+  customizedStyleProperties: string[];
+  gqlStyle: GQLLabelStyle;
 }
 
 export enum BorderNodePosition {
@@ -74,6 +92,12 @@ export interface EdgeData extends Record<string, unknown> {
   bendingPoints: XYPosition[] | null;
   edgePath?: string;
   isHovered: boolean;
+  edgeAppearanceData: EdgeAppearanceData;
+}
+
+export interface EdgeAppearanceData {
+  customizedStyleProperties: string[];
+  gqlStyle: GQLEdgeStyle;
 }
 
 export interface InsideLabel {
@@ -87,6 +111,7 @@ export interface InsideLabel {
   overflowStrategy: LabelOverflowStrategy;
   headerSeparatorStyle: React.CSSProperties;
   headerPosition: HeaderPosition | undefined;
+  appearanceData: LabelAppearanceData;
 }
 
 export type HeaderPosition = 'TOP' | 'BOTTOM';
@@ -99,6 +124,8 @@ export interface EdgeLabel {
   iconURL: string[];
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
+  position: XYPosition;
+  appearanceData: LabelAppearanceData;
 }
 
 export interface OutsideLabel {
@@ -108,6 +135,8 @@ export interface OutsideLabel {
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
+  appearanceData: LabelAppearanceData;
+  position: XYPosition;
 }
 
 export type ReactFlowPropsCustomizer = (

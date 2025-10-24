@@ -19,8 +19,11 @@ export interface TreeItemContextMenuProps {
   treeId: string;
   readOnly: boolean;
   depth: number;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  expanded: string[];
+  maxDepth: number;
+  selectedTreeItemIds: string[];
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   enterEditingMode: () => void;
   onClose: () => void;
 }

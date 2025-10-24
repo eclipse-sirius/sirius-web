@@ -53,20 +53,22 @@ export const FilterBar = ({ onTextChange, onTextClear, text }: FilterBarProps) =
         fullWidth
         value={text}
         onChange={onTextChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon fontSize="small" className={classes.placeHolderIcon} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton data-testid="filterbar-clear-button" aria-label="clear" size="small" onClick={onTextClear}>
-                <ClearIcon fontSize="small" />
-              </IconButton>
-            </InputAdornment>
-          ),
-          className: classes.textfield,
+        className={classes.textfield}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" className={classes.placeHolderIcon} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton data-testid="filterbar-clear-button" aria-label="clear" size="small" onClick={onTextClear}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
       />
     </div>

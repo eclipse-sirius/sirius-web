@@ -1,0 +1,45 @@
+= ADR-196 - Add the ability to contribute custom actions on graphical deletion
+
+== Context
+
+When a node is marked as unsynchronized, a quick access tool is automatically added to the palette of that node.
+This tool allows for graphical deletion, which removes the node from the diagram without performing a semantic deletion.
+This behavior is hard-coded, and there is no current way to add custom behavior to this action.
+
+NOTE: A similar principle exists for edges, although it is not fully supported yet.
+
+== Decision
+
+The decision is to minimize decisions made on behalf of the specifier and thus aim to eliminate hard-coded behaviors such as 'delete from diagram'.
+The specifier has all the tools to add a quick access tool themselves, which would allow, if they wish, for graphical deletion (or not) and the implementation of custom behavior.
+
+The decision taken is therefore to remove the automatic addition of a 'delete from diagram' tool in the case of an unsynchronized node.
+
+NOTE: Currently, this hard-coded tool is added both in the quick access tools and in the Edit tool section.
+It is not possible for a specifier to add a tool directly into this tool section.
+If a specifier wishes to add a tool that will be the equivalent of 'delete from diagram', they should therefore do so in another tool section or directly at the root of the palette.
+
+NOTE: It is not yet possible to remove the `DeleteTool`, as it is not yet possible to bind a tool to a keyboard shortcut.
+We would therefore lose the delete shortcut to trigger a deleteTool.
+
+=== Removal of 'delete from diagram'
+
+==== Frontend
+
+On the frontend, remove the hard-coded addition of graphical-delete in `useInvokePaletteTool`.
+The notion of `GQLDeletionPolicy` is therefore no longer relevant and can be entirely removed, notably from `useDelete`.
+
+==== Backend
+
+On the backend, remove the addition of the `SingleClickOnDiagramElementTool` `graphical-delete` in `PaletteDefaultToolsProvider.java`.
+The notion of `DeletionPolicy` is therefore no longer relevant and can be entirely removed, notably from `DeleteFromDiagramEventHandler` and `ViewDiagramDescriptionConverter`.
+
+== Consequence
+
+All existing `DiagramDescription` with unsynchronized `NodeDescription` that wish to retain access to the equivalent of 'delete from diagram' will need to add it manually.
+A migration participant will therefore be implemented to automatically add this quick access tool for all unsynchronized nodes.
+This tool will no longer be added to the `Edit` tool section.
+
+== Status
+
+Accepted

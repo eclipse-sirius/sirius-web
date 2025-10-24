@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
+import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -27,6 +28,7 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { DraggableOutsideLabel } from './DraggableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
@@ -123,6 +125,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
 
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
     const nodeStyle = useMemo(
       () => freeFormNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
       [data.style, !!selected, data.isHovered, data.faded]
@@ -161,8 +164,10 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...nodeStyle,
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
+            ...connectionLineActiveNodeStyle,
           }}
-          data-svg="rect"
+          data-svg={data.isListChild ? 'rect:compartment' : 'rect'}
+          className="custom-drag-handle"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
@@ -185,7 +190,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
         {data.outsideLabels.BOTTOM_MIDDLE && (
-          <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} />
+          <DraggableOutsideLabel
+            id={id}
+            label={data.outsideLabels.BOTTOM_MIDDLE}
+            faded={data.faded}
+            highlighted={selected || data.isHovered}
+          />
         )}
       </>
     );

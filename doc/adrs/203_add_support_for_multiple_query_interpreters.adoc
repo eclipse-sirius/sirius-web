@@ -1,0 +1,60 @@
+= ADR-203 - Add support for multiple query interpreters
+
+== Context
+
+Developers can contribute new languages to the query view.
+Users can query a model using these new languages using dedicated query prefixes (like `aql:` at the moment)
+
+== Decision
+
+We will generalize the APIs used to get the interpreter for a given query.
+
+=== Frontend
+
+No change on the frontend.
+
+=== GraphQL schema
+
+No change on the GraphQL schema.
+
+=== Backend
+
+We will replace `IAQLInterpreterProvider` with `IInterpreterProvider`
+
+[source, java]
+----
+public interface IInterpreterProvider {
+
+  boolean canHandle(String expression);
+
+  IInterpreter getInterpreter(IEditingContext editingContext);
+
+}
+----
+
+We will update `EvaluateExpressionHandler` to use a list of `IInterpreterProvider` instead of a single `IAQLInterpreterProvider`.
+
+We will create the `IInterpreter` interface with the following signature
+
+[source, java]
+----
+public interface IInterpreter {
+
+  Result evaluateExpression(Map<String, Object> variables, String expressionBody);
+}
+----
+
+The `AQLInterpreter` defined in `org.eclipse.sirius.components.interpreter` will implement this new interface.
+
+== Rabbit holes
+
+None.
+
+
+== Consequences
+
+None.
+
+== Cutting backs
+
+None.

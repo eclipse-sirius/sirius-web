@@ -20,8 +20,9 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.query.EditingContextServices;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.web.application.views.query.services.api.IAQLInterpreterProvider;
+import org.eclipse.sirius.components.interpreter.api.IInterpreter;
 import org.eclipse.sirius.web.application.views.query.services.api.IInterpreterJavaServiceProvider;
+import org.eclipse.sirius.web.application.views.query.services.api.IInterpreterProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class AQLInterpreterProvider implements IAQLInterpreterProvider {
+public class AQLInterpreterProvider implements IInterpreterProvider {
 
     private final List<IInterpreterJavaServiceProvider> interpreterJavaServiceProviders;
 
@@ -49,7 +50,14 @@ public class AQLInterpreterProvider implements IAQLInterpreterProvider {
     }
 
     @Override
-    public AQLInterpreter getInterpreter(IEditingContext editingContext) {
+    public boolean canHandle(IEditingContext editingContext, String expression) {
+        return expression != null && (expression.startsWith("aql:")
+                || expression.startsWith("var:")
+                || expression.startsWith("feature"));
+    }
+
+    @Override
+    public IInterpreter getInterpreter(IEditingContext editingContext) {
         var ePackages = this.getEPackages(editingContext);
         var services = this.getServices(editingContext);
         return new AQLInterpreter(List.of(EditingContextServices.class), services, ePackages);

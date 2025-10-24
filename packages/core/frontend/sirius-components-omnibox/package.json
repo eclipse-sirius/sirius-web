@@ -1,7 +1,7 @@
 {
   "name": "@eclipse-sirius/sirius-components-omnibox",
   "author": "Eclipse Sirius",
-  "version": "2025.2.10",
+  "version": "2025.10.0",
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
@@ -32,28 +32,26 @@
   "peerDependencies": {
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
-    "@mui/icons-material": "5.15.19",
-    "@mui/material": "5.15.19",
-    "@xstate/react": "3.0.0",
+    "@mui/icons-material": "7.0.2",
+    "@mui/material": "7.0.2",
     "graphql": "16.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tss-react": "4.9.7",
-    "xstate": "4.32.1"
+    "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
-    "@xstate/react": "3.0.0",
     "graphql": "16.8.1",
-    "tss-react": "4.9.7",
-    "xstate": "4.32.1",
-    "@mui/icons-material": "5.15.19",
-    "@mui/material": "5.15.19",
-    "@types/node": "20.12.12",
+    "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2",
+    "@mui/icons-material": "7.0.2",
+    "@mui/material": "7.0.2",
+    "@types/node": "22.16.0",
     "@types/react": "18.3.3",
-    "@vitejs/plugin-react": "4.3.0",
+    "@vitejs/plugin-react": "5.0.0",
     "jest-junit-reporter": "1.1.0",
     "prettier": "2.7.1",
     "react": "18.3.1",
@@ -61,6 +59,6 @@
     "react-router-dom": "6.26.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "5.4.5",
-    "vite": "5.2.11"
+    "vite": "7.1.1"
   }
 }

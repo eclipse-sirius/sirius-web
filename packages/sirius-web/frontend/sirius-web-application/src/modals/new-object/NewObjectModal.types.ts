@@ -13,6 +13,11 @@
 
 import { GQLMessage, Selection } from '@eclipse-sirius/sirius-components-core';
 
+export interface NewObjectModalStates {
+  childCreationDescriptions: GQLChildCreationDescription[];
+  selectedChildCreationDescriptionId: string;
+}
+
 export interface NewObjectModalProps {
   editingContextId: string;
   item: any;
@@ -28,7 +33,7 @@ export interface ChildCreationDescription {
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
-  kind: string;
+  containerId: string;
   referenceKind?: string;
 }
 

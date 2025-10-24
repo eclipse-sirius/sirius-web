@@ -20,6 +20,16 @@ export const ProjectAndRepresentationFragment = gql`
     natures {
       name
     }
+    capabilities {
+      canDownload
+      canRename
+      canDelete
+      canEdit
+      canDuplicate
+      settings {
+        canView
+      }
+    }
     currentEditingContext(name: $name) {
       id
       representation(representationId: $representationId) @include(if: $includeRepresentation) {
@@ -27,6 +37,9 @@ export const ProjectAndRepresentationFragment = gql`
         label
         kind
         iconURLs
+        description {
+          id
+        }
       }
     }
   }

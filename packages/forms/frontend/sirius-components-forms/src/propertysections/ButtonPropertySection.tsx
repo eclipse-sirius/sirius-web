@@ -36,18 +36,18 @@ const useStyle = makeStyles<ButtonStyleProps>()(
     style: {
       backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
       color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
+      fontSize: fontSize ? fontSize : undefined,
+      fontStyle: italic ? 'italic' : undefined,
+      fontWeight: bold ? 'bold' : undefined,
       textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       paddingTop: theme.spacing(0.5),
       paddingBottom: theme.spacing(0.5),
       '&:hover': {
         backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
         color: foregroundColor ? getCSSColor(foregroundColor, theme) : 'white',
-        fontSize: fontSize ? fontSize : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        fontSize: fontSize ? fontSize : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
         textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
       },
     },
@@ -156,7 +156,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
         onClick={onClick}
         disabled={readOnly || widget.readOnly}
         classes={{ root: classes.style }}>
-        {widget.imageURL?.length > 0 ? (
+        {widget.imageURL?.length ?? 0 > 0 ? (
           <img className={classes.icon} width="16" height="16" alt={widget.label} src={httpOrigin + widget.imageURL} />
         ) : null}
         {widget.buttonLabel}

@@ -35,11 +35,25 @@ export interface GQLProject {
   id: string;
   name: string;
   natures: GQLNature[];
+  capabilities: GQLProjectCapabilities;
   currentEditingContext: GQLEditingContext | null;
 }
 
 export interface GQLNature {
   name: string;
+}
+
+export interface GQLProjectCapabilities {
+  canDownload: boolean;
+  canRename: boolean;
+  canDelete: boolean;
+  canEdit: boolean;
+  canDuplicate: boolean;
+  settings: GQLProjectSettingsCapabilities;
+}
+
+export interface GQLProjectSettingsCapabilities {
+  canView: boolean;
 }
 
 export interface GQLEditingContext {
@@ -52,4 +66,9 @@ export type GQLRepresentationMetadata = {
   label: string;
   kind: string;
   iconURLs: string[];
+  description: GQLRepresentationDescription;
 };
+
+export interface GQLRepresentationDescription {
+  id: string;
+}

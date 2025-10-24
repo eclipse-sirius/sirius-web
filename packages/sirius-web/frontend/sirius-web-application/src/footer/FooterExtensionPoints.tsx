@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,14 @@ import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core'
 import { FooterProps } from './Footer.types';
 import { SiriusWebFooter } from './SiriusWebFooter';
 
+/**
+ * Extension point for the footer component.
+ *
+ * This extension point allows the contribution of a custom component as the footer.
+ * A contribution can thus define how the footer should be rendered and behave.
+ *
+ * @since v2024.9.0
+ */
 export const footerExtensionPoint: ComponentExtensionPoint<FooterProps> = {
   identifier: 'footer',
   FallbackComponent: SiriusWebFooter,

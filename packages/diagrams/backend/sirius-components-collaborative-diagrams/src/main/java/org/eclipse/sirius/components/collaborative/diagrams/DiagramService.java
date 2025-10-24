@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 
 /**
@@ -22,14 +21,14 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
  */
 public class DiagramService implements IDiagramService {
 
-    private IDiagramContext diagramContext;
+    private DiagramContext diagramContext;
 
-    public DiagramService(IDiagramContext diagramContext) {
+    public DiagramService(DiagramContext diagramContext) {
         this.diagramContext = diagramContext;
     }
 
     @Override
-    public IDiagramContext getDiagramContext() {
+    public DiagramContext getDiagramContext() {
         return this.diagramContext;
     }
 

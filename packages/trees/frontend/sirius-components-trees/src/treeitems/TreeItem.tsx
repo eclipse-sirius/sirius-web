@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, GQLStyledString, IconOverlay, StyledLabel } from '@eclipse-sirius/sirius-components-core';
-import CropDinIcon from '@mui/icons-material/CropDin';
+import { DRAG_SOURCES_TYPE, GQLStyledString, StyledLabel } from '@eclipse-sirius/sirius-components-core';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { GQLTreeItem } from '../views/TreeView.types';
 import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
+import { TreeItemIcon } from './TreeItemIcon';
 import { isFilterCandidate } from './filterTreeItem';
 import { useDropTreeItem } from './useDropTreeItem';
 
@@ -97,23 +98,46 @@ export const getString = (styledString: GQLStyledString): string => {
   return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
 };
 
-// The list of characters that will enable the direct edit mechanism.
-const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
+const getTooltipText = (item: GQLTreeItem) => {
+  let tooltipText = '';
+  if (item.kind.startsWith('siriusComponents://semantic')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('domain') && params.has('entity')) {
+      tooltipText = params.get('domain') + '::' + params.get('entity');
+    }
+  } else if (item.kind.startsWith('siriusComponents://representation')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('type')) {
+      tooltipText = params.get('type') ?? 'representation';
+    }
+  }
+  return tooltipText;
+};
 
+// The list of characters that will enable the direct edit mechanism.
+const directEditActivationValidCharacters = /[\p{L}\p{N}\p{P}]/u;
+
+/**
+ * Renders a *single* tree item (excluding its sub-items).
+ */
 export const TreeItem = ({
   editingContextId,
   treeId,
   item,
   itemIndex,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
   markedItemIds,
   treeItemActionRender,
   onTreeItemClick,
+  selectTreeItems,
   selectedTreeItemIds,
 }: TreeItemProps) => {
   const [state, setState] = useState<TreeItemState>({
@@ -131,14 +155,17 @@ export const TreeItem = ({
     setState((prevState) => ({ ...prevState, partHovered }));
   };
 
-  const handleMouseLeave = () => {
-    setState((prevState) => ({ ...prevState, partHovered: null }));
+  const handleMouseLeave = (partLeft: PartHovered) => {
+    setState((prevState) => {
+      if (prevState.partHovered !== partLeft) {
+        return prevState;
+      }
+      return { ...prevState, partHovered: null };
+    });
   };
 
   const onTreeItemAction = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: false };
-    });
+    setState((prevState) => ({ ...prevState, partHovered: null }));
   };
 
   const enterEditingMode = () => {
@@ -149,47 +176,11 @@ export const TreeItem = ({
     }));
   };
 
-  let content: JSX.Element | null = null;
-  if (item.expanded && item.children) {
-    content = (
-      <ul className={classes.ul}>
-        {item.children.map((childItem, index) => {
-          return (
-            <li key={childItem.id}>
-              <TreeItem
-                editingContextId={editingContextId}
-                treeId={treeId}
-                item={childItem}
-                itemIndex={index}
-                depth={depth + 1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
-                readOnly={readOnly}
-                textToHighlight={textToHighlight}
-                textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
-                onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
-              />
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-
-  let className = classes.treeItem;
-  let dataTestid: string | undefined = undefined;
-
   const selected = selectedTreeItemIds.find((id) => id === item.id);
-  if (selected) {
-    className = `${className} ${classes.selected}`;
-    dataTestid = 'selected';
-  }
-  if (state.partHovered === 'item' && item.selectable) {
-    className = `${className} ${classes.treeItemHover}`;
-  }
+
+  const className = selected ? `${classes.treeItem} ${classes.selected}` : classes.treeItem;
+  const dataTestid: string | undefined = selected ? 'selected' : undefined;
+
   useEffect(() => {
     if (selected) {
       if (refDom.current?.scrollIntoViewIfNeeded) {
@@ -201,37 +192,12 @@ export const TreeItem = ({
     }
   }, [selected]);
 
-  let image = <CropDinIcon />;
-  if (item.iconURL?.length > 0) {
-    image = <IconOverlay iconURL={item.iconURL} alt={item.kind} />;
-  }
-  let text: JSX.Element | null = null;
   const onCloseEditingMode = () => {
     setState((prevState) => {
       return { ...prevState, editingMode: false };
     });
     refDom.current.focus();
   };
-
-  const marked: boolean = markedItemIds.some((id) => id === item.id);
-  if (state.editingMode) {
-    text = (
-      <TreeItemDirectEditInput
-        editingContextId={editingContextId}
-        treeId={treeId}
-        treeItemId={item.id}
-        editingKey={state.editingKey}
-        onClose={onCloseEditingMode}></TreeItemDirectEditInput>
-    );
-  } else {
-    const styledLabelProps = {
-      styledString: item.label,
-      selected: false,
-      textToHighlight: textToHighlight ?? '',
-      marked: marked,
-    };
-    text = <StyledLabel {...styledLabelProps}></StyledLabel>;
-  }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
@@ -273,9 +239,17 @@ export const TreeItem = ({
     if (!isDraggedItemSelected) {
       // If we're dragging a non-selected item, drag it alone
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([item.id]));
+      const iconAndTextElement = (refDom.current as HTMLElement).getElementsByClassName(`iconAndText`).item(0);
+      if (iconAndTextElement) {
+        event.dataTransfer.setDragImage(iconAndTextElement, 0, 0);
+      }
     } else if (selectedTreeItemIds.length > 0) {
       // Otherwise drag the whole selection
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
+      const iconAndTextElement = (refDom.current as HTMLElement).getElementsByClassName(`iconAndText`).item(0);
+      if (iconAndTextElement) {
+        event.dataTransfer.setDragImage(iconAndTextElement, 0, 0);
+      }
     }
   };
 
@@ -297,26 +271,39 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
-  let tooltipText = '';
-  if (item.kind.startsWith('siriusComponents://semantic')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('domain') && params.has('entity')) {
-      tooltipText = params.get('domain') + '::' + params.get('entity');
+  const text: JSX.Element = state.editingMode ? (
+    <TreeItemDirectEditInput
+      editingContextId={editingContextId}
+      treeId={treeId}
+      treeItemId={item.id}
+      editingKey={state.editingKey}
+      onClose={onCloseEditingMode}
+    />
+  ) : (
+    <StyledLabel
+      styledString={item.label}
+      selected={false}
+      textToHighlight={textToHighlight ?? ''}
+      marked={markedItemIds.some((id) => id === item.id)}
+    />
+  );
+
+  const onExpand = (id: string, depth: number) => {
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+      onExpandedElementChange(newExpanded, Math.max(maxDepth, depth));
+    } else {
+      onExpandedElementChange([...expanded, id], Math.max(maxDepth, depth));
     }
-  } else if (item.kind.startsWith('siriusComponents://representation')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('type')) {
-      tooltipText = params.get('type') ?? 'representation';
-    }
-  }
+  };
 
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
     const label = getString(item.label);
+    const tooltipText = getTooltipText(item);
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
@@ -324,41 +311,56 @@ export const TreeItem = ({
           className={`${state.partHovered === 'before' ? classes.treeItemHover : ''} ${classes.treeItemBefore}`}
           onDrop={onDropBefore}
           onDragEnter={() => handleMouseEnter('before')}
-          onDragExit={handleMouseLeave}
+          onDragLeave={() => handleMouseLeave('before')}
           onDragOver={dragOver}
           data-testid={`${dataTestid}-drop-before`}
         />
         <div
-          className={className}
+          className={`${state.partHovered === 'item' && item.selectable ? classes.treeItemHover : ''} ${className}`}
           onClick={onClick}
+          draggable
+          onDragStart={dragStart}
+          onDragOver={(e) => {
+            handleMouseEnter('item');
+            dragOver(e);
+          }}
           onDragEnter={() => handleMouseEnter('item')}
-          onDragExit={handleMouseLeave}
+          onDragLeave={(e) => {
+            const targetNode = e.target as Node;
+            const relatedNode = e.relatedTarget as Node;
+            if (targetNode.contains(relatedNode) || relatedNode.contains(targetNode)) {
+              return;
+            }
+            handleMouseLeave('item');
+          }}
           onDrop={onDropItem}
           onMouseEnter={() => handleMouseEnter('item')}
-          onMouseLeave={handleMouseLeave}
+          onMouseLeave={() => handleMouseLeave('item')}
           data-testid={`${label}-fullrow`}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
-            draggable
-            onDragStart={dragStart}
-            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
             data-treeitemkind={item.kind}
             data-haschildren={item.hasChildren.toString()}
             data-depth={depth}
             data-expanded={item.expanded.toString()}
+            onDragEnter={(e) => {
+              e.stopPropagation();
+            }}
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
               <div
-                className={`${classes.imageAndLabel} ${item.selectable ? classes.imageAndLabelSelectable : ''}`}
+                className={`${classes.imageAndLabel} ${
+                  item.selectable ? classes.imageAndLabelSelectable : ''
+                } iconAndText`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
                 data-testid={label}>
-                {image}
+                <TreeItemIcon item={item} />
                 {text}
               </div>
               <div onClick={onTreeItemAction}>
@@ -368,11 +370,14 @@ export const TreeItem = ({
                     treeId: treeId,
                     item: item,
                     depth: depth,
-                    onExpand: onExpand,
-                    onExpandAll: onExpandAll,
+                    expanded: expanded,
+                    maxDepth: maxDepth,
+                    onExpandedElementChange: onExpandedElementChange,
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
+                    selectTreeItems,
                     isHovered: state.partHovered === 'item',
+                    selectedTreeItemIds: selectedTreeItemIds,
                   })
                 ) : (
                   <TreeItemAction
@@ -380,20 +385,22 @@ export const TreeItem = ({
                     treeId={treeId}
                     item={item}
                     depth={depth}
-                    onExpand={onExpand}
-                    onExpandAll={onExpandAll}
+                    expanded={expanded}
+                    maxDepth={maxDepth}
+                    onExpandedElementChange={onExpandedElementChange}
+                    selectTreeItems={selectTreeItems}
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
                     isHovered={state.partHovered === 'item'}
+                    selectedTreeItemIds={selectedTreeItemIds}
                   />
                 )}
               </div>
             </div>
           </div>
         </div>
-        {content}
       </>
     );
   }
-  return <>{currentTreeItem}</>;
+  return currentTreeItem;
 };

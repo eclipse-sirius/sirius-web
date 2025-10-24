@@ -26,7 +26,15 @@ type Modal = 'CreateNewObject' | 'CreateNewRepresentation' | 'DuplicateObject';
 
 export const ObjectTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    {
+      editingContextId,
+      treeId,
+      item,
+      readOnly,
+      selectTreeItems,
+      expandItem,
+      onClose,
+    }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const [modal, setModal] = useState<Modal>(null);
@@ -38,6 +46,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);
+      selectTreeItems(selection.entries.map((entry) => entry.id));
       expandItem();
       onClose();
     };

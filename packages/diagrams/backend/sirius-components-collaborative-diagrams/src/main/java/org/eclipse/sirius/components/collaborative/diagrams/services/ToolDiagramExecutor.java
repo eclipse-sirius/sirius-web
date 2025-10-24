@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
@@ -81,9 +80,9 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
         return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
     }
 
-    private IStatus executeTool(IEditingContext editingContext, IDiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, List<ToolVariable> variables) {
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, SingleClickOnDiagramElementTool tool, List<ToolVariable> variables) {
         IStatus result = new Failure("");
-        Diagram diagram = diagramContext.getDiagram();
+        Diagram diagram = diagramContext.diagram();
         Optional<Node> node = this.diagramQueryService.findNodeById(diagram, diagramElementId);
         Optional<Edge> edge = Optional.empty();
         if (node.isEmpty()) {
@@ -104,9 +103,9 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
             }
         }
         if (result instanceof Success success) {
-            success.getParameters().put(VIEW_CREATION_REQUESTS, diagramContext.getViewCreationRequests());
-            success.getParameters().put(VIEW_DELETION_REQUESTS, diagramContext.getViewDeletionRequests());
-            success.getParameters().put(DIAGRAM_EVENTS, diagramContext.getDiagramEvents());
+            success.getParameters().put(VIEW_CREATION_REQUESTS, diagramContext.viewCreationRequests());
+            success.getParameters().put(VIEW_DELETION_REQUESTS, diagramContext.viewDeletionRequests());
+            success.getParameters().put(DIAGRAM_EVENTS, diagramContext.diagramEvents());
         }
         return result;
     }
@@ -148,9 +147,9 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
         return self;
     }
 
-    private VariableManager populateVariableManager(IEditingContext editingContext, IDiagramContext diagramContext, Optional<Node> node, Optional<Edge> edge, Optional<Object> self) {
+    private VariableManager populateVariableManager(IEditingContext editingContext, DiagramContext diagramContext, Optional<Node> node, Optional<Edge> edge, Optional<Object> self) {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -52,14 +51,12 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
         this.synchronizationPolicy = Objects.requireNonNull(synchronizationPolicy);
     }
 
-
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType("flow::Fan")
                 .semanticCandidatesExpression("feature:elements")
-                .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
                 .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "feature:speed"))
                 .defaultHeightExpression("aql:self.speed/2")
                 .defaultWidthExpression("aql:self.speed/2")
@@ -77,12 +74,16 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodePalette createNodePalette() {
-
-        return this.diagramBuilderHelper.newNodePalette()
+        var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
-                .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .build();
+                .labelEditTool(this.flowViewBuilder.createLabelEditTool());
+
+        if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
+            nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());
+        }
+
+        return nodePaletteBuilder.build();
     }
 
 }

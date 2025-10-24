@@ -16,28 +16,17 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.eclipse.sirius</groupId>
+		<artifactId>sirius-web-parent</artifactId>
+		<version>2025.10.0</version>
+		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
+
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-application</artifactId>
-	<version>2025.2.10</version>
+	<version>2025.10.0</version>
 	<name>sirius-web-application</name>
 	<description>Sirius Web Application</description>
-
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -47,197 +36,197 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core-graphql</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-portals</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-validation</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf-forms</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf-tables</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-builder</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-customcells</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-customcells-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-edit</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-emf</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -249,17 +238,21 @@
 			<artifactId>swagger-annotations-jakarta</artifactId>
 			<version>2.2.27</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-csv</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -294,7 +287,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.13</version>
 				<executions>
 					<execution>
 						<goals>

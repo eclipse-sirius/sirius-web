@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -72,7 +74,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
 
     @Override
     public OperationEvaluationResult handle(AQLInterpreter interpreter, VariableManager variableManager, Operation operation) {
-        var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class);
+        var optionalDiagramContext = variableManager.get(DiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
         var optionalConvertedNodes = variableManager.get(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, Map.class);
 
         if (operation instanceof CreateView createViewOperation && optionalDiagramContext.isPresent() && optionalConvertedNodes.isPresent()) {
@@ -104,8 +106,8 @@ public class CreateViewOperationHandler implements IOperationHandler {
         return new OperationEvaluationResult(OperationExecutionStatus.FAILURE, List.of(variableManager), Map.of());
     }
 
-    private Node createView(IDiagramContext diagramContext, Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.diagram.NodeContainmentKind containmentKind) {
-        String parentElementId = optionalParentNode.map(Node::getId).orElse(diagramContext.getDiagram().getId());
+    private Node createView(DiagramContext diagramContext, Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.diagram.NodeContainmentKind containmentKind) {
+        String parentElementId = optionalParentNode.map(Node::getId).orElse(diagramContext.diagram().getId());
 
         NodeContainmentKind nodeContainmentKind = NodeContainmentKind.CHILD_NODE;
         if (containmentKind == org.eclipse.sirius.components.view.diagram.NodeContainmentKind.BORDER_NODE) {
@@ -114,7 +116,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
 
         var targetObjectId = this.identityService.getId(semanticElement);
         var targetObjectKind = this.identityService.getKind(semanticElement);
-        var targetObjectLabel = this.labelService.getLabel(semanticElement);
+        var targetObjectLabel = this.labelService.getStyledLabel(semanticElement).toString();
 
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)
@@ -122,7 +124,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .descriptionId(nodeDescription.getId())
                 .containmentKind(nodeContainmentKind)
                 .build();
-        diagramContext.getViewCreationRequests().add(viewCreationRequest);
+        diagramContext.viewCreationRequests().add(viewCreationRequest);
 
         // Since we have everything to compute the identifier of the node which will be created in the
         // future, we can create a fake node which will have the proper id in order to let the specifier
@@ -138,6 +140,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .borderColor("black")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
 
         var insideLabel = InsideLabel.newLabel("")
@@ -148,12 +151,14 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
                 .background("")
                 .borderColor("")
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         return Node.newNode(nodeId)
@@ -168,9 +173,10 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .collapsingState(CollapsingState.EXPANDED)
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
+                .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST)
                 .build();
     }
 }

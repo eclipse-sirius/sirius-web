@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,9 @@ export const useTableColumnSizing = (
   useEffect(() => {
     if (enableColumnSizing) {
       for (const [columnName, columnSize] of Object.entries(columnSizing)) {
-        resizeColumn(columnName, columnSize);
+        if (columnName !== 'mrt-row-header') {
+          resizeColumn(columnName, columnSize);
+        }
       }
     }
   }, [columnSizing]);
@@ -61,7 +63,11 @@ export const useTableColumnSizing = (
   useEffect(() => {
     //Once the table is up to date, we don't want to keep the column size in the state but use the data coming from
     // the backend.
-    setColumnSizing({});
+    const newColumnSizing: MRT_ColumnSizingState = {};
+    if (columnSizing.hasOwnProperty('mrt-row-header')) {
+      newColumnSizing['mrt-row-header'] = columnSizing['mrt-row-header'];
+    }
+    setColumnSizing(newColumnSizing);
   }, [table.columns.map((column) => column.width).join()]);
 
   const [mutationResizeColumn, mutationResizeColumnResult] = useMutation<GQLResizeColumnData, GQLResizeColumnVariables>(

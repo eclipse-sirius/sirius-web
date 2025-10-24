@@ -20,7 +20,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 
 /**

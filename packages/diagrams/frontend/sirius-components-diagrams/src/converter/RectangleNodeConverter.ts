@@ -20,7 +20,6 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
@@ -29,6 +28,7 @@ import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
+import { convertBorderNodePosition } from './convertBorderNodes';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -52,6 +52,7 @@ const toRectangularNode = (
     pinned,
     style,
     labelEditable,
+    customizedStyleProperties,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -79,7 +80,7 @@ const toRectangularNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     imageURL: null,
     faded: state === GQLViewModifier.Faded,
     pinned,
@@ -87,16 +88,22 @@ const toRectangularNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     labelEditable,
     positionDependentRotation: false,
     connectionHandles,
     isNew,
     resizedByUser,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
+    connectionLinePositionOnNode: 'none',
     isHovered: false,
+    nodeAppearanceData: {
+      gqlStyle: style,
+      customizedStyleProperties,
+    },
   };
 
   data.insideLabel = convertInsideLabel(
@@ -118,15 +125,15 @@ const toRectangularNode = (
     node.parentId = gqlParentNode.id;
   }
 
-  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
-  if (nodeLayoutData) {
+  if (gqlNodeLayoutData) {
     const {
       position,
       size: { height, width },
-    } = nodeLayoutData;
+    } = gqlNodeLayoutData;
     node.position = position;
     node.height = height;
     node.width = width;
+    node.dragHandle = '.custom-drag-handle';
     node.style = {
       ...node.style,
       width: `${node.width}px`,
@@ -136,13 +143,18 @@ const toRectangularNode = (
     node.height = data.defaultHeight ?? defaultHeight;
     node.width = data.defaultWidth ?? defaultWidth;
   }
-
+  if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
+    node.measured = {
+      height: gqlNodeLayoutData.size.height,
+      width: gqlNodeLayoutData.size.width,
+    };
+  }
   return node;
 };
 
 export class RectangleNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind !== 'List';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.style.childrenLayoutStrategy?.kind !== 'List';
   }
 
   handle(

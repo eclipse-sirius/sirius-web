@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,10 +35,10 @@ const useDataTimeWidgetStyles = makeStyles<DateTimeStyleProps>()(
     };
     return {
       style: {
-        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-        fontStyle: italic ? 'italic' : null,
-        fontWeight: bold ? 'bold' : null,
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : undefined,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : undefined,
+        fontStyle: italic ? 'italic' : undefined,
+        fontWeight: bold ? 'bold' : undefined,
       },
       selected: {
         color: theme.palette.primary.main,

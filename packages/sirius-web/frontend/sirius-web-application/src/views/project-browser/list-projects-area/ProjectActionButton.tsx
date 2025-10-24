@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,32 +12,27 @@
  *******************************************************************************/
 
 import { ComponentExtension, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { ComponentType, useState } from 'react';
-import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
-import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
+import { useState } from 'react';
+import { DeleteProjectMenuItem } from '../../edit-project/navbar/context-menu/DeleteProjectMenuItem';
+import { DownloadProjectMenuItem } from '../../edit-project/navbar/context-menu/DownloadProjectMenuItem';
+import { DuplicateProjectMenuItem } from '../../edit-project/navbar/context-menu/DuplicateProjectMenuItem';
+import { RenameProjectMenuItem } from '../../edit-project/navbar/context-menu/RenameProjectMenuItem';
 import {
+  ProjectActionButtonProps,
   ProjectActionButtonState,
   ProjectContextMenuEntryProps,
-  ProjectContextMenuModal,
-  ProjectContextMenuModalProps,
   ProjectContextMenuProps,
-  ProjectContextMenuState,
 } from './ProjectActionButton.types';
 import {
   projectContextMenuContainerExtensionPoint,
   projectContextMenuEntryExtensionPoint,
 } from './ProjectContextMenuExtensionPoints';
 
-export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEntryProps) => {
+export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonProps) => {
   const [state, setState] = useState<ProjectActionButtonState>({
     contextMenuAnchorElement: null,
   });
@@ -46,6 +41,11 @@ export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEnt
     setState((prevState) => ({ ...prevState, contextMenuAnchorElement: event.currentTarget }));
 
   const onCloseContextMenu = () => setState((prevState) => ({ ...prevState, contextMenuAnchorElement: null }));
+
+  const handleChange = () => {
+    onCloseContextMenu();
+    onChange();
+  };
 
   return (
     <>
@@ -58,7 +58,7 @@ export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEnt
         <ProjectContextMenu
           menuAnchor={state.contextMenuAnchorElement}
           project={project}
-          onChange={onChange}
+          onChange={handleChange}
           onClose={onCloseContextMenu}
         />
       ) : null}
@@ -66,32 +66,13 @@ export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEnt
   );
 };
 
-const modals: Record<ProjectContextMenuModal, ComponentType<ProjectContextMenuModalProps>> = {
-  RENAME_PROJECT_DIALOG: RenameProjectModal,
-  DELETE_PROJECT_DIALOG: DeleteProjectModal,
-};
-
 const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectContextMenuProps) => {
-  const [state, setState] = useState<ProjectContextMenuState>({
-    modalToDisplay: null,
-  });
-
   const { Component: ProjectContextMenuContainer } = useComponent(projectContextMenuContainerExtensionPoint);
-
-  const onRename = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'RENAME_PROJECT_DIALOG' }));
-  const onDelete = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'DELETE_PROJECT_DIALOG' }));
-  const onCancel = () => setState((prevState) => ({ ...prevState, modalToDisplay: null }));
-
-  const onSuccess = () => {
-    setState((prevState) => ({ ...prevState, modalToDisplay: null }));
-    onChange();
-  };
-
-  const ModalComponent = modals[state.modalToDisplay];
 
   const menuItemComponentExtensions: ComponentExtension<ProjectContextMenuEntryProps>[] = useComponents(
     projectContextMenuEntryExtensionPoint
   );
+
   return (
     <ProjectContextMenuContainer>
       <Menu
@@ -101,23 +82,20 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         keepMounted
         open={true}
         onClose={onClose}>
-        <MenuItem onClick={onRename} data-testid="rename">
-          <ListItemIcon>
-            <EditIcon />
-          </ListItemIcon>
-          <ListItemText primary="Rename" />
-        </MenuItem>
-        <MenuItem onClick={onDelete} data-testid="delete">
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Delete" />
-        </MenuItem>
+        {project.capabilities.canRename ? (
+          <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onChange} />
+        ) : null}
+        {project.capabilities.canDuplicate ? (
+          <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />
+        ) : null}
+        {project.capabilities.canDownload ? <DownloadProjectMenuItem project={project} onClick={onClose} /> : null}
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
-          <ProjectContextMenuItem key={index} project={project} onChange={onChange} />
+          <ProjectContextMenuItem key={index} project={project} onChange={onChange} onClose={onClose} />
         ))}
+        {project.capabilities.canDelete ? (
+          <DeleteProjectMenuItem project={project} onCancel={onClose} onSuccess={onChange} />
+        ) : null}
       </Menu>
-      {ModalComponent ? <ModalComponent project={project} onSuccess={onSuccess} onCancel={onCancel} /> : null}
     </ProjectContextMenuContainer>
   );
 };

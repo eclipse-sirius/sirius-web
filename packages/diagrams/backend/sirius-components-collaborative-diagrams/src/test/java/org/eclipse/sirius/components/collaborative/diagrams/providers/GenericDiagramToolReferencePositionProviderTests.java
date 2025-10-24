@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
@@ -49,7 +48,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
         DropOnDiagramInput inputDropOnDiagram = new DropOnDiagramInput(UUID.randomUUID(), "", "", "", List.of(), 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropOnDiagram)).isTrue();
 
-        DeleteFromDiagramInput inputDelete = new DeleteFromDiagramInput(UUID.randomUUID(), "", "", List.of(), List.of(), null);
+        DeleteFromDiagramInput inputDelete = new DeleteFromDiagramInput(UUID.randomUUID(), "", "", List.of(), List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDelete)).isFalse();
     }
 
@@ -57,15 +56,15 @@ public class GenericDiagramToolReferencePositionProviderTests {
     public void getReferencePositionInvokeSingleClickOnDiagramElementTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         // Test click on diagram
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClickOnDiagram = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
-                diagramId, "", 3, 2,  List.of());
+                diagramId, "", 3, 2, List.of());
         var result = diagramToolReferencePositionProvider.getReferencePosition(inputInvokeSingleClickOnDiagram, diagramContext);
         this.assertResult(result, null, new Position(3, 2));
         // Test click on container
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClickOnContainer = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
-                CONTAINER_ID, "", 3, 2,  List.of());
+                CONTAINER_ID, "", 3, 2, List.of());
         result = diagramToolReferencePositionProvider.getReferencePosition(inputInvokeSingleClickOnContainer, diagramContext);
         this.assertResult(result, CONTAINER_ID, new Position(3, 2));
     }
@@ -74,7 +73,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
     public void getReferencePositionDropOnDiagramElementTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         // Test drop on diagram
         DropOnDiagramInput dropOnDiagramInput = new DropOnDiagramInput(UUID.randomUUID(), "", "",
                 diagramId, List.of(), 3, 2);
@@ -91,7 +90,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
     public void getReferencePositionDropOnNodeTool() {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
-        IDiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         DropNodeInput dropNodeInput = new DropNodeInput(UUID.randomUUID(), "", "",
                 "", CONTAINER_ID, 3, 2);
         var result = diagramToolReferencePositionProvider.getReferencePosition(dropNodeInput, diagramContext);

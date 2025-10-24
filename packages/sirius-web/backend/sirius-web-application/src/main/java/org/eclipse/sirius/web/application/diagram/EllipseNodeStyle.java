@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 
@@ -35,12 +36,18 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private EllipseNodeStyle() {
         // Prevent instantiation
     }
 
     public static Builder newEllipseNodeStyle() {
         return new Builder();
+    }
+
+    public static Builder newEllipseNodeStyle(EllipseNodeStyle ellipseNodeStyle) {
+        return new Builder(ellipseNodeStyle);
     }
 
     public String getBackground() {
@@ -57,6 +64,11 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     public LineStyle getBorderStyle() {
         return this.borderStyle;
+    }
+
+    @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     @Override
@@ -81,8 +93,18 @@ public final class EllipseNodeStyle implements INodeStyle {
 
         private LineStyle borderStyle;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(EllipseNodeStyle ellipseNodeStyle) {
+            this.background = ellipseNodeStyle.getBackground();
+            this.borderColor = ellipseNodeStyle.getBorderColor();
+            this.borderSize = ellipseNodeStyle.getBorderSize();
+            this.borderStyle = ellipseNodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = ellipseNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder background(String background) {
@@ -105,6 +127,10 @@ public final class EllipseNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
 
         public EllipseNodeStyle build() {
             EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
@@ -112,6 +138,7 @@ public final class EllipseNodeStyle implements INodeStyle {
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;
         }
     }

@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.ComponentExchangeItemP
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentPortItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ConstructorItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ContainingLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ContributionItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ControllerItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DataTypeItemProviderSpec;
@@ -54,10 +55,17 @@ import org.eclipse.sirius.components.papaya.provider.spec.DomainItemProviderSpec
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumLiteralItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EventItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.FolderItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.GenericTypeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.InterfaceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.IterationItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.OperationItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalActivityItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalActorItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalCapabilityItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalEntityItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalInteractionItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.OperationalProcessItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.PackageItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ParameterItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProjectItemProviderSpec;
@@ -66,6 +74,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.PublicationItemProvide
 import org.eclipse.sirius.components.papaya.provider.spec.QueryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ReferencingLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RepositoryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RequiredServiceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ServiceItemProviderSpec;
@@ -153,6 +162,75 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ReferencingLink}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferencingLinkItemProvider referencingLinkItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ReferencingLink}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createReferencingLinkAdapter() {
+        if (this.referencingLinkItemProvider == null) {
+            this.referencingLinkItemProvider = new ReferencingLinkItemProviderSpec(this);
+        }
+
+        return this.referencingLinkItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ContainingLink}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ContainingLinkItemProvider containingLinkItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ContainingLink}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createContainingLinkAdapter() {
+        if (this.containingLinkItemProvider == null) {
+            this.containingLinkItemProvider = new ContainingLinkItemProviderSpec(this);
+        }
+
+        return this.containingLinkItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Folder} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FolderItemProvider folderItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Folder}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createFolderAdapter() {
+        if (this.folderItemProvider == null) {
+            this.folderItemProvider = new FolderItemProviderSpec(this);
+        }
+
+        return this.folderItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Project} instances.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -173,6 +251,146 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
         }
 
         return this.projectItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.papaya.OperationalCapability} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalCapabilityItemProvider operationalCapabilityItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalCapability}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalCapabilityAdapter() {
+        if (this.operationalCapabilityItemProvider == null) {
+            this.operationalCapabilityItemProvider = new OperationalCapabilityItemProviderSpec(this);
+        }
+
+        return this.operationalCapabilityItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalEntity}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalEntityItemProvider operationalEntityItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalEntity}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalEntityAdapter() {
+        if (this.operationalEntityItemProvider == null) {
+            this.operationalEntityItemProvider = new OperationalEntityItemProviderSpec(this);
+        }
+
+        return this.operationalEntityItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActor}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalActorItemProvider operationalActorItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActor}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalActorAdapter() {
+        if (this.operationalActorItemProvider == null) {
+            this.operationalActorItemProvider = new OperationalActorItemProviderSpec(this);
+        }
+
+        return this.operationalActorItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalProcess}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalProcessItemProvider operationalProcessItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalProcess}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalProcessAdapter() {
+        if (this.operationalProcessItemProvider == null) {
+            this.operationalProcessItemProvider = new OperationalProcessItemProviderSpec(this);
+        }
+
+        return this.operationalProcessItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActivity}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalActivityItemProvider operationalActivityItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActivity}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalActivityAdapter() {
+        if (this.operationalActivityItemProvider == null) {
+            this.operationalActivityItemProvider = new OperationalActivityItemProviderSpec(this);
+        }
+
+        return this.operationalActivityItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.papaya.OperationalInteraction} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected OperationalInteractionItemProvider operationalInteractionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalInteraction}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOperationalInteractionAdapter() {
+        if (this.operationalInteractionItemProvider == null) {
+            this.operationalInteractionItemProvider = new OperationalInteractionItemProviderSpec(this);
+        }
+
+        return this.operationalInteractionItemProvider;
     }
 
     /**
@@ -1111,8 +1329,26 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     public void dispose() {
         if (this.tagItemProvider != null)
             this.tagItemProvider.dispose();
+        if (this.referencingLinkItemProvider != null)
+            this.referencingLinkItemProvider.dispose();
+        if (this.containingLinkItemProvider != null)
+            this.containingLinkItemProvider.dispose();
+        if (this.folderItemProvider != null)
+            this.folderItemProvider.dispose();
         if (this.projectItemProvider != null)
             this.projectItemProvider.dispose();
+        if (this.operationalCapabilityItemProvider != null)
+            this.operationalCapabilityItemProvider.dispose();
+        if (this.operationalEntityItemProvider != null)
+            this.operationalEntityItemProvider.dispose();
+        if (this.operationalActorItemProvider != null)
+            this.operationalActorItemProvider.dispose();
+        if (this.operationalProcessItemProvider != null)
+            this.operationalProcessItemProvider.dispose();
+        if (this.operationalActivityItemProvider != null)
+            this.operationalActivityItemProvider.dispose();
+        if (this.operationalInteractionItemProvider != null)
+            this.operationalInteractionItemProvider.dispose();
         if (this.iterationItemProvider != null)
             this.iterationItemProvider.dispose();
         if (this.taskItemProvider != null)

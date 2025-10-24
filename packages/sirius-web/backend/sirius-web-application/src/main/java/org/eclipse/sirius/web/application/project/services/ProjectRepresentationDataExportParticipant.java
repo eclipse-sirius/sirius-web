@@ -80,36 +80,38 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
     public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
         Map<String, Map<String, String>> representationManifests = new HashMap<>();
 
-        var allRepresentationMetadata = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
+        var optionalEditingContext = this.projectEditingContextService.getEditingContextId(project.getId())
+                .flatMap(this.editingContextSearchService::findById)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast);
+
+        if (optionalEditingContext.isPresent()) {
+            var editingContext = optionalEditingContext.get();
+            var allRepresentationMetadata = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
                 .map(ProjectSemanticData::getSemanticData)
                 .map(this.representationMetadataSearchService::findAllRepresentationMetadataBySemanticData)
                 .orElse(List.of());
-        for (var representationMetadata: allRepresentationMetadata) {
-            var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(representationMetadata.getId())
-                    .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(representationMetadata, representationContent));
 
-            if (optionalRepresentationContentNode.isPresent()) {
-                var representationContentNode = optionalRepresentationContentNode.get();
+            for (var representationMetadata: allRepresentationMetadata) {
+                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(representationMetadata.getId())
+                        .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent));
 
-                var exportData = new RepresentationSerializedExportData(
-                        representationMetadata.getId(),
-                        project.getId(),
-                        representationMetadata.getDescriptionId(),
-                        representationMetadata.getTargetObjectId(),
-                        representationMetadata.getLabel(),
-                        representationMetadata.getKind(),
-                        representationContentNode
-                );
+                if (optionalRepresentationContentNode.isPresent()) {
+                    var representationContentNode = optionalRepresentationContentNode.get();
 
-                // Get TargetObjectURI
-                String uriFragment = "";
-                var optionalEditingContext = this.projectEditingContextService.getEditingContextId(project.getId())
-                        .flatMap(this.editingContextSearchService::findById)
-                        .filter(IEMFEditingContext.class::isInstance)
-                        .map(IEMFEditingContext.class::cast);
+                    var exportData = new RepresentationSerializedExportData(
+                            representationMetadata.getId(),
+                            project.getId(),
+                            representationMetadata.getDescriptionId(),
+                            representationMetadata.getTargetObjectId(),
+                            representationMetadata.getLabel(),
+                            representationMetadata.getKind(),
+                            representationContentNode
+                    );
 
-                if (optionalEditingContext.isPresent()) {
-                    var editingContext = optionalEditingContext.get();
+                    // Get TargetObjectURI
+                    String uriFragment = "";
+
                     String targetObjectId = representationMetadata.getTargetObjectId();
                     for (Resource resource : editingContext.getDomain().getResourceSet().getResources()) {
                         EObject eObject = resource.getEObject(targetObjectId);
@@ -118,32 +120,32 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                             break;
                         }
                     }
-                }
-                if (uriFragment.isEmpty()) {
-                    this.logger.warn("The serialization of the representationManifest won't be complete.");
-                }
+                    if (uriFragment.isEmpty()) {
+                        this.logger.warn("The serialization of the representationManifest won't be complete.");
+                    }
 
-                Map<String, String> representationManifest = Map.of(
-                        "type", representationMetadata.getKind(),
-                        "descriptionURI", representationMetadata.getDescriptionId(),
-                        "targetObjectURI", uriFragment
-                );
-                representationManifests.put(representationMetadata.getId().toString(), representationManifest);
+                    Map<String, String> representationManifest = Map.of(
+                            "type", representationMetadata.getKind(),
+                            "descriptionURI", representationMetadata.getDescriptionId(),
+                            "targetObjectURI", uriFragment
+                    );
+                    representationManifests.put(representationMetadata.getId().toString(), representationManifest);
 
-                try {
-                    byte[] bytes = this.objectMapper.writeValueAsBytes(exportData);
+                    try {
+                        byte[] bytes = this.objectMapper.writeValueAsBytes(exportData);
 
-                    String name = project.getName() + "/representations/" + representationMetadata.getId() + "." + JsonResourceFactoryImpl.EXTENSION;
+                        String name = project.getName() + "/representations/" + representationMetadata.getId() + "." + JsonResourceFactoryImpl.EXTENSION;
 
-                    ZipEntry zipEntry = new ZipEntry(name);
-                    zipEntry.setSize(bytes.length);
-                    zipEntry.setTime(System.currentTimeMillis());
+                        ZipEntry zipEntry = new ZipEntry(name);
+                        zipEntry.setSize(bytes.length);
+                        zipEntry.setTime(System.currentTimeMillis());
 
-                    outputStream.putNextEntry(zipEntry);
-                    outputStream.write(bytes);
-                    outputStream.closeEntry();
-                } catch (IOException exception) {
-                    this.logger.warn(exception.getMessage());
+                        outputStream.putNextEntry(zipEntry);
+                        outputStream.write(bytes);
+                        outputStream.closeEntry();
+                    } catch (IOException exception) {
+                        this.logger.warn(exception.getMessage());
+                    }
                 }
             }
         }

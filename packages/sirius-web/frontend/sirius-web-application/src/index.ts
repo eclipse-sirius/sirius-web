@@ -16,7 +16,7 @@ export type { SiriusWebApplicationProps } from './application/SiriusWebApplicati
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
 export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';
-export { ellipseNodeStyleDocumentTransform } from './extension/EllipseNodeDocumentTransform';
+export { ellipseNodeStyleDocumentTransform } from './extension/ellipsenode/EllipseNodeDocumentTransform';
 export { referenceWidgetDocumentTransform } from './extension/ReferenceWidgetDocumentTransform';
 export type { FooterProps } from './footer/Footer.types';
 export { footerExtensionPoint } from './footer/FooterExtensionPoints';
@@ -57,35 +57,53 @@ export {
 } from './navigationBar/NavigationBarExtensionPoints';
 export {
   type NavigationBarMenuContainerProps,
+  type NavigationBarMenuHeaderProps,
   type NavigationBarMenuIconProps,
   type NavigationBarMenuItemProps,
 } from './navigationBar/NavigationBarMenu.types';
 export {
   navigationBarMenuContainerExtensionPoint,
   navigationBarMenuEntryExtensionPoint,
+  navigationBarMenuHeaderExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from './navigationBar/NavigationBarMenuExtensionPoints';
 export { ImportLibraryCommand } from './omnibox/ImportLibraryCommand';
+export { NewDocumentArea } from './onboarding/NewDocumentArea';
+export { type EditingContextAction, type NewDocumentAreaProps } from './onboarding/NewDocumentArea.types';
+export { NewRepresentationArea } from './onboarding/NewRepresentationArea';
+export {
+  type NewRepresentationAreaProps,
+  type RepresentationDescriptionMetadata,
+} from './onboarding/NewRepresentationArea.types';
+export { RepresentationsArea } from './onboarding/RepresentationsArea';
+export { type RepresentationAreaProps } from './onboarding/RepresentationsArea.types';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
+export { CursorBasedPagination } from './table/CursorBasedPagination';
+export type { CursorBasedPaginationProps } from './table/CursorBasedPagination.types';
+export { useCurrentViewer } from './viewer/useCurrentViewer';
+export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
+export { useViewer } from './viewer/useViewer';
+export type { UseViewerValue } from './viewer/useViewer.types';
+export { ViewerContext, ViewerContextProvider } from './viewer/ViewerContext';
+export type { ViewerContextProviderProps, ViewerContextValue } from './viewer/ViewerContext.types';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
+export { EditProjectView } from './views/edit-project/EditProjectView';
 export type {
   EditProjectNavbarMenuContainerProps,
   EditProjectNavbarMenuEntryProps,
-  EditProjectNavbarSubtitleProps,
-} from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
+} from './views/edit-project/navbar/context-menu/EditProjectNavbarContextMenu.types';
 export {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,
-} from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
-export { EditProjectView } from './views/edit-project/EditProjectView';
-export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
-export { editProjectViewReadOnlyPredicateExtensionPoint } from './views/edit-project/EditProjectViewExtensionPoints';
+} from './views/edit-project/navbar/context-menu/EditProjectNavbarMenuExtensionPoints';
+export type { EditProjectNavbarSubtitleProps } from './views/edit-project/navbar/EditProjectNavbar.types';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';
+export { ExpandAllTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
 export { UpdateLibraryModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal';
 export * from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal.types';
 export { UpdateLibraryTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
@@ -101,19 +119,31 @@ export {
   type GQLRelatedElementsEventPayload,
   type UseRelatedElementsViewSubscriptionValue,
 } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription.types';
+export { SearchView } from './views/edit-project/workbench-views/search/SearchView';
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
 export { LibraryBrowserView } from './views/library-browser/LibraryBrowserView';
 export { NewProjectView } from './views/new-project/NewProjectView';
+export { CreateProjectArea } from './views/project-browser/create-projects-area/CreateProjectArea';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
+export type { CreateProjectAreaProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
+export { CreateProjectAreaCard } from './views/project-browser/create-projects-area/CreateProjectAreaCard';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
+export { NewProjectCard } from './views/project-browser/create-projects-area/NewProjectCard';
+export { ProjectTemplateCard } from './views/project-browser/create-projects-area/ProjectTemplateCard';
+export { ShowAllProjectTemplatesCard } from './views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
+export { UploadProjectCard } from './views/project-browser/create-projects-area/UploadProjectCard';
+export { ListProjectsArea } from './views/project-browser/list-projects-area/ListProjectsArea';
+export type { ListProjectsAreaProps } from './views/project-browser/list-projects-area/ListProjectsArea.types';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
 export { type ProjectContextMenuEntryProps } from './views/project-browser/list-projects-area/ProjectActionButton.types';
 export {
   projectContextMenuContainerExtensionPoint,
   projectContextMenuEntryExtensionPoint,
 } from './views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
+export { ProjectsTable } from './views/project-browser/list-projects-area/ProjectsTable';
+export type { ProjectsTableProps } from './views/project-browser/list-projects-area/ProjectsTable.types';
 export { projectFilterCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsExtensionPoints';
 export { type ProjectFilterCustomizer } from './views/project-browser/list-projects-area/useProjectsExtensionPoints.types';
 export { projectsTableColumnCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints';

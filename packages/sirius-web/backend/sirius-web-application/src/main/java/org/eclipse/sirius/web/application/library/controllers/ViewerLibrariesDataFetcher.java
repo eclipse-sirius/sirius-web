@@ -12,16 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.library.controllers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -31,6 +24,15 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
+import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * Data fetcher for the field Viewer#libraries.
@@ -44,14 +46,22 @@ public class ViewerLibrariesDataFetcher implements IDataFetcherWithFieldCoordina
 
     private static final String LIMIT_ARGUMENT = "limit";
 
+    private final ICapabilityEvaluator capabilityEvaluator;
+
     private final ILibraryApplicationService libraryApplicationService;
 
-    public ViewerLibrariesDataFetcher(ILibraryApplicationService libraryApplicationService) {
+    public ViewerLibrariesDataFetcher(ICapabilityEvaluator capabilityEvaluator, ILibraryApplicationService libraryApplicationService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.libraryApplicationService = Objects.requireNonNull(libraryApplicationService);
     }
 
     @Override
     public Connection<LibraryDTO> get(DataFetchingEnvironment environment) throws Exception {
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, null, SiriusWebCapabilities.Library.LIST);
+        if (!hasCapability) {
+            return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
+        }
+
         int page = Optional.<Integer> ofNullable(environment.getArgument(PAGE_ARGUMENT))
                 .filter(pageArgument -> pageArgument > 0)
                 .orElse(0);

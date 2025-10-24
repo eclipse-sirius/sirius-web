@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,8 @@ public class TablePapayaTemplatesProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var flowTemplate = new ProjectTemplate(TABLE_PAPAYA_TEMPLATE_ID, "PapayaTable", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
-        return List.of(flowTemplate);
+        var papayaTemplate = new ProjectTemplate(TABLE_PAPAYA_TEMPLATE_ID, "PapayaTable", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
+        return List.of(papayaTemplate);
     }
 
 }

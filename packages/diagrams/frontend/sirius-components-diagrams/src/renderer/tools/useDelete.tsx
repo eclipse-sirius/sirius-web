@@ -16,7 +16,6 @@ import {
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
   GQLDeleteFromDiagramVariables,
-  GQLDeletionPolicy,
   UseDeleteValue,
 } from './useDelete.types';
 
@@ -46,20 +45,13 @@ export const useDelete = (): UseDeleteValue => {
     GQLDeleteFromDiagramVariables
   >(deleteFromDiagramMutation);
 
-  const deleteDiagramElements = (
-    editingContextId: string,
-    diagramId: string,
-    nodeIds: string[],
-    edgeIds: string[],
-    deletionPolicy: GQLDeletionPolicy
-  ) => {
+  const deleteDiagramElements = (editingContextId: string, diagramId: string, nodeIds: string[], edgeIds: string[]) => {
     const input: GQLDeleteFromDiagramInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: diagramId,
       nodeIds,
       edgeIds,
-      deletionPolicy,
     };
     rawDeleteFromDiagram({ variables: { input } });
   };

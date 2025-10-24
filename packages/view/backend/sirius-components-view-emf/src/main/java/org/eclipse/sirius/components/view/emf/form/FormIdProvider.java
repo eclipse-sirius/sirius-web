@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@ package org.eclipse.sirius.components.view.emf.form;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +29,22 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class FormIdProvider implements IFormIdProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public FormIdProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public FormIdProvider(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String getId(FormDescription formDescription) {
         String sourceId = this.getSourceIdFromElementDescription(formDescription);
-        String sourceElementId = this.objectService.getId(formDescription);
+        String sourceElementId = this.identityService.getId(formDescription);
         return FORM_DESCRIPTION_KIND + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
     @Override
     public String getFormElementDescriptionId(EObject widgetDescription) {
         String sourceId = this.getSourceIdFromElementDescription(widgetDescription);
-        String sourceElementId = this.objectService.getId(widgetDescription);
+        String sourceElementId = this.identityService.getId(widgetDescription);
         String kind = widgetDescription.eClass().getName();
         return FORM_ELEMENT_DESCRIPTION_PREFIX + "?" + KIND + "=" + kind + "&" +  SOURCE_KIND + "=" +  VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }

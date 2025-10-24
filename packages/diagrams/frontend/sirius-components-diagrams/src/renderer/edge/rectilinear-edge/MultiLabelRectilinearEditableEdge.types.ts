@@ -10,9 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, XYPosition } from '@xyflow/react';
+import { Edge, EdgeProps, InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeData } from '../../DiagramRenderer.types';
 
 export type MultiLabelEditableEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
   bendingPoints: XYPosition[];
   customEdge: boolean;
+  sourceNode: InternalNode<Node<NodeData>>;
+  targetNode: InternalNode<Node<NodeData>>;
 } & EdgeProps<T>;
+
+export type XYPositionSetter = (source: XYPosition | ((prevState: XYPosition) => XYPosition)) => void;

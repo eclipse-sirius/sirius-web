@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.annotations.PublicApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Rendering service used to navigate recursively of on the elements to render.
  *
+ * <p>
+ *     Contrary to Sirius Desktop, it was decided that Sirius Components would embrace a common rendering engine for all
+ *     its representations.
+ *     This rendering engine is heavily inspired by the behavior of the JavaScript framework React.
+ *     The renderer uses a tree of elements which are processed recursively to create an immutable tree based structure
+ *     of target elements.
+ *     This tree is then converted into the expected data structure of the {@link IRepresentation representation}.
+ * </p>
+ *
  * @author sbegaudeau
+ * @since v0.1.0
  */
+@PublicApi
 public class BaseRenderer {
 
     private final IInstancePropsValidator instancePropsValidator;
@@ -55,7 +67,7 @@ public class BaseRenderer {
      * </p>
      * <p>
      * The components are a way to dynamically render part of the representation to create. They can be used to render
-     * final objects or new components alike. Components should implements the {@link IComponent} interface.
+     * final objects or new components alike. Components should implement the {@link IComponent} interface.
      * </p>
      * <p>
      * The elements are the building blocks of the rendering strategy. They are used to declaratively indicate what

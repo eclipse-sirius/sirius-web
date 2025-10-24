@@ -8,9 +8,7 @@ input GanttEventInput {
   ganttId: ID!
 }
 
-union GanttEventPayload =
-    ErrorPayload
-  | GanttRefreshedEventPayload
+union GanttEventPayload = ErrorPayload | GanttRefreshedEventPayload
 
 type GanttRefreshedEventPayload {
   id: ID!
@@ -24,6 +22,11 @@ type Gantt implements Representation {
   tasks: [Task!]!
   columns: [GanttColumn!]!
   dateRounding: GanttDateRounding!
+}
+
+type GanttDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
 }
 
 type GanttDateRounding {
@@ -47,8 +50,8 @@ type Task {
   id: ID!
   descriptionId: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   detail: TaskDetail!
   style: TaskStyle
   subTasks: [Task!]

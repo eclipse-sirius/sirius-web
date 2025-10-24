@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
 import {
-  GQLLabelStyle,
-  GQLOutsideLabel,
   GQLInsideLabel,
+  GQLLabelStyle,
   GQLLabelTextAlign,
+  GQLOutsideLabel,
 } from '../graphql/subscription/labelFragment.types';
-import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { AlignmentMap } from './convertDiagram.types';
+import { InsideLabel, NodeData, OutsideLabels } from '../renderer/DiagramRenderer.types';
 import { convertLineStyle } from './convertDiagram';
+import { AlignmentMap } from './convertDiagram.types';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
@@ -55,6 +56,10 @@ export const convertInsideLabel = (
       width: '100%',
     },
     headerPosition: undefined,
+    appearanceData: {
+      customizedStyleProperties: gqlInsideLabel.customizedStyleProperties,
+      gqlStyle: gqlInsideLabel.style,
+    },
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
@@ -106,7 +111,10 @@ export const convertInsideLabel = (
   return insideLabel;
 };
 
-export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): OutsideLabels => {
+export const convertOutsideLabels = (
+  gqlOutsideLabels: GQLOutsideLabel[],
+  gqlLabelLayoutData: GQLLabelLayoutData[]
+): OutsideLabels => {
   const outsideLabels: OutsideLabels = {};
   const reducer = (allOutsideLabels: OutsideLabels, gqlOutsideLabel: GQLOutsideLabel): OutsideLabels => {
     const {
@@ -116,6 +124,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       style: { iconURL },
       overflowStrategy,
     } = gqlOutsideLabel;
+
     allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = {
       id,
       text,
@@ -130,6 +139,11 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         ...convertContentStyle(labelStyle),
       },
       overflowStrategy,
+      appearanceData: {
+        customizedStyleProperties: gqlOutsideLabel.customizedStyleProperties,
+        gqlStyle: gqlOutsideLabel.style,
+      },
+      position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id)?.position ?? { x: 0, y: 0 },
     };
 
     return allOutsideLabels;
@@ -164,6 +178,10 @@ export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProper
   }
   if (decoration.length > 0) {
     style.textDecoration = decoration;
+  }
+
+  if (gqlLabelStyle.visibility) {
+    style.visibility = gqlLabelStyle.visibility;
   }
 
   return style;

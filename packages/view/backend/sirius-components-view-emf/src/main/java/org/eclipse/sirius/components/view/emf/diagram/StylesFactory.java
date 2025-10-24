@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -50,15 +53,15 @@ public final class StylesFactory {
 
     private static final String DEFAULT_TRANSPARENT_COLOR = "transparent";
 
-    private final List<INodeStyleProvider> iNodeStyleProviders;
+    private final List<INodeStyleProvider> nodeStyleProviders;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final AQLInterpreter interpreter;
 
-    public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService, AQLInterpreter interpreter) {
-        this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
-        this.objectService = Objects.requireNonNull(objectService);
+    public StylesFactory(List<INodeStyleProvider> nodeStyleProviders, ILabelService labelService, AQLInterpreter interpreter) {
+        this.nodeStyleProviders = Objects.requireNonNull(nodeStyleProviders);
+        this.labelService = Objects.requireNonNull(labelService);
         this.interpreter = Objects.requireNonNull(interpreter);
     }
 
@@ -73,7 +76,9 @@ public final class StylesFactory {
                 .iconURLProvider(variableManager -> {
                     List<String> iconURL = List.of();
                     if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class)
+                                .map(this.labelService::getImagePaths)
+                                .orElse(List.of());
                     }
                     if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() != null) {
                         iconURL = List.of(edgeStyle.getLabelIcon());
@@ -86,6 +91,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> edgeStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(edgeStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(edgeStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 
@@ -96,6 +102,7 @@ public final class StylesFactory {
                 .size(edgeStyle.getEdgeWidth())
                 .sourceArrow(ArrowStyle.valueOf(edgeStyle.getSourceArrowStyle().getLiteral()))
                 .targetArrow(ArrowStyle.valueOf(edgeStyle.getTargetArrowStyle().getLiteral()))
+                .edgeType(EdgeType.valueOf(edgeStyle.getEdgeType().getLiteral()))
                 .build();
     }
 
@@ -106,7 +113,7 @@ public final class StylesFactory {
         } else if (nodeStyleDescription instanceof IconLabelNodeStyleDescription) {
             type = Optional.of(NodeType.NODE_ICON_LABEL);
         } else {
-            for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+            for (INodeStyleProvider iNodeStyleProvider : this.nodeStyleProviders) {
                 Optional<String> nodeType = iNodeStyleProvider.getNodeType(nodeStyleDescription);
                 if (nodeType.isPresent()) {
                     type = nodeType;
@@ -117,11 +124,11 @@ public final class StylesFactory {
         return type.orElse(NodeType.NODE_RECTANGLE);
     }
 
-    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
-                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").build();
+                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").childrenLayoutStrategy(childrenLayoutStrategy).build();
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
@@ -130,13 +137,14 @@ public final class StylesFactory {
                         .borderSize(nodeStyle.getBorderSize())
                         .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                         .borderRadius(nodeStyle.getBorderRadius())
+                        .childrenLayoutStrategy(childrenLayoutStrategy)
                         .build();
                 break;
             default:
-                for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
-                    Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
-                    if (nodeStyleOpt.isPresent()) {
-                        result = nodeStyleOpt.get();
+                for (INodeStyleProvider nodeStyleProvider : this.nodeStyleProviders) {
+                    Optional<INodeStyle> optionalNodeStyle = nodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId, childrenLayoutStrategy);
+                    if (optionalNodeStyle.isPresent()) {
+                        result = optionalNodeStyle.get();
                         break;
                     }
                 }
@@ -170,7 +178,7 @@ public final class StylesFactory {
                         isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.labelService::getImagePaths).orElse(List.of());
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());
@@ -183,6 +191,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 
@@ -202,7 +211,7 @@ public final class StylesFactory {
                         isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.labelService::getImagePaths).orElse(List.of());
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());
@@ -215,6 +224,7 @@ public final class StylesFactory {
                 .borderRadiusProvider(variableManager -> labelStyle.getBorderRadius())
                 .borderStyleProvider(variableManager -> LineStyle.valueOf(labelStyle.getBorderLineStyle().getLiteral()))
                 .maxWidthProvider(variableManager -> this.computeMaxWidthProvider(labelStyle.getMaxWidthExpression(), variableManager))
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
     }
 

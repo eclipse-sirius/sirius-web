@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ export const ProposalsList = ({ anchorEl, proposals, onProposalSelected, onClose
         vertical: 'top',
         horizontal: 'left',
       }}>
-      <MenuList id="completion-proposals" data-testid="completion-proposals">
+      <MenuList autoFocus id="completion-proposals" data-testid="completion-proposals">
         {proposals.map((proposal, index) => (
           <Tooltip
             data-testid={`proposal-${proposal.textToInsert}-${proposal.charsToReplace}`}

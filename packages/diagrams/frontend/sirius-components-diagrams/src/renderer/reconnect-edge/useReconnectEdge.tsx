@@ -26,7 +26,13 @@ import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
+import {
+  getNearestPointInPerimeter,
+  getNodesUpdatedWithHandles,
+  isCursorNearCenterOfTheNode,
+} from '../edge/EdgeLayout';
+import { determineSegmentAxis, getNewPointToGoAroundNode } from '../edge/rectilinear-edge/RectilinearEdgeCalculation';
+import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import {
@@ -68,10 +74,33 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
 export const useReconnectEdge = (): UseReconnectEdge => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { screenToFlowPosition, getNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { removeNodeHandleLayoutData } = useHandlesLayout();
+  const updateNodeInternals = useUpdateNodeInternals();
+
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
     GQLReconnectEdgeData,
     GQLReconnectEdgeVariables
   >(reconnectEdgeMutation);
+
+  const onReconnectEdgeStart = useCallback(
+    (_event: React.MouseEvent<Element, MouseEvent>, edge: Edge<EdgeData>, _handleType: HandleType) => {
+      setEdges((prevEdges) =>
+        prevEdges.map((prevEdge) => {
+          if (prevEdge.id === edge.id) {
+            return {
+              ...prevEdge,
+              reconnectable: false,
+            };
+          }
+          return prevEdge;
+        })
+      );
+    },
+    []
+  );
 
   const handleReconnectEdge = useCallback(
     (edgeId: string, newEdgeEndId: string, reconnectEdgeKind: GQLReconnectKind): void => {
@@ -103,7 +132,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   }, [reconnectEdgeData, reconnectEdgeError]);
 
   const reconnectEdge = useCallback(
-    (oldEdge: Edge, newConnection: Connection) => {
+    (oldEdge: Edge<EdgeData>, newConnection: Connection) => {
+      // Reconnect an edge on another node
       if (oldEdge.target !== newConnection.target || oldEdge.source !== newConnection.source) {
         const edgeId = oldEdge.id;
         let reconnectEdgeKind = GQLReconnectKind.TARGET;
@@ -121,32 +151,88 @@ export const useReconnectEdge = (): UseReconnectEdge => {
     [handleReconnectEdge]
   );
 
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { screenToFlowPosition, getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { synchronizeLayoutData } = useSynchronizeLayoutData();
-
-  const updateNodeInternals = useUpdateNodeInternals();
-
   const onReconnectEdgeEnd = useCallback(
-    (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
-      const targetNodeHovered = getNodes().find((node) => node.data.isHovered);
-      const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
-      const targetInternalNode = store.getState().nodeLookup.get(targetNodeHovered?.id ?? '');
+    (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+      reconnectEdgeOnSameNode(event, edge, handleType);
+      reconnectEdgeOnSameEdge(event, edge, handleType);
+      reconnectEdgeOnAnotherEdge(event, edge, handleType);
+    },
+    [getNodes, getEdges]
+  );
 
-      const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
+  const reconnectEdgeOnSameEdge = (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+    const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
+    // Reconnect an edge on the same edge to update handle position
+    if (targetEdgeHovered && targetEdgeHovered.data && targetEdgeHovered.data.edgePath) {
+      let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
       if (
         'clientX' in event &&
         'clientY' in event &&
-        targetInternalNode &&
-        targetInternalNode.width &&
-        targetInternalNode.height &&
-        handle
+        ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id === edge.target) ||
+          (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id === edge.source))
       ) {
-        let XYPosition: XYPosition = screenToFlowPosition({
-          x: event.clientX,
-          y: event.clientY,
-        });
+        const finalDiagram: RawDiagram = {
+          nodes: getNodes(),
+          edges: getEdges(),
+        };
+        updateNodeInternals(targetEdgeHovered.id);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      }
+    }
+  };
 
+  const reconnectEdgeOnAnotherEdge = (
+    _event: MouseEvent | TouchEvent,
+    edge: Edge<EdgeData>,
+    handleType: HandleType
+  ) => {
+    const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
+    // Reconnect an edge on another edge
+    if (targetEdgeHovered) {
+      let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
+      if (
+        targetEdgeHovered.id !== edge.id &&
+        ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id !== edge.target) ||
+          (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id !== edge.source))
+      ) {
+        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
+      }
+    }
+
+    setEdges((prevEdges) =>
+      prevEdges.map((prevEdge) => {
+        if (prevEdge.id === edge.id) {
+          return {
+            ...prevEdge,
+            reconnectable: true,
+          };
+        }
+        return prevEdge;
+      })
+    );
+  };
+
+  const reconnectEdgeOnSameNode = (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
+    const targetInternalNode = store.getState().connection.toNode;
+    const handleId = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
+
+    // Reconnect an edge on the same node to update handle position
+    if (
+      'clientX' in event &&
+      'clientY' in event &&
+      targetInternalNode &&
+      targetInternalNode.width &&
+      targetInternalNode.height &&
+      handleId
+    ) {
+      let XYPosition: XYPosition = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const isNearCenter = isCursorNearCenterOfTheNode(targetInternalNode, { x: XYPosition.x, y: XYPosition.y });
+
+      if (!isNearCenter) {
         const pointToSnap = getNearestPointInPerimeter(
           targetInternalNode.internals.positionAbsolute.x,
           targetInternalNode.internals.positionAbsolute.y,
@@ -160,30 +246,102 @@ export const useReconnectEdge = (): UseReconnectEdge => {
           getNodes(),
           targetInternalNode,
           edge.id,
-          handle,
+          handleId,
           pointToSnap.XYPosition,
           pointToSnap.position
         );
 
+        //Create a new bending point if the edge was manualy layouted
+        let newEdges = store.getState().edges;
+        if (edge.data?.bendingPoints) {
+          if (handleType === 'source') {
+            const newPoints = [...edge.data.bendingPoints];
+            const lastPoint = newPoints[newPoints.length - 1];
+            const penultimatePoint = newPoints[newPoints.length - 2];
+            if (lastPoint && penultimatePoint) {
+              const segmentAxis = determineSegmentAxis(penultimatePoint, lastPoint);
+              const newPoint = getNewPointToGoAroundNode(
+                segmentAxis,
+                pointToSnap.position,
+                pointToSnap.XYPosition.x,
+                pointToSnap.XYPosition.y
+              );
+
+              if (newPoint) {
+                newPoints.push(newPoint);
+                if (segmentAxis === 'x') {
+                  lastPoint.x = newPoint.x;
+                } else if (segmentAxis === 'y') {
+                  lastPoint.y = newPoint.y;
+                }
+                newEdges = newEdges.map((previousEdge) => {
+                  if (previousEdge.data && previousEdge.id === edge.id) {
+                    return {
+                      ...previousEdge,
+                      data: {
+                        ...previousEdge.data,
+                        bendingPoints: newPoints,
+                      },
+                    };
+                  }
+                  return previousEdge;
+                });
+              }
+            }
+          } else {
+            const newPoints = [...edge.data.bendingPoints];
+            const firstPoint = newPoints[0];
+            const secondPoint = newPoints[1];
+            if (firstPoint && secondPoint) {
+              const segmentAxis = determineSegmentAxis(firstPoint, secondPoint);
+              const newPoint = getNewPointToGoAroundNode(
+                segmentAxis,
+                pointToSnap.position,
+                pointToSnap.XYPosition.x,
+                pointToSnap.XYPosition.y
+              );
+
+              if (newPoint) {
+                newPoints.unshift(newPoint);
+                if (segmentAxis === 'x') {
+                  firstPoint.x = newPoint.x;
+                } else if (segmentAxis === 'y') {
+                  firstPoint.y = newPoint.y;
+                }
+                newEdges = newEdges.map((previousEdge) => {
+                  if (previousEdge.data && previousEdge.id === edge.id) {
+                    return {
+                      ...previousEdge,
+                      data: {
+                        ...previousEdge.data,
+                        bendingPoints: newPoints,
+                      },
+                    };
+                  }
+                  return previousEdge;
+                });
+              }
+            }
+          }
+        }
+
         const finalDiagram: RawDiagram = {
           nodes: nodes,
-          edges: getEdges(),
+          edges: newEdges,
         };
         updateNodeInternals(targetInternalNode.id);
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-      }
+      } else {
+        const currentHandle = targetInternalNode.data.connectionHandles.find(
+          (connectionHandle) => connectionHandle.id === handleId
+        );
 
-      if (targetEdgeHovered) {
-        const connectionState = store.getState().connection;
-        let reconnectEdgeKind = GQLReconnectKind.TARGET;
-        if (edge.source === connectionState.fromNode?.id) {
-          reconnectEdgeKind = GQLReconnectKind.SOURCE;
+        if (currentHandle && currentHandle.XYPosition && (currentHandle.XYPosition.x || currentHandle.XYPosition.y)) {
+          removeNodeHandleLayoutData([targetInternalNode.id], edge.id);
         }
-        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
       }
-    },
-    [getNodes, getEdges]
-  );
+    }
+  };
 
-  return { reconnectEdge, onReconnectEdgeEnd };
+  return { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd };
 };

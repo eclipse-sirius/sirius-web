@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
 /**
  * Interface implemented by all tools.
  *
+ * @technical-debt This class and its related concepts such as {@link ToolSection} and {@link Palette} should be deleted.
+ * See the documentation of {@link Palette} for additional details.
+ *
  * @author hmarchadour
+ * @since v0.1.0
  */
 public interface ITool {
 

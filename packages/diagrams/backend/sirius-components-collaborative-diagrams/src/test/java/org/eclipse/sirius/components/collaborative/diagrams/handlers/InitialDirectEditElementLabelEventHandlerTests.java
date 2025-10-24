@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
@@ -123,9 +125,10 @@ public class InitialDirectEditElementLabelEventHandlerTests {
                 .borderColor("black")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .visibility(LabelVisibility.visible)
                 .build();
         Node node = new TestDiagramBuilder().getNodeWithOutsideLabels(UUID.randomUUID().toString(), false, List.of(new OutsideLabel(labelId, "text", OutsideLabelLocation.BOTTOM_MIDDLE, labelStyle,
-                LabelOverflowStrategy.NONE, LabelTextAlign.LEFT)));
+                LabelOverflowStrategy.NONE, LabelTextAlign.LEFT, Set.of())));
         Diagram diagram = Diagram.newDiagram(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())).nodes(List.of(node)).build();
 
         var input = new InitialDirectEditElementLabelInput(UUID.randomUUID(), this.editingContextId.toString(), UUID.randomUUID().toString(), labelId);

@@ -46,7 +46,7 @@ public class ReactiveStreamsProjectFactory implements IObjectFactory {
     private Project reactiveStreamsProject() {
         var reactiveStreams = PapayaFactory.eINSTANCE.createProject();
         reactiveStreams.setName("Reactive Streams Project");
-        reactiveStreams.getComponents().add(this.reactiveStreams());
+        reactiveStreams.getElements().add(this.reactiveStreams());
 
         return reactiveStreams;
     }

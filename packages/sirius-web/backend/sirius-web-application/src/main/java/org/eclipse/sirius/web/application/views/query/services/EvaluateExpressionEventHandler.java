@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.views.query.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,7 +40,7 @@ import org.eclipse.sirius.web.application.views.query.dto.ObjectsExpressionResul
 import org.eclipse.sirius.web.application.views.query.dto.StringExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.StringsExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.VoidExpressionResult;
-import org.eclipse.sirius.web.application.views.query.services.api.IAQLInterpreterProvider;
+import org.eclipse.sirius.web.application.views.query.services.api.IInterpreterProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ import reactor.core.publisher.Sinks;
 @Service
 public class EvaluateExpressionEventHandler implements IEditingContextEventHandler {
 
-    private final IAQLInterpreterProvider aqlInterpreterProvider;
+    private final List<IInterpreterProvider> interpreterProviders;
 
     private final IObjectSearchService objectSearchService;
 
@@ -65,8 +66,8 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
 
     private final Counter counter;
 
-    public EvaluateExpressionEventHandler(IAQLInterpreterProvider aqlInterpreterProvider, IObjectSearchService objectSearchService, IMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.aqlInterpreterProvider = Objects.requireNonNull(aqlInterpreterProvider);
+    public EvaluateExpressionEventHandler(List<IInterpreterProvider> interpreterProviders, IObjectSearchService objectSearchService, IMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
+        this.interpreterProviders = Objects.requireNonNull(interpreterProviders);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -89,25 +90,32 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof EvaluateExpressionInput evaluateExpressionInput) {
-            var interpreter = this.aqlInterpreterProvider.getInterpreter(editingContext);
+            Optional<IInterpreterProvider> optionalInterpreterProvider = this.interpreterProviders.stream()
+                .filter(interpreterProvider -> interpreterProvider.canHandle(editingContext, evaluateExpressionInput.expression()))
+                .findFirst();
+            if (optionalInterpreterProvider.isPresent()) {
+                var interpreter = optionalInterpreterProvider.get().getInterpreter(editingContext);
 
 
-            var selection = evaluateExpressionInput.selectedObjectIds().stream()
-                    .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
-                    .flatMap(Optional::stream)
-                    .toList();
-            var self = selection.stream()
-                    .findFirst()
-                    .orElse(null);
+                var selection = evaluateExpressionInput.selectedObjectIds().stream()
+                        .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
+                        .flatMap(Optional::stream)
+                        .toList();
+                var self = selection.stream()
+                        .findFirst()
+                        .orElse(null);
 
-            var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(VariableManager.SELF, self);
-            variableManager.put("selection", selection);
-            var evaluationResult = interpreter.evaluateExpression(variableManager.getVariables(), evaluateExpressionInput.expression());
+                var variableManager = new VariableManager();
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(VariableManager.SELF, self);
+                variableManager.put("selection", selection);
+                var evaluationResult = interpreter.evaluateExpression(variableManager.getVariables(), evaluateExpressionInput.expression());
 
-            payload = this.toPayload(input.id(), evaluationResult);
-            changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                payload = this.toPayload(input.id(), evaluationResult);
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+            } else {
+                payload = new ErrorPayload(input.id(), this.messageService.notFound());
+            }
         }
 
         payloadSink.tryEmitValue(payload);

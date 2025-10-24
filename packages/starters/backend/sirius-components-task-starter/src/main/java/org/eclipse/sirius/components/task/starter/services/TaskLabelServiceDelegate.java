@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,71 +12,48 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.services;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
-import org.eclipse.sirius.components.emf.services.DefaultLabelService;
-import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.task.TaskTag;
-import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
+import org.eclipse.sirius.components.emf.services.api.IDefaultEMFLabelService;
+import org.eclipse.sirius.components.emf.services.api.IEMFLabelServiceDelegate;
+import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * This class allows to override {@link IObjectSearchService} behavior.
+ * This class allows to override the default behavior for the labels.
  *
  * @author Laurent Fasani
  */
 @Service
-public class TaskLabelServiceDelegate extends DefaultLabelService implements ILabelServiceDelegate {
+public class TaskLabelServiceDelegate implements IEMFLabelServiceDelegate {
 
-    private final EditingDomainServices editingDomainServices = new EditingDomainServices();
+    private final IDefaultEMFLabelService defaultEMFLabelService;
 
-    public TaskLabelServiceDelegate(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
-        super(labelFeatureProviderRegistry, composedAdapterFactory);
+    public TaskLabelServiceDelegate(IDefaultEMFLabelService defaultEMFLabelService) {
+        this.defaultEMFLabelService = Objects.requireNonNull(defaultEMFLabelService);
     }
 
     @Override
-    public boolean canHandle(Object object) {
-        return object instanceof TaskTag;
+    public boolean canHandle(EObject self) {
+        return self instanceof TaskTag;
     }
 
     @Override
-    public String getLabel(Object object) {
-        if (object instanceof TaskTag tag) {
-            return this.editingDomainServices.getLabelProviderText(tag);
-        } else {
-            return super.getLabel(object);
+    public StyledString getStyledLabel(EObject self) {
+        var adapter = new TaskItemProviderAdapterFactory().adapt(self, IItemLabelProvider.class);
+        if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+            return StyledString.of(itemLabelProvider.getText(self));
         }
+        return StyledString.of("");
     }
 
     @Override
-    public String getFullLabel(Object object) {
-        if (object instanceof TaskTag tag) {
-            return this.editingDomainServices.getLabelProviderText(tag);
-        } else {
-            return super.getFullLabel(object);
-        }
-    }
-
-    @Override
-    public Optional<String> getLabelField(Object object) {
-        if (object instanceof TaskTag tag) {
-            return Optional.of(this.editingDomainServices.getLabelProviderText(tag));
-        } else {
-            return super.getLabelField(object);
-        }
-    }
-
-    @Override
-    public StyledString getStyledLabel(Object object) {
-        if (object instanceof TaskTag tag) {
-            return StyledString.of(this.editingDomainServices.getLabelProviderText((EObject) object));
-        } else {
-            return StyledString.of(super.getLabel(object));
-        }
+    public List<String> getImagePaths(EObject self) {
+        return this.defaultEMFLabelService.getImagePaths(self);
     }
 }

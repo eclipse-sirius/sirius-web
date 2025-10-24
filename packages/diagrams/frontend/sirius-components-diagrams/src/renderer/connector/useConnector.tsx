@@ -16,6 +16,7 @@ import {
   Connection,
   Edge,
   FinalConnectionState,
+  InternalNode,
   Node,
   OnConnect,
   OnConnectEnd,
@@ -30,7 +31,6 @@ import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
 import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
-import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
@@ -58,43 +58,59 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
   const theme = useTheme();
 
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
   const { diagramDescription } = useDiagramDescription();
 
-  const { setEdges, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { setEdges, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
   const updateNodeInternals = useUpdateNodeInternals();
 
-  const isConnectionInProgress = () => {
+  const isConnectionInProgress = useCallback(() => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
     return (!!connectionNodeId && isNewConnection) || !!connection;
-  };
+  }, [isNewConnection, connection]);
 
-  const isReconnectionInProgress = () => {
+  const isReconnectionInProgress = useCallback(() => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
     return !!connectionNodeId && !isNewConnection;
-  };
+  }, [isNewConnection]);
 
   //  Set the new connection if we're connecting to a node
-  const onConnect: OnConnect = useCallback((connection: Connection) => {
-    const nodeSource = nodeLookup.get(connection.source);
-    //  Set the edge as source when we're connecting from an EdgeAnchorNode
-    if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
-      connection.source = nodeSource.data.edgeId;
-    }
-    setConnection(connection);
-  }, []);
+  const onConnect: OnConnect = useCallback(
+    (connection: Connection) => {
+      const nodeSource = nodeLookup.get(connection.source);
+      //  Set the edge as source when we're connecting from an EdgeAnchorNode
+      if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
+        connection.source = nodeSource.data.edgeId;
+      }
+
+      // Use one of the parent as target if it's candidate
+      let isNodeCandidate = false;
+      let candidate: InternalNode<Node<NodeData>> | undefined = store.getState().nodeLookup.get(connection.target);
+
+      while (!isNodeCandidate && !!candidate) {
+        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+
+        if (isNodeCandidate && candidate) {
+          connection.target = candidate.id;
+        } else {
+          candidate = store.getState().nodeLookup.get(candidate.parentId || '');
+        }
+      }
+
+      setConnection(connection);
+    },
+    [candidates.join('-')]
+  );
 
   const onConnectStart: OnConnectStart = useCallback(
     (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
-      hideDiagramElementPalette();
       resetConnection();
       if (params.nodeId) {
         updateNodeInternals(params.nodeId);
       }
     },
-    [hideDiagramElementPalette]
+    []
   );
 
   const onConnectorContextualMenuClose = () => resetConnection();
@@ -139,7 +155,8 @@ export const useConnector = (): UseConnectorValue => {
         sourceNode,
         targetNode,
         store.getState().nodeLookup,
-        diagramDescription.arrangeLayoutDirection
+        diagramDescription.arrangeLayoutDirection,
+        []
       );
 
       const edge: Edge<EdgeData> = {
@@ -154,12 +171,27 @@ export const useConnector = (): UseConnectorValue => {
         style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };
-      setEdges((oldEdges) => [...oldEdges, edge]);
+      setEdges((previousEdges) => [...previousEdges, edge]);
     }
   };
 
   const removeTempConnectionLine = () => {
-    setEdges((oldEdges) => oldEdges.filter((item) => !item.id.includes('temp')));
+    setEdges((previousEdges) => previousEdges.filter((previousEdge) => !previousEdge.id.includes('temp')));
+    setNodes((previousNodes) =>
+      previousNodes.map((previousNode) => {
+        if (previousNode.data.connectionLinePositionOnNode !== 'none' || previousNode.data.isHovered) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              connectionLinePositionOnNode: 'none',
+              isHovered: false,
+            },
+          };
+        }
+        return previousNode;
+      })
+    );
   };
 
   return {

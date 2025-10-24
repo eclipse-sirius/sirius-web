@@ -321,22 +321,13 @@ public interface DiagramPackage extends EPackage {
     int NODE_DESCRIPTION__ACTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
-
-    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -345,7 +336,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -354,7 +345,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
@@ -363,7 +354,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -372,7 +363,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -381,7 +372,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -389,7 +380,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -398,7 +389,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -407,7 +398,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -416,7 +407,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Is Collapsed By Default Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -425,7 +416,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
+    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Inside Label</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -434,7 +425,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
+    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Outside Labels</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -443,7 +434,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
+    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
 
     /**
      * The feature id for the '<em><b>Is Hidden By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -452,7 +443,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
+    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
 
     /**
      * The feature id for the '<em><b>Is Faded By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -461,7 +452,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
+    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
 
     /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
@@ -470,7 +461,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 19;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -660,13 +651,49 @@ public interface DiagramPackage extends EPackage {
     int LAYOUT_STRATEGY_DESCRIPTION = 4;
 
     /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = 0;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = 1;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = 2;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = 3;
+
+    /**
      * The number of structural features of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 0;
+    int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
@@ -687,6 +714,42 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION = 5;
+
+    /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES;
 
     /**
      * The feature id for the '<em><b>Are Child Nodes Draggable Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -752,6 +815,42 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 6;
+
+    /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES;
 
     /**
      * The number of structural features of the '<em>Free Form Layout Strategy Description</em>' class. <!--
@@ -1567,13 +1666,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = BORDER_STYLE__BORDER_LINE_STYLE;
 
     /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = BORDER_STYLE_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = BORDER_STYLE_FEATURE_COUNT + 0;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = BORDER_STYLE_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1755,6 +1863,15 @@ public interface DiagramPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
+
+    /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1812,6 +1929,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1880,6 +2006,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2098,13 +2233,21 @@ public interface DiagramPackage extends EPackage {
     int EDGE_STYLE__MAX_WIDTH_EXPRESSION = STYLE_FEATURE_COUNT + 16;
 
     /**
+     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE__EDGE_TYPE = STYLE_FEATURE_COUNT + 17;
+
+    /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 17;
+    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 18;
 
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2281,13 +2424,21 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 17;
 
     /**
+     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__EDGE_TYPE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 18;
+
+    /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 18;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 19;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3820,6 +3971,16 @@ public interface DiagramPackage extends EPackage {
     int HEADER_SEPARATOR_DISPLAY_MODE = 58;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge Type</em>}' enum.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
+     * @generated
+     */
+    int EDGE_TYPE = 59;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4009,18 +4170,6 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getNodeDescription_Actions();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getChildrenLayoutStrategy <em>Children Layout
-     * Strategy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Children Layout Strategy</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getChildrenLayoutStrategy()
-     * @see #getNodeDescription()
-     * @generated
-     */
-    EReference getNodeDescription_ChildrenLayoutStrategy();
 
     /**
      * Returns the meta object for the containment reference
@@ -4355,6 +4504,54 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EClass getLayoutStrategyDescription();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnWestAtCreationBorderNodes
+     * <em>On West At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On West At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnWestAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnWestAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnEastAtCreationBorderNodes
+     * <em>On East At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On East At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnEastAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnEastAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnSouthAtCreationBorderNodes
+     * <em>On South At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On South At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnSouthAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnSouthAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnNorthAtCreationBorderNodes
+     * <em>On North At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On North At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnNorthAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnNorthAtCreationBorderNodes();
 
     /**
      * Returns the meta object for class
@@ -4781,6 +4978,18 @@ public interface DiagramPackage extends EPackage {
     EClass getNodeStyleDescription();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy <em>Children
+     * Layout Strategy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Children Layout Strategy</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy()
+     * @see #getNodeStyleDescription()
+     * @generated
+     */
+    EReference getNodeStyleDescription_ChildrenLayoutStrategy();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      * <em>Conditional Node Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5038,6 +5247,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getEdgeStyle_MaxWidthExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType <em>Edge Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Edge Type</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType()
+     * @see #getEdgeStyle()
+     * @generated
+     */
+    EAttribute getEdgeStyle_EdgeType();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
@@ -6093,6 +6314,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getHeaderSeparatorDisplayMode();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge
+     * Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Edge Type</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeType
+     * @generated
+     */
+    EEnum getEdgeType();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -6250,14 +6481,6 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_DESCRIPTION__ACTIONS = eINSTANCE.getNodeDescription_Actions();
-
-        /**
-         * The meta object literal for the '<em><b>Children Layout Strategy</b></em>' containment reference feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = eINSTANCE.getNodeDescription_ChildrenLayoutStrategy();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
@@ -6486,6 +6709,38 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EClass LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the '<em><b>On West At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnWestAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On East At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnEastAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On South At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnSouthAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On North At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnNorthAtCreationBorderNodes();
 
         /**
          * The meta object literal for the
@@ -6802,6 +7057,14 @@ public interface DiagramPackage extends EPackage {
         EClass NODE_STYLE_DESCRIPTION = eINSTANCE.getNodeStyleDescription();
 
         /**
+         * The meta object literal for the '<em><b>Children Layout Strategy</b></em>' containment reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = eINSTANCE.getNodeStyleDescription_ChildrenLayoutStrategy();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl <em>Conditional Node
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6996,6 +7259,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute EDGE_STYLE__MAX_WIDTH_EXPRESSION = eINSTANCE.getEdgeStyle_MaxWidthExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE__EDGE_TYPE = eINSTANCE.getEdgeStyle_EdgeType();
 
         /**
          * The meta object literal for the
@@ -7811,6 +8082,16 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EEnum HEADER_SEPARATOR_DISPLAY_MODE = eINSTANCE.getHeaderSeparatorDisplayMode();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge
+         * Type</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.EdgeType
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
+         * @generated
+         */
+        EEnum EDGE_TYPE = eINSTANCE.getEdgeType();
 
     }
 

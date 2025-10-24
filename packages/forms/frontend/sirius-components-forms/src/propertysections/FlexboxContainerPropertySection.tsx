@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,13 @@ const useFlexboxContainerPropertySectionStyles = makeStyles<{
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   flexGrow: number;
-  borderStyle: GQLContainerBorderStyle;
+  borderStyle: GQLContainerBorderStyle | null;
 }>()((theme, { flexDirection, flexWrap, flexGrow, borderStyle }) => ({
   containerAndLabel: {
     margin: borderStyle ? theme.spacing(0.5) : 0,
     padding: borderStyle ? theme.spacing(0.5) : 0,
     borderWidth: borderStyle?.size || 0,
-    borderColor: getCSSColor(borderStyle?.color, theme) || 'transparent',
+    borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'transparent',
     borderStyle: borderStyle?.lineStyle || 'solid',
     borderRadius: borderStyle?.radius || 0,
   },

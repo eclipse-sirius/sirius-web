@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.widget.reference.tests.assertions.ReferenceWidgetAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
@@ -20,13 +20,11 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -46,7 +44,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -95,18 +92,18 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
 
-                    assertThat(referenceWidget)
-                            .hasLabel("Super types")
-                            .hasValueWithLabel("NamedElement");
-                }, () -> fail("Missing form"));
+            assertThat(referenceWidget)
+                    .hasLabel("Super types")
+                    .hasValueWithLabel("NamedElement")
+                    .isBold()
+                    .isItalic()
+                    .isStrikeThrough()
+                    .isUnderline();
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -130,18 +127,14 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
 
-                    referenceWidgetId.set(referenceWidget.getId());
-                }, () -> fail("Missing form"));
+            referenceWidgetId.set(referenceWidget.getId());
+        });
 
         Runnable requestReferenceValueOptions = () -> {
             Map<String, Object> variables = Map.of(
@@ -181,18 +174,14 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
-                    assertThat(referenceWidget).hasValueWithLabel("NamedElement");
-                    referenceWidgetId.set(referenceWidget.getId());
-                }, () -> fail("Missing form"));
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            assertThat(referenceWidget).hasValueWithLabel("NamedElement");
+            referenceWidgetId.set(referenceWidget.getId());
+        });
 
         Runnable clearValueMutation = () -> {
             var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(),
@@ -204,16 +193,11 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         };
 
-        Consumer<Object> afterClearContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
-                    assertThat(referenceWidget).hasNoValue();
-                }, () -> fail("Missing form"));
+        Consumer<Object> afterClearContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            assertThat(referenceWidget).hasNoValue();
+        });
 
 
         StepVerifier.create(flux)
@@ -241,19 +225,15 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         var referenceWidgetId = new AtomicReference<String>();
         var referenceValueId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
-                    assertThat(referenceWidget).hasValueWithLabel("NamedElement");
-                    referenceValueId.set(referenceWidget.getReferenceValues().get(0).getId());
-                    referenceWidgetId.set(referenceWidget.getId());
-                }, () -> fail("Missing form"));
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            assertThat(referenceWidget).hasValueWithLabel("NamedElement");
+            referenceValueId.set(referenceWidget.getReferenceValues().get(0).getId());
+            referenceWidgetId.set(referenceWidget.getId());
+        });
 
         Runnable removeReferenceValueMutation = () -> {
             var removeReferenceValueInput = new RemoveReferenceValueInput(UUID.randomUUID(),
@@ -265,16 +245,11 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         };
 
-        Consumer<Object> afterRemoveReferenceContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
-                    assertThat(referenceWidget).hasNoValue();
-                }, () -> fail("Missing form"));
+        Consumer<Object> afterRemoveReferenceContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+            assertThat(referenceWidget).hasNoValue();
+        });
 
 
         StepVerifier.create(flux)

@@ -118,15 +118,6 @@ public class NodeDescriptionBuilder {
     }
 
     /**
-     * Setter for ChildrenLayoutStrategy.
-     *
-     * @generated
-     */
-    public NodeDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
-        this.getNodeDescription().setChildrenLayoutStrategy(value);
-        return this;
-    }
-    /**
      * Setter for Style.
      *
      * @generated

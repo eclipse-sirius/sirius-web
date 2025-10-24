@@ -16,11 +16,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-components-view-parent</artifactId>
-	<version>2025.2.10</version>
+	<artifactId>sirius-components-view-root</artifactId>
+	<version>2025.10.0</version>
 
-	<name>sirius-components-view-parent</name>
-	<description>Sirius Components View Parent</description>
+	<name>sirius-components-view-root</name>
+	<description>Sirius Components View Root</description>
 	<packaging>pom</packaging>
 
 	<distributionManagement>
@@ -36,6 +36,7 @@
 		<module>sirius-components-view-edit</module>
 		<module>sirius-components-view-emf</module>
 		<module>sirius-components-view-emf-widget-reference</module>
+		<module>sirius-components-view-builder-generator</module>
 		<module>sirius-components-view-builder</module>
 		<module>sirius-components-view-diagram</module>
 		<module>sirius-components-view-diagram-edit</module>

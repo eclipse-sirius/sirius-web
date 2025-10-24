@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,26 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useMachine } from '@xstate/react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import {
-  SchemaValue,
-  UploadProjectEvent,
-  UploadProjectViewContext,
-  UploadProjectViewStateSchema,
-  uploadProjectMachine,
-} from './UploadProjectViewMachine';
+  GQLUploadProjectPayload,
+  GQLUploadProjectSuccessPayload,
+  UploadProjectViewState,
+} from './UploadProjectView.types';
 
 const uploadProjectMutation = gql`
   mutation uploadProject($input: UploadProjectInput!) {
@@ -86,16 +83,35 @@ const useUploadProjectViewStyles = makeStyles()((theme) => ({
   },
 }));
 
+const isUploadProjectSuccessPayload = (payload: GQLUploadProjectPayload): payload is GQLUploadProjectSuccessPayload =>
+  payload && payload.__typename === 'UploadProjectSuccessPayload';
+
 export const UploadProjectView = () => {
   const { classes } = useUploadProjectViewStyles();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<UploadProjectViewContext, UploadProjectViewStateSchema, UploadProjectEvent>>(
-      uploadProjectMachine
-    );
-  const { uploadProjectView, toast } = value as SchemaValue;
-  const { file, newProjectId, message } = context;
+  const { addErrorMessage } = useMultiToast();
+  const [state, setState] = useState<UploadProjectViewState>({
+    file: null,
+    loading: false,
+    newProjectId: null,
+  });
+
+  const {
+    viewer: {
+      capabilities: {
+        projects: { canUpload },
+      },
+    },
+  } = useCurrentViewer();
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
+  const onUpload = (event: React.FormEvent<HTMLFormElement>) => {
+    setState((prevState) => ({
+      ...prevState,
+      loading: true,
+    }));
+    onUploadProject(event);
+  };
 
   const onUploadProject = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -107,35 +123,47 @@ export const UploadProjectView = () => {
     };
 
     try {
-      dispatch({ type: 'HANDLE_UPLOAD' });
-      const response = await sendFile(httpOrigin, uploadProjectMutation, variables, file);
+      const response = await sendFile(httpOrigin, uploadProjectMutation, variables, state.file);
       const { data, error } = response as any;
       if (error) {
-        dispatch({
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, the file uploaded may be too large',
-        });
+        addErrorMessage('An unexpected error has occurred, the file uploaded may be too large');
       }
       if (data) {
-        const typename = data.uploadProject.__typename;
-        if (typename === 'UploadProjectSuccessPayload') {
-          dispatch({ type: 'HANDLE_RESPONSE', data });
-        } else if (typename === 'ErrorMessage') {
-          dispatch({ type: 'SHOW_TOAST', message: data.uploadProject.message });
+        const { uploadProject } = data;
+        if (isUploadProjectSuccessPayload(uploadProject)) {
+          setState((prevState) => ({
+            ...prevState,
+            newProjectId: uploadProject.project.id,
+            loading: false,
+          }));
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+          }));
+          addErrorMessage(uploadProject.message);
         }
       }
     } catch (exception) {
-      dispatch({ type: 'SHOW_TOAST', message: 'An unexpected error has occurred, the file uploaded may be too large' });
+      addErrorMessage('An unexpected error has occurred, the file uploaded may be too large');
     }
   };
 
   const onFileSelected = (file: File) => {
-    dispatch({ type: 'HANDLE_SELECTED_FILE', file });
+    setState((prevState) => ({
+      ...prevState,
+      file: file,
+    }));
   };
 
-  if (uploadProjectView === 'success') {
-    return <Navigate to={`/projects/${newProjectId}/edit`} />;
+  if (!canUpload) {
+    return <Navigate to={'/errors/404'} />;
   }
+
+  if (state.newProjectId) {
+    return <Navigate to={`/projects/${state.newProjectId}/edit`} />;
+  }
+
   return (
     <div className={classes.uploadProjectView}>
       <NavigationBar />
@@ -151,14 +179,15 @@ export const UploadProjectView = () => {
               </Typography>
             </div>
             <Paper>
-              <form onSubmit={onUploadProject} encType="multipart/form-data" className={classes.form}>
+              <form onSubmit={onUpload} encType="multipart/form-data" className={classes.form}>
                 <FileUpload onFileSelected={onFileSelected} data-testid="file" />
                 <div className={classes.buttons}>
                   <Button
                     variant="contained"
                     type="submit"
                     color="primary"
-                    disabled={uploadProjectView !== 'fileSelected'}
+                    disabled={!state.file}
+                    loading={state.loading}
                     data-testid="upload-project">
                     Upload
                   </Button>
@@ -168,7 +197,6 @@ export const UploadProjectView = () => {
           </div>
         </Container>
       </main>
-      <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />
     </div>
   );
 };

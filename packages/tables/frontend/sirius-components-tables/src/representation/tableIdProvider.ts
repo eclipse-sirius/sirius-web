@@ -21,32 +21,28 @@ export const tableIdProvider = (
   globalFilter: string | null,
   columnFilters: ColumnFilter[] | null,
   expanded: string[],
-  activeRowFilters: string[] | null,
+  activeRowFilters: string[],
   columnSort: ColumnSort[] | null
-) => {
-  const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
-  const columnFiltersParam: string =
-    columnFilters !== null
-      ? `&columnFilters=[${columnFilters
-          .map((filter) => {
-            return filter.id + ':' + JSON.stringify(filter.value);
-          })
-          .map(encodeURIComponent)
-          .join(',')}]`
-      : '';
-  const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
-  const activeFilterIds =
-    activeRowFilters !== null ? `&activeRowFilterIds=[${activeRowFilters.map(encodeURIComponent).join(',')}]` : '';
-  const columnSortParams =
-    columnSort !== null
-      ? `&columnSort=[${columnSort
-          .map((sort) => {
-            return sort.id + ':' + sort.desc;
-          })
-          .map(encodeURIComponent)
-          .join(',')}]`
-      : '';
-  return `${tableId}?cursor=${
-    cursor ? encodeURIComponent(cursor) : cursor
-  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}${columnSortParams}`;
+): string | null => {
+  if (globalFilter !== null && columnFilters !== null && columnSort !== null) {
+    const globalFilterParam: string = `&globalFilter=${encodeURIComponent(globalFilter)}`;
+    const columnFiltersParam: string = `&columnFilters=[${columnFilters
+      .map((filter) => {
+        return filter.id + ':' + JSON.stringify(filter.value);
+      })
+      .map(encodeURIComponent)
+      .join(',')}]`;
+    const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
+    const activeFilterIds = `&activeRowFilterIds=[${activeRowFilters.map(encodeURIComponent).join(',')}]`;
+    const columnSortParams = `&columnSort=[${columnSort
+      .map((sort) => {
+        return sort.id + ':' + sort.desc;
+      })
+      .map(encodeURIComponent)
+      .join(',')}]`;
+    return `${tableId}?cursor=${
+      cursor ? encodeURIComponent(cursor) : cursor
+    }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}${columnSortParams}`;
+  }
+  return null;
 };

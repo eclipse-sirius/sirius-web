@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,15 @@ public abstract class NodeStyleDescriptionBuilder {
      */
     public NodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getNodeStyleDescription().setBorderLineStyle(value);
+        return this;
+    }
+    /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public NodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
 

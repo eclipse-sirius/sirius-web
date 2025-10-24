@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,24 +52,6 @@ public class SingleClickTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public SingleClickTreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
-        this.getSingleClickTreeItemContextMenuEntry().setLabelExpression(value);
-        return this;
-    }
-    /**
-     * Setter for IconURLExpression.
-     *
-     * @generated
-     */
-    public SingleClickTreeItemContextMenuEntryBuilder iconURLExpression(java.lang.String value) {
-        this.getSingleClickTreeItemContextMenuEntry().setIconURLExpression(value);
-        return this;
-    }
-    /**
      * Setter for PreconditionExpression.
      *
      * @generated
@@ -90,6 +72,33 @@ public class SingleClickTreeItemContextMenuEntryBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelExpression.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
+        this.getSingleClickTreeItemContextMenuEntry().setLabelExpression(value);
+        return this;
+    }
+    /**
+     * Setter for IconURLExpression.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder iconURLExpression(java.lang.String value) {
+        this.getSingleClickTreeItemContextMenuEntry().setIconURLExpression(value);
+        return this;
+    }
+    /**
+     * Setter for WithImpactAnalysis.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder withImpactAnalysis(java.lang.Boolean value) {
+        this.getSingleClickTreeItemContextMenuEntry().setWithImpactAnalysis(value);
+        return this;
+    }
 
 }
 

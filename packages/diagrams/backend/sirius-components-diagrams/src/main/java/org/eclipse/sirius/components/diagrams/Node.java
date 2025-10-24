@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,14 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 
 /**
  * A node.
  *
  * @author hmarchadour
  * @author sbegaudeau
+ * @since v0.1.0
  */
 @Immutable
 public final class Node implements IDiagramElement {
@@ -44,6 +46,8 @@ public final class Node implements IDiagramElement {
 
     private boolean borderNode;
 
+    private BorderNodePosition initialBorderNodePosition;
+
     private Set<ViewModifier> modifiers;
 
     private ViewModifier state;
@@ -56,8 +60,6 @@ public final class Node implements IDiagramElement {
 
     private INodeStyle style;
 
-    private ILayoutStrategy childrenLayoutStrategy;
-
     private List<Node> borderNodes;
 
     private List<Node> childNodes;
@@ -69,6 +71,8 @@ public final class Node implements IDiagramElement {
     private boolean labelEditable;
 
     private boolean pinned;
+
+    private Set<String> customizedStyleProperties;
 
     private Node() {
         // Prevent instantiation
@@ -95,10 +99,26 @@ public final class Node implements IDiagramElement {
         return this.targetObjectId;
     }
 
+    /**
+     * Returns the kind of the semantic element used as the target of the node.
+     *
+     * @return The kind of the semantic element
+     * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
+     */
+    @Deprecated(forRemoval = true)
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
 
+    /**
+     * Returns the label of the semantic element used as the target of the node.
+     *
+     * @return The label of the semantic element
+     * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
+     */
+    @Deprecated(forRemoval = true)
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }
@@ -110,6 +130,10 @@ public final class Node implements IDiagramElement {
 
     public boolean isBorderNode() {
         return this.borderNode;
+    }
+
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
     }
 
     public Set<ViewModifier> getModifiers() {
@@ -136,10 +160,6 @@ public final class Node implements IDiagramElement {
         return this.style;
     }
 
-    public ILayoutStrategy getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
-    }
-
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
@@ -162,6 +182,10 @@ public final class Node implements IDiagramElement {
 
     public boolean isPinned() {
         return this.pinned;
+    }
+
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
     }
 
     @Override
@@ -197,6 +221,8 @@ public final class Node implements IDiagramElement {
 
         private boolean borderNode;
 
+        private BorderNodePosition initialBorderNodePosition;
+
         private Set<ViewModifier> modifiers;
 
         private ViewModifier state;
@@ -208,8 +234,6 @@ public final class Node implements IDiagramElement {
         private List<OutsideLabel> outsideLabels = List.of();
 
         private INodeStyle style;
-
-        private ILayoutStrategy childrenLayoutStrategy;
 
         private List<Node> borderNodes;
 
@@ -223,6 +247,8 @@ public final class Node implements IDiagramElement {
 
         private boolean pinned;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -235,19 +261,20 @@ public final class Node implements IDiagramElement {
             this.targetObjectLabel = node.getTargetObjectLabel();
             this.descriptionId = node.getDescriptionId();
             this.borderNode = node.isBorderNode();
+            this.initialBorderNodePosition = node.getInitialBorderNodePosition();
             this.modifiers = node.getModifiers();
             this.state = node.getState();
             this.collapsingState = node.getCollapsingState();
             this.insideLabel = node.getInsideLabel();
             this.outsideLabels = node.getOutsideLabels();
             this.style = node.getStyle();
-            this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.defaultWidth = node.getDefaultWidth();
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
             this.pinned = node.isPinned();
+            this.customizedStyleProperties = node.getCustomizedStyleProperties();
         }
 
         public Builder type(String type) {
@@ -277,6 +304,11 @@ public final class Node implements IDiagramElement {
 
         public Builder borderNode(boolean borderNode) {
             this.borderNode = borderNode;
+            return this;
+        }
+
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = Objects.requireNonNull(initialBorderNodePosition);
             return this;
         }
 
@@ -310,11 +342,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
-            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
-            return this;
-        }
-
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -345,6 +372,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -354,19 +386,20 @@ public final class Node implements IDiagramElement {
             node.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             node.descriptionId = Objects.requireNonNull(this.descriptionId);
             node.borderNode = this.borderNode;
+            node.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);
             node.insideLabel = this.insideLabel;
             node.outsideLabels = Objects.requireNonNull(this.outsideLabels);
             node.style = Objects.requireNonNull(this.style);
-            node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.defaultWidth = this.defaultWidth; // Optional on purpose
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;
             node.pinned = this.pinned;
+            node.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return node;
         }
     }

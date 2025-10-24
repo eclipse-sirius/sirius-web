@@ -11,15 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { memo, useCallback, useContext } from 'react';
+import { memo, useCallback, useContext, useMemo } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
+import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
+import { ShowInSection } from './ShowInSection';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
 export const DiagramElementPalette = memo(
@@ -60,6 +63,23 @@ export const DiagramElementPalette = memo(
       }
     };
 
+    const extensionSections = useMemo(() => {
+      const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
+      sectionComponents.push(
+        <PaletteExtensionSection
+          component={PaletteAppearanceSection}
+          title="Appearance"
+          id="appearance"
+          onClose={() => {}}
+        />
+      );
+      sectionComponents.push(
+        <PaletteExtensionSection component={ShowInSection} title="Show in" id="show_in" onClose={onClose} />
+      );
+
+      return sectionComponents;
+    }, []);
+
     if (readOnly) {
       return null;
     }
@@ -73,8 +93,9 @@ export const DiagramElementPalette = memo(
             diagramElementId={diagramElementId}
             targetObjectId={targetObjectId}
             onDirectEditClick={handleDirectEditClick}
-            onClose={onClose}
-          />
+            onClose={onClose}>
+            {extensionSections}
+          </Palette>
         </div>
       </PalettePortal>
     ) : null;

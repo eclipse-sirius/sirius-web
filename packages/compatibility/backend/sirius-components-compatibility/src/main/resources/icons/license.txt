@@ -1,5 +1,0 @@
-Origin and license of the icons:
-
-svg/Default.svg:  adapted from an original from https://fonts.google.com/icons?selected=Material+Icons&icon.query=auto+awesome, Apache-2.0 License 
-svg/Diagram.svg:  adapted from an original from https://github.com/Remix-Design/remixicon, Apache-2.0 License 
-svg/Resource.svg: adapted from an original from https://github.com/Remix-Design/remixicon, Apache-2.0 License

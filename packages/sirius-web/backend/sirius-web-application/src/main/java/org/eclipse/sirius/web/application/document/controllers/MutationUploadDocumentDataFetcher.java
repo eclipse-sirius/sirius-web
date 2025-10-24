@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,8 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     private static final String ID = "id";
 
+    private static final String READ_ONLY = "readOnly";
+
     private final IEditingContextDispatcher editingContextDispatcher;
 
     private final IMessageService messageService;
@@ -69,12 +71,17 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
                 .filter(UploadFile.class::isInstance)
                 .map(UploadFile.class::cast);
 
-        if (optionalId.isPresent() && optionalEditingContextId.isPresent() && optionalFile.isPresent()) {
+        var optionalReadOnly = Optional.ofNullable(inputArgument.get(READ_ONLY))
+                .filter(Boolean.class::isInstance)
+                .map(Boolean.class::cast);
+
+        if (optionalId.isPresent() && optionalEditingContextId.isPresent() && optionalFile.isPresent() && optionalReadOnly.isPresent()) {
             var id = optionalId.get();
             var editingContextId = optionalEditingContextId.get();
             var file = optionalFile.get();
+            var readOnly = optionalReadOnly.get();
 
-            var input = new UploadDocumentInput(id, editingContextId, file);
+            var input = new UploadDocumentInput(id, editingContextId, file, readOnly);
             return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input).toFuture();
         }
 

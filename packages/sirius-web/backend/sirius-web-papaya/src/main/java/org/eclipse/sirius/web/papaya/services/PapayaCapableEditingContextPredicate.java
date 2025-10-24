@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.services;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -22,6 +24,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProje
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -48,25 +51,29 @@ public class PapayaCapableEditingContextPredicate implements IPapayaCapableEditi
 
     @Override
     public boolean test(String editingContextId) {
-        var isPapayaProject = new UUIDParser().parse(editingContextId)
+        return this.isPapayaProject(editingContextId) || this.isPapayaSemanticData(editingContextId);
+    }
+
+    private boolean isPapayaProject(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
                 .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
                 .map(ProjectSemanticData::getProject)
                 .map(AggregateReference::getId)
                 .flatMap(this.projectSearchService::findById)
                 .filter(this::isPapaya)
                 .isPresent();
-
-        var isPapayaSemanticData = new UUIDParser().parse(editingContextId)
-                .flatMap(this.semanticDataSearchService::findById)
-                .filter(semanticData -> semanticData.getDomains().stream().anyMatch(semanticDataDomain -> semanticDataDomain.uri().equals(PapayaPackage.eNS_URI)))
-                .isPresent();
-
-        return isPapayaProject || isPapayaSemanticData;
     }
 
     private boolean isPapaya(Project project) {
         return project.getNatures().stream()
                 .map(Nature::name)
                 .anyMatch(PapayaProjectTemplateProvider.PAPAYA_NATURE::equals);
+    }
+
+    private boolean isPapayaSemanticData(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
+                .map((UUID id) -> this.semanticDataSearchService.isUsingDomains(id, List.of(PapayaPackage.eNS_URI)))
+                .orElse(Boolean.FALSE)
+                .booleanValue();
     }
 }

@@ -13,19 +13,17 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
@@ -47,7 +45,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -100,23 +97,22 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
     public void givenDiagramWithSomeEdgesOnEdgeWhenTheDiagramPayloadIsReceivedThenTheEdgesAreRetured() {
         var flux = this.givenSubscriptionToLifeCycleDiagram();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
-                    assertThat(nodeCount).isEqualTo(9);
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(3);
-                    var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
-                    var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
-                    var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
-                    var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
-                    assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("Channel HTTP");
-                    assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller Controller1");
-                    assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command Command1");
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
+            assertThat(nodeCount).isEqualTo(9);
+
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(3);
+
+            var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
+            var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
+            var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
+            var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
+
+            assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("HTTP");
+            assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller1");
+            assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command1");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -135,22 +131,18 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
         var subscriptionEdgeId = new AtomicReference<String>();
         var connectorToolId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var channelNode = new DiagramNavigator(diagram).nodeWithLabel("HTTPS").getNode();
-                    channelNodeId.set(channelNode.getId());
+            var channelNode = new DiagramNavigator(diagram).nodeWithLabel("HTTPS").getNode();
+            channelNodeId.set(channelNode.getId());
 
-                    var subscriptionEdge = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
-                    subscriptionEdgeId.set(subscriptionEdge.getId());
+            var subscriptionEdge = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
+            subscriptionEdgeId.set(subscriptionEdge.getId());
 
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(3);
-                }, () -> fail("Missing diagram"));
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(3);
+        });
 
         Runnable requestConnectorTools = () -> {
             Map<String, Object> variables = Map.of(
@@ -184,15 +176,10 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(4);
-
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(4);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -214,22 +201,18 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
         var subscriptionEdgeId = new AtomicReference<String>();
         var connectorToolId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var channelNode = new DiagramNavigator(diagram).nodeWithLabel("HTTPS").getNode();
-                    channelNodeId.set(channelNode.getId());
+            var channelNode = new DiagramNavigator(diagram).nodeWithLabel("HTTPS").getNode();
+            channelNodeId.set(channelNode.getId());
 
-                    var subscriptionEdge = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
-                    subscriptionEdgeId.set(subscriptionEdge.getId());
+            var subscriptionEdge = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
+            subscriptionEdgeId.set(subscriptionEdge.getId());
 
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(3);
-                }, () -> fail("Missing diagram"));
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(3);
+        });
 
         Runnable requestConnectorTools = () -> {
             Map<String, Object> variables = Map.of(
@@ -263,15 +246,10 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(4);
-
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(4);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -292,19 +270,15 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
         var edgeToReconnectId = new AtomicReference<String>();
         var newEdgeTargetId  = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var edgeToReconnect = new DiagramNavigator(diagram).edgeWithLabel("channel").getEdge();
-                    edgeToReconnectId.set(edgeToReconnect.getId());
+            var edgeToReconnect = new DiagramNavigator(diagram).edgeWithLabel("channel").getEdge();
+            edgeToReconnectId.set(edgeToReconnect.getId());
 
-                    var newEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
-                    newEdgeTargetId.set(newEdgeTarget.getId());
-                }, () -> fail("Missing diagram"));
+            var newEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
+            newEdgeTargetId.set(newEdgeTarget.getId());
+        });
 
         Runnable reconnectSource = () -> {
             var input = new ReconnectEdgeInput(
@@ -320,23 +294,22 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
-                    assertThat(nodeCount).isEqualTo(9);
-                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
-                    assertThat(edgeCount).isEqualTo(3);
-                    var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
-                    var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
-                    var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
-                    var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
-                    assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("Channel HTTP");
-                    assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller Controller2");
-                    assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command Command2");
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
+            assertThat(nodeCount).isEqualTo(9);
+
+            var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+            assertThat(edgeCount).isEqualTo(3);
+
+            var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
+            var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
+            var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
+            var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
+
+            assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("HTTP");
+            assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller2");
+            assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command2");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

@@ -117,12 +117,16 @@ The *column semantic element* is referenced by the `columnTargetObject` variable
 A cell description must have one single child of type `CellWidgetDescription` used to render the value of the cell.
 At the moment, the available cell widget descriptions are:
 
-* `CellTextfieldWidgetDescription`: the cell is rendered as a single line text field
-* `CellTextareaWidgetDescription`: the cell is rendered as a multi line text field
-* `CellLabelWidgetDescription`: the cell is rendered as a read only text with an icon specified in its property `Icon Expression`.
+* `CellTextfieldWidgetDescription`: the cell is rendered as a single line text field.
+* `CellTextareaWidgetDescription`: the cell is rendered as a multi line text field.
+* `CellLabelWidgetDescription`: the cell is rendered as a read only text with an icon specified in its property `Icon Expression`
+* `CellCheckboxWidgetDescription`: the cell is rendered as a checkbox (only available if you extend `sirius-web-application` itself, as it is not part of the core `sirius-components-table`).
 
 The default cell widget description is `CellTextfieldWidgetDescription`.
 As far as editable widgets are concerned, specifier can define edit operations as children of the cell widget description element in the view model.
+
+It is also possible for applications to contribute new, custom cell widgets.
+The `CellCheckboxWidgetDescription` mentioned above is such an example that can serve as a blueprint.
 
 == Row filter description
 

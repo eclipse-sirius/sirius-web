@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,15 +15,16 @@ package org.eclipse.sirius.components.diagrams.description;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -31,9 +32,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * The description of the node.
  *
  * @author sbegaudeau
+ * @since v0.1.0
  */
 @Immutable
 public final class NodeDescription implements IDiagramElementDescription {
+
+    /**
+     * The name of the variable used to store the ancestors (all previous self) of the current context.
+     */
+    public static final String ANCESTORS = "ancestors";
 
     private String id;
 
@@ -56,8 +63,6 @@ public final class NodeDescription implements IDiagramElementDescription {
     private List<OutsideLabelDescription> outsideLabelDescriptions;
 
     private Function<VariableManager, INodeStyle> styleProvider;
-
-    private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
 
     private UserResizableDirection userResizable;
 
@@ -89,6 +94,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, IStatus> dropNodeHandler;
 
+    private Map<String, BorderNodePosition> initialChildBorderNodePositions;
+
     private NodeDescription() {
         // Prevent instantiation
     }
@@ -118,18 +125,61 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.targetObjectIdProvider;
     }
 
+    /**
+     * Provides a function used to compute the kind of the semantic element used as the target of the node.
+     *
+     * @return A function used to return the kind of the semantic element.
+     *
+     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
+     */
     public Function<VariableManager, String> getTargetObjectKindProvider() {
         return this.targetObjectKindProvider;
     }
 
+    /**
+     * Provides a function used to compute the label of the semantic element used as the target of the node.
+     *
+     * @return A function used to return the label of the semantic element.
+     *
+     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
+     */
     public Function<VariableManager, String> getTargetObjectLabelProvider() {
         return this.targetObjectLabelProvider;
     }
 
+    /**
+     * Provides the function which will be used to compute the semantic elements which will be used as the target of some
+     * nodes created from this description.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element used by the parent element, for example the root of the diagram
+     *     for top level nodes or the semantic element used as a target by the parent node</li>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the core
+     *     services</li>
+     *     <li><strong>previousDiagram</strong> - The previously rendered diagram or null if it is being rendered for the
+     *     first time</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     * </ul>
+     *
+     * @return A function used to return the semantic elements to use as the target of the nodes.
+     */
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
+    /**
+     * Provides a predicate used to indicate if a node should be rendered from the node description.
+     *
+     * @return A predicate to determine if a node should be rendered or not
+     *
+     * @technical-debt This method should probably be removed and the predicate be integrated in the semantic elements
+     * provider by downstream specifiers.
+     */
     public Predicate<VariableManager> getShouldRenderPredicate() {
         return this.shouldRenderPredicate;
     }
@@ -144,10 +194,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
         return this.styleProvider;
-    }
-
-    public Function<VariableManager, ILayoutStrategy> getChildrenLayoutStrategyProvider() {
-        return this.childrenLayoutStrategyProvider;
     }
 
     public UserResizableDirection getUserResizable() {
@@ -174,10 +220,58 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.reusedChildNodeDescriptionIds;
     }
 
+    /**
+     * Provides a function used to execute the deletion of the node.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element used as a target by the node to be deleted</li>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the
+     *     core services</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     *     <li><strong>selectedNode</strong> - The node which should be deleted</li>
+     * </ul>
+     *
+     * @return A function provided by a specifier to trigger the deletion of the node
+     *
+     * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
+     * into the description also provides a poor extensibility of the diagram representation by preventing downstream
+     * consumers from updating the existing behavior or adding a new one easily
+     */
     public Function<VariableManager, IStatus> getDeleteHandler() {
         return this.deleteHandler;
     }
 
+    /**
+     * Provides a function used to let end users drop nodes on another node.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the
+     *     core services</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     *     <li><strong>droppedElement</strong> - The semantic element used as a target by the dropped node</li>
+     *     <li><strong>droppedNode</strong> - The node being dropped</li>
+     *     <li><strong>targetElement</strong> - The semantic element used as a target by the target of the drop (another
+     *     node or the diagram itself)</li>
+     *     <li><strong>targetNode</strong> - The node in which the node is being dropped or null if dropped on the diagram
+     *     itself</li>
+     * </ul>
+     *
+     * @return A function provided by a specifier to drop nodes on another node
+     *
+     * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
+     * into the description also provides a poor extensibility of the diagram representation by preventing downstream
+     * consumers from updating the existing behavior or adding a new one easily
+     */
     public Function<VariableManager, IStatus> getDropNodeHandler() {
         return this.dropNodeHandler;
     }
@@ -208,6 +302,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, Integer> getDefaultHeightProvider() {
         return this.defaultHeightProvider;
+    }
+
+    public Map<String, BorderNodePosition> getInitialChildBorderNodePositions() {
+        return this.initialChildBorderNodePositions;
     }
 
     @Override
@@ -246,8 +344,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, INodeStyle> styleProvider;
 
-        private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
-
         private UserResizableDirection userResizable = UserResizableDirection.BOTH;
 
         private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
@@ -278,6 +374,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Map<String, BorderNodePosition> initialChildBorderNodePositions;
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -293,7 +391,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
             this.outsideLabelDescriptions = nodeDescription.getOutsideLabelDescriptions();
             this.styleProvider = nodeDescription.getStyleProvider();
-            this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
             this.borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
             this.childNodeDescriptions = nodeDescription.getChildNodeDescriptions();
             this.collapsible = nodeDescription.isCollapsible();
@@ -309,6 +406,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.isFadedByDefaultPredicate = nodeDescription.getIsFadedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
+            this.initialChildBorderNodePositions = nodeDescription.getInitialChildBorderNodePositions();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -358,11 +456,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder styleProvider(Function<VariableManager, INodeStyle> styleProvider) {
             this.styleProvider = Objects.requireNonNull(styleProvider);
-            return this;
-        }
-
-        public Builder childrenLayoutStrategyProvider(Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider) {
-            this.childrenLayoutStrategyProvider = Objects.requireNonNull(childrenLayoutStrategyProvider);
             return this;
         }
 
@@ -441,6 +534,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder initialChildBorderNodePositions(Map<String, BorderNodePosition> initialChildBorderNodePositions) {
+            this.initialChildBorderNodePositions = Objects.requireNonNull(initialChildBorderNodePositions);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -455,7 +553,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.outsideLabelDescriptions = Objects.requireNonNull(this.outsideLabelDescriptions);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.userResizable = Objects.requireNonNull(this.userResizable);
-            nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
             nodeDescription.collapsible = this.collapsible;
@@ -470,8 +567,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.isFadedByDefaultPredicate = Objects.requireNonNull(this.isFadedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
+            nodeDescription.initialChildBorderNodePositions = Objects.requireNonNull(this.initialChildBorderNodePositions);
             return nodeDescription;
         }
     }
-
 }

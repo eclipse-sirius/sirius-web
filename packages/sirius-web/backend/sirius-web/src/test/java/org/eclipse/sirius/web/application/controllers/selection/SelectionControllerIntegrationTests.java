@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.selection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -26,14 +27,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
@@ -51,8 +50,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -122,7 +119,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
-    private IObjectService objectService;
+    private ILabelService labelService;
 
     @BeforeEach
     public void beforeEach() {
@@ -167,9 +164,14 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
-        var hasResourceRootContent = this.getTreeRefreshedEventPayloadMatcher();
+        var hasResourceRootContent = assertRefreshedTreeThat(tree -> {
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(0).getIconURL().get(0)).isEqualTo("/icons/Resource.svg");
+            assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Sirius Web Architecture");
+            assertThat(tree.getChildren().get(0).getChildren()).isEmpty();
+        });
         StepVerifier.create(flux)
-            .expectNextMatches(hasResourceRootContent)
+            .consumeNextWith(hasResourceRootContent)
             .thenCancel()
             .verify();
     }
@@ -184,7 +186,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         var treeItemId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
@@ -200,9 +202,14 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of(treeItemId.get()));
         var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
         var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
-        var treeRefreshedEventPayloadExpandMatcher = this.getTreeRefreshedEventPayloadExpandMatcher();
+
+        var treeRefreshedEventPayloadExpandMatcher = assertRefreshedTreeThat(tree -> {
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(0).getChildren()).isNotEmpty();
+        });
+
         StepVerifier.create(expandedTreeFlux)
-            .expectNextMatches(treeRefreshedEventPayloadExpandMatcher)
+            .consumeNextWith(treeRefreshedEventPayloadExpandMatcher)
             .thenCancel()
             .verify();
     }
@@ -219,7 +226,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         var treeItemId = new AtomicReference<String>();
         var treeInstanceId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
@@ -248,7 +255,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             .thenCancel()
             .verify(Duration.ofSeconds(10));
 
-        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
@@ -276,7 +283,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         var rootTreeItemId = new AtomicReference<String>();
         var treeInstanceId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).allSatisfy(treeItem -> assertThat(treeItem.getChildren()).isEmpty());
@@ -296,7 +303,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         //Used to retrieve the Papaya Root Project tree item
         var rootProjectTreeItemId = new AtomicReference<String>();
-        Consumer<Object> firstTreeItemExpandedContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> firstTreeItemExpandedContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             var rootResourceTreeItem = tree.getChildren().get(0);
@@ -320,14 +327,14 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         };
 
         StepVerifier.create(expandedFirstTreeItemFlux)
-            .consumeNextWith(firstTreeItemExpandedContentConsumer)
-            //Now that we have expand and retrieve the Papaya Root Project tree item, we can perform the expandAll from it
-            .then(getTreePath)
-            .thenCancel()
-            .verify(Duration.ofSeconds(10));
+                .consumeNextWith(firstTreeItemExpandedContentConsumer)
+                //Now that we have expand and retrieve the Papaya Root Project tree item, we can perform the expandAll from it
+                .then(getTreePath)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
 
 
-        Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             TreeItem rootProjectTreeItem = tree.getChildren().get(0);
@@ -342,37 +349,6 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .consumeNextWith(initialExpandedTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-
-
-    }
-
-    private Predicate<Object> getTreeRefreshedEventPayloadMatcher() {
-        Predicate<Tree> treeMatcher = tree -> tree.getChildren().size() == 1 && tree.getChildren().get(0).getIconURL().get(0).equals("/icons/Resource.svg")
-                && tree.getChildren().get(0).getLabel().toString().equals("Sirius Web Architecture") && tree.getChildren().get(0).getChildren().isEmpty();
-
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .filter(treeMatcher)
-                .isPresent();
-    }
-
-    private Predicate<Object> getTreeRefreshedEventPayloadExpandMatcher() {
-        Predicate<Tree> treeMatcher = tree -> tree.getChildren().size() == 1 && !tree.getChildren().get(0).getChildren().isEmpty();
-
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .filter(treeMatcher)
-                .isPresent();
     }
 
     @Test
@@ -410,26 +386,16 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("given a selectionDescription then the image and the label are the expected ones")
     public void givenASelectionDescriptionThenTheImageAndLabelAreTheExpectedOnes() {
         SelectionDialogDescription selectionDRialogDescription = this.selectionDescriptionProvider.getSelectionDialog();
-        String selectionDialogLabel = this.objectService.getLabel(selectionDRialogDescription);
+        String selectionDialogLabel = this.labelService.getStyledLabel(selectionDRialogDescription).toString();
         assertThat(selectionDialogLabel).isEqualTo(selectionDRialogDescription.getSelectionMessage());
-        List<String> imagePath = this.objectService.getImagePath(selectionDRialogDescription);
+        List<String> imagePath = this.labelService.getImagePaths(selectionDRialogDescription);
         assertThat(imagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogDescription.svg");
 
         SelectionDialogTreeDescription selectionDialogTreeDescription = selectionDRialogDescription.getSelectionDialogTreeDescription();
-        String selectionDialogTreeDescriptionLabel = this.objectService.getLabel(selectionDialogTreeDescription);
+        String selectionDialogTreeDescriptionLabel = this.labelService.getStyledLabel(selectionDialogTreeDescription).toString();
         assertThat(selectionDialogTreeDescriptionLabel).isEqualTo(selectionDialogTreeDescription.getElementsExpression());
-        List<String> selectionDialogTreeDescriptionImagePath = this.objectService.getImagePath(selectionDialogTreeDescription);
+        List<String> selectionDialogTreeDescriptionImagePath = this.labelService.getImagePaths(selectionDialogTreeDescription);
         assertThat(selectionDialogTreeDescriptionImagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogTreeDescription.svg");
     }
 
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
-    }
 }

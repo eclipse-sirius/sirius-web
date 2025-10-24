@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, useUpdateNodeInternals } from '@xyflow/react';
+import { Edge, Node, useStoreApi, useUpdateNodeInternals } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { UseHandlesLayoutValue } from './useHandlesLayout.types';
 
 export const useHandlesLayout = (): UseHandlesLayoutValue => {
-  const { getEdges, getNodes, setNodes } = useStore();
+  const { getEdges, setNodes } = useStore();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const updateNodeInternals = useUpdateNodeInternals();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const synchronizeNodeLayoutData = useCallback(
     (nodes: Node<NodeData>[]): void => {
@@ -34,38 +35,48 @@ export const useHandlesLayout = (): UseHandlesLayoutValue => {
     [getEdges, synchronizeLayoutData]
   );
 
-  const removeNodeHandleLayoutData = useCallback(
-    (nodeIds: string[], edgeId: string): void => {
-      const nodes: Node<NodeData>[] = getNodes().map((node) => {
-        //Remove only the handles from the edge
-        if (nodeIds.includes(node.id)) {
-          const handles = node.data.connectionHandles.map((handle) => {
-            if (edgeId === handle.edgeId) {
-              return {
-                ...handle,
-                XYPosition: undefined,
-              };
-            } else {
-              return handle;
-            }
-          });
-
+  const getNodeWithoutHandles = (node: Node<NodeData>, nodeIdsToConsider: string[], edgeId: string): Node<NodeData> => {
+    //Remove only the handles from the edge
+    if (nodeIdsToConsider.includes(node.id)) {
+      const handles = node.data.connectionHandles.map((handle) => {
+        if (edgeId === handle.edgeId) {
           return {
-            ...node,
-            data: {
-              ...node.data,
-              connectionHandles: handles,
-            },
+            ...handle,
+            XYPosition: null,
           };
+        } else {
+          return handle;
         }
-        return node;
       });
 
-      setNodes(nodes);
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          connectionHandles: handles,
+        },
+      };
+    } else {
+      return node;
+    }
+  };
+
+  const removeNodeHandleLayoutData = useCallback(
+    (nodeIds: string[], edgeId: string): void => {
+      const nodes = store.getState().nodes.map((previousNode) => {
+        return getNodeWithoutHandles(previousNode, nodeIds, edgeId);
+      });
+
+      setNodes((previousNodes) =>
+        previousNodes.map((previousNode) => {
+          return getNodeWithoutHandles(previousNode, nodeIds, edgeId);
+        })
+      );
+
       updateNodeInternals(nodeIds);
       synchronizeNodeLayoutData(nodes);
     },
-    [synchronizeNodeLayoutData, getNodes]
+    [synchronizeNodeLayoutData]
   );
 
   return {

@@ -30,6 +30,8 @@ public interface ISemanticDataSearchService {
 
     Optional<SemanticData> findById(UUID id);
 
+    boolean isUsingDomains(UUID id, List<String> domainUris);
+
     boolean existsById(UUID id);
 
     List<AggregateReference<SemanticData, UUID>> findAllDependenciesIdById(UUID id);

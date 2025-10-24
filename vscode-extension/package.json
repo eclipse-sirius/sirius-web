@@ -4,7 +4,7 @@
   "description": "Sirius Web extension for VSCode",
   "publisher": "eclipse-sirius",
   "license": "EPL-2.0",
-  "version": "2025.2.10",
+  "version": "2025.10.0",
   "homepage": "https://www.eclipse.dev/sirius/sirius-web.html",
   "repository": {
     "type": "git",
@@ -122,7 +122,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@ObeoNetwork/gantt-task-react": "0.6.1",
+    "@ObeoNetwork/gantt-task-react": "0.6.2",
     "@ObeoNetwork/react-trello": "2.4.11",
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-browser": "*",
@@ -142,10 +142,10 @@
     "@eclipse-sirius/sirius-components-widget-reference": "*",
     "@eclipse-sirius/sirius-components-widget-table": "*",
     "@eclipse-sirius/sirius-web-application": "*",
-    "@mui/icons-material": "5.15.19",
-    "@mui/material": "5.15.19",
-    "@xstate/react": "3.0.0",
-    "@xyflow/react": "12.4.4",
+    "@mui/icons-material": "7.0.2",
+    "@mui/material": "7.0.2",
+    "@mui/x-tree-view": "7.29.1",
+    "@xyflow/react": "12.6.0",
     "axios": "0.21.4",
     "d3": "7.0.0",
     "elkjs": "0.8.2",
@@ -153,7 +153,7 @@
     "graphql": "16.8.1",
     "html-to-image": "1.11.11",
     "lexical": "0.8.1",
-    "material-react-table": "2.13.3",
+    "material-react-table": "3.2.1",
     "notistack": "3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -161,6 +161,6 @@
     "subscriptions-transport-ws": "0.11.0",
     "uuid": "8.3.2",
     "websocket": "1.0.34",
-    "xstate": "4.32.1"
+    "react-resizable-panels": "3.0.2"
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -29,11 +31,13 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.representations.Success;
 
@@ -65,6 +69,7 @@ public class TestDiagramBuilder {
                 .borderSize(1)
                 .borderStyle(LineStyle.Solid)
                 .background("#FFFFFF")
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
     }
 
@@ -83,12 +88,13 @@ public class TestDiagramBuilder {
                 .targetObjectLabel("")
                 .descriptionId(UUID.randomUUID().toString())
                 .style(this.getRectangularNodeStyle())
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .collapsingState(CollapsingState.EXPANDED);
+                .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST);
 
         if (withLabel) {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
@@ -99,6 +105,7 @@ public class TestDiagramBuilder {
                     .borderColor("black")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
+                    .visibility(LabelVisibility.visible)
                     .build();
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                     .text("text")
@@ -108,6 +115,7 @@ public class TestDiagramBuilder {
                     .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                     .overflowStrategy(LabelOverflowStrategy.NONE)
                     .textAlign(LabelTextAlign.CENTER)
+                    .customizedStyleProperties(Set.of())
                     .build();
             nodeBuilder.insideLabel(insideLabel);
         }
@@ -122,6 +130,7 @@ public class TestDiagramBuilder {
                 .sourceArrow(ArrowStyle.None)
                 .targetArrow(ArrowStyle.InputArrow)
                 .color("#FFFFFF")
+                .edgeType(EdgeType.Manhattan)
                 .build();
 
         return Edge.newEdge(id)
@@ -135,6 +144,7 @@ public class TestDiagramBuilder {
                 .style(style)
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
+                .customizedStyleProperties(new HashSet<>())
                 .build();
     }
 

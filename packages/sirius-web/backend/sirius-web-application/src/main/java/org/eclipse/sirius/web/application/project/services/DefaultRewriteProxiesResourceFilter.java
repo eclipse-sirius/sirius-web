@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesResourceFilter;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +27,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultRewriteProxiesResourceFilter implements IRewriteProxiesResourceFilter {
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    public DefaultRewriteProxiesResourceFilter(IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+    }
+
     @Override
     public boolean shouldRewriteProxies(Resource resource) {
-        return true;
+        return !this.readOnlyObjectPredicate.test(resource);
     }
+
 }

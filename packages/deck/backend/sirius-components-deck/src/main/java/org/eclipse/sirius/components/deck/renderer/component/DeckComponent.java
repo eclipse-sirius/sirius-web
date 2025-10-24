@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.deck.renderer.component;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.deck.Lane;
@@ -26,6 +21,11 @@ import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * The component used to render the Deck representation.
@@ -51,12 +51,12 @@ public class DeckComponent implements IComponent {
         String targetObjectId = deckDescription.targetObjectIdProvider().apply(variableManager);
         DeckStyle deckStyle = deckDescription.deckStyleProvider().apply(variableManager);
 
-        List<Element> children = deckDescription.laneDescriptions()//
-                .stream()//
+        List<Element> children = deckDescription.laneDescriptions()
+                .stream()
                 .map(laneDescription -> {
                     LaneComponentProps laneComponentProps = new LaneComponentProps(variableManager, laneDescription, deckId, previousLanes, optionalDeckEvent);
                     return new Element(LaneComponent.class, laneComponentProps);
-                })//
+                })
                 .toList();
 
         DeckElementProps deckElementProps = new DeckElementProps(deckId, deckDescription.getId(), targetObjectId, deckStyle, children);

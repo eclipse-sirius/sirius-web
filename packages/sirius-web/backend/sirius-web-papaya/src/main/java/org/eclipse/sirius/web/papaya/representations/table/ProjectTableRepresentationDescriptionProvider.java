@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
-import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
+import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
@@ -102,7 +102,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
 
     private boolean canCreate(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, Object.class)
-                .filter(ProjectSpec.class::isInstance)
+                .filter(Project.class::isInstance)
                 .isPresent();
     }
 
@@ -208,18 +208,21 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
                 .canCreatePredicate(new CellTypePredicate().isTextareaCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
                 .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellBooleanValueProvider())
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
                 .canCreatePredicate(new CellTypePredicate().isSelectCell())
@@ -229,6 +232,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
                 .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
@@ -238,6 +242,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         return cellDescriptions;
     }

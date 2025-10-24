@@ -14,6 +14,14 @@
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 import { ProjectsTableColumnCustomizer } from './useProjectsTableColumnsExtensionPoints.types';
 
+/**
+ * Extension point for customizing the columns of the projects table.
+ *
+ * This extension point allows contributions to customize the columns displayed in the projects table.
+ * Each contribution can define how a specific column should be rendered and behave.
+ *
+ * @since v2025.4.0
+ */
 export const projectsTableColumnCustomizersExtensionPoint: DataExtensionPoint<Array<ProjectsTableColumnCustomizer>> = {
   identifier: 'useProjectsTableColumn#projectsTableColumnCustomizers',
   fallback: [],

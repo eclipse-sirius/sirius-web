@@ -46,6 +46,10 @@ public class GeneralPurposeTests {
 
     private static final String FRONTEND_SRC_FOLDER_PATH = "packages";
 
+    private static final String INTEGRATION_TESTS_CYPRESS_SRC_FOLDER_PATH = "integration-tests-cypress/cypress";
+
+    private static final String INTEGRATION_TESTS_PLAYWRIGHT_SRC_FOLDER_PATH = "integration-tests-playwright/playwright";
+
     private static final String TYPESCRIPT_FILE_EXTENSION = ".ts";
 
     private static final String TYPESCRIPT_JSX_FILE_EXTENSION = ".tsx";
@@ -99,6 +103,8 @@ public class GeneralPurposeTests {
     private static final String ECLIPSE_PDE = "org.eclipse.pde";
 
     private static final String INVALID_MATERIALUI_IMPORT = "from '@mui/material';";
+
+    private static final String CYPRESS_NO_UNNECESSARY_WAITING = "cypress/no-unnecessary-waiting";
 
     private static final List<Pattern> COPYRIGHT_HEADER_START = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),
@@ -316,6 +322,38 @@ public class GeneralPurposeTests {
         }
     }
 
+    @Test
+    public void checkIntegrationTestsCode() {
+        File rootFolder = this.getRootFolder();
+        Path integrationTestsCypressPath = Paths.get(rootFolder.getAbsolutePath(), INTEGRATION_TESTS_CYPRESS_SRC_FOLDER_PATH);
+        List<Path> integrationTestCypressTypescriptFilePaths = this.findFilePaths(integrationTestsCypressPath, TYPESCRIPT_FILE_EXTENSION, true);
+        Path integrationTestsPlaywrightPath = Paths.get(rootFolder.getAbsolutePath(), INTEGRATION_TESTS_PLAYWRIGHT_SRC_FOLDER_PATH);
+        List<Path> integrationTestPlaywrightTypescriptFilePaths = this.findFilePaths(integrationTestsPlaywrightPath, TYPESCRIPT_FILE_EXTENSION, true);
+
+        List<Path> filePaths = new ArrayList<>();
+        filePaths.addAll(integrationTestCypressTypescriptFilePaths);
+        filePaths.addAll(integrationTestPlaywrightTypescriptFilePaths);
+
+        for (Path javascriptFilePath : filePaths) {
+            try {
+                List<String> lines = Files.readAllLines(javascriptFilePath);
+                for (int index = 0; index < lines.size(); index++) {
+                    String line = lines.get(index);
+                    this.testNoDebugger(index, line, javascriptFilePath);
+                    this.testNoConsoleLog(index, line, javascriptFilePath);
+                    this.testNoAlert(index, line, javascriptFilePath);
+                    this.testNoConfirm(index, line, javascriptFilePath);
+                    this.testNoPrompt(index, line, javascriptFilePath);
+                    this.testNoInvalidMaterialUIImport(index, line, javascriptFilePath);
+                    this.testNoCypressErrors(index, line, javascriptFilePath);
+                }
+                this.testCopyrightHeader(javascriptFilePath, lines);
+            } catch (IOException exception) {
+                fail(exception.getMessage());
+            }
+        }
+    }
+
     private void testNoESLintDisable(int index, String line, Path javascriptFilePath) {
         if (line.contains(ESLINT_DISABLE)) {
             fail(this.createErrorMessage(ESLINT_DISABLE, javascriptFilePath, index));
@@ -355,6 +393,12 @@ public class GeneralPurposeTests {
     private void testNoInvalidMaterialUIImport(int index, String line, Path javascriptFilePath) {
         if (line.contains(INVALID_MATERIALUI_IMPORT)) {
             fail(this.createErrorMessage(INVALID_MATERIALUI_IMPORT, javascriptFilePath, index));
+        }
+    }
+
+    private void testNoCypressErrors(int index, String line, Path javascriptFilePath) {
+        if (line.contains(CYPRESS_NO_UNNECESSARY_WAITING)) {
+            fail(this.createErrorMessage(CYPRESS_NO_UNNECESSARY_WAITING, javascriptFilePath, index));
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2024 Obeo.
+ Copyright (c) 2024, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -16,28 +16,17 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.eclipse.sirius</groupId>
+		<artifactId>sirius-web-parent</artifactId>
+		<version>2025.10.0</version>
+		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
+
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web</artifactId>
-	<version>2025.2.10</version>
+	<version>2025.10.0</version>
 	<name>sirius-web</name>
 	<description>Sirius Web</description>
-
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencyManagement>
 		<dependencies>
@@ -55,34 +44,34 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-starter</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-frontend</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 
 		<!-- Sirius Web Specific Dependencies -->
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-papaya</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-view-fork</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-flow-starter</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task-starter</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,7 +80,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-e2e-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -133,55 +122,55 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-tests-data</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables-tests</artifactId>
-			<version>2025.2.10</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -232,7 +221,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.13</version>
 				<executions>
 					<execution>
 						<goals>
@@ -260,6 +249,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>test-jar</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		      </plugin>
 		</plugins>
 	</build>
 </project>

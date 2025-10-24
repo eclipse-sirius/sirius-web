@@ -13,20 +13,18 @@
 
 package org.eclipse.sirius.web.services.undoredo;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RadioOption;
@@ -48,7 +46,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -106,58 +103,49 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
         var radioId = new AtomicReference<String>();
         var optionId = new AtomicReference<String>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var radio = groupNavigator.findWidget("SuperType", Radio.class);
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var radio = groupNavigator.findWidget("SuperType", Radio.class);
 
-                    radioId.set(radio.getId());
-                    assertThat(radio)
-                            .hasLabel("SuperType")
-                            .hasHelp("Pick a super type")
-                            .hasValueWithLabel("NamedElement")
-                            .isNotReadOnly();
+            radioId.set(radio.getId());
+            assertThat(radio)
+                    .hasLabel("SuperType")
+                    .hasHelp("Pick a super type")
+                    .hasValueWithLabel("NamedElement")
+                    .isNotReadOnly();
 
-                    var newValue = radio.getOptions().stream()
-                            .filter(radioOption -> radioOption.getLabel().equals("Human"))
-                            .findFirst()
-                            .map(RadioOption::getId)
-                            .orElseThrow(IllegalStateException::new);
-                    optionId.set(newValue);
-                }, () -> fail("Missing form"));
+            var newValue = radio.getOptions().stream()
+                    .filter(radioOption -> radioOption.getLabel().equals("Human"))
+                    .findFirst()
+                    .map(RadioOption::getId)
+                    .orElseThrow(IllegalStateException::new);
+            optionId.set(newValue);
+        });
 
-        var mutationId = UUID.randomUUID();
-
+        var inputId = UUID.randomUUID();
         Runnable editCheckbox = () -> {
-            var input = new EditRadioInput(mutationId, StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
+            var input = new EditRadioInput(inputId, StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var radio = groupNavigator.findWidget("SuperType", Radio.class);
+        Consumer<Object> updatedFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var radio = groupNavigator.findWidget("SuperType", Radio.class);
 
-                    assertThat(radio)
-                            .hasLabel("SuperType")
-                            .hasHelp("Pick a super type")
-                            .hasValueWithLabel("Human")
-                            .isNotReadOnly();
-                }, () -> fail("Missing form"));
+            assertThat(radio)
+                    .hasLabel("SuperType")
+                    .hasHelp("Pick a super type")
+                    .hasValueWithLabel("Human")
+                    .isNotReadOnly();
+        });
 
         Runnable undoMutation = () -> {
-            var input = new UndoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), mutationId.toString());
+            var input = new UndoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), inputId);
             var result = this.undoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.undo.__typename");
@@ -165,7 +153,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
         };
 
         Runnable redoMutation = () -> {
-            var input = new RedoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), mutationId.toString());
+            var input = new RedoInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), inputId);
             var result = this.redoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.redo.__typename");

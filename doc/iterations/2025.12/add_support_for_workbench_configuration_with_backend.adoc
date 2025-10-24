@@ -1,0 +1,49 @@
+= Add support for workbench configuration with the backend
+
+== Problem
+
+Using an extension point and/or the merge strategy it is possible to disable part of the workbench permanently.
+Rather than disabling workbench part permanently, we would like to disable such part dynamically based on some condition like the project nature or an environment variable.
+
+== Key Result
+
+* Some of the workbench views will not be available in some projects
+* Some of the workbench views that are by default on the left side will be on the right side and vice versa.
+* It should be possible to set the which workbench view is opened or closed by default.
+
+=== Acceptance Criteria
+
+There will be integration tests and Cypress tests to ensure that some view enabled or disabled, are opened or closed by default, and the position of the view.
+
+== Solution
+
+=== Scenario
+
+==== A project a workbench configuration
+
+Any user can create a project with a specific nature that display a subset of all available workbench views :
+
+* Create the specific project
+* Verify the available views of the workbench are expected
+* Verify that modify the configuration in the URL does not enable a disabled workbench view
+
+==== Update default workbench configuration
+
+Any user should be able to create a blank project and change the position of a workbench view using the URL :
+
+* Create a blank project
+* Verify the default workbench configuration
+* Update the project URL to change the workbench configuration
+* Verify the new workbench configuration
+
+=== Cutting backs
+
+We could extend that mechanism the main area and select a specific representation when a project template creates many representations at once.
+
+== Rabbit holes
+
+None.
+
+== No-gos
+
+None.

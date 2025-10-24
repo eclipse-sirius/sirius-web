@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,16 +32,6 @@ const getOnboardDataQuery = gql`
             }
           }
         }
-        representations {
-          edges {
-            node {
-              id
-              label
-              kind
-              iconURLs
-            }
-          }
-        }
         actions {
           edges {
             node {
@@ -58,7 +48,6 @@ const getOnboardDataQuery = gql`
 const INITIAL_STATE: OnboardAreaState = {
   editingContextActions: [],
   representationDescriptions: [],
-  representations: [],
 };
 
 const useOnboardAreaStyles = makeStyles()((theme) => ({
@@ -81,7 +70,7 @@ const useOnboardAreaStyles = makeStyles()((theme) => ({
 export const OnboardArea = ({ editingContextId, readOnly }: MainAreaComponentProps) => {
   const { classes } = useOnboardAreaStyles();
   const [state, setState] = useState<OnboardAreaState>(INITIAL_STATE);
-  const { editingContextActions, representationDescriptions, representations } = state;
+  const { editingContextActions, representationDescriptions } = state;
   const { selection } = useSelection();
 
   const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
@@ -93,14 +82,12 @@ export const OnboardArea = ({ editingContextId, readOnly }: MainAreaComponentPro
   useEffect(() => {
     if (!loading && !error && data?.viewer) {
       const { viewer } = data;
-      const representations = viewer.editingContext.representations.edges.map((edge) => edge.node);
       const editingContextActions = viewer.editingContext.actions.edges.map((edge) => edge.node);
       const representationDescriptions = viewer.editingContext.representationDescriptions.edges.map(
         (edge) => edge.node
       );
 
       setState({
-        representations,
         editingContextActions,
         representationDescriptions,
       });
@@ -120,7 +107,7 @@ export const OnboardArea = ({ editingContextId, readOnly }: MainAreaComponentPro
           representationDescriptions={representationDescriptions}
           readOnly={readOnly}
         />
-        <RepresentationsArea representations={representations} />
+        <RepresentationsArea editingContextId={editingContextId} />
       </div>
     </div>
   );

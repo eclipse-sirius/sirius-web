@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
@@ -52,20 +53,20 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addAllComponentsPropertyDescriptor(object);
+            this.addHomepagePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the All Components feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Homepage feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addAllComponentsPropertyDescriptor(Object object) {
+    protected void addHomepagePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Project_allComponents_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_allComponents_feature", "_UI_Project_type"),
-                PapayaPackage.Literals.PROJECT__ALL_COMPONENTS, false, false, false, null, null, null));
+                this.getString("_UI_Project_homepage_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_homepage_feature", "_UI_Project_type"),
+                PapayaPackage.Literals.PROJECT__HOMEPAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -80,15 +81,8 @@ public class ProjectItemProvider extends NamedElementItemProvider {
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__PROJECTS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__COMPONENTS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__COMPONENT_EXCHANGES);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__ITERATIONS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__TASKS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__CONTRIBUTIONS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__APPLICATION_CONCERNS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__DOMAINS);
-            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__CHANNELS);
+            this.childrenFeatures.add(PapayaPackage.Literals.CONTAINER__FOLDERS);
+            this.childrenFeatures.add(PapayaPackage.Literals.CONTAINER__ELEMENTS);
         }
         return this.childrenFeatures;
     }
@@ -165,15 +159,11 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Project.class)) {
-            case PapayaPackage.PROJECT__PROJECTS:
-            case PapayaPackage.PROJECT__COMPONENTS:
-            case PapayaPackage.PROJECT__COMPONENT_EXCHANGES:
-            case PapayaPackage.PROJECT__ITERATIONS:
-            case PapayaPackage.PROJECT__TASKS:
-            case PapayaPackage.PROJECT__CONTRIBUTIONS:
-            case PapayaPackage.PROJECT__APPLICATION_CONCERNS:
-            case PapayaPackage.PROJECT__DOMAINS:
-            case PapayaPackage.PROJECT__CHANNELS:
+            case PapayaPackage.PROJECT__HOMEPAGE:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case PapayaPackage.PROJECT__FOLDERS:
+            case PapayaPackage.PROJECT__ELEMENTS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -190,23 +180,33 @@ public class ProjectItemProvider extends NamedElementItemProvider {
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__PROJECTS, PapayaFactory.eINSTANCE.createProject()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__FOLDERS, PapayaFactory.eINSTANCE.createFolder()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__COMPONENTS, PapayaFactory.eINSTANCE.createComponent()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalCapability()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__COMPONENT_EXCHANGES, PapayaFactory.eINSTANCE.createComponentExchange()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalEntity()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__ITERATIONS, PapayaFactory.eINSTANCE.createIteration()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalActor()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__TASKS, PapayaFactory.eINSTANCE.createTask()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalProcess()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__CONTRIBUTIONS, PapayaFactory.eINSTANCE.createContribution()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalActivity()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__APPLICATION_CONCERNS, PapayaFactory.eINSTANCE.createApplicationConcern()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createIteration()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__DOMAINS, PapayaFactory.eINSTANCE.createDomain()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createTask()));
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__CHANNELS, PapayaFactory.eINSTANCE.createChannel()));
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createContribution()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createComponent()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createPackage()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createApplicationConcern()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createDomain()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createChannel()));
     }
 
 }

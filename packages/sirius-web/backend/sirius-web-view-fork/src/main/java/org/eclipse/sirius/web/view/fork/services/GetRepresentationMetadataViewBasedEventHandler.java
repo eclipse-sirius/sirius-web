@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -24,8 +26,8 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
@@ -34,9 +36,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.view.fork.dto.GetRepresentationMetadataViewBasedInput;
 import org.eclipse.sirius.web.view.fork.dto.GetRepresentationMetadataViewBasedPayload;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -47,24 +46,24 @@ import reactor.core.publisher.Sinks;
 @Service
 public class GetRepresentationMetadataViewBasedEventHandler implements IEditingContextEventHandler {
 
+    private final IIdentityService identityService;
+
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final IURLParser urlParser;
 
-    private final IObjectService objectService;
-
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public GetRepresentationMetadataViewBasedEventHandler(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-            IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+    public GetRepresentationMetadataViewBasedEventHandler(IIdentityService identityService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
+                                                          IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -93,7 +92,7 @@ public class GetRepresentationMetadataViewBasedEventHandler implements IEditingC
                         if (sourceId.isPresent() && sourceElementId.isPresent()) {
                             return this.viewRepresentationDescriptionSearchService.findViewsBySourceId(editingContext, sourceId.get()).stream()
                                     .flatMap(view -> view.getDescriptions().stream())
-                                    .anyMatch(description -> this.objectService.getId(description).equals(sourceElementId.get()));
+                                    .anyMatch(description -> this.identityService.getId(description).equals(sourceElementId.get()));
                         }
                         return false;
                     })

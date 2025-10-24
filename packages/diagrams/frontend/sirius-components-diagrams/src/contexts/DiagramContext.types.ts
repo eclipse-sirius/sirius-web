@@ -11,8 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Selection } from '@eclipse-sirius/sirius-components-core';
+
 export interface DiagramContextValue {
   editingContextId: string;
   diagramId: string;
   readOnly: boolean;
+  registerPostToolSelection: (id: string, selection: Selection) => void;
+  consumePostToolSelection: (id: string) => Selection | null;
+  toolSelections: Map<string, Selection>;
 }

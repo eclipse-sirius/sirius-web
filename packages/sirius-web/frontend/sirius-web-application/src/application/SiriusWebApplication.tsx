@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 import {
   ConfirmationDialogContextProvider,
   ExtensionProvider,
-  RepresentationPathContext,
   ServerContext,
 } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
@@ -61,11 +60,6 @@ export const SiriusWebApplication = ({
     }
   });
 
-  const getRepresentationPath = (editingContextId: string, representationId: string) => {
-    // Note that this should match the corresponding route configuration
-    return `/projects/${editingContextId}/edit/${representationId}`;
-  };
-
   if (extensionRegistry) {
     defaultExtensionRegistry.addAll(
       extensionRegistry,
@@ -80,17 +74,15 @@ export const SiriusWebApplication = ({
           <ThemeProvider theme={siriusWebTheme}>
             <CssBaseline />
             <ServerContext.Provider value={{ httpOrigin }}>
-              <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-                <ToastProvider>
-                  <ConfirmationDialogContextProvider>
-                    <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </NodeTypeContext.Provider>
-                  </ConfirmationDialogContextProvider>
-                </ToastProvider>
-              </RepresentationPathContext.Provider>
+              <ToastProvider>
+                <ConfirmationDialogContextProvider>
+                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                    <div style={style}>
+                      <Router />
+                    </div>
+                  </NodeTypeContext.Provider>
+                </ConfirmationDialogContextProvider>
+              </ToastProvider>
             </ServerContext.Provider>
           </ThemeProvider>
         </BrowserRouter>

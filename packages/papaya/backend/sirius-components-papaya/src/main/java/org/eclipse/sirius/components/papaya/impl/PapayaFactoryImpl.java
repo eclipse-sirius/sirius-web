@@ -31,16 +31,24 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
+import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.Iteration;
 import org.eclipse.sirius.components.papaya.Operation;
+import org.eclipse.sirius.components.papaya.OperationalActivity;
+import org.eclipse.sirius.components.papaya.OperationalActor;
+import org.eclipse.sirius.components.papaya.OperationalCapability;
+import org.eclipse.sirius.components.papaya.OperationalEntity;
+import org.eclipse.sirius.components.papaya.OperationalInteraction;
+import org.eclipse.sirius.components.papaya.OperationalProcess;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
@@ -50,6 +58,7 @@ import org.eclipse.sirius.components.papaya.ProvidedService;
 import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.ReferencingLink;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
@@ -65,7 +74,6 @@ import org.eclipse.sirius.components.papaya.spec.DataTypeSpec;
 import org.eclipse.sirius.components.papaya.spec.EnumSpec;
 import org.eclipse.sirius.components.papaya.spec.InterfaceSpec;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
-import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
 import org.eclipse.sirius.components.papaya.spec.RecordSpec;
 
 /**
@@ -110,8 +118,26 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
         switch (eClass.getClassifierID()) {
             case PapayaPackage.TAG:
                 return this.createTag();
+            case PapayaPackage.REFERENCING_LINK:
+                return this.createReferencingLink();
+            case PapayaPackage.CONTAINING_LINK:
+                return this.createContainingLink();
+            case PapayaPackage.FOLDER:
+                return this.createFolder();
             case PapayaPackage.PROJECT:
                 return this.createProject();
+            case PapayaPackage.OPERATIONAL_CAPABILITY:
+                return this.createOperationalCapability();
+            case PapayaPackage.OPERATIONAL_ENTITY:
+                return this.createOperationalEntity();
+            case PapayaPackage.OPERATIONAL_ACTOR:
+                return this.createOperationalActor();
+            case PapayaPackage.OPERATIONAL_PROCESS:
+                return this.createOperationalProcess();
+            case PapayaPackage.OPERATIONAL_ACTIVITY:
+                return this.createOperationalActivity();
+            case PapayaPackage.OPERATIONAL_INTERACTION:
+                return this.createOperationalInteraction();
             case PapayaPackage.ITERATION:
                 return this.createIteration();
             case PapayaPackage.TASK:
@@ -239,12 +265,111 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
+     */
+    @Override
+    public ReferencingLink createReferencingLink() {
+        ReferencingLinkImpl referencingLink = new ReferencingLinkImpl();
+        return referencingLink;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ContainingLink createContainingLink() {
+        ContainingLinkImpl containingLink = new ContainingLinkImpl();
+        return containingLink;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Folder createFolder() {
+        FolderImpl folder = new FolderImpl();
+        return folder;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
      */
     @Override
     public Project createProject() {
-        ProjectImpl project = new ProjectSpec();
+        ProjectImpl project = new ProjectImpl();
         return project;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalCapability createOperationalCapability() {
+        OperationalCapabilityImpl operationalCapability = new OperationalCapabilityImpl();
+        return operationalCapability;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalEntity createOperationalEntity() {
+        OperationalEntityImpl operationalEntity = new OperationalEntityImpl();
+        return operationalEntity;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalActor createOperationalActor() {
+        OperationalActorImpl operationalActor = new OperationalActorImpl();
+        return operationalActor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalProcess createOperationalProcess() {
+        OperationalProcessImpl operationalProcess = new OperationalProcessImpl();
+        return operationalProcess;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalActivity createOperationalActivity() {
+        OperationalActivityImpl operationalActivity = new OperationalActivityImpl();
+        return operationalActivity;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OperationalInteraction createOperationalInteraction() {
+        OperationalInteractionImpl operationalInteraction = new OperationalInteractionImpl();
+        return operationalInteraction;
     }
 
     /**

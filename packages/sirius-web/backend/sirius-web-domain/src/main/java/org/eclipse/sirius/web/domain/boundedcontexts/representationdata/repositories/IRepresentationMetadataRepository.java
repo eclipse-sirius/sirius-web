@@ -12,15 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Repository used to persist the representation metadata aggregate.
@@ -43,6 +43,65 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
         WHERE representationMetadata.semantic_data_id = :semanticDataId
         """)
     List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataId(UUID semanticDataId);
+
+    @Query("""
+        WITH
+        filtered_representation_metadata as (
+            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc), representationMetadata.*
+            FROM representation_metadata representationMetadata
+            WHERE representationMetadata.semantic_data_id = :semanticDataId
+            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc
+        ),
+        cursor_index as (
+            SELECT coalesce(
+                (
+                    SELECT representationMetadata.row_number
+                    FROM filtered_representation_metadata representationMetadata
+                    WHERE representationMetadata.id = :cursorId
+                    LIMIT 1
+                ),
+                (
+                    SELECT max(representationMetadata.row_number) + 1
+                    FROM filtered_representation_metadata representationMetadata
+                )
+            ) as row_number
+        )
+        SELECT representationMetadata.*
+        FROM filtered_representation_metadata representationMetadata, cursor_index c
+        WHERE representationMetadata.row_number >= greatest(0, c.row_number - :limit)
+        AND representationMetadata.row_number < c.row_number
+        """)
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataIdBefore(UUID semanticDataId, UUID cursorId, int limit);
+
+    @Query("""
+        WITH
+        filtered_representation_metadata as (
+            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc), representationMetadata.*
+            FROM representation_metadata representationMetadata
+            WHERE representationMetadata.semantic_data_id = :semanticDataId
+            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc
+        ),
+        cursor_index as (
+            SELECT coalesce(
+                (
+                    SELECT representationMetadata.row_number
+                    FROM filtered_representation_metadata representationMetadata
+                    WHERE representationMetadata.id = :cursorId
+                    LIMIT 1
+                ),
+                0
+            ) as row_number
+        )
+        SELECT representationMetadata.*
+        FROM filtered_representation_metadata representationMetadata, cursor_index c
+        WHERE
+        CASE WHEN cast(:cursorId AS UUID) IS NOT null THEN
+            representationMetadata.row_number <= c.row_number + :limit AND representationMetadata.row_number > c.row_number
+        ELSE
+            representationMetadata.row_number <= :limit
+        END
+        """)
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataIdAfter(UUID semanticDataId, UUID cursorId, int limit);
 
     @Query("""
         SELECT representationMetadata.*

@@ -13,17 +13,17 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow/react';
-import { memo, useEffect, useMemo } from 'react';
+import { BaseEdge, Edge, XYPosition } from '@xyflow/react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
-import { Label } from '../../Label';
 import { DiagramElementPalette } from '../../palette/DiagramElementPalette';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
+import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
-import { determineSegmentAxis } from './RectilinearEdgeCalculation';
+import { determineSegmentAxis, getMiddlePoint } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
 
@@ -46,28 +46,6 @@ const multiLabelEdgeStyle = (
   return multiLabelEdgeStyle;
 };
 
-const getTranslateFromHandlePositon = (position: Position) => {
-  switch (position) {
-    case Position.Right:
-      return 'translate(2%, -100%)';
-    case Position.Left:
-      return 'translate(-102%, -100%)';
-    case Position.Top:
-      return 'translate(2%, -100%)';
-    case Position.Bottom:
-      return 'translate(2%, 0%)';
-  }
-};
-
-const labelContainerStyle = (transform: string): React.CSSProperties => {
-  return {
-    transform,
-    position: 'absolute',
-    padding: 5,
-    zIndex: 1001,
-  };
-};
-
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
@@ -88,68 +66,88 @@ export const MultiLabelRectilinearEditableEdge = memo(
     targetY,
     bendingPoints,
     customEdge,
+    sourceNode,
+    sourceHandleId,
+    targetNode,
+    targetHandleId,
   }: MultiLabelEditableEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { beginLabel, endLabel, label, faded } = data || {};
+    const { label, faded } = data || {};
     const { setEdges } = useStore();
     const theme = useTheme();
+
+    const [source, setSource] = useState<XYPosition>({ x: sourceX, y: sourceY });
+    const [target, setTarget] = useState<XYPosition>({ x: targetX, y: targetY });
+
+    useEffect(() => {
+      setSource({ x: sourceX, y: sourceY });
+    }, [sourceX, sourceY]);
+
+    useEffect(() => {
+      setTarget({ x: targetX, y: targetY });
+    }, [targetX, targetY]);
 
     const { localBendingPoints, setLocalBendingPoints, onBendingPointDragStop, onBendingPointDrag } = useBendingPoints(
       id,
       bendingPoints,
-      sourceX,
-      sourceY,
-      targetX,
-      targetY,
+      source,
+      setSource,
+      sourceNode,
+      sourceHandleId ?? '',
+      sourcePosition,
+      target,
+      setTarget,
+      targetNode,
+      targetHandleId ?? '',
+      targetPosition,
       customEdge
     );
 
     const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
       id,
+      bendingPoints,
       localBendingPoints,
       setLocalBendingPoints,
-      sourceX,
-      sourceY,
-      targetX,
-      targetY
+      sourceNode,
+      sourceHandleId ?? '',
+      sourcePosition,
+      source,
+      setSource,
+      targetNode,
+      targetHandleId ?? '',
+      targetPosition,
+      target,
+      setTarget
     );
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
 
-    const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
-    const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
-
-    const edgeCenter: XYPosition = useMemo(() => {
-      let pointsSource = localBendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
-      if (isMultipleOfTwo(localBendingPoints.length)) {
-        pointsSource = middleBendingPoints;
+    const edgeCenter: XYPosition | undefined = useMemo(() => {
+      let pointsSource = bendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
+      if (isMultipleOfTwo(pointsSource.length)) {
+        //if there is an even number of bend points, this means that there is an odd number of segments
+        const prevPoint: XYPosition | undefined =
+          pointsSource.length === 0 ? source : pointsSource[Math.floor(pointsSource.length / 2) - 1];
+        const middlePoint: XYPosition | undefined =
+          pointsSource.length === 0 ? target : pointsSource[Math.floor(pointsSource.length / 2)];
+        return prevPoint && middlePoint ? getMiddlePoint(prevPoint, middlePoint) : undefined; //Place in the center of the middle segment
+      } else {
+        return pointsSource[Math.floor(pointsSource.length / 2)]; //Place on the middle point
       }
-      return pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 };
-    }, [
-      middleBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
-      localBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
-    ]);
+    }, [source, target, bendingPoints.map((point) => `${point.x}:${point.y}`).join()]);
 
     const edgePath: string = useMemo(() => {
-      let edgePath = `M ${sourceX} ${sourceY}`;
+      let edgePath = `M ${source.x} ${source.y}`;
       const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
       for (let i = 0; i < reorderBendPoint.length; i++) {
         const currentPoint = reorderBendPoint[i];
         if (currentPoint) {
-          if (i === 0) {
-            if (determineSegmentAxis({ x: sourceX, y: sourceY }, currentPoint) === 'x') {
-              edgePath += ` L ${currentPoint.x} ${sourceY}`;
-            } else {
-              edgePath += ` L ${sourceX} ${currentPoint.y}`;
-            }
-          } else {
-            edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
-          }
+          edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
         }
       }
-      edgePath += ` L ${targetX} ${targetY}`;
+      edgePath += ` L ${target.x} ${target.y}`;
       return edgePath;
-    }, [localBendingPoints.map((point) => point.x + point.y).join(), sourceX, sourceY, targetX, targetY]);
+    }, [localBendingPoints.map((point) => point.x + point.y).join(), source.x, source.y, target.x, target.y]);
 
     useEffect(() => {
       setEdges((prevEdges) =>
@@ -177,6 +175,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
             ...edgeStyle,
             ...connectionFeedbackStyle,
           }}
+          className={`target_handle_${targetPosition} source_handle_${sourcePosition}`}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
@@ -192,49 +191,50 @@ export const MultiLabelRectilinearEditableEdge = memo(
         ) : null}
         {selected &&
           localBendingPoints &&
-          localBendingPoints.map((point, index) => (
-            <BendPoint
-              key={index}
-              x={point.x}
-              y={point.y}
-              index={index}
-              onDrag={onBendingPointDrag}
-              onDragStop={onBendingPointDragStop}
-            />
-          ))}
-        {selected &&
-          middleBendingPoints &&
-          middleBendingPoints
-            .slice(1, -1)
-            .map((point, index) => (
-              <TemporaryMovingLine
+          localBendingPoints.map((point, index) => {
+            const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
+            const prevPoint = reorderBendPoint[point.pathOrder - 1];
+            const direction = prevPoint ? determineSegmentAxis(prevPoint, point) : determineSegmentAxis(source, point);
+            return (
+              <BendPoint
                 key={index}
                 x={point.x}
                 y={point.y}
-                direction={point.direction}
-                segmentLength={point.segmentLength}
-                index={index + 1}
-                onDrag={onTemporaryLineDrag}
-                onDragStop={onTemporaryLineDragStop}
+                index={index}
+                direction={direction}
+                onDrag={onBendingPointDrag}
+                onDragStop={onBendingPointDragStop}
               />
-            ))}
-        <EdgeLabelRenderer>
-          {beginLabel && (
-            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
-              <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
-            </div>
-          )}
-          {label && (
-            <div style={labelContainerStyle(`translate(${edgeCenter.x}px,${edgeCenter.y}px)`)}>
-              <Label diagramElementId={id} label={label} faded={!!faded} />
-            </div>
-          )}
-          {endLabel && (
-            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}>
-              <Label diagramElementId={id} label={endLabel} faded={!!faded} />
-            </div>
-          )}
-        </EdgeLabelRenderer>
+            );
+          })}
+        {selected &&
+          middleBendingPoints &&
+          middleBendingPoints.map((point, index) => (
+            <TemporaryMovingLine
+              key={index}
+              x={point.x}
+              y={point.y}
+              direction={point.direction}
+              segmentLength={point.segmentLength}
+              index={index}
+              onDrag={onTemporaryLineDrag}
+              onDragStop={onTemporaryLineDragStop}
+            />
+          ))}
+        {data ? (
+          <DraggableEdgeLabels
+            id={id}
+            data={data}
+            selected={!!selected}
+            sourcePosition={sourcePosition}
+            targetPosition={targetPosition}
+            sourceX={sourceX}
+            sourceY={sourceY}
+            targetX={targetX}
+            targetY={targetY}
+            edgeCenter={edgeCenter}
+          />
+        ) : null}
       </>
     );
   }

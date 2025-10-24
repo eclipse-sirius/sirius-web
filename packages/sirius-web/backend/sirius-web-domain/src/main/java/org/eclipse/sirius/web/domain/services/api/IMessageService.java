@@ -55,6 +55,8 @@ public interface IMessageService {
 
     String objectDoesNotExist(String objectId);
 
+    String unauthorized();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -149,6 +151,11 @@ public interface IMessageService {
 
         @Override
         public String objectDoesNotExist(String objectId) {
+            return "";
+        }
+
+        @Override
+        public String unauthorized() {
             return "";
         }
     }

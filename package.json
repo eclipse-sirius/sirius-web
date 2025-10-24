@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-parent",
-  "version": "2025.2.10",
+  "version": "2025.10.0",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -11,16 +11,18 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "engines": {
-    "node": "18.7.0",
-    "npm": "8.15.0"
+    "node": "22.16.0",
+    "npm": "10.9.2"
   },
-  "packageManager": "npm@8.15.0",
+  "packageManager": "npm@10.9.2",
   "workspaces": [
     "./packages/*/frontend/*"
   ],
   "scripts": {
     "build": "turbo run build",
-    "start": "turbo run start"
+    "start": "turbo run start",
+    "test": "turbo run test",
+    "coverage": "turbo run coverage"
   },
   "devDependencies": {
     "turbo": "2.4.4"

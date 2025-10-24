@@ -13,7 +13,8 @@
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { memo, useContext, useMemo } from 'react';
+import { useViewport } from '@xyflow/react';
+import { memo, useContext, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
@@ -63,7 +64,11 @@ const labelStyle = (theme: Theme, style: React.CSSProperties, faded: Boolean): R
   };
 };
 
-const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
+const labelContentStyle = (
+  theme: Theme,
+  label: EdgeLabel | InsideLabel | OutsideLabel,
+  highlighted: boolean
+): React.CSSProperties => {
   const labelContentStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -79,7 +84,7 @@ const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | Outsid
     default:
       break;
   }
-  return {
+  const style = {
     ...labelContentStyle,
     ...label.contentStyle,
     background: label.contentStyle.background ? getCSSColor(String(label.contentStyle.background), theme) : undefined,
@@ -87,6 +92,12 @@ const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | Outsid
       ? getCSSColor(String(label.contentStyle.borderColor), theme)
       : undefined,
   };
+  if (highlighted && (label.text.length > 0 || label.iconURL.length > 0)) {
+    style.borderWidth = `1px`;
+    style.borderColor = theme.palette.selected;
+    style.borderStyle = 'dashed';
+  }
+  return style;
 };
 
 const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
@@ -108,10 +119,22 @@ const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): Reac
   return style;
 };
 
-export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
+const minWidth: number = 130;
+
+const directEditInputWidth = (element: HTMLDivElement | null, zoom: number): number => {
+  let result = minWidth;
+  if (element) {
+    result = element.getBoundingClientRect().width / zoom;
+  }
+  return Math.max(minWidth, result);
+};
+
+export const Label = memo(({ diagramElementId, label, faded, highlighted }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const labelElementRef = useRef<HTMLDivElement>(null);
+  const { zoom } = useViewport();
 
   const handleClose = () => {
     resetDirectEdit();
@@ -127,12 +150,18 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
 
   const content: JSX.Element =
     label.id === currentlyEditedLabelId && !readOnly ? (
-      <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
+      <DiagramDirectEditInput
+        editingKey={editingKey}
+        width={Math.max(minWidth, directEditInputWidth(labelElementRef.current, zoom))}
+        onClose={handleClose}
+        labelId={label.id}
+      />
     ) : (
       <div
+        ref={labelElementRef}
         data-id={`${label.id}-content`}
         data-testid={`Label content - ${label.text}`}
-        style={labelContentStyle(theme, label)}>
+        style={labelContentStyle(theme, label, !!highlighted)}>
         <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
         <div style={labelOverflowStyle(label)} data-svg="text">
           {label.text}

@@ -12,15 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.EllipseNodeStyle;
@@ -35,7 +33,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -69,15 +66,11 @@ public class CustomNodesDiagramControllerTests extends AbstractIntegrationTests 
         var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), "ExpandCollapseDiagram");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getNodes())
-                            .isNotEmpty()
-                            .allSatisfy(node -> assertThat(node.getStyle()).isInstanceOf(EllipseNodeStyle.class));
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .isNotEmpty()
+                    .allSatisfy(node -> assertThat(node.getStyle()).isInstanceOf(EllipseNodeStyle.class));
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

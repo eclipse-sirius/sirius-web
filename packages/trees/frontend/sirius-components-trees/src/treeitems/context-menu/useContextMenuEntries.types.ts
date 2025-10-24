@@ -47,4 +47,5 @@ export interface GQLTreeItemContextMenuEntry {
   id: string;
   label: string;
   iconURL: string[];
+  withImpactAnalysis: boolean;
 }

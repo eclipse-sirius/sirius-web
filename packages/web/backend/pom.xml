@@ -16,11 +16,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-components-web-parent</artifactId>
-	<version>2025.2.10</version>
+	<artifactId>sirius-components-web-root</artifactId>
+	<version>2025.10.0</version>
 
-	<name>sirius-components-web-parent</name>
-	<description>Sirius Components Web Parent</description>
+	<name>sirius-components-web-root</name>
+	<description>Sirius Components Web Root</description>
 	<packaging>pom</packaging>
 
 	<distributionManagement>

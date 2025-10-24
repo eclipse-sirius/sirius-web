@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,16 +17,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -38,9 +33,8 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerLabelService;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
-import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,9 +55,9 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     public static final String REPRESENTATION_NAME = "Explorer";
 
-    private final IObjectService objectService;
+    public static final String EXISTING_REPRESENTATIONS = "existingRepresentations";
 
-    private final IURLParser urlParser;
+    private final ILabelService labelService;
 
     private final IExplorerElementsProvider explorerElementsProvider;
 
@@ -75,17 +69,18 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final IExplorerServices explorerServices;
 
-    public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders,
-            IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers,
-            List<IDeleteTreeItemHandler> deleteTreeItemHandlers, IExplorerServices explorerServices) {
-        this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
-        this.urlParser = explorerDescriptionProviderConfiguration.getUrlParser();
+    private final IExplorerLabelService explorerLabelService;
+
+    public ExplorerDescriptionProvider(ILabelService labelService, IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers, IExplorerServices explorerServices, IExplorerLabelService explorerLabelService) {
+        this.labelService = Objects.requireNonNull(labelService);
         this.explorerElementsProvider = Objects.requireNonNull(explorerElementsProvider);
         this.explorerChildrenProvider = Objects.requireNonNull(explorerChildrenProvider);
         this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
         this.deleteTreeItemHandlers = Objects.requireNonNull(deleteTreeItemHandlers);
         this.explorerServices = Objects.requireNonNull(explorerServices);
+        this.explorerLabelService = Objects.requireNonNull(explorerLabelService);
     }
+
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
@@ -150,24 +145,12 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        String label = "";
-        if (self instanceof RepresentationMetadata || self instanceof Resource) {
-            label = this.explorerServices.getLabel(self);
-        } else if (self instanceof EObject) {
-            StyledString styledString = this.objectService.getStyledLabel(self);
-            if (!styledString.toString().isBlank()) {
-                return styledString;
-            } else {
-                var kind = this.objectService.getKind(self);
-                label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
-            }
-        }
-        return StyledString.of(label);
+        return this.labelService.getStyledLabel(self);
     }
 
     private boolean isEditable(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        return this.explorerServices.isEditable(self);
+        return this.explorerLabelService.isEditable(self);
     }
 
     private boolean isDeletable(VariableManager variableManager) {
@@ -182,7 +165,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        return this.explorerServices.getImageURL(self);
+        return this.labelService.getImagePaths(self);
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {

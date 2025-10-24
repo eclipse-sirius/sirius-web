@@ -14,12 +14,16 @@ package org.eclipse.sirius.web.application.controllers.tables;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedColumnFilterThat;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedColumnSortThat;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedGlobalFilterThat;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -29,11 +33,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.tables.TableColumnFilterPayload;
-import org.eclipse.sirius.components.collaborative.tables.TableColumnSortPayload;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
-import org.eclipse.sirius.components.collaborative.tables.TableGlobalFilterValuePayload;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnFilterInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnSortInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnFilterMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnSortMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.TableConfigurationQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -59,7 +60,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -70,10 +70,8 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String MISSING_TABLE = "Missing table";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -99,6 +97,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     @Autowired
     private TableEventSubscriptionRunner tableEventSubscriptionRunner;
 
+    @Autowired
+    private TableConfigurationQueryRunner tableConfigurationQueryRunner;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -122,15 +123,11 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToTable();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(3);
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getLines()).hasSize(4);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -146,20 +143,15 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(3);
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getLines()).hasSize(4);
 
-                    tableId.set(table.getId());
-                }, () -> fail("Missing table"));
+            tableId.set(table.getId());
+        });
 
         Runnable refreshTable = () -> {
-
             Consumer<IEditingContextEventProcessor> editingContextEventProcessorConsumer = editingContextEventProcessor -> {
                 editingContextEventProcessor.getRepresentationEventProcessors().stream()
                         .filter(representationEventProcessor -> representationEventProcessor.getRepresentation().getId().equals(tableId.get()))
@@ -196,20 +188,16 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     public void givenTableRepresentationWithColumnHeaderWhenWeSubscribeToItsEventThenDataReceivedContainTheHeader() {
         var flux = this.givenSubscriptionToTable();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("A");
-                    assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("B");
-                    assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("C");
-                    assertThat(table.getColumns().get(3).getHeaderIndexLabel()).isEqualTo("D");
-                    assertThat(table.getColumns().get(4).getHeaderIndexLabel()).isEqualTo("E");
-                    assertThat(table.getColumns().get(5).getHeaderIndexLabel()).isEqualTo("F");
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("A");
+            assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("B");
+            assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("C");
+            assertThat(table.getColumns().get(3).getHeaderIndexLabel()).isEqualTo("D");
+            assertThat(table.getColumns().get(4).getHeaderIndexLabel()).isEqualTo("E");
+            assertThat(table.getColumns().get(5).getHeaderIndexLabel()).isEqualTo("F");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -225,15 +213,11 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getGlobalFilter()).isEqualTo("");
-                    tableId.set(table.getId());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getGlobalFilter()).isEqualTo("");
+            tableId.set(table.getId());
+        });
 
         Runnable changeGlobalFilter = () -> {
             var changeGlobalFilterValueInput = new ChangeGlobalFilterValueInput(
@@ -246,15 +230,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableGlobalFilterValuePayload.class::isInstance)
-                .map(TableGlobalFilterValuePayload.class::cast)
-                .map(TableGlobalFilterValuePayload::globalFilterValue)
-                .ifPresentOrElse(globalFilterValue -> {
-                    assertThat(globalFilterValue).isNotNull();
-                    assertThat(globalFilterValue).isEqualTo("New global filter value");
-                }, () -> fail("Missing global filter value"));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedGlobalFilterThat(globalFilterValue -> {
+            assertThat(globalFilterValue).isEqualTo("New global filter value");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -273,16 +251,13 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         var tableId = new AtomicReference<String>();
         var columnId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumnFilters()).hasSize(0);
-                    tableId.set(table.getId());
-                    columnId.set(table.getColumns().get(0).getId().toString());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumnFilters()).hasSize(0);
+
+            tableId.set(table.getId());
+            columnId.set(table.getColumns().get(0).getId().toString());
+        });
 
         Runnable changeColumnFilter = () -> {
             var changeColumnFilterInput = new ChangeColumnFilterInput(
@@ -295,17 +270,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableColumnFilterPayload.class::isInstance)
-                .map(TableColumnFilterPayload.class::cast)
-                .map(TableColumnFilterPayload::columnFilters)
-                .ifPresentOrElse(columnFilters -> {
-                    assertThat(columnFilters).isNotNull();
-                    assertThat(columnFilters).hasSize(1);
-                    assertThat(columnFilters.get(0).id()).isEqualTo(columnId.get());
-                    assertThat(columnFilters.get(0).value()).isEqualTo("filter value");
-                }, () -> fail("Missing column filter value"));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedColumnFilterThat(columnFilters -> {
+            assertThat(columnFilters).isNotNull();
+            assertThat(columnFilters).hasSize(1);
+            assertThat(columnFilters.get(0).id()).isEqualTo(columnId.get());
+            assertThat(columnFilters.get(0).value()).isEqualTo("filter value");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -328,20 +298,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         TestTransaction.end();
         TestTransaction.start();
 
-
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getGlobalFilter()).isEqualTo("PUB");
-                    assertThat(table.getColumnFilters()).hasSize(1);
-                    assertThat(table.getColumnFilters().get(0).value()).isEqualTo("LIC");
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getGlobalFilter()).isEqualTo("PUB");
+            assertThat(table.getColumnFilters()).hasSize(1);
+            assertThat(table.getColumnFilters().get(0).value()).isEqualTo("LIC");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -358,16 +320,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         var tableId = new AtomicReference<String>();
         var columnId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumnSort()).hasSize(0);
-                    tableId.set(table.getId());
-                    columnId.set(table.getColumns().get(0).getId().toString());
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumnSort()).hasSize(0);
+            tableId.set(table.getId());
+            columnId.set(table.getColumns().get(0).getId().toString());
+        });
 
         Runnable changeColumnSort = () -> {
             var changeColumnSortInput = new ChangeColumnSortInput(
@@ -380,17 +338,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableColumnSortPayload.class::isInstance)
-                .map(TableColumnSortPayload.class::cast)
-                .map(TableColumnSortPayload::columnSort)
-                .ifPresentOrElse(sort -> {
-                    assertThat(sort).isNotNull();
-                    assertThat(sort).hasSize(1);
-                    assertThat(sort.get(0).id()).isEqualTo(columnId.get());
-                    assertThat(sort.get(0).desc()).isEqualTo(true);
-                }, () -> fail("Missing sorting"));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedColumnSortThat(sort -> {
+            assertThat(sort).isNotNull();
+            assertThat(sort).hasSize(1);
+            assertThat(sort.get(0).id()).isEqualTo(columnId.get());
+            assertThat(sort.get(0).desc()).isEqualTo(true);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -398,6 +351,37 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table persisted, when table configuration query is triggered, then configuration data are returned")
+    public void givenTablePersistedWhenTableConfigurationQueryIsTriggeredThenConfigurationDataAreReturned() {
+        this.givenCommittedTransaction.commit();
+
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
+                "tableId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString()
+        );
+        var result = this.tableConfigurationQueryRunner.run(variables);
+
+
+        String globalFilterResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.globalFilter");
+        assertThat(globalFilterResult).isEqualTo("PUB");
+
+        List<String> columnFiltersValues = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnFilters[*].value");
+        assertThat(columnFiltersValues)
+                .isNotEmpty()
+                .hasSize(1)
+                .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo("LIC"));
+
+        List<String> columnSortIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnSort[*].id");
+        assertThat(columnSortIds)
+                .isEmpty();
+
+        Integer defaultPageSizeResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.defaultPageSize");
+        assertThat(defaultPageSizeResult).isEqualTo(10);
     }
 
 }

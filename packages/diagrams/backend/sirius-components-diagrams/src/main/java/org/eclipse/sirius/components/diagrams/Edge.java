@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,8 @@ public final class Edge implements IDiagramElement {
 
     private boolean centerLabelEditable;
 
+    private Set<String> customizedStyleProperties;
+
     private Edge() {
         // Prevent instantiation
     }
@@ -92,10 +94,12 @@ public final class Edge implements IDiagramElement {
         return this.targetObjectId;
     }
 
+    @Deprecated(forRemoval = true)
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
 
+    @Deprecated(forRemoval = true)
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }
@@ -139,6 +143,10 @@ public final class Edge implements IDiagramElement {
 
     public boolean isCenterLabelEditable() {
         return this.centerLabelEditable;
+    }
+
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
     }
 
     @Override
@@ -186,6 +194,8 @@ public final class Edge implements IDiagramElement {
 
         private boolean centerLabelEditable;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -206,6 +216,7 @@ public final class Edge implements IDiagramElement {
             this.state = edge.getState();
             this.style = edge.getStyle();
             this.centerLabelEditable = edge.isCenterLabelEditable();
+            this.customizedStyleProperties = edge.getCustomizedStyleProperties();
         }
 
         public Builder type(String type) {
@@ -278,6 +289,11 @@ public final class Edge implements IDiagramElement {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public Edge build() {
             Edge edge = new Edge();
             edge.id = Objects.requireNonNull(this.id);
@@ -295,6 +311,7 @@ public final class Edge implements IDiagramElement {
             edge.state = Objects.requireNonNull(this.state);
             edge.style = Objects.requireNonNull(this.style);
             edge.centerLabelEditable = this.centerLabelEditable;
+            edge.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return edge;
         }
     }

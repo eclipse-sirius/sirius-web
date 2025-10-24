@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.portals.tests.graphql;
 
 import java.util.Objects;
 
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
@@ -45,7 +46,10 @@ public class PortalEventSubscriptionRunner implements ISubscriptionRunner<Portal
 
     @Override
     public Flux<Object> run(PortalEventInput input) {
-        return this.graphQLRequestor.subscribe(PORTAL_EVENT_SUBSCRIPTION, input);
+        return this.graphQLRequestor.subscribe(PORTAL_EVENT_SUBSCRIPTION, input)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData);
     }
 
 }

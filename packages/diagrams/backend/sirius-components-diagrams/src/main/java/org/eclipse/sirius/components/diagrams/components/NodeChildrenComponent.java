@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,18 +14,21 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * The component used to render the node children.
@@ -61,9 +64,9 @@ public class NodeChildrenComponent implements IComponent {
         List<Element> nodeChildren = new ArrayList<>();
         InsideLabelDescription labelDescription = this.props.getNodeComponentProps().getNodeDescription().getInsideLabelDescription();
         if (labelDescription != null) {
-            this.props.getVariableManager().put(InsideLabelDescription.OWNER_ID, nodeId);
-
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription);
+            Optional<InsideLabel> optionalPreviousLabel = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getInsideLabel);
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription, optionalPreviousLabel,
+                    this.props.getNodeComponentProps().getDiagramEvents(), nodeId);
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
         }
@@ -71,11 +74,10 @@ public class NodeChildrenComponent implements IComponent {
     }
 
     private List<Element> getOutsideLabel(String nodeId) {
-
+        List<OutsideLabel> optionalPreviousLabels = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getOutsideLabels).orElse(new ArrayList<>());
         return this.props.getNodeComponentProps().getNodeDescription().getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            this.props.getVariableManager().put(OutsideLabelDescription.OWNER_ID, nodeId);
-
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription);
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps()
+                    .getDiagramEvents());
             return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
         }).toList();
 
@@ -91,13 +93,16 @@ public class NodeChildrenComponent implements IComponent {
                 .flatMap(Optional::stream)
                 .forEach(borderNodeDescriptions::add);
 
+        var descendantNodesVariableManager = this.getDescendantNodesVariableManager();
+
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
                     .orElse(List.of());
             List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
+            BorderNodePosition initialBorderNodePosition = this.getBorderNodePosition(borderNodeDescription, nodeDescription.getInitialChildBorderNodePositions());
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(this.props.getVariableManager())
+                    .variableManager(descendantNodesVariableManager)
                     .nodeDescription(borderNodeDescription)
                     .nodesRequestor(borderNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())
@@ -110,6 +115,8 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePosition(initialBorderNodePosition)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -125,13 +132,15 @@ public class NodeChildrenComponent implements IComponent {
                 .flatMap(Optional::stream)
                 .forEach(childNodeDescriptions::add);
 
+        var descendantNodesVariableManager = this.getDescendantNodesVariableManager();
+
         return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription))
                     .orElse(List.of());
             List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(this.props.getVariableManager())
+                    .variableManager(descendantNodesVariableManager)
                     .nodeDescription(childNodeDescription)
                     .nodesRequestor(childNodesRequestor)
                     .nodeDescriptionRequestor(this.props.getNodeComponentProps().getNodeDescriptionRequestor())
@@ -144,6 +153,8 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePosition(BorderNodePosition.NONE)
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);
@@ -155,5 +166,21 @@ public class NodeChildrenComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeComponentProps().getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getNodeComponentProps().getContainmentKind();
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
+    }
+
+    private VariableManager getDescendantNodesVariableManager() {
+        var childNodeVariableManager = this.props.getVariableManager().createChild();
+
+        var oldAncestors = this.props.getVariableManager().get(NodeDescription.ANCESTORS, List.class).orElse(List.of());
+        var ancestors = new ArrayList<>();
+        this.props.getVariableManager().get(VariableManager.SELF, Object.class).ifPresent(ancestors::add);
+        ancestors.addAll(oldAncestors);
+
+        childNodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
+        return childNodeVariableManager;
+    }
+
+    private BorderNodePosition getBorderNodePosition(NodeDescription nodeDescription, Map<String, BorderNodePosition> borderNodeInitialPositions) {
+        return Optional.ofNullable(borderNodeInitialPositions.get(nodeDescription.getId())).orElse(BorderNodePosition.EAST);
     }
 }

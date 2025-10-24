@@ -29,10 +29,19 @@ const getAllContextMenuEntriesQuery = gql`
           description {
             ... on TreeDescription {
               contextMenu(treeItemId: $treeItemId) {
-                __typename
-                id
-                label
-                iconURL
+                ... on SingleClickTreeItemContextMenuEntry {
+                  __typename
+                  id
+                  label
+                  iconURL
+                  withImpactAnalysis
+                }
+                ... on FetchTreeItemContextMenuEntry {
+                  __typename
+                  id
+                  label
+                  iconURL
+                }
               }
             }
           }

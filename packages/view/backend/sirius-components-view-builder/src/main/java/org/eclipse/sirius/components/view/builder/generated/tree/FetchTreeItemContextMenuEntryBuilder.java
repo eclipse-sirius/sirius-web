@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,14 +22,12 @@ public class FetchTreeItemContextMenuEntryBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry fetchTreeItemContextMenuEntry = org.eclipse.sirius.components.view.tree.TreeFactory.eINSTANCE.createFetchTreeItemContextMenuEntry();
 
     /**
      * Return instance org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry getFetchTreeItemContextMenuEntry() {
@@ -38,7 +36,6 @@ public class FetchTreeItemContextMenuEntryBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry build() {
@@ -54,27 +51,6 @@ public class FetchTreeItemContextMenuEntryBuilder {
         this.getFetchTreeItemContextMenuEntry().setName(value);
         return this;
     }
-
-    /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public FetchTreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
-        this.getFetchTreeItemContextMenuEntry().setLabelExpression(value);
-        return this;
-    }
-
-    /**
-     * Setter for IconURLExpression.
-     *
-     * @generated
-     */
-    public FetchTreeItemContextMenuEntryBuilder iconURLExpression(java.lang.String value) {
-        this.getFetchTreeItemContextMenuEntry().setIconURLExpression(value);
-        return this;
-    }
-
     /**
      * Setter for PreconditionExpression.
      *
@@ -84,7 +60,6 @@ public class FetchTreeItemContextMenuEntryBuilder {
         this.getFetchTreeItemContextMenuEntry().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for UrlExression.
      *
@@ -94,7 +69,6 @@ public class FetchTreeItemContextMenuEntryBuilder {
         this.getFetchTreeItemContextMenuEntry().setUrlExression(value);
         return this;
     }
-
     /**
      * Setter for Kind.
      *
@@ -102,6 +76,24 @@ public class FetchTreeItemContextMenuEntryBuilder {
      */
     public FetchTreeItemContextMenuEntryBuilder kind(org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind value) {
         this.getFetchTreeItemContextMenuEntry().setKind(value);
+        return this;
+    }
+    /**
+     * Setter for LabelExpression.
+     *
+     * @generated
+     */
+    public FetchTreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
+        this.getFetchTreeItemContextMenuEntry().setLabelExpression(value);
+        return this;
+    }
+    /**
+     * Setter for IconURLExpression.
+     *
+     * @generated
+     */
+    public FetchTreeItemContextMenuEntryBuilder iconURLExpression(java.lang.String value) {
+        this.getFetchTreeItemContextMenuEntry().setIconURLExpression(value);
         return this;
     }
 

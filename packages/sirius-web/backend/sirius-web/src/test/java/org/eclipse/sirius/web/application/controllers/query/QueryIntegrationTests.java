@@ -77,7 +77,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         List<String> labels = JsonPath.read(result, "$.data.evaluateExpression.result.objectsValue[*].label");
         assertThat(labels)
                 .isNotEmpty()
-                .containsExactly("Component sirius-web-tests-data", "Component sirius-web-domain", "Component sirius-web-application", "Component sirius-web-infrastructure", "Component sirius-web-starter", "Component sirius-web");
+                .containsExactlyInAnyOrder("sirius-web-tests-data", "graphql-java", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
     }
 
     @Test
@@ -94,7 +94,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         assertThat(resultTypename).isEqualTo(ObjectExpressionResult.class.getSimpleName());
 
         String label = JsonPath.read(result, "$.data.evaluateExpression.result.objectValue.label");
-        assertThat(label).isEqualTo("Component sirius-web-tests-data");
+        assertThat(label).isEqualTo("sirius-web-tests-data");
     }
 
     @Test
@@ -111,7 +111,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         assertThat(resultTypename).isEqualTo(IntExpressionResult.class.getSimpleName());
 
         int size = JsonPath.read(result, "$.data.evaluateExpression.result.intValue");
-        assertThat(size).isEqualTo(6);
+        assertThat(size).isEqualTo(7);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         List<String> values = JsonPath.read(result, "$.data.evaluateExpression.result.stringsValue[*]");
         assertThat(values)
                 .isNotEmpty()
-                .containsExactly("sirius-web-tests-data", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
+                .containsExactlyInAnyOrder("sirius-web-tests-data", "graphql-java", "sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
     }
 
     @Test
@@ -270,5 +270,23 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
 
         resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
         assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when we execute an expression with the service prefix returning a string, then the result is returned")
+    public void givenProjectWhenWeExecuteAnExpressionWithTheServicePrefixThenTheResultIsReturned() {
+        var expression = "service:self.toString()";
+        var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, selectedObjectIds));
+
+        String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        String resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(StringExpressionResult.class.getSimpleName());
+
+        String stringResult = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
+        assertThat(stringResult).contains("sirius-web-domain");
     }
 }

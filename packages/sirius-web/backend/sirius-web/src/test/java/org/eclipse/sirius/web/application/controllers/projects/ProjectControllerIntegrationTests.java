@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import graphql.relay.Relay;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
@@ -56,8 +58,6 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.relay.Relay;
 import reactor.test.StepVerifier;
 
 /**
@@ -158,6 +158,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(2);
     }
 
     @Test
@@ -184,6 +187,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(2);
     }
 
     @Test
@@ -257,6 +263,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures.size()).isGreaterThan(0);
     }
 
     @Test
@@ -284,6 +293,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures.size()).isGreaterThan(0);
     }
 
     @Test
@@ -310,6 +322,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isEqualTo(1);
+
+        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        assertThat(natures).hasSize(1);
     }
 
     @Test
@@ -341,18 +356,18 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenAForwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.ECORE_SAMPLE_PROJECT));
         var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
-        assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        assertThat(window.getContent().get(0).getId()).isEqualTo(StudioIdentifiers.EMPTY_STUDIO_PROJECT);
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
+    @DisplayName("Given a valid input, when a backward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenABackwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.backward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var keyset = ScrollPosition.backward(Map.of("id", StudioIdentifiers.EMPTY_STUDIO_PROJECT));
         var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();

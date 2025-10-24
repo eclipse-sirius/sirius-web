@@ -53,14 +53,16 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
 const handleStyle = (
   position: Position,
   isVirtualHandle: boolean,
-  XYPosition: XYPosition | undefined
+  isHidden: boolean,
+  XYPosition: XYPosition | null
 ): React.CSSProperties => {
-  if (!!XYPosition) {
+  if (XYPosition) {
     const style: React.CSSProperties = {
       position: 'absolute',
       transform: 'none',
-      opacity: '0',
       pointerEvents: 'none',
+      backgroundColor: 'white',
+      border: '1px solid black',
     };
     switch (position) {
       case Position.Left:
@@ -78,13 +80,17 @@ const handleStyle = (
       style.position = 'absolute';
       style.display = 'none';
     }
+    if (isHidden) {
+      style.opacity = 0;
+    }
     return style;
   } else {
     const style: React.CSSProperties = {
       position: 'relative',
       transform: 'none',
-      opacity: '0',
       pointerEvents: 'none',
+      backgroundColor: 'black',
+      border: 'black',
     };
     switch (position) {
       case Position.Left:
@@ -99,6 +105,9 @@ const handleStyle = (
     if (isVirtualHandle) {
       style.position = 'absolute';
       style.display = 'none';
+    }
+    if (isHidden) {
+      style.opacity = 0;
     }
     return style;
   }
@@ -117,7 +126,12 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
               return (
                 <Handle
                   id={connectionHandle.id ?? ''}
-                  style={handleStyle(connectionHandle.position, connectionHandle.hidden, connectionHandle.XYPosition)}
+                  style={handleStyle(
+                    connectionHandle.position,
+                    connectionHandle.isVirtualHandle,
+                    connectionHandle.isHidden,
+                    connectionHandle.XYPosition
+                  )}
                   type={connectionHandle.type}
                   position={connectionHandle.position}
                   key={connectionHandle.id}

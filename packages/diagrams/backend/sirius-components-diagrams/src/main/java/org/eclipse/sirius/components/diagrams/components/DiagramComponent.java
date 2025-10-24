@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -56,14 +57,20 @@ public class DiagramComponent implements IComponent {
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
+
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
+                    var nodeVariableManager = variableManager.createChild();
+                    var ancestors = new ArrayList<>();
+                    variableManager.get(VariableManager.SELF, Object.class).ifPresent(ancestors::add);
+                    nodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
+
                     var previousNodes = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getRootNodes(previousDiagram, nodeDescription))
                             .orElse(List.of());
                     var previousNodesTargetIds = previousNodes.stream().map(node -> node.getTargetObjectId()).toList();
                     INodesRequestor nodesRequestor = new NodesRequestor(previousNodes);
                     var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                            .variableManager(variableManager)
+                            .variableManager(nodeVariableManager)
                             .nodeDescription(nodeDescription)
                             .nodesRequestor(nodesRequestor)
                             .nodeDescriptionRequestor(nodeDescriptionRequestor)
@@ -76,6 +83,8 @@ public class DiagramComponent implements IComponent {
                             .diagramEvents(this.props.getDiagramEvents())
                             .parentElementState(ViewModifier.Normal)
                             .operationValidator(this.props.getOperationValidator())
+                            .nodeAppearanceHandlers(this.props.getNodeAppearanceHandlers())
+                            .initialBorderNodePosition(BorderNodePosition.NONE)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).toList();
@@ -85,7 +94,7 @@ public class DiagramComponent implements IComponent {
                     var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
                             .orElse(List.of());
                     IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
-                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents());
+                    var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents(), this.props.getEdgeAppearanceHandlers());
                     return new Element(EdgeComponent.class, edgeComponentProps);
                 })
                 .toList();

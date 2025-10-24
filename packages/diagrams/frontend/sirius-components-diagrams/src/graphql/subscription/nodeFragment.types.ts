@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ export interface GQLNode<T extends GQLNodeStyle> {
   insideLabel: GQLInsideLabel | undefined;
   outsideLabels: GQLOutsideLabel[];
   style: T;
-  childrenLayoutStrategy?: ILayoutStrategy;
   borderNodes: GQLNode<GQLNodeStyle>[] | undefined;
   childNodes: GQLNode<GQLNodeStyle>[] | undefined;
   position: GQLPosition;
@@ -32,7 +31,11 @@ export interface GQLNode<T extends GQLNodeStyle> {
   defaultWidth: number | null;
   defaultHeight: number | null;
   labelEditable: boolean;
+  customizedStyleProperties: string[];
+  initialBorderNodePosition: GQLBorderNodePosition;
 }
+
+export type GQLBorderNodePosition = 'WEST' | 'EAST' | 'SOUTH' | 'NORTH' | 'NONE';
 
 export interface ILayoutStrategy {
   __typename: string;
@@ -69,13 +72,14 @@ export interface GQLSize {
 
 export interface GQLNodeStyle {
   __typename: string;
+  childrenLayoutStrategy: ILayoutStrategy;
 }
 
 export interface GQLRectangularNodeStyle extends GQLNodeStyle {
   background: string;
   borderColor: string;
   borderStyle: string;
-  borderSize: string;
+  borderSize: number;
   borderRadius: number;
 }
 
@@ -83,7 +87,7 @@ export interface GQLImageNodeStyle extends GQLNodeStyle {
   imageURL: string;
   borderColor: string;
   borderStyle: string;
-  borderSize: string;
+  borderSize: number;
   borderRadius: number;
   positionDependentRotation: boolean;
 }

@@ -26,38 +26,46 @@ export const convertHandles = (
   let targetHandlesCounter = 0;
 
   gqlEdges.forEach((edge) => {
-    const alreadyLaidOutSourceHandle = handleLayoutData.find(
-      (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'source'
-    );
-
     if (edge.sourceId === elementId) {
+      const alreadyLaidOutSourceHandle = handleLayoutData.find(
+        (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'source'
+      );
+
       connectionHandles.push({
         id: `handle--source--${elementId}--${sourceHandlesCounter}`,
         edgeId: edge.id,
         index: 0,
         nodeId: elementId,
         position: alreadyLaidOutSourceHandle ? <Position>alreadyLaidOutSourceHandle.handlePosition : Position.Left,
-        XYPosition: alreadyLaidOutSourceHandle ? alreadyLaidOutSourceHandle.position : undefined,
+        XYPosition:
+          alreadyLaidOutSourceHandle && (alreadyLaidOutSourceHandle.position.x || alreadyLaidOutSourceHandle.position.y)
+            ? alreadyLaidOutSourceHandle.position
+            : null,
         type: 'source',
-        hidden: edge.state === GQLViewModifier.Hidden,
+        isVirtualHandle: edge.state === GQLViewModifier.Hidden,
+        isHidden: true,
       });
       sourceHandlesCounter += 1;
     }
 
-    const alreadyLaidOutTargetHandle = handleLayoutData.find(
-      (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'target'
-    );
-
     if (edge.targetId === elementId) {
+      const alreadyLaidOutTargetHandle = handleLayoutData.find(
+        (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'target'
+      );
+
       connectionHandles.push({
         id: `handle--target--${elementId}--${targetHandlesCounter}`,
         edgeId: edge.id,
         index: 0,
         nodeId: elementId,
         position: alreadyLaidOutTargetHandle ? <Position>alreadyLaidOutTargetHandle.handlePosition : Position.Left,
-        XYPosition: alreadyLaidOutTargetHandle ? alreadyLaidOutTargetHandle.position : undefined,
+        XYPosition:
+          alreadyLaidOutTargetHandle && (alreadyLaidOutTargetHandle.position.x || alreadyLaidOutTargetHandle.position.y)
+            ? alreadyLaidOutTargetHandle.position
+            : null,
         type: 'target',
-        hidden: edge.state === GQLViewModifier.Hidden,
+        isVirtualHandle: edge.state === GQLViewModifier.Hidden,
+        isHidden: true,
       });
       targetHandlesCounter += 1;
     }
@@ -70,7 +78,9 @@ export const convertHandles = (
     nodeId: elementId,
     position: Position.Right,
     type: 'source',
-    hidden: true,
+    XYPosition: null,
+    isVirtualHandle: true,
+    isHidden: true,
   });
 
   connectionHandles.push({
@@ -80,7 +90,9 @@ export const convertHandles = (
     nodeId: elementId,
     position: Position.Left,
     type: 'target',
-    hidden: true,
+    XYPosition: null,
+    isVirtualHandle: true,
+    isHidden: true,
   });
 
   return connectionHandles;

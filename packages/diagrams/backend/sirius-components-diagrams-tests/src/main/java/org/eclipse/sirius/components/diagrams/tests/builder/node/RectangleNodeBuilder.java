@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Node.Builder;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -109,7 +108,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
             descriptionId = TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID;
         }
 
-        Builder nodeBuilder = Node.newNode(nodeId)
+        return Node.newNode(nodeId)
                 .type(NodeType.NODE_RECTANGLE)
                 .insideLabel(this.insideLabel)
                 .borderNode(this.isBorderNode)
@@ -122,13 +121,9 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .style(Objects.requireNonNull(style))
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
-                .collapsingState(this.collapsingState);
-
-        if (this.childrenLayoutStrategy != null) {
-            nodeBuilder.childrenLayoutStrategy(this.childrenLayoutStrategy);
-        }
-
-        return nodeBuilder.build();
+                .collapsingState(this.collapsingState)
+                .customizedStyleProperties(Set.of())
+                .build();
     }
 
 }

@@ -124,6 +124,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .name("cell-name")
                 .preconditionExpression("aql:columnTargetObject.equals('Name')")
                 .valueExpression("aql:self.name")
+                .tooltipExpression("aql:self.name + 'Tooltip'")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
                         .body(setNameOperation.build())
                         .build())

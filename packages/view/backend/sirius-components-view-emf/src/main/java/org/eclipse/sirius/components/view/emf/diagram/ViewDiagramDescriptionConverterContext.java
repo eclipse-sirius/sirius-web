@@ -51,7 +51,7 @@ public class ViewDiagramDescriptionConverterContext {
     }
 
     public Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> getConvertedElements() {
-        // in case of key collisions, wich should never happen, we take the value of the node.
+        // in case of key collisions, which should never happen, we take the value of the node.
         return Stream.concat(this.convertedEdges.entrySet().stream(), this.convertedNodes.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (edges, nodes) -> nodes, LinkedHashMap::new));
     }

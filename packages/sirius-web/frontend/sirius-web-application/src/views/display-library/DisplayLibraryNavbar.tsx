@@ -48,11 +48,7 @@ export const DisplayLibraryNavbar = ({ library }: DisplayLibraryNavbarProps) => 
     <NavigationBar>
       <div className={classes.center}>
         <div className={classes.title}>
-          <Typography
-            variant="h6"
-            noWrap
-            className={classes.titleLabel}
-            data-testid={`navbar-${library.namespace}-${library.name}-${library.version}`}>
+          <Typography variant="h6" noWrap className={classes.titleLabel} data-testid={`navbar-title`}>
             {library.namespace} - {library.name} @{library.version}
           </Typography>
         </div>

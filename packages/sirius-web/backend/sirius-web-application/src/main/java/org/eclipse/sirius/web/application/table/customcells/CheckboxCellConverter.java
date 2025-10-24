@@ -13,12 +13,13 @@
 
 package org.eclipse.sirius.web.application.table.customcells;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
@@ -36,20 +37,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckboxCellConverter implements ICustomCellConverter {
 
-    @Override
-    public Optional<ICellDescription> convert(CellDescription viewCellDescription, AQLInterpreter interpreter, ITableIdProvider tableIdProvider, IObjectService objectService) {
-        if (viewCellDescription.getCellWidgetDescription() instanceof CellCheckboxWidgetDescription) {
-            Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-                return this.getSelf(viewCellDescription, interpreter, variableManager)
-                        .map(objectService::getId)
-                        .orElse("");
-            };
+    private final IIdentityService identityService;
 
-            Function<VariableManager, String> targetObjectKindProvider = variableManager -> {
-                return this.getSelf(viewCellDescription, interpreter, variableManager)
-                        .map(objectService::getKind)
-                        .orElse("");
-            };
+    private final ITableIdProvider tableIdProvider;
+
+    public CheckboxCellConverter(IIdentityService identityService, ITableIdProvider tableIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
+    }
+
+    @Override
+    public Optional<ICellDescription> convert(CellDescription viewCellDescription, AQLInterpreter interpreter) {
+        if (viewCellDescription.getCellWidgetDescription() instanceof CellCheckboxWidgetDescription) {
+            Function<VariableManager, String> targetObjectIdProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
+                    .map(this.identityService::getId)
+                    .orElse("");
+
+            Function<VariableManager, String> targetObjectKindProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
+                    .map(this.identityService::getKind)
+                    .orElse("");
 
             Predicate<VariableManager> canCreatePredicate =
                     variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false);
@@ -62,11 +68,18 @@ public class CheckboxCellConverter implements ICustomCellConverter {
                         .orElse(false);
             };
 
+            BiFunction<VariableManager, Object, String> cellTooltipValueProvider = (variableManager, columnTargetObject) -> {
+                var child = variableManager.createChild();
+                child.put("columnTargetObject", columnTargetObject);
+                return interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getTooltipExpression()).asString().orElse("");
+            };
+
             return Optional.of(CheckboxCellDescription.newCheckboxCellDescription(tableIdProvider.getId(viewCellDescription))
                     .targetObjectIdProvider(targetObjectIdProvider)
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         }
         return Optional.empty();

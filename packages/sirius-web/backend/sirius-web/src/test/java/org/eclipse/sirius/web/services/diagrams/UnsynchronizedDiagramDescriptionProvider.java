@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,16 +23,17 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.diagram.CreateViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DropToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -66,6 +67,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool createNodeTool;
 
+    private NodeTool removeViewTool;
+
     private DropTool dropOnDiagramTool;
 
     public UnsynchronizedDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
@@ -86,6 +89,10 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     public String getCreateNodeToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.createNodeTool).toString().getBytes()).toString();
+    }
+
+    public String getRemoveViewToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.removeViewTool).toString().getBytes()).toString();
     }
 
     public String getDropToolId() {
@@ -119,7 +126,18 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
+        var removeComponentView = new DeleteViewBuilder()
+                .viewExpression("aql:selectedNode")
+                .build();
+
+        this.removeViewTool = new NodeToolBuilder()
+                .name("Remove from Diagram")
+                .body(removeComponentView)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
+                .palette(new NodePaletteBuilder().nodeTools(this.removeViewTool)
+                        .build())
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
@@ -130,20 +148,14 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
         var createNewComponent = new CreateInstanceBuilder()
                 .typeName("papaya:Component")
-                .referenceName("components")
+                .referenceName("elements")
                 .variableName("newInstance")
                 .children(
-                        new SetValueBuilder()
-                                .featureName("components")
-                                .valueExpression("aql:newInstance")
-                                .children(
-                                        new CreateViewBuilder()
-                                                .elementDescription(nodeDescription)
-                                                .semanticElementExpression("aql:newInstance")
-                                                .parentViewExpression("aql:selectedNode")
-                                                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                                                .build()
-                                )
+                        new CreateViewBuilder()
+                                .elementDescription(nodeDescription)
+                                .semanticElementExpression("aql:newInstance")
+                                .parentViewExpression("aql:selectedNode")
+                                .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();

@@ -14,13 +14,11 @@
 import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
-import { DialogContextProvider } from '../dialog/DialogContext';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
-import { ImpactAnalysisDialogContextProvider } from '../renderer/palette/impact-analysis/ImpactAnalysisDialogContext';
 import { DiagramSubscriptionProviderProps, DiagramSubscriptionState } from './DiagramSubscriptionProvider.types';
 import { StoreContextProvider } from './StoreContext';
 import { useDiagramSubscription } from './useDiagramSubscription';
@@ -59,19 +57,15 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
 
   return (
     <StoreContextProvider>
-      <DialogContextProvider>
-        <ImpactAnalysisDialogContextProvider>
-          <div
-            style={{ display: 'inline-block', position: 'relative' }}
-            data-representation-kind="diagram"
-            data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-            <DiagramRenderer
-              key={state.diagramRefreshedEventPayload.diagram.id}
-              diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-            />
-          </div>
-        </ImpactAnalysisDialogContextProvider>
-      </DialogContextProvider>
+      <div
+        style={{ display: 'inline-block', position: 'relative' }}
+        data-representation-kind="diagram"
+        data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
+        <DiagramRenderer
+          key={state.diagramRefreshedEventPayload.diagram.id}
+          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+        />
+      </div>
     </StoreContextProvider>
   );
 });

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,15 @@ public class IconLabelNodeStyleDescriptionBuilder {
      */
     public IconLabelNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getIconLabelNodeStyleDescription().setBorderLineStyle(value);
+        return this;
+    }
+    /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public IconLabelNodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getIconLabelNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
     /**

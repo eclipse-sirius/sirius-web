@@ -65,7 +65,11 @@ public class MultiSelectCellComponent implements IComponent {
 
             options.add(option);
         }
-        MultiSelectCellElementProps cellElementProps = new MultiSelectCellElementProps(this.props.cellId(), this.props.multiSelectCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), options, values);
+
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
+
+        MultiSelectCellElementProps cellElementProps = new MultiSelectCellElementProps(this.props.cellId(), this.props.multiSelectCellDescription().getId(), targetObjectId, targetObjectKind,
+                this.props.columnId(), options, values, tooltipValue);
         return new Element(MultiSelectCellElementProps.TYPE, cellElementProps);
     }
 }

@@ -74,7 +74,7 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
         const input: GQLUndoInput = {
           id: crypto.randomUUID(),
           editingContextId: project.currentEditingContext.id,
-          mutationId: arr[0],
+          inputId: arr[0],
         };
         undo({ variables: { input } });
       }
@@ -89,7 +89,7 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
         const input: GQLRedoInput = {
           id: crypto.randomUUID(),
           editingContextId: project.currentEditingContext.id,
-          mutationId: arr[0],
+          inputId: arr[0],
         };
         redo({ variables: { input } });
       }

@@ -85,11 +85,12 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Objects::toString)
                 .orElse(null);
 
         Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("rowIndex", Integer.class)
@@ -251,7 +252,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .orElse("");
 
         Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("columnIndex", Integer.class)
@@ -281,6 +282,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
@@ -288,6 +290,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
@@ -298,6 +301,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
@@ -308,6 +312,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
 
 
@@ -318,7 +323,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isPresent();
 
         BiFunction<VariableManager, Object, List<String>> iconLabelCellIconURLsProvider = (variableManager, columnTargetObject) -> variableManager.get(VariableManager.SELF, EObject.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         cellDescriptions.add(IconLabelCellDescription.newIconLabelCellDescription("iconLabelCells")
@@ -327,6 +332,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider((variableManager, columnTargetObject) -> "")
                 .cellIconURLsProvider(iconLabelCellIconURLsProvider)
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
 
         Predicate<VariableManager> nbAnnotationCellPredicate = variableManager -> variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
@@ -346,6 +352,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                         .map(String::valueOf)
                         .orElse("NA"))
                 .cellIconURLsProvider((variableManager, object) -> List.of())
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
         return cellDescriptions;
     }

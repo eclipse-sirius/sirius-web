@@ -28,12 +28,12 @@ export interface ImportLibraryAction {
 }
 
 export interface ImportStudioSplitButtonProps {
+  selectedLibraries: string[];
   actions: ImportLibraryAction[];
-  onClick: (action: ImportLibraryAction) => void;
+  onLibraryImported: () => void;
 }
 
 export interface ImportStudioSplitButtonState {
-  actions: ImportLibraryAction[];
   selected: boolean;
   open: boolean;
   selectedIndex: number;

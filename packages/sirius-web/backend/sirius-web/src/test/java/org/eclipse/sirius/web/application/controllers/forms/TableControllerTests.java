@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.tables.tests.assertions.TablesAssertions.assertThat;
 import static org.eclipse.sirius.web.tests.services.tables.assertions.TableCheckboxCellAssertions.assertThat;
 
@@ -21,19 +21,16 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
@@ -42,6 +39,7 @@ import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutation
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
+import org.eclipse.sirius.components.widget.table.TableWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -99,8 +97,12 @@ public class TableControllerTests extends AbstractIntegrationTests {
     }
 
     private Flux<Object> givenSubscriptionToFormWithTableWidget() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), FormWithTableDescriptionProvider.TASK_FORM_ID,
-                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(), "FormWithTable");
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                FormWithTableDescriptionProvider.TASK_FORM_ID,
+                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
+                "FormWithTable");
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }
 
@@ -110,23 +112,24 @@ public class TableControllerTests extends AbstractIntegrationTests {
     public void givenTableWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToFormWithTableWidget();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
-                    var tableWidget = new FormNavigator(form).page("Iteration Page").group("Iteration Group").findWidget("Tasks", TableWidget.class);
-                    assertThat(tableWidget.getTable().getColumns()).hasSize(9);
-                    assertThat(tableWidget.getTable().getLines()).hasSize(3);
-                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(9 * 3);
-                    Line line = tableWidget.getTable().getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
-                    LineCheckboxCellNavigator checkboxCellNavigator = new LineCheckboxCellNavigator(line);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var tableWidget = new FormNavigator(form).page("Iteration Page").group("Iteration Group").findWidget("Tasks", TableWidget.class);
+            assertThat(tableWidget.getTable().getColumns()).hasSize(9);
+            assertThat(tableWidget.getTable().getLines()).hasSize(3);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(9 * 3);
 
-                    TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
-                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Improve some features of the deck");
-                    assertThat(checkboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
-                    assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P1");
-                    assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId())).hasValues(List.of());
+            Line line = tableWidget.getTable().getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+            LineCheckboxCellNavigator checkboxCellNavigator = new LineCheckboxCellNavigator(line);
 
-                }, () -> fail("Missing form"));
+            TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+
+            assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Improve some features of the deck");
+            assertThat(checkboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
+            assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P1");
+            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId())).hasValues(List.of());
+
+        });
 
         StepVerifier.create(flux).consumeNextWith(initialFormContentConsumer).thenCancel().verify(Duration.ofSeconds(10));
     }
@@ -144,19 +147,18 @@ public class TableControllerTests extends AbstractIntegrationTests {
         var selectCellId = new AtomicReference<UUID>();
         var multiSelectCellId = new AtomicReference<UUID>();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var table = this.getTable(form);
-                    tableId.set(table.getId());
-                    Line line = table.getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
+            var table = this.getTable(form);
+            tableId.set(table.getId());
+            Line line = table.getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
 
-                    TableNavigator tableNavigator = new TableNavigator(table);
-                    textfieldCellId.set(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId()).getId());
+            TableNavigator tableNavigator = new TableNavigator(table);
+            textfieldCellId.set(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId()).getId());
 
-                }, () -> fail("Missing form"));
+        });
 
         Runnable editNameTextfieldCell = () -> {
             var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
@@ -225,19 +227,20 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 "FormWithViewTable");
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
-                    var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
-                    assertThat(tableWidget.getTable().getColumns()).hasSize(1);
-                    assertThat(tableWidget.getTable().getLines()).hasSize(3);
-                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(3);
-                    Line line = tableWidget.getTable().getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
 
-                    TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
-                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+            assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+            assertThat(tableWidget.getTable().getLines()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
 
-                }, () -> fail("Missing form"));
+            Line line = tableWidget.getTable().getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+
+            TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+            assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -245,80 +248,131 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form with a view based table widget, when an cell is edited, then its cell body is properly executed")
+    public void givenFormWithViewBasedTableWidgetWhenAnCellIsEditedThenItsCellBodyIsProperlyExecuted() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "FormWithViewTable");
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+
+        var formId = new AtomicReference<String>();
+        var tableId = new AtomicReference<String>();
+        var textfieldCellId = new AtomicReference<UUID>();
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
+            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+
+            assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+            assertThat(tableWidget.getTable().getLines()).hasSize(4);
+            assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(4);
+
+            Line line = tableWidget.getTable().getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+
+            TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+            assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+
+            tableId.set(tableWidget.getTable().getId());
+            textfieldCellId.set(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId()).getId());
+
+        });
+
+        Runnable editNameTextfieldCell = () -> {
+            var editNameTextfieldCellInput = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(),
+                    "newName");
+            var result = this.editTextfieldCellMutationRunner.run(editNameTextfieldCellInput);
+
+            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> editNameConsumer = assertRefreshedFormThat(form -> {
+            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+            Line line = tableWidget.getTable().getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+
+            TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+            assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
+
+        });
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editNameTextfieldCell)
+                .consumeNextWith(editNameConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     private Consumer<Object> getEditIsDoneConsumer() {
-        return payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var table = this.getTable(form);
-                    TableNavigator tableNavigator = new TableNavigator(table);
-                    Line line = table.getLines().get(0);
-                    LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
+        return assertRefreshedFormThat(form -> {
+            var table = this.getTable(form);
+            TableNavigator tableNavigator = new TableNavigator(table);
+            Line line = table.getLines().get(0);
+            LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
 
-                    assertThat(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
+            assertThat(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
 
-                }, () -> fail("Missing form"));
+        });
     }
 
     private Consumer<Object> getEditDependenciesConsumer(AtomicReference<String> tableId, AtomicReference<UUID> checkboxCellId) {
-        return payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var table = this.getTable(form);
-                    tableId.set(table.getId());
-                    TableNavigator tableNavigator = new TableNavigator(table);
-                    Line line = table.getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
-                    LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
-                    checkboxCellId.set(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
+        return assertRefreshedFormThat(form -> {
+            var table = this.getTable(form);
+            tableId.set(table.getId());
+            TableNavigator tableNavigator = new TableNavigator(table);
+            Line line = table.getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+            LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
+            checkboxCellId.set(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
 
-                    assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies")
-                            .getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
+            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies")
+                    .getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
 
-                }, () -> fail("Missing form"));
+        });
     }
 
     private Consumer<Object> getEditPriorityConsumer(AtomicReference<String> tableId, AtomicReference<UUID> multiSelectCellId) {
-        return payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var table = this.getTable(form);
-                    tableId.set(table.getId());
-                    TableNavigator tableNavigator = new TableNavigator(table);
-                    Line line = table.getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
-                    multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId()).getId());
+        return assertRefreshedFormThat(form -> {
+            var table = this.getTable(form);
+            tableId.set(table.getId());
+            TableNavigator tableNavigator = new TableNavigator(table);
+            Line line = table.getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
+            multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId()).getId());
 
-                    assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P2");
+            assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P2");
 
-                }, () -> fail("Missing form"));
+        });
     }
 
     private Consumer<Object> getEditNameConsumer(AtomicReference<String> tableId, AtomicReference<UUID> selectCellId) {
-        return payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var table = this.getTable(form);
-                    tableId.set(table.getId());
-                    TableNavigator tableNavigator = new TableNavigator(table);
-                    Line line = table.getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
+        return assertRefreshedFormThat(form -> {
+            var table = this.getTable(form);
+            tableId.set(table.getId());
+            TableNavigator tableNavigator = new TableNavigator(table);
+            Line line = table.getLines().get(0);
+            LineNavigator lineNavigator = new LineNavigator(line);
 
-                    selectCellId.set(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId()).getId());
+            selectCellId.set(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId()).getId());
 
-                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
+            assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
 
-                }, () -> fail("Missing form"));
+        });
     }
 
     private Table getTable(Form form) {
-        return new FormNavigator(form).page("Iteration Page").group("Iteration Group").findWidget("Tasks", TableWidget.class).getTable();
+        return new FormNavigator(form)
+                .page("Iteration Page")
+                .group("Iteration Group")
+                .findWidget("Tasks", TableWidget.class)
+                .getTable();
     }
 }

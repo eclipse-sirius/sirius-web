@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components</artifactId>
-	<version>2025.2.10</version>
+	<version>2025.10.0</version>
 
 	<name>sirius-components</name>
 	<description>Sirius Components</description>
@@ -56,13 +56,11 @@
 		<module>trees/backend</module>
 		<module>validation/backend</module>
 		<module>portals/backend</module>
-		<module>compatibility/backend</module>
 		<module>domain/backend</module>
 		<module>view/backend</module>
 		<module>emf/backend</module>
 		<module>web/backend</module>
 		<module>task/backend</module>
-		<module>tools/backend</module>
 		<module>starters/backend</module>
 		<module>papaya/backend</module>
 		<module>sirius-web/backend</module>

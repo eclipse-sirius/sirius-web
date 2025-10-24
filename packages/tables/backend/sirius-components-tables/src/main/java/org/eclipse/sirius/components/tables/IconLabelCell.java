@@ -43,6 +43,8 @@ public final class IconLabelCell implements ICell {
 
     private List<String> iconURLs;
 
+    private String tooltipValue;
+
     private IconLabelCell() {
         // Prevent instantiation
     }
@@ -86,6 +88,11 @@ public final class IconLabelCell implements ICell {
     }
 
     @Override
+    public String getTooltipValue() {
+        return this.tooltipValue;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.columnId, this.value);
@@ -116,6 +123,8 @@ public final class IconLabelCell implements ICell {
         private String value;
 
         private List<String> iconURLs;
+
+        private String tooltipValue;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -151,6 +160,11 @@ public final class IconLabelCell implements ICell {
             return this;
         }
 
+        public Builder tooltipValue(String tooltipValue) {
+            this.tooltipValue = Objects.requireNonNull(tooltipValue);
+            return this;
+        }
+
         public IconLabelCell build() {
             IconLabelCell cell = new IconLabelCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -160,6 +174,7 @@ public final class IconLabelCell implements ICell {
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.value = Objects.requireNonNull(this.value);
             cell.iconURLs = Objects.requireNonNull(this.iconURLs);
+            cell.tooltipValue = Objects.requireNonNull(this.tooltipValue);
             return cell;
         }
     }

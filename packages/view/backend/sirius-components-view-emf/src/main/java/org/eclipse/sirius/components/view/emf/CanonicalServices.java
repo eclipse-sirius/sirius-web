@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IDefaultLabelFeatureProvider;
 
 /**
  * Implementation of the default/canonical behaviors suitable to be invoked as services from a plain AQL expression.
@@ -28,13 +28,14 @@ import org.eclipse.sirius.components.core.api.IObjectService;
  * @author pcdavid
  */
 public class CanonicalServices {
-    private final IObjectService objectService;
 
     private final IEditService editService;
 
-    public CanonicalServices(IObjectService objectService, IEditService editService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    private final IDefaultLabelFeatureProvider defaultLabelFeatureProvider;
+
+    public CanonicalServices(IEditService editService, IDefaultLabelFeatureProvider defaultLabelFeatureProvider) {
         this.editService = Objects.requireNonNull(editService);
+        this.defaultLabelFeatureProvider = Objects.requireNonNull(defaultLabelFeatureProvider);
     }
 
     /**
@@ -67,10 +68,7 @@ public class CanonicalServices {
      * Invoke as aql:self.defaultEditLabel(newLabel).
      */
     public EObject defaultEditLabel(EObject self, String newLabel) {
-        Optional<String> optionalLabelField = this.objectService.getLabelField(self);
-        if (optionalLabelField.isPresent()) {
-            this.editService.editLabel(self, optionalLabelField.get(), newLabel);
-        }
+        this.defaultLabelFeatureProvider.getDefaultLabelEAttribute(self).ifPresent(eAttribute -> self.eSet(eAttribute, newLabel));
         return self;
     }
 

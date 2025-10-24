@@ -11,9 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { RepresentationMetadata, WorkbenchConfiguration } from '@eclipse-sirius/sirius-components-core';
 import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 
 export type EditProjectViewParams = 'projectId' | 'representationId';
+
+export type EditProjectViewState = {
+  project: GQLProject | null;
+  representation: RepresentationMetadata | null;
+  workbenchConfiguration: WorkbenchConfiguration | null;
+};
 
 export interface TreeItemContextMenuProviderProps {
   children: React.ReactNode;
@@ -26,5 +33,3 @@ export interface TreeToolBarProviderProps {
 export interface DiagramPaletteToolProviderProps {
   children: React.ReactNode;
 }
-
-export type ProjectReadOnlyPredicate = (project: GQLProject) => boolean;

@@ -23,9 +23,11 @@ export interface TreeViewProps {
   textToFilter: string | null;
   markedItemIds?: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+  expanded: string[];
+  maxDepth: number;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
 }
 

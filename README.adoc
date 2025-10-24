@@ -79,7 +79,7 @@ To build the components in this repository on your own, you will need the follow
 ** https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/[Apache Maven 3.6.3]
 ** https://www.docker.com/[Docker] must be installed and running for some of the backend components tests to run.
 * To build the frontend components:
-** LTS versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
+** LTS versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 22.16.0 is required along with npm >= 10.9.2.
 ** https://turbo.build[TurboRepo] (`npm install -g turbo`)
 
 WARNING: Note that there are issues with NPM under Windows Subsystem for Linux (WSL).

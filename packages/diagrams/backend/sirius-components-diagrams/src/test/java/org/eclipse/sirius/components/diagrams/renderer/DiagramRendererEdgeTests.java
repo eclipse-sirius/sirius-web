@@ -27,12 +27,14 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -162,6 +164,8 @@ public class DiagramRendererEdgeTests {
                 .previousDiagram(Optional.empty())
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
+                .edgeAppearanceHandlers(List.of())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);
@@ -183,10 +187,10 @@ public class DiagramRendererEdgeTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
-                .idProvider(variableManager -> "insideLabelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
@@ -201,6 +205,7 @@ public class DiagramRendererEdgeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
@@ -219,11 +224,11 @@ public class DiagramRendererEdgeTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(nodeStyleProvider)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 
@@ -233,7 +238,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             List<Element> sourceElements = objectToNodes.get(FIRST_OBJECT_ID).stream()
-                    .filter(element -> isFromDescription(element, nodeDescription))
+                    .filter(element -> this.isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -245,7 +250,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             List<Element> targetElements = objectToNodes.get(SECOND_OBJECT_ID).stream()
-                    .filter(element -> isFromDescription(element, nodeDescription))
+                    .filter(element -> this.isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -259,6 +264,7 @@ public class DiagramRendererEdgeTests {
                     .sourceArrow(ArrowStyle.InputArrowWithDiamond)
                     .targetArrow(ArrowStyle.None)
                     .color("rgb(1, 2, 3)")
+                    .edgeType(EdgeType.Manhattan)
                     .build();
         };
 

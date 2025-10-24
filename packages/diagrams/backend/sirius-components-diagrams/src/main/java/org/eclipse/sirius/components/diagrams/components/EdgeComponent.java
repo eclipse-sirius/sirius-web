@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,11 +27,11 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps.Builder;
@@ -40,6 +41,8 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -167,13 +170,32 @@ public class EdgeComponent implements IComponent {
         boolean shouldRender = synchronizationPolicy == SynchronizationPolicy.SYNCHRONIZED || (synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED && optionalPreviousEdge.isPresent());
 
         if (shouldRender) {
-            EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
+            Optional<EdgeAppearance> optionalPreviousAppearance = optionalPreviousEdge.map(previousEdge ->
+                    new EdgeAppearance(previousEdge.getStyle(), previousEdge.getCustomizedStyleProperties())
+            );
+
+            EdgeStyle providedStyle = edgeDescription.getStyleProvider().apply(edgeVariableManager);
+
+            List<IEdgeAppearanceChange> appearanceChanges = diagramEvents.stream()
+                    .filter(EditAppearanceEvent.class::isInstance)
+                    .map(EditAppearanceEvent.class::cast)
+                    .flatMap(appearanceEvent -> appearanceEvent.changes().stream())
+                    .filter(IEdgeAppearanceChange.class::isInstance)
+                    .map(IEdgeAppearanceChange.class::cast)
+                    .filter(appearanceChange -> Objects.equals(id, appearanceChange.edgeId()))
+                    .toList();
+
+            EdgeAppearance appearance = this.props.getEdgeAppearanceHandlers().stream()
+                    .filter(handler -> handler.canHandle(providedStyle))
+                    .findFirst()
+                    .map(handler -> handler.handle(providedStyle, appearanceChanges, optionalPreviousAppearance))
+                    .orElse(new EdgeAppearance(providedStyle, new LinkedHashSet<>()));
 
             String edgeType = optionalPreviousEdge
                     .map(Edge::getType)
                     .orElse("edge:straight");
 
-            List<Element> labelChildren = this.getLabelsChildren(edgeDescription, edgeVariableManager, id);
+            List<Element> labelChildren = this.getLabelsChildren(optionalPreviousEdge, edgeDescription, edgeVariableManager, id);
             EdgeElementProps edgeElementProps = edgeElementPropsBuilder
                     .type(edgeType)
                     .descriptionId(edgeDescription.getId())
@@ -182,9 +204,10 @@ public class EdgeComponent implements IComponent {
                     .targetObjectLabel(targetObjectLabel)
                     .sourceId(sourceId)
                     .targetId(targetId)
-                    .style(style)
+                    .style(appearance.style())
                     .children(labelChildren)
                     .centerLabelEditable(edgeDescription.getLabelEditHandler() != null)
+                    .customizedStyleProperties(appearance.customizedStyleProperties())
                     .build();
 
             Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
@@ -388,24 +411,26 @@ public class EdgeComponent implements IComponent {
         return this.props.getEdgesRequestor().getById(potentialPreviousEdgeId);
     }
 
-    private List<Element> getLabelsChildren(EdgeDescription edgeDescription, VariableManager edgeVariableManager, String edgeId) {
+    private List<Element> getLabelsChildren(Optional<Edge> optionalPreviousEdge, EdgeDescription edgeDescription, VariableManager edgeVariableManager, String edgeId) {
         List<Element> edgeChildren = new ArrayList<>();
 
         VariableManager labelVariableManager = edgeVariableManager.createChild();
-        labelVariableManager.put(LabelDescription.OWNER_ID, edgeId);
 
+        Optional<Label> optionalPreviousBeginLabel = optionalPreviousEdge.map(Edge::getBeginLabel);
         Optional.ofNullable(edgeDescription.getBeginLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_BEGIN.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_BEGIN.getValue(), edgeId, LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX, optionalPreviousBeginLabel, this.props.getDiagramEvents());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
+        Optional<Label> optionalPreviousCenterLabel = optionalPreviousEdge.map(Edge::getCenterLabel);
         Optional.ofNullable(edgeDescription.getCenterLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_CENTER.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_CENTER.getValue(), edgeId, LabelIdProvider.EDGE_CENTER_LABEL_SUFFIX, optionalPreviousCenterLabel, this.props.getDiagramEvents());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 
+        Optional<Label> optionalPreviousEndLabel = optionalPreviousEdge.map(Edge::getEndLabel);
         Optional.ofNullable(edgeDescription.getEndLabelDescription()).map(labelDescription -> {
-            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_END.getValue());
+            LabelComponentProps labelComponentProps = new LabelComponentProps(labelVariableManager, labelDescription, LabelType.EDGE_END.getValue(), edgeId, LabelIdProvider.EDGE_END_LABEL_SUFFIX, optionalPreviousEndLabel, this.props.getDiagramEvents());
             return new Element(LabelComponent.class, labelComponentProps);
         }).ifPresent(edgeChildren::add);
 

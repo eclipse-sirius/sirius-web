@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,21 +18,18 @@ import {
   getCSSColor,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import { GQLButtonStyle, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import { GQLButton, GQLButtonStyle, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { Theme, useTheme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
@@ -167,12 +164,12 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
       } else {
         actionsImageURL[index] = httpOrigin + action.imageURL;
       }
-      const buttonLabel: string = action.buttonLabel;
+      const buttonLabel: string | null = action.buttonLabel;
       const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
       if (actionsIsValidImage[index] && isButtonLabelBlank) {
-        actionsButtonLabel[index] = null;
-      } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {
-        actionsButtonLabel[index] = buttonLabel;
+        actionsButtonLabel[index] = '';
+      } else if (!isButtonLabelBlank && !buttonLabel?.startsWith('aql:')) {
+        actionsButtonLabel[index] = buttonLabel ?? '';
       } else {
         actionsButtonLabel[index] = 'Lorem';
       }
@@ -258,11 +255,12 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
   };
 
   const getStyle = (index: number): React.CSSProperties => {
-    if (!widget.actions.at(index) || !widget.actions.at(index).style) {
+    const action: GQLButton | null = widget.actions.at(index) ?? null;
+    if (!action || !action.style) {
       const defaultProps = {
         backgroundColor: null,
         foregroundColor: null,
-        fontSize: theme.typography.subtitle2.fontSize,
+        fontSize: theme.typography.subtitle2.fontSize ?? null,
         italic: null,
         bold: null,
         underline: null,
@@ -270,7 +268,10 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
       };
       return actionStyle(theme, defaultProps);
     }
-    return actionStyle(theme, widget.actions[index].style);
+    if (action) {
+      return actionStyle(theme, action.style);
+    }
+    return {};
   };
 
   return (
@@ -309,8 +310,8 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
           style={{ ...getStyle(state.selectedIndex) }}>
           {state.actionsIsValidImage[state.selectedIndex] && state.actionsImageURL[state.selectedIndex] ? (
             <img
-              style={{ ...imageStyle(theme, state.actionsIsValidImage[state.selectedIndex]) }}
-              alt={widget.actions[state.selectedIndex].label}
+              style={{ ...imageStyle(theme, state.actionsIsValidImage[state.selectedIndex] ?? false) }}
+              alt={widget.actions[state.selectedIndex]?.label}
               src={state.actionsImageURL[state.selectedIndex]}
             />
           ) : null}
@@ -329,38 +330,27 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
-      <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu">
-                  {widget.actions.map((option, index) => (
-                    <MenuItem
-                      key={index}
-                      selected={index === state.selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                      style={{ ...getStyle(index) }}>
-                      {state.actionsIsValidImage[index] && state.actionsImageURL[index] ? (
-                        <img
-                          style={{ ...imageStyle(theme, state.actionsIsValidImage[index]) }}
-                          alt={option.label}
-                          src={state.actionsImageURL[index]}
-                        />
-                      ) : null}
-                      {state.actionsButtonLabel[index]}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+      <Menu anchorEl={buttonGroupRef.current} open={state.open} onClose={handleClose}>
+        <MenuList>
+          {widget.actions.map((option, index) => (
+            <MenuItem
+              key={index}
+              selected={index === state.selectedIndex}
+              onClick={(event) => handleMenuItemClick(event, index)}
+              style={{ ...getStyle(index) }}>
+              {state.actionsIsValidImage[index] && state.actionsImageURL[index] ? (
+                <img
+                  style={{ ...imageStyle(theme, state.actionsIsValidImage[index] ?? false) }}
+                  alt={option.label}
+                  src={state.actionsImageURL[index]}
+                />
+              ) : null}
+              {state.actionsButtonLabel[index]}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
+
       <div
         data-testid={`${widget.__typename}-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
@@ -370,15 +360,17 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
         onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a button widget here'}</Typography>
       </div>
-      <Toast
-        message={state.message}
-        open={!!state.message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {state.message ? (
+        <Toast
+          open
+          message={state.message}
+          onClose={() =>
+            setState((prevState) => {
+              return { ...prevState, message: null };
+            })
+          }
+        />
+      ) : null}
     </div>
   );
 };

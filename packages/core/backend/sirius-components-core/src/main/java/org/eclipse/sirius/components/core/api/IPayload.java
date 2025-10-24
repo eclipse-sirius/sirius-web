@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,12 @@ import java.util.UUID;
 /**
  * Interface to be implemented by all payloads.
  *
+ * <p>
+ *     A payload is a response to an input using the same identifier as the input.
+ * </p>
+ *
  * @author sbegaudeau
+ * @since v0.1.0
  */
 public interface IPayload {
     /**

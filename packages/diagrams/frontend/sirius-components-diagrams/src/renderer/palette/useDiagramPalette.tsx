@@ -42,8 +42,6 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     [showDiagramPalette]
   );
 
-  const onDiagramElementContextMenu = useCallback(() => hideDiagramPalette(), [hideDiagramPalette]);
-
   return {
     x,
     y,
@@ -51,7 +49,6 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     hideDiagramPalette,
     showDiagramPalette,
     onDiagramBackgroundContextMenu,
-    onDiagramElementContextMenu,
     getLastToolInvoked,
     setLastToolInvoked,
   };

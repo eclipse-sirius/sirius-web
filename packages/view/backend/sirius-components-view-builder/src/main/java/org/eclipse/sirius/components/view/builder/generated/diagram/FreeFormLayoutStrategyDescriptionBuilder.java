@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,54 @@ public class FreeFormLayoutStrategyDescriptionBuilder {
      */
     public org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription build() {
         return this.getFreeFormLayoutStrategyDescription();
+    }
+
+    /**
+     * Setter for OnWestAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public FreeFormLayoutStrategyDescriptionBuilder onWestAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getFreeFormLayoutStrategyDescription().getOnWestAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnEastAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public FreeFormLayoutStrategyDescriptionBuilder onEastAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getFreeFormLayoutStrategyDescription().getOnEastAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnSouthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public FreeFormLayoutStrategyDescriptionBuilder onSouthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getFreeFormLayoutStrategyDescription().getOnSouthAtCreationBorderNodes().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for OnNorthAtCreationBorderNodes.
+     *
+     * @generated
+     */
+    public FreeFormLayoutStrategyDescriptionBuilder onNorthAtCreationBorderNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getFreeFormLayoutStrategyDescription().getOnNorthAtCreationBorderNodes().add(value);
+        }
+        return this;
     }
 
 

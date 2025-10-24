@@ -44,7 +44,7 @@ public class ObjectIconURLsDataFetcher implements IDataFetcherWithFieldCoordinat
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         var object = environment.getSource();
 
-        return this.labelService.getImagePath(object).stream()
+        return this.labelService.getImagePaths(object).stream()
                 .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
                 .toList();
     }

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.papaya.impl;
 
 import static org.eclipse.sirius.components.papaya.PapayaPackage.CLASS;
+import static org.eclipse.sirius.components.papaya.PapayaPackage.CONTAINER;
 
 import java.time.Instant;
 
@@ -35,22 +36,32 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
+import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
+import org.eclipse.sirius.components.papaya.FolderElement;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
+import org.eclipse.sirius.components.papaya.Link;
 import org.eclipse.sirius.components.papaya.Message;
 import org.eclipse.sirius.components.papaya.MessageEmitter;
 import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.Operation;
+import org.eclipse.sirius.components.papaya.OperationalActivity;
+import org.eclipse.sirius.components.papaya.OperationalActor;
+import org.eclipse.sirius.components.papaya.OperationalCapability;
+import org.eclipse.sirius.components.papaya.OperationalEntity;
+import org.eclipse.sirius.components.papaya.OperationalInteraction;
+import org.eclipse.sirius.components.papaya.OperationalProcess;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
@@ -60,6 +71,7 @@ import org.eclipse.sirius.components.papaya.ProvidedService;
 import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.ReferencingLink;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
@@ -96,6 +108,27 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      *
      * @generated
      */
+    private EClass linkEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass referencingLinkEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass containingLinkEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass namedElementEClass = null;
 
     /**
@@ -103,7 +136,70 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      *
      * @generated
      */
+    private EClass containerEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass folderEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass folderElementEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass projectEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalCapabilityEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalEntityEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalActorEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalProcessEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalActivityEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass operationalInteractionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -514,6 +610,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EReference getModelElement_Links() {
+        return (EReference) this.modelElementEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTag() {
         return this.tagEClass;
     }
@@ -536,6 +642,76 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
     @Override
     public EAttribute getTag_Value() {
         return (EAttribute) this.tagEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getLink() {
+        return this.linkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLink_Kind() {
+        return (EAttribute) this.linkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getLink_Source() {
+        return (EReference) this.linkEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getReferencingLink() {
+        return this.referencingLinkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getReferencingLink_Target() {
+        return (EReference) this.referencingLinkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getContainingLink() {
+        return this.containingLinkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getContainingLink_Target() {
+        return (EReference) this.containingLinkEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -574,6 +750,56 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EClass getContainer() {
+        return this.containerEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getContainer_Folders() {
+        return (EReference) this.containerEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getContainer_Elements() {
+        return (EReference) this.containerEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFolder() {
+        return this.folderEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFolderElement() {
+        return this.folderElementEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getProject() {
         return this.projectEClass;
     }
@@ -584,8 +810,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Projects() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(0);
+    public EAttribute getProject_Homepage() {
+        return (EAttribute) this.projectEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -594,8 +820,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Components() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(1);
+    public EClass getOperationalCapability() {
+        return this.operationalCapabilityEClass;
     }
 
     /**
@@ -604,8 +830,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_AllComponents() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(2);
+    public EAttribute getOperationalCapability_Constraints() {
+        return (EAttribute) this.operationalCapabilityEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -614,8 +840,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_ComponentExchanges() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(3);
+    public EClass getOperationalEntity() {
+        return this.operationalEntityEClass;
     }
 
     /**
@@ -624,8 +850,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Iterations() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(4);
+    public EClass getOperationalActor() {
+        return this.operationalActorEClass;
     }
 
     /**
@@ -634,8 +860,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Tasks() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(5);
+    public EAttribute getOperationalActor_Type() {
+        return (EAttribute) this.operationalActorEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -644,8 +870,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Contributions() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(6);
+    public EClass getOperationalProcess() {
+        return this.operationalProcessEClass;
     }
 
     /**
@@ -654,8 +880,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_ApplicationConcerns() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(7);
+    public EClass getOperationalActivity() {
+        return this.operationalActivityEClass;
     }
 
     /**
@@ -664,8 +890,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Domains() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(8);
+    public EAttribute getOperationalActivity_Precondition() {
+        return (EAttribute) this.operationalActivityEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -674,8 +900,58 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getProject_Channels() {
-        return (EReference) this.projectEClass.getEStructuralFeatures().get(9);
+    public EAttribute getOperationalActivity_Postcondition() {
+        return (EAttribute) this.operationalActivityEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getOperationalInteraction() {
+        return this.operationalInteractionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getOperationalInteraction_Type() {
+        return (EAttribute) this.operationalInteractionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getOperationalInteraction_Frequency() {
+        return (EAttribute) this.operationalInteractionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getOperationalInteraction_Protocol() {
+        return (EAttribute) this.operationalInteractionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getOperationalInteraction_Latency() {
+        return (EAttribute) this.operationalInteractionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2089,26 +2365,56 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         // Create classes and their features
         this.modelElementEClass = this.createEClass(MODEL_ELEMENT);
         this.createEReference(this.modelElementEClass, MODEL_ELEMENT__TAGS);
+        this.createEReference(this.modelElementEClass, MODEL_ELEMENT__LINKS);
 
         this.tagEClass = this.createEClass(TAG);
         this.createEAttribute(this.tagEClass, TAG__KEY);
         this.createEAttribute(this.tagEClass, TAG__VALUE);
 
+        this.linkEClass = this.createEClass(LINK);
+        this.createEAttribute(this.linkEClass, LINK__KIND);
+        this.createEReference(this.linkEClass, LINK__SOURCE);
+
+        this.referencingLinkEClass = this.createEClass(REFERENCING_LINK);
+        this.createEReference(this.referencingLinkEClass, REFERENCING_LINK__TARGET);
+
+        this.containingLinkEClass = this.createEClass(CONTAINING_LINK);
+        this.createEReference(this.containingLinkEClass, CONTAINING_LINK__TARGET);
+
         this.namedElementEClass = this.createEClass(NAMED_ELEMENT);
         this.createEAttribute(this.namedElementEClass, NAMED_ELEMENT__NAME);
         this.createEAttribute(this.namedElementEClass, NAMED_ELEMENT__DESCRIPTION);
 
+        this.containerEClass = this.createEClass(CONTAINER);
+        this.createEReference(this.containerEClass, CONTAINER__FOLDERS);
+        this.createEReference(this.containerEClass, CONTAINER__ELEMENTS);
+
+        this.folderEClass = this.createEClass(FOLDER);
+
+        this.folderElementEClass = this.createEClass(FOLDER_ELEMENT);
+
         this.projectEClass = this.createEClass(PROJECT);
-        this.createEReference(this.projectEClass, PROJECT__PROJECTS);
-        this.createEReference(this.projectEClass, PROJECT__COMPONENTS);
-        this.createEReference(this.projectEClass, PROJECT__ALL_COMPONENTS);
-        this.createEReference(this.projectEClass, PROJECT__COMPONENT_EXCHANGES);
-        this.createEReference(this.projectEClass, PROJECT__ITERATIONS);
-        this.createEReference(this.projectEClass, PROJECT__TASKS);
-        this.createEReference(this.projectEClass, PROJECT__CONTRIBUTIONS);
-        this.createEReference(this.projectEClass, PROJECT__APPLICATION_CONCERNS);
-        this.createEReference(this.projectEClass, PROJECT__DOMAINS);
-        this.createEReference(this.projectEClass, PROJECT__CHANNELS);
+        this.createEAttribute(this.projectEClass, PROJECT__HOMEPAGE);
+
+        this.operationalCapabilityEClass = this.createEClass(OPERATIONAL_CAPABILITY);
+        this.createEAttribute(this.operationalCapabilityEClass, OPERATIONAL_CAPABILITY__CONSTRAINTS);
+
+        this.operationalEntityEClass = this.createEClass(OPERATIONAL_ENTITY);
+
+        this.operationalActorEClass = this.createEClass(OPERATIONAL_ACTOR);
+        this.createEAttribute(this.operationalActorEClass, OPERATIONAL_ACTOR__TYPE);
+
+        this.operationalProcessEClass = this.createEClass(OPERATIONAL_PROCESS);
+
+        this.operationalActivityEClass = this.createEClass(OPERATIONAL_ACTIVITY);
+        this.createEAttribute(this.operationalActivityEClass, OPERATIONAL_ACTIVITY__PRECONDITION);
+        this.createEAttribute(this.operationalActivityEClass, OPERATIONAL_ACTIVITY__POSTCONDITION);
+
+        this.operationalInteractionEClass = this.createEClass(OPERATIONAL_INTERACTION);
+        this.createEAttribute(this.operationalInteractionEClass, OPERATIONAL_INTERACTION__TYPE);
+        this.createEAttribute(this.operationalInteractionEClass, OPERATIONAL_INTERACTION__FREQUENCY);
+        this.createEAttribute(this.operationalInteractionEClass, OPERATIONAL_INTERACTION__PROTOCOL);
+        this.createEAttribute(this.operationalInteractionEClass, OPERATIONAL_INTERACTION__LATENCY);
 
         this.iterationEClass = this.createEClass(ITERATION);
         this.createEAttribute(this.iterationEClass, ITERATION__START_DATE);
@@ -2324,18 +2630,39 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        this.referencingLinkEClass.getESuperTypes().add(this.getLink());
+        this.containingLinkEClass.getESuperTypes().add(this.getLink());
         this.namedElementEClass.getESuperTypes().add(this.getModelElement());
+        this.folderEClass.getESuperTypes().add(this.getNamedElement());
+        this.folderEClass.getESuperTypes().add(this.getContainer());
         this.projectEClass.getESuperTypes().add(this.getNamedElement());
+        this.projectEClass.getESuperTypes().add(this.getContainer());
+        this.operationalCapabilityEClass.getESuperTypes().add(this.getNamedElement());
+        this.operationalCapabilityEClass.getESuperTypes().add(this.getFolderElement());
+        this.operationalEntityEClass.getESuperTypes().add(this.getNamedElement());
+        this.operationalEntityEClass.getESuperTypes().add(this.getFolderElement());
+        this.operationalActorEClass.getESuperTypes().add(this.getNamedElement());
+        this.operationalActorEClass.getESuperTypes().add(this.getFolderElement());
+        this.operationalProcessEClass.getESuperTypes().add(this.getNamedElement());
+        this.operationalProcessEClass.getESuperTypes().add(this.getFolderElement());
+        this.operationalActivityEClass.getESuperTypes().add(this.getNamedElement());
+        this.operationalActivityEClass.getESuperTypes().add(this.getFolderElement());
+        this.operationalInteractionEClass.getESuperTypes().add(this.getNamedElement());
         this.iterationEClass.getESuperTypes().add(this.getNamedElement());
+        this.iterationEClass.getESuperTypes().add(this.getFolderElement());
         this.taskEClass.getESuperTypes().add(this.getNamedElement());
+        this.taskEClass.getESuperTypes().add(this.getFolderElement());
         this.contributionEClass.getESuperTypes().add(this.getNamedElement());
+        this.contributionEClass.getESuperTypes().add(this.getFolderElement());
         this.componentEClass.getESuperTypes().add(this.getNamedElement());
+        this.componentEClass.getESuperTypes().add(this.getFolderElement());
         this.componentPortEClass.getESuperTypes().add(this.getNamedElement());
         this.componentExchangeEClass.getESuperTypes().add(this.getNamedElement());
         this.providedServiceEClass.getESuperTypes().add(this.getNamedElement());
         this.requiredServiceEClass.getESuperTypes().add(this.getNamedElement());
         this.packageEClass.getESuperTypes().add(this.getNamedElement());
         this.packageEClass.getESuperTypes().add(this.getAnnotableElement());
+        this.packageEClass.getESuperTypes().add(this.getFolderElement());
         this.typeEClass.getESuperTypes().add(this.getNamedElement());
         this.typeEClass.getESuperTypes().add(this.getAnnotableElement());
         this.typedElementEClass.getESuperTypes().add(this.getNamedElement());
@@ -2361,10 +2688,12 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.enumLiteralEClass.getESuperTypes().add(this.getNamedElement());
         this.enumLiteralEClass.getESuperTypes().add(this.getAnnotableElement());
         this.applicationConcernEClass.getESuperTypes().add(this.getNamedElement());
+        this.applicationConcernEClass.getESuperTypes().add(this.getFolderElement());
         this.controllerEClass.getESuperTypes().add(this.getNamedElement());
         this.controllerEClass.getESuperTypes().add(this.getMessageEmitter());
         this.controllerEClass.getESuperTypes().add(this.getMessageListener());
         this.domainEClass.getESuperTypes().add(this.getNamedElement());
+        this.domainEClass.getESuperTypes().add(this.getFolderElement());
         this.serviceEClass.getESuperTypes().add(this.getNamedElement());
         this.serviceEClass.getESuperTypes().add(this.getMessageListener());
         this.serviceEClass.getESuperTypes().add(this.getMessageEmitter());
@@ -2374,11 +2703,14 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.queryEClass.getESuperTypes().add(this.getMessage());
         this.repositoryEClass.getESuperTypes().add(this.getNamedElement());
         this.channelEClass.getESuperTypes().add(this.getNamedElement());
+        this.channelEClass.getESuperTypes().add(this.getFolderElement());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.modelElementEClass, ModelElement.class, "ModelElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getModelElement_Tags(), this.getTag(), null, "tags", null, 0, -1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getModelElement_Links(), this.getLink(), this.getLink_Source(), "links", null, 0, -1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.tagEClass, Tag.class, "Tag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTag_Key(), this.ecorePackage.getEString(), "key", null, 1, 1, Tag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
@@ -2386,33 +2718,67 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEAttribute(this.getTag_Value(), this.ecorePackage.getEString(), "value", null, 1, 1, Tag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.linkEClass, Link.class, "Link", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getLink_Kind(), this.ecorePackage.getEString(), "kind", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLink_Source(), this.getModelElement(), this.getModelElement_Links(), "source", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.referencingLinkEClass, ReferencingLink.class, "ReferencingLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getReferencingLink_Target(), this.getModelElement(), null, "target", null, 1, 1, ReferencingLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.containingLinkEClass, ContainingLink.class, "ContainingLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getContainingLink_Target(), this.getModelElement(), null, "target", null, 1, 1, ContainingLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getNamedElement_Name(), this.ecorePackage.getEString(), "name", null, 1, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNamedElement_Description(), this.ecorePackage.getEString(), "description", null, 0, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.containerEClass, org.eclipse.sirius.components.papaya.Container.class, "Container", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getContainer_Folders(), this.getFolder(), null, "folders", null, 0, -1, org.eclipse.sirius.components.papaya.Container.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getContainer_Elements(), this.getFolderElement(), null, "elements", null, 0, -1, org.eclipse.sirius.components.papaya.Container.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.folderEClass, Folder.class, "Folder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.folderElementEClass, FolderElement.class, "FolderElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
         this.initEClass(this.projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getProject_Projects(), this.getProject(), null, "projects", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Components(), this.getComponent(), null, "components", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_AllComponents(), this.getComponent(), null, "allComponents", null, 0, -1, Project.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_ComponentExchanges(), this.getComponentExchange(), null, "componentExchanges", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Iterations(), this.getIteration(), null, "iterations", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Tasks(), this.getTask(), null, "tasks", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Contributions(), this.getContribution(), null, "contributions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_ApplicationConcerns(), this.getApplicationConcern(), null, "applicationConcerns", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Domains(), this.getDomain(), null, "domains", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getProject_Channels(), this.getChannel(), null, "channels", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getProject_Homepage(), this.ecorePackage.getEString(), "homepage", null, 0, 1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.operationalCapabilityEClass, OperationalCapability.class, "OperationalCapability", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getOperationalCapability_Constraints(), this.ecorePackage.getEString(), "constraints", null, 0, 1, OperationalCapability.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.operationalEntityEClass, OperationalEntity.class, "OperationalEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.operationalActorEClass, OperationalActor.class, "OperationalActor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getOperationalActor_Type(), this.ecorePackage.getEString(), "type", null, 1, 1, OperationalActor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.operationalProcessEClass, OperationalProcess.class, "OperationalProcess", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.operationalActivityEClass, OperationalActivity.class, "OperationalActivity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getOperationalActivity_Precondition(), this.ecorePackage.getEString(), "precondition", null, 0, 1, OperationalActivity.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getOperationalActivity_Postcondition(), this.ecorePackage.getEString(), "postcondition", null, 0, 1, OperationalActivity.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.operationalInteractionEClass, OperationalInteraction.class, "OperationalInteraction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getOperationalInteraction_Type(), this.ecorePackage.getEString(), "type", null, 0, 1, OperationalInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getOperationalInteraction_Frequency(), this.ecorePackage.getEString(), "frequency", null, 0, 1, OperationalInteraction.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getOperationalInteraction_Protocol(), this.ecorePackage.getEString(), "protocol", null, 0, 1, OperationalInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getOperationalInteraction_Latency(), this.ecorePackage.getEString(), "latency", null, 0, 1, OperationalInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.iterationEClass, Iteration.class, "Iteration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getIteration_StartDate(), this.getInstant(), "startDate", null, 0, 1, Iteration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,

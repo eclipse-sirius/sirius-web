@@ -1,7 +1,7 @@
 extend type Viewer {
   project(projectId: ID!): Project
   projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilter): ViewerProjectsConnection!
-  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
+  projectTemplates(page: Int!, limit: Int!, context: ProjectTemplateContext!): ViewerProjectTemplatesConnection!
 }
 
 input ProjectFilter {
@@ -33,6 +33,11 @@ type Nature {
   name: String!
 }
 
+enum ProjectTemplateContext {
+  PROJECT_BROWSER
+  PROJECT_TEMPLATE_MODAL
+}
+
 type ViewerProjectTemplatesConnection {
   edges: [ViewerProjectTemplatesEdge!]!
   pageInfo: PageInfo!
@@ -48,6 +53,20 @@ type ProjectTemplate {
   imageURL: String!
 }
 
+extend type EditingContext {
+  representations(representationIds: [ID!], after: String, before: String, first: Int, last: Int): EditingContextRepresentationsConnection!
+}
+
+type EditingContextRepresentationsConnection {
+  edges: [EditingContextRepresentationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextRepresentationsEdge {
+  node: RepresentationMetadata!
+  cursor: String!
+}
+
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
   createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
@@ -56,6 +75,7 @@ extend type Mutation {
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
   uploadProject(input: UploadProjectInput!): UploadProjectPayload!
+  duplicateProject(input: DuplicateProjectInput!): DuplicateProjectPayload!
 }
 
 input CreateProjectInput {
@@ -156,4 +176,16 @@ union UploadProjectPayload = ErrorPayload | UploadProjectSuccessPayload
 type UploadProjectSuccessPayload {
   id: ID!
   project: Project!
+}
+
+input DuplicateProjectInput {
+  id : ID!
+  projectId: ID!
+}
+
+union DuplicateProjectPayload = ErrorPayload | DuplicateProjectSuccessPayload
+
+type DuplicateProjectSuccessPayload {
+ id : ID!
+ project : Project!
 }

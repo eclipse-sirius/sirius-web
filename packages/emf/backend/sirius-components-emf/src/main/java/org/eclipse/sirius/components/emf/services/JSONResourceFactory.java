@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,15 +32,14 @@ import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
  */
 public class JSONResourceFactory extends ResourceFactoryImpl {
 
-    @Override
-    public JsonResource createResource(URI uri) {
+    public JsonResource createResource(URI uri, Map<String, Object> customOptions) {
         Optional.ofNullable(uri)
             .map(URI::scheme)
             .filter(Objects::nonNull)
             .filter(Predicate.not(String::isEmpty))
             .orElseThrow(() -> new IllegalArgumentException(String.format("Missing scheme for URI %s", uri)));
 
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>(customOptions);
 
         options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
         options.put(JsonResource.OPTION_DISPLAY_DYNAMIC_INSTANCES, true);
@@ -48,6 +47,12 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
         var resource = new JsonResourceImpl(uri, options);
         resource.setIntrinsicIDToEObjectMap(new HashMap<>());
         return resource;
+
+    }
+
+    @Override
+    public JsonResource createResource(URI uri) {
+        return this.createResource(uri, Map.of());
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,12 +20,12 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { isListLayoutStrategy } from './convertDiagram';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
@@ -50,6 +50,7 @@ const toIconLabelNode = (
     pinned,
     style,
     labelEditable,
+    customizedStyleProperties,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
@@ -69,9 +70,9 @@ const toIconLabelNode = (
       background: style.background,
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     faded: state === GQLViewModifier.Faded,
     pinned,
     nodeDescription,
@@ -81,10 +82,16 @@ const toIconLabelNode = (
     connectionHandles,
     isNew,
     resizedByUser,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    connectionLinePositionOnNode: 'none',
+    nodeAppearanceData: {
+      gqlStyle: style,
+      customizedStyleProperties,
+    },
   };
 
   data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');
@@ -101,12 +108,11 @@ const toIconLabelNode = (
     node.parentId = gqlParentNode.id;
   }
 
-  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
-  if (nodeLayoutData) {
+  if (gqlNodeLayoutData) {
     const {
       position,
       size: { height, width },
-    } = nodeLayoutData;
+    } = gqlNodeLayoutData;
     node.position = position;
     node.height = height;
     node.width = width;
@@ -119,7 +125,12 @@ const toIconLabelNode = (
     node.height = data.defaultHeight ?? defaultHeight;
     node.width = data.defaultWidth ?? defaultWidth;
   }
-
+  if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
+    node.measured = {
+      height: gqlNodeLayoutData.size.height,
+      width: gqlNodeLayoutData.size.width,
+    };
+  }
   return node;
 };
 

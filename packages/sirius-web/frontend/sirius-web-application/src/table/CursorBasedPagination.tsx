@@ -57,7 +57,7 @@ export const CursorBasedPagination = ({
           ))}
         </Select>
       </Box>
-      <Box sx={{ displat: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <IconButton onClick={onPreviousPage} disabled={!hasPreviousPage} data-testid="pagination-prev">
           <ArrowBack />
         </IconButton>

@@ -37,5 +37,11 @@ export const ProjectFragment = gql`
   fragment Project on Project {
     id
     name
+    capabilities {
+      canDownload
+      canRename
+      canDelete
+      canDuplicate
+    }
   }
 `;

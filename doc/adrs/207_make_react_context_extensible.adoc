@@ -1,0 +1,59 @@
+= ADR-207 - Make react context extensible
+
+== Context
+
+There are many react contexts defined in Sirius Web.
+We know that downstream projects are using react contexts Sirius Web is exporting for their own needs, like the `ViewerContext` ("Viewer" is the root element our graphql schema).
+The `ViewerContext` provide data about the viewer in every part of the application contained in a `ViewerContextProvider`.
+We rely on graphql to retrieve data about viewer.
+Downstream projects can provider their own graphql fragments to extend this graphql query.
+Once given to the `ViewerContext`, viewer data can be used in React Component thanks to the hook: `useCurrentViewer()`.
+
+All of our frontend components are strongly typed with typescript, and does the `useCurrentViewer()`.
+That is a problem in downstream projects because the returned type of `useCurrentViewer()` is not extensible, and thus, will always be typed with the type from Sirius Web.
+It forces downstream project to write, everywhere custom viewer data will be needed, this kind of code: `(viewer as unknown as ExtendedGQLViewer).custom`.
+With some changes, we could rely on autocompletion on data retrieve from the graphql fragment we provide, and write instead: `viewer.custom`.
+
+
+== Decision
+
+The `ViewerContext` will be defined with: `export const ViewerContext = React.createContext<ViewerContextValue<GQLViewer>>(defaultValue);`
+
+
+[source,typescript]
+.useCurrentViewer.types.ts
+----
+
+export interface UseCurrentViewerValue<T extends GQLViewer> {
+  viewer: T;
+}
+
+----
+
+[source,typescript]
+.useCurrentViewer.ts
+----
+
+export const useCurrentViewer = <T extends GQLViewer = GQLViewer>(): UseCurrentViewerValue<T> => {
+  const { viewer } = useContext<ViewerContextValue<T>>(
+    ViewerContext as unknown as React.Context<ViewerContextValue<T>>
+  );
+
+  return { viewer };
+};
+
+----
+
+With these changes nothing will change in Sirius Web, we are still able to write `const { viewer } = useCurrentViewer()`.
+But, in downstream project we will be able to write `const { viewer } = useCurrentViewer<ExtendedGQLViewer>()`.
+With `viewer` correctly type, and giving access to custom properties (custom properties should have to be defined is `ExtendedGQLViewer`).
+
+NOTE: This could easily be done on all context that can be extended with graphql fragments like the `ProjectContext`
+
+== Consequences
+
+We may need to add `eslint-disable-next-line` in `useCurrentViewer.ts` because of `ViewerContext as unknown as React.Context<ViewerContextValue<T>>` once `sirius-web-application` will be strict.
+
+== Status
+
+Proposed.

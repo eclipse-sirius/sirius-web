@@ -18,8 +18,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
@@ -36,15 +37,14 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
+import org.eclipse.sirius.components.diagrams.renderer.IEdgeAppearanceHandler;
+import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 
 /**
  * Service used to create diagrams.
@@ -60,15 +60,21 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final IOperationValidator operationValidator;
 
+    private final List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+    private final List<IEdgeAppearanceHandler> edgeAppearanceHandlers;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-                                  IOperationValidator operationValidator, MeterRegistry meterRegistry) {
+                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
+        this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
+        this.edgeAppearanceHandlers = Objects.requireNonNull(edgeAppearanceHandlers);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
@@ -87,8 +93,8 @@ public class DiagramCreationService implements IDiagramCreationService {
     }
 
     @Override
-    public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
-        Diagram previousDiagram = diagramContext.getDiagram();
+    public Optional<Diagram> refresh(IEditingContext editingContext, DiagramContext diagramContext) {
+        Diagram previousDiagram = diagramContext.diagram();
 
         var optionalObject = this.objectSearchService.getObject(editingContext, previousDiagram.getTargetObjectId());
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
@@ -111,21 +117,21 @@ public class DiagramCreationService implements IDiagramCreationService {
         return Optional.empty();
     }
 
-    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<IDiagramContext> optionalDiagramContext) {
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<DiagramContext> optionalDiagramContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-        variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(optionalDiagramContext.orElse(null)));
 
-        List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(IDiagramContext::getDiagramEvents).orElse(List.of());
-        Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
-        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
-        List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
-        
+        List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(DiagramContext::diagramEvents).orElse(List.of());
+        Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(DiagramContext::diagram);
+        List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(DiagramContext::viewCreationRequests).orElse(List.of());
+        List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(DiagramContext::viewDeletionRequests).orElse(List.of());
+
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -134,7 +140,9 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
-                .diagramEvents(diagramEvents);
+                .diagramEvents(diagramEvents)
+                .nodeAppearanceHandlers(this.nodeAppearanceHandlers)
+                .edgeAppearanceHandlers(this.edgeAppearanceHandlers);
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);

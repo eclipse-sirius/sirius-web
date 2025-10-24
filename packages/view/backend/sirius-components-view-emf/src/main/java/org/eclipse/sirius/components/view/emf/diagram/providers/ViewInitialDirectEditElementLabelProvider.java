@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,14 +120,14 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
                 var optionalEdgeDescription = this.getEdgeDescription(diagramDescription.getEdgeDescriptions(), descriptionId);
 
-                if (edge.getBeginLabel() != null && edge.getBeginLabel().getId().equals(labelId)) {
+                if (edge.getBeginLabel() != null && edge.getBeginLabel().id().equals(labelId)) {
                     optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.BEGIN_LABEL));
-                    initialDirectEditElementLabel = edge.getBeginLabel().getText();
-                } else if (edge.getCenterLabel() != null && edge.getCenterLabel().getId().equals(labelId)) {
-                    initialDirectEditElementLabel = edge.getCenterLabel().getText();
+                    initialDirectEditElementLabel = edge.getBeginLabel().text();
+                } else if (edge.getCenterLabel() != null && edge.getCenterLabel().id().equals(labelId)) {
+                    initialDirectEditElementLabel = edge.getCenterLabel().text();
                     optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.CENTER_LABEL));
-                } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
-                    initialDirectEditElementLabel = edge.getEndLabel().getText();
+                } else if (edge.getEndLabel() != null && edge.getEndLabel().id().equals(labelId)) {
+                    initialDirectEditElementLabel = edge.getEndLabel().text();
                     optionalLabelEditTool = optionalEdgeDescription.flatMap(edgeDescription -> this.getLabelEditTool(edgeDescription, EdgeLabelKind.END_LABEL));
                 }
             }

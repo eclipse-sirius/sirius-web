@@ -13,19 +13,17 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.graphql.CompletionProposalsQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -41,8 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -80,20 +76,13 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();
 
-        Consumer<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Root Diagram").group("Core Properties");
-                    var textarea = groupNavigator.findWidget("Domain Type", Textarea.class);
-                    textareaId.set(textarea.getId());
-                }, () -> fail("Missing form"));
+            var groupNavigator = new FormNavigator(form).page("Root Diagram").group("Core Properties");
+            var textarea = groupNavigator.findWidget("Domain Type", Textarea.class);
+            textareaId.set(textarea.getId());
+        });
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(
@@ -132,20 +121,13 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();
 
-        Consumer<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    formId.set(form.getId());
+        Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
+            formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("Human Node").group("Core Properties");
-                    var textarea = groupNavigator.findWidget("Semantic Candidates Expression", Textarea.class);
-                    textareaId.set(textarea.getId());
-                }, () -> fail("Missing form"));
+            var groupNavigator = new FormNavigator(form).page("Human Node").group("Core Properties");
+            var textarea = groupNavigator.findWidget("Semantic Candidates Expression", Textarea.class);
+            textareaId.set(textarea.getId());
+        });
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(

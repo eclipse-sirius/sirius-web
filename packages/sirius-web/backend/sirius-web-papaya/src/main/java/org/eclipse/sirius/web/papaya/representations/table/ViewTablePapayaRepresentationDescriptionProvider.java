@@ -31,6 +31,7 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
     public RepresentationDescription create(IColorProvider colorProvider) {
 
         var nameColumnDescription = this.tableBuilders.newColumnDescription()
+                .name("ColumnDescription Name")
                 .semanticCandidatesExpression("aql:'Name'")
                 .headerLabelExpression("Qualified Name")
                 .initialWidthExpression("450")
@@ -39,6 +40,7 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
                 .build();
 
         var descriptionColumnDescription = this.tableBuilders.newColumnDescription()
+                .name("ColumnDescription Description")
                 .semanticCandidatesExpression("aql:'Description'")
                 .headerLabelExpression("Description")
                 .initialWidthExpression("250")
@@ -47,18 +49,21 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
                 .build();
 
         var cellNameDescription = this.tableBuilders.newCellDescription()
+                .name("CellDescription QualifiedName")
                 .preconditionExpression("aql:columnTargetObject == 'Name'")
                 .valueExpression("aql:self.qualifiedName")
                 .cellWidgetDescription(this.tableBuilders.newCellLabelWidgetDescription().build())
                 .build();
 
         var cellDescriptionDescription = this.tableBuilders.newCellDescription()
+                .name("CellDescription Description")
                 .preconditionExpression("aql:columnTargetObject == 'Description'")
                 .valueExpression("aql:self.description")
                 .cellWidgetDescription(this.tableBuilders.newCellLabelWidgetDescription().build())
                 .build();
 
         var rowDescription = this.tableBuilders.newRowDescription()
+                .name("RowDescription")
                 .semanticCandidatesExpression("aql:self.eAllContents()->filter(papaya::Package)->sortNamedElement(columnSort)->toPaginatedData(cursor,direction,size)")
                 .initialHeightExpression("-1")
                 .isResizableExpression("aql:false")

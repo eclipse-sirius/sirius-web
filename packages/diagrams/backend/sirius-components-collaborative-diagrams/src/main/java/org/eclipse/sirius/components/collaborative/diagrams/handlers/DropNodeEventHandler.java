@@ -16,11 +16,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -44,9 +46,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -97,7 +96,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DropNodeInput.class.getSimpleName());
@@ -105,7 +104,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof DropNodeInput input) {
-            Diagram diagram = diagramContext.getDiagram();
+            Diagram diagram = diagramContext.diagram();
             var optionalDroppedNode = this.diagramQueryService.findNodeById(diagram, input.droppedElementId());
             if (optionalDroppedNode.isPresent()) {
                 var optionalDropTarget = Optional.ofNullable(input.targetElementId()).flatMap(elementId -> this.diagramQueryService.findNodeById(diagram, elementId));
@@ -123,7 +122,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean invokeDropNodeTool(IEditingContext editingContext, IDiagramContext diagramContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
+    private boolean invokeDropNodeTool(IEditingContext editingContext, DiagramContext diagramContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
         var optionalHandler = this.findDropNodeHandler(editingContext, diagram, optionalDropTargetNode);
         var optionalTargetElement = this.objectSearchService.getObject(editingContext, optionalDropTargetNode.map(Node::getTargetObjectId).orElse(diagram.getTargetObjectId()));
         var optionalDroppedElement = this.objectSearchService.getObject(editingContext, droppedNode.getTargetObjectId());
@@ -135,7 +134,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+            variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(DROPPED_ELEMENT, optionalDroppedElement.get());
             variableManager.put(DROPPED_NODE, droppedNode);
             variableManager.put(TARGET_ELEMENT, targetElement);

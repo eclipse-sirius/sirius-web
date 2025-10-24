@@ -12,6 +12,13 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 
+export interface NewRepresentationState {
+  representationDescriptions: GQLRepresentationDescriptionMetadata[];
+  selectedRepresentationDescriptionId: string;
+  name: string;
+  nameHasBeenModified: boolean;
+}
+
 export interface NewRepresentationModalProps {
   editingContextId: string;
   item: any;

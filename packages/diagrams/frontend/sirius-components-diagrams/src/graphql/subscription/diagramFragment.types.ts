@@ -27,6 +27,7 @@ export interface GQLDiagram {
 export interface GQLDiagramLayoutData {
   nodeLayoutData: GQLNodeLayoutData[];
   edgeLayoutData: GQLEdgeLayoutData[];
+  labelLayoutData: GQLLabelLayoutData[];
 }
 
 export interface GQLNodeLayoutData {
@@ -44,9 +45,22 @@ export interface GQLHandleLayoutData {
   type: HandleType;
 }
 
+export interface GQLEdgeAnchorLayoutData {
+  edgeId: string;
+  positionRatio: number;
+  handlePosition: Position;
+  type: HandleType;
+}
+
 export interface GQLEdgeLayoutData {
   id: string;
   bendingPoints: GQLPosition[];
+  edgeAnchorLayoutData: GQLEdgeAnchorLayoutData[];
+}
+
+export interface GQLLabelLayoutData {
+  id: string;
+  position: GQLPosition;
 }
 
 export interface GQLRepresentationMetadata {

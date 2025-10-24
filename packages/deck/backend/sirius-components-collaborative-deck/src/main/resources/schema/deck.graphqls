@@ -23,6 +23,11 @@ type Deck implements Representation {
   style: DeckStyle
 }
 
+type DeckDescription implements RepresentationDescription {
+  id: ID!
+  label: String!
+}
+
 type DeckStyle {
   backgroundColor: String!
 }
@@ -30,8 +35,8 @@ type DeckStyle {
 type Lane {
   id: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   title: String!
   label: String!
   collapsible: Boolean!
@@ -43,8 +48,8 @@ type Lane {
 type Card {
   id: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   title: String!
   label: String!
   description: String!

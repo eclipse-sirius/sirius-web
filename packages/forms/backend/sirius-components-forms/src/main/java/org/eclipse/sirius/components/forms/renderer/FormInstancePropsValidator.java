@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.SliderElementProps;
 import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
-import org.eclipse.sirius.components.forms.elements.TableWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
@@ -44,7 +43,6 @@ import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.tables.renderer.TableInstancePropsValidator;
 
 /**
  * Used to validate the instance props.
@@ -52,8 +50,6 @@ import org.eclipse.sirius.components.tables.renderer.TableInstancePropsValidator
  * @author sbegaudeau
  */
 public class FormInstancePropsValidator implements IInstancePropsValidator {
-
-    private final TableInstancePropsValidator tableInstancePropsValidator = new TableInstancePropsValidator(List.of());
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
@@ -116,18 +112,13 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof SliderElementProps;
         } else if (DateTimeElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof DateTimeElementProps;
-        } else if (TableWidgetElementProps.TYPE.equals(type)) {
-            checkValidProps = props instanceof TableWidgetElementProps;
         } else {
-            checkValidProps = this.tableInstancePropsValidator.validateInstanceProps(type, props);
-            if (!checkValidProps) {
-                checkValidProps = this.widgetDescriptors.stream()
-                        .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))
-                        .filter(Optional::isPresent)
-                        .findFirst()
-                        .map(Optional::get)
-                        .orElse(false);
-            }
+            checkValidProps = this.widgetDescriptors.stream()
+                    .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(false);
         }
 
         return checkValidProps;

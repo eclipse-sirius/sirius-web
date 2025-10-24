@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
@@ -111,10 +112,13 @@ public class ViewPaletteProvider implements IPaletteProvider {
     }
 
     @Override
-    public Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription, IEditingContext editingContext) {
+    public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object diagramElementDescription, Object diagramElement, Object targetElement) {
         Palette palette = null;
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetElement);
+        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
@@ -297,7 +301,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
     }
 
     private Palette getEdgePalette(IEditingContext editingContext, DiagramDescription diagramDescription, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
-        List<ToolSection> extraToolSections = new PaletteDefaultToolsProvider().createExtraToolSections(edgeDescription, diagramElement);
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
@@ -306,29 +309,34 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
             var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
-                org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+                List<ToolSection> extraToolSections = new ArrayList<>();
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(edgeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(edgeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(quickAccessTools::add);
+                org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+
                 toolFinder.findQuickAccessNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .forEach(quickAccessTools::add);
 
                 List<IPaletteEntry> paletteEntries = new ArrayList<>();
-                toolFinder.findToolSections(viewEdgeDescription).stream()
-                        .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
-                        .forEach(paletteEntries::add);
-
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .forEach(paletteEntries::add);
-
                 toolFinder.findEdgeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, edgeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
+                toolFinder.findToolSections(viewEdgeDescription).stream()
+                        .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
 
+                paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
                 paletteEntries.addAll(extraToolSections);
 
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;

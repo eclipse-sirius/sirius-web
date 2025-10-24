@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,6 +112,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .targetObjectLabel(nodeElementProps.getTargetObjectLabel())
                     .descriptionId(nodeElementProps.getDescriptionId())
                     .borderNode(nodeElementProps.isBorderNode())
+                    .initialBorderNodePosition(nodeElementProps.getInitialBorderNodePosition())
                     .style(nodeElementProps.getStyle())
                     .borderNodes(borderNodes)
                     .childNodes(childNodes)
@@ -120,7 +121,8 @@ public class DiagramElementFactory implements IElementFactory {
                     .modifiers(nodeElementProps.getModifiers())
                     .collapsingState(nodeElementProps.getCollapsingState())
                     .outsideLabels(outsideLabels)
-                    .labelEditable(nodeElementProps.isLabelEditable());
+                    .labelEditable(nodeElementProps.isLabelEditable())
+                    .customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties());
 
             if (insideLabel != null) {
                 nodeBuilder.insideLabel(insideLabel);
@@ -132,10 +134,6 @@ public class DiagramElementFactory implements IElementFactory {
 
             if (nodeElementProps.getDefaultHeight() != null) {
                 nodeBuilder.defaultHeight(nodeElementProps.getDefaultHeight());
-            }
-
-            if (nodeElementProps.getChildrenLayoutStrategy() != null) {
-                nodeBuilder.childrenLayoutStrategy(nodeElementProps.getChildrenLayoutStrategy());
             }
 
             return nodeBuilder.build();
@@ -163,6 +161,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .state(edgeElementProps.getState())
                     .modifiers(edgeElementProps.getModifiers())
                     .centerLabelEditable(edgeElementProps.isCenterLabelEditable())
+                    .customizedStyleProperties(edgeElementProps.getCustomizedStyleProperties())
                     .build();
         }
         return null;
@@ -172,7 +171,7 @@ public class DiagramElementFactory implements IElementFactory {
         return children.stream()
                 .filter(Label.class::isInstance)
                 .map(Label.class::cast)
-                .filter(label -> label.getType().equals(labelType.getValue()))
+                .filter(label -> label.type().equals(labelType.getValue()))
                 .findFirst()
                 .orElse(null);
 
@@ -180,11 +179,7 @@ public class DiagramElementFactory implements IElementFactory {
 
     private Label instantiateLabel(IProps props) {
         if (props instanceof LabelElementProps labelElementProps) {
-            return Label.newLabel(labelElementProps.getId())
-                    .type(labelElementProps.getType())
-                    .text(labelElementProps.getText())
-                    .style(labelElementProps.getStyle())
-                    .build();
+            return new Label(labelElementProps.getId(), labelElementProps.getType(), labelElementProps.getText(), labelElementProps.getStyle(), labelElementProps.getCustomizedStyleProperties());
         }
         return null;
     }
@@ -199,6 +194,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .headerSeparatorDisplayMode(insideLabelElementProps.getHeaderSeparatorDisplayMode())
                     .overflowStrategy(insideLabelElementProps.getOverflowStrategy())
                     .textAlign(insideLabelElementProps.getTextAlign())
+                    .customizedStyleProperties(insideLabelElementProps.getCustomizedStyleProperties())
                     .build();
         }
         return null;
@@ -207,7 +203,7 @@ public class DiagramElementFactory implements IElementFactory {
     private OutsideLabel instantiateOutsideLabel(IProps props) {
         if (props instanceof OutsideLabelElementProps outsideLabelElementProps) {
             return new OutsideLabel(outsideLabelElementProps.getId(), outsideLabelElementProps.getText(), outsideLabelElementProps.getOutsideLabelLocation(), outsideLabelElementProps.getStyle(),
-                    outsideLabelElementProps.getOverflowStrategy(), outsideLabelElementProps.getTextAlign());
+                    outsideLabelElementProps.getOverflowStrategy(), outsideLabelElementProps.getTextAlign(), outsideLabelElementProps.getCustomizedStyleProperties());
         }
         return null;
     }

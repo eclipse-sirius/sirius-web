@@ -18,10 +18,13 @@ import {
   IconOverlay,
 } from '@eclipse-sirius/sirius-components-core';
 import {
+  ActionProps,
+  DiagramNodeActionOverrideContribution,
   DiagramPaletteToolContributionProps,
   EdgeData,
   NodeData,
   ReactFlowPropsCustomizer,
+  diagramNodeActionOverrideContributionExtensionPoint,
   diagramPaletteToolExtensionPoint,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
@@ -42,6 +45,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Edge, Node, ReactFlowProps } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
+import { PapayaComponentLabelDetailNodeActionContribution } from './nodeactions/PapayaComponentLabelDetailNodeActionContribution';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
 
@@ -149,6 +153,30 @@ papayaExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
   {
     identifier: `siriusweb_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
     data: omniboxCommandOverrides,
+  }
+);
+
+/*******************************************************************************
+ *
+ * Diagram node action command overrides
+ *
+ * Used to override the default show label node action
+ *
+ *******************************************************************************/
+const diagramNodeActionOverrides: DiagramNodeActionOverrideContribution[] = [
+  {
+    canHandle: ({ action }: ActionProps) => {
+      return action.id === 'papaya_show_label';
+    },
+    component: PapayaComponentLabelDetailNodeActionContribution,
+  },
+];
+
+papayaExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
+  diagramNodeActionOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${diagramNodeActionOverrideContributionExtensionPoint.identifier}`,
+    data: diagramNodeActionOverrides,
   }
 );
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,26 +20,29 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 /**
  * Interface of that allow us to regroup several services.
  *
- * @author mcharfadi
+ * @deprecated This service has tightly coupled various concerns for a long time. We have introduced smaller services
+ * like ILabelService, IObjectSearchService or IIdentityService a long time ago to replace it.
+ * @author sbegaudeau
+ * @since v0.1.11
  */
+@Deprecated(forRemoval = true)
 public interface IObjectService {
 
-    String getLabel(Object object);
-
     StyledString getStyledLabel(Object object);
-
-    String getFullLabel(Object object);
-
-    Optional<String> getLabelField(Object object);
-
-    boolean isLabelEditable(Object object);
-
-    List<String> getImagePath(Object object);
 
     List<Object> getContents(Object object);
 
     String getId(Object object);
 
+    /**
+     * Provides the kind of the given semantic element.
+     *
+     * @param object A semantic element
+     *
+     * @return The kind of the object
+     *
+     * @technical-debt This method should be deleted, see {@link IIdentityService#getKind(Object)} for additional details
+     */
     String getKind(Object object);
 
     Optional<Object> getObject(IEditingContext editingContext, String objectId);
@@ -52,32 +55,8 @@ public interface IObjectService {
     class NoOp implements IObjectService {
 
         @Override
-        public String getLabel(Object object) {
-            return "";
-        }
-        @Override
         public StyledString getStyledLabel(Object object) {
             return StyledString.of("");
-        }
-
-        @Override
-        public String getFullLabel(Object object) {
-            return "";
-        }
-
-        @Override
-        public Optional<String> getLabelField(Object object) {
-            return Optional.empty();
-        }
-
-        @Override
-        public boolean isLabelEditable(Object object) {
-            return false;
-        }
-
-        @Override
-        public List<String> getImagePath(Object object) {
-            return List.of();
         }
 
         @Override

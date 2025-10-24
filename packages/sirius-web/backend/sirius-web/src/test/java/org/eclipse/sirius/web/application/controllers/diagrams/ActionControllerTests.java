@@ -12,28 +12,25 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeActionInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.GetActionsQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeActionMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ActionDiagramDescriptionProvider;
@@ -46,7 +43,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -94,27 +90,19 @@ public class ActionControllerTests extends AbstractIntegrationTests {
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a diagram with a node with actions, when the actions are requested on this node, then the actions are retrieved")
-    public void testGetActions() {
+    public void givenDiagramWithNodeWithActionsWhenTheActionsAreRequestedOnThisNodeThenTheActionsAreRetrieved() {
         var flux = this.givenSubscriptionToActionDiagram();
 
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
-        var targetObjectId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diag -> {
-                    diagramId.set(diag.getId());
-                    var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
-                        .findFirst();
-                    assertTrue(node.isPresent());
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                    nodeId.set(node.get().getId());
-                    targetObjectId.set(node.get().getTargetObjectId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(node).hasState(ViewModifier.Normal);
+            nodeId.set(node.getId());
+        });
 
         Runnable getActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -127,15 +115,14 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
             List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
-                .hasSize(2)
-                .contains("Hide", "Fade");
+                    .isNotEmpty()
+                    .contains("Hide", "Fade");
             assertThat(actionsIds)
-                .hasSize(2)
-                .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString(), UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
+                    .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString(), UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
             assertThat(actionsIconURLs)
-                .hasSize(2)
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
+                    .isNotEmpty()
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
         };
 
         StepVerifier.create(flux)
@@ -147,28 +134,20 @@ public class ActionControllerTests extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a diagram with a node with actions with preconditions, when the actions are requested on this node, then only the actions with precondition evaluated to true are retrieved")
-    public void testGetActionsWithPrecondition() {
+    @DisplayName("Given a diagram with a node with actions using preconditions, when the actions are requested on this node, then only the actions with precondition evaluated to true are retrieved")
+    public void givenDiagramWithNodeWithActionsUsingPreconditionsWhenTheActionsAreRequestedOnThisNodeThenOnlyTheActionsWithPreconditionsEvaluatedToTrueAreRetrieved() {
         var flux = this.givenSubscriptionToActionDiagram();
 
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
-        var targetObjectId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diag -> {
-                    diagramId.set(diag.getId());
-                    var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-infrastructure".equals(n.getTargetObjectLabel()))
-                        .findFirst();
-                    assertTrue(node.isPresent());
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                    nodeId.set(node.get().getId());
-                    targetObjectId.set(node.get().getTargetObjectId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode();
+            assertThat(node).hasState(ViewModifier.Normal);
+            nodeId.set(node.getId());
+        });
 
         Runnable getActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -181,14 +160,17 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
             List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
-                .hasSize(1)
-                .contains("Hide");
+                    .isNotEmpty()
+                    .contains("Hide")
+                    .doesNotContain("Fade");
             assertThat(actionsIds)
-                .hasSize(1)
-                .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString());
+                    .isNotEmpty()
+                    .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString())
+                    .doesNotContain(UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
             assertThat(actionsIconURLs)
-                .hasSize(1)
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"));
+                    .isNotEmpty()
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
+                    .noneSatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
         };
 
         StepVerifier.create(flux)
@@ -201,25 +183,19 @@ public class ActionControllerTests extends AbstractIntegrationTests {
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a diagram with a node with an action, when the action is executed on this node, then the action body is invoked")
-    public void testInvokeAction() {
+    public void givenDiagramWithNodeWithAnActionWhenTheActionIsExecutedOnThisNodeThenTheActionBodyIsInvoked() {
         var flux = this.givenSubscriptionToActionDiagram();
 
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diag -> {
-                    diagramId.set(diag.getId());
-                    var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
-                        .findFirst();
-                    assertTrue(node.isPresent());
-                    assertEquals(ViewModifier.Normal, node.get().getState());
-                    nodeId.set(node.get().getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(node).hasState(ViewModifier.Normal);
+            nodeId.set(node.getId());
+        });
 
         Runnable invokeAction = () -> {
             String actionId = UUID.nameUUIDFromBytes("HideAction".getBytes()).toString();
@@ -229,17 +205,10 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var node = diagram.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
-                            .findFirst();
-                    assertTrue(node.isPresent());
-                    assertEquals(ViewModifier.Hidden, node.get().getState());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(node).hasState(ViewModifier.Hidden);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

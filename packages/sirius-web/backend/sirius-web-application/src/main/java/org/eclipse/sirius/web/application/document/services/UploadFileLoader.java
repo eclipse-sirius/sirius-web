@@ -18,15 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
-import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
+import org.eclipse.sirius.web.application.document.services.api.SanitizedResult;
+import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -49,49 +47,38 @@ public class UploadFileLoader implements IUploadFileLoader {
 
     private final IMessageService messageService;
 
-    private final IProxyValidator proxyValidator;
-
     private final IResourceLoader resourceLoader;
 
     private final IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider;
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
-    public UploadFileLoader(IMessageService messageService, IProxyValidator proxyValidator, IResourceLoader resourceLoader, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
+    public UploadFileLoader(IMessageService messageService, IResourceLoader resourceLoader, IDocumentSanitizedJsonContentProvider documentSanitizedJsonContentProvider, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.proxyValidator = Objects.requireNonNull(proxyValidator);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.documentSanitizedJsonContentProvider = Objects.requireNonNull(documentSanitizedJsonContentProvider);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
     }
 
     @Override
-    public IResult<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
+    public IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean readOnly) {
         var fileName = file.getName();
         var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
-        var optionalContent = this.getContent(resourceSet, file, applyMigrationParticipants);
-        if (optionalContent.isPresent()) {
-            var content = optionalContent.get();
-
-            URI resourceURI = new JSONResourceFactory().createResourceURI(file.getName());
-            var resource = resourceSet.getResource(resourceURI, false);
-
-            var hasProxies = this.proxyValidator.hasProxies(resource);
-            if (hasProxies) {
-                this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", file.getName());
-            } else {
-                var optionalRessource = this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), UUID.randomUUID()
-                        .toString(), fileName, content, applyMigrationParticipants);
-                if (optionalRessource.isPresent()) {
-                    return new Success<>(optionalRessource.get());
-                }
+        var optionalSanitizedContent = this.getSanitizedContent(resourceSet, file, applyMigrationParticipants);
+        if (optionalSanitizedContent.isPresent()) {
+            String id = UUID.randomUUID().toString();
+            SanitizedResult sanitizedContent = optionalSanitizedContent.get();
+            ResourceSet targetResourceSet = emfEditingContext.getDomain().getResourceSet();
+            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, readOnly);
+            if (optionalRessource.isPresent()) {
+                return new Success<>(new UploadedResource(optionalRessource.get(), sanitizedContent.idMapping()));
             }
         }
         return new Failure<>(this.messageService.unexpectedError());
     }
 
-    private Optional<String> getContent(ResourceSet resourceSet, UploadFile file, boolean applyMigrationParticipants) {
-        Optional<String> optionalContent = Optional.empty();
+    private Optional<SanitizedResult>  getSanitizedContent(ResourceSet resourceSet, UploadFile file, boolean applyMigrationParticipants) {
+        Optional<SanitizedResult> optionalContent = Optional.empty();
 
         try (var inputStream = file.getInputStream()) {
             optionalContent = this.documentSanitizedJsonContentProvider.getContent(resourceSet, file.getName(), inputStream, applyMigrationParticipants);

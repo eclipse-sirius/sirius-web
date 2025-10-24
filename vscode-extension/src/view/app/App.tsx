@@ -153,7 +153,14 @@ export const App = ({
     selection = {
       entries: [{ id: state.representationId }],
     };
-    component = <DetailsView editingContextId={state.editingContextId} readOnly={false} />;
+    component = (
+      <DetailsView
+        id="details"
+        editingContextId={state.editingContextId}
+        readOnly={false}
+        initialConfiguration={null}
+      />
+    );
   }
 
   const nodeTypeRegistryValue: NodeTypeContextValue = {

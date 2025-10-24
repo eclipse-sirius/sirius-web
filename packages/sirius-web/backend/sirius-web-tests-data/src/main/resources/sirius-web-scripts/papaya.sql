@@ -62,6 +62,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -81,7 +82,8 @@ INSERT INTO document (
          "id":"aa0b7b22-ade2-4148-9ee2-c5972bd72ab7",
          "eClass":"papaya:Project",
          "data":{
-           "components":[
+           "name":"Sirius Web",
+           "elements":[
              {
                "id":"fad0f4c9-e668-44f3-8deb-aef0edb6ddff",
                "eClass":"papaya:Component",
@@ -132,7 +134,17 @@ INSERT INTO document (
                           "data": {
                             "name": "AbstractTest",
                             "annotations":[
-                              "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@components.0/@packages.0/@types.0"
+                              "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@elements.0/@packages.0/@types.0"
+                            ]
+                          }
+                        },
+                        {
+                          "id": "632a0820-0187-4c0f-aa04-4b7385f65aca",
+                          "eClass": "papaya:Interface",
+                          "data": {
+                            "name": "IntegrationTest",
+                            "annotations":[
+                              "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@elements.0/@packages.0/@types.0"
                             ]
                           }
                         }
@@ -148,7 +160,7 @@ INSERT INTO document (
                "data":{
                  "name":"sirius-web-application",
                  "dependencies":[
-                   "//@components.0"
+                   "//@elements.0"
                  ]
                }
              },
@@ -178,6 +190,7 @@ INSERT INTO document (
        }
      ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -187,6 +200,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -197,68 +211,66 @@ INSERT INTO document (
   "json": { "version": "1.0", "encoding": "utf-8" },
   "ns": { "papaya": "https://www.eclipse.org/sirius-web/papaya" },
   "content": [
-   {
-    "id": "41dcf367-1e71-4548-a309-bc5277fea177",
-    "eClass": "papaya:Project",
-    "data": {
-      "name": "Sirius Web",
-      "applicationConcerns": [
-        {
-          "id": "df75f516-eb20-4844-b94d-cdff0ad0b2ac",
-          "eClass": "papaya:ApplicationConcern",
-          "data": {
-            "name": "Project Creation",
-            "controllers": [
-              {
-                "id": "9966a703-72c9-4029-80c2-31ad73e719b9",
-                "eClass": "papaya:Controller",
-                "data": {
-                  "name": "Controller1",
-                  "publications": [
-                    {
-                      "id": "2e91f8ff-1d09-4ce9-b221-9a52b8237b4e",
-                      "eClass": "papaya:Publication",
-                      "data": {
-                        "channel": "//@channels.0",
-                        "message": "//@applicationConcerns.0/@commands.0"
+    {
+      "id": "41dcf367-1e71-4548-a309-bc5277fea177",
+      "eClass": "papaya:Project",
+      "data": {
+        "name": "Sirius Web",
+        "elements": [
+          {
+            "id": "df75f516-eb20-4844-b94d-cdff0ad0b2ac",
+            "eClass": "papaya:ApplicationConcern",
+            "data": {
+              "name": "Project Creation",
+              "controllers": [
+                {
+                  "id": "9966a703-72c9-4029-80c2-31ad73e719b9",
+                  "eClass": "papaya:Controller",
+                  "data": {
+                    "name": "Controller1",
+                    "publications": [
+                      {
+                        "id": "2e91f8ff-1d09-4ce9-b221-9a52b8237b4e",
+                        "eClass": "papaya:Publication",
+                        "data": {
+                          "channel": "//@elements.1",
+                          "message": "//@elements.0/@commands.0"
+                        }
                       }
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "66b09642-f962-4174-8f61-3a43dafead51",
-                "eClass": "papaya:Controller",
-                "data": {
-                  "name": "Controller2",
-                  "subscriptions": [
-                    {
-                      "id": "94612afc-33c9-41c8-aa9e-f439aea6cfe7",
-                      "eClass": "papaya:Subscription",
-                      "data": {
-                        "message": "//@applicationConcerns.0/@commands.1"
+                    ]
+                  }
+                },
+                {
+                  "id": "66b09642-f962-4174-8f61-3a43dafead51",
+                  "eClass": "papaya:Controller",
+                  "data": {
+                    "name": "Controller2",
+                    "subscriptions": [
+                      {
+                        "id": "94612afc-33c9-41c8-aa9e-f439aea6cfe7",
+                        "eClass": "papaya:Subscription",
+                        "data": {
+                          "message": "//@elements.0/@commands.1"
+                        }
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
-              }
-            ],
-            "commands": [
-              {
-                "id": "1fa2194c-0fb2-4e34-9dd6-66b2f42d4e56",
-                "eClass": "papaya:Command",
-                "data": { "name": "Command1" }
-              },
-              {
-                "id": "9a8c3df5-de15-4d3c-b369-d7c87c8be032",
-                "eClass": "papaya:Command",
-                "data": { "name": "Command2" }
-              }
-            ]
-          }
-         }
-        ],
-        "channels": [
+              ],
+              "commands": [
+                {
+                  "id": "1fa2194c-0fb2-4e34-9dd6-66b2f42d4e56",
+                  "eClass": "papaya:Command",
+                  "data": { "name": "Command1" }
+                },
+                {
+                  "id": "9a8c3df5-de15-4d3c-b369-d7c87c8be032",
+                  "eClass": "papaya:Command",
+                  "data": { "name": "Command2" }
+                }
+              ]
+            }
+          },
           {
             "id": "e7fc138e-1b76-414d-86ca-a7980af6b88a",
             "eClass": "papaya:Channel",
@@ -274,6 +286,7 @@ INSERT INTO document (
      }
     ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -283,6 +296,7 @@ INSERT INTO document (
   semantic_data_id,
   name,
   content,
+  is_read_only,
   created_on,
   last_modified_on
 ) VALUES (
@@ -303,7 +317,7 @@ INSERT INTO document (
          "eClass":"papaya:Project",
          "data":{
            "name":"Sirius Web",
-           "iterations":[
+           "elements":[
              {
                "id":"8a8e1113-b7ce-4549-a80d-91349879e3d8",
                "eClass":"papaya:Iteration",
@@ -312,9 +326,9 @@ INSERT INTO document (
                  "startDate":"2023-12-11T09:00:00z",
                  "endDate":"2024-02-02T18:00:00z",
                  "tasks":[
-                   "//@tasks.4",
-                   "//@tasks.5",
-                   "//@tasks.6"
+                   "//@elements.6",
+                   "//@elements.7",
+                   "//@elements.8"
                  ]
                }
              },
@@ -326,9 +340,7 @@ INSERT INTO document (
                  "startDate":"2024-02-05T09:00:00z",
                  "endDate":"2024-03-29T18:00:00z"
                }
-             }
-           ],
-           "tasks":[
+             },
              {
                "id":"31395bb3-1e09-42a5-b450-034955c45ac2",
                "eClass":"papaya:Task",
@@ -411,9 +423,7 @@ INSERT INTO document (
                  "startDate":"2023-12-20T09:00:00z",
                  "endDate":"2023-12-25T09:00:00z"
                }
-             }
-           ],
-           "contributions":[
+             },
              {
                "id":"25ba0aea-74c0-4c2c-8b2a-beb3d53a5abc",
                "eClass":"papaya:Contribution",
@@ -442,9 +452,67 @@ INSERT INTO document (
        }
      ]
    }',
+  false,
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on
+) VALUES (
+  '56a66774-cbff-499f-a9fa-6b6600c86064',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'GraphQL',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": { "papaya": "https://www.eclipse.org/sirius-web/papaya" },
+    "content": [
+      {
+        "id": "d2296138-d96d-4b25-8eb7-70324a7ffa6d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "GraphQL Java",
+          "elements": [
+            {
+              "id": "d67005a5-226b-4b2d-8555-68a44ca468eb",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "graphql-java",
+                "packages": [
+                  {
+                    "id": "16e0d726-c0b3-4275-8ea9-c0bb68713c79",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "graphql",
+                      "types": [
+                        {
+                          "id": "30619f1e-e212-4a9c-a1a2-dd391cfa5ac6",
+                          "eClass": "papaya:Class",
+                          "data": { "name": "GraphQL" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  true,
+  '2025-08-22 9:42:0.000',
+  '2025-08-22 9:42:0.000'
+);
+
+
 INSERT INTO representation_metadata (
     id,
     semantic_data_id,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,7 +44,7 @@ public class NodeDescriptionLabelExpressionMigrationParticipant implements IMigr
     }
 
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
         if (eObject instanceof NodeDescription nodeDescription) {
             var optionalNodeDescriptionData = Optional.ofNullable(jsonObject.getAsJsonObject("data"));
             optionalNodeDescriptionData.ifPresent(nodeDescriptionData -> {

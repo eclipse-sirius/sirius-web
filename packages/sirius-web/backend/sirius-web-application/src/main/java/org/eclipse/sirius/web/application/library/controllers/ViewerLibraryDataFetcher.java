@@ -14,12 +14,13 @@ package org.eclipse.sirius.web.application.library.controllers;
 
 import java.util.Objects;
 
+import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
-
-import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Viewer#library.
@@ -35,9 +36,12 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
 
     private static final String INPUT_ARGUMENT_VERSION = "version";
 
+    private final ICapabilityEvaluator capabilityEvaluator;
+
     private final ILibraryApplicationService libraryApplicationService;
 
-    public ViewerLibraryDataFetcher(ILibraryApplicationService libraryApplicationService) {
+    public ViewerLibraryDataFetcher(ICapabilityEvaluator capabilityEvaluator, ILibraryApplicationService libraryApplicationService) {
+        this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.libraryApplicationService = Objects.requireNonNull(libraryApplicationService);
     }
 
@@ -47,6 +51,11 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
         String name = environment.getArgument(INPUT_ARGUMENT_NAME);
         String version = environment.getArgument(INPUT_ARGUMENT_VERSION);
 
-        return this.libraryApplicationService.findByNamespaceAndNameAndVersion(namespace, name, version).orElse(null);
+        String libraryIdentifier = String.format("%s:%s:%s", namespace, name, version);
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, libraryIdentifier, SiriusWebCapabilities.Library.VIEW);
+        if (hasCapability) {
+            return this.libraryApplicationService.findByNamespaceAndNameAndVersion(namespace, name, version).orElse(null);
+        }
+        return null;
     }
 }

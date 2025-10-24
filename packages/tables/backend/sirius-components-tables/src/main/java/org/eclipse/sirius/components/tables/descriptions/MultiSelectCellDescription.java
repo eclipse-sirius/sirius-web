@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,8 @@ public final class MultiSelectCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private MultiSelectCellDescription() {
         // Prevent instantiation
     }
@@ -86,6 +88,9 @@ public final class MultiSelectCellDescription implements ICellDescription {
         return this.cellOptionsProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
 
     public static Builder newMultiSelectCellDescription(String id) {
         return new Builder(id);
@@ -120,6 +125,8 @@ public final class MultiSelectCellDescription implements ICellDescription {
         private Function<VariableManager, String> cellOptionsLabelProvider;
 
         private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
+
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -160,6 +167,11 @@ public final class MultiSelectCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
+
 
         public MultiSelectCellDescription build() {
             MultiSelectCellDescription multiSelectCellDescription = new MultiSelectCellDescription();
@@ -171,6 +183,7 @@ public final class MultiSelectCellDescription implements ICellDescription {
             multiSelectCellDescription.cellOptionsIdProvider = Objects.requireNonNull(this.cellOptionsIdProvider);
             multiSelectCellDescription.cellOptionsLabelProvider = Objects.requireNonNull(this.cellOptionsLabelProvider);
             multiSelectCellDescription.cellOptionsProvider = Objects.requireNonNull(this.cellOptionsProvider);
+            multiSelectCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return multiSelectCellDescription;
         }
     }

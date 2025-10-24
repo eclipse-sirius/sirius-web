@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.form.converters;
 
-import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverterSwitch.VARIABLE_MANAGER;
+import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter.VARIABLE_MANAGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.function.BiFunction;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -43,7 +43,7 @@ public class SelectNewValueHandler implements BiFunction<VariableManager, String
 
     private final AQLInterpreter interpreter;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IOperationExecutor operationExecutor;
 
@@ -51,9 +51,9 @@ public class SelectNewValueHandler implements BiFunction<VariableManager, String
 
     private final List<Operation> operations;
 
-    public SelectNewValueHandler(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
+    public SelectNewValueHandler(AQLInterpreter interpreter, IObjectSearchService objectSearchService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.operations = Objects.requireNonNull(operations);
@@ -64,7 +64,7 @@ public class SelectNewValueHandler implements BiFunction<VariableManager, String
         Object newValueObject = null;
         if (newValue != null && !newValue.isBlank()) {
             newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                    .flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
+                    .flatMap(editingContext -> this.objectSearchService.getObject(editingContext, newValue))
                     .orElse(newValue);
         }
         VariableManager childVariableManager = variableManager.createChild();

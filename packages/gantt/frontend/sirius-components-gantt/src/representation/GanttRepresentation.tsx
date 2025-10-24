@@ -17,9 +17,10 @@ import {
   RepresentationLoadingIndicator,
   useMultiToast,
   useSelection,
+  WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { makeStyles } from 'tss-react/mui';
 import { useGanttMutations } from '../graphql/mutation/useGanttMutations';
@@ -68,117 +69,132 @@ const isErrorPayload = (payload: GQLGanttEventPayload): payload is GQLErrorPaylo
 /**
  * Connect the Gantt component to the GraphQL API.
  */
-export const GanttRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
-  const { classes } = useGanttRepresentationStyles();
-  const { addErrorMessage, addMessages } = useMultiToast();
-  const { setSelection } = useSelection();
+export const GanttRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  (
+    { editingContextId, representationId }: RepresentationComponentProps,
+    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+  ) => {
+    const { classes } = useGanttRepresentationStyles();
+    const { addErrorMessage, addMessages } = useMultiToast();
+    const { setSelection } = useSelection();
 
-  const [{ id, gantt, complete }, setState] = useState<GanttRepresentationState>({
-    id: crypto.randomUUID(),
-    gantt: null,
-    complete: false,
-  });
-
-  const onError = ({ message }: ApolloError) => {
-    addErrorMessage(message);
-  };
-
-  const onData = ({ data }: OnDataOptions<GQLGanttEventSubscription>) => {
-    flushSync(() => {
-      if (data.data) {
-        const { ganttEvent } = data.data;
-        if (isGanttRefreshedEventPayload(ganttEvent)) {
-          setState((previousState) => {
-            return { ...previousState, gantt: ganttEvent.gantt };
-          });
-        } else if (isErrorPayload(ganttEvent)) {
-          addMessages(ganttEvent.messages);
-        }
-      }
-    });
-  };
-
-  useSubscription<GQLGanttEventSubscription>(ganttEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        ganttId: representationId,
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          id: representationId,
+          applySelection: null,
+        };
       },
-    },
-    fetchPolicy: 'no-cache',
-    onData,
-    onError,
-    onComplete: () => {
-      setState((previousState) => {
-        return { ...previousState, complete: true, gantt: null };
-      });
-    },
-  });
+      []
+    );
 
-  //---------------------------------
-  // Mutations
-  const {
-    deleteTask,
-    editTask,
-    createTask,
-    dropTask,
-    createTaskDependency,
-    deleteTaskDependency,
-    changeTaskCollapseState,
-    changeColumn,
-  } = useGanttMutations(editingContextId, representationId);
+    const [{ id, gantt, complete }, setState] = useState<GanttRepresentationState>({
+      id: crypto.randomUUID(),
+      gantt: null,
+      complete: false,
+    });
 
-  const handleEditTask = (task: TaskOrEmpty) => {
-    const newDetail: GQLTaskDetail = {
-      name: task.name,
-      description: task.description ?? '',
-      startTime: formatDate((task as Task)?.start, (task as SelectableTask)?.temporalType, false),
-      endTime: formatDate((task as Task)?.end, (task as SelectableTask)?.temporalType, true),
-      progress: (task as Task)?.progress,
-      computeStartEndDynamically: task.isDisabled,
-      temporalType: (task as SelectableTask)?.temporalType,
+    const onError = ({ message }: ApolloError) => {
+      addErrorMessage(message);
     };
 
-    // to avoid blink because useMutation implies a re-render as the task value is the old one
-    updateTask(gantt, task.id, { ...newDetail, collapsed: (task as Task)?.hideChildren });
-    editTask(task.id, newDetail);
-  };
+    const onData = ({ data }: OnDataOptions<GQLGanttEventSubscription>) => {
+      flushSync(() => {
+        if (data.data) {
+          const { ganttEvent } = data.data;
+          if (isGanttRefreshedEventPayload(ganttEvent)) {
+            setState((previousState) => {
+              return { ...previousState, gantt: ganttEvent.gantt };
+            });
+          } else if (isErrorPayload(ganttEvent)) {
+            addMessages(ganttEvent.messages);
+          }
+        }
+      });
+    };
 
-  const onExpandCollapse = () => {};
+    useSubscription<GQLGanttEventSubscription>(ganttEventSubscription, {
+      variables: {
+        input: {
+          id,
+          editingContextId,
+          ganttId: representationId,
+        },
+      },
+      fetchPolicy: 'no-cache',
+      onData,
+      onError,
+      onComplete: () => {
+        setState((previousState) => {
+          return { ...previousState, complete: true, gantt: null };
+        });
+      },
+    });
 
-  let content: JSX.Element | null = null;
-  if (complete) {
-    content = (
-      <div className={classes.complete}>
-        <Typography variant="h5" align="center">
-          The Gantt does not exist anymore
-        </Typography>
-      </div>
-    );
-  } else if (!gantt) {
-    return <RepresentationLoadingIndicator />;
-  } else {
-    const tasks = getTaskFromGQLTask(gantt.tasks, '');
-    content = (
-      <Gantt
-        editingContextId={editingContextId}
-        representationId={representationId}
-        tasks={tasks}
-        gqlColumns={gantt.columns}
-        gqlDateRounding={gantt.dateRounding}
-        setSelection={setSelection}
-        onCreateTask={createTask}
-        onEditTask={handleEditTask}
-        onDeleteTask={deleteTask}
-        onExpandCollapse={onExpandCollapse}
-        onDropTask={dropTask}
-        onCreateTaskDependency={createTaskDependency}
-        onChangeTaskCollapseState={changeTaskCollapseState}
-        onChangeColumn={changeColumn}
-        onDeleteTaskDependency={deleteTaskDependency}
-      />
-    );
+    //---------------------------------
+    // Mutations
+    const {
+      deleteTask,
+      editTask,
+      createTask,
+      dropTask,
+      createTaskDependency,
+      deleteTaskDependency,
+      changeTaskCollapseState,
+      changeColumn,
+    } = useGanttMutations(editingContextId, representationId);
+
+    const handleEditTask = (task: TaskOrEmpty) => {
+      const newDetail: GQLTaskDetail = {
+        name: task.name,
+        description: task.description ?? '',
+        startTime: formatDate((task as Task)?.start, (task as SelectableTask)?.temporalType, false),
+        endTime: formatDate((task as Task)?.end, (task as SelectableTask)?.temporalType, true),
+        progress: (task as Task)?.progress,
+        computeStartEndDynamically: task.isDisabled,
+        temporalType: (task as SelectableTask)?.temporalType,
+      };
+
+      // to avoid blink because useMutation implies a re-render as the task value is the old one
+      updateTask(gantt, task.id, { ...newDetail, collapsed: (task as Task)?.hideChildren });
+      editTask(task.id, newDetail);
+    };
+
+    const onExpandCollapse = () => {};
+
+    let content: JSX.Element | null = null;
+    if (complete) {
+      content = (
+        <div className={classes.complete}>
+          <Typography variant="h5" align="center">
+            The Gantt does not exist anymore
+          </Typography>
+        </div>
+      );
+    } else if (!gantt) {
+      return <RepresentationLoadingIndicator />;
+    } else {
+      const tasks = getTaskFromGQLTask(gantt.tasks, '');
+      content = (
+        <Gantt
+          representationId={representationId}
+          tasks={tasks}
+          gqlColumns={gantt.columns}
+          gqlDateRounding={gantt.dateRounding}
+          setSelection={setSelection}
+          onCreateTask={createTask}
+          onEditTask={handleEditTask}
+          onDeleteTask={deleteTask}
+          onExpandCollapse={onExpandCollapse}
+          onDropTask={dropTask}
+          onCreateTaskDependency={createTaskDependency}
+          onChangeTaskCollapseState={changeTaskCollapseState}
+          onChangeColumn={changeColumn}
+          onDeleteTaskDependency={deleteTaskDependency}
+        />
+      );
+    }
+    return <>{content}</>;
   }
-  return <>{content}</>;
-};
+);

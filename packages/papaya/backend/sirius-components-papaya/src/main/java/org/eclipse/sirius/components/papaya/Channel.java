@@ -20,5 +20,5 @@ package org.eclipse.sirius.components.papaya;
  * @model
  * @generated
  */
-public interface Channel extends NamedElement {
+public interface Channel extends NamedElement, FolderElement {
 } // Channel

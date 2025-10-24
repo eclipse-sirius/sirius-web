@@ -10,7 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode, XYPosition } from '@xyflow/react';
+import {
+  Edge,
+  EdgeProps,
+  getSmoothStepPath,
+  InternalNode,
+  Node,
+  Position,
+  useInternalNode,
+  XYPosition,
+} from '@xyflow/react';
 import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
@@ -39,8 +48,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
-  const sourceNode = useInternalNode<Node<NodeData>>(source);
-  const targetNode = useInternalNode<Node<NodeData>>(target);
+  const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
+  const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
 
   if (!sourceNode || !targetNode) {
     return null;
@@ -102,7 +111,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   let bendingPoints: XYPosition[] = [];
-  if (data?.bendingPoints) {
+  if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({
@@ -166,7 +175,9 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetX={targetX}
       targetY={targetY}
       bendingPoints={bendingPoints}
-      customEdge={!!data?.bendingPoints}
+      customEdge={!!(data && data.bendingPoints && data.bendingPoints.length > 0)}
+      sourceNode={sourceNode}
+      targetNode={targetNode}
     />
   );
 });

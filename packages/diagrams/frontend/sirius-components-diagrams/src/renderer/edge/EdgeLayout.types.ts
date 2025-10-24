@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,8 @@ export type GetEdgeParameters = (
   source: InternalNode<Node<NodeData>>,
   target: InternalNode<Node<NodeData>>,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
-  layoutDirection: string
+  layoutDirection: string,
+  bendingPoints: XYPosition[]
 ) => EdgeParameters;
 
 export interface EdgeParameters {
@@ -77,6 +78,8 @@ export interface NodeCenter {
   y: number;
 }
 
+export type GetHandlePositionWithOffSet = (handleXYPosition: XYPosition, handlePosition: Position) => XYPosition;
+
 export type GetHandleCoordinatesByPosition = (
   node: InternalNode<Node<NodeData>>,
   handlePosition: Position,
@@ -90,3 +93,5 @@ export interface HandleCoordinates {
   x: number;
   y: number;
 }
+
+export type SegmentDirection = 'x' | 'y';

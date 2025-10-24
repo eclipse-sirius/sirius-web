@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class EdgeStyle {
+
     private int size;
 
     private LineStyle lineStyle;
@@ -34,8 +35,18 @@ public final class EdgeStyle {
 
     private String color;
 
+    private EdgeType edgeType;
+
     private EdgeStyle() {
         // Prevent instantiation
+    }
+
+    public static Builder newEdgeStyle() {
+        return new Builder();
+    }
+
+    public static Builder newEdgeStyle(EdgeStyle sourceEdgeStyle) {
+        return new Builder(sourceEdgeStyle);
     }
 
     public int getSize() {
@@ -58,8 +69,8 @@ public final class EdgeStyle {
         return this.color;
     }
 
-    public static Builder newEdgeStyle() {
-        return new Builder();
+    public EdgeType getEdgeType() {
+        return this.edgeType;
     }
 
     @Override
@@ -75,6 +86,7 @@ public final class EdgeStyle {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private int size;
 
         private LineStyle lineStyle;
@@ -85,8 +97,19 @@ public final class EdgeStyle {
 
         private String color;
 
+        private EdgeType edgeType;
+
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(EdgeStyle sourceEdgeStyle) {
+            this.size = sourceEdgeStyle.getSize();
+            this.lineStyle = sourceEdgeStyle.getLineStyle();
+            this.sourceArrow = sourceEdgeStyle.getSourceArrow();
+            this.targetArrow = sourceEdgeStyle.getTargetArrow();
+            this.color = sourceEdgeStyle.getColor();
+            this.edgeType = sourceEdgeStyle.getEdgeType();
         }
 
         public Builder size(int size) {
@@ -114,6 +137,11 @@ public final class EdgeStyle {
             return this;
         }
 
+        public Builder edgeType(EdgeType edgeType) {
+            this.edgeType = Objects.requireNonNull(edgeType);
+            return this;
+        }
+
         public EdgeStyle build() {
             EdgeStyle edgeStyle = new EdgeStyle();
             edgeStyle.size = this.size;
@@ -121,6 +149,7 @@ public final class EdgeStyle {
             edgeStyle.sourceArrow = Objects.requireNonNull(this.sourceArrow);
             edgeStyle.targetArrow = Objects.requireNonNull(this.targetArrow);
             edgeStyle.color = Objects.requireNonNull(this.color);
+            edgeStyle.edgeType = Objects.requireNonNull(this.edgeType);
             return edgeStyle;
         }
     }

@@ -12,20 +12,23 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { IconOverlay, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useStoreApi, XYPosition } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramDialogVariable } from '../../dialog/DialogContextExtensionPoints.types';
 import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
 import {
   ConnectorContextualMenuProps,
+  GetConnectorToolsData,
+  GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -36,8 +39,6 @@ import {
   GQLRepresentationDescription,
   GQLTool,
   GQLToolVariable,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
@@ -78,6 +79,7 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
     invokeSingleClickOnTwoDiagramElementsTool(input: $input) {
       __typename
       ... on InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
+        id
         newSelection {
           entries {
             id
@@ -113,15 +115,15 @@ const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingle
   tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { editingContextId, diagramId, registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
     useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
-  const { setSelection } = useSelection();
 
   const { showDialog, isOpened } = useDialog();
 
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const connectionSource: HTMLElement | null = connection
     ? document.querySelector(`[data-id="${connection.source}"]`)
@@ -198,6 +200,22 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   };
 
   const invokeToolMutation = (tool: GQLTool, variables: GQLToolVariable[]) => {
+    let targetHandlePosition: XYPosition = { x: 0, y: 0 };
+    if (position) {
+      targetHandlePosition = screenToFlowPosition({ x: position.x, y: position.y });
+    }
+    const target = store.getState().nodeLookup.get(targetDiagramElementId);
+    if (target && position) {
+      const isNearCenter = isCursorNearCenterOfTheNode(target, {
+        x: targetHandlePosition.x,
+        y: targetHandlePosition.y,
+      });
+
+      if (isNearCenter) {
+        targetHandlePosition = { x: 0, y: 0 };
+      }
+    }
+
     const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
       id: crypto.randomUUID(),
       editingContextId,
@@ -207,8 +225,8 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       toolId: tool.id,
       sourcePositionX: 0,
       sourcePositionY: 0,
-      targetPositionX: 0,
-      targetPositionY: 0,
+      targetPositionX: targetHandlePosition.x,
+      targetPositionY: targetHandlePosition.y,
       variables,
     };
     invokeSingleClickOnTwoDiagramElementsTool({ variables: { input } });
@@ -226,9 +244,9 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
         addMessages(payload.messages);
       }
       if (isSuccessPayload(payload)) {
-        const { newSelection } = payload;
+        const { id, newSelection } = payload;
         if (newSelection?.entries.length ?? 0 > 0) {
-          setSelection(newSelection);
+          registerPostToolSelection(id, newSelection);
         }
         addMessages(payload.messages);
         onShouldConnectorContextualMenuClose();
@@ -278,9 +296,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       onClose={onShouldConnectorContextualMenuClose}
       anchorEl={connectionTarget}
       anchorReference="anchorPosition"
+      data-testid="connectorContextualMenu"
       anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
       {connectorTools.map((tool) => (
-        <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
+        <MenuItem key={tool.id} onClick={() => invokeTool(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
           <ListItemIcon>
             <IconOverlay iconURL={tool.iconURL} alt={tool.label} title={tool.label} />
           </ListItemIcon>

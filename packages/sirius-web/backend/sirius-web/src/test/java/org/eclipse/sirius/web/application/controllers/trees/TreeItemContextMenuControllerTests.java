@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -22,15 +22,12 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
@@ -50,8 +47,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -117,10 +112,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
         var treeId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
-            assertThat(tree).isNotNull();
-            treeId.set(tree.getId());
-        });
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
 
         var helpId = new AtomicReference<String>();
         var toggleAbstractAction = new AtomicReference<String>();
@@ -134,14 +126,18 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
-
             List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
-            assertThat(actionLabels).isNotEmpty().hasSize(2);
-            assertThat(actionLabels.get(0)).isEqualTo("Help");
-            assertThat(actionLabels.get(1)).isEqualTo("Toggle abstract");
+            List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionLabels).isNotEmpty().hasSize(3);
+            assertThat(actionIds).isNotEmpty().hasSize(3);
+            // The ExpandAll action doesn't have a label, it only contains the ID of the frontend component to use.
+            assertThat(actionLabels.get(0)).isEqualTo("");
+            assertThat(actionIds.get(0)).isEqualTo("expandAll");
+            assertThat(actionLabels.get(1)).isEqualTo("Help");
+            assertThat(actionLabels.get(2)).isEqualTo("Toggle abstract");
 
-            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[0].id"));
-            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
+            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
+            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[2].id"));
         };
 
         // 4- invoke fetch action data query to retrieve the fetch action data
@@ -195,10 +191,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
         var treeId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
-            assertThat(tree).isNotNull();
-            treeId.set(tree.getId());
-        });
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
 
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -222,16 +215,4 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             .verify(Duration.ofSeconds(5));
     }
 
-
-
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
-    }
 }

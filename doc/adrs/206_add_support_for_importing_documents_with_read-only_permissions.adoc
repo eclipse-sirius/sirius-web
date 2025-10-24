@@ -1,0 +1,75 @@
+= ADR-206 - Add support for importing documents with read-only permissions
+
+== Context
+
+The upload document modal always imports resources that can be modified.
+In some use cases, users may want to import a resource with read-only permissions (e.g. to ensure that the imported resource remains unchanged).
+
+== Decision
+
+We will add an option to import a document in read-only mode in the upload document modal.
+
+=== Frontend
+
+The `UploadDocumentModal`'s _Upload_ button will be replaced with a split button with 2 options:
+
+- Upload
+- Upload (read-only)
+
+The _Upload_ option will correspond to the actual behavior of the _Upload_ button.
+
+We choose to have a split button instead of a checkbox to be consistent with the split button in the _Import libraries_ modal.
+
+=== GraphQL schema
+
+We will add a new field in `UploadDocumentInput`
+
+[source, graphqls]
+----
+input UploadDocumentInput {
+  id: ID!
+  editingContextId: ID!
+  file: Upload!
+  readOnly: Boolean!
+}
+----
+
+=== Backend
+
+We will change the signature of `IUploadFileLoader#load` as follows:
+
+[source, java]
+----
+IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean isReadOnly);
+----
+
+We will add a new boolean attribute `isReadOnly` in `ResourceMetadataAdapter`.
+
+We will change the signature of `IResourceLoader#toResource` as follows:
+
+[source, java]
+----
+Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants, boolean isReadOnly);
+----
+
+The implementation of this method will set the `isReadOnly` value in the created resource's `ResourceMetadataAdapter`.
+
+We will update the `DefaultReadOnlyObjectPredicate` to take into account this new attribute in the `ResourceMetadataAdapter`.
+
+We will add an `is_read_only` column in the `document` database, update the corresponding bounded context, and the `ResourceToDocumentService` to persist the `isReadOnly` metadata in the database.
+
+Finally, we will use this metadata to prevent the persistence of read-only resources _once they have been persisted for the first time_.
+The goal is to persist the resource when the user uploads it, but never persist it afterwards, so any breach in the read-only feature will not result in a persisted modification (we use a similar approach when we load libraries).
+
+== Rabbit holes
+
+None.
+
+== Consequences
+
+- A liquibase migration is required to support the new `is_read_only` column in the `document` table.
+This migration will set the value to `false` for all the existing projects.
+
+== Cutting backs
+
+None.

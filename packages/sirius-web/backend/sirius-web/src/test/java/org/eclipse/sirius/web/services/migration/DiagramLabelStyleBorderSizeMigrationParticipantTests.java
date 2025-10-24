@@ -205,7 +205,7 @@ public class DiagramLabelStyleBorderSizeMigrationParticipantTests extends Abstra
         this.givenCommittedTransaction.commit();
 
         var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file);
+        var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, false);
         var result = this.uploadDocumentMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -237,9 +237,9 @@ public class DiagramLabelStyleBorderSizeMigrationParticipantTests extends Abstra
                             .anyMatch(view -> view.eResource().eAdapters().stream()
                                     .filter(ResourceMetadataAdapter.class::isInstance)
                                     .map(ResourceMetadataAdapter.class::cast)
-                                    .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
-                                    .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
-                                            && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
+                                    .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getLastMigrationData() != null)
+                                    .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getLastMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
+                                            && resourceMetadataAdapter.getLastMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
                             ))
                     .orElse(false);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), isMigrated);

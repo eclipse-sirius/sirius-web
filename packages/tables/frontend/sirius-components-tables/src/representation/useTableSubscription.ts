@@ -96,6 +96,7 @@ export const getTableEventSubscription = `
               targetObjectId
               targetObjectKind
               columnId
+              tooltipValue
               ... on SelectCell {
                 value
                 options {
@@ -140,7 +141,10 @@ const isTableColumnFilterPayload = (payload: GQLTableEventPayload): payload is G
 const isTableColumnSortPayload = (payload: GQLTableEventPayload): payload is GQLTableColumnSortPayload =>
   payload.__typename === 'TableColumnSortPayload';
 
-export const useTableSubscription = (editingContextId: string, representationId: string): UseTableSubscriptionValue => {
+export const useTableSubscription = (
+  editingContextId: string,
+  representationId: string | null
+): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
     table: null,
@@ -150,7 +154,7 @@ export const useTableSubscription = (editingContextId: string, representationId:
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId,
+    representationId: representationId ?? '',
   };
 
   const variables: GQLTableEventVariables = { input };
@@ -217,6 +221,7 @@ export const useTableSubscription = (editingContextId: string, representationId:
     onData,
     onComplete,
     onError,
+    skip: representationId === null,
   });
 
   return {

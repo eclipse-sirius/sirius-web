@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -195,7 +195,6 @@ public class EdgeStyleBuilder {
         this.getEdgeStyle().setBackground(value);
         return this;
     }
-
     /**
      * Setter for MaxWidthExpression.
      *
@@ -203,6 +202,16 @@ public class EdgeStyleBuilder {
      */
     public EdgeStyleBuilder maxWidthExpression(java.lang.String value) {
         this.getEdgeStyle().setMaxWidthExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for EdgeType.
+     *
+     * @generated
+     */
+    public EdgeStyleBuilder edgeType(org.eclipse.sirius.components.view.diagram.EdgeType value) {
+        this.getEdgeStyle().setEdgeType(value);
         return this;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +41,7 @@ public class DiagramCustomizedPropertiesAttributeMigrationParticipant implements
     }
 
     @Override
-    public void replaceJsonNode(ObjectNode root, String currentAttribute, JsonNode currentValue) {
+    public void replaceJsonNode(IEditingContext editingContext, ObjectNode root, String currentAttribute, JsonNode currentValue) {
         if (currentAttribute.equals(CUSTOMIZED_PROPERTIES)) {
             root.remove(CUSTOMIZED_PROPERTIES);
         }

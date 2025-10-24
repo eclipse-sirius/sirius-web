@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -79,6 +81,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
@@ -93,7 +96,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
@@ -110,6 +112,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
@@ -124,7 +127,6 @@ public class DiagramRendererNodeTests {
         assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
-        assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getId).allMatch(id -> UUID.nameUUIDFromBytes(INSIDE_LABEL_ID.getBytes()).toString().equals(id));
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getText).allMatch(LABEL_TEXT::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getInsideLabel).extracting(InsideLabel::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
@@ -139,12 +141,11 @@ public class DiagramRendererNodeTests {
      */
     @Test
     public void testImageNodeRendering() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return ImageNodeStyle.newImageNodeStyle()
-                    .imageURL("test")
-                    .scalingFactor(1)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> ImageNodeStyle.newImageNodeStyle()
+                .imageURL("test")
+                .scalingFactor(1)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
+                .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, Optional.empty());
 
         assertThat(diagram).isNotNull();
@@ -175,6 +176,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
@@ -209,10 +211,10 @@ public class DiagramRendererNodeTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
 
         InsideLabelDescription insideLbelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
-                .idProvider(variableManager -> INSIDE_LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
@@ -230,11 +232,11 @@ public class DiagramRendererNodeTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLbelDescription)
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
@@ -259,6 +261,8 @@ public class DiagramRendererNodeTests {
                 .previousDiagram(previousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
+                .edgeAppearanceHandlers(List.of())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer().render(element);

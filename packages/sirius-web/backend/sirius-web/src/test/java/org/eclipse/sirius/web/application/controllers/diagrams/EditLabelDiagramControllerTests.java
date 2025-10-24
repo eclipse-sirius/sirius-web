@@ -12,20 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -44,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -97,16 +93,12 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
-                    labelId.set(node.getInsideLabel().getId());
-                }, () -> fail("Missing diagram"));
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
+            labelId.set(node.getInsideLabel().getId());
+        });
 
         Runnable requestInitialLabel = () -> {
             Map<String, Object> variables = Map.of(
@@ -137,16 +129,13 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         var nodeId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
-                    nodeId.set(node.getId());
-                    labelId.set(node.getInsideLabel().getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var node = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain-suffix").getNode();
+            nodeId.set(node.getId());
+            labelId.set(node.getInsideLabel().getId());
+        });
 
         Runnable editLabel = () -> {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "new label");
@@ -156,23 +145,15 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getNodes().stream()
-                        .filter(node -> node.getId().equals(nodeId.get()))
-                        .map(node -> node.getInsideLabel().getText().equals("new label-suffix"))
-                        .findFirst()
-                        .orElse(false);
-                })
-                .isPresent();
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(nodeId.get()).getNode();
+            assertThat(node.getInsideLabel()).hasText("new label-suffix");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(editLabel)
-                .expectNextMatches(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -187,16 +168,13 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         var edgeId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
-                    var edge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application - sirius-web-domain").getEdge();
-                    edgeId.set(edge.getId());
-                    labelId.set(edge.getCenterLabel().getId());
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var edge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application - sirius-web-domain").getEdge();
+            edgeId.set(edge.getId());
+            labelId.set(edge.getCenterLabel().id());
+        });
 
         Runnable editLabel = () -> {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
@@ -206,23 +184,15 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
-        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getEdges().stream()
-                            .filter(edge -> edge.getId().equals(edgeId.get()))
-                            .map(edge -> edge.getCenterLabel().getText().equals("sirius-web-application-renamed - sirius-web-domain"))
-                            .findFirst()
-                            .orElse(false);
-                })
-                .isPresent();
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var edge = new DiagramNavigator(diagram).edgeWithId(edgeId.get()).getEdge();
+            assertThat(edge.getCenterLabel()).hasText("sirius-web-application-renamed - sirius-web-domain");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(editLabel)
-                .expectNextMatches(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

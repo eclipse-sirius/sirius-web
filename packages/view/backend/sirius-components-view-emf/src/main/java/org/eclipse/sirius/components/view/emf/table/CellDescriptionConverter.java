@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
@@ -39,15 +39,15 @@ import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
  */
 public class CellDescriptionConverter {
 
-    private final ITableIdProvider tableIdProvider;
+    private final IIdentityService identityService;
 
-    private final IObjectService objectService;
+    private final ITableIdProvider tableIdProvider;
 
     private final List<ICustomCellConverter> customCellConverters;
 
-    public CellDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService, List<ICustomCellConverter> customCellConverters) {
+    public CellDescriptionConverter(IIdentityService identityService, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
-        this.objectService = Objects.requireNonNull(objectService);
         this.customCellConverters = Objects.requireNonNull(customCellConverters);
     }
 
@@ -62,15 +62,14 @@ public class CellDescriptionConverter {
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     private Optional<ICellDescription> convert(org.eclipse.sirius.components.view.table.CellDescription viewCellDescription, AQLInterpreter interpreter) {
-        Optional<ICellDescription> optionalICellDescription = Optional.empty();
+        Optional<ICellDescription> optionalICellDescription;
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Optional<Object> optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
                 optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
             }
-            return optionalSelf
-                    .map(this.objectService::getId)
+            return optionalSelf.map(this.identityService::getId)
                     .orElse("");
         };
 
@@ -79,8 +78,7 @@ public class CellDescriptionConverter {
             if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
                 optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
             }
-            return optionalSelf
-                    .map(this.objectService::getKind)
+            return optionalSelf.map(this.identityService::getKind)
                     .orElse("");
         };
 
@@ -93,12 +91,19 @@ public class CellDescriptionConverter {
             return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
         };
 
+        BiFunction<VariableManager, Object, String> cellTooltipValueProvider = (variableManager, columnTargetObject) -> {
+            var child = variableManager.createChild();
+            child.put("columnTargetObject", columnTargetObject);
+            return this.evaluateString(interpreter, child, viewCellDescription.getTooltipExpression());
+        };
+
         if (viewCellDescription.getCellWidgetDescription() instanceof CellTextfieldWidgetDescription cellTextfieldWidgetDescription) {
             optionalICellDescription = Optional.of(TextfieldCellDescription.newTextfieldCellDescription(this.tableIdProvider.getId(viewCellDescription))
                     .targetObjectIdProvider(targetObjectIdProvider)
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellLabelWidgetDescription cellLabelWidgetDescription) {
             optionalICellDescription = Optional.of(IconLabelCellDescription.newIconLabelCellDescription(this.tableIdProvider.getId(viewCellDescription))
@@ -111,6 +116,7 @@ public class CellDescriptionConverter {
                         child.put("columnTargetObject", columnTargetObject);
                         return new ViewIconURLsProvider(interpreter, cellLabelWidgetDescription.getIconExpression()).apply(child);
                     })
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellTextareaWidgetDescription) {
             optionalICellDescription = Optional.of(TextareaCellDescription.newTextareaCellDescription(this.tableIdProvider.getId(viewCellDescription))
@@ -118,10 +124,11 @@ public class CellDescriptionConverter {
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else {
             optionalICellDescription = this.customCellConverters.stream()
-                    .map(converter -> converter.convert(viewCellDescription, interpreter, this.tableIdProvider, this.objectService))
+                    .map(converter -> converter.convert(viewCellDescription, interpreter))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .findFirst();

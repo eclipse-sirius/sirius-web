@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,18 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
     !state.pristine && (state.newName.trim().length === 0 || state.newName.trim().length > 1024);
 
   return (
-    <Dialog open onClose={onCancel} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+    <Dialog
+      open
+      onClose={onCancel}
+      aria-labelledby="dialog-title"
+      maxWidth="xs"
+      data-testid="rename-project-dialog"
+      fullWidth
+      // Menu Items from MUI have a text based navigation, when the first letter of a menu item is hit (keydown event) the menu item gain the focus.
+      // When the user writes in a input text contained by a dialog, when he presses a the first letter of a menu item also opened, the input lose the focus.
+      // onKeyDown={(e) => e.stopPropagation()} on the dialog prevents any input present in the dialog to lose the focus
+      // See comments in https://github.com/eclipse-sirius/sirius-web/issues/5230
+      onKeyDown={(e) => e.stopPropagation()}>
       <DialogTitle id="dialog-title">Rename the project</DialogTitle>
       <DialogContent>
         <TextField
@@ -60,6 +71,9 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
           label="Name"
           placeholder="Enter a new project name"
           data-testid="rename-textfield"
+          slotProps={{
+            htmlInput: { 'data-testid': 'inner-rename-textfield' },
+          }}
           autoFocus
           fullWidth
         />
@@ -67,7 +81,7 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
       <DialogActions>
         <Button
           variant="contained"
-          disabled={loading}
+          disabled={loading || nameIsInvalid}
           onClick={onRenameProject}
           color="primary"
           data-testid="rename-project">

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,37 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.annotations.PublicApi;
+
 /**
  * Used to manage the variables.
  *
+ * <p>
+ *     The variable manager is used to give access to some variables to a piece of behavior.
+ *     Contrary to a regular map of variables, the variable manager contains a notion of scope.
+ *     It allows a piece of behavior to retrieve its relevant variables but also variables from its parent scopes.
+ *     It also let us redefine a variable by creating a new variable with the same name in a child scope.
+ * </p>
+ *
+ * <p>
+ *     This concept was first introduced and validated in Eclipse EEF and leveraged in Sirius Desktop.
+ * </p>
+ *
  * @author sbegaudeau
+ * @v0.1.0
  */
+@PublicApi
 public class VariableManager {
 
+    /**
+     * The name of the variable used as the context of the execution of a piece of behavior.
+     *
+     * <p>
+     *     While it is not a strict requirement of Sirius Components, one could make the assumption that every piece of
+     *     behavior executed with a variable manager should have access to a variable named <strong>self</strong>.
+     *     This variable would then contain the main semantic element that should be used as the context of the execution.
+     * </p>
+     */
     public static final String SELF = "self";
 
     /**
@@ -67,11 +91,9 @@ public class VariableManager {
     }
 
     public <T> Optional<T> get(String name, Class<T> expectedType) {
-        // @formatter:off
         return Optional.ofNullable(this.get(name))
                        .filter(expectedType::isInstance)
                        .map(expectedType::cast);
-        // @formatter:on
     }
 
     private Object get(String name) {

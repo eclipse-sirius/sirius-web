@@ -96,7 +96,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -107,7 +107,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 
@@ -129,7 +129,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -140,7 +140,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 
@@ -168,7 +168,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -179,7 +179,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
-        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java");
+        var resourceMetadataAdapter = new ResourceMetadataAdapter("Java", true);
         resource.eAdapters().add(resourceMetadataAdapter);
         resourceSet.getResources().add(resource);
 

@@ -81,7 +81,7 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
     private DeleteTool deleteTool() {
         return new DeleteToolBuilder()
-                .name("Edit Label")
+                .name("Delete")
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self.defaultDelete()")

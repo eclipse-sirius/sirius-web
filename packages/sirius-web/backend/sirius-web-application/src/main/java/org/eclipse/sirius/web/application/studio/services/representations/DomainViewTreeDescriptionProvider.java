@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.TextStyleDescription;
 import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.View;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -71,6 +73,8 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
     private final ITreeIdProvider treeIdProvider;
 
     private TreeDescription viewDescription;
+
+    private TreeItemContextMenuEntry toggleAbstractMenuEntry;
 
     public DomainViewTreeDescriptionProvider(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, ITreeIdProvider treeIdProvider) {
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
@@ -113,6 +117,10 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
         return this.treeIdProvider.getId(this.viewDescription);
     }
 
+    public String getToggleAbstractMenuEntryId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.toggleAbstractMenuEntry).toString().getBytes()).toString();
+    }
+
     private TreeDescription domainExplorerDescription(TextStylePalette domainTextStylePalette) {
         this.viewDescription = new TreeBuilders()
                 .newTreeDescription()
@@ -120,11 +128,11 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain explorer DSL'")
                 .kindExpression("aql:self.getKind()")
-                .treeItemIconExpression("aql:self.getIconURL()")
+                .treeItemIconExpression("aql:self.getIconURLs()")
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .selectableExpression("aql:self.isSelectable()")
-                .hasChildrenExpression("aql:editingContext.hasChildren(self)")
+                .hasChildrenExpression("aql:editingContext.hasChildren(self, " + ExplorerDescriptionProvider.EXISTING_REPRESENTATIONS + ")")
                 .elementsExpression("aql:editingContext.getElements()")
                 .childrenExpression("aql:self.getChildren(editingContext, expanded)")
                 .parentExpression("aql:self.getParent(editingContext, id)")
@@ -283,12 +291,18 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .urlExression("https://eclipse.dev/sirius/sirius-web.html")
                 .kind(FetchTreeItemContextMenuEntryKind.OPEN)
                 .build();
-        var toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
+        this.toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
                 .labelExpression("Toggle abstract")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .body(callService.build())
+                .withImpactAnalysis(true)
                 .build();
 
-        return List.of(helpMenuEntry, toggleAbstractMenuEntry);
+        var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .contributionId("expandAll")
+                .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
+                .build();
+
+        return List.of(expandAllMenuEntry, helpMenuEntry, this.toggleAbstractMenuEntry);
     }
 }

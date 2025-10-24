@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.LabelWidget;
@@ -40,7 +38,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -88,26 +85,22 @@ public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
     public void givenFlexboxContainerWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToFlexboxContainerForm();
 
-        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
-                    var flexboxContainer = groupNavigator.findWidget("", FlexboxContainer.class);
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+            var flexboxContainer = groupNavigator.findWidget("", FlexboxContainer.class);
 
-                    assertThat(flexboxContainer.getBorderStyle().getLineStyle()).isEqualTo(ContainerBorderLineStyle.Dashed);
-                    assertThat(flexboxContainer.getBorderStyle().getRadius()).isEqualTo(5);
-                    assertThat(flexboxContainer.getBorderStyle().getSize()).isEqualTo(2);
+            assertThat(flexboxContainer.getBorderStyle().getLineStyle()).isEqualTo(ContainerBorderLineStyle.Dashed);
+            assertThat(flexboxContainer.getBorderStyle().getRadius()).isEqualTo(5);
+            assertThat(flexboxContainer.getBorderStyle().getSize()).isEqualTo(2);
 
-                    assertThat(flexboxContainer.getChildren()).hasSize(2);
+            assertThat(flexboxContainer.getChildren()).hasSize(2);
 
-                    var firstWidget = flexboxContainer.getChildren().get(0);
-                    assertThat(firstWidget).isInstanceOf(Textfield.class);
+            var firstWidget = flexboxContainer.getChildren().get(0);
+            assertThat(firstWidget).isInstanceOf(Textfield.class);
 
-                    var secondWidget = flexboxContainer.getChildren().get(1);
-                    assertThat(secondWidget).isInstanceOf(LabelWidget.class);
-                }, () -> fail("Missing form"));
+            var secondWidget = flexboxContainer.getChildren().get(1);
+            assertThat(secondWidget).isInstanceOf(LabelWidget.class);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

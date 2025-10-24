@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1163,11 +1163,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTextStyleDescription_BackgroundColorExpression(), this.getInterpretedExpression(), "backgroundColorExpression", "", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextStyleDescription_IsBoldExpression(), this.getInterpretedExpression(), "isBoldExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+        this.initEAttribute(this.getTextStyleDescription_IsBoldExpression(), this.getInterpretedExpression(), "isBoldExpression", "aql:false", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextStyleDescription_IsItalicExpression(), this.getInterpretedExpression(), "isItalicExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
+        this.initEAttribute(this.getTextStyleDescription_IsItalicExpression(), this.getInterpretedExpression(), "isItalicExpression", "aql:false", 0, 1, TextStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTextStyleDescription_IsUnderlineExpression(), this.getInterpretedExpression(), "isUnderlineExpression", "aql:\'false\'", 0, 1, TextStyleDescription.class,
+        this.initEAttribute(this.getTextStyleDescription_IsUnderlineExpression(), this.getInterpretedExpression(), "isUnderlineExpression", "aql:false", 0, 1, TextStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types

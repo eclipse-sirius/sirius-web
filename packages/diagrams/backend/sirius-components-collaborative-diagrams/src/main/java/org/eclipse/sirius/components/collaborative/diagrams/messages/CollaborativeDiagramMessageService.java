@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CollaborativeDiagramMessageService implements ICollaborativeDiagramMessageService {
+
     private final MessageSourceAccessor messageSourceAccessor;
 
     public CollaborativeDiagramMessageService(@Qualifier("collaborativeDiagramMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
@@ -94,5 +95,10 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     @Override
     public String actionHandlerNotFound(String actionId) {
         return this.messageSourceAccessor.getMessage(MessageConstants.ACTION_HANDLER_NOT_FOUND, new Object[] { actionId });
+    }
+
+    @Override
+    public String diagramElementNotFound(String id) {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_ELEMENT_NOT_FOUND, new Object[] { id });
     }
 }

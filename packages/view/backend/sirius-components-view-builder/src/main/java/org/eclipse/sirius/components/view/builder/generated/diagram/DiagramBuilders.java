@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated.diagram;
 
-import org.eclipse.sirius.components.view.builder.generated.SelectionDialogTreeDescriptionBuilder;
-
 /**
  * Use to instantiate a new builder.
  *

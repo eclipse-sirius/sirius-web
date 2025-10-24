@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
-import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.elements.InsideLabelElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -44,8 +47,7 @@ public class InsideLabelComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         InsideLabelDescription insideLabelDescription = this.props.getInsideLabelDescription();
-        String idFromProvider = insideLabelDescription.getIdProvider().apply(variableManager);
-        String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
+        String id = new LabelIdProvider().getInsideLabelId(this.props.getParentNodeId());
         String text = insideLabelDescription.getTextProvider().apply(variableManager);
 
         boolean isHeader = insideLabelDescription.getIsHeaderProvider().apply(variableManager);
@@ -56,37 +58,13 @@ public class InsideLabelComponent implements IComponent {
 
         LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
 
-        String color = labelStyleDescription.getColorProvider().apply(variableManager);
-        Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = labelStyleDescription.getBoldProvider().apply(variableManager);
-        Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
-        Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
-        Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
-        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
-        String background = labelStyleDescription.getBackgroundProvider().apply(variableManager);
-        String borderColor = labelStyleDescription.getBorderColorProvider().apply(variableManager);
-        Integer borderRadius = labelStyleDescription.getBorderRadiusProvider().apply(variableManager);
-        Integer borderSize = labelStyleDescription.getBorderSizeProvider().apply(variableManager);
-        LineStyle borderLineStyle = labelStyleDescription.getBorderStyleProvider().apply(variableManager);
-        String maxWidth = labelStyleDescription.getMaxWidthProvider().apply(variableManager);
+        List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
+        Set<String> newCustomizedStyleProperties = new LinkedHashSet<>();
+        Optional<LabelStyle> optionalPreviousLabelStyle = this.props.getPreviousLabel().map(InsideLabel::getStyle);
+        Set<String> previousCustomizedStyleProperties = this.props.getPreviousLabel().map(InsideLabel::getCustomizedStyleProperties).orElse(new LinkedHashSet<>());
 
         InsideLabelLocation insideLabelLocation = insideLabelDescription.getInsideLabelLocation();
-
-        var labelStyle = LabelStyle.newLabelStyle()
-                .color(color)
-                .fontSize(fontSize)
-                .bold(bold)
-                .italic(italic)
-                .strikeThrough(strikeThrough)
-                .underline(underline)
-                .iconURL(iconURL)
-                .background(background)
-                .borderColor(borderColor)
-                .borderRadius(borderRadius)
-                .borderSize(borderSize)
-                .borderStyle(borderLineStyle)
-                .maxWidth(maxWidth)
-                .build();
+        var labelStyle = new LabelStyleComponentProvider().getLabelStyle(id, diagramEvents, previousCustomizedStyleProperties, optionalPreviousLabelStyle, labelStyleDescription, variableManager, newCustomizedStyleProperties);
 
         InsideLabelElementProps insideLabelElementProps = InsideLabelElementProps.newInsideLabelElementProps(id)
                 .text(text)
@@ -96,6 +74,7 @@ public class InsideLabelComponent implements IComponent {
                 .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                 .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .textAlign(insideLabelDescription.getTextAlign())
+                .customizedStyleProperties(newCustomizedStyleProperties)
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

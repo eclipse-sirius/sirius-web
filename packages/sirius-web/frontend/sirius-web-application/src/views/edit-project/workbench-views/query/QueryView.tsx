@@ -10,9 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  IconOverlay,
+  Selection,
+  ServerContext,
+  ServerContextValue,
+  useSelection,
+  WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,9 +32,30 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType } from 'react';
+import {
+  ComponentType,
+  ForwardedRef,
+  forwardRef,
+  RefObject,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { ExpressionAreaProps, ExpressionResultViewerProps, ResultAreaProps } from './QueryView.types';
+import { makeStyles } from 'tss-react/mui';
+import { useCurrentProject } from '../../useCurrentProject';
+import { SynchronizationButton } from '../SynchronizationButton';
+import {
+  ExportResultButtonProps,
+  ExpressionAreaHandle,
+  ExpressionAreaProps,
+  ExpressionResultViewerProps,
+  QueryViewConfiguration,
+  QueryViewState,
+  ResultAreaProps,
+} from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
@@ -36,88 +66,179 @@ import {
   GQLStringsExpressionResult,
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
+import { useQueryViewHandle } from './useQueryViewHandle';
 import { useResultAreaSize } from './useResultAreaSize';
 
-export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const queryViewStyle: SxProps<Theme> = (theme) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(2),
-    paddingX: theme.spacing(1),
-  });
-
-  const { evaluateExpression, loading, result } = useEvaluateExpression();
-  const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
-
-  const { ref, width, height } = useResultAreaSize();
-
-  return (
-    <Box data-representation-kind="query" sx={queryViewStyle} ref={ref}>
-      <ExpressionArea
-        editingContextId={editingContextId}
-        onEvaluateExpression={handleEvaluateExpression}
-        disabled={loading || readOnly}
-      />
-      <ResultArea loading={loading} payload={result} width={width} height={height} />
-    </Box>
-  );
-};
-
-const ExpressionArea = ({ editingContextId, onEvaluateExpression, disabled }: ExpressionAreaProps) => {
-  const { expression, onExpressionChange } = useExpression(editingContextId);
-
-  const expressionAreaToolbarStyle: SxProps<Theme> = {
+const useQueryViewStyles = makeStyles()((theme) => ({
+  view: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    gridTemplateRows: 'auto 1fr',
+    justifyItems: 'stretch',
+    overflow: 'auto',
+  },
+  toolbar: {
     display: 'flex',
     flexDirection: 'row',
+    overflow: 'hidden',
+    height: theme.spacing(4),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    justifyContent: 'right',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  };
+    borderBottomColor: theme.palette.divider,
+  },
+  content: {
+    overflow: 'auto',
+  },
+}));
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
-      onEvaluateExpression(expression);
-    }
-  };
+export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+  (
+    { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
+    const queryViewStyle: SxProps<Theme> = (theme) => ({
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(2),
+      paddingX: theme.spacing(1),
+    });
 
-  var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+    const [state, setState] = useState<QueryViewState>({
+      objectIds: [],
+      pinned: false,
+    });
 
-  return (
-    <div data-role="expression">
-      <Box sx={expressionAreaToolbarStyle}>
-        <Typography variant="subtitle2">Expression</Typography>
+    const applySelection = (selection: Selection) => {
+      const newObjetIds = selection.entries.map((entry) => entry.id);
+      setState((prevState) => ({
+        ...prevState,
+        objectIds: newObjetIds,
+      }));
+    };
 
-        <Tooltip
-          title={`Press this button or ${
-            isApple ? '⌘ ' : 'Ctrl '
-          } + Enter when the textfield below is focused to execute the expression`}>
-          <IconButton
-            onClick={() => onEvaluateExpression(expression)}
-            color={expression.trim().length > 0 ? 'primary' : undefined}
-            disabled={disabled || expression.trim().length === 0}>
-            <PlayCircleOutlineIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-      <div>
-        <TextField
-          placeholder="Enter an expression to get started"
-          value={expression}
-          onChange={onExpressionChange}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          spellCheck={false}
-          multiline
-          minRows={5}
-          fullWidth
-          autoFocus
-          sx={{
-            backgroundColor: '#fff8e5',
-          }}
+    const expressionAreaRef: RefObject<ExpressionAreaHandle | null> = useRef<ExpressionAreaHandle | null>(null);
+    useQueryViewHandle(id, expressionAreaRef, applySelection, ref);
+
+    const { selection } = useSelection();
+    useEffect(() => {
+      if (!state.pinned) {
+        applySelection(selection);
+      }
+    }, [selection, state.pinned]);
+
+    const { classes } = useQueryViewStyles();
+    const { evaluateExpression, loading, result } = useEvaluateExpression(state.objectIds);
+    const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
+
+    const { ref: resultAreaRef, width, height } = useResultAreaSize();
+
+    const initialQueryViewConfiguration: QueryViewConfiguration =
+      initialConfiguration as unknown as QueryViewConfiguration;
+    const initialQueryText = initialQueryViewConfiguration?.queryText ?? null;
+
+    const toolbar = (
+      <SynchronizationButton
+        pinned={state.pinned}
+        onClick={() => setState((prevState) => ({ ...prevState, pinned: !prevState.pinned }))}
+      />
+    );
+
+    const contents: JSX.Element = (
+      <Box data-representation-kind="query" sx={queryViewStyle} ref={resultAreaRef}>
+        <ExpressionArea
+          editingContextId={editingContextId}
+          initialQueryText={initialQueryText}
+          onEvaluateExpression={handleEvaluateExpression}
+          disabled={loading || readOnly}
+          ref={expressionAreaRef}
         />
+        <ResultArea loading={loading} payload={result} width={width} height={height} />
+      </Box>
+    );
+    return (
+      <div className={classes.view}>
+        <div className={classes.toolbar}>{toolbar}</div>
+        <div className={classes.content}>{contents}</div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
+
+const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
+  (
+    { editingContextId, initialQueryText, onEvaluateExpression, disabled }: ExpressionAreaProps,
+    ref: ForwardedRef<ExpressionAreaHandle>
+  ) => {
+    const { expression, onExpressionChange } = useExpression(editingContextId, initialQueryText);
+
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          getExpression: () => expression,
+        };
+      },
+      [expression]
+    );
+
+    const expressionAreaToolbarStyle: SxProps<Theme> = {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    };
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+      if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
+        onEvaluateExpression(expression);
+      }
+    };
+
+    var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+
+    return (
+      <div data-role="expression">
+        <Box sx={expressionAreaToolbarStyle}>
+          <Typography variant="subtitle2">Expression</Typography>
+
+          <Tooltip
+            title={`Press this button or ${
+              isApple ? '⌘ ' : 'Ctrl '
+            } + Enter when the textfield below is focused to execute the expression`}>
+            <IconButton
+              onClick={() => onEvaluateExpression(expression)}
+              color={expression.trim().length > 0 ? 'primary' : undefined}
+              disabled={disabled || expression.trim().length === 0}>
+              <PlayCircleOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <div>
+          <TextField
+            placeholder="Enter an expression to get started"
+            data-testid="query-textfield"
+            value={expression}
+            onChange={onExpressionChange}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            spellCheck={false}
+            multiline
+            minRows={5}
+            fullWidth
+            autoFocus
+            sx={{
+              backgroundColor: '#fff8e5',
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+);
 
 const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   if (result.__typename !== 'ObjectExpressionResult') {
@@ -137,14 +258,19 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
       <Typography variant="body2" gutterBottom>
         One object has been returned
       </Typography>
-      <List dense>
-        <ListItem sx={listItemStyle}>
-          <ListItemIcon sx={listItemIconStyle}>
-            <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
-          </ListItemIcon>
-          <ListItemText primary={objectValue.label} />
-        </ListItem>
-      </List>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+        <List dense>
+          <ListItem sx={listItemStyle}>
+            <ListItemIcon sx={listItemIconStyle}>
+              <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
+            </ListItemIcon>
+            <ListItemText primary={objectValue.label} />
+          </ListItem>
+        </List>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <ExportResultButton objectIds={[objectValue.id]} />
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -178,6 +304,7 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
 
   const listStyle: SxProps<Theme> = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
+    marginBottom: '1px',
   });
 
   return (
@@ -185,16 +312,21 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
       <Typography variant="body2" gutterBottom>
         A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
       </Typography>
-      <List dense disablePadding sx={listStyle}>
-        <FixedSizeList
-          height={height}
-          width={width}
-          itemData={objectsValue}
-          itemCount={objectsValue.length}
-          itemSize={34}>
-          {ObjectRow}
-        </FixedSizeList>
-      </List>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+        <List dense disablePadding sx={listStyle}>
+          <FixedSizeList
+            height={height}
+            width={width}
+            itemData={objectsValue}
+            itemCount={objectsValue.length}
+            itemSize={34}>
+            {ObjectRow}
+          </FixedSizeList>
+        </List>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <ExportResultButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -387,5 +519,26 @@ const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
 
       {content}
     </div>
+  );
+};
+
+const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { project } = useCurrentProject();
+
+  return (
+    <Button
+      data-testid="export-csv-button"
+      variant="contained"
+      color="primary"
+      component="a"
+      href={encodeURI(
+        `${httpOrigin}/api/editingcontexts/${
+          project.currentEditingContext.id
+        }/objects?contentType=text/csv&objectIds=${objectIds.join(',')}`
+      )}
+      type="application/octet-stream">
+      Export as CSV
+    </Button>
   );
 };

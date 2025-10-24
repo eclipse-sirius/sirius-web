@@ -1,0 +1,121 @@
+extend type Mutation {
+  editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  editImageNodeAppearance(input: EditImageNodeAppearanceInput!): EditImageNodeAppearancePayload!
+  editLabelAppearance(input: EditLabelAppearanceInput!): EditLabelAppearancePayload!
+  editEdgeAppearance(input: EditEdgeAppearanceInput!): EditEdgeAppearancePayload!
+  resetNodeAppearance(input: ResetNodeAppearanceInput!): ResetNodeAppearancePayload!
+  resetLabelAppearance(input: ResetLabelAppearanceInput!): ResetLabelAppearancePayload!
+  resetEdgeAppearance(input: ResetEdgeAppearanceInput!): ResetEdgeAppearancePayload!
+}
+
+input EditRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+input RectangularNodeAppearanceInput {
+  background: String
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+}
+
+union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditImageNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: ImageNodeAppearanceInput!
+}
+
+input ImageNodeAppearanceInput {
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+}
+
+union EditImageNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  labelId: String!
+  appearance: LabelAppearanceInput!
+}
+
+input LabelAppearanceInput {
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+  color: String
+  background: String
+  visibility: LabelVisibility
+}
+
+union EditLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  labelId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input EditEdgeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: ID!
+  appearance: EdgeAppearanceInput!
+}
+
+input EdgeAppearanceInput {
+  size: Int
+  color: String
+  lineStyle: LineStyle
+  sourceArrowStyle: ArrowStyle
+  targetArrowStyle: ArrowStyle
+  edgeType: EdgeType
+}
+
+union EditEdgeAppearancePayload = ErrorPayload | SuccessPayload
+
+
+input ResetEdgeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  edgeId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetEdgeAppearancePayload = ErrorPayload | SuccessPayload

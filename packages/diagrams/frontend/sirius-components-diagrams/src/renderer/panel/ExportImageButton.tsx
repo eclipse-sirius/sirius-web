@@ -43,22 +43,32 @@ export const ExportImageButton = () => {
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {
-      new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-        exportToPNG((dataUrl) => {
-          var img = new Image();
-          img.src = dataUrl;
-          img.id = 'png-viewer-image';
-          node.appendChild(img);
-        });
+      new Promise((resolve) => setTimeout(resolve, 5000)).then(() => {
+        if (urlParams.get('mode') === 'png-viewer') {
+          exportToPNG((dataUrl) => {
+            var img = new Image();
+            img.src = dataUrl;
+            img.id = 'png-viewer-image';
+            node.appendChild(img);
+          });
+        } else if (urlParams.get('mode') === 'svg-viewer') {
+          protoExportToSvg((dataUrl) => {
+            var img = new Image();
+            img.src = dataUrl;
+            img.id = 'svg-viewer-image';
+            node.appendChild(img);
+          });
+        }
       });
     }
   }, []);
 
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('mode') && urlParams.get('mode') === 'png-viewer') {
+  if (urlParams.has('mode')) {
+    const title = urlParams.get('mode') === 'png-viewer' ? 'PNG Viewer' : 'SVG Viewer';
     return (
       <Dialog open fullWidth maxWidth="xl">
-        <DialogTitle>PNG Viewer</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <div ref={ref}></div>
       </Dialog>
     );

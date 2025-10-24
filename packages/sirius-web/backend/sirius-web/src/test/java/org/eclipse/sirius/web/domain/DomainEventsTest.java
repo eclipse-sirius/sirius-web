@@ -13,6 +13,8 @@
 package org.eclipse.sirius.web.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,8 +27,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProje
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
@@ -76,6 +81,12 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
     @Autowired
     private IRepresentationContentUpdateService representationContentUpdateService;
+
+    @Autowired
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    @Autowired
+    private IRepresentationMetadataUpdateService representationMetadataUpdateService;
 
     @BeforeEach
     public void beforeEach() {
@@ -178,7 +189,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a document, updating its content with a diffrent value produces a domain event")
+    @DisplayName("Given a document, when its content is updated with a different value then a domain event is published")
     public void givenDocumentWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
         AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
@@ -249,4 +260,27 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a representation metadata, when its targetObjectId is updated, then a domain event is published")
+    public void givenARepresentationMetadataWhenItsTargetObjectIdIsUpdatedThenADomainEventIsPublished() {
+        assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
+
+        var optionalMetadata = this.representationMetadataSearchService.findMetadataById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        assertTrue(optionalMetadata.isPresent());
+        assertEquals(TestIdentifiers.EPACKAGE_OBJECT.toString(), optionalMetadata.get().getTargetObjectId());
+
+        var newTargetObjectId = TestIdentifiers.ECLASS_OBJECT.toString();
+        this.representationMetadataUpdateService.updateTargetObjectId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newTargetObjectId);
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
+        var event = this.domainEventCollector.getDomainEvents().get(0);
+        assertThat(event instanceof RepresentationMetadataUpdatedEvent representationMetadataUpdatedEvent && newTargetObjectId.equals(representationMetadataUpdatedEvent.representationMetadata().getTargetObjectId())).isTrue();
+
+        optionalMetadata = this.representationMetadataSearchService.findMetadataById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        assertTrue(optionalMetadata.isPresent());
+        assertEquals(TestIdentifiers.ECLASS_OBJECT.toString(), optionalMetadata.get().getTargetObjectId());
+    }
 }

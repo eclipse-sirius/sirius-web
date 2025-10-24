@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node SDK
         uses: actions/setup-node@v4
         with:
-          node-version: 18.7
+          node-version: 22.16
           registry-url: https://npm.pkg.github.com/
 
       - name: Check that the CHANGELOG has been updated
@@ -62,3 +62,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-frontend-dependencies.js
+
+      - name: Check that the frontend extension points are ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-extension-points.js

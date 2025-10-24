@@ -44,7 +44,10 @@ const createEdgeAnchorNodeCreationHandles = (
         userResizable: 'NONE',
         keepAspectRatio: false,
       },
-
+      nodeAppearanceData: {
+        customizedStyleProperties: [],
+        gqlStyle: { __typename: '', childrenLayoutStrategy: { __typename: '', kind: '' } },
+      },
       defaultWidth: null,
       defaultHeight: null,
       isBorderNode: false,
@@ -55,8 +58,10 @@ const createEdgeAnchorNodeCreationHandles = (
       isNew: false,
       resizedByUser: false,
       isListChild: false,
+      isDraggedNode: false,
       isDropNodeTarget: false,
       isDropNodeCandidate: false,
+      connectionLinePositionOnNode: 'none',
       isHovered: false,
       edgeId: edgeId,
     },

@@ -39,6 +39,16 @@ fragment diagramFragment on Diagram {
     edgeLayoutData {
       id
       bendingPoints { x y }
+      edgeAnchorLayoutData { 
+        edgeId
+        positionRatio
+        handlePosition
+        type
+      }
+    }
+    labelLayoutData {
+      id
+      position { x y }
     }
   }
   nodes {
@@ -70,6 +80,48 @@ fragment diagramFragment on Diagram {
               ...nodeFragment
               borderNodes {
                 ...nodeFragment
+              }
+              childNodes {
+                ...nodeFragment
+                borderNodes {
+                  ...nodeFragment
+                }
+                childNodes {
+                  ...nodeFragment
+                  borderNodes {
+                    ...nodeFragment
+                  }
+                  childNodes {
+                    ...nodeFragment
+                    borderNodes {
+                      ...nodeFragment
+                    }
+                    childNodes {
+                      ...nodeFragment
+                      borderNodes {
+                        ...nodeFragment
+                      }
+                      childNodes {
+                        ...nodeFragment
+                        borderNodes {
+                          ...nodeFragment
+                        }
+                        childNodes {
+                          ...nodeFragment
+                          borderNodes {
+                            ...nodeFragment
+                          }
+                          childNodes {
+                            ...nodeFragment
+                            borderNodes {
+                              ...nodeFragment
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }

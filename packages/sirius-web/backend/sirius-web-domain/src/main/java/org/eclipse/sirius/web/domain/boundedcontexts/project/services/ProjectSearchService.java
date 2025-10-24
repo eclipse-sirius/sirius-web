@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,11 @@ public class ProjectSearchService implements IProjectSearchService {
     }
 
     @Override
+    public List<Project> findAllByIds(List<String> projectIds) {
+        return this.projectRepository.findAllById(projectIds);
+    }
+
+    @Override
     public Window<Project> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter) {
         Window<Project> window = new Window<>(List.of(), index -> position, false, false);
         if (limit > 0) {
@@ -55,15 +61,9 @@ public class ProjectSearchService implements IProjectSearchService {
             if (cursorProjectKey instanceof String cursorProjectId) {
                 if (this.existsById(cursorProjectId)) {
                     if (position.scrollsForward()) {
-                        var projects = this.projectRepository.findAllAfter(cursorProjectId, limit + 1, filter);
-                        boolean hasNext = projects.size() > limit;
-                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectId, 1, filter).isEmpty();
-                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
+                        window = this.findAllForward(position, cursorProjectId, limit, filter);
                     } else if (position.scrollsBackward()) {
-                        var projects = this.projectRepository.findAllBefore(cursorProjectId, limit + 1, filter);
-                        boolean hasPrevious = projects.size() > limit;
-                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectId, 1, filter).isEmpty();
-                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
+                        window = this.findAllBackward(position, cursorProjectId, limit, filter);
                     }
                 }
             } else {
@@ -74,6 +74,35 @@ public class ProjectSearchService implements IProjectSearchService {
             }
         }
         return window;
+    }
+
+    private Window<Project> findAllForward(KeysetScrollPosition position, String cursorId, int limit, Map<String, Object> filter) {
+        var projects = this.projectRepository.findAllAfter(cursorId, limit + 1, filter);
+        boolean hasNext = projects.size() > limit;
+        boolean hasPrevious = false;
+
+        if (!projects.isEmpty()) {
+            var firstProjectId = projects.get(0).getId();
+            hasPrevious = !this.projectRepository.findAllBefore(firstProjectId, 1, filter).isEmpty();
+        }
+
+        return new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
+    }
+
+    private Window<Project> findAllBackward(KeysetScrollPosition position, String cursorId, int limit, Map<String, Object> filter) {
+        var projects = this.projectRepository.findAllBefore(cursorId, limit + 1, filter);
+        boolean hasPrevious = projects.size() > limit;
+        boolean hasNext = false;
+
+        if (!projects.isEmpty()) {
+            var lastProjectId = projects.get(projects.size() - 1).getId();
+            hasNext = !this.projectRepository.findAllAfter(lastProjectId, 1, filter).isEmpty();
+        }
+
+        if (hasPrevious) {
+            return new Window<>(projects.subList(projects.size() - limit, limit + 1), index -> position, hasNext, hasPrevious);
+        }
+        return new Window<>(projects, index -> position, hasNext, hasPrevious);
     }
 
 }

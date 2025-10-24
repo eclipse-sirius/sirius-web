@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,78 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
-import { GQLLink } from '../../form/FormEventFragments.types';
 import { LinkPropertySection } from '../LinkPropertySection';
+import { link } from './LinkPropertySection.data';
 
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
-
-afterEach(() => cleanup());
-
-const defaultLink: GQLLink = {
-  label: 'myLabel',
-  url: 'the/url/value',
-  iconURL: [],
-  hasHelpText: false,
-  style: {
-    color: null,
-    bold: null,
-    fontSize: null,
-    italic: null,
-    strikeThrough: null,
-    underline: null,
-  },
-  __typename: 'Label',
-  diagnostics: [],
-  id: 'labelId',
-};
-
-const defaultLinkWithStyle: GQLLink = {
-  label: 'myLabel',
-  url: 'the/url/value',
-  iconURL: [],
-  hasHelpText: false,
-  style: {
-    color: 'RebeccaPurple',
-    bold: true,
-    fontSize: 20,
-    italic: true,
-    strikeThrough: true,
-    underline: true,
-  },
-  __typename: 'Label',
-  diagnostics: [],
-  id: 'labelId',
-};
-
-test('render label widget', () => {
-  const { container } = render(
-    <MockedProvider>
-      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLink} />
-    </MockedProvider>
-  );
-  expect(container).toMatchSnapshot();
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
 });
 
-test('render label widget with style', () => {
-  const { container } = render(
+test('should render the link', () => {
+  render(
     <MockedProvider>
-      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={defaultLinkWithStyle} />
+      <LinkPropertySection editingContextId="editingContextId" formId="formId" widget={link} readOnly={false} />
     </MockedProvider>
   );
-  expect(container).toMatchSnapshot();
-});
 
-test('render label widget with help hint', () => {
-  const { container } = render(
-    <MockedProvider>
-      <LinkPropertySection
-        editingContextId="editingContextId"
-        formId="formId"
-        widget={{ ...defaultLink, hasHelpText: true }}
-      />
-    </MockedProvider>
-  );
-  expect(container).toMatchSnapshot();
+  expect(screen.getByRole('link')).toBeDefined();
+  expect(screen.getByRole('link').textContent).toBe('Google');
 });

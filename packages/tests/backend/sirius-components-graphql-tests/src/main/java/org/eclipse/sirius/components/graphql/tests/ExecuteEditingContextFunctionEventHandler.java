@@ -58,7 +58,11 @@ public class ExecuteEditingContextFunctionEventHandler implements IEditingContex
             try {
                 payload = executeEditingContextFunctionInput.function().apply(editingContext, input);
             } catch (Exception | AssertionError exception) {
-                payload = new ErrorPayload(input.id(), exception.getMessage());
+                var error = exception.getMessage();
+                if (error == null) {
+                    error = exception.getClass().getSimpleName();
+                }
+                payload = new ErrorPayload(input.id(), error);
             }
         }
 

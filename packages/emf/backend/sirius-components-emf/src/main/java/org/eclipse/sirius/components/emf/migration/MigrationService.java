@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -39,7 +40,9 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 public class MigrationService extends BasicExtendedMetaData implements JsonResource.IJsonResourceProcessor {
 
     private final List<IMigrationParticipant> migrationParticipants;
+
     private MigrationData documentMigrationData;
+
     private List<IMigrationParticipant> migrationParticipantsCandidates;
 
     public MigrationService(List<IMigrationParticipant> migrationParticipants) {
@@ -118,8 +121,9 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public void postSerialization(JsonResource resource, JsonObject jsonObject) {
         this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> {
-            if (resourceMetadataAdapter.getMigrationData() != null) {
-                var rootMigration = new Gson().toJsonTree(resourceMetadataAdapter.getMigrationData(), MigrationData.class);
+            MigrationData lastMigrationData = resourceMetadataAdapter.getLastMigrationData();
+            if (lastMigrationData != null) {
+                var rootMigration = new Gson().toJsonTree(lastMigrationData, MigrationData.class);
                 if (rootMigration != null) {
                     jsonObject.add(MigrationData.JSON_OBJECT_ROOT, rootMigration);
                 }
@@ -131,22 +135,34 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject, boolean isTopObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject, boolean isTopObject) {
         for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
-            migrationParticipant.postObjectLoading(eObject, jsonObject);
+            migrationParticipant.postObjectLoading(resource, eObject, jsonObject);
         }
     }
 
     @Override
-    public Object getValue(EObject object, EStructuralFeature feature, Object value) {
+    public Object getValue(JsonResource resource, EObject object, EStructuralFeature feature, Object value) {
         Object returnValue = value;
         for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
-            Object newValue = migrationParticipant.getValue(object, feature, value);
+            Object newValue = migrationParticipant.getValue(resource, object, feature, value);
             if (newValue != null) {
                 returnValue = newValue;
             }
         }
         return returnValue;
+    }
+
+    @Override
+    public String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri) {
+        String updatedUri = uri;
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
+            String newValue = migrationParticipant.getEObjectUri(resource, eObject, eReference, updatedUri);
+            if (newValue != null) {
+                updatedUri = newValue;
+            }
+        }
+        return updatedUri;
     }
 
     private Optional<ResourceMetadataAdapter> getOptionalResourceMetadataAdapter(JsonResource resource) {
@@ -157,7 +173,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     private void setResourceMetadataAdapterMigrationData(JsonResource resource, MigrationData migrationData) {
-        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.setMigrationData(migrationData));
+        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.addMigrationData(migrationData));
     }
 
     private void setMigrationDataFromDocumentContent(JsonObject jsonObject) {

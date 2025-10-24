@@ -41,6 +41,8 @@ public final class CheckboxCell implements ICell {
 
     private boolean value;
 
+    private String tooltipValue;
+
     private CheckboxCell() {
         // Prevent instantiation
     }
@@ -80,6 +82,11 @@ public final class CheckboxCell implements ICell {
     }
 
     @Override
+    public String getTooltipValue() {
+        return this.tooltipValue;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.columnId, this.value);
@@ -108,6 +115,8 @@ public final class CheckboxCell implements ICell {
         private UUID columnId;
 
         private boolean value;
+
+        private String tooltipValue;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -138,6 +147,11 @@ public final class CheckboxCell implements ICell {
             return this;
         }
 
+        public Builder tooltipValue(String tooltipValue) {
+            this.tooltipValue = Objects.requireNonNull(tooltipValue);
+            return this;
+        }
+
         public CheckboxCell build() {
             CheckboxCell cell = new CheckboxCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -146,6 +160,7 @@ public final class CheckboxCell implements ICell {
             cell.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.value = this.value;
+            cell.tooltipValue = Objects.requireNonNull(this.tooltipValue);
             return cell;
         }
     }

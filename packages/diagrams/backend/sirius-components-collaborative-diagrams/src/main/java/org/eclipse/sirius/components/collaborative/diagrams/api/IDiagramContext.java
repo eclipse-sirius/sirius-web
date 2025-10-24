@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,13 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 /**
  * Information used to perform some operations on the diagram.
  *
+ * @deprecated The diagram context is a data class used to contain some information relevant for the next rendering.
+ * It does not need this interface which had only been introduced because it was not immutable. Now that this concept
+ * is immutable, as it should have been from the start, this interface is useless.
+ *
  * @author sbegaudeau
  */
+@Deprecated(forRemoval = true)
 public interface IDiagramContext {
 
     /**
@@ -32,10 +37,6 @@ public interface IDiagramContext {
     String DIAGRAM_CONTEXT = "diagramContext";
 
     Diagram getDiagram();
-
-    void update(Diagram updatedDiagram);
-
-    void reset();
 
     List<ViewCreationRequest> getViewCreationRequests();
 
@@ -53,14 +54,6 @@ public interface IDiagramContext {
         @Override
         public Diagram getDiagram() {
             return null;
-        }
-
-        @Override
-        public void update(Diagram updatedDiagram) {
-        }
-
-        @Override
-        public void reset() {
         }
 
         @Override

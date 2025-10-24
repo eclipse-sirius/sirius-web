@@ -16,19 +16,19 @@ import Collections from '@mui/icons-material/Collections';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { NewDocumentAreaState } from './NewDocumentArea.types';
 import {
   GQLCreateRepresentationData,
   GQLCreateRepresentationInput,
   GQLCreateRepresentationVariables,
   GQLErrorPayload,
   NewRepresentationAreaProps,
+  NewRepresentationAreaState,
 } from './NewRepresentationArea.types';
 
 const useNewRepresentationAreaStyles = makeStyles()((theme) => ({
@@ -70,7 +70,7 @@ export const NewRepresentationArea = ({
   representationDescriptions,
   readOnly,
 }: NewRepresentationAreaProps) => {
-  const [state, setState] = useState<NewDocumentAreaState>({
+  const [state, setState] = useState<NewRepresentationAreaState>({
     message: null,
   });
   const { classes } = useNewRepresentationAreaStyles();
@@ -135,21 +135,23 @@ export const NewRepresentationArea = ({
                   .sort((a, b) => a.defaultName.localeCompare(b.defaultName))
                   .map((representationDescription) => {
                     return (
-                      <ListItem
+                      <ListItemButton
                         className={classes.item}
                         dense
                         disableGutters
-                        button
                         key={representationDescription.id}
                         data-testid={representationDescription.id}
                         onClick={() => {
                           onCreateRepresentation(representationDescription.id);
                         }}>
                         <ListItemIcon>
-                          <Collections htmlColor="primary" fontSize="small" />
+                          <Collections fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary={representationDescription.defaultName} />
-                      </ListItem>
+                        <ListItemText
+                          primary={representationDescription.defaultName}
+                          secondary={representationDescription.label}
+                        />
+                      </ListItemButton>
                     );
                   })}
           </List>

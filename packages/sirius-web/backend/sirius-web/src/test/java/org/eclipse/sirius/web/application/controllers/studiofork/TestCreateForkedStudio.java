@@ -14,7 +14,7 @@
 package org.eclipse.sirius.web.application.controllers.studiofork;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -26,22 +26,20 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.controllers.studiofork.graphql.CreateForkedStudioMutationRuner;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
-import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.fork.CreateForkedStudioMutationRunner;
+import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -70,16 +67,13 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
     private IGivenCreatedTableSubscription givenCreatedTableSubscription;
 
     @Autowired
-    private CreateForkedStudioMutationRuner createForkedStudioMutationRuner;
+    private CreateForkedStudioMutationRunner createForkedStudioMutationRunner;
 
     @Autowired
     private IProjectSearchService projectSearchService;
 
     @Autowired
     private IRepresentationMetadataSearchService representationMetadataSearchService;
-
-    @Autowired
-    private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
     private ISemanticDataRepository semanticDataRepository;
@@ -112,15 +106,11 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
     public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToTable();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(1);
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail("MISSING_TABLE"));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(1);
+            assertThat(table.getLines()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
@@ -139,7 +129,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
         Runnable forkStudio = () -> {
             var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID, representationId.get(), "");
-            var result = this.createForkedStudioMutationRuner.run(input);
+            var result = this.createForkedStudioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.createForkedStudio.__typename");
             assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
@@ -177,16 +167,12 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
             assertThat(forkedDocument.get().getContent()).contains(sourceElementId.get());
         };
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    representationId.set(table.getId());
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(1);
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail("MISSING_TABLE"));
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            representationId.set(table.getId());
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(1);
+            assertThat(table.getLines()).hasSize(2);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)

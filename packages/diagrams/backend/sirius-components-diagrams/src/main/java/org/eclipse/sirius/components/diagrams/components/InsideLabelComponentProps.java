@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -29,10 +33,18 @@ public class InsideLabelComponentProps implements IProps {
 
     private final InsideLabelDescription insideLabelDescription;
 
+    private final Optional<InsideLabel> previousLabel;
+    
+    private final String parentNodeId;
 
-    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription) {
+    private final List<IDiagramEvent> diagramEvents;
+
+    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> previousLabel, List<IDiagramEvent> diagramEvents, String parentNodeId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.insideLabelDescription = Objects.requireNonNull(labelDescription);
+        this.previousLabel = Objects.requireNonNull(previousLabel);
+        this.diagramEvents = Objects.requireNonNull(diagramEvents);
+        this.parentNodeId = Objects.requireNonNull(parentNodeId);
     }
 
     public VariableManager getVariableManager() {
@@ -43,4 +55,15 @@ public class InsideLabelComponentProps implements IProps {
         return this.insideLabelDescription;
     }
 
+    public Optional<InsideLabel> getPreviousLabel() {
+        return this.previousLabel;
+    }
+
+    public List<IDiagramEvent> getDiagramEvents() {
+        return this.diagramEvents;
+    }
+
+    public String getParentNodeId() {
+        return this.parentNodeId;
+    }
 }

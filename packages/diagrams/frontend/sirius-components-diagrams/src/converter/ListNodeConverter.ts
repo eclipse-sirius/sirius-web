@@ -9,7 +9,6 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- *     Aurelien Didier - Correct bug 4310
  *******************************************************************************/
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
@@ -21,12 +20,13 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
@@ -53,6 +53,7 @@ const toListNode = (
     pinned,
     style,
     labelEditable,
+    customizedStyleProperties,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -74,18 +75,15 @@ const toListNode = (
     descriptionId,
     style: {
       background: style.background,
-      borderTopColor: style.borderColor,
-      borderBottomColor: style.borderColor,
-      borderLeftColor: style.borderColor,
-      borderRightColor: style.borderColor,
+      borderColor: style.borderColor,
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     faded: state === GQLViewModifier.Faded,
     pinned,
     labelEditable,
@@ -94,19 +92,25 @@ const toListNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isNew,
-    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
-      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
+    areChildNodesDraggable: isListLayoutStrategy(style.childrenLayoutStrategy)
+      ? style.childrenLayoutStrategy.areChildNodesDraggable
       : true,
-    topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 0,
-    bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 0,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    topGap: isListLayoutStrategy(style.childrenLayoutStrategy) ? style.childrenLayoutStrategy.topGap : 0,
+    bottomGap: isListLayoutStrategy(style.childrenLayoutStrategy) ? style.childrenLayoutStrategy.bottomGap : 0,
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     resizedByUser,
-    growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
-      ? gqlNode.childrenLayoutStrategy.growableNodeIds
+    growableNodeIds: isListLayoutStrategy(style.childrenLayoutStrategy)
+      ? style.childrenLayoutStrategy.growableNodeIds
       : [],
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
+    connectionLinePositionOnNode: 'none',
     isHovered: false,
+    nodeAppearanceData: {
+      gqlStyle: style,
+      customizedStyleProperties,
+    },
   };
 
   data.insideLabel = convertInsideLabel(
@@ -128,12 +132,11 @@ const toListNode = (
     node.parentId = gqlParentNode.id;
   }
 
-  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
-  if (nodeLayoutData) {
+  if (gqlNodeLayoutData) {
     const {
       position,
       size: { height, width },
-    } = nodeLayoutData;
+    } = gqlNodeLayoutData;
     node.position = position;
     node.height = height;
     node.width = width;
@@ -146,7 +149,12 @@ const toListNode = (
     node.height = data.defaultHeight ?? defaultHeight;
     node.width = data.defaultWidth ?? defaultWidth;
   }
-
+  if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
+    node.measured = {
+      height: gqlNodeLayoutData.size.height,
+      width: gqlNodeLayoutData.size.width,
+    };
+  }
   return node;
 };
 
@@ -178,7 +186,7 @@ const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQL
 
 export class ListNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind === 'List';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.style.childrenLayoutStrategy?.kind === 'List';
   }
 
   handle(

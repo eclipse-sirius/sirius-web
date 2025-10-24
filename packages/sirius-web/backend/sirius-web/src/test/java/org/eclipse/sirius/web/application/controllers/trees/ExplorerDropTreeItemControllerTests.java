@@ -13,18 +13,16 @@
 package org.eclipse.sirius.web.application.controllers.trees;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.trees.tests.graphql.DropTreeItemMutationRunner;
@@ -43,8 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -89,20 +85,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
-        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
-                }, () -> fail("Missing tree"));
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
+                    .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+        });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
@@ -122,22 +111,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         };
 
 
-        Consumer<Object> updateTreeContentConsumer = object -> {
-            Optional.of(object)
-                    .filter(DataFetcherResult.class::isInstance)
-                    .map(DataFetcherResult.class::cast)
-                    .map(DataFetcherResult::getData)
-                    .filter(TreeRefreshedEventPayload.class::isInstance)
-                    .map(TreeRefreshedEventPayload.class::cast)
-                    .map(TreeRefreshedEventPayload::tree)
-                    .ifPresentOrElse(tree -> {
-                        assertThat(tree).isNotNull();
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                                .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
-                    }, () -> fail("Missing tree"));
-        };
+        Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
+                    .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+        });
 
 
         StepVerifier.create(flux)
@@ -163,20 +143,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
-        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
-                }, () -> fail("Missing tree"));
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
+                    .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+        });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
@@ -196,22 +169,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         };
 
 
-        Consumer<Object> updateTreeContentConsumer = object -> {
-            Optional.of(object)
-                    .filter(DataFetcherResult.class::isInstance)
-                    .map(DataFetcherResult.class::cast)
-                    .map(DataFetcherResult::getData)
-                    .filter(TreeRefreshedEventPayload.class::isInstance)
-                    .map(TreeRefreshedEventPayload.class::cast)
-                    .map(TreeRefreshedEventPayload::tree)
-                    .ifPresentOrElse(tree -> {
-                        assertThat(tree).isNotNull();
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
-                        assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                                .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
-                    }, () -> fail("Missing tree"));
-        };
+        Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
+                    .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+        });
 
 
         StepVerifier.create(flux)
@@ -237,19 +201,12 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
-        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId().equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
-                }, () -> fail("Missing tree"));
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId().equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+        });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(

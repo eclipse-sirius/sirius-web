@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.representations.IRepresentationRenderVariableCustomizer;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -51,10 +52,13 @@ public class DefaultExpandAllTreePathHandler {
 
     private final IURLParser urlParser;
 
-    public DefaultExpandAllTreePathHandler(ITreeNavigationService treeNavigationService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IURLParser urlParser) {
+    private final List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers;
+
+    public DefaultExpandAllTreePathHandler(ITreeNavigationService treeNavigationService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IURLParser urlParser, List<IRepresentationRenderVariableCustomizer> renderVariableCustomizers) {
         this.treeNavigationService = Objects.requireNonNull(treeNavigationService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.renderVariableCustomizers = Objects.requireNonNull(renderVariableCustomizers);
     }
 
     public IPayload handle(IEditingContext editingContext, Tree tree, ExpandAllTreePathInput input) {
@@ -80,6 +84,11 @@ public class DefaultExpandAllTreePathHandler {
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(TreeDescription.ID, treeItemId);
             variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, activeFilterIds);
+
+            for (var renderVariableCustomizer : this.renderVariableCustomizers) {
+                variableManager = renderVariableCustomizer.customize(optionalTreeDescription.get(), variableManager);
+            }
+
             maxDepth = this.addAllContents(optionalTreeDescription.get(), treeItemId, maxDepth, treeItemIdsToExpand, maxDepth, variableManager);
         }
         return new ExpandAllTreePathSuccessPayload(input.id(), new TreePath(treeItemIdsToExpand.stream().toList(), maxDepth));

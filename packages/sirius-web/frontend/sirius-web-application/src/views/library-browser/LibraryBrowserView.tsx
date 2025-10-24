@@ -16,10 +16,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, MRT_PaginationState, useMaterialReactTable } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { LibrariesTableProps, LibrariesTableState } from './LibraryBrowserView.types';
 import { useLibraries } from './useLibraries';
 import { GQLLibrary } from './useLibraries.types';
@@ -49,13 +50,24 @@ const useLibraryBrowserViewStyle = makeStyles()((theme) => ({
 export const LibraryBrowserView = () => {
   const { classes } = useLibraryBrowserViewStyle();
   const { Component: Footer } = useComponent(footerExtensionPoint);
+  const {
+    viewer: {
+      capabilities: {
+        libraries: { canList },
+      },
+    },
+  } = useCurrentViewer();
+
+  if (!canList) {
+    return <Navigate to="/errors/404" />;
+  }
 
   return (
     <div className={classes.librariesView}>
       <NavigationBar />
       <Container maxWidth="xl">
         <Grid container justifyContent="center">
-          <Grid item xs={8}>
+          <Grid size={{ xs: 8 }}>
             <main className={classes.main}>
               <div className={classes.header}>
                 <Typography variant="h4">Libraries</Typography>

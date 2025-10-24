@@ -21,7 +21,11 @@ export interface SvgExportResult {
 export interface ISVGExportEngine {
   registerElementSVGExportHandlerContribution(elementSVGExportHandlerContribution: IElementSVGExportHandler);
 
-  svgExport(element: HTMLElement[], edgeContainer: HTMLElement | null): SvgExportResult;
+  svgExport(
+    nodeContainer: HTMLElement | null,
+    edgeContainer: HTMLElement | null,
+    edgeLabelContainer: HTMLElement | null
+  ): SvgExportResult;
 }
 
 export interface IElementSVGExportHandler {

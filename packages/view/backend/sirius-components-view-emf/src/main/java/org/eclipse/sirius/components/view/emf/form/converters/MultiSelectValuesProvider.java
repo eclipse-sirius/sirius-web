@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.form.converters;
 
-import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverterSwitch.VARIABLE_MANAGER;
+import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter.VARIABLE_MANAGER;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -31,13 +31,13 @@ public class MultiSelectValuesProvider implements Function<VariableManager, List
 
     private final AQLInterpreter interpreter;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final String expression;
 
-    public MultiSelectValuesProvider(AQLInterpreter interpreter, IObjectService objectService, String expression) {
+    public MultiSelectValuesProvider(AQLInterpreter interpreter, IIdentityService identityService, String expression) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.expression = expression;
     }
 
@@ -50,7 +50,7 @@ public class MultiSelectValuesProvider implements Function<VariableManager, List
                     .asObjects()
                     .orElse(List.of())
                     .stream()
-                    .map(this.objectService::getId)
+                    .map(this.identityService::getId)
                     .toList();
         }
         return List.of();

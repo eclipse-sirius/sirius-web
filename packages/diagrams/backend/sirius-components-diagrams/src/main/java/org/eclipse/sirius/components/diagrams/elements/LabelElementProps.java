@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.elements;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
@@ -37,6 +38,8 @@ public final class LabelElementProps implements IProps {
 
     private LabelStyle style;
 
+    private Set<String> customizedStyleProperties;
+
     private LabelElementProps() {
         // Prevent instantiation
     }
@@ -55,6 +58,10 @@ public final class LabelElementProps implements IProps {
 
     public LabelStyle getStyle() {
         return this.style;
+    }
+
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
     }
 
     public static Builder newLabelElementProps(String id) {
@@ -82,6 +89,8 @@ public final class LabelElementProps implements IProps {
 
         private LabelStyle style;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -101,12 +110,18 @@ public final class LabelElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public LabelElementProps build() {
             LabelElementProps labelElementProps = new LabelElementProps();
             labelElementProps.id = Objects.requireNonNull(this.id);
             labelElementProps.type = Objects.requireNonNull(this.type);
             labelElementProps.text = Objects.requireNonNull(this.text);
             labelElementProps.style = Objects.requireNonNull(this.style);
+            labelElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return labelElementProps;
         }
     }

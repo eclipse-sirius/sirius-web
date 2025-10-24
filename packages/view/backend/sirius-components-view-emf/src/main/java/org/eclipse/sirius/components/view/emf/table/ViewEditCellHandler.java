@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.ViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
@@ -59,14 +60,17 @@ public class ViewEditCellHandler implements IEditCellHandler {
 
     @Override
     public IStatus handle(IEditingContext editingContext, TableDescription tableDescription, ICell cell, Line row, Column column, Object newValue) {
-        var optionalTableDescription = this.viewRepresentationDescriptionSearchService
+        return this.viewRepresentationDescriptionSearchService
                 .findById(editingContext, tableDescription.getId())
                 .filter(org.eclipse.sirius.components.view.table.TableDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.table.TableDescription.class::cast);
-        if (optionalTableDescription.isPresent()) {
-            return this.viewEditCellExecutor.execute(editingContext, optionalTableDescription.get(), cell, row, column, newValue);
-        }
-        return new Failure(this.viewEMFMessageService.tableCellEditError());
+                .map(org.eclipse.sirius.components.view.table.TableDescription.class::cast)
+                .map(viewTableDescription -> {
+                    if (viewTableDescription.eContainer() instanceof View view) {
+                        return this.viewEditCellExecutor.execute(editingContext, view, viewTableDescription.getCellDescriptions(), cell, row, column, newValue);
+                    }
+                    return new Failure(this.viewEMFMessageService.tableCellEditError());
+                })
+                .orElseGet(() -> new Failure(this.viewEMFMessageService.tableCellEditError()));
     }
 
 }

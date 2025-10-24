@@ -78,7 +78,6 @@ public class TextAreaDescriptionBuilder {
         this.getTextAreaDescription().setDiagnosticsExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

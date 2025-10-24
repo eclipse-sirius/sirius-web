@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramVariableProvider implements IVariableProvider {
 
-    public static final Variable OWNER_ID = new Variable("ownerId", List.of(String.class), "The identifier of the node");
     public static final Variable LABEL = new Variable("label", List.of(String.class), "The label of the diagram");
     public static final Variable DIAGRAM_EVENT = new Variable("diagramEvent", List.of(IDiagramEvent.class), "Indicates the potential event which has triggered a new rendering");
     public static final Variable PREVIOUS_DIAGRAM = new Variable("previousDiagram", List.of(Diagram.class), "The diagram rendered during the previous refresh");
@@ -56,36 +55,37 @@ public class DiagramVariableProvider implements IVariableProvider {
     public static final Variable GRAPHICAL_EDGE_SOURCE = new Variable("graphicalEdgeSource", List.of(Element.class), "The virtual diagram element at the source of the edge");
     public static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeTarget", List.of(Element.class), "The virtual diagram element at the target of the edge");
     public static final Variable CACHE = new Variable("cache", List.of(DiagramRenderingCache.class), "An internal cache used to retrieve some internal data during the rendering");
+    public static final Variable ANCESTORS = new Variable("ancestors", List.of(Object.class), "The semantic ancestors of the node");
 
     @Override
     public List<Variable> getVariables(String operation) {
         return switch (operation) {
-            case NODE_SEMANTIC_CANDIDATES -> nodeSemanticCandidates();
-            case NODE_PRECONDITION -> nodePrecondition();
-            case NODE_LABEL -> nodeLabel();
-            case NODE_WIDTH_COMPUTATION, NODE_HEIGHT_COMPUTATION -> nodeWidthAndHeight();
-            case EDGE_SEMANTIC_CANDIDATES -> edgeSemanticCandidates();
-            case EDGE_SOURCE_NODES, EDGE_TARGET_NODES -> edgeSourceAndTargetNodes();
-            case EDGE_PRECONDITION -> edgePrecondition();
-            case EDGE_BEGIN_LABEL, EDGE_LABEL, EDGE_END_LABEL -> edgeLabels();
-            default -> noVariables();
+            case NODE_SEMANTIC_CANDIDATES -> this.nodeSemanticCandidates();
+            case NODE_PRECONDITION -> this.nodePrecondition();
+            case NODE_LABEL -> this.nodeLabel();
+            case NODE_WIDTH_COMPUTATION, NODE_HEIGHT_COMPUTATION -> this.nodeWidthAndHeight();
+            case EDGE_SEMANTIC_CANDIDATES -> this.edgeSemanticCandidates();
+            case EDGE_SOURCE_NODES, EDGE_TARGET_NODES -> this.edgeSourceAndTargetNodes();
+            case EDGE_PRECONDITION -> this.edgePrecondition();
+            case EDGE_BEGIN_LABEL, EDGE_LABEL, EDGE_END_LABEL -> this.edgeLabels();
+            default -> this.noVariables();
         };
     }
 
     private List<Variable> nodeSemanticCandidates() {
-        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, SEMANTIC_ELEMENT_IDS, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, LABEL, OWNER_ID, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, SEMANTIC_ELEMENT_IDS, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, LABEL, CommonVariables.ENVIRONMENT, ANCESTORS);
     }
 
     private List<Variable> nodePrecondition() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, ANCESTORS);
     }
 
     private List<Variable> nodeLabel() {
-        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, ANCESTORS);
     }
 
     private List<Variable> nodeWidthAndHeight() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, ANCESTORS);
     }
 
     private List<Variable> edgeSemanticCandidates() {
@@ -101,6 +101,6 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> edgeLabels() {
-        return List.of(CommonVariables.SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, CACHE,  LABEL, CommonVariables.ENVIRONMENT);
+        return List.of(CommonVariables.SELF, SEMANTIC_EDGE_SOURCE, SEMANTIC_EDGE_TARGET, GRAPHICAL_EDGE_SOURCE, GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DIAGRAM_EVENT, PREVIOUS_DIAGRAM, CACHE, LABEL, CommonVariables.ENVIRONMENT);
     }
 }

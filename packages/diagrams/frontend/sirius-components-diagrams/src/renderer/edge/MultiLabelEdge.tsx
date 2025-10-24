@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,11 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { BaseEdge, Edge, EdgeLabelRenderer, Position } from '@xyflow/react';
-import { memo, useMemo } from 'react';
-import { Label } from '../Label';
+import { BaseEdge, Edge } from '@xyflow/react';
+import { memo, useEffect, useMemo } from 'react';
+import { useStore } from '../../representation/useStore';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { DraggableEdgeLabels } from './DraggableEdgeLabels';
 import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
@@ -38,28 +39,6 @@ const multiLabelEdgeStyle = (
   return multiLabelEdgeStyle;
 };
 
-const getTranslateFromHandlePositon = (position: Position) => {
-  switch (position) {
-    case Position.Right:
-      return 'translate(2%, -100%)';
-    case Position.Left:
-      return 'translate(-102%, -100%)';
-    case Position.Top:
-      return 'translate(2%, -100%)';
-    case Position.Bottom:
-      return 'translate(2%, 0%)';
-  }
-};
-
-const labelContainerStyle = (transform: string): React.CSSProperties => {
-  return {
-    transform,
-    position: 'absolute',
-    padding: 5,
-    zIndex: 1001,
-  };
-};
-
 export const MultiLabelEdge = memo(
   ({
     id,
@@ -78,12 +57,27 @@ export const MultiLabelEdge = memo(
     edgeCenterY,
     svgPathString,
   }: MultiLabelEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { beginLabel, endLabel, label, faded } = data || {};
+    const { label, faded } = data || {};
     const theme = useTheme();
-
+    const { setEdges } = useStore();
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
-    const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
-    const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
+
+    useEffect(() => {
+      setEdges((prevEdges) =>
+        prevEdges.map((prevEdge) => {
+          if (prevEdge.id === id && prevEdge.data) {
+            return {
+              ...prevEdge,
+              data: {
+                ...prevEdge.data,
+                edgePath: svgPathString,
+              },
+            };
+          }
+          return prevEdge;
+        })
+      );
+    }, [svgPathString]);
 
     return (
       <>
@@ -101,23 +95,20 @@ export const MultiLabelEdge = memo(
             labelId={label ? label.id : null}
           />
         ) : null}
-        <EdgeLabelRenderer>
-          {beginLabel && (
-            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
-              <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
-            </div>
-          )}
-          {label && (
-            <div style={labelContainerStyle(`translate(${edgeCenterX}px,${edgeCenterY}px)`)}>
-              <Label diagramElementId={id} label={label} faded={!!faded} />
-            </div>
-          )}
-          {endLabel && (
-            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}>
-              <Label diagramElementId={id} label={endLabel} faded={!!faded} />
-            </div>
-          )}
-        </EdgeLabelRenderer>
+        {data ? (
+          <DraggableEdgeLabels
+            id={id}
+            data={data}
+            selected={!!selected}
+            sourcePosition={sourcePosition}
+            targetPosition={targetPosition}
+            sourceX={sourceX}
+            sourceY={sourceY}
+            targetX={targetX}
+            targetY={targetY}
+            edgeCenter={edgeCenterX && edgeCenterY ? { x: edgeCenterX, y: edgeCenterY } : undefined}
+          />
+        ) : null}
       </>
     );
   }

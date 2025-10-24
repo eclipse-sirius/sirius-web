@@ -11,11 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { Connection, Edge } from '@xyflow/react';
+import { Connection, Edge, HandleType } from '@xyflow/react';
+import { EdgeData } from '../DiagramRenderer.types';
 
 export interface UseReconnectEdge {
-  reconnectEdge: (oldEdge: Edge, newConnection: Connection) => void;
-  onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge, handleType: 'source' | 'target') => void;
+  onReconnectEdgeStart: (
+    event: React.MouseEvent<Element, MouseEvent>,
+    edge: Edge<EdgeData>,
+    handleType: HandleType
+  ) => void;
+  reconnectEdge: (oldEdge: Edge<EdgeData>, newConnection: Connection) => void;
+  onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: 'source' | 'target') => void;
 }
 
 export interface GQLReconnectEdgeVariables {

@@ -13,22 +13,19 @@
 package org.eclipse.sirius.web.application.controllers.tables;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextareaCellInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.ICell;
-import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextareaCellMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -90,9 +87,9 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
         var cellRef = new AtomicReference<ICell>();
         var tableId = new AtomicReference<String>();
 
-        Consumer<Object> initialTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("");
@@ -115,9 +112,9 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
         };
 
 
-        Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(3);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("new description");
@@ -129,14 +126,6 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-    }
-
-    private Consumer<Object> getTableSubscriptionConsumer(Consumer<Table> tableConsumer) {
-        return payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(tableConsumer, () -> fail("Missing table"));
     }
 
 }

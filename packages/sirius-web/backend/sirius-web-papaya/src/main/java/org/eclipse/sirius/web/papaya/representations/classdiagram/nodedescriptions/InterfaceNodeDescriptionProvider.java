@@ -59,19 +59,20 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .style(insideLabelStyle)
                 .build();
 
+        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("aql:false")
+                .build();
+
         var interfaceNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         var operationNodeDescription = this.operationNodeDescription();
-
-        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("aql:false")
-                .build();
 
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
@@ -80,7 +81,6 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .insideLabel(insideLabel)
                 .style(interfaceNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(operationNodeDescription)
                 .build();
     }

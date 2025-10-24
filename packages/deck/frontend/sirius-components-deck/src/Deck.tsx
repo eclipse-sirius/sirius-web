@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 import Board from '@ObeoNetwork/react-trello';
 import { Theme, useTheme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { CSSProperties, useEffect, useRef } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
 import { useZoom } from './hooks/useZoom';
@@ -86,7 +86,6 @@ export const Deck = ({
     <DeckContext.Provider value={{ editingContextId, deckId: representationId }}>
       <div ref={deckContainerRef} className={deckClasses.deckContainer}>
         <DeckToolbar
-          editingContextId={editingContextId}
           representationId={representationId}
           onZoomIn={zoomIn}
           onZoomOut={zoomOut}

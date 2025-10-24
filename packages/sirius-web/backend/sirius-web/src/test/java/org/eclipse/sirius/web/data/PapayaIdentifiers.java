@@ -53,6 +53,14 @@ public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_SIRIUS_WEB_LIFECYCLE_ROOT_OBJECT = UUID.fromString("df75f516-eb20-4844-b94d-cdff0ad0b2ac");
 
+    public static final UUID PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA = UUID.fromString("429fb025-f429-4f78-a314-a8502024997a");
+
+    public static final UUID PAPAYA_LIBRARY_EDITING_CONTEXT_ID = UUID.fromString("5b7cb887-b38a-4424-9508-ea7aa869ba6f");
+
+    public static final UUID PAPAYA_LIBRARY_JAVA_PACKAGE_ID = UUID.fromString("a463e723-5748-4817-92d8-12d7e6ef967d");
+
+    public static final UUID PAPAYA_GRAPHQL_CLASS_OBJECT = UUID.fromString("30619f1e-e212-4a9c-a1a2-dd391cfa5ac6");
+
     private PapayaIdentifiers() {
         // Prevent instantiation
     }

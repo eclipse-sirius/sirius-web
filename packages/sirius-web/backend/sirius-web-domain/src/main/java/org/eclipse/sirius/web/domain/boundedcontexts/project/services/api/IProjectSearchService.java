@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
@@ -29,6 +30,8 @@ public interface IProjectSearchService {
     boolean existsById(String projectId);
 
     Optional<Project> findById(String projectId);
+
+    List<Project> findAllByIds(List<String> projectIds);
 
     Window<Project> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter);
 }

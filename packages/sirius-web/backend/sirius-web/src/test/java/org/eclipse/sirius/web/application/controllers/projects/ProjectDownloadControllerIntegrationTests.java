@@ -12,16 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.zip.ZipInputStream;
-
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
@@ -44,6 +34,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.zip.ZipInputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Integration tests of the project download controllers.
@@ -192,12 +192,12 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                         },
                         "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                         }
                       }
                     }
@@ -300,7 +300,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                                 "name":"humans",
                                 "many":true,
                                 "containment":true,
-                                "targetType":"//@types.2"
+                                "targetType":"1731ffb5-bfb0-46f3-a23d-0c0650300005"
                               }
                             }
                           ]
@@ -353,7 +353,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                             }
                           ],
                           "superTypes":[
-                            "//@types.1"
+                            "c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc"
                           ]
                         }
                       }
@@ -592,7 +592,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                       "projectId":"99d336a2-3049-439a-8853-b104ffb22653",
                       "descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                       "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
-                      "label":"Portal",
+                      "label":"EPackage Portal",
                       "kind":"siriusComponents://representation?type=Portal",
                       "representation":{
                         "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",

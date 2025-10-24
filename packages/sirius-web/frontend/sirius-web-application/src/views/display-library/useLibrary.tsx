@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 import { GQLGetLibraryQueryData, GQLGetLibraryQueryVariables, UseLibraryValue } from './useLibrary.types';
 
 const getLibraryQuery = gql`
-  query getLibraries($namespace: String!, $name: String!, $version: String!) {
+  query getLibrary($namespace: String!, $name: String!, $version: String!) {
     viewer {
       library(namespace: $namespace, name: $name, version: $version) {
         namespace

@@ -22,14 +22,12 @@ public class ColumnDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.table.ColumnDescription.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.table.ColumnDescription columnDescription = org.eclipse.sirius.components.view.table.TableFactory.eINSTANCE.createColumnDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.ColumnDescription.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.table.ColumnDescription getColumnDescription() {
@@ -38,7 +36,6 @@ public class ColumnDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.ColumnDescription.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.table.ColumnDescription build() {
@@ -54,7 +51,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setName(value);
         return this;
     }
-
     /**
      * Setter for DomainType.
      *
@@ -64,7 +60,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setDomainType(value);
         return this;
     }
-
     /**
      * Setter for SemanticCandidatesExpression.
      *
@@ -74,7 +69,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setSemanticCandidatesExpression(value);
         return this;
     }
-
     /**
      * Setter for PreconditionExpression.
      *
@@ -84,7 +78,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for HeaderIndexLabelExpression.
      *
@@ -94,7 +87,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setHeaderIndexLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for HeaderLabelExpression.
      *
@@ -104,7 +96,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setHeaderLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for HeaderIconExpression.
      *
@@ -114,7 +105,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setHeaderIconExpression(value);
         return this;
     }
-
     /**
      * Setter for InitialWidthExpression.
      *
@@ -124,7 +114,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setInitialWidthExpression(value);
         return this;
     }
-
     /**
      * Setter for IsResizableExpression.
      *
@@ -134,7 +123,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setIsResizableExpression(value);
         return this;
     }
-
     /**
      * Setter for FilterWidgetExpression.
      *
@@ -144,7 +132,6 @@ public class ColumnDescriptionBuilder {
         this.getColumnDescription().setFilterWidgetExpression(value);
         return this;
     }
-
     /**
      * Setter for IsSortableExpression.
      *

@@ -21,10 +21,15 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
 import {
+  ActionProps,
   DiagramDialogContribution,
+  DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
+  PaletteAppearanceSectionContributionProps,
   diagramDialogContributionExtensionPoint,
+  diagramNodeActionOverrideContributionExtensionPoint,
   diagramPanelActionExtensionPoint,
+  paletteAppearanceSectionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
@@ -68,39 +73,34 @@ import {
   TableWidgetPropertySection,
 } from '@eclipse-sirius/sirius-components-widget-table';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Filter from '@mui/icons-material/Filter';
-import FolderIcon from '@mui/icons-material/Folder';
 import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import { Navigate, PathRouteProps, Link as RouterLink, useMatch } from 'react-router-dom';
+import { Navigate, PathRouteProps, useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
+import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
 import { PublishStudioLibraryCommand } from '../libraries/PublishStudioLibraryCommand';
 import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
 import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
-import { NavigationBarMenuItemProps } from '../navigationBar/NavigationBarMenu.types';
-import { navigationBarMenuEntryExtensionPoint } from '../navigationBar/NavigationBarMenuExtensionPoints';
 import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { routerExtensionPoint } from '../router/RouterExtensionPoints';
 import { CheckboxCell } from '../table/CheckboxCell';
+import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
-import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
-import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
+import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ObjectTreeItemContextMenuContribution';
 import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
 import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
@@ -108,14 +108,9 @@ import { ExplorerView } from '../views/edit-project/workbench-views/explorer/Exp
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
+import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
-import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
-import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
-import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
-import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
-import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
-import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
@@ -123,7 +118,8 @@ import { ProjectSettingTabContribution } from '../views/project-settings/Project
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { checkboxCellDocumentTransform } from './CheckboxCelllDocumentTransform';
-import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
+import { ellipseNodeStyleDocumentTransform } from './ellipsenode/EllipseNodeDocumentTransform';
+import { EllipseNodeAppearanceSection } from './ellipsenode/EllipseNodePaletteAppearanceSection';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
 
@@ -155,38 +151,52 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  * Used to register all the views available in the left and right of the workbench
  *
  *******************************************************************************/
+
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
+    id: 'explorer',
     side: 'left',
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
   },
   {
+    id: 'validation',
     side: 'left',
     title: 'Validation',
     icon: <WarningIcon />,
     component: ValidationView,
   },
   {
+    id: 'search',
+    side: 'left',
+    title: 'Search',
+    icon: <SearchIcon />,
+    component: SearchView,
+  },
+  {
+    id: 'details',
     side: 'right',
     title: 'Details',
     icon: <MenuIcon />,
     component: DetailsView,
   },
   {
+    id: 'query',
     side: 'right',
     title: 'Query',
     icon: <PlayArrowIcon />,
     component: QueryView,
   },
   {
+    id: 'representations',
     side: 'right',
     title: 'Representations',
     icon: <Filter />,
     component: RepresentationsView,
   },
   {
+    id: 'related-elements',
     side: 'right',
     title: 'Related Elements',
     icon: <LinkIcon />,
@@ -242,67 +252,6 @@ export const OmniboxButtonContribution = ({}: NavigationBarRightContributionProp
 defaultExtensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
   identifier: `siriusweb_${navigationBarRightContributionExtensionPoint.identifier}_omnibox`,
   Component: OmniboxButtonContribution,
-});
-
-/*******************************************************************************
- *
- * NavigationBar menu contributions
- *
- * Used to register actions in the navigation bar menu
- *
- *******************************************************************************/
-
-export const ProjectsButtonContribution = ({}: NavigationBarMenuItemProps) => {
-  return (
-    <MenuItem component={RouterLink} to="/projects">
-      <ListItemIcon>
-        <FolderIcon />
-      </ListItemIcon>
-      <ListItemText primary="Projects" />
-    </MenuItem>
-  );
-};
-
-defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_projects`,
-  Component: ProjectsButtonContribution,
-});
-
-export const LibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
-  return (
-    <MenuItem component={RouterLink} to="/libraries">
-      <ListItemIcon>
-        <FileCopyIcon />
-      </ListItemIcon>
-      <ListItemText primary="Libraries" />
-    </MenuItem>
-  );
-};
-
-defaultExtensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
-  Component: LibrariesButtonContribution,
-});
-
-/*******************************************************************************
- *
- * Create project area cards
- *
- * Used to register all the type of cards in the create project area
- *
- *******************************************************************************/
-
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_newProjectCard`,
-  Component: NewProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_uploadProjectCard`,
-  Component: UploadProjectCard,
-});
-defaultExtensionRegistry.addComponent(createProjectAreaCardExtensionPoint, {
-  identifier: `siriusweb_${createProjectAreaCardExtensionPoint.identifier}_showAllProjectTemplatesCard`,
-  Component: ShowAllProjectTemplatesCard,
 });
 
 /*******************************************************************************
@@ -377,6 +326,12 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
       return entry.id.includes('updateLibrary');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('expandAll');
+    },
+    component: ExpandAllTreeItemContextMenuContribution,
   },
 ];
 
@@ -536,30 +491,6 @@ defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
 
 /*******************************************************************************
  *
- * Edit project navbar context menu items
- *
- * Used to register menu items available on project's context menu in the edit project view
- *
- *******************************************************************************/
-defaultExtensionRegistry.addComponent(editProjectNavbarMenuEntryExtensionPoint, {
-  identifier: `siriusWeb_${editProjectNavbarMenuEntryExtensionPoint.identifier}_download`,
-  Component: DownloadProjectMenuEntryContribution,
-});
-
-/*******************************************************************************
- *
- * Project action buttons
- *
- * Used to register menu items available on projects in the project browser viewx
- *
- *******************************************************************************/
-defaultExtensionRegistry.addComponent(projectContextMenuEntryExtensionPoint, {
-  identifier: `siriusWeb_${projectContextMenuEntryExtensionPoint.identifier}_download`,
-  Component: ProjectDownloadMenuItemExtension,
-});
-
-/*******************************************************************************
- *
  * Omnibox command overrides
  *
  * Used to override the default rendering of omnibox commands
@@ -600,31 +531,59 @@ defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
 export const siriusWebRouterContributions: PathRouteProps[] = [
   {
     path: '/new/project/*',
-    element: <NewProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <NewProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/upload/project/*',
-    element: <UploadProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <UploadProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/projects',
-    element: <ProjectBrowserView />,
+    element: (
+      <ViewerContextProvider>
+        <ProjectBrowserView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/projects/:projectId/edit/:representationId?/*',
-    element: <EditProjectView />,
+    element: (
+      <ViewerContextProvider>
+        <EditProjectView />
+      </ViewerContextProvider>
+    ),
   },
   {
-    path: '/projects/:projectId/settings/*',
-    element: <ProjectSettingsView />,
+    path: '/projects/:projectId/settings/:tabId?',
+    element: (
+      <ViewerContextProvider>
+        <ProjectSettingsView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/libraries',
-    element: <LibraryBrowserView />,
+    element: (
+      <ViewerContextProvider>
+        <LibraryBrowserView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/libraries/:namespace/:name/:version',
-    element: <DisplayLibraryView />,
+    element: (
+      <ViewerContextProvider>
+        <DisplayLibraryView />
+      </ViewerContextProvider>
+    ),
   },
   {
     path: '/',
@@ -635,6 +594,51 @@ export const siriusWebRouterContributions: PathRouteProps[] = [
 defaultExtensionRegistry.putData(routerExtensionPoint, {
   identifier: `siriusweb_${routerExtensionPoint.identifier}`,
   data: siriusWebRouterContributions,
+});
+
+/*******************************************************************************
+ *
+ * Diagram node action command overrides
+ *
+ * Used to override the default rendering of diagram node action manage visibility
+ *
+ *******************************************************************************/
+const diagramNodeActionOverrides: DiagramNodeActionOverrideContribution[] = [
+  {
+    canHandle: ({ action, diagramElementId }: ActionProps) => {
+      return action.id === 'siriusweb_manage_visibility' && !!diagramElementId;
+    },
+    component: SiriusWebManageVisibilityNodeAction,
+  },
+];
+
+defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
+  diagramNodeActionOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${diagramNodeActionOverrideContributionExtensionPoint.identifier}`,
+    data: diagramNodeActionOverrides,
+  }
+);
+
+/*******************************************************************************
+ *
+ * Palette ellipse node appearance contribution
+ *
+ * Used to contribute custom node appearance section on the palette for ellipse nodes
+ *
+ *******************************************************************************/
+const ellipseNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+  {
+    canHandle: (element) => {
+      return element.type === 'ellipseNode';
+    },
+    component: EllipseNodeAppearanceSection,
+  },
+];
+
+defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
+  identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
+  data: ellipseNodePaletteAppearanceSectionContribution,
 });
 
 export { defaultExtensionRegistry };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ export interface GQLLabel {
   id: string;
   text: string;
   style: GQLLabelStyle;
+  customizedStyleProperties: string[];
 }
 
 export interface GQLInsideLabel {
@@ -26,6 +27,7 @@ export interface GQLInsideLabel {
   headerSeparatorDisplayMode: GQLHeaderSeparatorDisplayMode;
   overflowStrategy: GQLLabelOverflowStrategy;
   textAlign: GQLLabelTextAlign;
+  customizedStyleProperties: string[];
 }
 
 export type GQLHeaderSeparatorDisplayMode = 'NEVER' | 'ALWAYS' | 'IF_CHILDREN';
@@ -52,6 +54,7 @@ export interface GQLOutsideLabel {
   style: GQLLabelStyle;
   overflowStrategy: GQLLabelOverflowStrategy;
   textAlign: GQLLabelTextAlign;
+  customizedStyleProperties: string[];
 }
 
 export type GQLOutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';
@@ -67,7 +70,8 @@ export interface GQLLabelStyle {
   background: string;
   borderColor: string;
   borderStyle: string;
-  borderSize: string;
+  borderSize: number;
   borderRadius: number;
   maxWidth: string;
+  visibility: 'visible' | 'hidden';
 }

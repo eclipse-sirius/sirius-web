@@ -13,25 +13,22 @@
 package org.eclipse.sirius.web.application.controllers.tables;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.tables.tests.TableEventPayloadConsumer.assertRefreshedTableThat;
 
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
-import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.ColumnSort;
-import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
@@ -54,7 +51,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -67,8 +63,6 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String MISSING_TABLE = "Missing table";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -127,7 +121,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     public void givenSimpleViewTableDescriptionWhenSubscriptionIsCreatedThenTableIsRender() {
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(3);
             assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
@@ -137,7 +131,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(table.getColumns().get(2).getHeaderLabel()).isEqualTo("Abstract");
             assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("2");
 
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
@@ -163,9 +157,9 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var tableId = new AtomicReference<String>();
         var rowId = new AtomicReference<UUID>();
         var rowLabel = new AtomicReference<String>();
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
             rowLabel.set(table.getLines().get(0).getHeaderLabel());
@@ -203,7 +197,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines().get(0).getHeaderLabel()).isEqualTo(rowLabel + "Updated");
         });
@@ -223,9 +217,9 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     public void givenViewTableWithSelectedTargetObjectExpressionWhenSubscriptionIsCreatedThenCellTargetObjectDataAreCorrectlyExecuted() {
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectId()).isEqualTo(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString());
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectKind()).isEqualTo("siriusComponents://semantic?domain=papaya&entity=Package");
         });
@@ -242,15 +236,16 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     public void givenViewTableWithSubElementsWhenSubscriptionIsCreatedThenTheDepthLevelsAreCorrect() {
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.isEnableSubRows()).isTrue();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
             assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
             assertThat(table.getLines().get(4).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(5).getDepthLevel()).isEqualTo(0);
         });
 
         StepVerifier.create(flux)
@@ -266,9 +261,9 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
         AtomicReference<String> tableId = new AtomicReference<>();
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
             tableId.set(table.getId());
         });
 
@@ -286,18 +281,11 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.end();
         TestTransaction.start();
 
-        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(1);
-                    assertThat(table.getLines().get(0).getHeaderLabel()).isEqualTo("Success");
-                }, () -> fail("Missing table"));
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(1);
+            assertThat(table.getLines().get(0).getHeaderLabel()).isEqualTo("Success");
+        });
 
         StepVerifier.create(rowFilterFlux)
                 .consumeNextWith(updatedTableContentConsumer)
@@ -314,15 +302,17 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         var tableId = new AtomicReference<String>();
         var columnNameId = new AtomicReference<String>();
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getColumns()).hasSize(3);
-            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines()).hasSize(6);
+
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
             assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("Failure");
             assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
             assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("fooParameter");
             assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
+            assertThat(((TextfieldCell) table.getLines().get(5).getCells().get(0)).getValue()).isEqualTo("IntegrationTest");
             tableId.set(table.getId());
             columnNameId.set(table.getColumns().get(0).getId().toString());
         });
@@ -340,21 +330,15 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.end();
         TestTransaction.start();
 
-        Consumer<Object> sortedTableContentConsumer = payload -> Optional.of(payload)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
-                    assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("fooParameter");
-                    assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
-                    assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("Failure");
-                    assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
-                }, () -> fail(MISSING_TABLE));
+        Consumer<Object> sortedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("IntegrationTest");
+            assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooParameter");
+            assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("fooOperation");
+            assertThat(((TextfieldCell) table.getLines().get(4).getCells().get(0)).getValue()).isEqualTo("Failure");
+            assertThat(((TextfieldCell) table.getLines().get(5).getCells().get(0)).getValue()).isEqualTo("AbstractTest");
+        });
 
         StepVerifier.create(expandedFlux)
                 .consumeNextWith(sortedTableContentConsumer)
@@ -368,7 +352,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     public void givenViewTableWithPageSizeOptionsWhenSubscriptionIsCreatedThenThePageSizeOptionsAreCorrect() {
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getPageSizeOptions()).hasSize(3);
             assertThat(table.getPageSizeOptions().get(0)).isEqualTo(5);
@@ -389,7 +373,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     public void givenViewTableWithoutPageSizeOptionsWhenSubscriptionIsCreatedThenThePageSizeOptionsAreSetToFallbackValues() {
         var flux = this.givenSubscriptionToMinimalViewTableRepresentation();
 
-        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getPageSizeOptions()).hasSize(4);
             assertThat(table.getPageSizeOptions().get(0)).isEqualTo(5);
@@ -405,11 +389,22 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Consumer<Object> getTableSubscriptionConsumer(Consumer<Table> tableConsumer) {
-        return payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(tableConsumer, () -> fail("Missing table"));
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description, when a subscription is created, then the tooltip values are returned")
+    public void givenViewTableWhenSubscriptionIsCreatedThenTheTooltipValuesAreReturned() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(6);
+            assertThat((table.getLines().get(0).getCells().get(0)).getTooltipValue()).isEqualTo("SuccessTooltip");
+            assertThat(table.getLines().get(0).getCells().get(1).getTooltipValue()).isEqualTo("");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }

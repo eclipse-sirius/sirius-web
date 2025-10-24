@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,52 +27,49 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
  *
  * @author hmarchadour
  */
-public class DiagramContext implements IDiagramContext {
+public record DiagramContext(
+        Diagram diagram,
+        List<ViewCreationRequest> viewCreationRequests,
+        List<ViewDeletionRequest> viewDeletionRequests,
+        List<IDiagramEvent> diagramEvents) implements IDiagramContext {
 
-    private Diagram diagram;
+    /**
+     * The name of the variable used to store and retrieve the diagram context from a variable manager.
+     */
+    public static final String DIAGRAM_CONTEXT = "diagramContext";
 
-    private final List<ViewCreationRequest> viewCreationRequests;
-
-    private final List<ViewDeletionRequest> viewDeletionRequests;
-
-    private final List<IDiagramEvent> diagramEvents;
-
-    public DiagramContext(Diagram initialDiagram) {
-        this.diagram = Objects.requireNonNull(initialDiagram);
-        this.viewCreationRequests = new ArrayList<>();
-        this.viewDeletionRequests = new ArrayList<>();
-        this.diagramEvents = new ArrayList<>();
+    public DiagramContext {
+        Objects.requireNonNull(diagram);
+        Objects.requireNonNull(viewCreationRequests);
+        Objects.requireNonNull(viewDeletionRequests);
+        Objects.requireNonNull(diagramEvents);
     }
 
+    public DiagramContext(Diagram diagram) {
+        this(diagram, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    @Deprecated(forRemoval = true)
     @Override
     public Diagram getDiagram() {
         return this.diagram;
     }
 
-    @Override
-    public void update(Diagram mutateDiagram) {
-        this.diagram = Objects.requireNonNull(mutateDiagram);
-    }
-
+    @Deprecated(forRemoval = true)
     @Override
     public List<ViewCreationRequest> getViewCreationRequests() {
         return this.viewCreationRequests;
     }
 
+    @Deprecated(forRemoval = true)
     @Override
     public List<ViewDeletionRequest> getViewDeletionRequests() {
         return this.viewDeletionRequests;
     }
 
+    @Deprecated(forRemoval = true)
     @Override
     public List<IDiagramEvent> getDiagramEvents() {
         return this.diagramEvents;
-    }
-
-    @Override
-    public void reset() {
-        this.diagramEvents.clear();
-        this.viewCreationRequests.clear();
-        this.viewDeletionRequests.clear();
     }
 }

@@ -89,4 +89,19 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
 
         return result;
     }
+
+    @Override
+    public IResult<Void> updateTargetObjectId(ICause cause, UUID representationMetadataId, String targetObjectId) {
+        IResult<Void> result = new Failure<>(this.messageService.notFound());
+
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        if (optionalRepresentationMetadata.isPresent()) {
+            var representationMetadata = optionalRepresentationMetadata.get();
+            representationMetadata.updateTargetObjectId(cause, targetObjectId);
+            this.representationMetadataRepository.save(representationMetadata);
+
+            result = new Success<>(null);
+        }
+        return result;
+    }
 }

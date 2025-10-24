@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class ResourceLoader implements IResourceLoader {
     }
 
     @Override
-    public Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants) {
+    public Optional<Resource> toResource(ResourceSet resourceSet, String id, String name, String content, boolean applyMigrationParticipants, boolean isReadOnly) {
         Optional<Resource> optionalResource = Optional.empty();
 
         HashMap<Object, Object> options = new HashMap<>();
@@ -67,7 +67,7 @@ public class ResourceLoader implements IResourceLoader {
 
         try (var inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))) {
             resourceSet.getResources().add(resource);
-            resource.eAdapters().add(new ResourceMetadataAdapter(name));
+            resource.eAdapters().add(new ResourceMetadataAdapter(name, isReadOnly));
             resource.load(inputStream, options);
 
             optionalResource = Optional.of(resource);

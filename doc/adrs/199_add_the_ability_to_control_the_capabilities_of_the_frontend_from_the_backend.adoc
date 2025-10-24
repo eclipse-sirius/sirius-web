@@ -1,0 +1,152 @@
+= ADR-199 - Add the ability to control the capabilities of the frontend from the backend
+
+== Context
+
+We want to control some capabilities of the frontend without having to rebuild the entire frontend.
+For example, one should be able to configure a Sirius Web server as a demo instance where everything is read only and the end user cannot create new projects or delete existing ones.
+Another example to consider is that some downstream projects based on Sirius Web do not want to support downloading / uploading projects because it does not make sense in their use cases.
+We should be able to deactivate those capabilities more easily than today.
+
+We don't want to do this by hardcoding in the frontend that some part is being removed thanks to some manipulation of the extension registry.
+This should be possible dynamically.
+
+
+== Decision
+
+The GraphQL API will expose the capabilities that should be available to the frontend with something like this:
+
+```
+extend type Viewer {
+  capabilities: ViewerCapabilities!
+}
+
+type ViewerCapabilities {
+  projects: ProjectsCapabilities!
+}
+
+type ProjectsCapabilities {
+  canCreate: Boolean!
+  canUpload: Boolean!
+}
+
+extend type Project {
+  capabilities: ProjectCapabilities!
+}
+
+type ProjectCapabilities {
+  canDownload: Boolean!
+}
+```
+
+As such, the frontend should be able to perform a query like this:
+
+```
+query getViewerCapabilities {
+  viewer {
+    capabilities {
+      projects {
+        canCreate // Used to indicate if the server accepts the creation of new projects
+        canUpload // Used to indicate if the server accepts the upload of projects
+      }
+    }
+  }
+}
+```
+
+or like that:
+
+```
+query getProjectCapabilities($projectId: ID!) {
+  viewer {
+    project(projectId: $projectId) {
+      capabilities {
+        canDownload // Used to indicate if the server accepts the download of this specific project
+      }
+    }
+  }
+}
+```
+
+The precise list of capabilities exposed by the backend will be discovered during the implementation.
+On the backend side, some datafetchers will be created along with their services to control the value of those capabilities.
+Since we don't want to repeat ourselves too much, a generic service will be created to evaluate the value of the capabilities, the `ICapabilityVoter`
+
+
+```
+public enum Vote {
+  GRANTED,
+  DENIED
+}
+```
+
+```
+public interface ICapabilityVoter {
+  Vote vote(String type, String identifier, String capability);
+}
+```
+
+
+By default, we will always return true, otherwise, we will let downstream applications provide a service to disable a feature of their choice.
+
+```
+@Query(type = "Viewer", field = "capabilities")
+public class ViewerCapabilitiesDataFetcher  implements IDataFetcherWithFieldCoordinates<Object> {
+  public Object get(DataFetchingEnvironment environment) {
+    return new Object();
+  }
+}
+```
+
+```
+@Query(type = "Project", field = "capabilities")
+public class ProjectCapabilitiesDataFetcher  implements IDataFetcherWithFieldCoordinates<Object> {
+  public Object get(DataFetchingEnvironment environment) {
+    return new Object();
+  }
+}
+```
+
+```
+@Query(type = "ProjectCapabilities", field = "canCreate")
+public class ProjectsCapabilitiesCanCreateDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
+
+  private final List<ICapabilityVoter> capabilityVoters;
+
+  public ProjectsCapabilitiesCanCreateDataFetcher(List<ICapabilityVoter> capabilityVoters) {
+    this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+  }
+
+  public Boolean get(DataFetchingEnvironment environment) {
+   if (this.capabilityVoters.size() > 0) {
+      return this.capabilityVoters.stream().allMatch(voter -> vote("Project", null, "canCreate) == Vote.GRANTED);
+    }
+    return true;
+  }
+}
+```
+
+and
+
+```
+public class ProjectCapabilitiesCanDownloadDataFetcher implements IDataFetcherWithFieldCoordinates<Boolean> {
+
+  private final List<ICapabilityVoter> capabilityVoters;
+
+  public ProjectCapabilitiesCanCreateDataFetcher(List<ICapabilityVoter> capabilityVoters) {
+    this.capabilityVoters = Objects.requireNonNull(capabilityVoters);
+  }
+
+  public Boolean get(DataFetchingEnvironment environment) {
+    var projectId = ...; // Use the GraphQL context to retrieve the project id
+
+    if (this.capabilityVoters.size() > 0) {
+      return this.capabilityVoters.stream().allMatch(voter -> vote("Project", projectId, "canDownload) == Vote.GRANTED);
+    }
+    return true;
+  }
+}
+```
+
+== Status
+
+Accepted

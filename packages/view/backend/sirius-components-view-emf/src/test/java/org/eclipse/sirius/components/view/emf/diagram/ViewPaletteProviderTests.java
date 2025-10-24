@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
@@ -27,11 +28,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
+import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -67,25 +68,33 @@ public class ViewPaletteProviderTests {
         EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         EdgePalette edgePalette = DiagramFactory.eINSTANCE.createEdgePalette();
         edgeDescription.setPalette(edgePalette);
+
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         edgePalette.getNodeTools().add(nodeTool);
+
         NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
         nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
         edgePalette.getNodeTools().add(nodeToolWithFalsePrecondition);
+
         EdgeToolSection toolSection = DiagramFactory.eINSTANCE.createEdgeToolSection();
         edgePalette.getToolSections().add(toolSection);
+
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
         toolSection.getNodeTools().add(nodeToolInToolSection);
+
         return edgeDescription;
     }
 
     private static org.eclipse.sirius.components.view.diagram.NodeDescription getNodeDescription() {
         org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
+
         NodePalette nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
+
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
         nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
+
         EdgeTool edgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         EdgeTool edgeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createEdgeTool();
         edgeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
@@ -93,28 +102,38 @@ public class ViewPaletteProviderTests {
         nodePalette.getEdgeTools().add(edgeTool);
         nodePalette.getNodeTools().add(nodeToolWithFalsePrecondition);
         nodePalette.getEdgeTools().add(edgeToolWithFalsePrecondition);
+
         NodeToolSection toolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
         nodePalette.getToolSections().add(toolSection);
+
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
         toolSection.getNodeTools().add(nodeToolInToolSection);
+
         EdgeTool edgeToolInToolSection = DiagramFactory.eINSTANCE.createEdgeTool();
         toolSection.getEdgeTools().add(edgeToolInToolSection);
+
         return nodeDescription;
     }
 
     private static org.eclipse.sirius.components.view.diagram.DiagramDescription getDiagramDescription() {
         org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
+
         DiagramPalette diagramPalette = DiagramFactory.eINSTANCE.createDiagramPalette();
         diagramDescription.setPalette(diagramPalette);
+
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         diagramPalette.getNodeTools().add(nodeTool);
+
         NodeTool nodeToolWithFalsePrecondition = DiagramFactory.eINSTANCE.createNodeTool();
         nodeToolWithFalsePrecondition.setPreconditionExpression(PRECONDITION_EXPRESSION_FALSE);
         diagramPalette.getNodeTools().add(nodeToolWithFalsePrecondition);
+
         DiagramToolSection diagramToolSection = DiagramFactory.eINSTANCE.createDiagramToolSection();
         diagramPalette.getToolSections().add(diagramToolSection);
+
         NodeTool nodeToolInToolSection = DiagramFactory.eINSTANCE.createNodeTool();
         diagramToolSection.getNodeTools().add(nodeToolInToolSection);
+
         return diagramDescription;
     }
 
@@ -125,15 +144,17 @@ public class ViewPaletteProviderTests {
         DiagramDescription diagramDescription = this.createDiagramDescription();
 
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(null, diagram, diagramDescription, diagramDescription, new IEditingContext.NoOp());
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), diagramDescription, diagramDescription, diagram, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://diagramPalette?diagramId=sourceElementId");
         assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(1);
         var tools = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).toList();
+
         assertThat(tools.get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
         assertThat(((SingleClickOnDiagramElementTool) tools.get(0)).appliesToDiagramRoot()).isTrue();
         assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(1);
+
         var toolSections = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).toList();
         assertThat(toolSections.get(0).tools()).hasSize(1);
         assertThat(toolSections.get(0).tools().get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
@@ -144,18 +165,21 @@ public class ViewPaletteProviderTests {
     public void getNodePaletteTest() {
         ViewPaletteProvider viewPaletteProvider = this.createViewPaletteProvider();
 
+        var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
-        var result = viewPaletteProvider.handle(null, node, this.createNodeDescription(), this.createDiagramDescription(), new IEditingContext.NoOp());
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), this.createNodeDescription(), node, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
         assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(2);
+
         var tools = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).toList();
         assertThat(tools.get(0)).isInstanceOf(SingleClickOnDiagramElementTool.class);
         assertThat(((SingleClickOnDiagramElementTool) tools.get(0)).appliesToDiagramRoot()).isFalse();
         assertThat(tools.get(1)).isInstanceOf(SingleClickOnTwoDiagramElementsTool.class);
         assertThat(((SingleClickOnTwoDiagramElementsTool) tools.get(1)).candidates()).isNotEmpty();
         assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(2);
+
         var toolSections = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).toList();
         assertThat(toolSections.get(0).tools()).hasSize(2);
     }
@@ -178,16 +202,19 @@ public class ViewPaletteProviderTests {
                         .targetObjectLabelProvider(vm -> "")
                         .build();
 
+        var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var edge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(null, edge, edgeDescription, this.createDiagramDescription(), new IEditingContext.NoOp());
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), edgeDescription, edge, null);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");
         assertThat(result.paletteEntries()).filteredOn(ITool.class::isInstance).hasSize(1);
+
         var tool = result.paletteEntries().stream().filter(ITool.class::isInstance).map(ITool.class::cast).findFirst().orElse(null);
         assertThat(tool).isInstanceOf(SingleClickOnDiagramElementTool.class);
         assertThat(((SingleClickOnDiagramElementTool) tool).appliesToDiagramRoot()).isFalse();
         assertThat(result.paletteEntries()).filteredOn(ToolSection.class::isInstance).hasSize(2);
+
         var toolSection = result.paletteEntries().stream().filter(ToolSection.class::isInstance).map(ToolSection.class::cast).findFirst().orElse(null);
         assertThat(toolSection.tools()).hasSize(1);
     }
@@ -254,10 +281,10 @@ public class ViewPaletteProviderTests {
                 .borderSizeProvider(variableManager -> 0)
                 .borderStyleProvider(variableManager -> LineStyle.Solid)
                 .maxWidthProvider(variableManager -> null)
+                .visibilityProvider(variableManager -> LabelVisibility.visible)
                 .build();
 
         InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("nodeId")
-                .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
                 .isHeaderProvider(vm -> false)
@@ -275,11 +302,11 @@ public class ViewPaletteProviderTests {
                 .semanticElementsProvider(variableManager -> List.of())
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(variableManager -> null)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 }

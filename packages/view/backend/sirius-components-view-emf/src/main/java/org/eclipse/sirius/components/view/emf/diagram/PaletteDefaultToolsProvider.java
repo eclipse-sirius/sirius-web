@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.springframework.stereotype.Service;
 
@@ -62,13 +61,10 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
     private List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
-        boolean unsynchronizedMapping = false;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
             targetDescriptions.add(nodeDescription);
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
             targetDescriptions.addAll(edgeDescription.getSourceDescriptions());
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDescription.getSynchronizationPolicy());
         }
 
         List<ITool> extraTools = new ArrayList<>();
@@ -76,11 +72,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             // Edit Tool (the handler is never called)
             var editTool = this.createExtraEditLabelEditTool(targetDescriptions);
             extraTools.add(editTool);
-        }
-        if (unsynchronizedMapping) {
-            // Graphical Delete Tool (the handler is never called)
-            var graphicalDeleteTool = this.createExtraGraphicalDeleteTool(targetDescriptions);
-            extraTools.add(graphicalDeleteTool);
         }
         if (this.hasDeleteTool(diagramElementDescription)) {
             // Semantic Delete Tool (the handler is never called)
@@ -129,16 +120,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
                 .label("Delete from model")
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
-                .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
-                .withImpactAnalysis(false)
-                .build();
-    }
-
-    private ITool createExtraGraphicalDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
-                .label("Delete from diagram")
-                .iconURL(List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)

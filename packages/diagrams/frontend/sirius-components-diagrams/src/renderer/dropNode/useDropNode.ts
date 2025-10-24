@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -141,7 +141,7 @@ const useDropNodeMutation = () => {
 };
 
 export const useDropNode = (): UseDropNodeValue => {
-  const { droppableOnDiagram, initialPosition, draggedNodeId, initializeDrop, resetDrop } =
+  const { droppableOnDiagram, initialPosition, initializeDrop, resetDrop } =
     useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
@@ -185,7 +185,7 @@ export const useDropNode = (): UseDropNodeValue => {
       initializeDrop({
         initialPosition: computedNode.position,
         droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
-        draggedNodeId: computedNode.id,
+        dragging: true,
       });
 
       setNodes((nds) =>
@@ -195,7 +195,26 @@ export const useDropNode = (): UseDropNodeValue => {
               ...n,
               data: {
                 ...n.data,
+                isDraggedNode: n.id === computedNode.id,
                 isDropNodeCandidate: true,
+              },
+            };
+          }
+          if (computedNode.parentId === n.id) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isDropNodeTarget: true,
+              },
+            };
+          }
+          if (n.id === computedNode.id) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                isDraggedNode: true,
               },
             };
           }
@@ -207,19 +226,24 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
-    (_event, node, nodes) => {
+    (event, node, nodes) => {
       if (!node || nodes.length > 1) {
         // Drag on multi selection is not supported yet
         return;
       }
 
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
 
       if (draggedNode && !draggedNode.data.isBorderNode) {
+        const mouseXYPosition: XYPosition = screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY,
+        });
         const rectNode: Rect = {
-          ...evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup),
-          width: draggedNode.width ?? 0,
-          height: draggedNode.height ?? 0,
+          x: mouseXYPosition.x,
+          y: mouseXYPosition.y,
+          width: 1,
+          height: 1,
         };
         const intersections = getIntersectingNodes(rectNode).filter((intersectingNode) => !intersectingNode.hidden);
 
@@ -258,18 +282,14 @@ export const useDropNode = (): UseDropNodeValue => {
         }
       }
     },
-    [droppableOnDiagram, draggedNodeId, getNodes]
+    [droppableOnDiagram, getNodes]
   );
 
   const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
-    (event) => {
-      const draggedNode = getNodes().find((node) => node.id === draggedNodeId) || null;
-      const dropPosition = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
+    (_event) => {
+      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
       if (draggedNode) {
+        const dropPosition = evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup);
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
         const isDropOnNode: boolean = !!targetNode;
 
@@ -295,26 +315,31 @@ export const useDropNode = (): UseDropNodeValue => {
           cancelDrop(draggedNode);
         }
 
-        resetDrop();
-
-        setNodes((nds) =>
-          nds.map((n) => {
-            if (n.data.isDropNodeCandidate || n.data.isDropNodeTarget) {
+        setNodes((previousNodes) =>
+          previousNodes.map((previousNode) => {
+            if (previousNode.data.isDropNodeCandidate || previousNode.data.isDropNodeTarget) {
               return {
-                ...n,
+                ...previousNode,
                 data: {
-                  ...n.data,
+                  ...previousNode.data,
                   isDropNodeCandidate: false,
                   isDropNodeTarget: false,
                 },
               };
             }
-            return n;
+            if (previousNode.dragging) {
+              return {
+                ...previousNode,
+                dragging: false,
+              };
+            }
+            return previousNode;
           })
         );
       }
+      resetDrop();
     },
-    [droppableOnDiagram, initialPosition, draggedNodeId, getNodes]
+    [droppableOnDiagram, initialPosition, getNodes]
   );
 
   const cancelDrop = (node: Node<NodeData>) => {

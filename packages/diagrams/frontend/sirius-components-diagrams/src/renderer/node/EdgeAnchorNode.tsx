@@ -13,18 +13,19 @@
 import { Edge, Handle, Node, NodeProps, Position, ReactFlowState, useReactFlow, useStore } from '@xyflow/react';
 import { memo, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { getHandlePositionFromNodeAndPath } from '../edge/EdgeLayout';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { EdgeAnchorNodeData } from './EdgeAnchorNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 
 const edgePathSelector = (state: ReactFlowState, edgeId: string) => state.edgeLookup.get(edgeId)?.data?.edgePath || '';
 
-const handleStyle = (position: Position): React.CSSProperties => {
+const handleStyle = (isHidden: boolean, position: Position): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'absolute',
     transform: 'none',
-    opacity: '0',
     pointerEvents: 'none',
+    border: '1px solid black',
   };
   switch (position) {
     case Position.Left:
@@ -38,12 +39,15 @@ const handleStyle = (position: Position): React.CSSProperties => {
       style.left = '-75%';
       break;
   }
+  if (isHidden) {
+    style.opacity = 0;
+  }
   return style;
 };
 
 export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
   ({ data, id, positionAbsoluteX, positionAbsoluteY }: NodeProps<Node<EdgeAnchorNodeData>>) => {
-    const { setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { setNodes, getEdge, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
     // Subscribe to the path of the edge used to position the node
     const edgePath = useStore((state) => edgePathSelector(state, id)) as string;
@@ -53,26 +57,50 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
 
     // Update the node position if the path of the edge changed
     useEffect(() => {
-      if (edgePath) {
+      if (edgePath || (!positionAbsoluteX && !positionAbsoluteY)) {
         setNodes((prevNodes) =>
           prevNodes.map((prevNode) => {
             if (prevNode.id === id && edgePath) {
-              //Get the middle point of the svgPath
+              //Get the point on the svgPath where the EdgeAnchorNode will be placed
               var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
               svgPath.setAttribute('d', edgePath);
               const pathLength = svgPath.getTotalLength();
-              const points = svgPath.getPointAtLength(pathLength * 0.5);
+              let points = svgPath.getPointAtLength(pathLength * 0.5);
+              if (data.isLayouted && data.positionRatio) {
+                points = svgPath.getPointAtLength(pathLength * data.positionRatio);
+              }
+
+              //Update the handles position
+              const connectionHandles = data.connectionHandles.map((connectionHandle) => {
+                const connectedEdge = getEdge(connectionHandle.edgeId);
+                if (connectedEdge) {
+                  const otherEndNodeId = connectedEdge.source === id ? connectedEdge.target : connectedEdge.source;
+                  const otherEndNode = getNode(otherEndNodeId);
+                  if (otherEndNode) {
+                    const handlePosition = getHandlePositionFromNodeAndPath(edgePath, points, otherEndNode);
+                    return {
+                      ...connectionHandle,
+                      position: handlePosition,
+                    };
+                  }
+                }
+                return connectionHandle;
+              });
 
               return {
                 ...prevNode,
                 position: points,
+                data: {
+                  ...prevNode.data,
+                  connectionHandles,
+                },
               };
             }
             return prevNode;
           })
         );
       }
-    }, [edgePath]);
+    }, [edgePath, data.positionRatio, !positionAbsoluteX && !positionAbsoluteY]);
 
     if (!positionAbsoluteX && !positionAbsoluteY) {
       return null;
@@ -84,7 +112,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
           return (
             <Handle
               id={connectionHandle.id ?? ''}
-              style={handleStyle(connectionHandle.position)}
+              style={handleStyle(connectionHandle.isHidden, connectionHandle.position)}
               type={connectionHandle.type}
               position={connectionHandle.position}
               key={connectionHandle.id}

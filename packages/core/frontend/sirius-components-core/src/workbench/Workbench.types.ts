@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
+import React, { FC, ForwardRefExoticComponent, MemoExoticComponent, PropsWithoutRef, RefAttributes } from 'react';
+import { Selection } from '../selection/SelectionContext.types';
+import { WorkbenchPanelHandle } from './Panels.types';
 
-export interface GQLEditingContextEventPayload {
-  __typename: string;
-}
+export type WorkbenchProps = {
+  editingContextId: string;
+  initialRepresentationSelected: RepresentationMetadata | null;
+  onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
+  readOnly: boolean;
+  initialWorkbenchConfiguration: WorkbenchConfiguration | null;
+};
 
-export interface GQLRepresentationRenamedEventPayload extends GQLEditingContextEventPayload {
+export type WorkbenchState = {
   id: string;
-  representationId: string;
-  newLabel: string;
-}
-
-export type GQLEditingContextEventSubscription = {
-  editingContextEvent: GQLEditingContextEventPayload;
+  displayedRepresentationMetadata: RepresentationMetadata | null;
+  representationsMetadata: RepresentationMetadata[];
 };
 
 export type RepresentationMetadata = {
@@ -31,33 +33,19 @@ export type RepresentationMetadata = {
   label: string;
   kind: string;
   iconURLs: string[];
+  description: RepresentationDescription;
+};
+
+export type RepresentationDescription = {
+  id: string;
 };
 
 export type WorkbenchViewSide = 'left' | 'right';
-
-export interface WorkbenchViewContribution {
-  side: WorkbenchViewSide;
-  title: string;
-  icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
-}
-
-export interface WorkbenchViewComponentProps {
-  editingContextId: string;
-  readOnly: boolean;
-}
 
 export interface MainAreaComponentProps {
   editingContextId: string;
   readOnly: boolean;
 }
-
-export type WorkbenchProps = {
-  editingContextId: string;
-  initialRepresentationSelected: RepresentationMetadata | null;
-  onRepresentationSelected: (representation: RepresentationMetadata | null) => void;
-  readOnly: boolean;
-};
 
 export type RepresentationComponentProps = {
   editingContextId: string;
@@ -65,8 +53,86 @@ export type RepresentationComponentProps = {
   readOnly: boolean;
 };
 
-export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;
+export type RepresentationComponent =
+  | FC<RepresentationComponentProps>
+  | MemoExoticComponent<FC<RepresentationComponentProps>>
+  | ForwardRefExoticComponent<
+      PropsWithoutRef<RepresentationComponentProps> & RefAttributes<WorkbenchMainRepresentationHandle | null>
+    >
+  | MemoExoticComponent<
+      ForwardRefExoticComponent<
+        PropsWithoutRef<RepresentationComponentProps> & RefAttributes<WorkbenchMainRepresentationHandle | null>
+      >
+    >;
 
 export type RepresentationComponentFactory = {
   (representationMetadata: RepresentationMetadata): RepresentationComponent | null;
 };
+
+export interface WorkbenchHandle {
+  getConfiguration(): WorkbenchConfiguration;
+  applySelection: (selection: Selection) => void;
+}
+
+export interface WorkbenchPanelsHandle {
+  getWorkbenchPanelConfigurations: () => WorkbenchSidePanelConfiguration[];
+  getWorkbenchPanelHandles: () => WorkbenchPanelHandle[];
+}
+
+export interface RepresentationNavigationHandle {
+  getMainPanelConfiguration: () => WorkbenchMainPanelConfiguration | null;
+}
+
+export interface WorkbenchViewContribution {
+  id: string;
+  side: WorkbenchViewSide;
+  title: string;
+  icon: React.ReactElement;
+  component: ForwardRefExoticComponent<
+    PropsWithoutRef<WorkbenchViewComponentProps> & RefAttributes<WorkbenchViewHandle>
+  >;
+}
+
+export interface WorkbenchViewComponentProps {
+  id: string;
+  editingContextId: string;
+  readOnly: boolean;
+  initialConfiguration: WorkbenchViewConfiguration | null;
+}
+
+export interface WorkbenchViewHandle {
+  id: string;
+  getWorkbenchViewConfiguration: () => Record<string, unknown>;
+  applySelection: ((selection: Selection) => void) | null;
+}
+
+export interface WorkbenchConfiguration {
+  mainPanel: WorkbenchMainPanelConfiguration | null;
+  workbenchPanels: WorkbenchSidePanelConfiguration[];
+}
+
+export interface WorkbenchSidePanelConfiguration {
+  id: string;
+  isOpen: boolean;
+  views: WorkbenchViewConfiguration[];
+}
+
+export interface WorkbenchViewConfiguration {
+  id: string;
+  isActive: boolean;
+}
+
+export interface WorkbenchMainPanelConfiguration {
+  id: string;
+  representationEditors: WorkbenchRepresentationEditorConfiguration[];
+}
+
+export interface WorkbenchRepresentationEditorConfiguration {
+  representationId: string;
+  isActive: boolean;
+}
+
+export interface WorkbenchMainRepresentationHandle {
+  id: string;
+  applySelection: ((selection: Selection) => void) | null;
+}

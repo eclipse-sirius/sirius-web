@@ -22,14 +22,12 @@ public class CellDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.table.CellDescription.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.table.CellDescription cellDescription = org.eclipse.sirius.components.view.table.TableFactory.eINSTANCE.createCellDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.CellDescription.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.table.CellDescription getCellDescription() {
@@ -38,7 +36,6 @@ public class CellDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.CellDescription.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.table.CellDescription build() {
@@ -54,7 +51,6 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setName(value);
         return this;
     }
-
     /**
      * Setter for PreconditionExpression.
      *
@@ -64,7 +60,6 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for SelectedTargetObjectExpression.
      *
@@ -74,7 +69,6 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setSelectedTargetObjectExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -84,7 +78,6 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setValueExpression(value);
         return this;
     }
-
     /**
      * Setter for TooltipExpression.
      *
@@ -94,7 +87,6 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setTooltipExpression(value);
         return this;
     }
-
     /**
      * Setter for CellWidgetDescription.
      *

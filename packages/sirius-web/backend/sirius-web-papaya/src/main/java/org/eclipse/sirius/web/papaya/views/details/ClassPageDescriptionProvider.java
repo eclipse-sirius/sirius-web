@@ -178,11 +178,19 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
                 .semanticCandidatesExpression("aql:self.attributes->toPaginatedData()")
                 .isResizableExpression("false")
                 .initialHeightExpression("-1")
+                .depthLevelExpression("0")
                 .build();
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("AttributesCell")
                 .preconditionExpression("true")
-                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
+                        .body(
+                                new ViewBuilders().newSetValue()
+                                        .featureName("name")
+                                        .valueExpression("aql:newValue")
+                                        .build()
+                        )
+                        .build())
                 .valueExpression("aql:self.name")
                 .build();
         return new TableWidgetBuilders().newTableWidgetDescription()

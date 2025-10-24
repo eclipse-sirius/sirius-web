@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -109,16 +108,22 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         PortalServices portalServices = new PortalServices(this.representationSearchService, this.editingContext);
-        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION) && changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
-            var deletedRepresentationId = deleteRepresentationInput.representationId();
+        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION)) {
+            var deletedRepresentationId = Optional.ofNullable(changeDescription.getParameters().get(ChangeDescriptionParameters.REPRESENTATION_ID))
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .orElse("");
             if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
                 var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
-                this.updatePortal(deleteRepresentationInput, newPortal);
+                this.updatePortal(changeDescription.getInput(), newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
             // The Portal's structure itself has not changed, but clients need to refresh to show the updated names.
-            String renamedRepresentationId = changeDescription.getSourceId();
+            String renamedRepresentationId = Optional.ofNullable(changeDescription.getParameters().get(ChangeDescriptionParameters.REPRESENTATION_ID))
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .orElse("");
             if (renamedRepresentationId.equals(this.currentPortal.getId()) || portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
                 this.emitNewPortal(changeDescription.getInput());
             }

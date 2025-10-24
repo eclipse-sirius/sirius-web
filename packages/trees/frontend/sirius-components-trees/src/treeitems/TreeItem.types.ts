@@ -19,14 +19,16 @@ export interface TreeItemProps {
   item: GQLTreeItem;
   itemIndex: number;
   depth: number;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  expanded: string[];
+  maxDepth: number;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
 }
 

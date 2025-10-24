@@ -103,30 +103,6 @@ public interface NodeDescription extends DiagramElementDescription {
     EList<Action> getActions();
 
     /**
-     * Returns the value of the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @see #setChildrenLayoutStrategy(LayoutStrategyDescription)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_ChildrenLayoutStrategy()
-     * @model containment="true"
-     * @generated
-     */
-    LayoutStrategyDescription getChildrenLayoutStrategy();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getChildrenLayoutStrategy <em>Children Layout
-     * Strategy</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     */
-    void setChildrenLayoutStrategy(LayoutStrategyDescription value);
-
-    /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *

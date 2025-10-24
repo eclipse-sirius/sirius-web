@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,5 +19,5 @@ import java.util.List;
  *
  * @author Jerome Gout
  */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL) implements ITreeItemContextMenuEntry { }
+public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis) implements ITreeItemContextMenuEntry { }
 

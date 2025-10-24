@@ -13,7 +13,8 @@
 
 import { Edge, HandleType, Node, ReactFlowState } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLReferencePosition } from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLDiagram, GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
 import {
@@ -24,12 +25,14 @@ import {
   ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { DiagramEdgeType } from '../renderer/edge/EdgeTypes.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHandleFromReferencePosition';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
+import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
+import { EdgeAnchorNodeData } from '../renderer/node/EdgeAnchorNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -37,6 +40,7 @@ import { IconLabelNodeConverter } from './IconLabelNodeConverter';
 import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
+import { convertEdgeType } from './convertEdge';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
 import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
 
@@ -53,7 +57,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
-const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLayoutData[]): EdgeLabel => {
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,
@@ -63,6 +67,14 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
     },
     contentStyle: {
       ...convertContentStyle(gqlEdgeLabel.style),
+    },
+    position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlEdgeLabel.id)?.position ?? {
+      x: 0,
+      y: 0,
+    },
+    appearanceData: {
+      customizedStyleProperties: gqlEdgeLabel.customizedStyleProperties,
+      gqlStyle: gqlEdgeLabel.style,
     },
   };
 };
@@ -82,19 +94,29 @@ export const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): str
   strategy?.kind === 'List';
 
 const getOrCreateAnchorNodeEdge = (
+  gqlDiagram: GQLDiagram,
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>,
   type: HandleType,
   gqlEdge: GQLEdge,
   edges: GQLEdge[]
-): Node<NodeData> | undefined => {
+): Node<NodeData | EdgeAnchorNodeData> | undefined => {
   // We need to use the already rendered node in order to preserve its position and avoid flickering after a refresh
   const id = type === 'source' ? gqlEdge.sourceId : gqlEdge.targetId;
-  const alreadyExistingNode = state.nodeLookup.get(id);
-  if (!alreadyExistingNode) {
-    return createEdgeAnchorNode(gqlEdge, type, edges);
-  } else {
-    return state.nodeLookup.get(id);
+  let edgeAnchorNode = state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, type, edges);
+
+  // Today, we only have one EdgeAnchorNode for each edge used as source or target
+  const edgeLayoutData = gqlDiagram.layoutData.edgeLayoutData.find((layoutData) => layoutData.id === id);
+  if (edgeLayoutData && edgeLayoutData.edgeAnchorLayoutData.length === 1 && edgeLayoutData.edgeAnchorLayoutData[0]) {
+    return {
+      ...edgeAnchorNode,
+      data: {
+        ...edgeAnchorNode.data,
+        positionRatio: edgeLayoutData.edgeAnchorLayoutData[0].positionRatio,
+        isLayouted: true,
+      },
+    };
   }
+  return edgeAnchorNode;
 };
 
 const defaultNodeConverters: INodeConverter[] = [
@@ -106,9 +128,9 @@ const defaultNodeConverters: INodeConverter[] = [
 
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
+  referencePosition: GQLReferencePosition | null,
   nodeConverterContributions: INodeConverter[],
   diagramDescription: GQLDiagramDescription,
-  edgeType: DiagramEdgeType,
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
@@ -171,7 +193,7 @@ export const convertDiagram = (
     if (!sourceNode) {
       //If the node used as an anchor was not converted already
       if (!nodeId2node.get(gqlEdge.sourceId)) {
-        sourceNode = getOrCreateAnchorNodeEdge(state, 'source', gqlEdge, gqlDiagram.edges);
+        sourceNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'source', gqlEdge, gqlDiagram.edges);
         if (sourceNode) {
           nodeId2node.set(sourceNode.id, sourceNode);
           nodes.push(sourceNode);
@@ -181,7 +203,7 @@ export const convertDiagram = (
 
     if (!targetNode) {
       if (!nodeId2node.get(gqlEdge.targetId)) {
-        targetNode = getOrCreateAnchorNodeEdge(state, 'target', gqlEdge, gqlDiagram.edges);
+        targetNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'target', gqlEdge, gqlDiagram.edges);
         if (targetNode) {
           nodeId2node.set(targetNode.id, targetNode);
           nodes.push(targetNode);
@@ -192,6 +214,16 @@ export const convertDiagram = (
     const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
       (layoutData) => layoutData.id === gqlEdge.id
     );
+
+    let strokeDasharray: string | undefined = undefined;
+    if (gqlEdge.style.lineStyle === 'Dash') {
+      strokeDasharray = '5,5';
+    } else if (gqlEdge.style.lineStyle === 'Dot') {
+      strokeDasharray = '2,2';
+    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
+      strokeDasharray = '10,5,2,2,2,5';
+    }
+
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -203,16 +235,20 @@ export const convertDiagram = (
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
       edgePath,
       isHovered: false,
+      edgeAppearanceData: {
+        gqlStyle: gqlEdge.style,
+        customizedStyleProperties: gqlEdge.customizedStyleProperties,
+      },
     };
 
     if (gqlEdge.beginLabel) {
-      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
+      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel, gqlDiagram.layoutData.labelLayoutData);
     }
     if (gqlEdge.centerLabel) {
-      data.label = convertEdgeLabel(gqlEdge.centerLabel);
+      data.label = convertEdgeLabel(gqlEdge.centerLabel, gqlDiagram.layoutData.labelLayoutData);
     }
     if (gqlEdge.endLabel) {
-      data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
+      data.endLabel = convertEdgeLabel(gqlEdge.endLabel, gqlDiagram.layoutData.labelLayoutData);
     }
 
     const sourceHandle = sourceNode?.data.connectionHandles
@@ -227,28 +263,14 @@ export const convertDiagram = (
       usedHandles.push(sourceHandle?.id, targetHandle.id);
     }
 
-    let strokeDasharray: string | undefined = undefined;
-    if (gqlEdge.style.lineStyle === 'Dash') {
-      strokeDasharray = '5,5';
-    } else if (gqlEdge.style.lineStyle === 'Dot') {
-      strokeDasharray = '2,2';
-    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
-      strokeDasharray = '10,5,2,2,2,5';
-    }
-
     return {
       id: gqlEdge.id,
-      type: edgeType,
+      type: convertEdgeType(gqlEdge.style.edgeType),
       source: sourceNode ? sourceNode.id : '',
       target: targetNode ? targetNode.id : '',
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
       markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
       zIndex: 2000,
-      style: {
-        stroke: gqlEdge.style.color,
-        strokeWidth: gqlEdge.style.size,
-        strokeDasharray,
-      },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
       sourceHandle: sourceHandle?.id,
@@ -256,6 +278,11 @@ export const convertDiagram = (
       sourceNode: sourceNode,
       targetNode: targetNode,
       reconnectable: !!state.edgeLookup.get(gqlEdge.id)?.reconnectable,
+      style: {
+        stroke: gqlEdge.style.color,
+        strokeWidth: gqlEdge.style.size,
+        strokeDasharray,
+      },
     };
   });
 
@@ -269,9 +296,11 @@ export const convertDiagram = (
     nodeLookUp.set(node.id, node);
   });
 
+  updateHandleViewModifier(rawDiagram.nodes, state);
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
   layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
+  updateHandleFromReferencePosition(rawDiagram, state, referencePosition);
 
   return {
     nodes: rawDiagram.nodes,

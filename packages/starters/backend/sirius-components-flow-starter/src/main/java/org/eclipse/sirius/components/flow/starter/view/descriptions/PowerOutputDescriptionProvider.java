@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -48,15 +47,12 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
-
     @Override
     public NodeDescription create() {
-
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType("flow::PowerOutput")
                 .semanticCandidatesExpression("feature:powerOutputs")
-                .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
                 .defaultHeightExpression("50")
                 .defaultWidthExpression("50")
                 .userResizable(UserResizableDirection.NONE)
@@ -73,7 +69,6 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
     }
 
     private NodePalette createNodePalette() {
-
         return this.diagramBuilderHelper.newNodePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())

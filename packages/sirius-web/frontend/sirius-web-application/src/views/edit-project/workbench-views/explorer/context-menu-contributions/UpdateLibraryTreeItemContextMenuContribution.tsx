@@ -21,7 +21,7 @@ import { useObject } from './useObject';
 
 export const UpdateLibraryTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, item, readOnly, onClose }: TreeItemContextMenuComponentProps,
+    { editingContextId, item, entry, readOnly, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -52,6 +52,7 @@ export const UpdateLibraryTreeItemContextMenuContribution = forwardRef(
               name={library.name}
               version={library.version}
               title={`Update ${library.name} @${library.version}`}
+              withImpactAnalysis={entry.withImpactAnalysis}
               onClose={onClose}
             />
           </Fragment>

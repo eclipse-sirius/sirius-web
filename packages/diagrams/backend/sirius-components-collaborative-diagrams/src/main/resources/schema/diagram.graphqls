@@ -25,6 +25,7 @@ enum RefreshCause {
 type ReferencePosition {
   parentId: ID
   position: Position!
+  causedBy : String!
 }
 
 type Diagram implements Representation {
@@ -39,6 +40,7 @@ type Diagram implements Representation {
 type DiagramLayoutData {
   nodeLayoutData: [NodeLayoutData!]!
   edgeLayoutData: [EdgeLayoutData!]!
+  labelLayoutData: [LabelLayoutData!]!
 }
 
 type NodeLayoutData {
@@ -56,14 +58,27 @@ type HandleLayoutData {
   type: HandleType!
 }
 
+type EdgeAnchorLayoutData {
+  edgeId: ID!
+  positionRatio: Float!
+  handlePosition : String!
+  type : HandleType!
+}
+
 type EdgeLayoutData {
   id: ID!
   bendingPoints: [Position!]!
+  edgeAnchorLayoutData: [EdgeAnchorLayoutData!]!
 }
 
 enum HandleType {
   source
   target
+}
+
+type LabelLayoutData {
+  id: ID!
+  position: Position!
 }
 
 enum ViewModifier {
@@ -86,17 +101,34 @@ type Node {
   descriptionId: ID!
   type: String!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   state: ViewModifier!
   pinned: Boolean!
   style: INodeStyle!
-  childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
   childNodes: [Node!]!
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
+  customizedStyleProperties: [NodeStyleProperty!]!
+  initialBorderNodePosition: BorderNodePosition!
+}
+
+enum NodeStyleProperty {
+  BACKGROUND,
+  BORDER_COLOR,
+  BORDER_RADIUS,
+  BORDER_SIZE,
+  BORDER_STYLE
+}
+
+enum BorderNodePosition {
+  WEST
+  EAST
+  SOUTH
+  NORTH
+  NONE
 }
 
 type FreeFormLayoutStrategy {
@@ -118,6 +150,7 @@ type Label {
   text: String!
   type: String!
   style: LabelStyle!
+  customizedStyleProperties: [LabelStyleProperty!]!
 }
 
 type InsideLabel {
@@ -129,6 +162,22 @@ type InsideLabel {
   headerSeparatorDisplayMode: HeaderSeparatorDisplayMode!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
+  customizedStyleProperties: [LabelStyleProperty!]!
+}
+
+enum LabelStyleProperty {
+  FONT_SIZE
+  ITALIC
+  BOLD
+  UNDERLINE
+  STRIKE_THROUGH
+  BORDER_COLOR
+  BORDER_RADIUS
+  BORDER_SIZE
+  BORDER_STYLE
+  COLOR
+  BACKGROUND
+  VISIBILITY
 }
 
 enum HeaderSeparatorDisplayMode {
@@ -169,6 +218,7 @@ type OutsideLabel {
   style: LabelStyle!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
+  customizedStyleProperties: [LabelStyleProperty!]!
 }
 
 enum OutsideLabelLocation {
@@ -191,6 +241,7 @@ type LabelStyle {
   borderStyle: LineStyle!
   background: String!
   maxWidth: String
+  visibility: LabelVisibility!
 }
 
 union INodeStyle = ImageNodeStyle | IconLabelNodeStyle | RectangularNodeStyle
@@ -202,10 +253,12 @@ type ImageNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   positionDependentRotation: Boolean!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 type IconLabelNodeStyle {
   background: String!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 type RectangularNodeStyle {
@@ -214,6 +267,7 @@ type RectangularNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   background: String!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 enum LineStyle {
@@ -221,6 +275,11 @@ enum LineStyle {
   Dash_Dot
   Dot
   Solid
+}
+
+enum LabelVisibility {
+  visible
+  hidden
 }
 
 type Edge {
@@ -233,11 +292,21 @@ type Edge {
   sourceId: ID!
   targetId: ID!
   targetObjectId: String!
-  targetObjectKind: String!
-  targetObjectLabel: String!
+  targetObjectKind: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
+  targetObjectLabel: String! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/5114")
   state: ViewModifier!
   style: EdgeStyle!
   centerLabelEditable: Boolean!
+  customizedStyleProperties: [EdgeStyleProperty!]!
+}
+
+enum EdgeStyleProperty {
+  SIZE,
+  COLOR,
+  LINESTYLE,
+  SOURCE_ARROW,
+  TARGET_ARROW,
+  EDGE_TYPE
 }
 
 type EdgeStyle {
@@ -246,6 +315,7 @@ type EdgeStyle {
   size: Int!
   sourceArrow: ArrowStyle!
   targetArrow: ArrowStyle!
+  edgeType: EdgeType!
 }
 
 enum ArrowStyle {
@@ -265,6 +335,12 @@ enum ArrowStyle {
   CrossedCircle
   ClosedArrowWithVerticalBar
   ClosedArrowWithDots
+}
+
+enum EdgeType {
+  Manhattan,
+  SmartManhattan,
+  Oblique
 }
 
 type Position {
@@ -339,10 +415,11 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
+  manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
-  diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): DiagramImpactAnalysisReport!
+  diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
 }
 
@@ -380,6 +457,11 @@ type Action {
   iconURLs: [String!]!
 }
 
+type ManageVisibilityAction {
+  id: ID!
+  label: String!
+}
+
 type EdgeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
@@ -407,6 +489,7 @@ extend type Mutation {
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
   invokeAction(input: InvokeActionInput!): InvokeActionPayload!
+  invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
 }
 
 input DropNodeInput {
@@ -433,12 +516,6 @@ input DeleteFromDiagramInput {
   representationId: ID!
   nodeIds: [ID!]!
   edgeIds: [ID!]!
-  deletionPolicy: DeletionPolicy!
-}
-
-enum DeletionPolicy {
-  SEMANTIC
-  GRAPHICAL
 }
 
 union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
@@ -518,7 +595,17 @@ input InvokeActionInput {
   actionId: ID!
 }
 
+input InvokeManageVisibilityActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  actionId: ID!
+}
+
 union InvokeActionPayload = ErrorPayload | SuccessPayload
+
+union InvokeManageVisibilityActionPayload = ErrorPayload | SuccessPayload
 
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
@@ -620,6 +707,7 @@ input LayoutDiagramInput {
 input DiagramLayoutDataInput {
   nodeLayoutData: [NodeLayoutDataInput!]!
   edgeLayoutData: [EdgeLayoutDataInput!]!
+  labelLayoutData: [LabelLayoutDataInput!]!
 }
 
 input NodeLayoutDataInput {
@@ -637,9 +725,22 @@ input HandleLayoutDataInput {
   type : HandleType!
 }
 
+input EdgeAnchorLayoutDataInput {
+  edgeId: ID!
+  positionRatio: Float!
+  handlePosition : String!
+  type : HandleType!
+}
+
 input EdgeLayoutDataInput {
   id: ID!
   bendingPoints: [PositionInput!]!
+  edgeAnchorLayoutData: [EdgeAnchorLayoutDataInput!]!
+}
+
+input LabelLayoutDataInput {
+  id: ID!
+  position: PositionInput!
 }
 
 input PositionInput {
@@ -653,10 +754,3 @@ input SizeInput {
 }
 
 union LayoutDiagramPayload = ErrorPayload | SuccessPayload
-
-type DiagramImpactAnalysisReport {
-  nbElementDeleted: Int!
-  nbElementModified: Int!
-  nbElementCreated: Int!
-  additionalReports: [String!]!
-}

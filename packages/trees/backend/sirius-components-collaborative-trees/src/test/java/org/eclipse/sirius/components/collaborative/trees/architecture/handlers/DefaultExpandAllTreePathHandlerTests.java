@@ -90,7 +90,7 @@ public class DefaultExpandAllTreePathHandlerTests {
             }
         };
 
-        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp(), List.of());
         Tree tree = this.createTree();
 
         var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");
@@ -143,7 +143,7 @@ public class DefaultExpandAllTreePathHandlerTests {
             }
         };
 
-        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp(), List.of());
         Tree tree = this.createTree();
 
         var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");

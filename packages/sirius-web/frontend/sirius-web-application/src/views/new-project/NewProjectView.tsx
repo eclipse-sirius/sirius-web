@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,32 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
+import { useComponent, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { StateMachine } from 'xstate';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { GQLCreateProjectMutationData, GQLCreateProjectPayload, GQLErrorPayload } from './NewProjectView.types';
+import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import {
-  ChangeNameEvent,
-  HandleResponseEvent,
-  HideToastEvent,
-  NewProjectEvent,
-  NewProjectViewContext,
-  NewProjectViewStateSchema,
-  RequestProjectCreationEvent,
-  SchemaValue,
-  ShowToastEvent,
-  newProjectViewMachine,
-} from './NewProjectViewMachine';
+  GQLCreateProjectMutationData,
+  GQLCreateProjectPayload,
+  GQLCreateProjectSuccessPayload,
+  GQLErrorPayload,
+  NewProjectViewState,
+} from './NewProjectView.types';
 
 const createProjectMutation = gql`
   mutation createProject($input: CreateProjectInput!) {
@@ -95,19 +88,37 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
 const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
+const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 1024;
+
+const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
+  payload.__typename === 'CreateProjectSuccessPayload';
+
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
-  const [{ value, context }, dispatch] =
-    useMachine<StateMachine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>>(newProjectViewMachine);
-  const { newProjectView, toast } = value as SchemaValue;
-  const { name, nameMessage, nameIsInvalid, message, newProjectId } = context;
+  const { addErrorMessage } = useMultiToast();
+
+  const [state, setState] = useState<NewProjectViewState>({
+    name: '',
+    projectId: '',
+  });
+
+  const {
+    viewer: {
+      capabilities: {
+        projects: { canCreate },
+      },
+    },
+  } = useCurrentViewer();
+
   const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
   const onNameChange = (event) => {
     const value = event.target.value;
-    const changeNameEvent: ChangeNameEvent = { type: 'CHANGE_NAME', name: value };
-    dispatch(changeNameEvent);
+    setState((prevState) => ({
+      ...prevState,
+      name: value,
+    }));
   };
 
   const onCreateNewProject = (event) => {
@@ -115,42 +126,42 @@ export const NewProjectView = () => {
     const variables = {
       input: {
         id: crypto.randomUUID(),
-        name: name.trim(),
+        name: state.name.trim(),
         natures: [],
       },
     };
-    const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };
-    dispatch(submitEvent);
     createProject({ variables });
   };
 
   useEffect(() => {
     if (!loading) {
       if (error) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage(error.message);
       }
       if (data) {
-        const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data };
-        dispatch(handleResponseEvent);
-
         const { createProject } = data;
         if (isErrorPayload(createProject)) {
           const { message } = createProject;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+          addErrorMessage(message);
+        } else if (isCreateProjectSuccessPayload(createProject)) {
+          setState((prevState) => ({
+            ...prevState,
+            projectId: createProject.project.id,
+          }));
         }
       }
     }
   }, [loading, data, error]);
 
-  if (newProjectView === 'success') {
-    return <Navigate to={`/projects/${newProjectId}/edit`} />;
+  if (!canCreate) {
+    return <Navigate to={'/errors/404'} />;
   }
 
+  if (state.projectId) {
+    return <Navigate to={`/projects/${state.projectId}/edit`} />;
+  }
+
+  const isError = isNameInvalid(state.name);
   return (
     <>
       <div className={classes.newProjectView}>
@@ -170,11 +181,11 @@ export const NewProjectView = () => {
                 <form onSubmit={onCreateNewProject} className={classes.form}>
                   <TextField
                     variant="standard"
-                    error={nameIsInvalid}
-                    helperText={nameMessage}
+                    error={isError}
+                    helperText="The name must contain between 3 and 1024 characters"
                     label="Name"
                     name="name"
-                    value={name}
+                    value={state.name}
                     placeholder="Enter the project name"
                     inputProps={{ 'data-testid': 'name' }}
                     autoFocus={true}
@@ -184,7 +195,7 @@ export const NewProjectView = () => {
                     <Button
                       variant="contained"
                       type="submit"
-                      disabled={newProjectView !== 'valid'}
+                      disabled={isError}
                       data-testid="create-project"
                       color="primary">
                       Create
@@ -197,11 +208,6 @@ export const NewProjectView = () => {
         </main>
         <Footer />
       </div>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };

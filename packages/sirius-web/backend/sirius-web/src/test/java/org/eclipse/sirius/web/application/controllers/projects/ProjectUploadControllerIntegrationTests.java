@@ -33,6 +33,8 @@ import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +45,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -72,6 +75,12 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
 
     @Autowired
     private IProjectSearchService projectSearchService;
+
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    @Autowired
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -153,6 +162,14 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
         var optionalProject = this.projectSearchService.findById(newProjectId);
         assertThat(optionalProject).isPresent();
         optionalProject.ifPresent(project -> assertThat(project.getName()).isEqualTo(ECORE_SAMPLE));
+
+        var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(optionalProject.get().getId()));
+        assertThat(optionalProjectSemanticData).isPresent();
+        var semanticDataId = optionalProjectSemanticData.get().getSemanticData().getId();
+
+        var representations = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticDataId));
+        assertThat(representations).hasSize(1);
+        assertThat(representations.get(0)).extracting("label").isEqualTo("Portal");
     }
 
     private byte[] getZipTestFile() {
@@ -206,7 +223,7 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
               ],
               "representations":{
                 "e81eec5c-42d6-491c-8bcc-9beb951356f8":{
-                  "targetObjectURI":"sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/",
+                  "targetObjectURI":"sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8",
                   "type":"siriusComponents://representation?type=Portal",
                   "descriptionURI":"69030a1b-0b5f-3c1d-8399-8ca260e4a672"
                 }

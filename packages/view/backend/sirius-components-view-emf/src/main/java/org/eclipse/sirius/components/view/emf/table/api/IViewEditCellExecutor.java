@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.table.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
-import org.eclipse.sirius.components.view.table.TableDescription;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.table.CellDescription;
 
 /**
  * Service that handles the execution part of edit operation in table cells.
@@ -25,5 +28,6 @@ import org.eclipse.sirius.components.view.table.TableDescription;
  * @author Jerome Gout
  */
 public interface IViewEditCellExecutor {
-    IStatus execute(IEditingContext editingContext, TableDescription viewTableDescription, ICell cell, Line row, Column column, Object newValue);
+
+    IStatus execute(IEditingContext editingContext, View view, List<CellDescription> viewTableCellDescriptions, ICell cell, Line row, Column column, Object newValue);
 }

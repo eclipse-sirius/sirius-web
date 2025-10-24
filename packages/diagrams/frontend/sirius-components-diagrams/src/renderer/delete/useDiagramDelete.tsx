@@ -17,13 +17,12 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDelete } from '../tools/useDelete';
-import { GQLDeletionPolicy } from '../tools/useDelete.types';
 import { UseDiagramDeleteValue } from './useDiagramDelete.types';
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const { deleteDiagramElements } = useDelete();
 
@@ -41,8 +40,11 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
         const nodeToDeleteIds: string[] = getNodes()
           .filter((node) => node.selected)
           .map((node) => node.id);
+        const edgeToDeleteIds: string[] = getEdges()
+          .filter((edge) => edge.selected)
+          .map((edge) => edge.id);
         showDeletionConfirmation(() => {
-          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, [], GQLDeletionPolicy.SEMANTIC);
+          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, edgeToDeleteIds);
         });
       }
     },

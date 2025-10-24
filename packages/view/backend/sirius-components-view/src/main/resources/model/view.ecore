@@ -110,10 +110,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColorExpression"
         eType="#//InterpretedExpression" defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBoldExpression" eType="#//InterpretedExpression"
-        defaultValueLiteral="aql:'false'"/>
+        defaultValueLiteral="aql:false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isItalicExpression" eType="#//InterpretedExpression"
-        defaultValueLiteral="aql:'false'"/>
+        defaultValueLiteral="aql:false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnderlineExpression"
-        eType="#//InterpretedExpression" defaultValueLiteral="aql:'false'"/>
+        eType="#//InterpretedExpression" defaultValueLiteral="aql:false"/>
   </eClassifiers>
 </ecore:EPackage>

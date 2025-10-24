@@ -13,26 +13,19 @@
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
-
-import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -46,7 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -67,7 +59,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
     private ExpandCollapseDiagramDescriptionProvider expandCollapseDiagramDescriptionProvider;
@@ -94,20 +86,16 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     public void givenDiagramWithCollapsedNodesByDefaultWhenItIsOpenedThenSomeNodesAreCollapsed() {
         var flux = this.givenSubscriptionToExpandedCollapseDiagram();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
 
-                    var nonDomainNodes = diagram.getNodes().stream()
-                            .filter(node -> !node.getInsideLabel().getText().endsWith("-domain"));
-                    assertThat(nonDomainNodes)
-                            .isNotEmpty()
-                            .allSatisfy(node -> assertThat(node).hasCollapsingState(CollapsingState.EXPANDED));
-                }, () -> fail("Missing diagram"));
+            var nonDomainNodes = diagram.getNodes().stream()
+                    .filter(node -> !node.getInsideLabel().getText().endsWith("-domain"));
+            assertThat(nonDomainNodes)
+                    .isNotEmpty()
+                    .allSatisfy(node -> assertThat(node).hasCollapsingState(CollapsingState.EXPANDED));
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -124,35 +112,21 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
         var diagramId = new AtomicReference<String>();
         var collapsedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        var initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
-                    collapsedNodeId.set(siriusWebDomainNode.getId());
-                }, () -> fail("Missing diagram"));
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.COLLAPSED);
+            collapsedNodeId.set(siriusWebDomainNode.getId());
+        });
 
-        Runnable expandNodes = () -> {
-            String expandToolId = this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, List.of());
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable expandNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), collapsedNodeId.get(), this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId(), 0, 0, List.of())
+                    .isSuccess();
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
-                    assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.EXPANDED);
-                }, () -> fail("Missing diagram"));
+        var updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            var siriusWebDomainNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode();
+            assertThat(siriusWebDomainNode).hasCollapsingState(CollapsingState.EXPANDED);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -171,47 +145,30 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
         var diagramId = new AtomicReference<String>();
         var expandedNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramId.set(diagram.getId());
+        var initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
 
-                    diagram.getNodes().stream()
-                            .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
-                            .map(Node::getId)
-                            .findFirst()
-                            .ifPresent(expandedNodeId::set);
-                }, () -> fail("Missing diagram"));
+            diagram.getNodes().stream()
+                    .filter(node -> node.getCollapsingState().equals(CollapsingState.EXPANDED))
+                    .map(Node::getId)
+                    .findFirst()
+                    .ifPresent(expandedNodeId::set);
+        });
 
-        Runnable collapseNodes = () -> {
-            String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, List.of());
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        Runnable collapseNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), expandedNodeId.get(), this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId(), 0, 0, List.of())
+                    .isSuccess();
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
-
-        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .filter(diagram -> {
-                    return diagram.getNodes().stream()
-                        .filter(node -> node.getId().equals(expandedNodeId.get()))
-                        .map(node -> node.getCollapsingState().equals(CollapsingState.COLLAPSED))
-                        .findFirst()
-                        .orElse(false);
-                })
-                .isPresent();
+        var updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            assertThat(new DiagramNavigator(diagram).nodeWithId(expandedNodeId.get()).getNode())
+                    .hasCollapsingState(CollapsingState.COLLAPSED);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(collapseNodes)
-                .expectNextMatches(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
 }

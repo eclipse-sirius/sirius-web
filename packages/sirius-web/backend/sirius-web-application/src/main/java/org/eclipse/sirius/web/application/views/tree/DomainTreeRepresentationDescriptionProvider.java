@@ -27,6 +27,8 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvi
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
@@ -63,14 +65,20 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private final IObjectService objectService;
 
+    private final IIdentityService identityService;
+
+    private final ILabelService labelService;
+
     private final IURLParser urlParser;
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
@@ -115,12 +123,10 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
             id = representationMetadata.getId().toString();
-        } else if (self instanceof Resource resource) {
-            id = resource.getURI().path().substring(1);
-        } else if (self instanceof EObject) {
-            id = this.objectService.getId(self);
+        } else if (self instanceof Resource || self instanceof EObject) {
+            id = this.identityService.getId(self);
         } else if (self instanceof Setting setting) {
-            id = SETTING + this.objectService.getId(setting.getEObject()) + SETTING_ID_SEPARATOR + setting.getEStructuralFeature().getName();
+            id = SETTING + this.identityService.getId(setting.getEObject()) + SETTING_ID_SEPARATOR + setting.getEStructuralFeature().getName();
         }
         return id;
     }
@@ -145,7 +151,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         if (self instanceof RepresentationMetadata representationMetadata) {
             label = representationMetadata.getLabel();
         } else if (self instanceof EObject) {
-            label = this.objectService.getLabel(self);
+            label = this.labelService.getStyledLabel(self).toString();
             if (label.isBlank()) {
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
@@ -161,7 +167,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
         List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
-            imageURL = this.objectService.getImagePath(self);
+            imageURL = this.labelService.getImagePaths(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
             if (representationMetadata.getIconURLs().isEmpty()) {
                 imageURL = this.representationImageProviders.stream()
@@ -197,7 +203,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                     .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
 
             if (!hasChildren && optionalSemanticDataId.isPresent()) {
-                String id = this.objectService.getId(eObject);
+                String id = this.identityService.getId(eObject);
                 var semanticDataId = optionalSemanticDataId.get();
                 hasChildren = this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(semanticDataId), id);
             }

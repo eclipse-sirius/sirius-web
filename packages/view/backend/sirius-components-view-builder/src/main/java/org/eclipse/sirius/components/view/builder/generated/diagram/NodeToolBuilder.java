@@ -90,7 +90,6 @@ public class NodeToolBuilder {
         this.getNodeTool().setIconURLsExpression(value);
         return this;
     }
-
     /**
      * Setter for ElementsToSelectExpression.
      *
@@ -100,7 +99,6 @@ public class NodeToolBuilder {
         this.getNodeTool().setElementsToSelectExpression(value);
         return this;
     }
-
     /**
      * Setter for WithImpactAnalysis.
      *

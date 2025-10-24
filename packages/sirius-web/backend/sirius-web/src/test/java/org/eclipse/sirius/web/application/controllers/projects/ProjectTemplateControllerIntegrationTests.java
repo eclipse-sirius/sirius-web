@@ -20,20 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
-import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
+import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +53,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
 
     @Autowired
@@ -64,21 +67,16 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Autowired
     private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
-
     @BeforeEach
     public void beforeEach() {
-        this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .map(IEditingContextEventProcessor::getEditingContextId)
-                .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
+        this.givenInitialServerState.initialize();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a set of project templates, when a query is performed, then the project templates are returned")
     public void givenSetOfProjectTemplatesWhenQueryIsPerformedThenTheProjectTemplatesAreReturned() {
-        Map<String, Object> variables = Map.of("page", 0, "limit", 10);
+        Map<String, Object> variables = Map.of("page", 0, "limit", 10, "context", ProjectTemplateContext.PROJECT_TEMPLATE_MODAL);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
@@ -98,6 +96,34 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
         List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[*].node.id");
         assertThat(projectTemplateIds).hasSizeGreaterThan(0);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a set of project templates, when a query asking default templates is performed, then the result contains the default templates")
+    public void givenSetOfProjectTemplatesWhenQueryAskingDefaultTemplatesIsPerformedThenTheResultContainsTheDefaultTemplates() {
+        Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
+        var result = this.projectTemplatesQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isTrue();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        assertThat(count).isGreaterThan(6);
+
+        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
+        assertThat(projectTemplateIds.get(0)).isEqualTo("create-project");
+        assertThat(projectTemplateIds.get(1)).isEqualTo("upload-project");
+        assertThat(projectTemplateIds.get(2)).isEqualTo("browse-all-project-templates");
     }
 
     @Test
@@ -123,7 +149,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
                 .map(ProjectSemanticData::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(UUID::toString)
-                .flatMap(editingContextSearchService::findById);
+                .flatMap(this.editingContextSearchService::findById);
 
         assertThat(optionalEditingContext).isPresent();
 
@@ -141,7 +167,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID);
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
@@ -154,7 +180,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
                 .map(ProjectSemanticData::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(UUID::toString)
-                .flatMap(editingContextSearchService::findById);
+                .flatMap(this.editingContextSearchService::findById);
 
         assertThat(optionalEditingContext).isPresent();
 

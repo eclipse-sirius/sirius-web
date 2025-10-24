@@ -12,16 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.deck;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.deck.description.CardDescription;
@@ -41,6 +35,13 @@ import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 /**
  * Converts a View-based deck description into an equivalent {@link DeckDescription}.
  *
@@ -53,7 +54,9 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private static final String DEFAULT_DECK_DESCRIPTION_LABEL = "Deck Description";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final ILabelService labelService;
 
     private final IOperationExecutor operationExecutor;
 
@@ -65,13 +68,14 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private final DeckIdProvider deckIdProvider;
 
-    public ViewDeckDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, DeckIdProvider deckIdProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewDeckDescriptionConverter(IIdentityService identityService, ILabelService labelService, IOperationExecutor operationExecutor, DeckIdProvider deckIdProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.deckIdProvider = Objects.requireNonNull(deckIdProvider);
-        this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
-        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
-        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
+        this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.identityService::getId).orElse(null);
+        this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.identityService::getKind).orElse(null);
+        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(null);
     }
 
     @Override
@@ -216,8 +220,8 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)//
-                .map(this.objectService::getId)//
+        return variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
                 .orElse(null);
     }
 

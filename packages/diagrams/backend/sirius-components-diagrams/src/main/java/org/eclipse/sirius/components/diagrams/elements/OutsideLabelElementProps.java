@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.elements;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
@@ -43,6 +44,8 @@ public final class OutsideLabelElementProps implements IProps {
     private LabelOverflowStrategy overflowStrategy;
 
     private LabelTextAlign textAlign;
+
+    private Set<String> customizedStyleProperties;
 
     private OutsideLabelElementProps() {
         // Prevent instantiation
@@ -76,6 +79,10 @@ public final class OutsideLabelElementProps implements IProps {
         return this.textAlign;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -101,6 +108,8 @@ public final class OutsideLabelElementProps implements IProps {
         private LabelOverflowStrategy overflowStrategy;
 
         private LabelTextAlign textAlign;
+
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -131,6 +140,11 @@ public final class OutsideLabelElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public OutsideLabelElementProps build() {
             OutsideLabelElementProps outsideLabelElementProps = new OutsideLabelElementProps();
             outsideLabelElementProps.id = Objects.requireNonNull(this.id);
@@ -139,6 +153,7 @@ public final class OutsideLabelElementProps implements IProps {
             outsideLabelElementProps.style = Objects.requireNonNull(this.style);
             outsideLabelElementProps.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             outsideLabelElementProps.textAlign = Objects.requireNonNull(this.textAlign);
+            outsideLabelElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return outsideLabelElementProps;
         }
     }

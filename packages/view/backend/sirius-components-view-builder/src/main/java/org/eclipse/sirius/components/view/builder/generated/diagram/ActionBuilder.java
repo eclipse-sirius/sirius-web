@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,6 @@ public class ActionBuilder {
         this.getAction().setTooltipExpression(value);
         return this;
     }
-
     /**
      * Setter for IconURLsExpression.
      *
@@ -79,7 +78,6 @@ public class ActionBuilder {
         this.getAction().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for Body.
      *
@@ -91,6 +89,7 @@ public class ActionBuilder {
         }
         return this;
     }
+
 
 }
 
