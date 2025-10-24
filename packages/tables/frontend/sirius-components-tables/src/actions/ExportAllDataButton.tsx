@@ -77,7 +77,7 @@ export const ExportAllDataButton = ({ table }: ExportAllDataButtonProps) => {
       <ListItemIcon>
         <FileDownloadIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText>Export all data in page</ListItemText>
+      <ListItemText>Export page data as CSV</ListItemText>
     </MenuItem>
   );
 };
