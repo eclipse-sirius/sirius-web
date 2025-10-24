@@ -154,7 +154,7 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
             for (Map.Entry<String, UploadFile> entry : uploadFiles.entrySet()) {
                 var uploadFile = entry.getValue();
                 IResult<UploadedResource> result = this.uploadDocumentLoader.load(editingContext.getDomain().getResourceSet(), editingContext,
-                        new UploadFile(uploadFile.getName(), uploadFile.getInputStream()), false);
+                        new UploadFile(uploadFile.getName(), uploadFile.getInputStream()), true, false);
 
                 if (result instanceof Success<UploadedResource> success) {
                     var newResource = success.data().resource();
@@ -176,7 +176,7 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 }
             }
 
-            this.rewriteProxiesService.rewriteProxies(editingContext, documentIds);
+            this.rewriteProxiesService.rewriteProxies(editingContext, documentIds, semanticIds);
             this.editingContextPersistenceService.persist(new CopySemanticDataCause(UUID.randomUUID(), cause, semanticIds, documentIds), editingContext);
         }
     }

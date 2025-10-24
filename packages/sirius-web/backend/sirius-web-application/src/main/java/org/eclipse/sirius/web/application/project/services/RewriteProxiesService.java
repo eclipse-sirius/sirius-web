@@ -40,19 +40,19 @@ public class RewriteProxiesService implements IRewriteProxiesService {
     }
 
     @Override
-    public int rewriteProxies(IEMFEditingContext editingContext, Map<String, String> oldDocumentIdToNewDocumentId) {
+    public int rewriteProxies(IEMFEditingContext editingContext, Map<String, String> oldDocumentIdToNewDocumentId, Map<String, String> semanticElementsIdMappings) {
         AdapterFactoryEditingDomain adapterFactoryEditingDomain = editingContext.getDomain();
         int totalRewrittenCount = 0;
         var resources = adapterFactoryEditingDomain.getResourceSet().getResources().stream()
                 .filter(resource -> this.rewriteProxiesResourceFilters.stream().allMatch(rewriteProxiesResourceFilter -> rewriteProxiesResourceFilter.shouldRewriteProxies(resource)))
                 .toList();
         for (Resource resource : resources) {
-            totalRewrittenCount += this.rewriteProxyURIs(resource, oldDocumentIdToNewDocumentId);
+            totalRewrittenCount += this.rewriteProxyURIs(resource, oldDocumentIdToNewDocumentId, semanticElementsIdMappings);
         }
         return totalRewrittenCount;
     }
 
-    private int rewriteProxyURIs(Resource resource, Map<String, String> oldDocumentIdToNewDocumentId) {
+    private int rewriteProxyURIs(Resource resource, Map<String, String> oldDocumentIdToNewDocumentId, Map<String, String> semanticElementsIdMappings) {
         int count = 0;
 
         var iterator = resource.getAllContents();
@@ -65,9 +65,12 @@ public class RewriteProxiesService implements IRewriteProxiesService {
                     URI proxyURI = internalEObject.eProxyURI();
                     String oldDocumentId = proxyURI.path().substring(1);
                     String newDocumentId = oldDocumentIdToNewDocumentId.get(oldDocumentId);
-                    if (newDocumentId != null) {
+                    String oldSemanticElementId = proxyURI.fragment();
+                    String newSemanticElementId = semanticElementsIdMappings.get(oldSemanticElementId);
+
+                    if (newDocumentId != null && newSemanticElementId != null) {
                         String prefix = IEMFEditingContext.RESOURCE_SCHEME + ":///";
-                        URI newProxyURI = URI.createURI(proxyURI.toString().replace(prefix + oldDocumentId, prefix + newDocumentId));
+                        URI newProxyURI = URI.createURI(proxyURI.toString().replace(prefix + oldDocumentId, prefix + newDocumentId).replace("#" + oldSemanticElementId, "#" + newSemanticElementId));
                         internalEObject.eSetProxyURI(newProxyURI);
                         count++;
                     }
