@@ -1,0 +1,32 @@
+= Add support for representations edit capability
+
+== Problem
+
+The actual `edit` capability for project make the whole project content read-only or not.
+This capability forces everything inside a project to be read-only when the project is read-only.
+We would like to make the `edit` capability for project more finer-grained.
+
+== Key Result
+
+A representation could be read-only while another one could be modified.
+
+[NOTE]
+====
+
+Some actions made in a writable representation while the project is read-only will not work.
+Some representations are using action that directly update the editing context, and thus, the capability check for these actions will be based on the project capabilities instead of representation capabilities.
+
+====
+
+== Acceptance Criteria
+
+An integration tests will be enough to ensure that a capability voter can force a representation to be read-only while another representation can be modified.
+
+== Solution
+
+We will rely on the same mechanism as the `edit` project capabilities.
+Each representation will have its own `edit` capabilities.
+
+=== Cutting backs
+
+== Rabbit holes

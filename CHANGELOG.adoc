@@ -9,13 +9,14 @@
 - Add initial support for in-project search
 - Add support for tree presentation of impact analysis reports
 - Add support for workbench configuration with the backend
+- Add support for representations edit capability
 
 
 === Architectural decision records
 
 - [ADR-209] Decouple the command palette from the editing context
 - [ADR-210] Add the support for backend workbench configuration
-
+- [ADR-211] Add edit capabilities on representation
 
 === Deprecation warning
 
