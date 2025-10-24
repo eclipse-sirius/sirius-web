@@ -254,6 +254,7 @@ Note that the namespace of published libraries from studios still matches the `p
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.9[Spring Boot 3.5.9]
 - [releng] Switch to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
+- [releng] Switch to https://github.com/xyflow/xyflow/releases/tag/%40xyflow%2Freact%4012.10.0[xyflow 12.10.0]
 
 
 === Bug fixes
