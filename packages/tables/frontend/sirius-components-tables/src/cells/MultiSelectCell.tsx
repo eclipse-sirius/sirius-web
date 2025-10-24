@@ -53,7 +53,10 @@ export const MultiSelectCell = ({
       disabled={disabled || loading}
       multiple
       size="small"
-      fullWidth>
+      disableUnderline={true}
+      fullWidth
+      variant="standard"
+      sx={{ height: '100%' }}>
       {cell.options.map((option) => {
         return (
           <MenuItem key={option.id} value={option.id}>

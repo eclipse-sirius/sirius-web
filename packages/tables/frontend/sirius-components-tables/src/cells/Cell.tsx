@@ -41,7 +41,8 @@ const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__type
 
 const useStyles = makeStyles()((theme) => ({
   wrapper: {
-    padding: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
     height: '100%',
     width: '100%',
     cursor: 'pointer',
