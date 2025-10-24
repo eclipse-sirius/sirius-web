@@ -37,6 +37,7 @@ The code responsible for the import has been refactor with:
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
 
 === Dependency update
 
@@ -76,6 +77,7 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5733[#5733] [sirius-web] Extract frontend project creation into a hook
+- https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] Add `hasChildrenExpression` to `RowDescription` to block the expand action on rows that have no children
 
 
 == 2025.10.0
