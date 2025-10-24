@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 
 test.describe('diagram - list', () => {
   let projectId;
@@ -123,6 +123,7 @@ test.describe('diagram - list', () => {
     page,
   }) => {
     const parentNode = new PlaywrightNode(page, 'Test with a very large name that can be wrap', 'List');
+
     const firstChildNode = new PlaywrightNode(page, 'List 1', 'List');
     await parentNode.click();
     const firstChildXYPositionBefore = await firstChildNode.getDOMXYPosition();
@@ -132,11 +133,12 @@ test.describe('diagram - list', () => {
     const box = (await resizeAnchor.boundingBox())!;
     await resizeAnchor.hover();
     await page.mouse.down();
-    await page.mouse.move(box.x + 100, box.y, { steps: 8 });
+    await page.mouse.move(box.x + 200, box.y, { steps: 8 });
 
     await page.waitForFunction(
       ({ previousY }) => {
         const child = document.querySelector(`[data-testid="List - List 1"]`);
+
         if (!child) {
           return false;
         }
