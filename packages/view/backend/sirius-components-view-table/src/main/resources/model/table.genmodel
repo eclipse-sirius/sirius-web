@@ -46,6 +46,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/isResizableExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//RowDescription/contextMenuEntries"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/depthLevelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/hasChildrenExpression"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/name"/>

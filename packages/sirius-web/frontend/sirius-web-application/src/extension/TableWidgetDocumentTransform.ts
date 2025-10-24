@@ -135,6 +135,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                   fieldBuilder('height'),
                   fieldBuilder('isResizable'),
                   fieldBuilder('depthLevel'),
+                  fieldBuilder('hasChildren'),
                   structuredFieldBuilder('cells', [
                     fieldBuilder('id'),
                     fieldBuilder('targetObjectId'),

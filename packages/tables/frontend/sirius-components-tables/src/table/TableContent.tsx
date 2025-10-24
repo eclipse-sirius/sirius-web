@@ -176,7 +176,7 @@ export const TableContent = memo(
       onSortingChange: setSorting,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
-        columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
+        columnPinning: { left: ['mrt-row-expand-header', 'mrt-row-header'], right: ['mrt-row-actions'] },
       },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
