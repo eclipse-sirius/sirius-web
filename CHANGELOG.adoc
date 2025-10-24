@@ -12,7 +12,6 @@
 - Improve the creation of new project
 - Add support for representations edit capability
 
-
 === Architectural decision records
 
 - [ADR-209] Decouple the command palette from the editing context
@@ -23,6 +22,7 @@
 - [ADR-214] Add the support for i18n
 - [ADR-215] Add support for displaying data trees
 - [ADR-216] Lower the coupling between Palette and DiagramDescription
+- [ADR-217] Add support for drag'n'drop of multiple elements at once on diagrams
 
 
 === Deprecation warning
