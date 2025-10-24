@@ -69,6 +69,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextMenuEntries" upperBound="-1"
         eType="#//RowContextMenuEntry" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="depthLevelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasChildrenExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CellDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>

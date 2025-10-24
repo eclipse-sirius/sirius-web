@@ -113,6 +113,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)
                 .depthLevelExpression("aql:if self.oclIsKindOf(papaya::Type) then 0 else if self.oclIsKindOf(papaya::Operation) then 1 else if self.oclIsKindOf(papaya::Parameter) then 2 else 0 endif endif endif")
+                .hasChildrenExpression("aql:self.eContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->size() == 0")
                 .build();
 
         var setNameOperation = new ViewBuilders().newSetValue()

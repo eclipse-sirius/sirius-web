@@ -111,6 +111,7 @@ export interface GQLLine {
   height: number;
   isResizable: boolean;
   depthLevel: number;
+  hasChildren: boolean;
 }
 
 export interface GQLPaginationData {

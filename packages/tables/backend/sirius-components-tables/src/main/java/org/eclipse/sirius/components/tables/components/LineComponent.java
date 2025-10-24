@@ -87,6 +87,7 @@ public class LineComponent implements IComponent {
         List<String> headerIconURLs = lineDescription.getHeaderIconURLsProvider().apply(lineVariableManager);
         String headerIndexLabel = lineDescription.getHeaderIndexLabelProvider().apply(lineVariableManager);
         Integer depthLevel = lineDescription.getDepthLevelProvider().apply(lineVariableManager);
+        boolean hasChildren = lineDescription.getHasChildrenProvider().apply(lineVariableManager);
 
         var cells = this.getCells(lineVariableManager, rowId);
         boolean resizable = lineDescription.getIsResizablePredicate().test(lineVariableManager);
@@ -116,6 +117,7 @@ public class LineComponent implements IComponent {
                 .children(children)
                 .resizable(resizable)
                 .depthLevel(depthLevel)
+                .hasChildren(hasChildren)
                 .height(height);
 
         this.props.tableEvents().stream()

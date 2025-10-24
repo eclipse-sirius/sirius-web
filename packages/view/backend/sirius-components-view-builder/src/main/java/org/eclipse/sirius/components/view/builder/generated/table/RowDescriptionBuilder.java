@@ -127,5 +127,15 @@ public class RowDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for HasChildrenExpression.
+     *
+     * @generated
+     */
+    public RowDescriptionBuilder hasChildrenExpression(java.lang.String value) {
+        this.getRowDescription().setHasChildrenExpression(value);
+        return this;
+    }
+
 }
 

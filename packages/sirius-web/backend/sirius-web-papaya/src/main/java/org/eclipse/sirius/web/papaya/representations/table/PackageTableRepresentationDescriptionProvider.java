@@ -106,6 +106,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isResizablePredicate(variableManager -> true)
                 .initialHeightProvider(variableManager -> 53)
                 .depthLevelProvider(this::getSemanticElementDepthLevel)
+                .hasChildrenProvider(this::hasChildren)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
@@ -200,6 +201,19 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
             return expandedIds.contains(parentId) && this.hasExpandedParent(parent, expandedIds);
         }
         return true;
+    }
+
+    private boolean hasChildren(VariableManager variableManager) {
+        var hasChildren = false;
+
+        var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+        if (optionalEObject.isPresent()) {
+            var eObject = optionalEObject.get();
+            hasChildren = eObject.eContents().stream()
+                    .anyMatch(childEObject -> childEObject instanceof Operation || childEObject instanceof Parameter);
+        }
+
+        return hasChildren;
     }
 
     private Integer getSemanticElementDepthLevel(VariableManager variableManager) {
