@@ -23,7 +23,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author frouene
  */
 public interface IUploadFileLoader {
-
-    IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean readOnly);
-
+    IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean allowProxies, boolean readOnly);
 }

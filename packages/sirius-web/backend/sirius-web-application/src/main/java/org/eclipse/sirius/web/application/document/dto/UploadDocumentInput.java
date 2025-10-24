@@ -24,5 +24,8 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author hmarchadour
  */
-public record UploadDocumentInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UploadFile file, boolean readOnly) implements IInput {
+public record UploadDocumentInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UploadFile file, boolean allowProxies, boolean readOnly) implements IInput {
+    public UploadDocumentInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UploadFile file, boolean readOnly) {
+        this(id, editingContextId, file, false, readOnly);
+    }
 }
