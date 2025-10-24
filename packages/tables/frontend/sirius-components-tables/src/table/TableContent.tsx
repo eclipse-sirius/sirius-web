@@ -24,7 +24,7 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
-import { SettingsButton } from '../actions/SettingsButton';
+import { ToolsButton } from '../actions/ToolsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
@@ -206,7 +206,7 @@ export const TableContent = memo(
       },
       renderTopToolbarCustomActions: () => (
         <Box>
-          <SettingsButton editingContextId={editingContextId} representationId={representationId} table={table} />
+          <ToolsButton editingContextId={editingContextId} representationId={representationId} table={table} />
         </Box>
       ),
       enableBottomToolbar: enablePagination,

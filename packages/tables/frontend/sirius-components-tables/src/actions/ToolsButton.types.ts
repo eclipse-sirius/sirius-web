@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,12 @@
 
 import { GQLTable } from '../table/TableContent.types';
 
-export interface ExportAllDataButtonProps {
+export interface ToolsButtonProps {
+  editingContextId: string;
+  representationId: string;
   table: GQLTable;
 }
 
-export interface CsvData {
-  [key: string]: string;
+export interface ToolsButtonState {
+  contextMenuAnchorElement: HTMLElement | null;
 }
