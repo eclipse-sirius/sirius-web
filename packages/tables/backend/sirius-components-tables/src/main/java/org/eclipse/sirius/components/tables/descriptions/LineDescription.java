@@ -54,6 +54,8 @@ public final class LineDescription {
 
     private Function<VariableManager, Integer> depthLevelProvider;
 
+    private Function<VariableManager, Boolean> hasChildrenProvider;
+
     private LineDescription() {
         // Prevent instantiation
     }
@@ -102,6 +104,10 @@ public final class LineDescription {
         return this.depthLevelProvider;
     }
 
+    public Function<VariableManager, Boolean> getHasChildrenProvider() {
+        return this.hasChildrenProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -135,6 +141,8 @@ public final class LineDescription {
         private Predicate<VariableManager> isResizablePredicate;
 
         private Function<VariableManager, Integer> depthLevelProvider;
+
+        private Function<VariableManager, Boolean> hasChildrenProvider;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -185,6 +193,11 @@ public final class LineDescription {
             return this;
         }
 
+        public Builder hasChildrenProvider(Function<VariableManager, Boolean> hasChildrenProvider) {
+            this.hasChildrenProvider = Objects.requireNonNull(hasChildrenProvider);
+            return this;
+        }
+
         public LineDescription build() {
             LineDescription lineDescription = new LineDescription();
             lineDescription.id = Objects.requireNonNull(this.id);
@@ -197,6 +210,7 @@ public final class LineDescription {
             lineDescription.initialHeightProvider = Objects.requireNonNull(this.initialHeightProvider);
             lineDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             lineDescription.depthLevelProvider = Objects.requireNonNull(this.depthLevelProvider);
+            lineDescription.hasChildrenProvider = Objects.requireNonNull(this.hasChildrenProvider);
             return lineDescription;
         }
     }
