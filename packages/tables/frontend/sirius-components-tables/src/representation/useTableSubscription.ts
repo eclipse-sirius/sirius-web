@@ -90,6 +90,7 @@ export const getTableEventSubscription = `
             height
             isResizable
             depthLevel
+            hasChildren
             cells {
               __typename
               id

@@ -12,14 +12,11 @@
  *******************************************************************************/
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { RowHeaderProps } from './RowHeader.types';
 
-export const RowHeader = ({ row, isExpanded, onClick, enableSubRows }: RowHeaderProps) => {
+export const RowHeader = ({ row }: RowHeaderProps) => {
   return (
     <Box
       sx={(theme) => ({
@@ -30,14 +27,7 @@ export const RowHeader = ({ row, isExpanded, onClick, enableSubRows }: RowHeader
         height: '100%',
       })}
       data-testid="table-row-header">
-      {enableSubRows && (
-        <IconButton
-          onClick={(_) => onClick(row.targetObjectId)}
-          sx={(theme) => ({ marginLeft: theme.spacing(row.depthLevel) })}>
-          {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-        </IconButton>
-      )}
-      <Typography noWrap sx={(theme) => ({ marginRight: theme.spacing(1) })}>
+      <Typography noWrap sx={(theme) => ({ marginLeft: theme.spacing(row.depthLevel), marginRight: theme.spacing(1) })}>
         {row.headerIndexLabel}
       </Typography>
       <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1) })}>

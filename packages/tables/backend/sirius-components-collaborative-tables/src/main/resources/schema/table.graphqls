@@ -93,6 +93,7 @@ type Line {
   height: Int!
   isResizable: Boolean!
   depthLevel: Int!
+  hasChildren: Boolean!
 }
 
 type PaginationData {

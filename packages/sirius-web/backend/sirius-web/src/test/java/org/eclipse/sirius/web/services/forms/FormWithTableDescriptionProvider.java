@@ -145,6 +145,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .isResizablePredicate(variableManager -> false)
                 .initialHeightProvider(variableManager -> 0)
                 .depthLevelProvider(variableManager -> 0)
+                .hasChildrenProvider(variableManager -> false)
                 .build();
 
         TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)

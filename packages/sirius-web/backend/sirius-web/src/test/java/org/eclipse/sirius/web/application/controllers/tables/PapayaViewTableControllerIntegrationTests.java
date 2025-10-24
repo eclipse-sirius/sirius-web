@@ -256,6 +256,30 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a view table description with sub elements, when a subscription is created, then hasChildren is correctly set")
+    public void givenViewTableWithSubElementsWhenSubscriptionIsCreatedThenHasChildrenIsCorrectlySet() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.isEnableSubRows()).isTrue();
+            assertThat(table.getLines()).hasSize(6);
+            assertThat(table.getLines().get(0).isHasChildren()).isTrue();
+            assertThat(table.getLines().get(1).isHasChildren()).isFalse();
+            assertThat(table.getLines().get(2).isHasChildren()).isFalse();
+            assertThat(table.getLines().get(3).isHasChildren()).isTrue();
+            assertThat(table.getLines().get(4).isHasChildren()).isTrue();
+            assertThat(table.getLines().get(5).isHasChildren()).isTrue();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a view table description with Failure element, when hide-failure row filter is activated, then the failure row is not in table")
     public void givenViewTableWithFailureElementWhenHideFailureRowFilterIsActivatedThenTheFailureRowNotInTable() {
         var flux = this.givenSubscriptionToViewTableRepresentation();

@@ -73,6 +73,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
             this.addInitialHeightExpressionPropertyDescriptor(object);
             this.addIsResizableExpressionPropertyDescriptor(object);
             this.addDepthLevelExpressionPropertyDescriptor(object);
+            this.addHasChildrenExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -203,11 +204,23 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Has Children Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addHasChildrenExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_hasChildrenExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_hasChildrenExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
@@ -288,6 +301,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
             case TablePackage.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:

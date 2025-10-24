@@ -45,9 +45,9 @@ const reorderColumnsMutation = gql`
 const getColumnsOrder = (table: GQLTable, enableColumnResizing: boolean) => {
   const ids = [...table.columns].map((col) => col.id);
   if (enableColumnResizing) {
-    return ['mrt-row-actions', ...ids, 'mrt-row-header', 'mrt-row-spacer'];
+    return ['mrt-row-actions', ...ids, 'mrt-row-expand-header', 'mrt-row-header', 'mrt-row-spacer'];
   }
-  return ['mrt-row-actions', ...ids, 'mrt-row-header'];
+  return ['mrt-row-actions', ...ids, 'mrt-row-expand-header', 'mrt-row-header'];
 };
 
 export const useTableColumnOrdering = (
