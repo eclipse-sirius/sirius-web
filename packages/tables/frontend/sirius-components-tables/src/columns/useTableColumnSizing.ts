@@ -53,7 +53,7 @@ export const useTableColumnSizing = (
   useEffect(() => {
     if (enableColumnSizing) {
       for (const [columnName, columnSize] of Object.entries(columnSizing)) {
-        if (columnName !== 'mrt-row-header') {
+        if (columnName !== 'mrt-row-header' && columnName !== 'mrt-row-expand-header') {
           resizeColumn(columnName, columnSize);
         }
       }
@@ -66,6 +66,9 @@ export const useTableColumnSizing = (
     const newColumnSizing: MRT_ColumnSizingState = {};
     if (columnSizing.hasOwnProperty('mrt-row-header')) {
       newColumnSizing['mrt-row-header'] = columnSizing['mrt-row-header'];
+    }
+    if (columnSizing.hasOwnProperty('mrt-row-expand-header')) {
+      newColumnSizing['mrt-row-expand-header'] = columnSizing['mrt-row-expand-header'];
     }
     setColumnSizing(newColumnSizing);
   }, [table.columns.map((column) => column.width).join()]);

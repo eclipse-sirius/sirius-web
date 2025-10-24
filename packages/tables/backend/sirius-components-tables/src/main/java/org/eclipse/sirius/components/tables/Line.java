@@ -49,8 +49,14 @@ public final class Line {
 
     private int depthLevel;
 
+    private boolean hasChildren;
+
     private Line() {
         // Prevent instantiation
+    }
+
+    public static Builder newLine(UUID id) {
+        return new Builder(id);
     }
 
     public UUID getId() {
@@ -97,8 +103,8 @@ public final class Line {
         return this.depthLevel;
     }
 
-    public static Builder newLine(UUID id) {
-        return new Builder(id);
+    public boolean isHasChildren() {
+        return this.hasChildren;
     }
 
     @Override
@@ -136,6 +142,8 @@ public final class Line {
         private boolean resizable;
 
         private int depthLevel;
+
+        private boolean hasChildren;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -191,6 +199,11 @@ public final class Line {
             return this;
         }
 
+        public Builder hasChildren(boolean hasChildren) {
+            this.hasChildren = hasChildren;
+            return this;
+        }
+
         public Line build() {
             Line line = new Line();
             line.id = Objects.requireNonNull(this.id);
@@ -204,6 +217,7 @@ public final class Line {
             line.height = this.height;
             line.resizable = this.resizable;
             line.depthLevel = this.depthLevel;
+            line.hasChildren = this.hasChildren;
             return line;
         }
     }
