@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.project.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -29,6 +33,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
 import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
@@ -70,16 +75,19 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
 
     private final IRewriteProxiesService rewriteProxiesService;
 
+    private final IProxyValidator proxyValidator;
+
     private final Logger logger = LoggerFactory.getLogger(SemanticDataProjectContentImportParticipant.class);
 
     public SemanticDataProjectContentImportParticipant(
             IEditingContextSearchService editingContextSearchService, IUploadFileLoader uploadDocumentLoader, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, ISemanticDataUpdateService semanticDataUpdateService,
-            IEditingContextPersistenceService editingContextPersistenceService, IRewriteProxiesService rewriteProxiesService) {
+            IEditingContextPersistenceService editingContextPersistenceService, IRewriteProxiesService rewriteProxiesService, IProxyValidator proxyValidator) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentLoader = Objects.requireNonNull(uploadDocumentLoader);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.rewriteProxiesService = Objects.requireNonNull(rewriteProxiesService);
+        this.proxyValidator = Objects.requireNonNull(proxyValidator);
     }
 
     @Override
@@ -174,16 +182,12 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
             for (Map.Entry<String, UploadFile> entry : uploadFiles.entrySet()) {
                 var uploadFile = entry.getValue();
                 IResult<UploadedResource> result = this.uploadDocumentLoader.load(editingContext.getDomain().getResourceSet(), editingContext,
-                        new UploadFile(uploadFile.getName(), uploadFile.getInputStream()), false);
+                        new UploadFile(uploadFile.getName(), uploadFile.getInputStream()), true, false);
 
                 if (result instanceof Success<UploadedResource> success) {
                     var newResource = success.data().resource();
                     var optionalId = new UUIDParser().parse(newResource.getURI().path().substring(1));
-                    var optionalName = newResource.eAdapters().stream()
-                            .filter(ResourceMetadataAdapter.class::isInstance)
-                            .map(ResourceMetadataAdapter.class::cast)
-                            .findFirst()
-                            .map(ResourceMetadataAdapter::getName);
+                    var optionalName = this.getDocumentName(newResource);
 
                     if (optionalId.isPresent() && optionalName.isPresent()) {
                         var id = optionalId.get();
@@ -196,8 +200,44 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 }
             }
 
-            this.rewriteProxiesService.rewriteProxies(editingContext, documentIds);
+            this.rewriteProxiesService.rewriteProxies(editingContext, documentIds, semanticIds);
+            List<Resource> removedResources = this.removeResourcesWithInvalidProxies(editingContext);
+            if (!removedResources.isEmpty()) {
+                this.logger.warn("Some documents with invalid references were not imported: {}", removedResources.stream()
+                        .map(resource -> this.getDocumentName(resource).orElse(resource.getURI().toString()))
+                        .collect(Collectors.joining(", ")));
+            }
             this.editingContextPersistenceService.persist(new CopySemanticDataCause(UUID.randomUUID(), cause, semanticIds, documentIds), editingContext);
         }
+    }
+
+    private Optional<String> getDocumentName(Resource resource) {
+        var optionalName = resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .findFirst()
+                .map(ResourceMetadataAdapter::getName);
+        return optionalName;
+    }
+
+    private List<Resource> removeResourcesWithInvalidProxies(IEMFEditingContext editingContext) {
+        List<Resource> removedResources = new ArrayList<>();
+        ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
+
+        Collection<Resource> resourcesWithInvalidProxies;
+        do {
+            resourcesWithInvalidProxies = this.findResourcesWithProxies(resourceSet);
+            for (Resource res : resourcesWithInvalidProxies) {
+                res.unload();
+                resourceSet.getResources().remove(res);
+                removedResources.add(res);
+            }
+        } while (!resourcesWithInvalidProxies.isEmpty());
+
+        return removedResources;
+    }
+
+    private Collection<Resource> findResourcesWithProxies(ResourceSet resourceSet) {
+        return resourceSet.getResources().stream().filter(this.proxyValidator::hasProxies).toList();
     }
 }

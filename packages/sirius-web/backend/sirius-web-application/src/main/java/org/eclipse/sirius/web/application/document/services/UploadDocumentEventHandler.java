@@ -107,7 +107,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         if (input instanceof UploadDocumentInput uploadDocumentInput && editingContext instanceof IEMFEditingContext emfEditingContext && optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
 
-            IResult<UploadedResource> result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file(), uploadDocumentInput.readOnly());
+            IResult<UploadedResource> result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file(), false, uploadDocumentInput.readOnly());
             if (result instanceof Success<UploadedResource> success) {
                 var newResource = success.data().resource();
 

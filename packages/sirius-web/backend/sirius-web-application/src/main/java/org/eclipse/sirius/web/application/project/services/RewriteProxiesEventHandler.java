@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -58,7 +59,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof RewriteProxiesInput rewriteInput && editingContext instanceof IEMFEditingContext emfEditingContext) {
-            int totalRewrittenCount = rewriteProxiesService.rewriteProxies(emfEditingContext, rewriteInput.oldDocumentIdToNewDocumentId());
+            int totalRewrittenCount = this.rewriteProxiesService.rewriteProxies(emfEditingContext, rewriteInput.oldDocumentIdToNewDocumentId(), rewriteInput.semanticElementsIdMappings());
             if (totalRewrittenCount > 0) {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             }
@@ -68,5 +69,4 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
-
 }

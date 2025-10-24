@@ -172,7 +172,8 @@ Do not hesitate to read the ADR-214 for further understanding.
 This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [browser] Add support for overriding the tree description to use for a specific model browser.
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
+Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
 
 === Improvements
 

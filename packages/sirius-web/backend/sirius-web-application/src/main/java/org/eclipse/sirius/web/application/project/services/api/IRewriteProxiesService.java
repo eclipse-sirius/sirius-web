@@ -27,10 +27,12 @@ public interface IRewriteProxiesService {
      * Rewrite all proxies in the editing context using a map of id mapping old resource id to new resource id.
      *
      * @param editingContext
-     *         the current editing context
+     *            the current editing context
      * @param oldDocumentIdToNewDocumentId
-     *         a map linking old resource id to new resource id
+     *            a map linking old resource id to new resource id
+     * @param semanticElementsIdMappings
+     *            a map linking old semantic elements id to the "fresh" ids of their imported equivalent
      * @return the number of rewritten proxy
      */
-    int rewriteProxies(IEMFEditingContext editingContext, Map<String, String> oldDocumentIdToNewDocumentId);
+    int rewriteProxies(IEMFEditingContext editingContext, Map<String, String> oldDocumentIdToNewDocumentId, Map<String, String> semanticElementsIdMappings);
 }

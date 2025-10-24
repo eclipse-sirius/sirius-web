@@ -96,7 +96,7 @@ public class RewriteProxiesEventHandlerTests {
         oldDocumentIdToNewDocumentId.put(FLOW1_OLD, FLOW1_NEW);
         oldDocumentIdToNewDocumentId.put(FLOW2_OLD, FLOW2_NEW);
 
-        RewriteProxiesInput input = new RewriteProxiesInput(UUID.randomUUID(), editingContext.getId(), oldDocumentIdToNewDocumentId);
+        RewriteProxiesInput input = new RewriteProxiesInput(UUID.randomUUID(), editingContext.getId(), oldDocumentIdToNewDocumentId, Map.of());
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
 
@@ -142,7 +142,7 @@ public class RewriteProxiesEventHandlerTests {
         oldDocumentIdToNewDocumentId.put(FLOW1_OLD, FLOW1_NEW);
         oldDocumentIdToNewDocumentId.put(FLOW2_OLD, FLOW2_NEW);
 
-        RewriteProxiesInput input = new RewriteProxiesInput(UUID.randomUUID(), editingContext.getId(), oldDocumentIdToNewDocumentId);
+        RewriteProxiesInput input = new RewriteProxiesInput(UUID.randomUUID(), editingContext.getId(), oldDocumentIdToNewDocumentId, Map.of());
 
         assertThat(handler.canHandle(editingContext, input)).isTrue();
 
