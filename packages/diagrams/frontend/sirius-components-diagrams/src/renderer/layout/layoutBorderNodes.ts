@@ -94,7 +94,7 @@ export const findBorderNodePosition = (
 
 export const getNewlyAddedBorderNodePosition = (
   newlyAddedNode: Node<NodeData, DiagramNodeType>,
-  parentNode: Node<NodeData, string> | undefined,
+  parentNode: Node<NodeData, string | undefined> | undefined,
   referencePosition: GQLReferencePosition
 ): void => {
   if (parentNode) {

@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - node creation', () => {
   let projectId;
@@ -53,9 +53,11 @@ test.describe('diagram - node creation', () => {
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
+    const listParentNode = new PlaywrightNode(page, 'Parent', 'List');
+    await listParentNode.move({ x: 200, y: 200 });
+    await listParentNode.nodeLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').click();
     const entity4FirstNode = new PlaywrightNode(page, 'Entity4');
@@ -70,7 +72,7 @@ test.describe('diagram - node creation', () => {
     expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding);
 
     // When creating a second one, it should place next to the first one
-    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    await listParentNode.nodeLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
