@@ -41,6 +41,9 @@
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
+- https://github.com/eclipse-sirius/sirius-web/issues/5300[#5300] [diagram] Add undo redo for node layout
+- https://github.com/eclipse-sirius/sirius-web/issues/5651[#5651] [diagram] Add undo redo for label layout and appearance
+
 
 === Improvements
 

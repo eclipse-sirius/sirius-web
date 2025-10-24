@@ -13,11 +13,23 @@
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import { DraggableData } from 'react-draggable';
-import { UseLabelMoveValue } from './useLabelMove.types';
-import { OutsideLabel, NodeData, EdgeData } from '../DiagramRenderer.types';
-import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { RawDiagram } from '../layout/layout.types';
+import { EdgeData, NodeData, OutsideLabel } from '../DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
+import { RawDiagram } from '../layout/layout.types';
+import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
+import { UseLabelMoveValue } from './useLabelMove.types';
+
+const addUndoForLayout = (mutationId: string) => {
+  var storedUndoStack = sessionStorage.getItem('undoStack');
+  var storedRedoStack = sessionStorage.getItem('redoStack');
+
+  if (storedUndoStack && storedRedoStack) {
+    var undoStack: String[] = JSON.parse(storedUndoStack);
+    if (!undoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
+    }
+  }
+};
 
 export const useLabelMove = (): UseLabelMoveValue => {
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -37,7 +49,10 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: nodes,
         edges: getEdges(),
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+
+      var id = crypto.randomUUID();
+      synchronizeLayoutData(id, 'layout', finalDiagram);
+      addUndoForLayout(id);
     },
     [getNodes, synchronizeLayoutData]
   );
@@ -67,7 +82,10 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: [...getNodes()],
         edges: edges,
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+
+      var id = crypto.randomUUID();
+      synchronizeLayoutData(id, 'layout', finalDiagram);
+      addUndoForLayout(id);
     },
     [getEdges, synchronizeLayoutData]
   );

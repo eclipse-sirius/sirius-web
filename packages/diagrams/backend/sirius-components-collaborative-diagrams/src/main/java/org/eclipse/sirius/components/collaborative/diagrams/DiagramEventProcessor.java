@@ -135,6 +135,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
             if (LayoutDiagramInput.CAUSE_LAYOUT.equals(layoutDiagramInput.cause()) || layoutDiagramInput.id().equals(this.currentRevisionId)) {
+                var changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE, editingContext.getId(), representationInput);
+                this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
                 var diagram = this.diagramContext.diagram();
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
@@ -165,10 +167,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext = new DiagramContext(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
-
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
                 this.currentRevisionId = layoutDiagramInput.id();
-
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
             } else {
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
@@ -193,7 +193,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
-
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
@@ -202,7 +201,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             }
 
             this.diagramContext = new DiagramContext(refreshedDiagram);
-
             this.currentRevisionId = changeDescription.getInput().id();
             this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
 
