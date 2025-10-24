@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.0</version>
+		<version>2025.10.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-deck</artifactId>
-	<version>2025.10.0</version>
+	<version>2025.10.1</version>
 	<name>sirius-components-collaborative-deck</name>
 	<description>Sirius Components Collaborative deck</description>
 
@@ -40,23 +40,23 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-deck</artifactId>
-			<version>2025.10.0</version>
+			<version>2025.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2025.10.0</version>
+			<version>2025.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.10.0</version>
+			<version>2025.10.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.10.0</version>
+			<version>2025.10.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
