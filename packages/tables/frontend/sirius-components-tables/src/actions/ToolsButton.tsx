@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo and others.
+ * Copyright (c) 2024, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,22 @@
  *******************************************************************************/
 
 import { ComponentExtension, useComponents } from '@eclipse-sirius/sirius-components-core';
-import SettingsIcon from '@mui/icons-material/Settings';
+import ToolsIcon from '@mui/icons-material/Build';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import { useState } from 'react';
-import { ExportAllDataButton } from './ExportAllDataButton';
-import { SettingsButtonProps, SettingsButtonState } from './SettingsButton.types';
-import { settingButtonMenuEntryExtensionPoint } from './SettingsButtonExtensionPoints';
-import { SettingsButtonMenuEntryProps } from './SettingsButtonExtensionPoints.types';
+import { ExportDataButton } from './ExportDataButton';
+import { ToolsButtonProps, ToolsButtonState } from './ToolsButton.types';
+import { toolsButtonMenuEntryExtensionPoint } from './ToolsButtonExtensionPoints';
+import { ToolsButtonMenuEntryProps } from './ToolsButtonExtensionPoints.types';
 
-export const SettingsButton = ({ editingContextId, representationId, table }: SettingsButtonProps) => {
-  const [state, setState] = useState<SettingsButtonState>({
+export const ToolsButton = ({ editingContextId, representationId, table }: ToolsButtonProps) => {
+  const [state, setState] = useState<ToolsButtonState>({
     contextMenuAnchorElement: null,
   });
 
-  const settingsButtonMenuEntries: ComponentExtension<SettingsButtonMenuEntryProps>[] = useComponents(
-    settingButtonMenuEntryExtensionPoint
+  const toolsButtonMenuEntries: ComponentExtension<ToolsButtonMenuEntryProps>[] = useComponents(
+    toolsButtonMenuEntryExtensionPoint
   );
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) =>
@@ -40,19 +40,19 @@ export const SettingsButton = ({ editingContextId, representationId, table }: Se
       <Button
         aria-haspopup="true"
         aria-expanded={!!state.contextMenuAnchorElement ? 'true' : undefined}
-        startIcon={<SettingsIcon />}
+        startIcon={<ToolsIcon />}
         color="inherit"
         onClick={handleClick}>
-        Settings
+        Tools
       </Button>
       <Menu
         id="basic-menu"
         anchorEl={state.contextMenuAnchorElement}
         open={!!state.contextMenuAnchorElement}
         onClose={handleClose}>
-        <ExportAllDataButton table={table} />
-        {settingsButtonMenuEntries.map(({ Component: SettingsButtonMenuItem }, index) => (
-          <SettingsButtonMenuItem
+        <ExportDataButton table={table} />
+        {toolsButtonMenuEntries.map(({ Component: ToolsButtonMenuItem }, index) => (
+          <ToolsButtonMenuItem
             key={index}
             editingContextId={editingContextId}
             representationId={representationId}

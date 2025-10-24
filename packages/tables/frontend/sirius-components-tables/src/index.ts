@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export * from './actions/SettingsButtonExtensionPoints';
-export type { SettingsButtonMenuEntryProps } from './actions/SettingsButtonExtensionPoints.types';
+export * from './actions/ToolsButtonExtensionPoints';
+export type { ToolsButtonMenuEntryProps } from './actions/ToolsButtonExtensionPoints.types';
 export type { CustomCellProps } from './cells/Cell.types';
 export type { TableCellContribution } from './cells/TableCellExtensionPoints.types';
 export * from './cells/TableCellExtensionPoints';

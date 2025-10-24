@@ -12,17 +12,17 @@
  *******************************************************************************/
 
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { SettingsButtonMenuEntryProps } from './SettingsButtonExtensionPoints.types';
+import { ToolsButtonMenuEntryProps } from './ToolsButtonExtensionPoints.types';
 
 /**
- * Extension point for table settings button menu entries.
+ * Extension point for table tools button menu entries.
  *
- * This extension point allows the addition of custom menu entries to the settings button of a table.
+ * This extension point allows the addition of custom menu entries to the tools button of a table.
  * Each contribution can define how a menu entry should be rendered or behave.
  *
  * @since v2025.1.0
  */
-export const settingButtonMenuEntryExtensionPoint: ComponentExtensionPoint<SettingsButtonMenuEntryProps> = {
-  identifier: 'settingsButton#menuEntry',
+export const toolsButtonMenuEntryExtensionPoint: ComponentExtensionPoint<ToolsButtonMenuEntryProps> = {
+  identifier: 'toolsButton#menuEntry',
   FallbackComponent: () => null,
 };

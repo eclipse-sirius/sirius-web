@@ -24,7 +24,7 @@ import {
   GQLTextareaCell,
   GQLTextfieldCell,
 } from '../table/TableContent.types';
-import { CsvData, ExportAllDataButtonProps } from './ExportAllDataButton.types';
+import { CsvData, ExportDataButtonProps } from './ExportDataButton.types';
 
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
 const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__typename === 'IconLabelCell';
@@ -71,13 +71,13 @@ export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) 
   download(csvConfig)(csv);
 };
 
-export const ExportAllDataButton = ({ table }: ExportAllDataButtonProps) => {
+export const ExportDataButton = ({ table }: ExportDataButtonProps) => {
   return (
     <MenuItem onClick={() => handleExportData(table, getCellLabel)}>
       <ListItemIcon>
         <FileDownloadIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText>Export all data in page</ListItemText>
+      <ListItemText>Export page data as CSV</ListItemText>
     </MenuItem>
   );
 };
