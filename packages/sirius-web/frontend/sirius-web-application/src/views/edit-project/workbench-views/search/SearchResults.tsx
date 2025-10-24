@@ -63,12 +63,8 @@ const useSecondsSince = (startTime: number, refreshDelay: number = 1000): number
   return secondsSince;
 };
 
-export const SearchResults = ({ loading, query, result, timestamp }: SearchResultProps) => {
-  const { classes } = useSearchResultStyles();
-  const { setSelection } = useSelection();
-  const { selectionTargets } = useSelectionTargets();
-
-  const resultsAge = useSecondsSince(timestamp, 10_000);
+const AgeIndicator = ({ timestamp }: { timestamp: number }) => {
+  const resultsAge = useSecondsSince(timestamp, 60_000);
   const resultsAgeText =
     resultsAge < 60
       ? `less than a minute`
@@ -77,6 +73,17 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
       : resultsAge < 86_400
       ? `${Math.floor(resultsAge / 3_600)}h`
       : `${Math.floor(resultsAge / 86_400)}d`;
+  return (
+    <Typography variant="caption" color="secondary">
+      {`Performed ${resultsAgeText} ago`}
+    </Typography>
+  );
+};
+
+export const SearchResults = ({ loading, query, result, timestamp }: SearchResultProps) => {
+  const { classes } = useSearchResultStyles();
+  const { setSelection } = useSelection();
+  const { selectionTargets } = useSelectionTargets();
 
   const matches = result?.matches || [];
 
@@ -104,9 +111,7 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
           <Typography variant="subtitle2" color="secondary">
             {`${matches.length} result${matches.length > 1 ? 's' : ''} for '${query.text}'`}
           </Typography>
-          <Typography variant="caption" color="secondary">
-            {`Performed ${resultsAgeText} ago`}
-          </Typography>
+          <AgeIndicator timestamp={timestamp} />
         </div>
       </>
     );
