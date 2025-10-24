@@ -73,7 +73,7 @@ public class DiagramEdgeOnBorderNodeDomainProvider implements IDomainProvider {
         entity1LinkedToEntity2.setOptional(true);
         entity1LinkedToEntity2.setMany(true);
         entity1LinkedToEntity2.setTargetType(entity2);
-        entity1.getRelations().add(entity1LinkedToEntity2);
+        entity2.getRelations().add(entity1LinkedToEntity2);
 
         this.addAttribute(entity1, "name", DataType.STRING);
         this.addAttribute(entity2, "name", DataType.STRING);

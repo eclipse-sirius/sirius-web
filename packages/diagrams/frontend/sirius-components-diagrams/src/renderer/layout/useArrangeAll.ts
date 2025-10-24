@@ -142,7 +142,9 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         labels: computeLabels(node, zoom, reactFlowWrapper),
         ...node,
       })),
-      edges,
+      edges: edges.filter(
+        (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
+      ),
     };
     try {
       const layoutedGraph = await elk.layout(graph);
