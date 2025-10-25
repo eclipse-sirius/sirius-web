@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services.api;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import java.io.InputStream;
 import java.util.Optional;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * Used to compute a sanitized content for a given resource.
@@ -24,5 +24,10 @@ import java.util.Optional;
  */
 public interface IDocumentSanitizedJsonContentProvider {
 
-    Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants);
+    @Deprecated(forRemoval = true)
+    default Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants) {
+        return this.getContent(resourceSet, name, inputStream, false, applyMigrationParticipants);
+    }
+
+    Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean allowProxies, boolean applyMigrationParticipants);
 }

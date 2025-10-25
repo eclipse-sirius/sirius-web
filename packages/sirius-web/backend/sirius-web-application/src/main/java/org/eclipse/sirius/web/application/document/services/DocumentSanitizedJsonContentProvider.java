@@ -12,6 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -32,18 +44,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Used to compute a sanitized content for a given resource.
@@ -72,7 +72,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
     }
 
     @Override
-    public Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants) {
+    public Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean allowProxies, boolean applyMigrationParticipants) {
         Optional<SanitizedResult> optionalResult = Optional.empty();
 
         URI resourceURI = new JSONResourceFactory().createResourceURI(name);
@@ -81,11 +81,11 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
             Resource inputResource = optionalInputResource.get();
             try {
                 long start = System.nanoTime();
-                var hasProxies = this.proxyValidator.hasProxies(inputResource);
+                var hasForbiddenProxies = !allowProxies && this.proxyValidator.hasProxies(inputResource);
                 Duration timeToTestProxies = Duration.ofNanos(System.nanoTime() - start);
                 this.logger.trace("Checked for proxies in {}ms", timeToTestProxies.toMillis());
 
-                if (hasProxies) {
+                if (hasForbiddenProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
                 } else {
                     JsonResource outputResource;
