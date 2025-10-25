@@ -1,0 +1,88 @@
+= ADR-211 - Add support for drag'n'drop of multiple elements at once on diagrams
+
+== Context
+
+It is currently possible to define a "Drop Node Tool" on a node (or on the diagram itself), but they can only accept a single dropped node.
+Indeed, when more than one node is selected, the frontend explicitly avoids calling the tool.
+
+It should be possible for end-users to DnD mulitple elements at once, and for studio makers to define how to behave in such cases.
+
+== Decision
+
+=== GraphQL Schema changes
+
+The `dropNode` mutation will be renamed into `dropNodes` and updated to allow for multiple nodes dropped in a single operation:
+
+[source,graphql]
+----
+extend type Mutation {
+  # Current: dropNode(input: DropNodeInput!): DropNodesPayload!
+  dropNodes(input: DropNodesInput!): DropNodesPayload!
+}
+
+# Current name: DropNodeInput
+input DropNodesInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  droppedElementId: ID!
+  droppedElementIds: [ID!]! # New
+  targetElementId: ID
+  x: Float!
+  y: Float!
+}
+
+# Current name: DropNodePayload
+union DropNodesPayload = ErrorPayload | SuccessPayload
+----
+
+i.e. beside the name, the only actual change will be the *addition* of a new `droppedElementIds: [ID!]!` field to `DropNodesInput`.
+The previous `droppedElementId: ID!` field will be kept for compatibility to avoid breaking existing modelers.
+It will contain the first element of the new `droppedElementIds` array.
+
+The position (`x` and `y`) of the drop will stay the same and correspond to the mouse position at drop time (since issue https://github.com/eclipse-sirius/sirius-web/issues/5487[#5487]).
+
+==== Frontend
+
+On the frontend, `useDropNode` will no longer prevent the case where there are more than one node in the selection.
+
+However, it will still consider `DropNodeCompatibility` to decide whether a drop is possible on a specific target and which of the selected node(s) can be dropped.
+
+If the user has selected NodeA (type A) and NodeB (type B) and tries to drop both in NodeC (of type C), then the drop is only possible if C contains a _Drop Node Tool_ which accepts (`DropNodeTool.acceptedNodeTypes`) either A or B.
+
+If C has at a drop node tool which accepts a non-empty subset of the node types in the selection, then it will be invoked, with *the subset of the selection* which is compatible with this tool.
+
+Otherwise the drop is forbidden.
+
+For example if C has a drop node tool which accepts only A, dropping NodeA _and_ NodeB on NodeC will invoke the tool, but only pass it NodeA.
+
+==== Backend
+
+`MutationDropNodeDataFetcher` and `DropNodeEventHandler` (in particular `invokeDropNodeTool()`) will need to be updated to handle multiple nodes.
+
+New variables `DROPPED_NODES = "droppedNodes"` and `DROPPED_ELEMENTS = "droppedElements"` will be added, with the `List` of nodes and semantic elements dropped.
+
+==== View DSL
+
+No change is required in the View DSL definition itself, but when they are invoked, View-based `DropNodeTools` will see the new `droppedNodes` and `droppedElements` variables.
+
+=== Breadboarding
+
+No UI change.
+
+=== Cutting backs
+
+* Showing a precise feedback of which nodes in a multi-selection will be passed to the selected tool on a specific target (e.g. if the only available drop tool on NodeC only accepts NodeA, indicating that the drop is possible but will not include NodeB which is also selected).
+
+=== Rabbit holes
+
+== Status
+
+Proposed
+
+== Consequences
+
+* Studio makers will need to update their drop node tools definitions to leverage the new `droppedElementIds` variable to handle the drop of mulitple elements.
+* If they do not update their definitions, dropping multiple elements on a container (or on the diagram) will still invoke their tool, but with only one of the dropped node (`droppedElementId` visible to them).
+In this case, it is unspecified which one is passed as `droppedElementId`.
+* It will be up to studio makers to decide whether and how to handle complex cases where e.g. both a node and its parent are part of the dropped set.
