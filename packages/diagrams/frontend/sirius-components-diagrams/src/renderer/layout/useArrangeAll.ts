@@ -33,8 +33,13 @@ function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
   return new Map<K, V>(reversedNodes);
 }
 
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
+const getSubNodes = (
+  nodes: Node<NodeData, string | undefined>[]
+): Map<string, Node<NodeData, string | undefined>[]> => {
+  const subNodes: Map<string, Node<NodeData, string | undefined>[]> = new Map<
+    string,
+    Node<NodeData, string | undefined>[]
+  >();
   for (const node of nodes.filter((n) => !n.hidden)) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
@@ -168,10 +173,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[]
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutedAllNodes: Node<NodeData, string>[] = [];
+    subNodes: Map<string, Node<NodeData, string | undefined>[]>,
+    allNodes: Node<NodeData, string | undefined>[]
+  ): Promise<Node<NodeData, string | undefined>[]> => {
+    let layoutedAllNodes: Node<NodeData, string | undefined>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     const edges: Edge<EdgeData>[] = getEdges();
     for (const [parentNodeId, nodes] of subNodes) {
@@ -231,10 +236,10 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const arrangeAll = async (): Promise<void> => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string>[]) => {
-      const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
+    const nodes: Node<NodeData, string | undefined>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
+    const subNodes: Map<string, Node<NodeData, string | undefined>[]> = reverseOrdreMap(getSubNodes(nodes));
+    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string | undefined>[]) => {
+      const laidOutNodesWithElk: Node<NodeData, string | undefined>[] = nodes.reverse();
       laidOutNodesWithElk.filter((laidOutNode) => {
         const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
         return !parentNode || !isListData(parentNode);
@@ -258,7 +263,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
       };
       const layoutPromise = new Promise<void>((resolve) => {
         layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+          const overlapFreeLaidOutNodes: Node<NodeData, string | undefined>[] = resolveNodeOverlap(
             laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
             'horizontal'
           ) as Node<NodeData, DiagramNodeType>[];
