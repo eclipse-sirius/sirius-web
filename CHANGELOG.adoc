@@ -32,6 +32,7 @@ The code responsible for the import has been refactor with:
 * `ProjectImporter` no longer exist. Its code has been split among `IProjectContentImportParticipant`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5599[#5599] [sirius-web] `IProjectExportService` and `IProjectExportParticipant` now takes the id of the _EditingContext_ to export as a parameter.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
 
 === Dependency update
 
@@ -63,7 +64,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] Add `hasChildrenExpression` to `RowDescription` to block the expand action on rows that have no children
 
 
 == 2025.10.0
