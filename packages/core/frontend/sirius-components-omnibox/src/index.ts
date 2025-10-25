@@ -11,8 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export type { OmniboxMode } from './Omnibox.types';
 export * from './OmniboxButton';
+export * from './OmniboxButton.types';
 export * from './OmniboxExtensionPoints';
 export * from './OmniboxExtensionPoints.types';
 export * from './OmniboxProvider';
-export { type GQLOmniboxCommand } from './useOmniboxCommands.types';
+export * from './useExecuteWorkbenchOmniboxCommand';
+export * from './useExecuteWorkbenchOmniboxCommand.types';
+export * from './useWorkbenchOmniboxCommands';
+export type {
+  GQLGetWorkbenchOmniboxCommandsQueryVariables,
+  GQLOmniboxCommand, // GH comment: this is a shared type (corresponds to the interface IOmniboxCommand in the backend), I don't really know where to put it.
+  GQLWorkbenchCommand,
+} from './useWorkbenchOmniboxCommands.types';
+export * from './useWorkbenchOmniboxSearch';
+export type {
+  GQLGetWorkbenchOmniboxSearchResultsQueryVariables,
+  GQLWorkbenchSearchCommand,
+} from './useWorkbenchOmniboxSearch.types';

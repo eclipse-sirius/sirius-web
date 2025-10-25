@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
  */
 public interface IOmniboxCommandHandler {
 
-    boolean canHandle(ExecuteOmniboxCommandInput input);
+    boolean canHandle(ExecuteWorkbenchOmniboxCommandInput input);
 
-    IPayload handle(ExecuteOmniboxCommandInput input);
+    IPayload handle(ExecuteWorkbenchOmniboxCommandInput input);
 }

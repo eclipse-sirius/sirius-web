@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandExecutor;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;
@@ -48,7 +48,7 @@ public class OmniboxCommandExecutor implements IOmniboxCommandExecutor {
     }
 
     @Override
-    public IPayload execute(ExecuteOmniboxCommandInput input) {
+    public IPayload execute(ExecuteWorkbenchOmniboxCommandInput input) {
         Optional<IOmniboxCommandHandler> optionalOmniboxCommandHandler = this.omniboxCommandHandlers.stream()
                 .filter(handler -> handler.canHandle(input))
                 .findFirst();

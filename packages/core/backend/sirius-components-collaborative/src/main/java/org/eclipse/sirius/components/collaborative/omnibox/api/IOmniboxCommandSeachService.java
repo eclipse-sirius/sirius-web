@@ -14,13 +14,11 @@ package org.eclipse.sirius.components.collaborative.omnibox.api;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
-
 /**
  * Used to find omnibox commands.
  *
  * @author sbegaudeau
  */
 public interface IOmniboxCommandSeachService {
-    List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query);
+    List<? extends IOmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query);
 }

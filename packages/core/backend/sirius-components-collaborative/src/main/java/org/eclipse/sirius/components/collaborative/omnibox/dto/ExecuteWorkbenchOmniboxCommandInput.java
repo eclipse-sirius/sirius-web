@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,18 +16,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Used to indicate that a command has been successfully executed.
+ * The input object of the execute workbench omnibox command mutation.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
-public record ExecuteOmniboxCommandSuccessPayload(UUID id, WorkbenchSelection newSelection, List<Message> messages) implements IPayload {
-    public ExecuteOmniboxCommandSuccessPayload {
+public record ExecuteWorkbenchOmniboxCommandInput(UUID id, String editingContextId, List<String> selectedObjectIds, String commandId) implements IInput {
+
+    public ExecuteWorkbenchOmniboxCommandInput {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(messages);
+        Objects.requireNonNull(editingContextId);
+        Objects.requireNonNull(selectedObjectIds);
+        Objects.requireNonNull(commandId);
     }
 }

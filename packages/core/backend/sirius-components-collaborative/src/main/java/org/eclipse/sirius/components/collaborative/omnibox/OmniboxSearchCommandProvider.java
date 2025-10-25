@@ -14,8 +14,9 @@ package org.eclipse.sirius.components.collaborative.omnibox;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchCommand;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,8 +30,8 @@ public class OmniboxSearchCommandProvider implements IOmniboxCommandProvider {
     public static final String SEARCH_COMMAND_ID = "search";
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
-        return List.of(new OmniboxCommand(SEARCH_COMMAND_ID, "Search", List.of("/omnibox/search.svg"), "Search an element in the project"));
+    public List<IOmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
+        return List.of(new WorkbenchCommand(SEARCH_COMMAND_ID, "Search", List.of("/omnibox/search.svg"), "Search an element in the project"));
     }
 
 }

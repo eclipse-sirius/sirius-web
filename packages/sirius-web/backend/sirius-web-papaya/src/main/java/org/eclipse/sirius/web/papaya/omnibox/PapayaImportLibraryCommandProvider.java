@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchCommand;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +39,10 @@ public class PapayaImportLibraryCommandProvider implements IOmniboxCommandProvid
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
-        List<OmniboxCommand> result = new ArrayList<>();
+    public List<? extends IOmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
+        List<IOmniboxCommand> result = new ArrayList<>();
         if (this.papayaCapableEditingContextPredicate.test(editingContextId)) {
-            result.add(new OmniboxCommand(IMPORT_LIBRARY_COMMAND_ID, "Import papaya libraries", List.of("/omnibox/import.svg"), "Import papaya libraries in the project"));
+            result.add(new WorkbenchCommand(IMPORT_LIBRARY_COMMAND_ID, "Import papaya libraries", List.of("/omnibox/import.svg"), "Import papaya libraries in the project"));
         }
         return result;
     }

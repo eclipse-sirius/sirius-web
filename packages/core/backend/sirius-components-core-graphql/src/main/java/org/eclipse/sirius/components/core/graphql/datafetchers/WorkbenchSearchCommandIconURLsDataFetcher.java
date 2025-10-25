@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -24,22 +24,22 @@ import org.eclipse.sirius.components.graphql.api.URLConstants;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for the field OmniboxCommand#iconURL.
+ * Data fetcher for the field WorkbenchCommand#iconURL.
  *
  * @author gcoutable
  */
-@QueryDataFetcher(type = "OmniboxCommand", field = "iconURLs")
-public class OmniboxCommandIconURLsDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
+@QueryDataFetcher(type = "WorkbenchSearchCommand", field = "iconURLs")
+public class WorkbenchSearchCommandIconURLsDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     private final IImageURLSanitizer imageURLSanitizer;
 
-    public OmniboxCommandIconURLsDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+    public WorkbenchSearchCommandIconURLsDataFetcher(IImageURLSanitizer imageURLSanitizer) {
         this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
     }
 
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
-        OmniboxCommand omniboxCommand = environment.getSource();
+        IOmniboxCommand omniboxCommand = environment.getSource();
         return omniboxCommand.iconURLs().stream()
                 .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
                 .toList();

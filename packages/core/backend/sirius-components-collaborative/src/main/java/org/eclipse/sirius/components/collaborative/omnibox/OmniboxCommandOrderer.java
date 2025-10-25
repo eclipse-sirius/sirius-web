@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,13 +30,13 @@ import org.springframework.stereotype.Service;
 public class OmniboxCommandOrderer implements IOmniboxCommandOrderer {
 
     @Override
-    public List<OmniboxCommand> order(List<OmniboxCommand> omniboxCommands) {
-        Optional<OmniboxCommand> optionalSearchCommand = omniboxCommands.stream()
+    public List<? extends IOmniboxCommand> order(List<? extends IOmniboxCommand> omniboxCommands) {
+        Optional<? extends IOmniboxCommand> optionalSearchCommand = omniboxCommands.stream()
                 .filter(command -> Objects.equals(command.id(), OmniboxSearchCommandProvider.SEARCH_COMMAND_ID))
                 .findFirst();
 
         if (optionalSearchCommand.isPresent()) {
-            List<OmniboxCommand> commands = new ArrayList<>();
+            List<IOmniboxCommand> commands = new ArrayList<>();
 
             var otherCommands = omniboxCommands.stream()
                     .filter(command -> !Objects.equals(command.id(), OmniboxSearchCommandProvider.SEARCH_COMMAND_ID))

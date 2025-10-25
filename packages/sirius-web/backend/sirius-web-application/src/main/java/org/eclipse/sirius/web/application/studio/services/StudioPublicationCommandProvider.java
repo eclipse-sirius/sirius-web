@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.WorkbenchCommand;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +39,10 @@ public class StudioPublicationCommandProvider implements IOmniboxCommandProvider
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
-        List<OmniboxCommand> result = new ArrayList<>();
+    public List<? extends IOmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
+        List<IOmniboxCommand> result = new ArrayList<>();
         if (this.studioCapableEditingContextPredicate.test(editingContextId)) {
-            result.add(new OmniboxCommand(PUBLISH_STUDIO_COMMAND_ID, "Publish Studio", List.of("/omnibox/publish.svg"), "Publish all the domains and representation descriptions as individual libraries"));
+            result.add(new WorkbenchCommand(PUBLISH_STUDIO_COMMAND_ID, "Publish Studio", List.of("/omnibox/publish.svg"), "Publish all the domains and representation descriptions as individual libraries"));
         }
         return result;
     }
