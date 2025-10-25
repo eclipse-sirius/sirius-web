@@ -63,7 +63,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] Rename Settings menu and export action
 
 
 == 2025.10.0
