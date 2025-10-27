@@ -17,6 +17,7 @@
 - [ADR-209] Decouple the command palette from the editing context
 - [ADR-210] Add the support for backend workbench configuration
 - [ADR-211] Unified project creation
+- [ADR-212] Add support for grouping search results
 
 === Deprecation warning
 
