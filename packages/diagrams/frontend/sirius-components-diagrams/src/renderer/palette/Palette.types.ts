@@ -37,8 +37,7 @@ export interface PaletteProps {
   x: number;
   y: number;
   diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
+  onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
   children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
