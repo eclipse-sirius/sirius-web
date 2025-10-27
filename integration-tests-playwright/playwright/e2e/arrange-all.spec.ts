@@ -14,6 +14,7 @@ import { test, expect } from '@playwright/test';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightWorkbench } from '../helpers/PlaywrightWorkbench';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
 
 test.describe('diagram - arrange all', () => {
   let projectId;
@@ -46,5 +47,38 @@ test.describe('diagram - arrange all', () => {
     await page.getByTestId('arrange-all').click();
 
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+  });
+});
+
+test.describe('diagram - arrange all', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectDiagramUnarrange.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Unarrange-project');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a arrange all is triggered, then node are arranged depending on edge direction even if edge are on border node', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all').click();
+
+    const sourceNode = new PlaywrightNode(page, 'Entity1-source');
+    const targetNode = new PlaywrightNode(page, 'Entity1-target');
+    const sourcePosition = await sourceNode.getReactFlowXYPosition();
+    const targetPosition = await targetNode.getReactFlowXYPosition();
+    expect(targetPosition.x).toBeGreaterThan(sourcePosition.x);
   });
 });

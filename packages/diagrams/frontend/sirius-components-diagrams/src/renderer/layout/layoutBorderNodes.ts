@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CoordinateExtent, Node, XYPosition } from '@xyflow/react';
+import { CoordinateExtent, Node, XYPosition, Position, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -107,4 +108,67 @@ export const getNewlyAddedBorderNodePosition = (
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.SOUTH;
     }
   }
+};
+
+export const convertPositionToBorderNodePosition = (position: Position): BorderNodePosition => {
+  switch (position) {
+    case Position.Top:
+      return BorderNodePosition.NORTH;
+    case Position.Right:
+      return BorderNodePosition.EAST;
+    case Position.Bottom:
+      return BorderNodePosition.SOUTH;
+    case Position.Left:
+      return BorderNodePosition.WEST;
+    default:
+      return BorderNodePosition.EAST;
+  }
+};
+
+export const getBorderNodeParentIfExist = (
+  node: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): InternalNode<Node<NodeData>> => {
+  if (node && node.data.isBorderNode && node.parentId) {
+    const parentNode = nodeLookup.get(node.parentId);
+    if (parentNode) {
+      return parentNode;
+    }
+  }
+  return node;
+};
+
+export const computeBorderNodeXYPositionFromBorderNodePosition = (
+  node: Node<NodeData>,
+  newBorderNodePosition: BorderNodePosition,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+): XYPosition | null => {
+  if (node.data.borderNodePosition !== newBorderNodePosition) {
+    const parentNode = nodeLookup.get(node.parentId ?? '');
+    if (parentNode) {
+      switch (newBorderNodePosition) {
+        case BorderNodePosition.WEST:
+          return {
+            x: -(node.width ?? 0) - borderNodeOffset,
+            y: (parentNode.height ?? 0) / 2 - (node.height ?? 0) / 2,
+          };
+        case BorderNodePosition.EAST:
+          return {
+            x: (parentNode.width ?? 0) - borderNodeOffset,
+            y: (parentNode.height ?? 0) / 2 - (node.height ?? 0) / 2,
+          };
+        case BorderNodePosition.NORTH:
+          return {
+            x: (parentNode.width ?? 0) / 2 - (node.width ?? 0) / 2,
+            y: -(node.height ?? 0) - borderNodeOffset,
+          };
+        case BorderNodePosition.SOUTH:
+          return {
+            x: (parentNode.width ?? 0) / 2 - (node.width ?? 0) / 2,
+            y: (parentNode.height ?? 0) - borderNodeOffset,
+          };
+      }
+    }
+  }
+  return null;
 };
