@@ -1,0 +1,46 @@
+{
+  "id": "decision-rel-north-source-east-target-north",
+  "name": "B North of A — source East to target North",
+  "description": "Relative position: B is north of A. Source anchor: east. Target anchor: north. Expected edge shape: U bend. Because the target handle on north faces away from A, the path must loop around before approaching, so a U bend avoids crossing the nodes.",
+  "categories": [
+    "decision-table",
+    "routing"
+  ],
+  "expectedEdgeShape": "U bend",
+  "nodes": [
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 360,
+        "y": 360
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 360,
+        "y": 100
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "top"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "misaligned-a-b-c",
+  "name": "Misaligned A-B-C",
+  "description": "A vertical link with 10px horizontal offset and a horizontal link with 15px vertical offset.",
+  "categories": ["alignment"],
+  "nodes": [
+    {
+      "id": "node-a",
+      "label": "A",
+      "position": { "x": 205, "y": 120 },
+      "size": { "width": 160, "height": 80 }
+    },
+    {
+      "id": "node-b",
+      "label": "B",
+      "position": { "x": 215, "y": 320 },
+      "size": { "width": 160, "height": 80 }
+    },
+    {
+      "id": "node-c",
+      "label": "C",
+      "position": { "x": 520, "y": 335 },
+      "size": { "width": 160, "height": 80 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "node-a",
+      "target": "node-b",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    },
+    {
+      "id": "edge-b-c",
+      "source": "node-b",
+      "target": "node-c",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    }
+  ]
+}

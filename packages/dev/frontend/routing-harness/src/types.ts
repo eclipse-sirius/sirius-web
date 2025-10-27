@@ -49,6 +49,7 @@ export interface DiagramFixture {
   name: string;
   description?: string;
   categories?: string[];
+  expectedEdgeShape?: string;
   nodes: FixtureNode[];
   edges: FixtureEdge[];
 }

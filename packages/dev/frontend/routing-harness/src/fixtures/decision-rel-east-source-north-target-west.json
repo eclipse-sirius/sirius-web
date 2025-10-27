@@ -1,0 +1,46 @@
+{
+  "id": "decision-rel-east-source-north-target-west",
+  "name": "B East of A — source North to target West",
+  "description": "Relative position: B is east of A. Source anchor: north. Target anchor: west. Expected edge shape: zig zag. Because the source handle on north is perpendicular to the east offset, we add an extra elbow to realign before attaching, making a zig zag connector.",
+  "categories": [
+    "decision-table",
+    "routing"
+  ],
+  "expectedEdgeShape": "zig zag",
+  "nodes": [
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 360,
+        "y": 360
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 720,
+        "y": 360
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "top",
+      "targetPosition": "left"
+    }
+  ]
+}
