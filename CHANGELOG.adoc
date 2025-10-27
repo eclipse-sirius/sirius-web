@@ -43,7 +43,7 @@ The code responsible for the import has been refactor with:
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
-
+- [releng] Switch to elkjs 0.11.0
 
 === Bug fixes
 
@@ -68,8 +68,7 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
 
 
