@@ -22,11 +22,13 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
-import { Palette } from './Palette';
+import { getPaletteToolCount, Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
+import { usePaletteContents } from './usePaletteContents';
+import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramElementPalette = memo(
   ({ diagramElementId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
@@ -35,6 +37,7 @@ export const DiagramElementPalette = memo(
     const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
     const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
     const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+
     //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
     const onClose = () => {
       hideDiagramElementPalette();
@@ -44,6 +47,9 @@ export const DiagramElementPalette = memo(
     };
 
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+    const { nodeLookup, edgeLookup } = store.getState();
+    const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
+    const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
 
     const onKeyDown = useCallback(
       (event: React.KeyboardEvent<Element>) => {
@@ -97,18 +103,19 @@ export const DiagramElementPalette = memo(
     if (readOnly) {
       return null;
     }
+    const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
 
-    return isOpened && paletteX && paletteY && !currentlyEditedLabelId ? (
+    return isOpened && paletteX && paletteY && !currentlyEditedLabelId && shouldRender ? (
       <PalettePortal>
         <div onKeyDown={onKeyDown}>
           <Palette
             x={paletteX}
             y={paletteY}
             diagramElementId={diagramElementId}
+            palette={palette}
             onToolClick={onToolClick}
-            onClose={onClose}>
-            {extensionSections}
-          </Palette>
+            onClose={onClose}
+            paletteToolListExtensions={extensionSections}></Palette>
         </div>
       </PalettePortal>
     ) : null;

@@ -18,16 +18,19 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
-import { Palette } from './Palette';
+import { getPaletteToolCount, Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
+import { usePaletteContents } from './usePaletteContents';
+import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x: paletteX, y: paletteY, hideDiagramPalette } = useDiagramPalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -44,9 +47,8 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
     return null;
   }
 
-  const handleDirectEditClick = () => {};
-
   const onToolClick = (tool: GQLTool) => {
+    const handleDirectEditClick = () => {};
     let x: number = 0;
     let y: number = 0;
     if (viewportZoom !== 0 && paletteX && paletteY) {
@@ -56,16 +58,19 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
     executeTool(x, y, diagramElementId, targetObjectId, handleDirectEditClick, tool);
   };
 
-  return isOpened && paletteX && paletteY ? (
+  const shouldRender = palette && getPaletteToolCount(palette) > 0;
+
+  return isOpened && paletteX && paletteY && shouldRender ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
         <Palette
           x={paletteX}
           y={paletteY}
           diagramElementId={diagramElementId}
+          palette={palette}
           onToolClick={onToolClick}
           onClose={hideDiagramPalette}
-          children={[]}
+          paletteToolListExtensions={[]}
         />
       </div>
     </PalettePortal>
