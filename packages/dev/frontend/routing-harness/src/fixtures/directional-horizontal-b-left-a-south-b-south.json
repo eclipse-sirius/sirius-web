@@ -1,0 +1,46 @@
+{
+  "id": "directional-horizontal-b-left-a-south-b-south",
+  "name": "B left of A - A South to B South",
+  "description": "Horizontal layout: B left of A, edge from A using the SOUTH side to B using the SOUTH side.",
+  "categories": [
+    "directional",
+    "cardinal",
+    "horizontal"
+  ],
+  "nodes": [
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 220,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 620,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "bottom"
+    }
+  ]
+}

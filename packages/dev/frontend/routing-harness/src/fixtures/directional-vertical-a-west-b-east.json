@@ -1,0 +1,46 @@
+{
+  "id": "directional-vertical-a-west-b-east",
+  "name": "A above B \u2014 A West to B East",
+  "description": "Vertical layout: A above B, edge from A using the WEST side to B using the EAST side.",
+  "categories": [
+    "directional",
+    "cardinal",
+    "vertical"
+  ],
+  "nodes": [
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 360,
+        "y": 140
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 360,
+        "y": 420
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "left",
+      "targetPosition": "right"
+    }
+  ]
+}
