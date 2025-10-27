@@ -21,13 +21,11 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { Theme, useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
-import { Edge, Node, useStoreApi, useViewport } from '@xyflow/react';
-import React, { useContext, useEffect, useState } from 'react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
+import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
-import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
-import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import {
   GQLPalette,
   GQLPaletteDivider,
@@ -69,14 +67,12 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
-  targetObjectId,
-  onDirectEditClick,
+  onToolClick,
   onClose,
   children,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
-  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const theme: Theme = useTheme();
 
@@ -89,20 +85,13 @@ export const Palette = ({
 
   const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
   const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
-  const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
 
   const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
 
   const handleToolClick = (tool: GQLTool) => {
     onClose();
     domNode?.focus();
-    let x: number = 0;
-    let y: number = 0;
-    if (viewportZoom !== 0 && paletteX && paletteY) {
-      x = (paletteX - viewportX) / viewportZoom;
-      y = (paletteY - viewportY) / viewportZoom;
-    }
-    executeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
+    onToolClick(tool);
     if (palette) {
       setLastToolInvoked(palette.id, tool);
     }

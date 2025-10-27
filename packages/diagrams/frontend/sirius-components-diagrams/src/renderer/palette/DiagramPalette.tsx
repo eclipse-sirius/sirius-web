@@ -11,17 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useViewport } from '@xyflow/react';
 import { memo, useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { Palette } from './Palette';
+import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
 
 export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
+  const { isOpened, x: paletteX, y: paletteY, hideDiagramPalette } = useDiagramPalette();
+  const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -38,15 +44,26 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
     return null;
   }
 
-  return isOpened && x && y ? (
+  const handleDirectEditClick = () => {};
+
+  const onToolClick = (tool: GQLTool) => {
+    let x: number = 0;
+    let y: number = 0;
+    if (viewportZoom !== 0 && paletteX && paletteY) {
+      x = (paletteX - viewportX) / viewportZoom;
+      y = (paletteY - viewportY) / viewportZoom;
+    }
+    executeTool(x, y, diagramElementId, targetObjectId, handleDirectEditClick, tool);
+  };
+
+  return isOpened && paletteX && paletteY ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
         <Palette
-          x={x}
-          y={y}
+          x={paletteX}
+          y={paletteY}
           diagramElementId={diagramElementId}
-          targetObjectId={targetObjectId}
-          onDirectEditClick={() => {}}
+          onToolClick={onToolClick}
           onClose={hideDiagramPalette}
           children={[]}
         />

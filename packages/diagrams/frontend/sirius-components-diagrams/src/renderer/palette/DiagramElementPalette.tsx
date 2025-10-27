@@ -12,15 +12,18 @@
  *******************************************************************************/
 
 import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useStoreApi, useViewport } from '@xyflow/react';
 import { memo, useCallback, useContext, useMemo } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
+import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { Palette } from './Palette';
+import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
@@ -28,9 +31,10 @@ import { useDiagramElementPalette } from './useDiagramElementPalette';
 export const DiagramElementPalette = memo(
   ({ diagramElementId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-    const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
+    const { isOpened, x: paletteX, y: paletteY, hideDiagramElementPalette } = useDiagramElementPalette();
     const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
-
+    const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
+    const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
     //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
     const onClose = () => {
       hideDiagramElementPalette();
@@ -63,6 +67,16 @@ export const DiagramElementPalette = memo(
       }
     };
 
+    const onToolClick = (tool: GQLTool) => {
+      let x: number = 0;
+      let y: number = 0;
+      if (viewportZoom !== 0 && paletteX && paletteY) {
+        x = (paletteX - viewportX) / viewportZoom;
+        y = (paletteY - viewportY) / viewportZoom;
+      }
+      executeTool(x, y, diagramElementId, targetObjectId, handleDirectEditClick, tool);
+    };
+
     const extensionSections = useMemo(() => {
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
       sectionComponents.push(
@@ -84,15 +98,14 @@ export const DiagramElementPalette = memo(
       return null;
     }
 
-    return isOpened && x && y && !currentlyEditedLabelId ? (
+    return isOpened && paletteX && paletteY && !currentlyEditedLabelId ? (
       <PalettePortal>
         <div onKeyDown={onKeyDown}>
           <Palette
-            x={x}
-            y={y}
+            x={paletteX}
+            y={paletteY}
             diagramElementId={diagramElementId}
-            targetObjectId={targetObjectId}
-            onDirectEditClick={handleDirectEditClick}
+            onToolClick={onToolClick}
             onClose={onClose}>
             {extensionSections}
           </Palette>
