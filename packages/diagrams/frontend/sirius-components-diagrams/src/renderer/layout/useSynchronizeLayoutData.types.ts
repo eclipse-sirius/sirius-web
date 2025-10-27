@@ -30,6 +30,7 @@ export interface GQLNodeLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+  movedByUser: boolean;
   handleLayoutData: GQLHandleLayoutData[];
 }
 

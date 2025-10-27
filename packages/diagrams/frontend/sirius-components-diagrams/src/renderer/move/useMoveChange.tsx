@@ -70,6 +70,7 @@ export const useMoveChange = (): UseMoveChangeValue => {
         const movedNode = nodes.find((node) => node.id === change.id);
         if (movedNode) {
           movedNode.zIndex = 1;
+          movedNode.data.movedByUser = true;
         }
       }
     });

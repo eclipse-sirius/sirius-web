@@ -207,6 +207,7 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
 
         var compositeProcessorNode = diagramNavigator.nodeWithLabel("CompositeProcessor1").getNode();
         assertThat(nodeLayoutData.get(compositeProcessorNode.getId())).isNotNull();
+        assertThat(nodeLayoutData.get(compositeProcessorNode.getId()).movedByUser()).isTrue();
         assertThat(compositeProcessorNode).hasState(ViewModifier.Faded);
         assertThat(compositeProcessorNode.getChildNodes()).hasSize(1);
         assertThat(compositeProcessorNode.getCustomizedStyleProperties()).hasSize(5);
@@ -617,6 +618,7 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "position": { "x": 637.3746671921161, "y": 35.32298260722773 },
                       "size": { "width": 203.1746240068104, "height": 217.02468732410244 },
                       "resizedByUser": false,
+                      "movedByUser": true,
                       "handleLayoutData": []
                     },
                     "8c413729-434f-33f0-b54f-1f299baffaf0": {
@@ -624,6 +626,7 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "position": { "x": 481.95505817253127, "y": 310.04716080713234 },
                       "size": { "width": 66.0, "height": 90.0 },
                       "resizedByUser": false,
+                      "movedByUser": false,
                       "handleLayoutData": []
                     },
                     "eab592b4-afe6-3fdd-af54-b03d03a0269e": {
@@ -631,6 +634,7 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
                       "position": { "x": 45.174624006810404, "y": 43.024687324102445 },
                       "size": { "width": 150.0, "height": 150.0 },
                       "resizedByUser": false,
+                      "movedByUser": false,
                       "handleLayoutData": []
                     }
                   },

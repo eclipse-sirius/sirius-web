@@ -24,6 +24,7 @@ public record NodeLayoutData(
         Position position,
         Size size,
         boolean resizedByUser,
+        boolean movedByUser,
         List<HandleLayoutData> handleLayoutData) {
 
 }
