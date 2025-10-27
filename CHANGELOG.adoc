@@ -20,6 +20,7 @@
 - [ADR-211] Unified project creation
 - [ADR-212] Add support for grouping search results
 - [ADR-213] Add edit capabilities on representation
+- [ADR-214] Add the support for i18n
 
 === Deprecation warning
 
