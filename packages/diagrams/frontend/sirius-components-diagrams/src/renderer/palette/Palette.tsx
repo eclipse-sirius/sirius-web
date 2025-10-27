@@ -38,8 +38,6 @@ import {
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 import { useDiagramPalette } from './useDiagramPalette';
-import { usePaletteContents } from './usePaletteContents';
-import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
@@ -51,9 +49,7 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
 
-const paletteWidth = 200;
-
-const getPaletteToolCount = (palette: GQLPalette): number => {
+export const getPaletteToolCount = (palette: GQLPalette): number => {
   return (
     palette.paletteEntries.filter(isSingleClickOnDiagramElementTool).length +
     palette.quickAccessTools.filter(isSingleClickOnDiagramElementTool).length +
@@ -63,15 +59,18 @@ const getPaletteToolCount = (palette: GQLPalette): number => {
   );
 };
 
+const paletteWidth = 200;
+
 export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  palette,
   onToolClick,
   onClose,
-  children,
+  paletteToolListExtensions,
 }: PaletteProps) => {
-  const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const { domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const theme: Theme = useTheme();
@@ -81,9 +80,6 @@ export const Palette = ({
     controlledPosition: { x: paletteX, y: paletteY },
   });
 
-  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
-
-  const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
   const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
 
   const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
@@ -100,10 +96,6 @@ export const Palette = ({
       return { ...prevState, controlledPosition: position };
     });
   };
-
-  useEffect(() => {}, []);
-
-  const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
 
   useEffect(() => {
     if (!nodeRef.current) return;
@@ -122,13 +114,9 @@ export const Palette = ({
     resizeObserver.observe(nodeRef.current);
 
     return () => resizeObserver.disconnect();
-  }, [shouldRender]);
+  }, []);
 
   const draggableBounds = getUpdatedBounds(nodeRef);
-
-  if (!shouldRender) {
-    return null;
-  }
 
   const onPaletteDragStop = (_event, data: DraggableData) => {
     setState((prevState) => ({ ...prevState, controlledPosition: data }));
@@ -212,7 +200,7 @@ export const Palette = ({
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
                 diagramElementId={diagramElementId}>
-                {children}
+                {paletteToolListExtensions}
               </PaletteToolList>
             )}
           </Box>
