@@ -1,6 +1,6 @@
-import { Background, ReactFlow } from '@xyflow/react';
+import { Background, ReactFlow, type ReactFlowInstance } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { NodeTypeContext } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext.types';
 import { edgeTypes } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes';
@@ -30,6 +30,7 @@ interface DiagramViewerProps {
 const DiagramRuntime = memo(({ fixture, onMetricsChange }: DiagramViewerProps) => {
   const { getNodes, getEdges, onNodesChange, onEdgesChange, setNodes, setEdges } = useStore();
   const diagram = useMemo(() => convertFixtureToDiagram(fixture), [fixture]);
+  const instanceRef = useRef<ReactFlowInstance | null>(null);
 
   useEffect(() => {
     setNodes(diagram.nodes);
@@ -41,6 +42,41 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange }: DiagramViewerProps) =
 
   const nodes = getNodes();
   const edges = getEdges();
+
+  const fitToWidth = useCallback(() => {
+    if (!instanceRef.current) {
+      return;
+    }
+    instanceRef.current.fitView({
+      padding: 0.06,
+      includeHiddenNodes: true,
+      duration: 0,
+    });
+  }, []);
+
+  const handleInit = useCallback((instance: ReactFlowInstance) => {
+    instanceRef.current = instance;
+    fitToWidth();
+  }, [fitToWidth]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      fitToWidth();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [fitToWidth, diagram.nodes, diagram.edges]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      requestAnimationFrame(() => {
+        fitToWidth();
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [fitToWidth]);
 
   useEffect(() => {
     onMetricsChange(computeRoutingMetrics(fixture.id, edges));
@@ -60,6 +96,7 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange }: DiagramViewerProps) =
         edgesFocusable={false}
         fitView
         fitViewOptions={{ padding: 0.2 }}
+        onInit={handleInit}
         proOptions={{ hideAttribution: true }}
         panOnDrag={true}
         zoomOnScroll={true}>

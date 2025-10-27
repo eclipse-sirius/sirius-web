@@ -1,166 +1,103 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DiagramViewer } from './components/DiagramViewer';
 import { loadFixture, loadManifest } from './lib/fixtureLoader';
-import type { DiagramFixture, FixtureManifestEntry, RoutingMetrics } from './types';
+import type { DiagramFixture, FixtureManifestEntry } from './types';
 import './styles/app.css';
 import './styles/edge-overlay.css';
 
-const getInitialFixtureId = (manifest: FixtureManifestEntry[]): string | null => {
-  const searchParams = new URLSearchParams(window.location.search);
-  const requestedId = searchParams.get('fixture');
-  if (requestedId && manifest.some((entry) => entry.id === requestedId)) {
-    return requestedId;
-  }
-  return manifest.length > 0 ? manifest[0].id : null;
-};
+interface LoadedFixture {
+  entry: FixtureManifestEntry;
+  fixture: DiagramFixture;
+}
 
 export default function App() {
-  const [manifest, setManifest] = useState<FixtureManifestEntry[]>([]);
-  const [activeFixture, setActiveFixture] = useState<DiagramFixture | null>(null);
-  const [activeFixtureId, setActiveFixtureId] = useState<string | null>(null);
-  const [metrics, setMetrics] = useState<RoutingMetrics | null>(null);
+  const [fixtures, setFixtures] = useState<LoadedFixture[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const requestRef = useRef(0);
 
   useEffect(() => {
     let mounted = true;
-    loadManifest()
-      .then((entries) => {
-        if (mounted) {
-          setManifest(entries);
+
+    const fetchFixtures = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const entries = await loadManifest();
+        if (!mounted) {
+          return;
         }
-      })
-      .catch((err) => {
+
+        if (entries.length === 0) {
+          setFixtures([]);
+          return;
+        }
+
+        const loadedFixtures = await Promise.all(
+          entries.map(async (entry) => {
+            const fixture = await loadFixture(entry.id);
+            return { entry, fixture };
+          })
+        );
+
+        if (!mounted) {
+          return;
+        }
+
+        setFixtures(loadedFixtures);
+      } catch (err) {
         if (mounted) {
           setError(err instanceof Error ? err.message : String(err));
+          setFixtures([]);
         }
-      });
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchFixtures();
+
     return () => {
       mounted = false;
     };
   }, []);
 
-  const selectFixture = useCallback(async (fixtureId: string) => {
-    setIsLoading(true);
-    setError(null);
-    setMetrics(null);
-    const requestId = ++requestRef.current;
-    try {
-      const fixture = await loadFixture(fixtureId);
-      if (requestRef.current !== requestId) {
-        return;
-      }
-      setActiveFixture(fixture);
-      setActiveFixtureId(fixtureId);
-      const url = new URL(window.location.href);
-      url.searchParams.set('fixture', fixtureId);
-      window.history.replaceState({}, '', url);
-    } catch (err) {
-      if (requestRef.current === requestId) {
-        setError(err instanceof Error ? err.message : String(err));
-        setActiveFixture(null);
-        setActiveFixtureId(null);
-      }
-    } finally {
-      if (requestRef.current === requestId) {
-        setIsLoading(false);
-      }
-    }
-  }, []);
-
   useEffect(() => {
-    if (manifest.length === 0) {
-      return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('fixture')) {
+      url.searchParams.delete('fixture');
+      window.history.replaceState({}, '', url);
     }
-    const initialId = getInitialFixtureId(manifest);
-    if (initialId) {
-      selectFixture(initialId);
-    } else {
-      setIsLoading(false);
-    }
-  }, [manifest, selectFixture]);
-
-  const handleFixtureClick = useCallback(
-    (fixtureId: string) => {
-      if (fixtureId !== activeFixtureId) {
-        selectFixture(fixtureId);
-      }
-    },
-    [activeFixtureId, selectFixture]
-  );
-
-  const handleMetricsChange = useCallback((nextMetrics: RoutingMetrics) => {
-    setMetrics(nextMetrics);
   }, []);
 
-  const sidebarEntries = useMemo(
-    () =>
-      manifest.map((entry) => ({
-        ...entry,
-        isActive: entry.id === activeFixtureId,
-      })),
-    [manifest, activeFixtureId]
-  );
+  const handleMetricsChange = useCallback(() => {}, []);
 
   return (
     <div className="app">
-      <aside className="app__sidebar">
-        <h1 className="app__title">Routing Harness</h1>
-        <div className="app__fixture-list">
-          {sidebarEntries.map((entry) => (
-            <button
-              key={entry.id}
-              className={`app__fixture-button${entry.isActive ? ' app__fixture-button--active' : ''}`}
-              onClick={() => handleFixtureClick(entry.id)}>
-              <div>{entry.name}</div>
-              {entry.categories?.length ? (
-                <small>{entry.categories.join(' • ')}</small>
-              ) : (
-                <small>{entry.id}</small>
-              )}
-            </button>
-          ))}
-        </div>
-      </aside>
-      <main className="app__main">
-        {error ? <div className="app__status app__status--error">{error}</div> : null}
-        {!error && isLoading ? <div className="app__status">Loading fixtures…</div> : null}
-        {activeFixture ? (
-          <>
-            {activeFixture.description ? (
-              <p className="app__description">{activeFixture.description}</p>
-            ) : (
-              <p className="app__description">{activeFixture.name}</p>
-            )}
-            <section className="app__viewer">
-              <DiagramViewer fixture={activeFixture} onMetricsChange={handleMetricsChange} />
-            </section>
-            {metrics ? (
-              <section className="app__metrics-panel">
-                <article className="app__metric">
-                  <h2 className="app__metric-title">Edges</h2>
-                  <div className="app__metric-value">{metrics.totalEdges}</div>
-                </article>
-                <article className="app__metric">
-                  <h2 className="app__metric-title">Total Bend Points</h2>
-                  <div className="app__metric-value">{metrics.totalAutoBendPoints.toFixed(0)}</div>
-                </article>
-                <article className="app__metric">
-                  <h2 className="app__metric-title">Average Bend Points</h2>
-                  <div className="app__metric-value">{metrics.averageBendPoints.toFixed(2)}</div>
-                </article>
-                <article className="app__metric">
-                  <h2 className="app__metric-title">Min / Max Bend Points</h2>
-                  <div className="app__metric-value">
-                    {metrics.minBendPoints} – {metrics.maxBendPoints}
-                  </div>
-                </article>
-              </section>
-            ) : null}
-          </>
-        ) : null}
-      </main>
+      {error ? <div className="app__status app__status--error">{error}</div> : null}
+      {!error && isLoading ? <div className="app__status">Loading fixtures…</div> : null}
+      {!isLoading && !error && fixtures.length === 0 ? (
+        <div className="app__status">No fixtures available.</div>
+      ) : null}
+      {fixtures.map(({ entry, fixture }) => {
+        const title = fixture.name ?? entry.name ?? entry.id;
+        const description = fixture.description ?? entry.description;
+        const key = fixture.id ?? entry.id;
+
+        return (
+          <section key={key} className="fixture">
+            <header className="fixture__header">
+              <h2 className="fixture__title">{title}</h2>
+              {description ? <p className="fixture__description">{description}</p> : null}
+            </header>
+            <div className="fixture__viewer">
+              <DiagramViewer fixture={fixture} onMetricsChange={handleMetricsChange} />
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
