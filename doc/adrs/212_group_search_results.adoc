@@ -1,0 +1,168 @@
+= ADR-212 - Add support for grouping search results
+
+== Context
+
+This is a follow-up to https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667], which currently always displays the matches as a flat list.
+This can quickly become cumbersome when there are many search results as the user then has to... search manually inside the search results.
+
+It should be possible to group the results according to different criterions (e.g. by type, by document, etc.).
+These criterions should not be hard-coded as different applications and project natures may have different and domain-specific criterions.
+
+== Decision
+
+=== GraphQL
+
+At the GraphQL level we will only change the structure of the result returned by the backend on `EditingContext#search` query.
+
+The `SearchResult` type, which is currently defined as:
+
+[source,graphql]
+----
+type SearchResult {
+  matches: [Object!]!
+}
+----
+
+Will be enriched to become:
+
+[source,graphql]
+----
+type SearchResult {
+  groups: [SearchResultGroup!]!
+  matches: [SearchMatch!]!
+}
+
+type SearchResultGroup {
+  id: String!
+  label: String!
+  iconURL: String!
+  sections: [SearchResultSection!]!
+}
+
+type SearchResultSection {
+  id: String!
+  label: String!
+  iconURL: String!
+}
+
+type SearchMatch {
+  object: Object!
+  memberships: [String!]! # e.g. ["document/b6b8a040-ddcc-4369-9dfc-5899fe3fc3ca", "type/view::NodeDescription"]
+}
+----
+
+This way, the backend is fully responsible to decide, for a given search, which kinds of groupings are possible/relevant.
+
+Groups correspond to the grouping criterions that the end user can decide to toggle.
+Section are named sub-groups which contain all the matches that share the same value for a particular grouping criterion.
+
+For example, by in the default application we will provide two groups, "Model" and "Type" which will always be the same.
+However for a given search in a specific project, the actual sections available will differ for each search as they will correspond to the _actual_ documents and object types present in the current project and for which there is at least one match.
+
+The groups and their sections are returned directly along with the search result instead of requested through a separate query so that in theory, even inside the same project, different search queries/results could decide to expose different grouping categories.
+
+This means the frontend will not be able to show the grouping categories until search results have been received.
+This is not an issue as there is not much point to propose groupings until we actually have some results.
+
+Once the search has been performed, the actual presentation of the results in a flat list or grouped by categories will be handled directly on the frontend (who now has all the required information) without further interaction with the backend.
+
+Each match can be member of any number of sections, identified by a string of the form `":groupId/:sectionId"`.
+This encoding is not very GraphQL-like, but chosen to reduce the overhead of sending more structured data for hundreds or even thousands of matches:
+
+[]
+----
+object: {
+  "id": "fa15c6e8-2f84-47a3-9a5b-97852d92ede7",
+  "label": "Some Object",
+  "iconURLs": [ "/icons/SomeType.svg" ]
+  "memberships": [ "document/b6b8a040-ddcc-4369-9dfc-5899fe3fc3ca", "type/view::NodeDescription" ]
+}
+----
+
+instead of:
+
+[]
+----
+object: {
+  "id": "fa15c6e8-2f84-47a3-9a5b-97852d92ede7",
+  "label": "Some Object",
+  "iconURLs": [ "/icons/SomeType.svg" ]
+  "membership": [
+    {
+      "groupId": "document",
+      "sectionId": "b6b8a040-ddcc-4369-9dfc-5899fe3fc3ca"
+    },
+    {
+      "groupId": "type",
+      "sectionId": "view::NodeDescription"
+    },
+  ]
+}
+----
+
+=== Backend
+
+`org.eclipse.sirius.web.application.views.search.dto.SearchResult` will evolve accordingly into:
+
+[source,java]
+----
+public record SearchResult(@NotNull List<SearchResultCategory> categories, @NotNull List<SearchMatch> matches) {}
+public record SearchResultGroup(@NotNull String id, @NotNullString label, @NotNull String iconURL, @NotNulll List<SearchResultSection> sections) {}
+public record SearchResultSection(@NotNull String id, @NotNullString label, @NotNull String iconURL) {}
+public record SearchMatch(@NotNull Object object, @NotNull List<String> memberships) {}
+----
+
+The default implementation in `org.eclipse.sirius.web.application.views.search.services.SearchService` will provide two `SearchResultGroup`:
+
+* one named _Models_, which will have one `SearchResultSection` per actual document which contain at least one match;
+* one named _Type_, which will have one `SearchResultSection` per element kind (e.g. `view::NodeDescription`) of which there is at least one instance among the matches;
+
+While the groups returned (by the default implementation) will be the same for all searches, the actual sections will vary for each actual search.
+
+=== Frontend
+
+Once it has received a complete search result, the frontend will still present all the matches as a flat list by default.
+
+However when a (non-empty) result is displayed, the frontend will now also propose a menu (in the top-right of the _search results_) with one entry per `SearchResultCategory` in the result, in the order they are received in `SearchResult#groups`.
+
+When grouping by a single group G is enabled, instead of showing all the matches as a list, the frontend will show them in a tree where:
+
+* the root nodes are the `SearchResultSection` defined inside group G;
+* inside these section nodes, leaf items show all the matches which are member of this particular section.
+
+Both sections and items in them are displayed in the order they are returned by the backend.
+If the backend wants for exemple to sort sections with the one with the most matches at the top, it's up to it to return them in this order.
+
+A special section labeled "_None_" will be displayed (by the frontend) at the end of the sections with all the matches which are not identified as part of a specific group.
+This is to ensure that even if some matches or not members of any section of a given group they are still displayed to the end-user as actual matches.
+
+Note that it is possible for a given match to appear inside more than one section.
+
+The tree nodes showing each sections will have have a small badge indicating the number of matches inside them.
+When enabling grouping, all the sections created by the grouping will be initialy collapsed.
+
+It is possible for end-users to enable grouping by multiple groups.
+If grouping by G1, G2, and G3, the structure of the tree will be:
+
+* at the top-level, all the sections defined for grouping G1;
+* then nodes representing all the sections defined for grouping G2;
+* then nodes representing all the sections defined for grouping G3;
+* and finally the leaf nodes which are member of all the corresponding sections in G1, G2 and G3
+
+The order G1, *then* G2, *then* G3 is implied by the order in which groups are returned by the backend.
+It is independant on the order in which the end-user enabled them.
+
+A special _None_ section may exist at any level.
+
+=== Breadboarding
+
+=== Cutting backs
+
+=== Rabbit holes
+
+== Status
+
+Proposed
+
+== Consequences
+
