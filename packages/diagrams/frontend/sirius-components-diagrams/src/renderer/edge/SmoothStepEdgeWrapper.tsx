@@ -26,6 +26,7 @@ import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { useStore } from '../../representation/useStore';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -36,6 +37,12 @@ function isMultipleOfTwo(num: number): boolean {
 
 const DEFAULT_TURN_PREFERENCE: RectilinearTurnPreference = 'target';
 const DEFAULT_MIN_OUTWARD_LENGTH = 10;
+const DEFAULT_FAN_IN_ENABLED = true;
+const FAN_SPACING = 12;
+const FAN_MAX_SPREAD = 50;
+
+type PositionAwareEdge = Edge<MultiLabelEdgeData> & { targetPosition?: Position };
+type Axis = 'horizontal' | 'vertical';
 
 function interpolateHalfway(from: number, to: number): number {
   return from + (to - from) * 0.5;
@@ -106,6 +113,259 @@ function enforceMinimumClearance(
   }
 
   return origin + minOutwardLength * direction;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+function isHorizontalPosition(position: Position): boolean {
+  return position === Position.Left || position === Position.Right;
+}
+
+function getNodeCenterCoordinate(node: Node<NodeData> | undefined, axis: 'x' | 'y'): number {
+  if (!node) {
+    return 0;
+  }
+  if (axis === 'x') {
+    return node.position.x + (node.width ?? 0) / 2;
+  }
+  return node.position.y + (node.height ?? 0) / 2;
+}
+
+function symmetricOffset(index: number, count: number): number {
+  if (count <= 1) {
+    return 0;
+  }
+  const step = Math.min(FAN_SPACING, FAN_MAX_SPREAD / (count - 1));
+  const half = (count - 1) / 2;
+  return clamp((index - half) * step, -FAN_MAX_SPREAD, FAN_MAX_SPREAD);
+}
+
+function determineInitialAxis(position: Position): Axis {
+  return isHorizontalPosition(position) ? 'horizontal' : 'vertical';
+}
+
+type FanArrangement = {
+  offset: number;
+  count: number;
+  index: number;
+};
+
+function determineFanArrangement(
+  edges: Edge<MultiLabelEdgeData>[],
+  currentEdgeId: string,
+  targetId: string,
+  targetHandleId: string | null | undefined,
+  targetPosition: Position,
+  getNode: (id: string) => Node<NodeData> | undefined
+): FanArrangement {
+  const normalizedHandleId = targetHandleId ?? '';
+  const positionedEdges = edges as PositionAwareEdge[];
+
+  const sameTargetEdges = positionedEdges.filter((edge) => edge.target === targetId);
+  if (sameTargetEdges.length <= 1) {
+    return { offset: 0, index: 0, count: sameTargetEdges.length };
+  }
+
+  const sameSideEdges = sameTargetEdges.filter(
+    (edge) => (edge.targetPosition ?? targetPosition) === targetPosition
+  );
+  const candidateEdges = (() => {
+    if (sameSideEdges.length === 0) {
+      return sameTargetEdges;
+    }
+    const sameHandleEdges = sameSideEdges.filter((edge) => (edge.targetHandle ?? '') === normalizedHandleId);
+    if (sameHandleEdges.length > 1) {
+      return sameHandleEdges;
+    }
+    return sameSideEdges;
+  })();
+
+  if (candidateEdges.length <= 1) {
+    return { offset: 0, index: 0, count: candidateEdges.length };
+  }
+
+  const axis: 'x' | 'y' = isHorizontalPosition(targetPosition) ? 'y' : 'x';
+  const sortedEdges = candidateEdges
+    .slice()
+    .sort((edgeA, edgeB) => {
+      const coordA = getNodeCenterCoordinate(getNode(edgeA.source), axis);
+      const coordB = getNodeCenterCoordinate(getNode(edgeB.source), axis);
+      if (coordA !== coordB) {
+        return coordA - coordB;
+      }
+      return edgeA.id.localeCompare(edgeB.id);
+    });
+
+  let edgeIndex = sortedEdges.findIndex((edge) => edge.id === currentEdgeId);
+  if (edgeIndex === -1) {
+    edgeIndex = 0;
+  }
+
+  return {
+    offset: symmetricOffset(edgeIndex, sortedEdges.length),
+    count: sortedEdges.length,
+    index: edgeIndex,
+  };
+}
+
+function computeFanOutwardLength(arrangement: FanArrangement, minOutwardLength: number): number {
+  const { count, index } = arrangement;
+  if (count <= 1) {
+    return minOutwardLength;
+  }
+  const center = (count - 1) / 2;
+  if (center === 0) {
+    return minOutwardLength;
+  }
+  const distanceFromCenter = Math.abs(index - center);
+  const normalized = clamp(1 - distanceFromCenter / center, 0, 1);
+  const spread = Math.min(FAN_SPACING * (count - 1), FAN_MAX_SPREAD);
+  const bonus = (spread / 2) * normalized;
+  return minOutwardLength + bonus;
+}
+
+function alignTailCoordinate(points: XYPosition[], axis: 'x' | 'y', value: number): void {
+  let pointer = points.length - 1;
+  if (pointer < 0) {
+    return;
+  }
+  const base = points[pointer]?.[axis];
+  if (base === undefined) {
+    return;
+  }
+  while (pointer >= 0) {
+    const current = points[pointer];
+    if (!current) {
+      pointer--;
+      continue;
+    }
+    const coordinate = current[axis];
+    if (coordinate === undefined || Math.abs(coordinate - base) > 0.01) {
+      break;
+    }
+    points[pointer] =
+      axis === 'x' ? { x: value, y: current.y } : { x: current.x, y: value };
+    pointer--;
+  }
+}
+
+type FanApplicationResult = {
+  bendingPoints: XYPosition[];
+  targetX: number;
+  targetY: number;
+};
+
+function applyFanOffset(
+  bendingPoints: XYPosition[],
+  targetPosition: Position,
+  sourceCoordinates: { x: number; y: number },
+  targetCoordinates: { x: number; y: number },
+  perpendicularOffset: number,
+  minOutwardLength: number,
+  arrangement?: FanArrangement
+): FanApplicationResult {
+  const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
+  const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
+  const outwardLength = hasFanArrangement
+    ? computeFanOutwardLength(arrangement as FanArrangement, minOutwardLength)
+    : Math.max(minOutwardLength, 1);
+
+  let targetX = targetCoordinates.x;
+  let targetY = targetCoordinates.y;
+
+  if (isHorizontalPosition(targetPosition)) {
+    targetY = targetCoordinates.y + perpendicularOffset;
+    if (adjustedPoints.length === 0) {
+      const direction = targetPosition === Position.Right ? 1 : -1;
+      const columnX = targetCoordinates.x + direction * outwardLength;
+      adjustedPoints.push({ x: columnX, y: sourceCoordinates.y });
+      adjustedPoints.push({ x: columnX, y: targetY });
+    } else if (perpendicularOffset !== 0) {
+      alignTailCoordinate(adjustedPoints, 'y', targetY);
+    }
+
+    if (hasFanArrangement) {
+      const direction = targetPosition === Position.Left ? -1 : 1;
+      const desiredX = targetCoordinates.x + direction * outwardLength;
+      alignTailCoordinate(adjustedPoints, 'x', desiredX);
+    }
+
+    return {
+      bendingPoints: adjustedPoints,
+      targetX,
+      targetY,
+    };
+  }
+
+  targetX = targetCoordinates.x + perpendicularOffset;
+  if (adjustedPoints.length === 0) {
+    const direction = targetPosition === Position.Bottom ? 1 : -1;
+    const columnY = targetCoordinates.y + direction * outwardLength;
+    adjustedPoints.push({ x: sourceCoordinates.x, y: columnY });
+    adjustedPoints.push({ x: targetX, y: columnY });
+  } else if (perpendicularOffset !== 0) {
+    alignTailCoordinate(adjustedPoints, 'x', targetX);
+  }
+
+  if (hasFanArrangement) {
+    const direction = targetPosition === Position.Top ? -1 : 1;
+    const desiredY = targetCoordinates.y + direction * outwardLength;
+    alignTailCoordinate(adjustedPoints, 'y', desiredY);
+  }
+
+  return {
+    bendingPoints: adjustedPoints,
+    targetX,
+    targetY: targetCoordinates.y,
+  };
+}
+
+function ensureRectilinearPath(
+  bendingPoints: XYPosition[],
+  source: XYPosition,
+  target: XYPosition,
+  initialAxis: Axis
+): XYPosition[] {
+  const rectified: XYPosition[] = [];
+  const checkpoints = [...bendingPoints, target];
+  let prev = source;
+  let axis = initialAxis;
+
+  for (let i = 0; i < checkpoints.length; i++) {
+    const current = checkpoints[i];
+    if (!current) {
+      continue;
+    }
+    let dx = current.x - prev.x;
+    let dy = current.y - prev.y;
+    let guard = 0;
+
+    while (!(axis === 'horizontal' ? dy === 0 : dx === 0) && (dx !== 0 || dy !== 0) && guard < 4) {
+      const intermediate =
+        axis === 'horizontal'
+          ? { x: current.x, y: prev.y }
+          : { x: prev.x, y: current.y };
+      if (intermediate.x === prev.x && intermediate.y === prev.y) {
+        break;
+      }
+      rectified.push(intermediate);
+      prev = intermediate;
+      axis = axis === 'horizontal' ? 'vertical' : 'horizontal';
+      dx = current.x - prev.x;
+      dy = current.y - prev.y;
+      guard++;
+    }
+
+    if (i < checkpoints.length - 1 && (current.x !== prev.x || current.y !== prev.y)) {
+      rectified.push(current);
+    }
+    prev = current;
+    axis = axis === 'horizontal' ? 'vertical' : 'horizontal';
+  }
+
+  return rectified;
 }
 
 function simplifyRectilinearBends(bendingPoints: XYPosition[], source: XYPosition, target: XYPosition): XYPosition[] {
@@ -258,6 +518,7 @@ function enforceTargetClearance(
 
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const {
+    id,
     source,
     target,
     markerEnd,
@@ -269,6 +530,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     data,
   } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const { getEdges, getNode } = useStore();
 
   const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
   const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
@@ -343,6 +605,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
 
   let bendingPoints: XYPosition[] = [];
   const customEdge = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
+  const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     // Preserve user-authored geometry; downstream component treats this as a custom edge.
     bendingPoints = data.bendingPoints;
@@ -442,6 +705,32 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             break;
         }
 
+        if (fanInEnabled && getEdges) {
+          const edges = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
+          const arrangement = determineFanArrangement(
+            edges,
+            id,
+            target,
+            targetHandleId,
+            targetPosition,
+            (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+          );
+          if (arrangement.count > 1) {
+            const fanResult = applyFanOffset(
+              bendingPoints,
+              targetPosition,
+              { x: sourceX, y: sourceY },
+              { x: targetX, y: targetY },
+              arrangement.offset,
+              minOutwardLength,
+              arrangement
+            );
+            bendingPoints = fanResult.bendingPoints;
+            targetX = fanResult.targetX;
+            targetY = fanResult.targetY;
+          }
+        }
+
         bendingPoints = enforceTargetClearance(
           bendingPoints,
           targetPosition,
@@ -452,8 +741,17 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }
   }
 
+  const rectifiedBendingPoints = customEdge
+    ? bendingPoints
+    : ensureRectilinearPath(
+        bendingPoints,
+        { x: sourceX, y: sourceY },
+        { x: targetX, y: targetY },
+        determineInitialAxis(sourcePosition)
+      );
+
   const finalBendingPoints = simplifyRectilinearBends(
-    bendingPoints,
+    rectifiedBendingPoints,
     { x: sourceX, y: sourceY },
     { x: targetX, y: targetY }
   );
