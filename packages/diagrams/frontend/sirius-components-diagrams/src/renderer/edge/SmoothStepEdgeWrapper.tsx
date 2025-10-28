@@ -27,11 +27,57 @@ import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
 
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
+}
+
+const DEFAULT_TURN_PREFERENCE: RectilinearTurnPreference = 'target';
+const MIN_TURN_CLEARANCE = 4;
+
+function interpolateHalfway(from: number, to: number): number {
+  return from + (to - from) * 0.5;
+}
+
+function computePreferredTurnCoordinate(
+  defaultCoordinate: number,
+  sourceCoordinate: number,
+  targetCoordinate: number,
+  preference: RectilinearTurnPreference
+): number {
+  const safeDefault = Number.isFinite(defaultCoordinate) ? defaultCoordinate : sourceCoordinate;
+  switch (preference) {
+    case 'source':
+      return interpolateHalfway(safeDefault, sourceCoordinate);
+    case 'target':
+      return interpolateHalfway(safeDefault, targetCoordinate);
+    case 'middle': {
+      const midpoint = (sourceCoordinate + targetCoordinate) / 2;
+      return Number.isFinite(midpoint) ? midpoint : safeDefault;
+    }
+    default:
+      return safeDefault;
+  }
+}
+
+function enforceMinimumClearance(
+  coordinate: number,
+  origin: number,
+  fallback: number,
+  directionHint: number
+): number {
+  const clearance = Math.abs(coordinate - origin);
+  if (clearance >= MIN_TURN_CLEARANCE) {
+    return coordinate;
+  }
+  const fallbackClearance = Math.abs(fallback - origin);
+  if (fallbackClearance >= MIN_TURN_CLEARANCE) {
+    return fallback;
+  }
+  const direction = directionHint !== 0 ? directionHint : fallbackClearance !== 0 ? Math.sign(fallback - origin) : 1;
+  return origin + MIN_TURN_CLEARANCE * direction;
 }
 
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
@@ -139,13 +185,26 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }[] = smoothEdgePath.includes('NaN') ? [] : parse(smoothEdgePath).filter((segment) => segment.code === 'Q');
 
     if (quadraticCurvePoints.length > 0) {
+      // When no custom bends are given, we shape the first turn according to the chosen strategy.
+      const turnPreference: RectilinearTurnPreference =
+        data?.rectilinearTurnPreference ?? DEFAULT_TURN_PREFERENCE;
       const firstPoint = quadraticCurvePoints[0];
       if (firstPoint) {
         switch (sourcePosition) {
           case Position.Right:
           case Position.Left:
             // Seed the first bend so the polyline departs horizontally from a left/right handle.
-            bendingPoints.push({ x: firstPoint.x, y: sourceY });
+            {
+              const defaultTurnX = firstPoint.x ?? sourceX;
+              const preferredTurnX = enforceMinimumClearance(
+                computePreferredTurnCoordinate(defaultTurnX, sourceX, targetX, turnPreference),
+                sourceX,
+                defaultTurnX,
+                Math.sign(defaultTurnX - sourceX) || Math.sign(targetX - sourceX)
+              );
+              quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], x: preferredTurnX };
+              bendingPoints.push({ x: preferredTurnX, y: sourceY });
+            }
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
@@ -162,7 +221,17 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           case Position.Top:
           case Position.Bottom:
             // Seed the first bend so the polyline departs vertically from a top/bottom handle.
-            bendingPoints.push({ x: sourceX, y: firstPoint.y });
+            {
+              const defaultTurnY = firstPoint.y ?? sourceY;
+              const preferredTurnY = enforceMinimumClearance(
+                computePreferredTurnCoordinate(defaultTurnY, sourceY, targetY, turnPreference),
+                sourceY,
+                defaultTurnY,
+                Math.sign(defaultTurnY - sourceY) || Math.sign(targetY - sourceY)
+              );
+              quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], y: preferredTurnY };
+              bendingPoints.push({ x: sourceX, y: preferredTurnY });
+            }
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
