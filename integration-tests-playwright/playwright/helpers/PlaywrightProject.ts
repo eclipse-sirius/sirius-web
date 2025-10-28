@@ -81,7 +81,7 @@ export class PlaywrightProject {
 
     const payload = jsonResponse.data.createProjectFromTemplate;
     const projectId = payload.project.id;
-    const representationToOpenId = payload.representationToOpen.id;
+    const representationToOpenId = payload.representationToOpen?.id;
     return { projectId, representationId: representationToOpenId };
   }
 

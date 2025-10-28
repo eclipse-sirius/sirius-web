@@ -36,7 +36,10 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] `RectangularNodeAppearanceSection`, `ImageNodeAppearanceSection` and `EdgeAppearanceSection` are no longer hard-coded in the frontend, but contribute via the  `paletteAppearanceSectionExtensionPoint`.
+If you are not contributing custom appearance sections, no action is required.
+Otherwise, you may need to add a merge strategy to merge the two contributions.
+The extension point signature has also changed to take edges into account: `canHandle: (nodeElement: Node<NodeData> | undefined, edgeElement: Edge<EdgeData> | undefined) => boolean;`
 
 === Dependency update
 
@@ -70,9 +73,9 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
-- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular, image and edge appearance sections with the corresponding contribution point
 
 
 == 2025.10.0

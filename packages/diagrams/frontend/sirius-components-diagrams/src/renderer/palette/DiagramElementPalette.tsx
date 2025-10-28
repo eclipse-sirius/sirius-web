@@ -70,6 +70,7 @@ export const DiagramElementPalette = memo(
           component={PaletteAppearanceSection}
           title="Appearance"
           id="appearance"
+          key={'appearance'}
           onClose={() => {}}
         />
       );

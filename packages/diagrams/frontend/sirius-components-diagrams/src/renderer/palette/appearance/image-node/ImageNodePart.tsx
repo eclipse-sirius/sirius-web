@@ -49,7 +49,7 @@ export const ImageNodePart = ({ nodeId, style, customizedStyleProperties }: Imag
 
   return (
     <ListItem disablePadding sx={(theme) => ({ paddingX: theme.spacing(1), paddingBottom: theme.spacing(1) })}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid={'image-node-part'}>
         <Typography variant="subtitle2">Style</Typography>
 
         <AppearanceColorPicker
