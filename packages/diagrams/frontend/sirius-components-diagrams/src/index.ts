@@ -34,8 +34,13 @@ export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graph
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export { Action } from './renderer/actions/Action';
+export type { ActionProps } from './renderer/actions/Action.types';
+export { ActionsContainer } from './renderer/actions/ActionsContainer';
+export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.types';
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoints';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
+export { useActions } from './renderer/actions/useActions';
 export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
 export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
 export { useConnectionLineNodeStyle } from './renderer/connector/useConnectionLineNodeStyle';
@@ -66,22 +71,24 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
 export type {
   PaletteAppearanceSectionContributionComponentProps,
   PaletteAppearanceSectionContributionProps,
 } from './renderer/palette/appearance/extensions/PaletteAppearanceSectionContribution.types';
 export { paletteAppearanceSectionExtensionPoint } from './renderer/palette/appearance/extensions/PaletteAppearanceSectionExtensionPoints';
+export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
 export { LabelAppearancePart } from './renderer/palette/appearance/label/LabelAppearancePart';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
 export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNodeAppearance';
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
 export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
+export { DiagramPaletteContributionContext } from './renderer/palette/contexts/DiagramPaletteContributionContext';
+export type { DiagramPaletteContributionContextValue } from './renderer/palette/contexts/DiagramPaletteContributionContext.types';
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
-export type {
-  DiagramPaletteToolContributionComponentProps,
-  DiagramPaletteToolContributionProps,
-} from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
-export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export * from './renderer/palette/group-tool/LayoutTools';
+export { useDiagramPalette } from './renderer/palette/useDiagramPalette';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/panel/experimental-svg-export/SVGExportEngine.types';
@@ -89,11 +96,3 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
-export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
-export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
-export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
-export { ActionsContainer } from './renderer/actions/ActionsContainer';
-export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.types';
-export { Action } from './renderer/actions/Action';
-export type { ActionProps } from './renderer/actions/Action.types';
-export { useActions } from './renderer/actions/useActions';

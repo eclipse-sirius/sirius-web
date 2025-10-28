@@ -10,15 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramPaletteToolComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  DiagramPaletteContributionContext,
+  DiagramPaletteContributionContextValue,
+  EdgeData,
+  NodeData,
+} from '@eclipse-sirius/sirius-components-diagrams';
+import { PaletteQuickToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import Slideshow from '@mui/icons-material/Slideshow';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
-import { Node, useNodes } from '@xyflow/react';
-import { Fragment, useState } from 'react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Fragment, useContext, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 const useToolStyle = makeStyles()((theme: Theme) => ({
@@ -31,11 +37,13 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
+export const PapayaComponentLabelDetailToolContribution = ({}: PaletteQuickToolContributionComponentProps) => {
+  const { diagramElementIds } = useContext<DiagramPaletteContributionContextValue>(DiagramPaletteContributionContext);
   const [modal, setModal] = useState<Modal | null>(null);
   const { classes } = useToolStyle();
-  const nodes = useNodes<Node<NodeData>>();
-  const targetedNode = nodes.find((node) => node.id === diagramElementId);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const targetedNode = store.getState().nodeLookup.get(diagramElementIds[0] || '');
+
   if (
     !targetedNode ||
     targetedNode.data.targetObjectKind !== 'siriusComponents://semantic?domain=papaya&entity=Component'
