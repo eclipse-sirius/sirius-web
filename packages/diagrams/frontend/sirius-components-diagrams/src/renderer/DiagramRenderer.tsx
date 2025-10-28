@@ -46,6 +46,7 @@ import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useResetXYFlowConnection } from './connector/useResetXYFlowConnection';
 import { DebugPanel } from './debug/DebugPanel';
+import { useRegisterFixtureExporter } from './debug/useRegisterFixtureExporter';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useNodesDraggable } from './drag/useNodesDraggable';
@@ -119,8 +120,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
-  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  useRegisterFixtureExporter(getNodes, getEdges, reactFlowInstance.getNode, reactFlowInstance.getNodes);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { getNode } = reactFlowInstance;
 
   useEffect(() => {
     const { id, diagram, cause, referencePosition } = diagramRefreshedEventPayload;
