@@ -23,7 +23,7 @@ test.describe('edge', () => {
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
 
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('flow-template');
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);

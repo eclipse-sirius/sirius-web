@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightWorkbench } from '../helpers/PlaywrightWorkbench';
 
 test.describe('diagram - arrange all', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('flow-template');
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/`);

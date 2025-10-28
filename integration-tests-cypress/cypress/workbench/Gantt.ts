@@ -14,6 +14,8 @@
 import { Project } from '../pages/Project';
 import { Projects } from '../pages/Projects';
 import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { Studio } from '../usecases/Studio';
+import { Deck } from './Deck';
 import { Explorer } from './Explorer';
 
 export class GanttTestHelper {
@@ -121,7 +123,7 @@ export class GanttTestHelper {
    */
   public initGanttView(): Cypress.Chainable<string> {
     new Projects().visit();
-    return cy.createProjectFromTemplate('blank-studio-template').then((res) => {
+    return cy.createProjectFromTemplate('Blank Studio', 'blank-studio-template', [Studio.STUDIO_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const studioProjectId = payload.project.id;
@@ -143,7 +145,7 @@ export class GanttTestHelper {
   ): Cypress.Chainable<string> {
     new Projects().visit();
     return cy
-      .createProjectFromTemplate('task-template')
+      .createProjectFromTemplate('Task', 'task-template', [Deck.TASK_NATURE])
       .then((res) => {
         const payload = res.body.data.createProjectFromTemplate;
         if (isCreateProjectFromTemplateSuccessPayload(payload)) {

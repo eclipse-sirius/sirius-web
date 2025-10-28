@@ -56,17 +56,22 @@ const deleteProjectQuery = `
     `;
 
 export class PlaywrightProject {
+  static readonly FLOW_NATURE = 'siriusWeb://nature?kind=flow';
+
+  static readonly PAPAYA_NATURE = 'siriusComponents://nature?kind=papaya';
   readonly request: APIRequestContext;
 
   constructor(request: APIRequestContext) {
     this.request = request;
   }
 
-  async createProjectFromTemplate(templateId: string): Promise<{ projectId: string; representationId: string }> {
+  async createProjectFromTemplate(name: string, templateId: string, natures: string[]): Promise<{ projectId: string; representationId: string }> {
     const variables = {
       input: {
         id: crypto.randomUUID(),
-        templateId: templateId,
+        name,
+        templateId,
+        natures
       },
     };
     const response = await this.request.post('http://localhost:8080/api/graphql', {

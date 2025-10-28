@@ -51,6 +51,7 @@ type ProjectTemplate {
   id: ID!
   label: String!
   imageURL: String!
+  natures: [String!]!
 }
 
 extend type EditingContext {
@@ -94,7 +95,9 @@ type CreateProjectSuccessPayload {
 
 input CreateProjectFromTemplateInput {
   id: ID!
+  name: String!
   templateId: ID!
+  natures: [String!]!
 }
 
 union CreateProjectFromTemplatePayload = ErrorPayload | CreateProjectFromTemplateSuccessPayload

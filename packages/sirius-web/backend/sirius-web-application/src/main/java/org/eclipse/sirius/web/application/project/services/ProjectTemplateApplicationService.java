@@ -97,7 +97,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size() + siriusWebProjectTemplate.size());
         var projectTemplateDTOs = Stream.concat(projectTemplates.subList(startIndex, endIndex - siriusWebProjectTemplate.size()).stream(), siriusWebProjectTemplate.stream())
-                .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL()))
+                .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL(), projectTemplate.natures().stream().map(ProjectTemplateNature::id).toList()))
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
@@ -109,7 +109,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size());
         var projectTemplateDTOs = projectTemplates.subList(startIndex, endIndex).stream()
-                .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL()))
+                .map(projectTemplate -> new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL(), projectTemplate.natures().stream().map(ProjectTemplateNature::id).toList()))
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
@@ -142,14 +142,8 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
                 .flatMap(Collection::stream)
                 .filter(projectTemplate -> projectTemplate.id().equals(input.templateId()))
                 .findFirst();
-
         if (optionalProjectTemplate.isPresent()) {
-            var projectTemplate = optionalProjectTemplate.get();
-            var natures = projectTemplate.natures().stream()
-                    .map(ProjectTemplateNature::id)
-                    .toList();
-
-            var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), projectTemplate.label(), natures, List.of()));
+            var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), input.name(), input.natures(), List.of()));
             if (projectCreationPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
                 var projectId = createProjectSuccessPayload.project().id();
                 payload = this.templateBasedProjectInitializer.initializeProjectFromTemplate(input, projectId, input.templateId());

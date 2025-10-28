@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseCreateProjectFromTemplateValue {
-  createProjectFromTemplate: (templateId: string) => void;
+  createProjectFromTemplate: (name: string, templateId: string, natures: string[]) => void;
   loading: boolean;
   projectCreatedFromTemplate: GQLCreateProjectFromTemplateSuccessPayload | null;
 }
@@ -50,5 +50,7 @@ export interface GQLCreateProjectFromTemplateMutationVariables {
 
 export interface GQLCreateProjectFromTemplateInput {
   id: string;
+  name: string;
   templateId: string;
+  natures: string[];
 }

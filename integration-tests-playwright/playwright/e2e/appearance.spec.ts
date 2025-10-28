@@ -20,7 +20,7 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('appearance', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('flow-template');
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);

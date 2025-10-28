@@ -26,7 +26,7 @@ export const isCreateProjectFromTemplateSuccessPayload = (
 ): payload is CreateProjectFromTemplateSuccessPayload =>
   payload.__typename === 'CreateProjectFromTemplateSuccessPayload';
 
-Cypress.Commands.add('createProjectFromTemplate', (templateId) => {
+Cypress.Commands.add('createProjectFromTemplate', (name: string, templateId: string, natures: string[]) => {
   const query = `
   mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
     createProjectFromTemplate(input: $input) {
@@ -48,7 +48,9 @@ Cypress.Commands.add('createProjectFromTemplate', (templateId) => {
   const variables: CreateProjectFromTemplateVariables = {
     input: {
       id: crypto.randomUUID(),
+      name,
       templateId,
+      natures,
     },
   };
 
