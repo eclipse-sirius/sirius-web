@@ -17,7 +17,7 @@ export class Omnibox {
   }
 
   public display(): Cypress.Chainable<JQuery<HTMLElement>> {
-    cy.getByTestId(`navbar-title`).should('exist');
+    cy.getByTestId('navigation-bar').should('exist');
     cy.get('body').type('{ctrl+k}');
     cy.getByTestId('omnibox').should('exist');
     return this.getOmnibox();
