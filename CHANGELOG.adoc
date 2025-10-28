@@ -75,6 +75,7 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5416[#5416] [palette] Move the component `PaletteToolList` from `sirius-components-diagrams` to `sirius-components-palette`
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/5733[#5733] [sirius-web] Extract frontend project creation into a hook
 
 
 == 2025.10.0

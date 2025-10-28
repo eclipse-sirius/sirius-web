@@ -12,25 +12,4 @@
  *******************************************************************************/
 export interface NewProjectViewState {
   name: string;
-  projectId: string;
-}
-
-export interface GQLCreateProjectMutationData {
-  createProject: GQLCreateProjectPayload;
-}
-
-export interface GQLCreateProjectPayload {
-  __typename: string;
-}
-
-export interface GQLCreateProjectSuccessPayload extends GQLCreateProjectPayload {
-  project: GQLProject;
-}
-
-export interface GQLProject {
-  id: string;
-}
-
-export interface GQLErrorPayload extends GQLCreateProjectPayload {
-  message: string;
 }

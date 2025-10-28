@@ -10,42 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
-import { useComponent, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+
+import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
-import {
-  GQLCreateProjectMutationData,
-  GQLCreateProjectPayload,
-  GQLCreateProjectSuccessPayload,
-  GQLErrorPayload,
-  NewProjectViewState,
-} from './NewProjectView.types';
-
-const createProjectMutation = gql`
-  mutation createProject($input: CreateProjectInput!) {
-    createProject(input: $input) {
-      __typename
-      ... on CreateProjectSuccessPayload {
-        project {
-          id
-        }
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
+import { NewProjectViewState } from './NewProjectView.types';
+import { useCreateProject } from './useCreateProject';
 
 const useNewProjectViewStyles = makeStyles()((theme) => ({
   newProjectView: {
@@ -85,21 +64,14 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
   },
 }));
 
-const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 1024;
-
-const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
-  payload.__typename === 'CreateProjectSuccessPayload';
 
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
-  const { addErrorMessage } = useMultiToast();
+  const navigate = useNavigate();
 
   const [state, setState] = useState<NewProjectViewState>({
     name: '',
-    projectId: '',
   });
 
   const {
@@ -110,7 +82,7 @@ export const NewProjectView = () => {
     },
   } = useCurrentViewer();
 
-  const [createProject, { loading, data, error }] = useMutation<GQLCreateProjectMutationData>(createProjectMutation);
+  const { createProject, newProjectId } = useCreateProject();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
   const onNameChange = (event) => {
@@ -123,43 +95,20 @@ export const NewProjectView = () => {
 
   const onCreateNewProject = (event) => {
     event.preventDefault();
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        name: state.name.trim(),
-        natures: [],
-      },
-    };
-    createProject({ variables });
+    createProject(state.name.trim(), []);
   };
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      if (data) {
-        const { createProject } = data;
-        if (isErrorPayload(createProject)) {
-          const { message } = createProject;
-          addErrorMessage(message);
-        } else if (isCreateProjectSuccessPayload(createProject)) {
-          setState((prevState) => ({
-            ...prevState,
-            projectId: createProject.project.id,
-          }));
-        }
-      }
+    if (!canCreate) {
+      navigate('/errors/404');
     }
-  }, [loading, data, error]);
+  }, [canCreate]);
 
-  if (!canCreate) {
-    return <Navigate to={'/errors/404'} />;
-  }
-
-  if (state.projectId) {
-    return <Navigate to={`/projects/${state.projectId}/edit`} />;
-  }
+  useEffect(() => {
+    if (newProjectId) {
+      navigate(`/projects/${newProjectId}/edit`);
+    }
+  }, [newProjectId]);
 
   const isError = isNameInvalid(state.name);
   return (
@@ -187,7 +136,11 @@ export const NewProjectView = () => {
                     name="name"
                     value={state.name}
                     placeholder="Enter the project name"
-                    inputProps={{ 'data-testid': 'name' }}
+                    slotProps={{
+                      htmlInput: () => ({
+                        'data-testid': 'name',
+                      }),
+                    }}
                     autoFocus={true}
                     onChange={onNameChange}
                   />
