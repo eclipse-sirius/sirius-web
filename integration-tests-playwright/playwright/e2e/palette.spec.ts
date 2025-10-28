@@ -50,10 +50,9 @@ test.describe('diagram - palette', () => {
     );
 
     //Check the last tool used is the one proposed as quick tool (disabled until the layout section is using the reworked palette extension point)
-    //await playwrightNode2.openPalette();
-    //await expect(page.getByTestId('Palette')).toBeAttached();
-    //await expect(page.getByTestId('Palette').getByTestId('tool-Align left')).not.toBeAttached();
-    //await expect(page.getByTestId('Palette').getByTestId('tool-Align bottom')).toBeAttached();
+    await playwrightNode2.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await expect(page.getByTestId('Palette').getByTestId('tool-Align bottom')).toBeAttached();
   });
 
   test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({

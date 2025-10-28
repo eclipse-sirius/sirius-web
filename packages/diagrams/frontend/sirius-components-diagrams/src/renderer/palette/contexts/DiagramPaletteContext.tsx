@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import React, { useCallback, useState } from 'react';
-import { GQLTool } from '../Palette.types';
 import {
   DiagramPaletteContextProviderProps,
   DiagramPaletteContextProviderState,
@@ -27,8 +26,8 @@ const defaultValue: DiagramPaletteContextValue = {
   diagramElementIds: [],
   hideDiagramPalette: () => {},
   showDiagramPalette: () => {},
-  getLastToolInvoked: () => null,
-  setLastToolInvoked: () => {},
+  getLastToolInvokedId: () => null,
+  setLastToolInvokedId: () => {},
 };
 
 export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(defaultValue);
@@ -52,14 +51,14 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
     }
   }, [state.isOpened]);
 
-  const getLastToolInvoked = (paletteId: string): GQLTool | null => {
+  const getLastToolInvokedId = (paletteId: string): string | null => {
     return (
       state.lastToolsInvoked.find((toolSectionWithDefaultTool) => toolSectionWithDefaultTool.paletteId === paletteId)
-        ?.lastTool || null
+        ?.lastToolId || null
     );
   };
 
-  const setLastToolInvoked = (paletteId: string, tool: GQLTool) => {
+  const setLastToolInvokedId = (paletteId: string, toolId: string) => {
     const lastToolsInvoked: PaletteWithLastTool[] = state.lastToolsInvoked;
     if (lastToolsInvoked.some((toolSectionWithLastTool) => toolSectionWithLastTool.paletteId === paletteId)) {
       lastToolsInvoked.splice(
@@ -67,7 +66,7 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
         1
       );
     }
-    lastToolsInvoked.push({ paletteId, lastTool: tool });
+    lastToolsInvoked.push({ paletteId, lastToolId: toolId });
   };
 
   return (
@@ -79,8 +78,8 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
         diagramElementIds: state.diagramElementIds,
         showDiagramPalette: showPalette,
         hideDiagramPalette: hidePalette,
-        getLastToolInvoked,
-        setLastToolInvoked,
+        getLastToolInvokedId,
+        setLastToolInvokedId,
       }}>
       {children}
     </DiagramPaletteContext.Provider>

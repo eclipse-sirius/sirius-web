@@ -24,8 +24,8 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     diagramElementIds,
     hideDiagramPalette,
     showDiagramPalette,
-    getLastToolInvoked,
-    setLastToolInvoked,
+    getLastToolInvokedId,
+    setLastToolInvokedId,
   } = useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
 
   return {
@@ -35,7 +35,7 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     diagramElementIds,
     hideDiagramPalette,
     showDiagramPalette,
-    getLastToolInvoked,
-    setLastToolInvoked,
+    getLastToolInvokedId,
+    setLastToolInvokedId,
   };
 };

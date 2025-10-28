@@ -45,6 +45,7 @@ For now it consists only in adding missing attributes from `CreateProjectInput` 
 As described in ADR-211, the final purpose is to only have one way to create a project, and thus, only one input to create a project will remain.
 Updates the GraphQL schema and frontend hooks accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] `DiagramElementPalette` is no longer exported.
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [diagram] `diagramPaletteToolExtensionPoint` has been rename to `paletteQuickToolExtensionPoint`, you can refer to the ADR 212 for more details.
 
 
 === Dependency update
@@ -81,6 +82,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748] [sirius-web] Add support for choosing libraries to import when creating a project (does not add libraries without https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745])
 - https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [diagram] You can now contribute `tool`, `toolSection` and `quicktool` to a palette with these frontend extension point `paletteToolExtensionPoint`, `paletteToolSectionExtensionPoint` and `paletteQuickToolExtensionPoint`, you can refer to the ADR 212 for more details.
 
 
 

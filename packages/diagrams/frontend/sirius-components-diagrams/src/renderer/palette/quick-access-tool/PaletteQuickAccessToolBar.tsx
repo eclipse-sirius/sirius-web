@@ -12,6 +12,10 @@
  *******************************************************************************/
 
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import {
+  PaletteQuickToolContributionProps,
+  paletteQuickToolExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Theme } from '@mui/material/styles';
@@ -20,8 +24,6 @@ import { EdgeLookup, NodeLookup } from '@xyflow/system';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../../edge/MultiLabelEdge.types';
-import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteToolExtensionPoints';
-import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
 import { AdjustSizeTool } from './AdjustSizeTool';
 import { FadeElementTool } from './FadeElementTool';
 import { HideElementTool } from './HideElementTool';
@@ -106,8 +108,6 @@ export const PaletteQuickAccessToolBar = ({
   diagramElementIds,
   quickAccessTools,
   onToolClick,
-  x,
-  y,
 }: PaletteQuickAccessToolBarProps) => {
   const { classes } = useStyle();
 
@@ -179,19 +179,15 @@ export const PaletteQuickAccessToolBar = ({
   }
 
   if (diagramElementIds.length === 1) {
-    const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
-      diagramPaletteToolExtensionPoint
-    );
+    const paletteToolData: DataExtension<PaletteQuickToolContributionProps[]> = useData(paletteQuickToolExtensionPoint);
 
     paletteToolData.data
-      .filter((data) => data.canHandle(diagramElements[0] ?? null))
+      .filter((data) => data.canHandle(diagramElementIds))
       .map((data) => data.component)
       .forEach((PaletteToolComponent, index) =>
         quickAccessToolComponents.push(
           <PaletteToolComponent
-            x={x}
-            y={y}
-            diagramElementId={diagramElementIds[0] || ''}
+            representationElementIds={diagramElementIds}
             key={'paletteToolComponents_' + index.toString()}
           />
         )

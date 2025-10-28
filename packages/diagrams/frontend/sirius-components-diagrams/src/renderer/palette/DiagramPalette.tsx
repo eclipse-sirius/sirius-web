@@ -22,7 +22,6 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramPaletteProps } from './DiagramPalette.types';
-import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
 import { getPaletteToolCount, Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
@@ -33,7 +32,15 @@ import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x: paletteX, y: paletteY, diagramElementIds, hideDiagramPalette } = useDiagramPalette();
+  const {
+    isOpened,
+    x: paletteX,
+    y: paletteY,
+    diagramElementIds,
+    hideDiagramPalette,
+    getLastToolInvokedId,
+    setLastToolInvokedId,
+  } = useDiagramPalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
@@ -94,6 +101,9 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
       y = (paletteY - viewportY) / viewportZoom;
     }
     executeTool(x, y, elementId, targetObjectId, handleDirectEditClick, tool);
+    if (palette) {
+      setLastToolInvokedId(palette.id, tool.id);
+    }
   };
 
   const extensionSections = useMemo(() => {
@@ -118,16 +128,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
         />
       );
     }
-    if (diagramElementIds.length > 1) {
-      sectionComponents.push(
-        <PaletteExtensionSection
-          component={GroupPaletteLayoutSection}
-          id={'layout_section'}
-          title={'Layout'}
-          onClose={hideDiagramPalette}
-        />
-      );
-    }
 
     return sectionComponents;
   }, [diagramElementIds.join('-')]);
@@ -148,6 +148,8 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
     (getPaletteToolCount(palette) > 0 || diagramElementIds.length > 1) &&
     !currentlyEditedLabelId;
 
+  const lastToolInvokedId = palette ? getLastToolInvokedId(palette.id) : null;
+
   return palette && shouldRender ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
@@ -156,6 +158,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
           y={paletteY}
           diagramElementIds={diagramElementIds.length > 0 ? diagramElementIds : [diagramId]}
           palette={palette}
+          lastToolInvokedId={lastToolInvokedId}
           onToolClick={onToolClick}
           onClose={hideDiagramPalette}
           paletteToolListExtensions={extensionSections}

@@ -37,7 +37,6 @@ import {
   PaletteState,
 } from './Palette.types';
 import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
-import { useDiagramPalette } from './useDiagramPalette';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
@@ -68,6 +67,7 @@ export const Palette = ({
   palette,
   onToolClick,
   onClose,
+  lastToolInvokedId,
   paletteToolListExtensions,
 }: PaletteProps) => {
   const { domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
@@ -86,17 +86,11 @@ export const Palette = ({
     });
   }, [paletteX, paletteY]);
 
-  const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
-
-  const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
-
   const handleToolClick = (tool: GQLTool) => {
     onClose();
     domNode?.focus();
     onToolClick(tool);
-    if (palette) {
-      setLastToolInvoked(palette.id, tool);
-    }
+
     const position = getUpdatedModalPosition({ x: state.controlledPosition.x, y: state.controlledPosition.y }, nodeRef);
     setState((prevState) => {
       return { ...prevState, controlledPosition: position };
@@ -193,12 +187,11 @@ export const Palette = ({
               diagramElementIds={diagramElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
-              x={paletteX}
-              y={paletteY}
             />
             <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
             {state.searchToolValue.length > 0 ? (
               <PaletteSearchResult
+                diagramElementIds={diagramElementIds}
                 searchToolValue={state.searchToolValue}
                 palette={palette}
                 onToolClick={handleToolClick}
@@ -209,7 +202,7 @@ export const Palette = ({
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
-                lastToolInvoked={lastToolInvoked}
+                lastToolInvokedId={lastToolInvokedId}
                 diagramElementIds={diagramElementIds}>
                 {paletteToolListExtensions}
               </PaletteToolList>

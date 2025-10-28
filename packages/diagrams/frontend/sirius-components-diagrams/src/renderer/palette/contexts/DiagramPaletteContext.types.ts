@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from '../Palette.types';
-
 export interface DiagramPaletteContextValue {
   x: number | null;
   y: number | null;
@@ -20,8 +18,8 @@ export interface DiagramPaletteContextValue {
   diagramElementIds: string[];
   showDiagramPalette: (x: number, y: number, diagramElementIds: string[]) => void;
   hideDiagramPalette: () => void;
-  getLastToolInvoked: (paletteId: string) => GQLTool | null;
-  setLastToolInvoked: (paletteId: string, tool: GQLTool) => void;
+  getLastToolInvokedId: (paletteId: string) => string | null;
+  setLastToolInvokedId: (paletteId: string, toolId: string) => void;
 }
 
 export interface DiagramPaletteContextProviderProps {
@@ -38,5 +36,5 @@ export interface DiagramPaletteContextProviderState {
 
 export interface PaletteWithLastTool {
   paletteId: string;
-  lastTool: GQLTool;
+  lastToolId: string | null;
 }

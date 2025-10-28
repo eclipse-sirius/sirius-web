@@ -13,6 +13,7 @@
 
 import { GQLPalette, GQLTool } from '../Palette.types';
 export interface PaletteSearchResultProps {
+  diagramElementIds: string[];
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
   searchToolValue: string;

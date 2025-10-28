@@ -10,9 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface GroupPaletteLayoutSectionProps {
-  onBackToMainList: () => void;
-  onClose: () => void;
-  selectedElementIds: string[];
-  lastDistributeElementToolId: string;
+
+export interface PaletteToolSectionContributionProps {
+  canHandle: (representationElementIds: string[]) => boolean;
+  id: string;
+  label: string;
+}
+
+export interface PaletteToolSectionContributionComponentProps {
+  representationElementIds: string[];
 }
