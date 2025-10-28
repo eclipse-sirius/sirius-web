@@ -13,6 +13,7 @@
 
 import { Project } from '../../../pages/Project';
 import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
+import { Studio } from '../../../usecases/Studio';
 import { Explorer } from '../../../workbench/Explorer';
 
 describe('Explorer - duplicate object', () => {
@@ -20,7 +21,7 @@ describe('Explorer - duplicate object', () => {
   let domainName: string = '';
   context('Given a studio with a domain', () => {
     beforeEach(() => {
-      cy.createProjectFromTemplate('studio-template').then((res) => {
+      cy.createProjectFromTemplate('Studio', 'studio-template', [Studio.STUDIO_NATURE]).then((res) => {
         const payload = res.body.data.createProjectFromTemplate;
         if (isCreateProjectFromTemplateSuccessPayload(payload)) {
           const projectId = payload.project.id;

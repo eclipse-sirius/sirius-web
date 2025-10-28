@@ -30,7 +30,11 @@ declare global {
         projectId: string
       ) => Chainable<Response<QueryResponse<GetCurrentEditingContextIdtData>>>;
       createProject: (name: string, natures: string[]) => Chainable<Response<MutationResponse<CreateProjectData>>>;
-      createProjectFromTemplate: (name: string) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
+      createProjectFromTemplate: (
+        name: string,
+        templateId: string,
+        natures: string[]
+      ) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
       deleteProject: (projectId: string) => Chainable<Response<MutationResponse<DeleteProjectData>>>;
 
       createDocument: (

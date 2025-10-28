@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -22,5 +24,6 @@ import jakarta.validation.constraints.NotNull;
 public record ProjectTemplateDTO(
         @NotNull String id,
         @NotNull String label,
-        @NotNull String imageURL) {
+        @NotNull String imageURL,
+        @NotNull List<String> natures) {
 }

@@ -12,11 +12,11 @@
  *******************************************************************************/
 
 export interface UseProjectTemplatesValue {
-  data: GQLgetProjectTemplatesQueryData | null;
+  data: GQLGetProjectTemplatesQueryData | null;
   loading: boolean;
 }
 
-export interface GQLgetProjectTemplatesQueryVariables {
+export interface GQLGetProjectTemplatesQueryVariables {
   page: number;
   limit: number;
   context: ProjectTemplateContext;
@@ -27,7 +27,7 @@ export enum ProjectTemplateContext {
   PROJECT_TEMPLATE_MODAL = 'PROJECT_TEMPLATE_MODAL',
 }
 
-export interface GQLgetProjectTemplatesQueryData {
+export interface GQLGetProjectTemplatesQueryData {
   viewer: GQLViewer;
 }
 
@@ -48,6 +48,7 @@ export interface GQLProjectTemplate {
   id: string;
   label: string;
   imageURL: string;
+  natures: string[];
 }
 
 export interface GQLPageInfo {

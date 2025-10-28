@@ -17,7 +17,7 @@ export class Papaya {
   static readonly PAPAYA_NATURE = 'siriusComponents://nature?kind=papaya';
 
   public createPapayaBlankProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('papaya-empty').then((res) => {
+    return cy.createProjectFromTemplate('Papaya - Blank', 'papaya-empty', [Papaya.PAPAYA_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;
@@ -30,7 +30,7 @@ export class Papaya {
   }
 
   public createPapayaTableExempleProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('papaya-table-template').then((res) => {
+    return cy.createProjectFromTemplate('PapayaTable', 'papaya-table-template', [Papaya.PAPAYA_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;
@@ -43,15 +43,17 @@ export class Papaya {
   }
 
   public createPapayaLibraryExampleProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('papaya-library-template').then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
-        const projectId = payload.project.id;
-        const data: CreatedProjectData = { projectId };
-        return cy.wrap(data);
-      } else {
-        throw new Error(`The project papaya library example has not been created`);
-      }
-    });
+    return cy
+      .createProjectFromTemplate('PapayaLibrary', 'papaya-library-template', [Papaya.PAPAYA_NATURE])
+      .then((res) => {
+        const payload = res.body.data.createProjectFromTemplate;
+        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+          const projectId = payload.project.id;
+          const data: CreatedProjectData = { projectId };
+          return cy.wrap(data);
+        } else {
+          throw new Error(`The project papaya library example has not been created`);
+        }
+      });
   }
 }
