@@ -68,15 +68,36 @@ function enforceMinimumClearance(
   fallback: number,
   directionHint: number
 ): number {
-  const clearance = Math.abs(coordinate - origin);
+  // Always exit the source node in the expected outward direction while keeping a minimum offset.
+  const fallbackOffset = fallback - origin;
+  const direction =
+    directionHint !== 0 ? directionHint : fallbackOffset !== 0 ? Math.sign(fallbackOffset) : coordinate >= origin ? 1 : -1;
+
+  if (direction === 0) {
+    return coordinate;
+  }
+
+  const offset = coordinate - origin;
+  const hasCorrectDirection = offset * direction >= 0;
+
+  if (!hasCorrectDirection) {
+    const fallbackHasCorrectDirection = fallbackOffset * direction >= MIN_TURN_CLEARANCE;
+    if (fallbackHasCorrectDirection) {
+      return fallback;
+    }
+    return origin + MIN_TURN_CLEARANCE * direction;
+  }
+
+  const clearance = Math.abs(offset);
   if (clearance >= MIN_TURN_CLEARANCE) {
     return coordinate;
   }
-  const fallbackClearance = Math.abs(fallback - origin);
-  if (fallbackClearance >= MIN_TURN_CLEARANCE) {
+
+  const fallbackClearance = Math.abs(fallbackOffset);
+  if (fallbackClearance >= MIN_TURN_CLEARANCE && fallbackOffset * direction >= 0) {
     return fallback;
   }
-  const direction = directionHint !== 0 ? directionHint : fallbackClearance !== 0 ? Math.sign(fallback - origin) : 1;
+
   return origin + MIN_TURN_CLEARANCE * direction;
 }
 
@@ -196,11 +217,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             // Seed the first bend so the polyline departs horizontally from a left/right handle.
             {
               const defaultTurnX = firstPoint.x ?? sourceX;
+              const outwardDirection = sourcePosition === Position.Left ? -1 : 1;
               const preferredTurnX = enforceMinimumClearance(
                 computePreferredTurnCoordinate(defaultTurnX, sourceX, targetX, turnPreference),
                 sourceX,
                 defaultTurnX,
-                Math.sign(defaultTurnX - sourceX) || Math.sign(targetX - sourceX)
+                outwardDirection
               );
               quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], x: preferredTurnX };
               bendingPoints.push({ x: preferredTurnX, y: sourceY });
@@ -223,11 +245,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             // Seed the first bend so the polyline departs vertically from a top/bottom handle.
             {
               const defaultTurnY = firstPoint.y ?? sourceY;
+              const outwardDirection = sourcePosition === Position.Top ? -1 : 1;
               const preferredTurnY = enforceMinimumClearance(
                 computePreferredTurnCoordinate(defaultTurnY, sourceY, targetY, turnPreference),
                 sourceY,
                 defaultTurnY,
-                Math.sign(defaultTurnY - sourceY) || Math.sign(targetY - sourceY)
+                outwardDirection
               );
               quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], y: preferredTurnY };
               bendingPoints.push({ x: sourceX, y: preferredTurnY });
