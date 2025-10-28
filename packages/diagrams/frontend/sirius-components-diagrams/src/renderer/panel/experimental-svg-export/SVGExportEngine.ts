@@ -73,6 +73,17 @@ export class SVGExportEngine implements ISVGExportEngine {
       });
     });
 
+    // Retrieve edge markers definitions
+    const edgeRelatedElements = Array.from(edgeContainer?.querySelectorAll<HTMLElement>('[data-svg]') ?? []);
+    edgeRelatedElements.forEach((child) => {
+      this.elementSVGExportHandlers.forEach((svgExportHandler) => {
+        if (svgExportHandler.canHandle(child)) {
+          const addAtTheEnd = svgExportHandler.handle(child, this.svg, this.svgDocument);
+          elementToAddAtTheEnd.push(...addAtTheEnd);
+        }
+      });
+    });
+
     // It is not possible to use a export handler for edges, because reactflow only create a <path> for an edge and wraps each edge in a <g> in a <svg>
     // We do not have the hand on that.
     const matrix = new DOMMatrixReadOnly(this.htmlToImageTransform);

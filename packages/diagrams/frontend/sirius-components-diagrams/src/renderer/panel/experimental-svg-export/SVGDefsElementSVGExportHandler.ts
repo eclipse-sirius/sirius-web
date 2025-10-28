@@ -22,7 +22,6 @@ export class SVGDefsElementSVGExportHandler implements IElementSVGExportHandler 
   }
   handle(element: Element, parentSvgElement: SVGElement, svgDocument: XMLDocument): SVGElement[] {
     if (element instanceof SVGDefsElement) {
-      svgDocument.importNode(element, true);
       const clonedDefs = svgDocument.importNode(element, true);
       clonedDefs.removeAttribute('style');
       parentSvgElement.appendChild(clonedDefs);
