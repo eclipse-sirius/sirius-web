@@ -14,20 +14,16 @@
 import { Node, XYPosition, Position, InternalNode } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
-import { useStore } from '../../../representation/useStore';
 import { NodeData } from '../../DiagramRenderer.types';
-import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
-  cleanBendPoint,
   determineSegmentAxis,
   generateNewBendPointOnSegment,
   generateNewHandlePoint,
-  getHandlePositionFromXYPosition,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { BendPointData, UseBendingPointsValue, BendingPointsState } from './useBendingPoints.types';
 import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
-import { getNodesUpdatedWithHandles } from '../EdgeLayout';
+import { BendPointData, UseBendingPointsValue, BendingPointsState } from './useBendingPoints.types';
+import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
 
 export const useBendingPoints = (
   edgeId: string,
@@ -44,8 +40,7 @@ export const useBendingPoints = (
   targetPosition: Position,
   customEdge: boolean
 ): UseBendingPointsValue => {
-  const { getEdges, getNodes } = useStore();
-  const { synchronizeEdgeLayoutData } = useEditableEdgePath();
+  const { handleDragStop } = useEdgeDragStopHandler();
 
   const [localBendingPoints, setLocalBendingPoints] = useState<BendPointData[]>(
     originalBendingPoints.map((bendingPoint: XYPosition, index: number) => ({ ...bendingPoint, pathOrder: index }))
@@ -61,54 +56,23 @@ export const useBendingPoints = (
   }, [originalBendingPoints.map((point) => point.x + point.y).join()]);
 
   const onBendingPointDragStop = (_eventData: DraggableData) => {
-    const edges = getEdges();
-    let nodes = getNodes();
-    const edge = edges.find((edge) => edge.id === edgeId);
-
-    const newBendingPoint = cleanBendPoint(localBendingPoints.sort((a, b) => a.pathOrder - b.pathOrder));
-    if (edge?.data) {
-      edge.data.bendingPoints = newBendingPoint;
-      if (state.isSourceSegment) {
-        let newPosition: Position | null = null;
-        if (newBendingPoint[0]) {
-          newPosition = getHandlePositionFromXYPosition(
-            sourceNode,
-            source,
-            determineSegmentAxis(source, newBendingPoint[0])
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          sourceNode,
-          edge.id,
-          sourceHandleId,
-          source,
-          newPosition ?? sourcePosition
-        );
-        setState((prevState) => ({ ...prevState, isSourceSegment: false }));
-      }
-      if (state.isTargetSegment) {
-        let newPosition: Position | null = null;
-        const lastBendingPoint = newBendingPoint[newBendingPoint.length - 1];
-        if (lastBendingPoint) {
-          newPosition = getHandlePositionFromXYPosition(
-            targetNode,
-            target,
-            determineSegmentAxis(target, lastBendingPoint)
-          );
-        }
-        nodes = getNodesUpdatedWithHandles(
-          nodes,
-          targetNode,
-          edge.id,
-          targetHandleId,
-          target,
-          newPosition ?? targetPosition
-        );
-      }
-      setState((prevState) => ({ ...prevState, dragInProgress: false }));
-      synchronizeEdgeLayoutData(edges, nodes);
-    }
+    handleDragStop(
+      edgeId,
+      source,
+      setSource,
+      sourceNode,
+      sourceHandleId,
+      sourcePosition,
+      target,
+      setTarget,
+      targetNode,
+      targetHandleId,
+      targetPosition,
+      state.isSourceSegment,
+      state.isTargetSegment,
+      localBendingPoints
+    );
+    setState((prevState) => ({ ...prevState, isSourceSegment: false, isTargetSegment: false, dragInProgress: false }));
   };
 
   const onBendingPointDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {

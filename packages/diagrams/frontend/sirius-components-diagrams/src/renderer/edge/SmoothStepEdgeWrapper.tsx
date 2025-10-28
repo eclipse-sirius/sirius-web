@@ -34,6 +34,10 @@ function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
 
+function roundToDecimal(num: number): number {
+  return Math.round(num * 10) / 10;
+}
+
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const {
     source,
@@ -115,11 +119,11 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({
-      sourceX,
-      sourceY,
+      sourceX: roundToDecimal(sourceX),
+      sourceY: roundToDecimal(sourceY),
       sourcePosition,
-      targetX,
-      targetY,
+      targetX: roundToDecimal(targetX),
+      targetY: roundToDecimal(targetY),
       targetPosition,
     });
 
