@@ -35,7 +35,7 @@ function isMultipleOfTwo(num: number): boolean {
 }
 
 const DEFAULT_TURN_PREFERENCE: RectilinearTurnPreference = 'target';
-const MIN_TURN_CLEARANCE = 4;
+const DEFAULT_MIN_OUTWARD_LENGTH = 10;
 
 function interpolateHalfway(from: number, to: number): number {
   return from + (to - from) * 0.5;
@@ -66,12 +66,19 @@ function enforceMinimumClearance(
   coordinate: number,
   origin: number,
   fallback: number,
-  directionHint: number
+  directionHint: number,
+  minOutwardLength: number
 ): number {
   // Always exit the source node in the expected outward direction while keeping a minimum offset.
   const fallbackOffset = fallback - origin;
   const direction =
-    directionHint !== 0 ? directionHint : fallbackOffset !== 0 ? Math.sign(fallbackOffset) : coordinate >= origin ? 1 : -1;
+    directionHint !== 0
+      ? directionHint
+      : fallbackOffset !== 0
+      ? Math.sign(fallbackOffset)
+      : coordinate >= origin
+      ? 1
+      : -1;
 
   if (direction === 0) {
     return coordinate;
@@ -81,24 +88,172 @@ function enforceMinimumClearance(
   const hasCorrectDirection = offset * direction >= 0;
 
   if (!hasCorrectDirection) {
-    const fallbackHasCorrectDirection = fallbackOffset * direction >= MIN_TURN_CLEARANCE;
+    const fallbackHasCorrectDirection = fallbackOffset * direction >= minOutwardLength;
     if (fallbackHasCorrectDirection) {
       return fallback;
     }
-    return origin + MIN_TURN_CLEARANCE * direction;
+    return origin + minOutwardLength * direction;
   }
 
   const clearance = Math.abs(offset);
-  if (clearance >= MIN_TURN_CLEARANCE) {
+  if (clearance >= minOutwardLength) {
     return coordinate;
   }
 
   const fallbackClearance = Math.abs(fallbackOffset);
-  if (fallbackClearance >= MIN_TURN_CLEARANCE && fallbackOffset * direction >= 0) {
+  if (fallbackClearance >= minOutwardLength && fallbackOffset * direction >= 0) {
     return fallback;
   }
 
-  return origin + MIN_TURN_CLEARANCE * direction;
+  return origin + minOutwardLength * direction;
+}
+
+function simplifyRectilinearBends(bendingPoints: XYPosition[], source: XYPosition, target: XYPosition): XYPosition[] {
+  if (bendingPoints.length === 0) {
+    return bendingPoints;
+  }
+
+  const points: XYPosition[] = [source, ...bendingPoints, target];
+
+  // Remove duplicates that would introduce zero-length segments.
+  const deduplicated: XYPosition[] = [];
+  for (const point of points) {
+    const previous = deduplicated[deduplicated.length - 1];
+    if (!previous || previous.x !== point.x || previous.y !== point.y) {
+      deduplicated.push(point);
+    }
+  }
+
+  // Simplify collinear runs and small S-shaped detours.
+  const working: XYPosition[] = [...deduplicated];
+  let mutated = true;
+  while (mutated && working.length >= 3) {
+    mutated = false;
+
+    for (let i = 1; i < working.length - 1; i++) {
+      const prev = working[i - 1];
+      const curr = working[i];
+      const next = working[i + 1];
+      if (!prev || !curr || !next) {
+        continue;
+      }
+      const sameX = prev.x === curr.x && curr.x === next.x;
+      const sameY = prev.y === curr.y && curr.y === next.y;
+      if (sameX || sameY) {
+        working.splice(i, 1);
+        mutated = true;
+        break;
+      }
+    }
+    if (mutated) {
+      continue;
+    }
+
+    for (let i = 0; i < working.length - 3; i++) {
+      const touchesSource = i === 0;
+      const touchesTarget = i + 3 === working.length - 1;
+      if (touchesSource || touchesTarget) {
+        continue;
+      }
+
+      const a = working[i];
+      const b = working[i + 1];
+      const c = working[i + 2];
+      const d = working[i + 3];
+      if (!a || !b || !c || !d) {
+        continue;
+      }
+
+      const horizontalAB = a.y === b.y && a.x !== b.x;
+      const verticalBC = b.x === c.x && b.y !== c.y;
+      const horizontalCD = c.y === d.y && c.x !== d.x;
+      if (horizontalAB && verticalBC && horizontalCD) {
+        const dir1 = Math.sign(b.x - a.x);
+        const dir3 = Math.sign(d.x - c.x);
+        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.x === d.x) {
+          working.splice(i + 1, 2);
+          mutated = true;
+          break;
+        }
+      }
+
+      const verticalAB = a.x === b.x && a.y !== b.y;
+      const horizontalBC = b.y === c.y && b.x !== c.x;
+      const verticalCD = c.x === d.x && c.y !== d.y;
+      if (verticalAB && horizontalBC && verticalCD) {
+        const dir1 = Math.sign(b.y - a.y);
+        const dir3 = Math.sign(d.y - c.y);
+        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.y === d.y) {
+          working.splice(i + 1, 2);
+          mutated = true;
+          break;
+        }
+      }
+    }
+  }
+
+  return working.slice(1, working.length - 1);
+}
+
+function enforceTargetClearance(
+  bendingPoints: XYPosition[],
+  targetPosition: Position,
+  target: XYPosition,
+  minOutwardLength: number
+): XYPosition[] {
+  if (bendingPoints.length === 0 || minOutwardLength <= 0) {
+    return bendingPoints;
+  }
+
+  const adjusted = [...bendingPoints];
+  const tailIndex = adjusted.length - 1;
+  const tailPoint = adjusted[tailIndex];
+  if (!tailPoint) {
+    return bendingPoints;
+  }
+
+  switch (targetPosition) {
+    case Position.Left:
+    case Position.Right: {
+      const inwardDirection = targetPosition === Position.Left ? -1 : 1;
+      const horizontalDistance = Math.abs(target.x - tailPoint.x);
+      if (horizontalDistance < minOutwardLength) {
+        const desiredX = target.x + inwardDirection * minOutwardLength;
+        const initialColumnX = tailPoint.x;
+        let index = tailIndex;
+        while (index >= 0 && adjusted[index]?.x === initialColumnX) {
+          const current = adjusted[index];
+          if (!current) {
+            break;
+          }
+          adjusted[index] = { x: desiredX, y: current.y };
+          index--;
+        }
+      }
+      break;
+    }
+    case Position.Top:
+    case Position.Bottom: {
+      const inwardDirection = targetPosition === Position.Top ? -1 : 1;
+      const verticalDistance = Math.abs(target.y - tailPoint.y);
+      if (verticalDistance < minOutwardLength) {
+        const desiredY = target.y + inwardDirection * minOutwardLength;
+        const initialColumnY = tailPoint.y;
+        let index = tailIndex;
+        while (index >= 0 && adjusted[index]?.y === initialColumnY) {
+          const current = adjusted[index];
+          if (!current) {
+            break;
+          }
+          adjusted[index] = { x: current.x, y: desiredY };
+          index--;
+        }
+      }
+      break;
+    }
+  }
+
+  return adjusted;
 }
 
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
@@ -127,7 +282,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   // 2. Compute handle coordinates for both endpoints (honouring node-specific overrides).
   // 3. Offset the endpoints so markers still touch the node border visually.
   // 4. Build the rectilinear bending points, either reusing user data or converting a smooth path.
-  // 5. Delegate to the multi-label rectilinear edge renderer with the assembled geometry.
+  // 5. Simplify the rectilinear path to eliminate redundant elbows.
+  // 6. Delegate to the multi-label rectilinear edge renderer with the assembled geometry.
 
   const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
     nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
@@ -186,6 +342,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   let bendingPoints: XYPosition[] = [];
+  const customEdge = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     // Preserve user-authored geometry; downstream component treats this as a custom edge.
     bendingPoints = data.bendingPoints;
@@ -200,15 +357,22 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetPosition,
     });
 
-    const quadraticCurvePoints: {
-      x: number;
-      y: number;
-    }[] = smoothEdgePath.includes('NaN') ? [] : parse(smoothEdgePath).filter((segment) => segment.code === 'Q');
+    const quadraticCurvePoints: XYPosition[] = smoothEdgePath.includes('NaN')
+      ? []
+      : parse(smoothEdgePath)
+          .filter((segment) => segment.code === 'Q' && typeof segment.x === 'number' && typeof segment.y === 'number')
+          .map((segment) => ({ x: segment.x as number, y: segment.y as number }));
 
     if (quadraticCurvePoints.length > 0) {
       // When no custom bends are given, we shape the first turn according to the chosen strategy.
-      const turnPreference: RectilinearTurnPreference =
-        data?.rectilinearTurnPreference ?? DEFAULT_TURN_PREFERENCE;
+      const turnPreference: RectilinearTurnPreference = data?.rectilinearTurnPreference ?? DEFAULT_TURN_PREFERENCE;
+      const minOutwardLengthCandidate = data?.rectilinearMinOutwardLength;
+      const minOutwardLength =
+        typeof minOutwardLengthCandidate === 'number' &&
+        Number.isFinite(minOutwardLengthCandidate) &&
+        minOutwardLengthCandidate > 0
+          ? minOutwardLengthCandidate
+          : DEFAULT_MIN_OUTWARD_LENGTH;
       const firstPoint = quadraticCurvePoints[0];
       if (firstPoint) {
         switch (sourcePosition) {
@@ -222,21 +386,25 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
                 computePreferredTurnCoordinate(defaultTurnX, sourceX, targetX, turnPreference),
                 sourceX,
                 defaultTurnX,
-                outwardDirection
+                outwardDirection,
+                minOutwardLength
               );
-              quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], x: preferredTurnX };
+              quadraticCurvePoints[0] = { x: preferredTurnX, y: firstPoint.y };
               bendingPoints.push({ x: preferredTurnX, y: sourceY });
             }
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
-              if (currentPoint && previousPoint) {
-                // Even/odd index alternation swaps axis, keeping the path rectilinear.
-                if (isMultipleOfTwo(i)) {
-                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
-                } else {
-                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
-                }
+              if (!currentPoint || !previousPoint) {
+                continue;
+              }
+              const { x: currentX, y: currentY } = currentPoint;
+              const { x: previousX, y: previousY } = previousPoint;
+              // Even/odd index alternation swaps axis, keeping the path rectilinear.
+              if (isMultipleOfTwo(i)) {
+                bendingPoints.push({ x: currentX, y: previousY });
+              } else {
+                bendingPoints.push({ x: previousX, y: currentY });
               }
             }
             break;
@@ -250,28 +418,45 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
                 computePreferredTurnCoordinate(defaultTurnY, sourceY, targetY, turnPreference),
                 sourceY,
                 defaultTurnY,
-                outwardDirection
+                outwardDirection,
+                minOutwardLength
               );
-              quadraticCurvePoints[0] = { ...quadraticCurvePoints[0], y: preferredTurnY };
+              quadraticCurvePoints[0] = { x: firstPoint.x, y: preferredTurnY };
               bendingPoints.push({ x: sourceX, y: preferredTurnY });
             }
             for (let i = 1; i < quadraticCurvePoints.length; i++) {
               const currentPoint = quadraticCurvePoints[i];
               const previousPoint = quadraticCurvePoints[i - 1];
-              if (currentPoint && previousPoint) {
-                // Even/odd index alternation swaps axis, keeping the path rectilinear.
-                if (isMultipleOfTwo(i)) {
-                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
-                } else {
-                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
-                }
+              if (!currentPoint || !previousPoint) {
+                continue;
+              }
+              const { x: currentX, y: currentY } = currentPoint;
+              const { x: previousX, y: previousY } = previousPoint;
+              // Even/odd index alternation swaps axis, keeping the path rectilinear.
+              if (isMultipleOfTwo(i)) {
+                bendingPoints.push({ x: previousX, y: currentY });
+              } else {
+                bendingPoints.push({ x: currentX, y: previousY });
               }
             }
             break;
         }
+
+        bendingPoints = enforceTargetClearance(
+          bendingPoints,
+          targetPosition,
+          { x: targetX, y: targetY },
+          minOutwardLength
+        );
       }
     }
   }
+
+  const finalBendingPoints = simplifyRectilinearBends(
+    bendingPoints,
+    { x: sourceX, y: sourceY },
+    { x: targetX, y: targetY }
+  );
 
   return (
     <MultiLabelRectilinearEditableEdge
@@ -280,8 +465,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       sourceY={sourceY}
       targetX={targetX}
       targetY={targetY}
-      bendingPoints={bendingPoints}
-      customEdge={!!(data && data.bendingPoints && data.bendingPoints.length > 0)}
+      bendingPoints={finalBendingPoints}
+      customEdge={customEdge}
       sourceNode={sourceNode}
       targetNode={targetNode}
     />
