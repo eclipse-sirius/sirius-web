@@ -20,6 +20,7 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
+import { ProjectBrowserOmnibox } from './ProjectBrowserOmnibox';
 
 const useProjectBrowserViewStyles = makeStyles()((theme) => ({
   projectsView: {
@@ -54,19 +55,21 @@ export const ProjectBrowserView = () => {
   }
 
   return (
-    <div className={classes.projectsView}>
-      <NavigationBar />
-      <Container maxWidth="xl">
-        <Grid container justifyContent="center">
-          <Grid size={{ xs: 8 }}>
-            <main className={classes.main}>
-              {canCreate ? <CreateProjectArea /> : null}
-              <ListProjectsArea />
-            </main>
+    <ProjectBrowserOmnibox>
+      <div className={classes.projectsView}>
+        <NavigationBar />
+        <Container maxWidth="xl">
+          <Grid container justifyContent="center">
+            <Grid size={{ xs: 8 }}>
+              <main className={classes.main}>
+                {canCreate ? <CreateProjectArea /> : null}
+                <ListProjectsArea />
+              </main>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-      <Footer />
-    </div>
+        </Container>
+        <Footer />
+      </div>
+    </ProjectBrowserOmnibox>
   );
 };

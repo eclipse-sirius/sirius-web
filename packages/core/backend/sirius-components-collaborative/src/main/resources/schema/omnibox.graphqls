@@ -1,6 +1,7 @@
 extend type Viewer {
   workbenchOmniboxSearch(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
   workbenchOmniboxCommands(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
+  projectsOmniboxCommands(query: String!): ViewerOmniboxCommandsConnection!
 }
 
 input OmniboxContextEntry {
