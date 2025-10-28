@@ -11,9 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
-
 export interface OmniboxContextValue {
   openOmnibox: () => void;
-  applySelection: (selection: Selection) => void;
 }

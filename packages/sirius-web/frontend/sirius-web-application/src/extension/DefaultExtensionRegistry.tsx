@@ -81,7 +81,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
-import { Navigate, PathRouteProps, useMatch } from 'react-router-dom';
+import { matchRoutes, Navigate, PathRouteProps, useLocation } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
@@ -242,8 +242,10 @@ defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {
  *******************************************************************************/
 
 export const OmniboxButtonContribution = ({}: NavigationBarRightContributionProps) => {
-  const match = useMatch('/projects/:projectId/edit/:representationId?/*');
-  if (match) {
+  const location = useLocation();
+  const routes = [{ path: '/projects/:projectId/edit/:representationId?/*' }, { path: '/projects' }];
+  const matches = matchRoutes(routes, location);
+  if (matches) {
     return <OmniboxButton size="small" />;
   }
   return null;

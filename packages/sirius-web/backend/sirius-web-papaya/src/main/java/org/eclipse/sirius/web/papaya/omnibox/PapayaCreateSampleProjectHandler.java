@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandSuccessPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -75,7 +75,7 @@ public class PapayaCreateSampleProjectHandler implements IEditingContextEventHan
             siriusWebProjectCreationLifecycleFactory.link(eObjectIndexer);
 
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-            payload = new ExecuteOmniboxCommandSuccessPayload(input.id(), null, List.of());
+            payload = new ExecuteWorkbenchOmniboxCommandSuccessPayload(input.id(), null, List.of());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
