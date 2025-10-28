@@ -24,8 +24,8 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandSuccessPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -34,9 +34,9 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
-import org.eclipse.sirius.components.graphql.tests.ExecuteOmniboxCommandMutationRunner;
-import org.eclipse.sirius.components.graphql.tests.OmniboxCommandsQueryRunner;
-import org.eclipse.sirius.components.graphql.tests.OmniboxSearchQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteWorkbenchOmniboxCommandMutationRunner;
+import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxSearchQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -60,28 +60,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
-    private OmniboxCommandsQueryRunner omniboxCommandsQueryRunner;
+    private WorkbenchOmniboxCommandsQueryRunner workbenchOmniboxCommandsQueryRunner;
 
     @Autowired
-    private OmniboxSearchQueryRunner omniboxSearchQueryRunner;
+    private WorkbenchOmniboxSearchQueryRunner workbenchOmniboxSearchQueryRunner;
 
     @Autowired
-    private ExecuteOmniboxCommandMutationRunner executeOmniboxCommandMutationRunner;
+    private ExecuteWorkbenchOmniboxCommandMutationRunner executeWorkbenchOmniboxCommandMutationRunner;
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a query, when a query is performed, then omnibox commands are returned")
+    @DisplayName("Given a query, when a query is performed in the workbench omnibox, then omnibox commands are returned")
     public void givenQueryWhenAQueryIsPerformedThenCommandsAreReturned() {
         Map<String, Object> firstQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "selectedObjectIds", List.of(),
                 "query", ""
         );
-        var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);
-        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
+        var firstQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(firstQueryVariables);
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(allCommandLabels).hasSize(3).contains("Search", "Publish Studio", "Import studio libraries");
 
         Map<String, Object> secondQueryVariables = Map.of(
@@ -89,8 +89,8 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "selectedObjectIds", List.of(),
                 "query", "Sea"
         );
-        var secondQueryResult = this.omniboxCommandsQueryRunner.run(secondQueryVariables);
-        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
+        var secondQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(secondQueryVariables);
+        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Search"));
 
         Map<String, Object> thirdQueryVariables = Map.of(
@@ -98,22 +98,22 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "selectedObjectIds", List.of(),
                 "query", "yello"
         );
-        var thirdQueryResult = this.omniboxCommandsQueryRunner.run(thirdQueryVariables);
-        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
+        var thirdQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(thirdQueryVariables);
+        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(yelloFilteredCommandsLabels).isEmpty();
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a query, when the text-based objects are queried, then the objects are returned")
+    @DisplayName("Given a query, when the text-based objects are queried in the workbench omnibox, then the objects are returned")
     public void givenQueryWhenTextBasedObjectsAreQueriedThenObjectsAreReturned() {
         Map<String, Object> emptyQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "selectedObjectIds", List.of(),
                 "query", ""
         );
-        var emptyQueryResult = this.omniboxSearchQueryRunner.run(emptyQueryVariables);
-        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.omniboxSearch[*].label");
+        var emptyQueryResult = this.workbenchOmniboxSearchQueryRunner.run(emptyQueryVariables);
+        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
         assertThat(emptyQueryObjectLabels).isNotEmpty();
 
         String filterQuery = "yello";
@@ -122,18 +122,18 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "selectedObjectIds", List.of(),
                 "query", filterQuery
         );
-        var filterQueryResult = this.omniboxSearchQueryRunner.run(filterQueryVariables);
-        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.omniboxSearch[*].label");
+        var filterQueryResult = this.workbenchOmniboxSearchQueryRunner.run(filterQueryVariables);
+        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
         assertThat(filterQueryObjectLabels).isNotEmpty().allMatch(label -> label.toLowerCase().contains(filterQuery.toLowerCase()));
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given an omnibox command id, when the mutation is performed, then the command is executed")
+    @DisplayName("Given an workbench omnibox command id, when the mutation is performed, then the command is executed")
     public void givenAnOmniboxCommandIdWhenTheMutationIsPerformedThenTheCommandIsExecuted() {
-        var result = this.executeOmniboxCommandMutationRunner.run(new ExecuteOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
-        String typename = JsonPath.read(result, "$.data.executeOmniboxCommand.__typename");
-        assertThat(typename).isEqualTo(ExecuteOmniboxCommandSuccessPayload.class.getSimpleName());
+        var result = this.executeWorkbenchOmniboxCommandMutationRunner.run(new ExecuteWorkbenchOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
+        String typename = JsonPath.read(result, "$.data.executeWorkbenchOmniboxCommand.__typename");
+        assertThat(typename).isEqualTo(ExecuteWorkbenchOmniboxCommandSuccessPayload.class.getSimpleName());
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {

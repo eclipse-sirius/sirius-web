@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { OmniboxMode } from './Omnibox.types';
-import { GQLGetOmniboxCommandsQueryData } from './useOmniboxCommands.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 
 export interface OmniboxCommandListProps {
-  data: GQLGetOmniboxCommandsQueryData | null;
+  commands: GQLOmniboxCommand[] | null;
   loading: boolean;
-  editingContextId: string;
   onClose: () => void;
   onModeChanged: (mode: OmniboxMode) => void;
+  onCommandClick: (command: GQLOmniboxCommand) => void;
 }

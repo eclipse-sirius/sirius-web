@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,21 +20,24 @@ import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * The query runner to perform a search from the omnibox.
+ * The query runner to retrieve omnibox commands.
  *
- * @author gdaniel
+ * @author gcoutable
  */
 @Service
-public class OmniboxSearchQueryRunner implements IQueryRunner {
+public class WorkbenchOmniboxCommandsQueryRunner implements IQueryRunner {
 
-    private static final String OMNIBOX_SEARCH = """
-            query getOmniboxSearchResults($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
+    private static final String WORKBENCH_OMNIBOX_COMMANDS = """
+            query getWorkbenchOmniboxCommands($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
               viewer {
-                omniboxSearch(editingContextId: $editingContextId, selectedObjectIds: $selectedObjectIds, query: $query) {
-                  id
-                  kind
-                  label
-                  iconURLs
+                workbenchOmniboxCommands(editingContextId: $editingContextId, selectedObjectIds: $selectedObjectIds, query: $query) {
+                  edges {
+                    node {
+                      id
+                      label
+                      iconURLs
+                    }
+                  }
                 }
               }
             }
@@ -42,12 +45,12 @@ public class OmniboxSearchQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public OmniboxSearchQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public WorkbenchOmniboxCommandsQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
     public String run(Map<String, Object> variables) {
-        return this.graphQLRequestor.execute(OMNIBOX_SEARCH, variables);
+        return this.graphQLRequestor.execute(WORKBENCH_OMNIBOX_COMMANDS, variables);
     }
 }

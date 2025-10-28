@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLGetOmniboxSearchResultsQueryData } from './useOmniboxSearch.types';
+package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-export interface OmniboxObjectListProps {
-  loading: boolean;
-  data: GQLGetOmniboxSearchResultsQueryData | null;
-  onClose: () => void;
-}
+import java.util.List;
 
-export interface ObjectAction {
-  id: string;
-  icon: JSX.Element;
-  kind: string;
-  label: string;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+
+/**
+ * Used to find workbench omnibox commands.
+ *
+ * @author sbegaudeau
+ */
+public interface IWorkbenchOmniboxCommandSearchService {
+    List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query);
 }

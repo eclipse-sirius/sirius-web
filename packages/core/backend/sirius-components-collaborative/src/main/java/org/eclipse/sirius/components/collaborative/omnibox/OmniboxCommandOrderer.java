@@ -32,14 +32,14 @@ public class OmniboxCommandOrderer implements IOmniboxCommandOrderer {
     @Override
     public List<OmniboxCommand> order(List<OmniboxCommand> omniboxCommands) {
         Optional<OmniboxCommand> optionalSearchCommand = omniboxCommands.stream()
-                .filter(command -> Objects.equals(command.id(), OmniboxSearchCommandProvider.SEARCH_COMMAND_ID))
+                .filter(command -> Objects.equals(command.id(), WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID))
                 .findFirst();
 
         if (optionalSearchCommand.isPresent()) {
             List<OmniboxCommand> commands = new ArrayList<>();
 
             var otherCommands = omniboxCommands.stream()
-                    .filter(command -> !Objects.equals(command.id(), OmniboxSearchCommandProvider.SEARCH_COMMAND_ID))
+                    .filter(command -> !Objects.equals(command.id(), WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID))
                     .toList();
             commands.add(optionalSearchCommand.get());
             commands.addAll(otherCommands);
