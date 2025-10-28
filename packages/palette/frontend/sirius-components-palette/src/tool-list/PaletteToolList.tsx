@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -18,10 +19,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/paletteToolExtensionPoints';
+import { PaletteToolSectionContributionProps } from '../extensions/PaletteToolSectionContribution.types';
+import { paletteToolSectionExtensionPoint } from '../extensions/paletteToolSectionExtensionPoints';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
-import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPalette, GQLPaletteEntry, GQLTool } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
@@ -63,8 +68,8 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 const defaultStateValue: PaletteToolListStateValue = {
-  toolSection: null,
-  extensionSection: null,
+  openedToolSectionId: null,
+  openedToolSectionLabel: null,
 };
 
 const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
@@ -78,64 +83,75 @@ const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
 
 export const PaletteToolList = ({
   palette,
+  diagramElementId,
+  lastToolInvoked,
   onToolClick,
   onBackToMainList,
-  diagramElementId,
   onClose,
-  lastToolInvoked,
   children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { classes } = useStyle();
 
-  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
-    event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection, extensionSection: null }));
-  };
-
-  const handleExtensionSectionClick = (
+  const handleToolSectionClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    extensionSectionId: string
+    extensionSectionId: string,
+    openedToolSectionLabel: string
   ) => {
     event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: extensionSectionId }));
+    setState((prevState) => ({
+      ...prevState,
+      openedToolSectionId: extensionSectionId,
+      openedToolSectionLabel: openedToolSectionLabel,
+    }));
   };
 
   const handleBackToMainList = () => {
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
+    setState((prevState) => ({ ...prevState, openedToolSectionId: null, openedToolSectionLabel: null }));
     onBackToMainList();
   };
 
-  const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
-    if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      return (
-        <ToolListItem
-          onToolClick={onToolClick}
-          tool={paletteEntry}
-          disabled={false}
-          key={'toolItem_' + paletteEntry.id}
-          data-testid={`paletteEntry-${paletteEntry.label}`}
-        />
-      );
-    } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
-      return (
-        <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
-          <ListItemButton
-            className={classes.listItemButton}
-            onClick={(event) => handleToolSectionClick(event, paletteEntry)}
-            data-testid={`toolSection-${paletteEntry.label}`}>
-            <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
-            <NavigateNextIcon />
-          </ListItemButton>
-        </Tooltip>
-      );
-    } else if (isPaletteDivider(paletteEntry)) {
-      return <Divider key={'divider_' + paletteEntry.id} />;
-    }
-    return [];
-  });
+  const getContributionId = (contributionProp: PaletteToolContributionProps | PaletteToolSectionContributionProps) =>
+    contributionProp.id;
 
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+  const paletteToolSectionData: DataExtension<PaletteToolSectionContributionProps[]> = useData(
+    paletteToolSectionExtensionPoint
+  );
+  const listItemsRendered = palette.paletteEntries
+    .filter((paletteEntry) => !paletteToolData.data.map(getContributionId).includes(paletteEntry.id))
+    .filter((paletteEntry) => !paletteToolSectionData.data.map(getContributionId).includes(paletteEntry.id))
+    .flatMap((paletteEntry: GQLPaletteEntry) => {
+      if (isSingleClickOnDiagramElementTool(paletteEntry)) {
+        return (
+          <ToolListItem
+            onToolClick={onToolClick}
+            tool={paletteEntry}
+            disabled={false}
+            key={'toolItem_' + paletteEntry.id}
+            data-testid={`paletteEntry-${paletteEntry.label}`}
+          />
+        );
+      } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
+        return (
+          <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
+            <ListItemButton
+              className={classes.listItemButton}
+              onClick={(event) => handleToolSectionClick(event, paletteEntry.id, paletteEntry.label)}
+              data-testid={`toolSection-${paletteEntry.label}`}>
+              <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
+              <NavigateNextIcon />
+            </ListItemButton>
+          </Tooltip>
+        );
+      } else if (isPaletteDivider(paletteEntry)) {
+        return <Divider key={'divider_' + paletteEntry.id} />;
+      }
+      return [];
+    });
+
+  //This should be removed and a contribution with the toolSection or tool extension point should be used instead
   children.forEach((extensionSection) => {
     const extensionSectionId = extensionSection.props.id;
     const extensionSectionTitle = extensionSection.props.title;
@@ -143,7 +159,7 @@ export const PaletteToolList = ({
       <Tooltip key={`tooltip_${extensionSectionId}`} title={extensionSectionTitle} placement="right">
         <ListItemButton
           className={classes.listItemButton}
-          onClick={(event) => handleExtensionSectionClick(event, extensionSectionId)}
+          onClick={(event) => handleToolSectionClick(event, extensionSectionId, extensionSectionTitle)}
           data-testid={`toolSection-${extensionSectionTitle}`}>
           <ListItemText primary={extensionSectionTitle} className={classes.listItemText} />
           <NavigateNextIcon />
@@ -153,6 +169,7 @@ export const PaletteToolList = ({
   });
 
   const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
+  //TODO make lastUsedTool work
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
       <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
@@ -161,53 +178,101 @@ export const PaletteToolList = ({
   ) : null;
 
   const containerRef = React.useRef<HTMLElement>(null);
+
+  paletteToolData.data
+    .filter((data) => data.canHandle([diagramElementId]))
+    .filter((data) => !data.toolSectionId)
+    .map((data) => data.component)
+    .forEach((PaletteToolComponent, index) =>
+      listItemsRendered.push(
+        <PaletteToolComponent
+          representationElementIds={[diagramElementId]}
+          key={'paletteToolComponents_' + index.toString()}
+        />
+      )
+    );
+
+  paletteToolSectionData.data
+    .filter((data) => data.canHandle([diagramElementId]))
+    .forEach((PaletteToolComponent) =>
+      listItemsRendered.push(
+        <Tooltip key={'tooltip_' + PaletteToolComponent.id} title={PaletteToolComponent.label} placement="right">
+          <ListItemButton
+            className={classes.listItemButton}
+            onClick={(event) => handleToolSectionClick(event, PaletteToolComponent.id, PaletteToolComponent.label)}
+            data-testid={`toolSection-${PaletteToolComponent.label}`}>
+            <ListItemText primary={PaletteToolComponent.label} className={classes.listItemText} />
+            <NavigateNextIcon />
+          </ListItemButton>
+        </Tooltip>
+      )
+    );
+
+  const openedTooLSectionComponent = useMemo(() => {
+    let renderedToolSection: JSX.Element | null = null;
+    const isOpenedPaletteFromPaletteContent = palette.paletteEntries
+      .filter(isToolSection)
+      .find((entry) => state.openedToolSectionId === entry.id);
+    const isOpenedPaletteFromPaletteExtension = paletteToolSectionData.data.find(
+      (entry) => state.openedToolSectionId === entry.id
+    );
+
+    if (
+      state.openedToolSectionId &&
+      state.openedToolSectionLabel &&
+      (isOpenedPaletteFromPaletteContent || isOpenedPaletteFromPaletteExtension)
+    ) {
+      renderedToolSection = (
+        <PaletteToolSectionList
+          palette={palette}
+          toolSectionId={state.openedToolSectionId}
+          toolSectionLabel={state.openedToolSectionLabel}
+          onToolClick={onToolClick}
+          onBackToMainList={handleBackToMainList}
+          representationElementIds={[diagramElementId]}
+        />
+      );
+    } else if (
+      state.openedToolSectionId &&
+      state.openedToolSectionLabel &&
+      !isOpenedPaletteFromPaletteContent &&
+      !isOpenedPaletteFromPaletteExtension
+    ) {
+      //This should be removed and a contribution with the toolSection or tool extension point should be used instead
+      children
+        .filter((extensionSection) => state.openedToolSectionId === extensionSection.props.id)
+        .map((extensionSection) => {
+          const SectionComponent = extensionSection.props.component;
+          renderedToolSection = (
+            <SectionComponent
+              onBackToMainList={handleBackToMainList}
+              diagramElementId={diagramElementId}
+              onClose={onClose}
+            />
+          );
+        });
+    }
+
+    return renderedToolSection;
+  }, [state.openedToolSectionId]);
+
   return (
     <Box className={classes.container}>
       {lastUsedTool}
       <Box className={classes.toolListContainer} ref={containerRef}>
-        {palette.paletteEntries.filter(isToolSection).map((entry) => (
-          <Slide
-            key={'slide_' + entry.id}
-            direction={'left'}
-            in={state.toolSection?.id === entry.id}
-            container={containerRef.current}
-            unmountOnExit
-            mountOnEnter>
-            <div className={classes.toolList}>
-              <PaletteToolSectionList
-                toolSection={entry}
-                onToolClick={onToolClick}
-                onBackToMainList={handleBackToMainList}
-              />
-            </div>
-          </Slide>
-        ))}
-
-        {children.map((extensionSection) => {
-          const extensionSectionId = extensionSection.props.id;
-          const SectionComponent = extensionSection.props.component;
-          return (
-            <Slide
-              key={'extension_' + extensionSectionId}
-              direction={'left'}
-              in={state.extensionSection === extensionSectionId}
-              container={containerRef.current}
-              unmountOnExit
-              mountOnEnter>
-              <div className={classes.toolList}>
-                <SectionComponent
-                  onBackToMainList={handleBackToMainList}
-                  diagramElementId={diagramElementId}
-                  onClose={onClose}
-                />
-              </div>
-            </Slide>
-          );
-        })}
+        <Slide
+          key={'extension_' + state.openedToolSectionId}
+          direction={'left'}
+          in={!!state.openedToolSectionId}
+          container={containerRef.current}
+          unmountOnExit
+          mountOnEnter>
+          <div className={classes.toolList}>{openedTooLSectionComponent}</div>
+        </Slide>
 
         <Slide
           direction={'right'}
-          in={state.toolSection === null && state.extensionSection === null}
+          in={state.openedToolSectionId === null}
           container={containerRef.current}
           appear={false}
           unmountOnExit

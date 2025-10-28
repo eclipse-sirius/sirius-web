@@ -20,6 +20,7 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
+import { DiagramPaletteContributionContext } from './extensions/DiagramPaletteContributionContext';
 import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
@@ -87,15 +88,17 @@ export const DiagramElementPalette = memo(
     return isOpened && x && y && !currentlyEditedLabelId ? (
       <PalettePortal>
         <div onKeyDown={onKeyDown}>
-          <Palette
-            x={x}
-            y={y}
-            diagramElementId={diagramElementId}
-            targetObjectId={targetObjectId}
-            onDirectEditClick={handleDirectEditClick}
-            onClose={onClose}>
-            {extensionSections}
-          </Palette>
+          <DiagramPaletteContributionContext.Provider value={{ toolXYPosition: { x, y } }}>
+            <Palette
+              x={x}
+              y={y}
+              diagramElementId={diagramElementId}
+              targetObjectId={targetObjectId}
+              onDirectEditClick={handleDirectEditClick}
+              onClose={onClose}>
+              {extensionSections}
+            </Palette>
+          </DiagramPaletteContributionContext.Provider>
         </div>
       </PalettePortal>
     ) : null;

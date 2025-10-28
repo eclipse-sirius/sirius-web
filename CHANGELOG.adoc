@@ -49,6 +49,7 @@ As described in ADR-211, the final purpose is to only have one way to create a p
 Updates the GraphQL schema and frontend hooks accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] The extension point for adding global actions to a table has been renamed from `settingButtonMenuEntryExtensionPoint` to `toolsButtonMenuEntryExtensionPoint`
 - https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Change the input to create a project and update the GraphQL schema accordingly.
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [diagram] `diagramPaletteToolExtensionPoint` has been rename to `paletteQuickToolExtensionPoint`, you can refer to the ADR 212 for more details.
 
 
 === Dependency update
@@ -90,6 +91,7 @@ This will use a transactional event listener to add the dependency to the librar
 Models are asynchronously indexed in Elasticsearch, which will allow advanced and cross-project search in the future.
 This feature is opt-in: Sirius Web won't try to index models if it is not configured to do so.
 You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure Sirius Web with Elasticsearch
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [diagram] You can now contribute `tool`, `toolSection` and `quicktool` to a palette with these frontend extension point `paletteToolExtensionPoint`, `paletteToolSectionExtensionPoint` and `paletteQuickToolExtensionPoint`, you can refer to the ADR 212 for more details.
 
 
 === Improvements
