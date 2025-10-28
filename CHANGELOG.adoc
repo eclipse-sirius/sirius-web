@@ -91,7 +91,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5595[#5595] [sirius-web] Provide an API to compute the containment references to consider to duplicate objects instead of relying only on the metamodel.
 - https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5731[#5731] [sirius-web] Add the command palette on the projects page
 
 === Improvements
 

@@ -19,6 +19,8 @@ export * from './OmniboxExtensionPoints.types';
 export * from './OmniboxProvider';
 export * from './useExecuteWorkbenchOmniboxCommand';
 export * from './useExecuteWorkbenchOmniboxCommand.types';
+export * from './useProjectsOmniboxCommands';
+export type { GQLGetProjectsOmniboxCommandsQueryVariables } from './useProjectsOmniboxCommands.types';
 export * from './useWorkbenchOmniboxCommands';
 export type {
   GQLGetWorkbenchOmniboxCommandsQueryVariables,
