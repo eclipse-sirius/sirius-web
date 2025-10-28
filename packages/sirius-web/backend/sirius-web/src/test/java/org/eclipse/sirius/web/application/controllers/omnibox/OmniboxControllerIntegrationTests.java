@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteWorkbenchOmniboxCommandMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxSearchQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
@@ -64,6 +65,9 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private WorkbenchOmniboxSearchQueryRunner workbenchOmniboxSearchQueryRunner;
+
+    @Autowired
+    private ProjectsOmniboxCommandsQueryRunner projectsOmniboxCommandsQueryRunner;
 
     @Autowired
     private ExecuteWorkbenchOmniboxCommandMutationRunner executeWorkbenchOmniboxCommandMutationRunner;
@@ -150,6 +154,32 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), function);
         var payload = this.executeEditingContextFunctionRunner.execute(input).block();
         assertThat(payload).isInstanceOf(SuccessPayload.class);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a query, when a query is performed in the projects omnibox, then the omnibox commands are returned")
+    public void givenQueryWhenAQueryIsPerformedInProjectsOmniboxThenCommandsAreReturned() {
+        Map<String, Object> firstQueryVariables = Map.of(
+                "query", ""
+        );
+        var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        assertThat(allCommandLabels).hasSize(1).contains("New project");
+
+        Map<String, Object> secondQueryVariables = Map.of(
+                "query", "New"
+        );
+        var secondQueryResult = this.projectsOmniboxCommandsQueryRunner.run(secondQueryVariables);
+        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "New project"));
+
+        Map<String, Object> thirdQueryVariables = Map.of(
+                "query", "yello"
+        );
+        var thirdQueryResult = this.projectsOmniboxCommandsQueryRunner.run(thirdQueryVariables);
+        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        assertThat(yelloFilteredCommandsLabels).isEmpty();
     }
 
 }

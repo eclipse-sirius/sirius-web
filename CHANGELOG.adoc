@@ -123,6 +123,7 @@ You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure 
 A new module `sirius-components-datatree` has been created to:
 * Define data trees in the backend
 * Display data trees in the frontend (component `DataTree`) 
+- https://github.com/eclipse-sirius/sirius-web/issues/5731[#5731] [sirius-web] Add the omnibox on the projects browser
 
 
 === Improvements
