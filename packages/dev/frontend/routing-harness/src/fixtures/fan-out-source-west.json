@@ -1,31 +1,31 @@
 {
-  "id": "fan-out-source",
-  "name": "Fan-Out Source",
+  "id": "fan-out-source-west",
+  "name": "Fan-Out WEST",
   "description": "Single source splitting into several targets to inspect anchor selection.",
   "categories": ["stress"],
   "nodes": [
     {
       "id": "source",
       "label": "Source",
-      "position": { "x": 240, "y": 220 },
+      "position": { "x": 620, "y": 220 },
       "size": { "width": 160, "height": 90 }
     },
     {
       "id": "target-north",
       "label": "North Target",
-      "position": { "x": 620, "y": 80 },
+      "position": { "x": 200, "y": 80 },
       "size": { "width": 140, "height": 72 }
     },
     {
       "id": "target-middle",
       "label": "Middle Target",
-      "position": { "x": 620, "y": 220 },
+      "position": { "x": 220, "y": 220 },
       "size": { "width": 140, "height": 72 }
     },
     {
       "id": "target-south",
       "label": "South Target",
-      "position": { "x": 620, "y": 360 },
+      "position": { "x": 240, "y": 360 },
       "size": { "width": 140, "height": 72 }
     }
   ],
@@ -35,24 +35,24 @@
       "source": "source",
       "target": "target-north",
       "type": "manhattan",
-      "sourcePosition": "right",
-      "targetPosition": "left"
+      "sourcePosition": "left",
+      "targetPosition": "right"
     },
     {
       "id": "edge-middle",
       "source": "source",
       "target": "target-middle",
       "type": "manhattan",
-      "sourcePosition": "right",
-      "targetPosition": "left"
+      "sourcePosition": "left",
+      "targetPosition": "right"
     },
     {
       "id": "edge-south",
       "source": "source",
       "target": "target-south",
       "type": "manhattan",
-      "sourcePosition": "right",
-      "targetPosition": "left"
+      "sourcePosition": "left",
+      "targetPosition": "right"
     }
   ]
 }
