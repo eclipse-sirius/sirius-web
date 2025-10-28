@@ -1,0 +1,58 @@
+{
+  "id": "fan-in-target-west",
+  "name": "Fan-In Target WEST",
+  "description": "Multiple sources converging into a single target to exercise offset spacing.",
+  "categories": ["stress"],
+  "nodes": [
+    {
+      "id": "source-north",
+      "label": "North",
+      "position": { "x": 300, "y": 60 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "source-middle",
+      "label": "Middle",
+      "position": { "x": 350, "y": 220 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "source-south",
+      "label": "South",
+      "position": { "x": 300, "y": 380 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "target",
+      "label": "Target",
+      "position": { "x": 0, "y": 220 },
+      "size": { "width": 160, "height": 96 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-north",
+      "source": "source-north",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "left",
+      "targetPosition": "right"
+    },
+    {
+      "id": "edge-middle",
+      "source": "source-middle",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "left",
+      "targetPosition": "right"
+    },
+    {
+      "id": "edge-south",
+      "source": "source-south",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "left",
+      "targetPosition": "right"
+    }
+  ]
+}

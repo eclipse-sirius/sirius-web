@@ -37,9 +37,15 @@
       "id": "edge-a-b",
       "source": "A",
       "target": "B",
-      "type": "manhattan",
-      "sourcePosition": "right",
-      "targetPosition": "bottom"
+      "type": "manhattan",      
+      "sourcePoint": {
+        "x": 280,
+        "y": 120
+      },
+      "targetPoint": {
+        "x": 700,
+        "y": 240
+      }
     }
   ]
 }
