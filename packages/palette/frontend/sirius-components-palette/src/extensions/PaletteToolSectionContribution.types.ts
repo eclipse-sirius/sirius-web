@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
-import { ListItemButton, ListItemText } from '@mui/material';
 
-export const PapayaComponentLabelDetailToolContribution = ({
-  representationElementIds,
-}: PaletteToolContributionComponentProps) => {
-  return (
-    <ListItemButton onClick={() => {}} autoFocus={true}>
-      <ListItemText primary={representationElementIds} />
-    </ListItemButton>
-  );
-};
+export interface PaletteToolSectionContributionProps {
+  canHandle: (representationElementIds: string[]) => boolean;
+  id: string;
+  label: string;
+}
+
+export interface PaletteToolSectionContributionComponentProps {
+  representationElementIds: string[];
+}

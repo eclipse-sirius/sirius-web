@@ -205,8 +205,6 @@ export const Palette = ({
               diagramElementId={diagramElementId}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
-              x={paletteX}
-              y={paletteY}
             />
             <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
             {state.searchToolValue.length > 0 ? (
