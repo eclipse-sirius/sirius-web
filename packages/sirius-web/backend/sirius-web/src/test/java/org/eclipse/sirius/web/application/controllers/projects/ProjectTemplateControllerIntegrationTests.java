@@ -133,7 +133,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), "Studio", StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID, List.of(StudioProjectTemplateProvider.STUDIO_NATURE));
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
@@ -167,7 +167,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), "Papaya - Performance", PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID, List.of(PapayaProjectTemplateProvider.PAPAYA_NATURE));
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");

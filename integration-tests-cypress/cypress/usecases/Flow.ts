@@ -38,7 +38,7 @@ export class Flow {
   }
 
   public createFlowProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('flow-template').then((res) => {
+    return cy.createProjectFromTemplate('Flow', 'flow-template', [Flow.FLOW_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;

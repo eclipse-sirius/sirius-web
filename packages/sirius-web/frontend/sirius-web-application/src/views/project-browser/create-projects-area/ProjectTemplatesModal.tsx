@@ -117,7 +117,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
           template={template}
           disabled={createProjectLoading}
           running={template === state.runningTemplate}
-          onCreateProject={() => createProjectFromTemplate(template.id)}
+          onCreateProject={() => createProjectFromTemplate(template.label, template.id, template.natures)}
           key={template.id}
         />
       ))

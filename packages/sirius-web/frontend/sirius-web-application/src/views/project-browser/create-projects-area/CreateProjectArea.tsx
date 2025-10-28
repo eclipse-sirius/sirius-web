@@ -65,7 +65,7 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
 
   const onCreateProject = (template: GQLProjectTemplate) => {
     if (!state.runningTemplate) {
-      createProjectFromTemplate(template.id);
+      createProjectFromTemplate(template.label, template.id, template.natures);
       setState((prevState) => ({ ...prevState, runningTemplate: template }));
     }
   };

@@ -33,11 +33,9 @@ public class LibraryPapayaTemplatesProvider implements IProjectTemplateProvider 
 
     public static final String PAPAYA_NATURE = "siriusComponents://nature?kind=papaya";
 
-    public static final String PAPAYA_PROJECT_NAME = "PapayaLibrary";
-
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var papayaTemplate = new ProjectTemplate(LIBRARY_PAPAYA_TEMPLATE_ID, PAPAYA_PROJECT_NAME, "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
+        var papayaTemplate = new ProjectTemplate(LIBRARY_PAPAYA_TEMPLATE_ID, "PapayaLibrary", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
         return List.of(papayaTemplate);
     }
 

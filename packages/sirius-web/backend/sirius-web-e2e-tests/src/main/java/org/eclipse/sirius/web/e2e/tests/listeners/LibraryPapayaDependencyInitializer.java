@@ -53,7 +53,7 @@ public class LibraryPapayaDependencyInitializer {
         // We cannot react to the creation of a project from a template (see #4674), so we react to the creation of a papaya project with the name provided by the template.
         if (semanticDataCreatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent
                 && projectCreatedEvent.project().getNatures().stream().anyMatch(nature -> Objects.equals(LibraryPapayaTemplatesProvider.PAPAYA_NATURE, nature.name()))
-                && Objects.equals(LibraryPapayaTemplatesProvider.PAPAYA_PROJECT_NAME, projectCreatedEvent.project().getName())) {
+                && Objects.equals("PapayaLibrary", projectCreatedEvent.project().getName())) {
             Optional<Library> optionalJavaLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
             optionalJavaLibrary.ifPresent(javaLibrary -> {
                 this.semanticDataUpdateService.addDependencies(semanticDataCreatedEvent, AggregateReference.to(semanticDataCreatedEvent.semanticData().getId()), List.of(javaLibrary.getSemanticData()));
