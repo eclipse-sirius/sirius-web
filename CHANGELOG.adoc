@@ -45,6 +45,8 @@ For now it consists only in adding missing attributes from `CreateProjectInput` 
 As described in ADR-211, the final purpose is to only have one way to create a project, and thus, only one input to create a project will remain.
 Updates the GraphQL schema and frontend hooks accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] The extension point for adding global actions to a table has been renamed from `settingButtonMenuEntryExtensionPoint` to `toolsButtonMenuEntryExtensionPoint`
+- https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Change the input to create a project and update the GraphQL schema accordingly.
+
 
 === Dependency update
 
@@ -77,8 +79,9 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5595[#5595] [sirius-web] Provide an API to compute the containment references to consider to duplicate objects instead of relying only on the metamodel.
 - https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
-- https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748] [sirius-web] Add support for choosing libraries to import when creating a project (does not add libraries without https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745])
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748] [sirius-web] Add support for choosing libraries to import when creating a project
+- https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Add support for importing libraries when creating a project.
+This will use a transactional event listener to add the dependency to the libraries in the project created.
 
 
 === Improvements
