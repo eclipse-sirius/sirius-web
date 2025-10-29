@@ -19,6 +19,7 @@ export interface CreateProjectInput {
   id: string;
   name: string;
   natures: string[];
+  libraryIds: string[];
 }
 
 export interface CreateProjectData {

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import graphql.relay.Relay;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -58,6 +57,8 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.relay.Relay;
 import reactor.test.StepVerifier;
 
 /**
@@ -331,7 +332,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the project is created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenProjectIsCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -397,7 +398,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the semantic data are created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
