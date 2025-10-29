@@ -36,6 +36,7 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Change the input to create a project and update the GraphQL schema accordingly.
 
 
 === Dependency update
@@ -67,6 +68,8 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5595[#5595] [sirius-web] Provide an API to compute the containment references to consider to duplicate objects instead of relying only on the metamodel.
 - https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
+- https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Add support for importing libraries when creating a project (Unable to choose libraries to import without https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748])
+Rely on a transactional event listener to add libraries in a project.
 
 
 === Improvements
