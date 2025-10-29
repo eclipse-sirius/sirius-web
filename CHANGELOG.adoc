@@ -113,7 +113,7 @@ An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
 - https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add a dependency to `spring-boot-starter-data-elasticsearch` in `sirius-web-infrastructure`
-
+- [releng] Switch to react-window 2.2.2.
 
 === Bug fixes
 
@@ -210,7 +210,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5558[#5558] [diagram] Prevent the node from overlapping its edge bend points
 - https://github.com/eclipse-sirius/sirius-web/issues/5635[#5635] [diagram] Improve the position of border nodes when they are used as edge handles
 - https://github.com/eclipse-sirius/sirius-web/issues/5821[#5821] [sirius-web] Provide a way to customize the tree displayed in the object duplication modal.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 
 == 2025.10.0
 

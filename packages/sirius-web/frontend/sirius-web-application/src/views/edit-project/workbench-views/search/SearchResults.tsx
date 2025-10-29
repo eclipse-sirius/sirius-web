@@ -17,8 +17,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { List as FixedSizeList, type RowComponentProps } from 'react-window';
 import { makeStyles } from 'tss-react/mui';
 import { SearchResultProps } from './SearchResult.types';
 import { GQLObject } from './useSearch.types';
@@ -37,7 +39,12 @@ const useSearchResultStyles = makeStyles()((theme) => ({
     gap: '10px',
     padding: '10px',
   },
-  matches: { overflow: 'auto' },
+  matches: {
+    overflow: 'auto',
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '1fr',
+  },
   matchItem: {
     cursor: 'pointer',
     '&:hover': {
@@ -82,8 +89,6 @@ const AgeIndicator = ({ timestamp }: { timestamp: number }) => {
 
 export const SearchResults = ({ loading, query, result, timestamp }: SearchResultProps) => {
   const { classes } = useSearchResultStyles();
-  const { setSelection } = useSelection();
-  const { selectionTargets } = useSelectionTargets();
 
   const matches = result?.matches || [];
 
@@ -117,6 +122,22 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
     );
   }
 
+  return (
+    <div className={classes.results} data-role="result">
+      <div className={classes.statusMessage}>{status}</div>
+      <List dense disablePadding className={classes.matches} data-testid="search-matches">
+        {matches.length > 0 ? (
+          <FixedSizeList rowComponent={MatchRow} rowProps={{ matches }} rowCount={matches.length} rowHeight={34} />
+        ) : null}
+      </List>
+    </div>
+  );
+};
+
+const MatchRow = ({ matches, index, style }: RowComponentProps<{ matches: GQLObject[] }>) => {
+  const { setSelection } = useSelection();
+  const { selectionTargets } = useSelectionTargets();
+
   const onMatchSelected = (match: GQLObject) => {
     const newSelection = { entries: [{ id: match.id }] };
     setSelection(newSelection);
@@ -127,21 +148,28 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
     });
   };
 
+  const matchItemStyle: SxProps<Theme> = (theme) => ({
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  });
+
+  const matchedObject = matches[index];
   return (
-    <div className={classes.results}>
-      <div className={classes.statusMessage}>{status}</div>
-      {matches ? (
-        <List dense disablePadding className={classes.matches} data-testid="search-matches">
-          {matches.map((matchedObject, index) => (
-            <ListItem key={index} className={classes.matchItem} onClick={() => onMatchSelected(matchedObject)}>
-              <ListItemIcon>
-                <IconOverlay iconURLs={matchedObject.iconURLs} alt="Icon of the object" />
-              </ListItemIcon>
-              <ListItemText primary={matchedObject.label} />
-            </ListItem>
-          ))}
-        </List>
-      ) : null}
-    </div>
+    <ListItem key={index} style={style} sx={matchItemStyle} onClick={() => onMatchSelected(matchedObject)}>
+      <ListItemIcon sx={{ minWidth: '24px' }}>
+        <IconOverlay iconURLs={matchedObject.iconURLs} alt="Icon of the object" />
+      </ListItemIcon>
+      <ListItemText
+        primary={matchedObject.label}
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          maxWidth: '100ch',
+        }}
+      />
+    </ListItem>
   );
 };
