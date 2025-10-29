@@ -26,8 +26,8 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getInsideLabelWidthConstraint,
   getHeaderHeightFootprint,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -135,7 +135,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
 
-    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+    const previousNode: Node<NodeData, string | undefined> | undefined = (previousDiagram?.nodes ?? []).find(
       (previouseNode) => previouseNode.id === node.id
     );
 

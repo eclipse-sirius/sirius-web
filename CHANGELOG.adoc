@@ -44,6 +44,7 @@ The code responsible for the import has been refactor with:
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
+- [releng] Switch to @xyflow/react 12.8.2
 
 
 === Bug fixes
