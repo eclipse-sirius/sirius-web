@@ -36,14 +36,10 @@ export interface ExpressionAreaHandle {
 export interface ResultAreaProps {
   loading: boolean;
   payload: GQLEvaluateExpressionSuccessPayload | null;
-  height: number | null;
-  width: number | null;
 }
 
 export interface ExpressionResultViewerProps {
   result: GQLExpressionResult;
-  height: number | null;
-  width: number | null;
 }
 
 export interface ExportResultButtonProps {

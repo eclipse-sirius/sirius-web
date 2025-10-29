@@ -43,7 +43,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { List as FixedSizeList, RowComponentProps } from 'react-window';
 import { makeStyles } from 'tss-react/mui';
 import { useCurrentProject } from '../../useCurrentProject';
 import { SynchronizationButton } from '../SynchronizationButton';
@@ -60,6 +60,7 @@ import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
   GQLIntExpressionResult,
+  GQLObject,
   GQLObjectExpressionResult,
   GQLObjectsExpressionResult,
   GQLStringExpressionResult,
@@ -67,7 +68,6 @@ import {
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
-import { useResultAreaSize } from './useResultAreaSize';
 
 const useQueryViewStyles = makeStyles()((theme) => ({
   view: {
@@ -92,6 +92,9 @@ const useQueryViewStyles = makeStyles()((theme) => ({
   },
   content: {
     overflow: 'auto',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
   },
 }));
 
@@ -105,6 +108,7 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       flexDirection: 'column',
       gap: theme.spacing(2),
       paddingX: theme.spacing(1),
+      overflow: 'auto',
     });
 
     const [state, setState] = useState<QueryViewState>({
@@ -134,8 +138,6 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
     const { evaluateExpression, loading, result } = useEvaluateExpression(state.objectIds);
     const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
 
-    const { ref: resultAreaRef, width, height } = useResultAreaSize();
-
     const initialQueryViewConfiguration: QueryViewConfiguration =
       initialConfiguration as unknown as QueryViewConfiguration;
     const initialQueryText = initialQueryViewConfiguration?.queryText ?? null;
@@ -148,7 +150,7 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
     );
 
     const contents: JSX.Element = (
-      <Box data-representation-kind="query" sx={queryViewStyle} ref={resultAreaRef}>
+      <Box data-representation-kind="query" sx={queryViewStyle}>
         <ExpressionArea
           editingContextId={editingContextId}
           initialQueryText={initialQueryText}
@@ -156,7 +158,7 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
           disabled={loading || readOnly}
           ref={expressionAreaRef}
         />
-        <ResultArea loading={loading} payload={result} width={width} height={height} />
+        <ResultArea loading={loading} payload={result} />
       </Box>
     );
     return (
@@ -254,11 +256,11 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
     minWidth: '0px',
   });
   return (
-    <Box>
+    <Box sx={{ overflow: 'auto' }}>
       <Typography variant="body2" gutterBottom>
         One object has been returned
       </Typography>
-      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1), overflow: 'auto' })}>
         <List dense>
           <ListItem sx={listItemStyle}>
             <ListItemIcon sx={listItemIconStyle}>
@@ -275,7 +277,7 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   );
 };
 
-const ObjectRow = ({ data, index, style }: ListChildComponentProps) => {
+const ObjectRow = ({ data, index, style }: RowComponentProps<{ data: GQLObject[] }>) => {
   const listItemStyle: SxProps<Theme> = (theme) => ({
     gap: theme.spacing(2),
   });
@@ -295,7 +297,7 @@ const ObjectRow = ({ data, index, style }: ListChildComponentProps) => {
   );
 };
 
-const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResultViewerProps) => {
+const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   if (result.__typename !== 'ObjectsExpressionResult') {
     return null;
   }
@@ -305,23 +307,29 @@ const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResu
   const listStyle: SxProps<Theme> = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     marginBottom: '1px',
+    overflow: 'auto',
   });
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
       <Typography variant="body2" gutterBottom>
         A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
       </Typography>
-      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+      <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(1),
+          paddingBottom: theme.spacing(1),
+          overflow: 'auto',
+        })}>
         <List dense disablePadding sx={listStyle}>
           <FixedSizeList
-            height={height}
-            width={width}
-            itemData={objectsValue}
-            itemCount={objectsValue.length}
-            itemSize={34}>
-            {ObjectRow}
-          </FixedSizeList>
+            rowComponent={ObjectRow}
+            rowProps={{ data: objectsValue }}
+            rowCount={objectsValue.length}
+            rowHeight={34}
+          />
         </List>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <ExportResultButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
@@ -351,7 +359,7 @@ const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   );
 };
 
-const StringRow = ({ data, index, style }: ListChildComponentProps) => {
+const StringRow = ({ data, index, style }: RowComponentProps<{ data: string[] }>) => {
   const listItemStyle: SxProps<Theme> = (theme) => ({
     gap: theme.spacing(2),
   });
@@ -365,7 +373,7 @@ const StringRow = ({ data, index, style }: ListChildComponentProps) => {
   );
 };
 
-const StringsExpressionResultViewer = ({ result, width, height }: ExpressionResultViewerProps) => {
+const StringsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   if (result.__typename !== 'StringsExpressionResult') {
     return null;
   }
@@ -383,13 +391,11 @@ const StringsExpressionResultViewer = ({ result, width, height }: ExpressionResu
       </Typography>
       <List dense disablePadding sx={listStyle}>
         <FixedSizeList
-          height={height}
-          width={width}
-          itemData={stringsValue}
-          itemCount={stringsValue.length}
-          itemSize={34}>
-          {StringRow}
-        </FixedSizeList>
+          rowComponent={StringRow}
+          rowProps={{ data: stringsValue }}
+          rowCount={stringsValue.length}
+          rowHeight={34}
+        />
       </List>
     </Box>
   );
@@ -484,7 +490,7 @@ const LoadingViewer = () => {
   );
 };
 
-const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
+const ResultArea = ({ loading, payload }: ResultAreaProps) => {
   const resultAreaToolbarStyle: SxProps<Theme> = {
     display: 'flex',
     flexDirection: 'row',
@@ -503,14 +509,14 @@ const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
   } else if (payload) {
     const Viewer = resultType2viewer[payload.result.__typename];
     if (Viewer) {
-      content = <Viewer result={payload.result} width={width} height={height} />;
+      content = <Viewer result={payload.result} />;
     } else {
       content = <Typography variant="body2">The expression has returned a result that is not supported</Typography>;
     }
   }
 
   return (
-    <div data-role="result">
+    <div data-role="result" style={{ overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
       <Box sx={resultAreaToolbarStyle}>
         <Box sx={titleAreaStyle}>
           <Typography variant="subtitle2">Evaluation result</Typography>

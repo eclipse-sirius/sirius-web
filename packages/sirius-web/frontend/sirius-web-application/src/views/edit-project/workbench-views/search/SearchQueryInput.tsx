@@ -66,7 +66,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
   };
 
   return (
-    <Box>
+    <Box data-role="query">
       <Box sx={{ padding: theme.spacing(1) }}>
         <TextField
           value={state.text}
