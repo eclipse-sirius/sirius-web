@@ -108,7 +108,7 @@ This mechanisms was previously used to provide the menu entry to update/remove a
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0].
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
 - https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add a dependency to `spring-boot-starter-data-elasticsearch` in `sirius-web-infrastructure`
-
+- [releng] Switch to react-window 2.2.2.
 
 === Bug fixes
 
@@ -195,8 +195,7 @@ This will allow to integrate the command palette in other contexts than the work
 As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5702[#5702] [table] Improve the rendering of components used in table cells
 - https://github.com/eclipse-sirius/sirius-web/issues/5788[#5788] [sirius-web] Add resource changes in the impact analysis tree.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 
 
 == 2025.10.0
