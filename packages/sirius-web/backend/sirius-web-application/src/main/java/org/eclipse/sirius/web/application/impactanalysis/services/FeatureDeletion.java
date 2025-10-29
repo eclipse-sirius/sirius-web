@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.web.application.impactanalysis.services;
 
-import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.datatree.DataTree;
+import org.eclipse.emf.ecore.EObject;
 
 /**
- * Report with data to display an impact analysis.
+ * Represents the deletion of a value in an object's feature.
  *
- * @author frouene
+ * @author gdaniel
  */
-public record ImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports, DataTree impactTree) {
+public record FeatureDeletion(EObject source, String feature, Object oldValue) {
 
-    public ImpactAnalysisReport {
-        Objects.requireNonNull(additionalReports);
-        Objects.requireNonNull(impactTree);
+    public FeatureDeletion {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(feature);
+        Objects.requireNonNull(oldValue);
     }
 
 }

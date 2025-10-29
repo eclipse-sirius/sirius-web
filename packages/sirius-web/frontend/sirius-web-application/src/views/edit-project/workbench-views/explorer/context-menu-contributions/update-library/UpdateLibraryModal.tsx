@@ -21,7 +21,7 @@ import { UpdateLibraryModalProps, UpdateLibraryModalState } from './UpdateLibrar
 import { UpdateLibraryTable } from './UpdateLibraryTable';
 import { useUpdateLibrary } from './useUpdateLibrary';
 import { useInvokeImpactAnalysis } from './useUpdateLibraryImpactAnalysis';
-import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-core';
+import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { GQLInvokeImpactAnalysisVariables } from './useUpdateLibraryImpactAnalysis.types';
 
 export const UpdateLibraryModal = ({

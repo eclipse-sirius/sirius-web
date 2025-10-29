@@ -12,14 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -35,7 +31,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
-import org.eclipse.sirius.web.application.impactanalysis.services.api.IImpactAnalysisMessageService;
+import org.eclipse.sirius.web.application.impactanalysis.services.api.ITreeImpactAnalysisReportProvider;
 import org.eclipse.sirius.web.application.library.dto.InvokeUpdateLibraryImpactAnalysisInput;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -58,16 +54,16 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
 
     private final IEditingContextSnapshotService editingContextSnapshotService;
 
-    private final IImpactAnalysisMessageService impactAnalysisMessageService;
+    private final ITreeImpactAnalysisReportProvider treeImpactAnalysisReportProvider;
 
     private final IMessageService messageService;
 
     private final Counter counter;
 
-    public InvokeUpdateLibraryImpactAnalysisHandler(IUpdateLibraryExecutor updateLibraryExecutor, IEditingContextSnapshotService editingContextSnapshotService, IImpactAnalysisMessageService impactAnalysisMessageService, IMessageService messageService, MeterRegistry meterRegistry) {
+    public InvokeUpdateLibraryImpactAnalysisHandler(IUpdateLibraryExecutor updateLibraryExecutor, IEditingContextSnapshotService editingContextSnapshotService, ITreeImpactAnalysisReportProvider treeImpactAnalysisReportProvider, IMessageService messageService, MeterRegistry meterRegistry) {
         this.updateLibraryExecutor = Objects.requireNonNull(updateLibraryExecutor);
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
-        this.impactAnalysisMessageService = Objects.requireNonNull(impactAnalysisMessageService);
+        this.treeImpactAnalysisReportProvider = Objects.requireNonNull(treeImpactAnalysisReportProvider);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -91,16 +87,21 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
         if (input instanceof InvokeUpdateLibraryImpactAnalysisInput invokeUpdateLibraryImpactAnalysisInput && editingContext instanceof EditingContext siriusWebEditingContext) {
             var editingContextSnapshot = this.editingContextSnapshotService.createSnapshot(siriusWebEditingContext);
             if (editingContextSnapshot.isPresent()) {
+                ChangeRecorder changeRecorder = siriusWebEditingContext.getChangeRecorder();
+                changeRecorder.beginRecording(siriusWebEditingContext.getDomain().getResourceSet().getResources());
 
                 IStatus updateLibraryResult = this.updateLibraryExecutor.updateLibrary(invokeUpdateLibraryImpactAnalysisInput, siriusWebEditingContext, invokeUpdateLibraryImpactAnalysisInput.libraryId());
 
+                var diff = changeRecorder.summarize();
+                changeRecorder.endRecording();
+
                 if (updateLibraryResult instanceof Success success) {
-                    Map<EObject, Collection<Setting>> removedProxies = (Map<EObject, Collection<Setting>>) success.getParameters().get(UpdateLibraryExecutor.REMOVED_PROXIES_PARAMETER_KEY);
-
-                    List<String> messages = new ArrayList<>();
-                    messages.addAll(this.impactAnalysisMessageService.getUnresolvedProxyMessages(removedProxies));
-
-                    payload = new InvokeImpactAnalysisSuccessPayload(input.id(), new ImpactAnalysisReport(0, 0, 0, messages), success.getMessages());
+                    Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.treeImpactAnalysisReportProvider.getReport(editingContext, diff, success);
+                    if (optionalImpactAnalysisReport.isPresent()) {
+                        payload = new InvokeImpactAnalysisSuccessPayload(input.id(), optionalImpactAnalysisReport.get(), success.getMessages());
+                    } else {
+                        payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+                    }
                 } else if (updateLibraryResult instanceof Failure failure) {
                     payload = new ErrorPayload(invokeUpdateLibraryImpactAnalysisInput.id(), failure.getMessages());
                 }

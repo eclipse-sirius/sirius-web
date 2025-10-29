@@ -27,6 +27,7 @@ import { SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import { ImpactAnalysisDialogProps, ReportViewerProps } from './ImpactAnalysisDialog.types';
+import { DataTree } from '@eclipse-sirius/sirius-components-datatree';
 
 const useImpactAnalysisDialogStyles = makeStyles()((theme: Theme) => ({
   title: {
@@ -76,6 +77,7 @@ export const ImpactAnalysisDialog = ({
             nbElementDeleted={impactAnalysisReport.nbElementDeleted}
             nbElementModified={impactAnalysisReport.nbElementModified}
             additionalReports={impactAnalysisReport.additionalReports}
+            impactTree={impactAnalysisReport.impactTree}
             label={label}
           />
         ) : (
@@ -102,6 +104,7 @@ const ReportViewer = ({
   nbElementDeleted,
   nbElementModified,
   additionalReports,
+  impactTree,
   label,
 }: ReportViewerProps) => {
   const listStyle: SxProps<Theme> = {
@@ -166,6 +169,7 @@ const ReportViewer = ({
             );
           })}
       </List>
+      <DataTree dataTree={impactTree} />
       <Typography>Are you sure you want to proceed?</Typography>
     </Box>
   );

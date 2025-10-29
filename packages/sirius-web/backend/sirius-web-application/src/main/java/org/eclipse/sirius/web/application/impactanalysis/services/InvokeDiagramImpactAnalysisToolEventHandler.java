@@ -12,12 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.impactanalysis.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -39,8 +36,12 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
+import org.eclipse.sirius.web.application.impactanalysis.services.api.IDiagramImpactAnalysisReportProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -58,12 +59,15 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
     private final IToolDiagramExecutor toolDiagramExecutor;
 
+    private final IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider;
+
     private final Counter counter;
 
-    public InvokeDiagramImpactAnalysisToolEventHandler(IResourceLoader resourceLoader, IResourceToDocumentService resourceToDocumentService, IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService, IToolDiagramExecutor toolDiagramExecutor, MeterRegistry meterRegistry) {
+    public InvokeDiagramImpactAnalysisToolEventHandler(IResourceLoader resourceLoader, IResourceToDocumentService resourceToDocumentService, IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService, IToolDiagramExecutor toolDiagramExecutor, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
         this.messageService = Objects.requireNonNull(messageService);
         this.toolDiagramExecutor = Objects.requireNonNull(toolDiagramExecutor);
+        this.diagramImpactAnalysisReportProvider = Objects.requireNonNull(diagramImpactAnalysisReportProvider);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -96,24 +100,18 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
                 var diff = siriusEditingContext.getChangeRecorder().summarize();
                 siriusEditingContext.getChangeRecorder().endRecording();
 
-                this.editingContextSnapshotService.restoreSnapshot(siriusEditingContext, editingContextSnapshot.get());
-
                 if (toolExecutionResult instanceof Success success) {
-                    List<String> additionalReports = new ArrayList<>();
-                    if (success.getParameters().get("viewCreationRequests") instanceof List<?> viewCreationRequestsList && !viewCreationRequestsList.isEmpty()) {
-                        additionalReports.add("Views added: " + viewCreationRequestsList.size());
+                    Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.diagramImpactAnalysisReportProvider.getReport(editingContext, diff, success);
+                    if (optionalImpactAnalysisReport.isPresent()) {
+                        payload = new InvokeImpactAnalysisSuccessPayload(diagramInput.id(), optionalImpactAnalysisReport.get(), success.getMessages());
+                        changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
+                    } else {
+                        payload = new ErrorPayload(diagramInput.id(), this.messageService.unexpectedError());
                     }
-                    if (success.getParameters()
-                            .get("viewDeletionRequests") instanceof List<?> viewDeletionRequestsList && !viewDeletionRequestsList.isEmpty()) {
-                        additionalReports.add("Views deleted: " + viewDeletionRequestsList.size());
-                    }
-                    payload = new InvokeImpactAnalysisSuccessPayload(invokeImpactAnalysisToolInput.id(),
-                            new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), additionalReports),
-                            success.getMessages());
-                    changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
                 } else if (toolExecutionResult instanceof Failure failure) {
                     payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                 }
+                this.editingContextSnapshotService.restoreSnapshot(siriusEditingContext, editingContextSnapshot.get());
             } else {
                 payload = new ErrorPayload(diagramInput.id(), this.messageService.unexpectedError());
             }
