@@ -11,15 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - animation', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('flow-template');
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/`);
@@ -32,7 +32,7 @@ test.describe('diagram - animation', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when a new element is add to an empty digram, then the view port keep the same zoom level', async ({
+  test('when a new element is add to an empty diagram, then the view port keep the same zoom level', async ({
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);

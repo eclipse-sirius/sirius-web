@@ -16,8 +16,8 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 
 import {
-  GQLgetProjectTemplatesQueryData,
-  GQLgetProjectTemplatesQueryVariables,
+  GQLGetProjectTemplatesQueryData,
+  GQLGetProjectTemplatesQueryVariables,
   ProjectTemplateContext,
   UseProjectTemplatesValue,
 } from './useProjectTemplates.types';
@@ -31,6 +31,7 @@ export const getProjectTemplatesQuery = gql`
             id
             label
             imageURL
+            natures
           }
         }
         pageInfo {
@@ -49,12 +50,12 @@ export const useProjectTemplates = (
   context: ProjectTemplateContext,
   skip?: boolean
 ): UseProjectTemplatesValue => {
-  const variables: GQLgetProjectTemplatesQueryVariables = {
+  const variables: GQLGetProjectTemplatesQueryVariables = {
     page,
     limit,
     context,
   };
-  const { data, loading, error } = useQuery<GQLgetProjectTemplatesQueryData, GQLgetProjectTemplatesQueryVariables>(
+  const { data, loading, error } = useQuery<GQLGetProjectTemplatesQueryData, GQLGetProjectTemplatesQueryVariables>(
     getProjectTemplatesQuery,
     { variables, skip }
   );

@@ -35,12 +35,14 @@ public class PapayaProjectTemplateProvider implements IProjectTemplateProvider {
 
     public static final String PAPAYA_NATURE = "siriusComponents://nature?kind=papaya";
 
+    public static final String BENCHMARK_PROJECT_TEMPLATE_NAME = "Papaya - Performance";
+
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         return List.of(
                 new ProjectTemplate(EMPTY_PROJECT_TEMPLATE_ID, "Papaya - Blank", "/project-templates/Retro-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
                 new ProjectTemplate(SIRIUS_WEB_PROJECT_TEMPLATE_ID, "Papaya - Example", "/project-templates/Smart-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
-                new ProjectTemplate(BENCHMARK_PROJECT_TEMPLATE_ID, "Papaya - Performance", "/project-templates/Cosmic-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)))
+                new ProjectTemplate(BENCHMARK_PROJECT_TEMPLATE_ID, BENCHMARK_PROJECT_TEMPLATE_NAME, "/project-templates/Cosmic-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)))
         );
     }
 }

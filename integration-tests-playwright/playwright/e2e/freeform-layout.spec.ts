@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - freeform layout', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('papaya-empty');
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Papaya - Blank', 'papaya-empty', [PlaywrightProject.PAPAYA_NATURE]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);
@@ -35,14 +35,14 @@ test.describe('diagram - freeform layout', () => {
 
   test('when a freeform node has children, then there is padding on the left and bottom', async ({ page }) => {
     const applicationLayerNode = new PlaywrightNode(page, 'Application Concern', 'FreeForm', 1);
-    const controlerNode = new PlaywrightNode(page, 'Controller');
+    const controllerNode = new PlaywrightNode(page, 'Controller');
 
     const applicationLayerSize = await applicationLayerNode.getReactFlowSize();
-    const controlerSize = await controlerNode.getReactFlowSize();
-    const controlerPosition = await controlerNode.getReactFlowXYPosition();
+    const controllerSize = await controllerNode.getReactFlowSize();
+    const controllerPosition = await controllerNode.getReactFlowXYPosition();
     const nodePadding = 8;
 
-    expect(applicationLayerSize.height).toBe(controlerPosition.y + controlerSize.height + nodePadding);
-    expect(controlerPosition.x).toBe(nodePadding);
+    expect(applicationLayerSize.height).toBe(controllerPosition.y + controllerSize.height + nodePadding);
+    expect(controllerPosition.x).toBe(nodePadding);
   });
 });

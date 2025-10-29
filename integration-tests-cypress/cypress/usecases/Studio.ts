@@ -22,7 +22,7 @@ export class Studio {
   static readonly STUDIO_NATURE = 'siriusComponents://nature?kind=studio';
 
   public createStudioProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('studio-template').then((res) => {
+    return cy.createProjectFromTemplate('Studio', 'studio-template', [Studio.STUDIO_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;
@@ -35,7 +35,7 @@ export class Studio {
   }
 
   public createBlankStudioProjectWithView(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('blank-studio-template').then((res) => {
+    return cy.createProjectFromTemplate('Blank Studio', 'blank-studio-template', [Studio.STUDIO_NATURE]).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;

@@ -15,7 +15,9 @@ export interface CreateProjectFromTemplateVariables {}
 
 export interface CreateProjectFromTemplateInput {
   id: string;
+  name: string;
   templateId: string;
+  natures: string[];
 }
 
 export interface CreateProjectFromTemplateData {

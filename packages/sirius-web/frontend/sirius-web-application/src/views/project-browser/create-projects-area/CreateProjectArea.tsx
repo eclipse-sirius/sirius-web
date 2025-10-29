@@ -13,8 +13,8 @@
 
 import { useComponents } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaProps, CreateProjectAreaState } from './CreateProjectArea.types';
 import { createProjectAreaCardExtensionPoint } from './CreateProjectAreaExtensionPoints';
@@ -48,6 +48,7 @@ const useCreateProjectAreaStyles = makeStyles()((theme) => ({
 
 export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
   const { classes } = useCreateProjectAreaStyles();
+  const navigate = useNavigate();
 
   const createProjectAreaCards = useComponents(createProjectAreaCardExtensionPoint);
 
@@ -65,17 +66,17 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
 
   const onCreateProject = (template: GQLProjectTemplate) => {
     if (!state.runningTemplate) {
-      createProjectFromTemplate(template.id);
+      createProjectFromTemplate(template.label, template.id, template.natures);
       setState((prevState) => ({ ...prevState, runningTemplate: template }));
     }
   };
 
-  const redirectUrl: string | null = projectCreatedFromTemplate
-    ? redirectUrlFromTemplate(projectCreatedFromTemplate)
-    : null;
-  if (redirectUrl) {
-    return <Navigate to={redirectUrl} replace />;
-  }
+  useEffect(() => {
+    if (projectCreatedFromTemplate) {
+      const newUrl = redirectUrlFromTemplate(projectCreatedFromTemplate);
+      navigate(newUrl, { replace: true });
+    }
+  }, [projectCreatedFromTemplate]);
 
   return (
     <>
