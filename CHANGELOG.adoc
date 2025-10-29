@@ -91,6 +91,10 @@ This will use a transactional event listener to add the dependency to the librar
 Models are asynchronously indexed in Elasticsearch, which will allow advanced and cross-project search in the future.
 This feature is opt-in: Sirius Web won't try to index models if it is not configured to do so.
 You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure Sirius Web with Elasticsearch
+- https://github.com/eclipse-sirius/sirius-web/issues/5743[#5743] [datatree] Add support for data trees.
+A new module `sirius-components-datatree` has been created to:
+* Define data trees in the backend
+* Display data trees in the frontend (component `DataTree`) 
 
 
 === Improvements

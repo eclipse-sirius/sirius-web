@@ -1,0 +1,12 @@
+type DataTree {
+  id: ID!
+  nodes: [DataTreeNode!]!
+}
+
+type DataTreeNode {
+  id: ID!
+  parentId: ID
+  label: StyledString!
+  iconURLs: [String!]!
+  endIconsURLs: [[String!]!]!
+}
