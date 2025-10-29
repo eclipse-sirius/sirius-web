@@ -91,6 +91,7 @@ export class PlaywrightProject {
         id: crypto.randomUUID(),
         name: projectName,
         natures: [],
+        libraryIds: []
       },
     };
     const response = await this.request.post('http://localhost:8080/api/graphql', {

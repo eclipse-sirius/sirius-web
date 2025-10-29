@@ -12,4 +12,6 @@
  *******************************************************************************/
 export interface NewProjectViewState {
   name: string;
+  librariesImportOpen: boolean;
+  selectedLibraries: string[];
 }
