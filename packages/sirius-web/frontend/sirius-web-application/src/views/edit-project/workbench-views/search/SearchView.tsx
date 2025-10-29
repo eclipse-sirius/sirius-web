@@ -16,6 +16,7 @@ import { makeStyles } from 'tss-react/mui';
 import { SearchQueryInput } from './SearchQueryInput';
 import { SearchResults } from './SearchResults';
 import { SearchViewState } from './SearchView.types';
+import { useResultAreaSize } from './useResultAreaSize';
 import { useSearch } from './useSearch';
 import { GQLSearchPayload, GQLSearchSuccessPayload } from './useSearch.types';
 import { useSearchViewHandle } from './useSearchViewHandle';
@@ -57,8 +58,10 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
       }
     }, [loading, data]);
 
+    const { ref: resultAreaRef, width, height } = useResultAreaSize();
+
     return (
-      <div className={classes.view} data-representation-kind="search-view">
+      <div className={classes.view} data-representation-kind="search-view" ref={resultAreaRef}>
         <SearchQueryInput
           onLaunchSearch={(newQuery) => {
             setState((prevState) => ({ ...prevState, query: newQuery }));
@@ -70,6 +73,8 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
           loading={loading}
           query={state.query}
           result={state.result}
+          width={width}
+          height={height}
           timestamp={state.resultsReceivedTimestamp}
         />
       </div>

@@ -11,13 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSearchResult, SearchQuery } from './useSearch.types';
+import { MutableRefObject } from 'react';
 
-export interface SearchResultProps {
-  loading: boolean;
-  query: SearchQuery | null;
-  result: GQLSearchResult | null;
-  width: number | null;
+export interface UseResultAreaSizeValue {
+  ref: MutableRefObject<HTMLDivElement | null>;
   height: number | null;
-  timestamp: number | null;
+  width: number | null;
+}
+
+export interface UseResultAreaSizeState {
+  height: number | null;
+  width: number | null;
 }
