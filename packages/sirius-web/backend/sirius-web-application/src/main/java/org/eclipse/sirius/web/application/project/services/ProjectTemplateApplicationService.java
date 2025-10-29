@@ -149,7 +149,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
                     .map(ProjectTemplateNature::id)
                     .toList();
 
-            var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), projectTemplate.label(), natures));
+            var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), projectTemplate.label(), natures, List.of()));
             if (projectCreationPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
                 var projectId = createProjectSuccessPayload.project().id();
                 payload = this.templateBasedProjectInitializer.initializeProjectFromTemplate(input, projectId, input.templateId());

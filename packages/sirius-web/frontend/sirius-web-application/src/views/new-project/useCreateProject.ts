@@ -53,11 +53,12 @@ export const useCreateProject = (): UseCreateProjectValue => {
     GQLCreateProjectMutationVariables
   >(createProjectMutation);
 
-  const createProject = (name: string, natures: string[]) => {
+  const createProject = (name: string, natures: string[], libraryIds: string[]) => {
     const input: GQLCreateProjectMutationInput = {
       id: crypto.randomUUID(),
       name,
       natures,
+      libraryIds,
     };
     rawCreateProject({ variables: { input } });
   };

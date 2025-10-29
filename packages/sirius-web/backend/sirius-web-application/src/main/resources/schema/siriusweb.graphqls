@@ -82,6 +82,7 @@ input CreateProjectInput {
   id: ID!
   name: String!
   natures: [String!]!
+  libraryIds: [String!]!
 }
 
 union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload

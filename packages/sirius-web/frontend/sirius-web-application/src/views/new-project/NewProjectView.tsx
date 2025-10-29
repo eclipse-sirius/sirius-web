@@ -12,8 +12,13 @@
  *******************************************************************************/
 
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
 import Container from '@mui/material/Container';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -22,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { LibrariesImportTable } from '../../omnibox/LibrariesImportTable';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { NewProjectViewState } from './NewProjectView.types';
 import { useCreateProject } from './useCreateProject';
@@ -72,6 +78,8 @@ export const NewProjectView = () => {
 
   const [state, setState] = useState<NewProjectViewState>({
     name: '',
+    librariesImportOpen: false,
+    selectedLibraries: [],
   });
 
   const {
@@ -93,9 +101,23 @@ export const NewProjectView = () => {
     }));
   };
 
-  const onCreateNewProject = (event) => {
+  const onCreateNewProject: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    createProject(state.name.trim(), []);
+    createProject(state.name.trim(), [], state.selectedLibraries);
+  };
+
+  const toggleLibrariesImport: React.MouseEventHandler<HTMLDivElement> = () => {
+    setState((prevState) => ({
+      ...prevState,
+      librariesImportOpen: !prevState.librariesImportOpen,
+    }));
+  };
+
+  const onSelectedLibrariesChange = (selectedLibraryIds: string[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      selectedLibraries: selectedLibraryIds,
+    }));
   };
 
   useEffect(() => {
@@ -116,7 +138,7 @@ export const NewProjectView = () => {
       <div className={classes.newProjectView}>
         <NavigationBar />
         <main className={classes.main}>
-          <Container maxWidth="sm">
+          <Container maxWidth="lg">
             <div className={classes.newProjectViewContainer}>
               <div className={classes.titleContainer}>
                 <Typography variant="h2" align="center" gutterBottom>
@@ -144,6 +166,42 @@ export const NewProjectView = () => {
                     autoFocus={true}
                     onChange={onNameChange}
                   />
+                  <List dense>
+                    <ListItemButton onClick={toggleLibrariesImport} disableGutters>
+                      <ListItemText
+                        sx={(theme) => ({
+                          display: 'flex',
+                          flexDirection: 'row',
+                          columnGap: theme.spacing(0.5),
+                          alignItems: 'center',
+                        })}
+                        slots={{
+                          primary: Typography,
+                        }}
+                        slotProps={{
+                          primary: { variant: 'h6' },
+                        }}
+                        primary="Libraries"
+                        secondary="(Optional)"
+                      />
+                      {state.librariesImportOpen ? (
+                        <ExpandLess
+                          sx={(theme) => ({
+                            color: theme.palette.text.secondary,
+                          })}
+                        />
+                      ) : (
+                        <ExpandMore
+                          sx={(theme) => ({
+                            color: theme.palette.text.secondary,
+                          })}
+                        />
+                      )}
+                    </ListItemButton>
+                    <Collapse in={state.librariesImportOpen} timeout="auto">
+                      <LibrariesImportTable onSelectedLibrariesChange={onSelectedLibrariesChange} />
+                    </Collapse>
+                  </List>
                   <div className={classes.buttons}>
                     <Button
                       variant="contained"
