@@ -1,0 +1,49 @@
+= ADR-215 - Add support for data trees
+
+== Context
+
+In various places, we want (or will want) to display static trees computed by the backend.
+This is the case in the impact analysis, and could be the case in the search view.
+We want to have an off-the-shelf solution we can reuse to construct and display these trees.
+
+== Decision
+
+We will create a new package `sirius-components-datatree` to hold the backend and frontend code of this new feature.
+
+This package should be independent of the context where the data trees will be displayed (e.g. no reference to impact analysis information).
+
+We will create a GraphQL schema `datatree.graphqls` with the relevant records in the backend:
+
+[source, graphqls]
+----
+type DataTree {
+  id: ID!
+  label: String!
+  iconURLs: [String!]!
+  nodes: [DataTreeNode!]!
+}
+
+type DataTreeNode {
+  id: ID!
+  parentId: ID
+  label: StyledString!
+  iconURLs: [String!]!
+  endIconsURLs: [[String!]!]!
+}
+----
+
+We will create a `DataTree` component in the frontend that can display such data.
+The `DataTree` component will be a simplified version of the `TreePropertySection` already defined in the `forms` package.
+
+== Consequences
+
+It will be possible to integrate data trees where needed in Sirius Web.
+For example, the impact analysis APIs could integrate it to display the impacts of a change as a tree.
+
+In the frontend, `sirius-components-datatree` will have a dependency to `sirius-components-core` (to display `StyledLabel`).
+This implies that code in `sirius-components-core` won't be able to depend on `sirius-components-datatree` to avoid circular dependencies.
+It may be necessary to move some code where we want to use data trees to break this circular dependency (e.g. the impact analysis code should be moved to `core/sirius-components-impactanalysis`).
+
+== Status
+
+Proposed.
