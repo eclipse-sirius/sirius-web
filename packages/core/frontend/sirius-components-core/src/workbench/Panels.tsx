@@ -273,7 +273,12 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
               <PanelGroup direction="vertical">
                 {leftSelectedContributions.map((leftContribution, index) => (
                   <>
-                    <Panel key={leftContribution.id} className={classes.panel} minSize={10}>
+                    <Panel
+                      id={leftContribution.id}
+                      key={leftContribution.id}
+                      order={index}
+                      className={classes.panel}
+                      minSize={10}>
                       <WorkbenchPart
                         editingContextId={editingContextId}
                         readOnly={readOnly}
@@ -325,7 +330,12 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
               <PanelGroup direction="vertical">
                 {rightSelectedContributions.map((rightContribution, index) => (
                   <>
-                    <Panel key={rightContribution.id} className={classes.panel} minSize={10}>
+                    <Panel
+                      id={rightContribution.id}
+                      key={rightContribution.id}
+                      order={index}
+                      className={classes.panel}
+                      minSize={10}>
                       <WorkbenchPart
                         editingContextId={editingContextId}
                         readOnly={readOnly}
