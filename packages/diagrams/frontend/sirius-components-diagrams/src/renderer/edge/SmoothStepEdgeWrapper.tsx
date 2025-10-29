@@ -24,9 +24,10 @@ import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
+import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useStore } from '../../representation/useStore';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
@@ -41,8 +42,12 @@ const DEFAULT_FAN_IN_ENABLED = true;
 const DEFAULT_FAN_OUT_ENABLED = true;
 const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
+const MIN_DETOUR_SPAN = 6;
 
-type PositionAwareEdge = Edge<MultiLabelEdgeData> & { targetPosition?: Position };
+type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
+  targetPosition?: Position;
+  sourcePosition?: Position;
+};
 type Axis = 'horizontal' | 'vertical';
 
 function interpolateHalfway(from: number, to: number): number {
@@ -141,6 +146,20 @@ function symmetricOffset(index: number, count: number): number {
   const step = Math.min(FAN_SPACING, FAN_MAX_SPREAD / (count - 1));
   const half = (count - 1) / 2;
   return clamp((index - half) * step, -FAN_MAX_SPREAD, FAN_MAX_SPREAD);
+}
+
+function polylinesEqual(first: XYPosition[], second: XYPosition[]): boolean {
+  if (first.length !== second.length) {
+    return false;
+  }
+  for (let i = 0; i < first.length; i++) {
+    const a = first[i];
+    const b = second[i];
+    if (!a || !b || a.x !== b.x || a.y !== b.y) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function determineInitialAxis(position: Position): Axis {
@@ -515,7 +534,11 @@ function ensureRectilinearPath(
   return rectified;
 }
 
-function simplifyRectilinearBends(bendingPoints: XYPosition[], source: XYPosition, target: XYPosition): XYPosition[] {
+export function simplifyRectilinearBends(
+  bendingPoints: XYPosition[],
+  source: XYPosition,
+  target: XYPosition
+): XYPosition[] {
   if (bendingPoints.length === 0) {
     return bendingPoints;
   }
@@ -577,7 +600,11 @@ function simplifyRectilinearBends(bendingPoints: XYPosition[], source: XYPositio
       if (horizontalAB && verticalBC && horizontalCD) {
         const dir1 = Math.sign(b.x - a.x);
         const dir3 = Math.sign(d.x - c.x);
-        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.x === d.x) {
+        const span1 = Math.abs(b.x - a.x);
+        const spanMiddle = Math.abs(c.y - b.y);
+        const span3 = Math.abs(d.x - c.x);
+        const isSmallDetour = Math.max(span1, span3, spanMiddle) <= MIN_DETOUR_SPAN;
+        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.x === d.x && isSmallDetour) {
           working.splice(i + 1, 2);
           mutated = true;
           break;
@@ -590,7 +617,11 @@ function simplifyRectilinearBends(bendingPoints: XYPosition[], source: XYPositio
       if (verticalAB && horizontalBC && verticalCD) {
         const dir1 = Math.sign(b.y - a.y);
         const dir3 = Math.sign(d.y - c.y);
-        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.y === d.y) {
+        const span1 = Math.abs(b.y - a.y);
+        const spanMiddle = Math.abs(c.x - b.x);
+        const span3 = Math.abs(d.y - c.y);
+        const isSmallDetour = Math.max(span1, span3, spanMiddle) <= MIN_DETOUR_SPAN;
+        if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.y === d.y && isSmallDetour) {
           working.splice(i + 1, 2);
           mutated = true;
           break;
@@ -677,7 +708,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     data,
   } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { getEdges, getNode } = useStore();
+  const { getEdges, getNode, getNodes } = useStore();
 
   const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
   const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
@@ -914,7 +945,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }
   }
 
-  const rectifiedBendingPoints = customEdge
+  const baselineBendingPoints = customEdge
     ? bendingPoints
     : ensureRectilinearPath(
         bendingPoints,
@@ -922,6 +953,64 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         { x: targetX, y: targetY },
         determineInitialAxis(sourcePosition)
       );
+
+  // Run the rectilinear simplification before invoking the last-chance detour so the
+  // detour logic works on the definitive orthogonal backbone (otherwise a later
+  // simplification pass could erase the detour we add).
+  let rectifiedBendingPoints = customEdge
+    ? baselineBendingPoints
+    : simplifyRectilinearBends(
+        baselineBendingPoints,
+        { x: sourceX, y: sourceY },
+        { x: targetX, y: targetY }
+      );
+
+  if (!customEdge && getEdges) {
+    const edgesForDetour = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
+    const nodesForDetour = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
+    if (edgesForDetour.length > 0 && nodesForDetour.length > 0) {
+      const nodesAsNodes = nodesForDetour as Node<NodeData, DiagramNodeType>[];
+      const baselinePolyline: XYPosition[] = [
+        { x: sourceX, y: sourceY },
+        ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
+        { x: targetX, y: targetY },
+      ];
+
+      const currentEdge =
+        edgesForDetour.find((edge) => edge.id === id) ??
+        ({
+          id,
+          source,
+          target,
+          sourceHandle: sourceHandleId ?? undefined,
+          targetHandle: targetHandleId ?? undefined,
+          sourcePosition,
+          targetPosition,
+          data,
+        } as Edge<MultiLabelEdgeData>);
+
+      const detouredPolyline = buildDetouredPolyline(
+        currentEdge,
+        baselinePolyline,
+        edgesForDetour,
+        nodesAsNodes
+      );
+
+      if (!polylinesEqual(detouredPolyline, baselinePolyline)) {
+        const firstPoint = detouredPolyline[0];
+        const lastPoint = detouredPolyline[detouredPolyline.length - 1];
+        if (firstPoint) {
+          sourceX = firstPoint.x;
+          sourceY = firstPoint.y;
+        }
+        if (lastPoint) {
+          targetX = lastPoint.x;
+          targetY = lastPoint.y;
+        }
+        rectifiedBendingPoints = detouredPolyline.slice(1, -1);
+      }
+    }
+  }
 
   const finalBendingPoints = simplifyRectilinearBends(
     rectifiedBendingPoints,
