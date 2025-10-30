@@ -139,6 +139,8 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add th
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Add `IGroupPaletteToolsProvider` in order to provide extra tools to a group palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys in project semantic data with proper events
+- https://github.com/eclipse-sirius/sirius-web/issues/5752[#5752] [table] Add the functionality to expand all row in one action
+
 
 === Improvements
 

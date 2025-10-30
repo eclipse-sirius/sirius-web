@@ -16,11 +16,12 @@ import { useMemo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
+import { ExpandAllColumnHeader } from '../columns/ExpandAllColumnHeader';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
+import { RowExpandHeader } from '../rows/RowExpandHeader';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
-import { RowExpandHeader } from '../rows/RowExpandHeader';
 
 const useStyles = makeStyles()((theme) => ({
   cell: {
@@ -47,7 +48,9 @@ export const useTableColumns = (
   enableSelectionSynchronization: boolean,
   handleRowHeightChange: (rowId: string, height: number) => void,
   onExpandedElement: (rowId: string) => void,
-  expandedRowIds: string[]
+  expandedRowIds: string[],
+  onExpandAllChange: () => void,
+  expandAll: boolean
 ): UseTableColumnsValue => {
   const { setSelection } = useSelection();
   const { classes } = useStyles();
@@ -132,6 +135,9 @@ export const useTableColumns = (
     const rowExpandHeaderColumn: MRT_ColumnDef<GQLLine, string> = {
       id: 'mrt-row-expand-header',
       header: '',
+      Header: ({}) => {
+        return <ExpandAllColumnHeader expandAll={expandAll} onExpandAllChange={onExpandAllChange} />;
+      },
       columnDefType: 'display',
       size: size,
       muiTableHeadCellProps: {
@@ -148,7 +154,7 @@ export const useTableColumns = (
         <div className={classes.cell}>
           <RowExpandHeader
             row={row.original}
-            isExpanded={expandedRowIds.includes(row.original.targetObjectId)}
+            isExpanded={expandedRowIds.includes(row.original.targetObjectId) || (expandAll && row.original.hasChildren)}
             onClick={onExpandedElement}
           />
         </div>
@@ -158,7 +164,7 @@ export const useTableColumns = (
       return [rowExpandHeaderColumn, rowHeaderColumn, ...columnDefs];
     }
     return [rowHeaderColumn, ...columnDefs];
-  }, [table, expandedRowIds]);
+  }, [table, expandedRowIds, expandAll]);
 
   return {
     columns,

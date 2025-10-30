@@ -224,6 +224,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.EXPANDED_IDS, this.tableCreationParameters.getExpanded());
         variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, this.tableCreationParameters.getActiveRowFilterIds());
         variableManager.put(TableRenderer.CUSTOM_CELL_DESCRIPTORS, this.tableCreationParameters.getCustomCellDescriptors());
+        variableManager.put(TableRenderer.EXPAND_ALL, this.tableCreationParameters.isExpandAll());
 
         TableComponentProps props = new TableComponentProps(
                 variableManager,

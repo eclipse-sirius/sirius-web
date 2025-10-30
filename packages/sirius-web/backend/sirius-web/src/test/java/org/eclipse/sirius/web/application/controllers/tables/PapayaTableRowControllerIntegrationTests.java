@@ -415,4 +415,50 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .isNotEmpty()
                 .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo(PackageTableRowFiltersProvider.HIDE_RECORDS_ROW_FILTER_ID));
     }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table representation, when we expand all rows, then all sub rows are returned")
+    public void givenTableRepresentationWhenWeExpandAllRowsThenAllSubRowsAreReturned() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(6);
+            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+            tableId.set(table.getId());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of(), List.of());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId + "&expandAll");
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Consumer<Object> expandedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(6);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
+            assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
+            assertThat(table.getLines().get(4).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(5).getDepthLevel()).isEqualTo(0);
+        });
+
+        StepVerifier.create(expandedFlux)
+                .consumeNextWith(expandedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

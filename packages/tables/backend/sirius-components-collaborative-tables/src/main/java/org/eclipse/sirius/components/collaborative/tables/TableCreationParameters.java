@@ -52,6 +52,8 @@ public final class TableCreationParameters {
 
     private List<ICustomCellDescriptor> customCellDescriptors;
 
+    private boolean expandAll;
+
     private TableCreationParameters() {
         // Prevent instantiation
     }
@@ -100,6 +102,10 @@ public final class TableCreationParameters {
         return this.customCellDescriptors;
     }
 
+    public boolean isExpandAll() {
+        return this.expandAll;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -133,6 +139,8 @@ public final class TableCreationParameters {
         private List<ColumnSort> columnSort;
 
         private List<ICustomCellDescriptor> customCellDescriptors;
+
+        private boolean expandAll;
 
         private Builder(String id) {
             this.id = id;
@@ -188,6 +196,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder expandAll(boolean expandAll) {
+            this.expandAll = expandAll;
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -201,6 +214,7 @@ public final class TableCreationParameters {
             tableCreationParameters.activeRowFilterIds = Objects.requireNonNull(this.activeRowFilterIds);
             tableCreationParameters.columnSort = Objects.requireNonNull(this.columnSort);
             tableCreationParameters.customCellDescriptors = Objects.requireNonNull(this.customCellDescriptors);
+            tableCreationParameters.expandAll = this.expandAll;
             return tableCreationParameters;
         }
     }
