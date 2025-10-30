@@ -69,19 +69,22 @@ const createEdgeAnchorNodeCreationHandles = (
 };
 
 export const EdgeCreationHandle = ({ edgeId, edgePath }: EdgeCreationHandleProps) => {
-  const { setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-
+  const { setNodes, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const currentEdgeAnchorNode = getNode(`edgeAnchorNodeCreationHandles-${edgeId}`);
   useEffect(() => {
-    var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    svgPath.setAttribute('d', edgePath);
-    const pathLength = svgPath.getTotalLength();
-    const points = svgPath.getPointAtLength(pathLength * 0.5);
-    const offSet = EDGE_ANCHOR_NODE_DEFAULT_SIZE / 2;
+    if (!currentEdgeAnchorNode) {
+      var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      svgPath.setAttribute('d', edgePath);
+      const pathLength = svgPath.getTotalLength();
+      const points = svgPath.getPointAtLength(pathLength * 0.5);
+      const offSet = EDGE_ANCHOR_NODE_DEFAULT_SIZE / 2;
 
-    const nodePosition = { x: points.x - offSet, y: points.y - offSet };
-    const node = createEdgeAnchorNodeCreationHandles(edgeId, nodePosition);
-    setNodes((prevNodes) => prevNodes.concat(node));
-  }, [setNodes]);
+      const nodePosition = { x: points.x - offSet, y: points.y - offSet };
+      const node = createEdgeAnchorNodeCreationHandles(edgeId, nodePosition);
+
+      setNodes((prevNodes) => prevNodes.concat(node));
+    }
+  }, [currentEdgeAnchorNode]);
 
   useEffect(() => {
     return () => {

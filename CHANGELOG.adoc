@@ -58,6 +58,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5689[#5689] [sirius-web] Applying a selection (e.g. from the Omnibox) to the workbench now correctly applies it the opened representation (if any)
 - https://github.com/eclipse-sirius/sirius-web/issues/5658[#5658] [diagram] Make labels non-draggable in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/5661[#5661] [diagram] Fix missing edge markers in SVG export
+- https://github.com/eclipse-sirius/sirius-web/issues/5755[#5755] [diagram] Fix an issue where EdgeCreationHandle was not rendered after an edge creation
 
 
 === New Features
