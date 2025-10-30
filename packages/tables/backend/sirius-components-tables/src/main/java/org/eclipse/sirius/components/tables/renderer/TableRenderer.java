@@ -36,6 +36,7 @@ public class TableRenderer {
     public static final String ACTIVE_ROW_FILTER_IDS = "activeRowFilterIds";
     public static final String COLUMN_SORT = "columnSort";
     public static final String CUSTOM_CELL_DESCRIPTORS = "customCellDescriptors";
+    public static final String EXPAND_ALL = "expandAll";
 
     private final BaseRenderer baseRenderer;
 

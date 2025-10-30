@@ -22,7 +22,8 @@ export const tableIdProvider = (
   columnFilters: ColumnFilter[] | null,
   expanded: string[],
   activeRowFilters: string[],
-  columnSort: ColumnSort[] | null
+  columnSort: ColumnSort[] | null,
+  expandAll: boolean
 ): string | null => {
   if (globalFilter !== null && columnFilters !== null && columnSort !== null) {
     const globalFilterParam: string = `&globalFilter=${encodeURIComponent(globalFilter)}`;
@@ -40,9 +41,10 @@ export const tableIdProvider = (
       })
       .map(encodeURIComponent)
       .join(',')}]`;
+    const expandAllParam = expandAll ? '&expandAll' : '';
     return `${tableId}?cursor=${
       cursor ? encodeURIComponent(cursor) : cursor
-    }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}${columnSortParams}`;
+    }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}${columnSortParams}${expandAllParam}`;
   }
   return null;
 };

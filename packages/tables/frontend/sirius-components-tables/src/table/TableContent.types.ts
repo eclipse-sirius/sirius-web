@@ -25,6 +25,7 @@ export interface TableContentProps {
   onExpandedElementChange: (rowId: string) => void;
   onRowFiltersChange: (activeRowFilterIds: string[]) => void;
   onSortingChange: (columnSort: ColumnSort[]) => void;
+  onExpandAllChange: () => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
@@ -38,6 +39,7 @@ export interface TableContentProps {
   rowFilters: RowFilter[] | null;
   activeRowFilterIds: string[];
   enableSorting: boolean;
+  expandAll: boolean;
 }
 
 export interface TablePaginationState {
