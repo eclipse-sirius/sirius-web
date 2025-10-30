@@ -129,7 +129,7 @@ public class ProjectRestController {
     })
     @PostMapping
     public ResponseEntity<RestProject> createProject(@RequestParam String name, @RequestParam Optional<String> description) {
-        var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, List.of());
+        var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, List.of(), List.of());
         var newProjectPayload = this.projectApplicationService.createProject(createProjectInput);
 
         if (newProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {

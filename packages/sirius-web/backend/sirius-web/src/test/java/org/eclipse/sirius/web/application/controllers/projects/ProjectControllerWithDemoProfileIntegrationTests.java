@@ -104,7 +104,7 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a mutation to create a project is performed, then it returns an error payload")
     public void givenTheDemoProfileWhenAMutationToCreateAProjectIsPerformedThenItReturnsAnErrorPayload() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         String typeName = JsonPath.read(result, "$.data.createProject.__typename");

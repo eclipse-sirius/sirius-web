@@ -14,7 +14,7 @@
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseCreateProjectValue {
-  createProject: (name: string, natures: string[]) => void;
+  createProject: (name: string, natures: string[], libraryIds: string[]) => void;
   loading: boolean;
   newProjectId: string | null;
 }
@@ -27,6 +27,7 @@ export interface GQLCreateProjectMutationInput {
   id: string;
   name: string;
   natures: string[];
+  libraryIds: string[];
 }
 
 export interface GQLCreateProjectMutationData {

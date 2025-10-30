@@ -42,6 +42,7 @@ Cypress.Commands.add('createProject', (name, natures) => {
       id: crypto.randomUUID(),
       name,
       natures: [...natures],
+      libraryIds: [],
     },
   };
 

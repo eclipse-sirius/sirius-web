@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class ExceptionWrapperTests {
     @Test
     @DisplayName("Given a basic exception wrapper, when supplier are wrapped, then the supplier is really executed")
     public void givenBasicExceptionWrapperWhenWrappedThenSupplierExecuted() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
 
         var payload = this.exceptionWrapper.wrap(() -> new SuccessPayload(input.id()), input);
         assertThat(payload.id()).isEqualTo(input.id());
