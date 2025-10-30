@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -35,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -56,9 +56,6 @@ public class ForIfControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private FormWithForIfDescriptionProvider formWithForIfDescriptionProvider;
-
-    @Autowired
-    private EditCheckboxMutationRunner editCheckboxMutationRunner;
 
     @BeforeEach
     public void beforeEach() {

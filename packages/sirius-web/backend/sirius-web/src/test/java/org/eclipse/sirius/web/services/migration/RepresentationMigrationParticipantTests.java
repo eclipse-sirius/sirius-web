@@ -27,9 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,13 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepresentationMigrationParticipantTests extends AbstractIntegrationTests {
 
     @Autowired
-    private IRepresentationMetadataRepository representationMetadataRepository;
-
-    @Autowired
     private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
-    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @Autowired
     private IRepresentationContentSearchService representationContentSearchService;

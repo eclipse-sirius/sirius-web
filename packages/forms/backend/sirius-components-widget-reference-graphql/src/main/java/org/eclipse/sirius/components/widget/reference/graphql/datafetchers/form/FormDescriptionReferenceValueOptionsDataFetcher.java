@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,8 +37,6 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "FormDescription", field = "referenceValueOptions")
 public class FormDescriptionReferenceValueOptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ReferenceValue>>> {
-
-    private static final String REPRESENTATION_ID = "representationId";
 
     private static final String REFERENCE_WIDGET_ID = "referenceWidgetId";
 

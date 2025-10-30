@@ -16,7 +16,6 @@ package org.eclipse.sirius.components.collaborative.tables.handlers;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -28,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.collaborative.tables.api.RowFilter;
 import org.eclipse.sirius.components.collaborative.tables.dto.RowFiltersInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.RowFiltersSuccessPayload;
-import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -46,15 +44,11 @@ import reactor.core.publisher.Sinks;
 @Service
 public class RowFiltersEventHandler implements ITableEventHandler {
 
-    private final ICollaborativeTableMessageService messageService;
-
     private final Counter counter;
 
     private final List<IRowFilterProvider> rowFilterProviders;
 
-    public RowFiltersEventHandler(ICollaborativeTableMessageService messageService, MeterRegistry meterRegistry,
-            List<IRowFilterProvider> rowFilterProviders) {
-        this.messageService = Objects.requireNonNull(messageService);
+    public RowFiltersEventHandler(MeterRegistry meterRegistry, List<IRowFilterProvider> rowFilterProviders) {
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())

@@ -97,7 +97,7 @@ public class CellDescriptionConverter {
             return this.evaluateString(interpreter, child, viewCellDescription.getTooltipExpression());
         };
 
-        if (viewCellDescription.getCellWidgetDescription() instanceof CellTextfieldWidgetDescription cellTextfieldWidgetDescription) {
+        if (viewCellDescription.getCellWidgetDescription() instanceof CellTextfieldWidgetDescription) {
             optionalICellDescription = Optional.of(TextfieldCellDescription.newTextfieldCellDescription(this.tableIdProvider.getId(viewCellDescription))
                     .targetObjectIdProvider(targetObjectIdProvider)
                     .targetObjectKindProvider(targetObjectKindProvider)
