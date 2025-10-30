@@ -52,6 +52,7 @@ export const TableContent = memo(
     onExpandedElementChange,
     onRowFiltersChange,
     onSortingChange,
+    onExpandAllChange,
     enableColumnVisibility,
     enableColumnResizing,
     enableColumnFilters,
@@ -65,6 +66,7 @@ export const TableContent = memo(
     rowFilters,
     activeRowFilterIds,
     enableSorting,
+    expandAll,
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
@@ -88,7 +90,9 @@ export const TableContent = memo(
       enableSelectionSynchronization,
       handleRowHeightChange,
       onExpandedElementChange,
-      expandedRowIds
+      expandedRowIds,
+      onExpandAllChange,
+      expandAll
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,

@@ -58,6 +58,7 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       expanded: [],
       activeRowFilterIds: [],
       columnSort: null,
+      expandAll: false,
     });
 
     const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
@@ -102,7 +103,8 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       state.columnFilters,
       state.expanded,
       state.activeRowFilterIds,
-      state.columnSort
+      state.columnSort,
+      state.expandAll
     );
     const { complete, table } = useTableSubscription(editingContextId, representationFullId);
 
@@ -157,10 +159,23 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
     };
 
     const onExpandedElementChange = (rowId: string) => {
-      if (state.expanded.includes(rowId)) {
-        setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
+      if (state.expandAll) {
+        const expandAllId = table?.lines.filter((line) => line.hasChildren).map((line) => line.targetObjectId) ?? [];
+        setState((prev) => ({ ...prev, expandAll: false, expanded: expandAllId.filter((id) => id !== rowId) }));
       } else {
-        setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
+        if (state.expanded.includes(rowId)) {
+          setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
+        } else {
+          setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
+        }
+      }
+    };
+
+    const onExpandAllChange = () => {
+      if (state.expandAll) {
+        setState((prev) => ({ ...prev, expandAll: !prev.expandAll, expanded: [] }));
+      } else {
+        setState((prev) => ({ ...prev, expandAll: !prev.expandAll }));
       }
     };
 
@@ -201,6 +216,8 @@ export const TableRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
             rowFilters={rowFilters}
             activeRowFilterIds={state.activeRowFilterIds}
             enableSorting
+            expandAll={state.expandAll}
+            onExpandAllChange={onExpandAllChange}
           />
         </div>
       );

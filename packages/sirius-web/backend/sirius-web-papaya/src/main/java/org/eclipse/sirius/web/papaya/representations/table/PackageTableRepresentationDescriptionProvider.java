@@ -145,9 +145,10 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         List<ColumnFilter> columnFilters = variableManager.get(TableRenderer.COLUMN_FILTERS, List.class).orElse(List.of());
         List<String> expandedIds = variableManager.get(TableRenderer.EXPANDED_IDS, List.class).orElse(List.of());
         List<String> activeRowFilterIds = variableManager.get(TableRenderer.ACTIVE_ROW_FILTER_IDS, List.class).orElse(List.of());
+        boolean expandAll = variableManager.get(TableRenderer.EXPAND_ALL, Boolean.class).orElse(false);
 
         Predicate<EObject> predicate = eObject -> {
-            boolean isValidCandidate = this.isValidType(eObject, self) && this.hasExpandedParent(eObject, expandedIds) && this.validateFilters(eObject, activeRowFilterIds);
+            boolean isValidCandidate = this.isValidType(eObject, self) && (this.hasExpandedParent(eObject, expandedIds) || expandAll) && this.validateFilters(eObject, activeRowFilterIds);
             if (isValidCandidate && eObject instanceof Type type) {
                 if (globalFilter != null && !globalFilter.isBlank()) {
                     isValidCandidate = type.getName() != null && type.getName().contains(globalFilter);
@@ -210,7 +211,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                     if (eObject instanceof Package) {
                         return false;
                     } else {
-                        return !eObject.eContents().isEmpty();
+                        return eObject.eContents().stream().anyMatch(content -> this.isValidType(content, eObject));
                     }
                 })
                 .orElse(false);
