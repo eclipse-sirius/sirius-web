@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<papaya:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:papaya="https://www.eclipse.org/sirius-web/papaya" name="Project">
+  <elements xmi:type="papaya:Component" name="Component">
+    <packages name="Package">
+      <types xmi:type="papaya:Class" name="Class 1" description="This is a class">
+        <attributes name="Attribute 1" description="This is an attribute"/>
+        <operations name="Operation 1" description="This is an operation"/>
+      </types>
+      <types xmi:type="papaya:Class" name="Class 2"/>
+      <types xmi:type="papaya:Class" name="Class 3"/>
+      <types xmi:type="papaya:Class" name="Class 4"/>
+      <types xmi:type="papaya:Record" name="Record 1" description="This is a record">
+        <operations name="Operation1" description="This is an operation"/>
+      </types>
+      <types xmi:type="papaya:Record" name="Record 2"/>
+      <types xmi:type="papaya:Record" name="Record 3"/>
+      <types xmi:type="papaya:Annotation" name="Annotation 1" description="This is an annotation"/>
+    </packages>
+  </elements>
+</papaya:Project>
