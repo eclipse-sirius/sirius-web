@@ -107,7 +107,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                                 .children(
                                         new ViewBuilders().newSetValue()
                                                 .featureName("dependencies")
-                                                .valueExpression("aql:self.dependencies->including(droppedElement)")
+                                                .valueExpression("aql:self.dependencies->union(droppedElements)")
                                                 .build()
                                 )
                                 .build()

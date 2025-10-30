@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, InternalNode, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, InternalNode, Node, OnNodeDrag, useReactFlow, useStoreApi, XYPosition } from '@xyflow/react';
 import { NodeLookup, Rect } from '@xyflow/system';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -26,18 +26,18 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
-  GQLDropNodeData,
-  GQLDropNodeInput,
-  GQLDropNodePayload,
-  GQLDropNodeVariables,
+  GQLDropNodesData,
+  GQLDropNodesInput,
+  GQLDropNodesPayload,
+  GQLDropNodesVariables,
   GQLErrorPayload,
   GQLSuccessPayload,
-  UseDropNodeValue,
-} from './useDropNode.types';
+  UseDropNodesValue,
+} from './useDropNodes.types';
 
-const dropNodeMutation = gql`
-  mutation dropNode($input: DropNodeInput!) {
-    dropNode(input: $input) {
+const dropNodesMutation = gql`
+  mutation dropNodes($input: DropNodesInput!) {
+    dropNodes(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -55,9 +55,9 @@ const dropNodeMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLDropNodePayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLDropNodesPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLDropNodePayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLDropNodesPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -87,49 +87,49 @@ const evaluateAbsolutePosition = (node: Node, nodeLookup: NodeLookup<InternalNod
   return positionAbsolute;
 };
 
-const useDropNodeMutation = () => {
+const useDropNodesMutation = () => {
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<
-    GQLDropNodeData,
-    GQLDropNodeVariables
-  >(dropNodeMutation);
+  const [dropMutation, { data: dropNodesData, error: dropNodesError }] = useMutation<
+    GQLDropNodesData,
+    GQLDropNodesVariables
+  >(dropNodesMutation);
 
   useEffect(() => {
-    if (dropNodeError) {
+    if (dropNodesError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (dropNodeData) {
-      const { dropNode } = dropNodeData;
-      if (isSuccessPayload(dropNode)) {
-        addMessages(dropNode.messages);
+    if (dropNodesData) {
+      const { dropNodes } = dropNodesData;
+      if (isSuccessPayload(dropNodes)) {
+        addMessages(dropNodes.messages);
       }
-      if (isErrorPayload(dropNode)) {
-        addMessages(dropNode.messages);
+      if (isErrorPayload(dropNodes)) {
+        addMessages(dropNodes.messages);
       }
     }
-  }, [dropNodeData, dropNodeError]);
+  }, [dropNodesData, dropNodesError]);
 
   const invokeMutation = useCallback(
     (
-      droppedNode: Node<NodeData>,
+      droppedNodes: Node<NodeData>[],
       targetElementId: string | null,
       dropPosition: XYPosition,
-      onDragCancelled: (node: Node<NodeData>) => void
+      onDragCancelled: (nodes: Node<NodeData>[]) => void
     ): void => {
-      const input: GQLDropNodeInput = {
+      const input: GQLDropNodesInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
-        droppedElementId: droppedNode.id,
+        droppedElementIds: droppedNodes.map((node) => node.id),
         targetElementId,
         x: dropPosition.x,
         y: dropPosition.y,
       };
       if (!readOnly) {
         dropMutation({ variables: { input } }).then((result) => {
-          if (result.data?.dropNode && isErrorPayload(result.data?.dropNode)) {
-            onDragCancelled(droppedNode);
+          if (result.data?.dropNodes && isErrorPayload(result.data?.dropNodes)) {
+            onDragCancelled(droppedNodes);
           }
         });
       }
@@ -140,12 +140,12 @@ const useDropNodeMutation = () => {
   return invokeMutation;
 };
 
-export const useDropNode = (): UseDropNodeValue => {
+export const useDropNodes = (): UseDropNodesValue => {
   const { droppableOnDiagram, initialPosition, initializeDrop, resetDrop } =
     useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
-  const onDropNode = useDropNodeMutation();
+  const onDropNodes = useDropNodesMutation();
   const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes } = useStore();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -164,43 +164,47 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, nodes) => {
-      if (!node || nodes.length > 1) {
-        // Drag on multi selection is not supported yet
+      if (!node) {
         return;
       }
-      const computedNode = getDraggableNode(node);
+      const draggedNodes = nodes.map((node) => getDraggableNode(node));
 
-      const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
-        (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
+      const dropDataEntries: GQLDropNodeCompatibility[] = diagramDescription.dropNodeCompatibility.filter((entry) =>
+        draggedNodes.some((node) => node.data.descriptionId === entry.droppedNodeDescriptionId)
       );
-      const compatibleNodes = getNodes()
+      const compatibleTargetNodes = getNodes()
         .filter(
-          (candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
-        )
-        .filter((candidate) =>
-          dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
+          (candidate) =>
+            // Only consider visible nodes
+            !candidate.hidden &&
+            // A node cannot be dropped on itself or one of its descendants
+            !draggedNodes.some((draggedNode) =>
+              isDescendantOf(draggedNode, candidate, storeApi.getState().nodeLookup)
+            ) &&
+            // Check declared compatibility
+            dropDataEntries.some((entry) => entry.droppableOnNodeTypes.includes(candidate.data.descriptionId))
         )
         .map((candidate) => candidate.id);
 
       initializeDrop({
-        initialPosition: computedNode.position,
-        droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
+        initialPosition: getDraggableNode(node).position,
+        droppableOnDiagram: dropDataEntries.length > 0 && dropDataEntries.some((entry) => entry.droppableOnDiagram),
         dragging: true,
       });
 
       setNodes((nds) =>
         nds.map((n) => {
-          if (compatibleNodes.includes(n.id)) {
+          if (compatibleTargetNodes.includes(n.id)) {
             return {
               ...n,
               data: {
                 ...n.data,
-                isDraggedNode: n.id === computedNode.id,
+                isDraggedNode: draggedNodes.some((node) => node.id === n.id),
                 isDropNodeCandidate: true,
               },
             };
           }
-          if (computedNode.parentId === n.id) {
+          if (draggedNodes.some((node) => node.parentId === n.id)) {
             return {
               ...n,
               data: {
@@ -209,7 +213,7 @@ export const useDropNode = (): UseDropNodeValue => {
               },
             };
           }
-          if (n.id === computedNode.id) {
+          if (draggedNodes.some((node) => node.id === n.id)) {
             return {
               ...n,
               data: {
@@ -226,9 +230,8 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
-    (event, node, nodes) => {
-      if (!node || nodes.length > 1) {
-        // Drag on multi selection is not supported yet
+    (event, node, _nodes) => {
+      if (!node) {
         return;
       }
 
@@ -286,8 +289,7 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
-    (_event) => {
-      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
+    (_event, draggedNode, draggedNodes) => {
       if (draggedNode) {
         const dropPosition = evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup);
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
@@ -305,14 +307,14 @@ export const useDropNode = (): UseDropNodeValue => {
 
         if ((isValidDropOnDiagram && !isDropFromDiagramToDiagram) || (isValidDropOnNode && !isDropOnSameParent)) {
           const target = targetNode?.id || null;
-          onDropNode(draggedNode, target, dropPosition, cancelDrop);
+          onDropNodes(draggedNodes, target, dropPosition, cancelDrop);
         }
         if (!isDropOnNode && !isValidDropOnDiagram && !isDropFromDiagramToDiagram && !isBorderNodeDrop) {
-          cancelDrop(draggedNode);
+          cancelDrop(draggedNodes);
         } else if (isDropOnNode && !isValidDropOnNode && !isDropOnSameParent) {
-          cancelDrop(draggedNode);
+          cancelDrop(draggedNodes);
         } else if (isDropOnNode && draggedNode?.type === 'iconLabelNode' && isDropOnSameParent) {
-          cancelDrop(draggedNode);
+          cancelDrop(draggedNodes);
         }
 
         setNodes((previousNodes) =>
@@ -342,11 +344,11 @@ export const useDropNode = (): UseDropNodeValue => {
     [droppableOnDiagram, initialPosition, getNodes]
   );
 
-  const cancelDrop = (node: Node<NodeData>) => {
+  const cancelDrop = (nodes: Node<NodeData>[]) => {
     if (initialPosition) {
       setNodes((nds) =>
         nds.map((n) => {
-          if (n.id === node.id) {
+          if (nodes.some((node) => node.id === n.id)) {
             return {
               ...n,
               position: initialPosition,
@@ -360,8 +362,8 @@ export const useDropNode = (): UseDropNodeValue => {
   };
 
   return {
-    onNodeDragStart,
-    onNodeDrag,
-    onNodeDragStop,
+    onNodesDragStart: onNodeDragStart,
+    onNodesDrag: onNodeDrag,
+    onNodesDragStop: onNodeDragStop,
   };
 };

@@ -20,14 +20,13 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -45,6 +44,8 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -52,7 +53,7 @@ import reactor.core.publisher.Sinks;
  *
  * @author frouene
  */
-public class DropNodeEventHandlerTests {
+public class DropNodesEventHandlerTests {
 
     private static final String DROPPED_ELEMENT_ID = "droppedElementId";
 
@@ -81,8 +82,8 @@ public class DropNodeEventHandlerTests {
         assertThat(variableManager.getVariables()).containsKey(IEditingContext.EDITING_CONTEXT);
         assertThat(variableManager.getVariables()).containsKey(DiagramContext.DIAGRAM_CONTEXT);
         assertThat(variableManager.getVariables()).containsKey(IDiagramService.DIAGRAM_SERVICES);
-        assertThat(variableManager.getVariables()).containsKey("droppedNode");
-        assertThat(variableManager.getVariables()).containsKey("droppedElement");
+        assertThat(variableManager.getVariables()).containsKey("droppedNodes");
+        assertThat(variableManager.getVariables()).containsKey("droppedElements");
         assertThat(variableManager.getVariables()).containsKey("targetNode");
         assertThat(variableManager.getVariables()).containsKey("targetElement");
         this.hasBeenExecuted.set(true);
@@ -93,7 +94,7 @@ public class DropNodeEventHandlerTests {
         @Override
         public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {
             var baseNodeDescription = new TestDiagramDescriptionBuilder().getNodeDescription(UUID.randomUUID().toString(), variableManager -> List.of());
-            return Optional.of(NodeDescription.newNodeDescription(baseNodeDescription).dropNodeHandler(DropNodeEventHandlerTests.this.dropNodeHandler).build());
+            return Optional.of(NodeDescription.newNodeDescription(baseNodeDescription).dropNodeHandler(DropNodesEventHandlerTests.this.dropNodeHandler).build());
         }
 
     };
@@ -102,16 +103,16 @@ public class DropNodeEventHandlerTests {
         @Override
         public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
             var baseDiagramDescription = new TestDiagramDescriptionBuilder().getDiagramDescription(UUID.randomUUID().toString(), List.of(), List.of(), List.of());
-            return Optional.of(DiagramDescription.newDiagramDescription(baseDiagramDescription).dropNodeHandler(DropNodeEventHandlerTests.this.dropNodeHandler).build());
+            return Optional.of(DiagramDescription.newDiagramDescription(baseDiagramDescription).dropNodeHandler(DropNodesEventHandlerTests.this.dropNodeHandler).build());
         }
     };
 
     @Test
     public void testDropNodeToDiagram() {
-        var handler = new DropNodeEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DropNodesEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, null, 0, 0);
+        var input = new DropNodesInput(UUID.randomUUID(), "editingContextId", "representationId", List.of(DROPPED_ELEMENT_ID), null, 0, 0);
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -132,10 +133,10 @@ public class DropNodeEventHandlerTests {
 
     @Test
     public void testDropNodeToOtherNode() {
-        var handler = new DropNodeEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DropNodesEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, TARGET_ELEMENT_ID, 0, 0);
+        var input = new DropNodesInput(UUID.randomUUID(), "editingContextId", "representationId", List.of(DROPPED_ELEMENT_ID), TARGET_ELEMENT_ID, 0, 0);
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

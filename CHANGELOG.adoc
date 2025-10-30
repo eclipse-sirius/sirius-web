@@ -36,7 +36,9 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes.
+As such, the variables `droppedNode` and `droppedElement` which are exposed in the body of such tools and which only supported a single node have been replaced with `droppedNodes` and `droppedElements` representing all the nodes (and corresponding semantic elements) dropped at once.
+_Drop Node Tool_ definitions need to be adapted to handle these new variables.
 
 === Dependency update
 
@@ -67,7 +69,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5595[#5595] [sirius-web] Provide an API to compute the containment references to consider to duplicate objects instead of relying only on the metamodel.
 - https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes at once.
 
 === Improvements
 

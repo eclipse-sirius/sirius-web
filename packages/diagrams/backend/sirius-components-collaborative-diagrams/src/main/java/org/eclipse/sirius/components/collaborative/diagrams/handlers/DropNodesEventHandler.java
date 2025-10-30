@@ -12,12 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -28,7 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -46,6 +45,9 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -55,11 +57,11 @@ import reactor.core.publisher.Sinks.One;
  * @author pcdavid
  */
 @Service
-public class DropNodeEventHandler implements IDiagramEventHandler {
+public class DropNodesEventHandler implements IDiagramEventHandler {
 
-    private static final String DROPPED_NODE = "droppedNode";
+    private static final String DROPPED_NODES = "droppedNodes";
 
-    private static final String DROPPED_ELEMENT = "droppedElement";
+    private static final String DROPPED_ELEMENTS = "droppedElements";
 
     private static final String TARGET_NODE = "targetNode";
 
@@ -79,7 +81,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public DropNodeEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
+    public DropNodesEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
@@ -92,23 +94,23 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof DropNodeInput;
+        return diagramInput instanceof DropNodesInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DropNodeInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), DropNodesInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
-        if (diagramInput instanceof DropNodeInput input) {
+        if (diagramInput instanceof DropNodesInput input) {
             Diagram diagram = diagramContext.diagram();
-            var optionalDroppedNode = this.diagramQueryService.findNodeById(diagram, input.droppedElementId());
-            if (optionalDroppedNode.isPresent()) {
+            var droppedNodes = input.droppedElementIds().stream().flatMap(droppedElementId -> this.diagramQueryService.findNodeById(diagram, droppedElementId).stream()).toList();
+            if (droppedNodes.size() == input.droppedElementIds().size()) {
                 var optionalDropTarget = Optional.ofNullable(input.targetElementId()).flatMap(elementId -> this.diagramQueryService.findNodeById(diagram, elementId));
-                boolean handled = this.invokeDropNodeTool(editingContext, diagramContext, diagram, optionalDroppedNode.get(), optionalDropTarget);
+                boolean handled = this.invokeDropNodesTool(editingContext, diagramContext, diagram, droppedNodes, optionalDropTarget);
                 if (handled) {
                     payload = new SuccessPayload(diagramInput.id(), this.feedbackMessageService.getFeedbackMessages());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
@@ -122,11 +124,11 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean invokeDropNodeTool(IEditingContext editingContext, DiagramContext diagramContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
+    private boolean invokeDropNodesTool(IEditingContext editingContext, DiagramContext diagramContext, Diagram diagram, List<Node> droppedNodes, Optional<Node> optionalDropTargetNode) {
         var optionalHandler = this.findDropNodeHandler(editingContext, diagram, optionalDropTargetNode);
         var optionalTargetElement = this.objectSearchService.getObject(editingContext, optionalDropTargetNode.map(Node::getTargetObjectId).orElse(diagram.getTargetObjectId()));
-        var optionalDroppedElement = this.objectSearchService.getObject(editingContext, droppedNode.getTargetObjectId());
-        if (optionalHandler.isPresent() && optionalTargetElement.isPresent() && optionalDroppedElement.isPresent()) {
+        var droppedElements = droppedNodes.stream().flatMap(droppedNode -> this.objectSearchService.getObject(editingContext, droppedNode.getTargetObjectId()).stream()).toList();
+        if (optionalHandler.isPresent() && optionalTargetElement.isPresent() && droppedElements.size() == droppedNodes.size()) {
             var handler = optionalHandler.get();
             var targetElement = optionalTargetElement.get();
 
@@ -135,8 +137,8 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
             variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-            variableManager.put(DROPPED_ELEMENT, optionalDroppedElement.get());
-            variableManager.put(DROPPED_NODE, droppedNode);
+            variableManager.put(DROPPED_ELEMENTS, droppedElements);
+            variableManager.put(DROPPED_NODES, droppedNodes);
             variableManager.put(TARGET_ELEMENT, targetElement);
             variableManager.put(TARGET_NODE, optionalDropTargetNode.orElse(null));
             return handler.apply(variableManager) instanceof Success;

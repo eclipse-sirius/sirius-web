@@ -24,10 +24,10 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodeMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodesMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.GetDropNodeCompatibilityQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -53,7 +54,7 @@ import reactor.test.StepVerifier;
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class DropNodeControllerTests extends AbstractIntegrationTests {
+public class DropNodesControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -68,7 +69,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
     private GetDropNodeCompatibilityQueryRunner dropNodeCompatibilityQueryRunner;
 
     @Autowired
-    private DropNodeMutationRunner dropNodeMutationRunner;
+    private DropNodesMutationRunner dropNodesMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -111,17 +112,17 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable dropNode = () -> {
-            var input = new DropNodeInput(
+            var input = new DropNodesInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     siriusWebInfrastructureNodeId.get(),
                     0,
                     0
             );
-            var result = this.dropNodeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNode.__typename");
+            var result = this.dropNodesMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
