@@ -28,18 +28,18 @@ import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
-  GQLDropNodeData,
-  GQLDropNodeInput,
-  GQLDropNodePayload,
-  GQLDropNodeVariables,
+  GQLDropNodesData,
+  GQLDropNodesInput,
+  GQLDropNodesPayload,
+  GQLDropNodesVariables,
   GQLErrorPayload,
   GQLSuccessPayload,
-  UseDropNodeValue,
-} from './useDropNode.types';
+  UseDropNodesValue,
+} from './useDropNodes.types';
 
-const dropNodeMutation = gql`
-  mutation dropNode($input: DropNodeInput!) {
-    dropNode(input: $input) {
+const dropNodesMutation = gql`
+  mutation dropNodes($input: DropNodesInput!) {
+    dropNodes(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -57,9 +57,9 @@ const dropNodeMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLDropNodePayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLDropNodesPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLDropNodePayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLDropNodesPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -75,50 +75,50 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
   return nodeDepth;
 };
 
-const useDropNodeMutation = () => {
+const useDropNodesMutation = () => {
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useDropNodeMutation' });
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<
-    GQLDropNodeData,
-    GQLDropNodeVariables
-  >(dropNodeMutation);
+  const [dropMutation, { data: dropNodesData, error: dropNodesError }] = useMutation<
+    GQLDropNodesData,
+    GQLDropNodesVariables
+  >(dropNodesMutation);
 
   useEffect(() => {
-    if (dropNodeError) {
+    if (dropNodesError) {
       addErrorMessage(t('errors.unexpected'));
     }
-    if (dropNodeData) {
-      const { dropNode } = dropNodeData;
-      if (isSuccessPayload(dropNode)) {
-        addMessages(dropNode.messages);
+    if (dropNodesData) {
+      const { dropNodes } = dropNodesData;
+      if (isSuccessPayload(dropNodes)) {
+        addMessages(dropNodes.messages);
       }
-      if (isErrorPayload(dropNode)) {
-        addMessages(dropNode.messages);
+      if (isErrorPayload(dropNodes)) {
+        addMessages(dropNodes.messages);
       }
     }
-  }, [dropNodeData, dropNodeError]);
+  }, [dropNodesData, dropNodesError]);
 
   const invokeMutation = useCallback(
     (
-      droppedNode: Node<NodeData>,
+      droppedNodes: Node<NodeData>[],
       targetElementId: string | null,
       dropPosition: XYPosition,
-      onDragCancelled: (node: Node<NodeData>) => void
+      onDragCancelled: (nodes: Node<NodeData>[]) => void
     ): void => {
-      const input: GQLDropNodeInput = {
+      const input: GQLDropNodesInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
-        droppedElementId: droppedNode.id,
+        droppedElementIds: droppedNodes.map((node) => node.id),
         targetElementId,
         x: dropPosition.x,
         y: dropPosition.y,
       };
       if (!readOnly) {
         dropMutation({ variables: { input } }).then((result) => {
-          if (result.data?.dropNode && isErrorPayload(result.data?.dropNode)) {
-            onDragCancelled(droppedNode);
+          if (result.data?.dropNodes && isErrorPayload(result.data?.dropNodes)) {
+            onDragCancelled(droppedNodes);
           }
         });
       }
@@ -129,18 +129,19 @@ const useDropNodeMutation = () => {
   return invokeMutation;
 };
 
-export const useDropNode = (): UseDropNodeValue => {
-  const { droppableOnDiagram, initialPosition, initializeDrop, resetDrop } =
+export const useDropNodes = (): UseDropNodesValue => {
+  const { droppableOnDiagram, initialPositions, initializeDrop, resetDrop } =
     useContext<DropNodeContextValue>(DropNodeContext);
 
   const { diagramDescription } = useDiagramDescription();
-  const onDropNode = useDropNodeMutation();
+  const onDropNodes = useDropNodesMutation();
   const { getNodes, getIntersectingNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setNodes } = useStore();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-
   const getNodeById = (id: string) => storeApi.getState().nodeLookup.get(id);
 
+  // Some nodes are not draggable themselves.
+  // In these cases, what we *actually* want to drag is their parent.
   const getDraggableNode = (node: Node<NodeData>): Node<NodeData> => {
     if (node.parentId) {
       const parentNode = getNodeById(node.parentId);
@@ -152,44 +153,61 @@ export const useDropNode = (): UseDropNodeValue => {
   };
 
   const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
-    (_event, node, nodes) => {
-      if (!node || nodes.length > 1) {
-        // Drag on multi selection is not supported yet
+    (_event, _node, nodes) => {
+      if (nodes.length === 0) {
         return;
       }
-      const computedNode = getDraggableNode(node);
+      const draggedNodes = nodes.map((node) => getDraggableNode(node));
 
-      const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
-        (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
+      // Store the initial positions to be able to reset them correctly on cancel.
+      const initialPositions: Map<string, XYPosition> = new Map();
+      draggedNodes.forEach((node) => {
+        initialPositions.set(node.id, node.position);
+      });
+
+      // Find the entries which accept at least one of the dragged nodes
+      const dropDataEntries: GQLDropNodeCompatibility[] = diagramDescription.dropNodeCompatibility.filter((entry) =>
+        draggedNodes.some((node) => node.data.descriptionId === entry.droppedNodeDescriptionId)
       );
-      const compatibleNodes = getNodes()
+
+      const compatibleTargetNodes = getNodes()
         .filter(
-          (candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, storeApi.getState().nodeLookup)
-        )
-        .filter((candidate) =>
-          dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
+          (candidate) =>
+            // Only consider visible nodes
+            !candidate.hidden &&
+            // A node cannot be dropped on itself or one of its descendants
+            !draggedNodes.some((draggedNode) =>
+              isDescendantOf(draggedNode, candidate, storeApi.getState().nodeLookup)
+            ) &&
+            // Check declared compatibility
+            dropDataEntries.some((entry) => entry.droppableOnNodeTypes.includes(candidate.data.descriptionId))
         )
         .map((candidate) => candidate.id);
 
+      const droppableOnDiagram: boolean = dropDataEntries.some((entry) => entry.droppableOnDiagram);
+
       initializeDrop({
-        initialPosition: computedNode.position,
-        droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
+        initialPositions,
+        droppableOnDiagram,
         dragging: true,
       });
 
+      const draggedNodeIds = new Set();
+      draggedNodes.forEach((node) => draggedNodeIds.add(node.id));
+
       setNodes((nds) =>
         nds.map((n) => {
-          if (compatibleNodes.includes(n.id)) {
+          if (compatibleTargetNodes.includes(n.id)) {
             return {
               ...n,
               data: {
                 ...n.data,
-                isDraggedNode: n.id === computedNode.id,
+                isDraggedNode: draggedNodeIds.has(n.id),
                 isDropNodeCandidate: true,
               },
             };
           }
-          if (computedNode.parentId === n.id) {
+          if (draggedNodes.some((node) => node.parentId === n.id)) {
             return {
               ...n,
               data: {
@@ -198,7 +216,7 @@ export const useDropNode = (): UseDropNodeValue => {
               },
             };
           }
-          if (n.id === computedNode.id) {
+          if (draggedNodeIds.has(n.id)) {
             return {
               ...n,
               data: {
@@ -215,15 +233,13 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
-    (event, node, nodes) => {
-      if (!node || nodes.length > 1) {
-        // Drag on multi selection is not supported yet
+    (event, _node, nodes) => {
+      if (nodes.length === 0) {
         return;
       }
+      const draggedNodes: Node<NodeData>[] = getNodes().filter((node) => node.data.isDraggedNode);
 
-      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
-
-      if (draggedNode && !draggedNode.data.isBorderNode) {
+      if (draggedNodes.length > 0 && !draggedNodes.some((node) => node.data.isBorderNode)) {
         const mouseXYPosition: XYPosition = screenToFlowPosition({
           x: event.clientX,
           y: event.clientY,
@@ -239,13 +255,16 @@ export const useDropNode = (): UseDropNodeValue => {
         const newParentId =
           [...intersections]
             .filter(
-              (intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeLookup)
+              (intersectingNode) =>
+                !draggedNodes.some((draggedNode) =>
+                  isDescendantOf(draggedNode, intersectingNode, storeApi.getState().nodeLookup)
+                )
             )
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
 
-        const targetNode = getNodes().find((node) => node.data.isDropNodeTarget) || null;
+        const previousTargetNode = getNodes().find((node) => node.data.isDropNodeTarget) || null;
 
-        if (targetNode?.id != newParentId) {
+        if (previousTargetNode?.id != newParentId) {
           setNodes((nds) =>
             nds.map((n) => {
               if (n.id === newParentId) {
@@ -275,8 +294,7 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
-    (_event) => {
-      const draggedNode = getNodes().find((node) => node.data.isDraggedNode) || null;
+    (_event, draggedNode, draggedNodes) => {
       if (draggedNode) {
         const dropPosition = evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup);
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
@@ -292,65 +310,70 @@ export const useDropNode = (): UseDropNodeValue => {
         const isValidDropOnNode: boolean = isDropOnNode && !!targetNode?.data.isDropNodeCandidate;
         const isValidDropOnDiagram: boolean = !isDropOnNode && droppableOnDiagram;
 
+        const resetInitialPositions = (nodes: Node<NodeData>[]) => {
+          setNodes((nds) =>
+            nds.map((n) => {
+              if (nodes.some((node) => node.id === n.id)) {
+                return {
+                  ...n,
+                  position: initialPositions[n.id] || n.position,
+                  dragging: false,
+                };
+              }
+              return n;
+            })
+          );
+        };
+
         if ((isValidDropOnDiagram && !isDropFromDiagramToDiagram) || (isValidDropOnNode && !isDropOnSameParent)) {
           const target = targetNode?.id || null;
-          onDropNode(draggedNode, target, dropPosition, cancelDrop);
+          onDropNodes(draggedNodes, target, dropPosition, resetInitialPositions);
         }
+        let dropCancelled = false;
         if (!isDropOnNode && !isValidDropOnDiagram && !isDropFromDiagramToDiagram && !isBorderNodeDrop) {
-          cancelDrop(draggedNode);
+          dropCancelled = true;
         } else if (isDropOnNode && !isValidDropOnNode && !isDropOnSameParent) {
-          cancelDrop(draggedNode);
+          dropCancelled = true;
         } else if (isDropOnNode && draggedNode?.type === 'iconLabelNode' && isDropOnSameParent) {
-          cancelDrop(draggedNode);
+          dropCancelled = true;
         }
 
-        setNodes((previousNodes) =>
-          previousNodes.map((previousNode) => {
-            if (previousNode.data.isDropNodeCandidate || previousNode.data.isDropNodeTarget) {
+        setNodes((nodes) =>
+          nodes.map((node) => {
+            let finalPosition: XYPosition = node.position;
+            if (dropCancelled && initialPositions.get(node.id)) {
+              finalPosition = initialPositions.get(node.id) || finalPosition;
+            }
+            if (node.data.isDropNodeCandidate || node.data.isDropNodeTarget) {
               return {
-                ...previousNode,
+                ...node,
+                position: finalPosition,
                 data: {
-                  ...previousNode.data,
+                  ...node.data,
                   isDropNodeCandidate: false,
                   isDropNodeTarget: false,
                 },
               };
             }
-            if (previousNode.dragging) {
+            if (draggedNodes.some((draggedNode) => draggedNode.id === node.id)) {
               return {
-                ...previousNode,
+                ...node,
+                position: finalPosition,
                 dragging: false,
               };
             }
-            return previousNode;
+            return node;
           })
         );
       }
       resetDrop();
     },
-    [droppableOnDiagram, initialPosition, getNodes]
+    [droppableOnDiagram, initialPositions, getNodes]
   );
 
-  const cancelDrop = (node: Node<NodeData>) => {
-    if (initialPosition) {
-      setNodes((nds) =>
-        nds.map((n) => {
-          if (n.id === node.id) {
-            return {
-              ...n,
-              position: initialPosition,
-              dragging: false,
-            };
-          }
-          return n;
-        })
-      );
-    }
-  };
-
   return {
-    onNodeDragStart,
-    onNodeDrag,
-    onNodeDragStop,
+    onNodesDragStart: onNodeDragStart,
+    onNodesDrag: onNodeDrag,
+    onNodesDragStop: onNodeDragStop,
   };
 };

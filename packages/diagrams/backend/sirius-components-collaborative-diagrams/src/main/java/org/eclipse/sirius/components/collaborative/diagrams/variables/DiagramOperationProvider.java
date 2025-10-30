@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DiagramOperationProvider implements IOperationProvider {
+
+    public static final String DIAGRAM_DROP_NODES = "Diagram#dropNodes";
+    public static final Operation DIAGRAM_DROP_NODES_OPERATION = new Operation(DIAGRAM_DROP_NODES, "Used to drop node from one containing element to another");
 
     public static final String NODE_SEMANTIC_CANDIDATES = "Node#semanticCandidates";
     public static final Operation NODE_SEMANTIC_CANDIDATES_OPERATION = new Operation(NODE_SEMANTIC_CANDIDATES, "Used to provide the semantic elements that will be rendered as nodes");
@@ -66,6 +69,8 @@ public class DiagramOperationProvider implements IOperationProvider {
     @Override
     public List<Operation> getOperations() {
         List<Operation> operations = new ArrayList<>();
+
+        operations.add(DIAGRAM_DROP_NODES_OPERATION);
 
         operations.add(NODE_SEMANTIC_CANDIDATES_OPERATION);
         operations.add(NODE_PRECONDITION_OPERATION);

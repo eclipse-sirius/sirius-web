@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
@@ -27,12 +27,12 @@ import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher to use to drop a node on another one.
+ * The data fetcher to use to DnD node(s) on a diagram.
  *
  * @author pcdavid
  */
-@MutationDataFetcher(type = "Mutation", field = "dropNode")
-public class MutationDropNodeDataFetcher  implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+@MutationDataFetcher(type = "Mutation", field = "dropNodes")
+public class MutationDropNodesDataFetcher  implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -42,7 +42,7 @@ public class MutationDropNodeDataFetcher  implements IDataFetcherWithFieldCoordi
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public MutationDropNodeDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
+    public MutationDropNodesDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
@@ -51,7 +51,7 @@ public class MutationDropNodeDataFetcher  implements IDataFetcherWithFieldCoordi
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, DropNodeInput.class);
+        var input = this.objectMapper.convertValue(argument, DropNodesInput.class);
         return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input), input).toFuture();
     }
 }

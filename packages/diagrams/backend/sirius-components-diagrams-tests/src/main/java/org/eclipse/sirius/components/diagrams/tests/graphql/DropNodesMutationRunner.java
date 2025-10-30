@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class DropNodeMutationRunner implements IMutationRunner<DropNodeInput> {
+public class DropNodesMutationRunner implements IMutationRunner<DropNodesInput> {
 
     private static final String DROP_NODE_MUTATION = """
-            mutation dropNode($input: DropNodeInput!) {
-              dropNode(input: $input) {
+            mutation dropNodes($input: DropNodesInput!) {
+              dropNodes(input: $input) {
                 __typename
               }
             }
@@ -37,12 +37,12 @@ public class DropNodeMutationRunner implements IMutationRunner<DropNodeInput> {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public DropNodeMutationRunner(IGraphQLRequestor graphQLRequestor) {
+    public DropNodesMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public String run(DropNodeInput input) {
+    public String run(DropNodesInput input) {
         return this.graphQLRequestor.execute(DROP_NODE_MUTATION, input);
     }
 }

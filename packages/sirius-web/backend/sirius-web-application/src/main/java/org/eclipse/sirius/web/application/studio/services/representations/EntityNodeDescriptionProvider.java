@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DropNodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -46,9 +48,11 @@ import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
 
-    private static final String ENTITY_NODE_DESCRIPTION_NAME = "Entity";
+    public static final String ENTITY_NODE_DESCRIPTION_NAME = "Entity";
 
-    private static final String ENTITY_NODE_TOOL_SECTION_NAME = "Entity";
+    public  static final String ATTRIBUTE_NODE_DESCRIPTION_NAME = "Attribute";
+
+    private static final String ENTITY_NODE_TOOL_SECTION_NAME = "Attributes";
 
     private final IColorProvider colorProvider;
 
@@ -62,7 +66,6 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeDescription entityNodeDescription() {
-
         var nodeStyle = new DiagramBuilders()
                 .newRectangularNodeStyleDescription()
                 .borderRadius(8)
@@ -90,34 +93,38 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
 
+        NodeDescription attributeNodeDescription = this.attributeNodeDescription();
+
         var entityNodeDescription = new DiagramBuilders()
                 .newNodeDescription()
                 .name(ENTITY_NODE_DESCRIPTION_NAME)
                 .domainType("domain::Entity")
                 .semanticCandidatesExpression("aql:self.types")
                 .insideLabel(this.entityNodeLabelDescription())
-                .childrenDescriptions(this.attributeNodeDescription())
+                .childrenDescriptions(attributeNodeDescription)
                 .style(nodeStyle)
                 .conditionalStyles(conditionalNodeStyle)
                 .build();
 
-        var palette = this.entityNodePalette(entityNodeDescription);
+        var palette = this.entityNodePalette(entityNodeDescription, attributeNodeDescription);
         entityNodeDescription.setPalette(palette);
 
         return entityNodeDescription;
     }
 
-    private NodePalette entityNodePalette(NodeDescription edgeTargetNodeDescription) {
+    private NodePalette entityNodePalette(NodeDescription edgeTargetNodeDescription, NodeDescription attributeNodeDescription) {
         var nodeToolSection = this.entityNodeCreationTools();
         var relationEdgeTool = this.entityRelationEdgeTool(edgeTargetNodeDescription);
         var containmentEdgeTool = this.entityContainmentEdgeTool(edgeTargetNodeDescription);
         var supertypeEdgeTool = this.entitySupertypeEdgeTool(edgeTargetNodeDescription);
         var labelEditTool = this.labelEditTool();
         var deleteTool = this.deleteTool();
+        var dropNodeTool = this.entityDropAttributesTool(attributeNodeDescription);
         return new DiagramBuilders()
                 .newNodePalette()
                 .labelEditTool(labelEditTool)
                 .deleteTool(deleteTool)
+                .dropNodeTool(dropNodeTool)
                 .edgeTools(relationEdgeTool, containmentEdgeTool, supertypeEdgeTool)
                 .toolSections(nodeToolSection, new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .build();
@@ -235,6 +242,24 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
     }
 
+    private DropNodeTool entityDropAttributesTool(NodeDescription attributeNodeDescription) {
+        return new DropNodeToolBuilder()
+                .name("Drop attributes")
+                .acceptedNodeTypes(attributeNodeDescription)
+                .body(new ViewBuilders().newFor()
+                       .expression("aql:droppedElements")
+                       .iteratorName("droppedAttribute")
+                       .children(new ViewBuilders().newChangeContext()
+                                  .expression("aql:targetElement")
+                                  .children(new ViewBuilders().newSetValue()
+                                             .featureName("attributes")
+                                             .valueExpression("aql:droppedAttribute")
+                                             .build())
+                                  .build())
+                       .build())
+                .build();
+    }
+
     private NodeTool entityAttributeCreationTool(String toolName, String iconExpression, String valueExpressionForName, String valueExpressionForType) {
         var createInstance = new ViewBuilders().newCreateInstance()
                 .typeName("domain::Attribute")
@@ -345,7 +370,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
 
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Attribute")
+                .name(ATTRIBUTE_NODE_DESCRIPTION_NAME)
                 .domainType("domain::Attribute")
                 .semanticCandidatesExpression("aql:self.attributes")
                 .style(nodeStyle)

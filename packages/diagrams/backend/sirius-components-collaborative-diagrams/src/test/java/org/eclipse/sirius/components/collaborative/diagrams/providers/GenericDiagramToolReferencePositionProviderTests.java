@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
@@ -43,7 +43,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClick = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
                 "", "", 0, 0, List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputInvokeSingleClick)).isTrue();
-        DropNodeInput inputDropNode = new DropNodeInput(UUID.randomUUID(), "", "", "", "", 0, 0);
+        DropNodesInput inputDropNode = new DropNodesInput(UUID.randomUUID(), "", "", List.of(""), "", 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropNode)).isTrue();
         DropOnDiagramInput inputDropOnDiagram = new DropOnDiagramInput(UUID.randomUUID(), "", "", "", List.of(), 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropOnDiagram)).isTrue();
@@ -91,8 +91,8 @@ public class GenericDiagramToolReferencePositionProviderTests {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
-        DropNodeInput dropNodeInput = new DropNodeInput(UUID.randomUUID(), "", "",
-                "", CONTAINER_ID, 3, 2);
+        DropNodesInput dropNodeInput = new DropNodesInput(UUID.randomUUID(), "", "",
+                List.of(""), CONTAINER_ID, 3, 2);
         var result = diagramToolReferencePositionProvider.getReferencePosition(dropNodeInput, diagramContext);
         this.assertResult(result, CONTAINER_ID, new Position(3, 2));
     }

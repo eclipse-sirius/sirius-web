@@ -15,38 +15,38 @@ import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { Node, OnNodeDrag } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
-export interface UseDropNodeValue {
-  onNodeDragStart: OnNodeDrag<Node<NodeData>>;
-  onNodeDrag: OnNodeDrag<Node<NodeData>>;
-  onNodeDragStop: OnNodeDrag<Node<NodeData>>;
+export interface UseDropNodesValue {
+  onNodesDragStart: OnNodeDrag<Node<NodeData>>;
+  onNodesDrag: OnNodeDrag<Node<NodeData>>;
+  onNodesDragStop: OnNodeDrag<Node<NodeData>>;
 }
 
-export interface GQLDropNodePayload {
+export interface GQLDropNodesPayload {
   __typename: string;
 }
 
-export interface GQLDropNodeData {
-  dropNode: GQLDropNodePayload;
+export interface GQLDropNodesData {
+  dropNodes: GQLDropNodesPayload;
 }
 
-export interface GQLDropNodeVariables {
-  input: GQLDropNodeInput;
+export interface GQLDropNodesVariables {
+  input: GQLDropNodesInput;
 }
 
-export interface GQLDropNodeInput {
+export interface GQLDropNodesInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  droppedElementId: string;
+  droppedElementIds: string[];
   targetElementId: string | null;
   x: number;
   y: number;
 }
 
-export interface GQLErrorPayload extends GQLDropNodePayload {
+export interface GQLErrorPayload extends GQLDropNodesPayload {
   messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload extends GQLDropNodePayload {
+export interface GQLSuccessPayload extends GQLDropNodesPayload {
   messages: GQLMessage[];
 }

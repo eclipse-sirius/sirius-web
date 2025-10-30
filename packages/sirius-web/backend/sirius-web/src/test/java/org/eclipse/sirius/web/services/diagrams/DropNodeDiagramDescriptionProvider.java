@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -92,40 +93,8 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
     }
 
     private DiagramDescription createDiagramDescription() {
-        var nodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .build();
-
-        var insideLabel = new DiagramBuilders().newInsideLabelDescription()
-                .labelExpression("aql:self.name")
-                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
-                .position(InsideLabelPosition.TOP_CENTER)
-                .build();
-        this.dropNodeTool = new DiagramBuilders().newDropNodeTool()
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:targetElement")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("dependencies")
-                                                .valueExpression("aql:self.dependencies->including(droppedElement)")
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
-
-        var nodePalette = new DiagramBuilders().newNodePalette()
-                .dropNodeTool(this.dropNodeTool)
-                .build();
-
-        var nodeDescription = new DiagramBuilders().newNodeDescription()
-                .name("Component")
-                .domainType("papaya:Component")
-                .semanticCandidatesExpression("aql:self.eContents()")
-                .insideLabel(insideLabel)
-                .style(nodeStyle)
-                .palette(nodePalette)
-                .build();
+        var packageNodeDescription = this.packageNodeDescription();
+        var componentNodeDescription = this.componentNodeDescription(packageNodeDescription);
 
         var edgeStyle = new DiagramBuilders().newEdgeStyle()
                 .edgeWidth(1)
@@ -138,25 +107,111 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .centerLabelExpression("aql:semanticEdgeSource.name + ' -> ' + semanticEdgeTarget.name")
                 .sourceExpression("aql:self")
                 .targetExpression("aql:self.dependencies")
-                .sourceDescriptions(nodeDescription)
-                .targetDescriptions(nodeDescription)
+                .sourceDescriptions(componentNodeDescription)
+                .targetDescriptions(componentNodeDescription)
                 .palette(edgePalette)
                 .style(edgeStyle)
                 .build();
 
+        var createComponentFromPackage = new ViewBuilders().newChangeContext()
+                .expression("aql:targetElement")
+                .children(
+                        new ViewBuilders().newCreateInstance()
+                                .typeName("papaya::Component")
+                                .referenceName("elements")
+                                .variableName("newComponent")
+                                .children(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:newComponent")
+                                                .children(
+                                                        new ViewBuilders().newSetValue()
+                                                                .featureName("name")
+                                                                .valueExpression("aql:droppedElement.name")
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
         var diagramPalette = new DiagramBuilders().newDiagramPalette()
+                .dropNodeTool(
+                        new DiagramBuilders().newDropNodeTool()
+                                .acceptedNodeTypes(packageNodeDescription)
+                                .body(createComponentFromPackage)
+                                .build()
+                )
                 .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
                 .titleExpression("aql:'DropNodeDiagram'")
                 .domainType("papaya:Project")
-                .nodeDescriptions(nodeDescription)
+                .nodeDescriptions(componentNodeDescription)
                 .edgeDescriptions(edgeDescription)
                 .palette(diagramPalette)
                 .autoLayout(false)
                 .build();
 
         return this.diagramDescription;
+    }
+
+    private NodeDescription packageNodeDescription() {
+        return new DiagramBuilders().newNodeDescription()
+                .name("Package")
+                .domainType("papaya:Package")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .insideLabel(
+                        new DiagramBuilders().newInsideLabelDescription()
+                                .labelExpression("aql:self.name")
+                                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                                .position(InsideLabelPosition.TOP_CENTER)
+                                .build()
+                )
+                .style(
+                        new DiagramBuilders().newRectangularNodeStyleDescription()
+                                .build()
+                )
+                .build();
+    }
+
+    private NodeDescription componentNodeDescription(NodeDescription packageNodeDescription) {
+        var insideLabel = new DiagramBuilders().newInsideLabelDescription()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+
+        this.dropNodeTool = new DiagramBuilders().newDropNodeTool()
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:targetElement")
+                                .children(
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("dependencies")
+                                                .valueExpression("aql:self.dependencies->union(droppedElements)")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
+        var nodePalette = new DiagramBuilders().newNodePalette()
+                .dropNodeTool(this.dropNodeTool)
+                .build();
+
+        return new DiagramBuilders().newNodeDescription()
+                .name("Component")
+                .domainType("papaya:Component")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .childrenDescriptions(packageNodeDescription)
+                .insideLabel(insideLabel)
+                .style(
+                        new DiagramBuilders().newRectangularNodeStyleDescription()
+                                .build()
+                )
+                .palette(nodePalette)
+                .build();
     }
 }

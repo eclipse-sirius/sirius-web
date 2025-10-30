@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * The view provider for the graphical-dnd.cy.ts test suite.
+ * The view provider for "integration-tests-playwright/playwright/e2e/dnd.spec.ts".
  *
  * @author frouene
  */
@@ -100,7 +100,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                                 .build(),
                         new ViewBuilders()
                                 .newChangeContext()
-                                .expression("aql:droppedElement")
+                                .expression("aql:droppedElements->first()")
                                 .children(new ViewBuilders()
                                         .newDeleteElement()
                                         .build())

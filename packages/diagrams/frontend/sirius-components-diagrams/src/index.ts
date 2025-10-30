@@ -47,7 +47,7 @@ export { DiagramDirectEditInput } from './renderer/direct-edit/DiagramDirectEdit
 export type { DiagramDirectEditInputProps } from './renderer/direct-edit/DiagramDirectEditInput.types';
 export { useDiagramDirectEdit } from './renderer/direct-edit/useDiagramDirectEdit';
 export { useDrop } from './renderer/drop/useDrop';
-export { useDropNode } from './renderer/dropNode/useDropNode';
+export { useDropNodes } from './renderer/dropNode/useDropNodes';
 export { useDropNodeStyle } from './renderer/dropNode/useDropNodeStyle';
 export { ConnectionCreationHandles } from './renderer/handles/ConnectionCreationHandles';
 export { ConnectionHandles } from './renderer/handles/ConnectionHandles';
