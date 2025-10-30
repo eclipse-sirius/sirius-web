@@ -278,10 +278,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     }
   }, [toolSelections]);
 
-  useEffect(() => {
-    setEdges((oldEdges) => oldEdges.map((edge) => ({ ...edge, reconnectable: !!edge.selected && !readOnly })));
-  }, [edges.map((edge) => edge.id + edge.selected).join(), readOnly]);
-
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
@@ -336,7 +332,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onEdgeSelectedChange } = useSelectEdgeChange();
   const handleEdgesChange: OnEdgesChange<Edge<EdgeData>> = useCallback(
     (changes: EdgeChange<Edge<EdgeData>>[]) => {
-      onEdgeSelectedChange(changes);
+      if (!readOnly) {
+        onEdgeSelectedChange(changes);
+      }
       onEdgesChange(changes);
     },
     [onEdgesChange]
