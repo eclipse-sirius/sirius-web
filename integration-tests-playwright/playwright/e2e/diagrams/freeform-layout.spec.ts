@@ -11,14 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
-import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
 test.describe('diagram - freeform layout', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Papaya - Blank', 'papaya-empty', [PlaywrightProject.PAPAYA_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Papaya - Blank', 'papaya-empty', [
+      PlaywrightProject.PAPAYA_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);
