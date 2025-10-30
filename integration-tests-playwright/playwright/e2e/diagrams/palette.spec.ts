@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { test, expect } from '@playwright/test';
-import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
-import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
+import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
 test.describe('diagram - palette', () => {
   let projectId;
