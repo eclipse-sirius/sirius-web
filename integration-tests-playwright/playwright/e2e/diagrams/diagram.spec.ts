@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
-import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
 test.describe('diagram', () => {
   let projectId;
