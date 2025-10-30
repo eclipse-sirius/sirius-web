@@ -155,6 +155,8 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5836[#5836] [core] Ensure that the behavior of the omnibox search is consistent with the rest of the application
 - https://github.com/eclipse-sirius/sirius-web/issues/5828[#5828] [diagram] Fix the new node position when creating a grandchild
 - https://github.com/eclipse-sirius/sirius-web/issues/5762[#5762] [diagram] Fix an issue where the selection requested by a diagram tool was no longer applied globaly to the workbench
+- https://github.com/eclipse-sirius/sirius-web/issues/5756[#5756] [diagram] Fix handle not always visible when the edge is selected
+
 
 === New Features
 
