@@ -2,6 +2,7 @@ import { Edge, Node, Position, XYPosition } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { collectPolylineRectCollisions, expandRect } from './collision';
+import type { PolylineRectCollision } from './collision';
 import { buildDetourAroundRectangle, DetourContext, DetourOptions } from './detour';
 import { computeAbsoluteNodeRects, Rect } from './geometry';
 
@@ -64,6 +65,8 @@ type CollisionCandidate = {
   obstacle: Rect;
 };
 
+type CollisionSide = 'top' | 'right' | 'bottom' | 'left' | null;
+
 const computeEntryOrder = (entryPoint: XYPosition, obstacle: Rect): number => {
   if (entryPoint.y <= obstacle.y + 0.5 || entryPoint.y === obstacle.y) {
     return entryPoint.x;
@@ -75,6 +78,91 @@ const computeEntryOrder = (entryPoint: XYPosition, obstacle: Rect): number => {
     return entryPoint.y;
   }
   return entryPoint.y;
+};
+
+const determineCollisionSide = (
+  point: XYPosition,
+  bounds: { left: number; right: number; top: number; bottom: number },
+  tolerance = 0.6
+): CollisionSide => {
+  if (Math.abs(point.y - bounds.top) <= tolerance) {
+    return 'top';
+  }
+  if (Math.abs(point.y - bounds.bottom) <= tolerance) {
+    return 'bottom';
+  }
+  if (Math.abs(point.x - bounds.left) <= tolerance) {
+    return 'left';
+  }
+  if (Math.abs(point.x - bounds.right) <= tolerance) {
+    return 'right';
+  }
+  return null;
+};
+
+const preferredTargetEntrySide = (position?: Position): CollisionSide => {
+  switch (position) {
+    case Position.Top:
+      return 'top';
+    case Position.Bottom:
+      return 'bottom';
+    case Position.Left:
+      return 'left';
+    case Position.Right:
+      return 'right';
+    default:
+      return null;
+  }
+};
+
+const preferredSourceExitSide = (position?: Position): CollisionSide => {
+  switch (position) {
+    case Position.Top:
+      return 'top';
+    case Position.Bottom:
+      return 'bottom';
+    case Position.Left:
+      return 'left';
+    case Position.Right:
+      return 'right';
+    default:
+      return null;
+  }
+};
+
+const projectPointToSide = (
+  point: XYPosition,
+  bounds: { left: number; right: number; top: number; bottom: number },
+  side: CollisionSide
+): XYPosition => {
+  const clampedX = Math.min(Math.max(point.x, bounds.left), bounds.right);
+  const clampedY = Math.min(Math.max(point.y, bounds.top), bounds.bottom);
+  switch (side) {
+    case 'top':
+      return { x: clampedX, y: bounds.top };
+    case 'bottom':
+      return { x: clampedX, y: bounds.bottom };
+    case 'left':
+      return { x: bounds.left, y: clampedY };
+    case 'right':
+      return { x: bounds.right, y: clampedY };
+    default:
+      return { x: clampedX, y: clampedY };
+  }
+};
+
+const closestCollisionSide = (
+  point: XYPosition,
+  bounds: { left: number; right: number; top: number; bottom: number }
+): CollisionSide => {
+  const distances: Array<{ side: CollisionSide; value: number }> = [
+    { side: 'top', value: Math.abs(point.y - bounds.top) },
+    { side: 'bottom', value: Math.abs(point.y - bounds.bottom) },
+    { side: 'left', value: Math.abs(point.x - bounds.left) },
+    { side: 'right', value: Math.abs(point.x - bounds.right) },
+  ];
+  distances.sort((a, b) => a.value - b.value);
+  return distances[0]?.side ?? null;
 };
 
 const gatherCollisions = (
@@ -91,9 +179,13 @@ const gatherCollisions = (
     }
 
     edges.forEach((edge) => {
-      if (edge.source === nodeId || edge.target === nodeId || edge.hidden) {
+      const isSourceNode = edge.source === nodeId;
+      const isTargetNode = edge.target === nodeId;
+      if (edge.hidden || (isSourceNode && isTargetNode)) {
         return;
       }
+
+      const edgeWithPositions = edge as EdgeWithPositions;
 
       const polyline = polylines.get(edge.id);
       if (!polyline || polyline.length < 2) {
@@ -101,12 +193,71 @@ const gatherCollisions = (
       }
 
       const paddedRect = expandRect(rect, DETOUR_BASE_GAP);
+      const paddedBounds = {
+        left: paddedRect.x,
+        right: paddedRect.x + paddedRect.width,
+        top: paddedRect.y,
+        bottom: paddedRect.y + paddedRect.height,
+      };
       const collisionSpans = collectPolylineRectCollisions(polyline, paddedRect);
       if (collisionSpans.length === 0) {
         return;
       }
 
+      const preferredTargetSide = isTargetNode
+        ? preferredTargetEntrySide(edgeWithPositions.targetPosition)
+        : null;
+      const preferredSourceSide = isSourceNode
+        ? preferredSourceExitSide(edgeWithPositions.sourcePosition)
+        : null;
+
+      const adjustedSpans: PolylineRectCollision[] = [];
+
       collisionSpans.forEach((span) => {
+        let entrySide = determineCollisionSide(span.entryPoint, paddedBounds);
+        let exitSide = determineCollisionSide(span.exitPoint, paddedBounds);
+
+        if (!entrySide) {
+          entrySide =
+            (isSourceNode && preferredSourceSide) ||
+            (isTargetNode && preferredTargetSide) ||
+            closestCollisionSide(span.entryPoint, paddedBounds);
+        }
+
+        if (!exitSide) {
+          exitSide =
+            (isTargetNode && preferredTargetSide) ||
+            (isSourceNode && preferredSourceSide) ||
+            closestCollisionSide(span.exitPoint, paddedBounds);
+        }
+
+        if (isTargetNode && preferredTargetSide && entrySide === preferredTargetSide) {
+          return;
+        }
+        if (isSourceNode && preferredSourceSide && exitSide === preferredSourceSide) {
+          return;
+        }
+
+        if (isTargetNode && preferredTargetSide) {
+          exitSide = preferredTargetSide;
+        }
+
+        const entryPoint = projectPointToSide(span.entryPoint, paddedBounds, entrySide);
+        const exitPoint = projectPointToSide(span.exitPoint, paddedBounds, exitSide);
+
+        adjustedSpans.push({
+          entryPoint,
+          exitPoint,
+          entryIndex: span.entryIndex,
+          exitIndex: span.exitIndex,
+        });
+      });
+
+      if (adjustedSpans.length === 0) {
+        return;
+      }
+
+      adjustedSpans.forEach((span) => {
         const key = `${nodeId}::${Math.round(span.entryPoint.x)}::${Math.round(span.entryPoint.y)}`;
         const candidates = collisions.get(key) ?? [];
         candidates.push({
@@ -210,15 +361,6 @@ const computeExcludedObstacleIds = (
   lookup: Map<string, Node<NodeData, DiagramNodeType>>
 ): Set<string> => {
   const excluded = new Set<string>();
-  const addId = (candidate: string | null | undefined) => {
-    if (candidate) {
-      excluded.add(candidate);
-    }
-  };
-
-  addId(currentEdge.source);
-  addId(currentEdge.target);
-
   const sourceAncestors = collectAncestorIds(currentEdge.source, lookup);
   const targetAncestors = collectAncestorIds(currentEdge.target, lookup);
 
