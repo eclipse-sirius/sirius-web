@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFacto
 import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.tables.ColumnFilter;
@@ -54,6 +54,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String EXPANDED_IDS = "expandedIds";
     private static final String ACTIVE_ROW_FILTER_IDS = "activeRowFilterIds";
     private static final String COLUMN_SORT = "columnSort";
+    private static final String EXPAND_ALL = "expandAll";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -61,7 +62,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<ITableEventHandler> tableEventHandlers;
 
@@ -74,11 +75,11 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private final List<ICustomCellDescriptor> customCellDescriptors;
 
     public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
+            IObjectSearchService objectSearchService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
@@ -99,7 +100,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
             Optional<TableDescription> optionalTableDescription = this.representationDescriptionSearchService.findById(editingContext, table.getDescriptionId())
                     .filter(TableDescription.class::isInstance)
                     .map(TableDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, table.getTargetObjectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, table.getTargetObjectId());
             if (optionalTableDescription.isPresent() && optionalObject.isPresent()) {
                 TableDescription tableDescription = optionalTableDescription.get();
                 Object object = optionalObject.get();
@@ -116,6 +117,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .activeRowFilterIds(this.getActiveRowFilterIds(representationId))
                         .columnSort(this.getColumnSort(representationId, table))
                         .customCellDescriptors(this.customCellDescriptors)
+                        .expandAll(this.isExpandAll(representationId))
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
@@ -151,7 +153,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 cursor = param.get(CURSOR).stream()
                         .filter(cursorValue -> !cursorValue.equals("null"))
                         .findFirst()
-                        .flatMap(cursorId -> this.objectService.getObject(editingContext, cursorId))
+                        .flatMap(cursorId -> this.objectSearchService.getObject(editingContext, cursorId))
                         .orElse(null);
             }
             if (param.containsKey(SIZE)) {
@@ -209,5 +211,9 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
             }
         }
         return table.getColumnSort();
+    }
+
+    private boolean isExpandAll(String representationId) {
+        return representationId.indexOf(EXPAND_ALL) > 0;
     }
 }
