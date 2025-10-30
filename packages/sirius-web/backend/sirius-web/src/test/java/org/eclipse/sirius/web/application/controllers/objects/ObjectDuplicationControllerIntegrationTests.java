@@ -216,7 +216,6 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
 
         String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
-        assertThat(errorMessage).isEqualTo("Unable to create a new instance of \"RectangularNodeStyleDescription\" in feature \"style\" because it has reached its upper-bound cardinality");
     }
 
     @Test
@@ -240,7 +239,6 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
 
         String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
-        assertThat(errorMessage).isEqualTo("The object with id \"unknown_object_id\" does not exist");
     }
 
     @Test

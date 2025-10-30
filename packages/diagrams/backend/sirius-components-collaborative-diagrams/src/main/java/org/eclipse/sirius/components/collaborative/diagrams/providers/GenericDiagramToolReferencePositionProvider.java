@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.providers;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
@@ -34,7 +34,7 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
 
     @Override
     public boolean canHandle(IInput diagramInput) {
-        return diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput || diagramInput instanceof DropNodeInput || diagramInput instanceof DropOnDiagramInput || diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput;
+        return diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput || diagramInput instanceof DropNodesInput || diagramInput instanceof DropOnDiagramInput || diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             String parentId = this.getParentId(diagramContext, input.diagramElementId());
             referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()), input.getClass().getSimpleName());
-        } else if (diagramInput instanceof DropNodeInput input) {
+        } else if (diagramInput instanceof DropNodesInput input) {
             referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()), input.getClass().getSimpleName());
         } else if (diagramInput instanceof DropOnDiagramInput input) {
             String parentId = this.getParentId(diagramContext, input.diagramTargetElementId());

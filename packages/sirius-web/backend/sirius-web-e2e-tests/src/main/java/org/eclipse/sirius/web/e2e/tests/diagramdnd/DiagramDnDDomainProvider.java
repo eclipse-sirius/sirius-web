@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to contribute domains for graphical-dnd.cy.ts tests.
+ * Used to contribute domains for "integration-tests-playwright/playwright/e2e/dnd.spec.ts".
  *
  * @author frouene
  */

@@ -109,6 +109,9 @@ An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Custom node layout handlers must now set `minComputedWidth` and  `minComputedHeight` values to limit the resizer to a minimum size.
 An example can be found with `EllipseNodeLayoutHandler.ts` and `EllipseNodeConverter.ts`.
 If you want to use this limit on your custom nodes, you must either use the `SiriusWeb` `Resizer` component or add `minWidth={data.minComputedWidth ?? undefined}` and ` minHeight={data.minComputedHeight ?? undefined}` to the `ReactFlow` `NodeResize`
+- https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes.
+As such, the variables `droppedNode` and `droppedElement` which are exposed in the body of such tools and which only supported a single node should stop being used and replaced with `droppedNodes` and `droppedElements` representing all the nodes (and corresponding semantic elements) dropped at once.
+_Drop Node Tool_ definitions need to be adapted to handle these new variables.
 
 
 === Dependency update
@@ -119,6 +122,7 @@ If you want to use this limit on your custom nodes, you must either use the `Sir
 This also includes an update from ANTLR 4.10.1 to 4.13.2.
 - https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add a dependency to `spring-boot-starter-data-elasticsearch` in `sirius-web-infrastructure`
 - [releng] Switch to react-window 2.2.2.
+
 
 === Bug fixes
 
@@ -183,6 +187,7 @@ This can be used to retrieve a `ViewDiagramConversionData` that contains the map
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
+- https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes at once.
 
 
 === Improvements
@@ -225,6 +230,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5831[#5831] Add French translation into the backend to align with the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/5811[#5811] [diagram] Introduce CrossFade Tunnels to automatically create blank underpasses when edges cross and defer crossing detection while nodes are being dragged to keep interactions smooth.
 - https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Limit node resizing with minimum node size constraints
+
 
 
 == 2025.10.0

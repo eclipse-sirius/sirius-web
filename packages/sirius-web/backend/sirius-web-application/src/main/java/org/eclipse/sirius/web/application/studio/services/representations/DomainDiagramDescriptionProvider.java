@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.representations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +25,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -57,6 +60,8 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
     public static final String BLACK_COLOR = "Black";
 
     private static final String DOMAIN_VIEW_DIAGRAM_ID = "DomainDiagram";
+
+    private static final String DROP_ATTRIBUTES_TOOL_NAME = "Create new entity from attributes";
 
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
 
@@ -110,6 +115,13 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
         });
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(domainDiagramDescription, cache));
 
+        domainDiagramDescription.getNodeDescriptions().stream()
+            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ENTITY_NODE_DESCRIPTION_NAME))
+            .flatMap(entityNodeScription -> entityNodeScription.getChildrenDescriptions().stream())
+            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ATTRIBUTE_NODE_DESCRIPTION_NAME))
+            .findFirst()
+            .ifPresent(attributeNodeDescription -> domainDiagramDescription.getPalette().getDropNodeTool().getAcceptedNodeTypes().add(attributeNodeDescription));
+
         domainView.eAllContents().forEachRemaining(eObject -> {
             var id = UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
             eObject.eAdapters().add(new IDAdapter(id));
@@ -124,26 +136,11 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
     }
 
     private DiagramDescription domainDiagramDescription() {
-        var newEntitySetValue = new ViewBuilders().newSetValue()
-                .featureName("name")
-                .valueExpression("NewEntity")
-                .build();
-
-        var newEntityChangeContext = new ViewBuilders().newChangeContext()
-                .expression("aql:newEntity")
-                .children(newEntitySetValue)
-                .build();
-
-        var createEntityInstance = new ViewBuilders().newCreateInstance()
-                .referenceName("types")
-                .typeName("domain::Entity")
-                .variableName("newEntity")
-                .children(newEntityChangeContext)
-                .build();
-
+        var newEntity = "newEntity";
+        var newEntityExpr =  "aql:newEntity";
         var initialChangeContext = new ViewBuilders().newChangeContext()
                 .expression("aql:self")
-                .children(createEntityInstance)
+                .children(this.withNewEntity("NewEntity", newEntity))
                 .build();
 
         var newEntityNodeTool = new DiagramBuilders().newNodeTool()
@@ -151,17 +148,79 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .body(initialChangeContext)
                 .build();
 
-        var palette = new DiagramBuilders().newDiagramPalette()
-                .nodeTools(newEntityNodeTool)
+        var dropAttributesTool = new DiagramBuilders().newDropNodeTool()
+                .name(DROP_ATTRIBUTES_TOOL_NAME)
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:targetElement")
+                                .children(
+                                        this.withNewEntity(
+                                                "AbstractEntity",
+                                                newEntity,
+                                                this.setValue(newEntityExpr, "abstract", "aql:true"),
+                                                this.forEach("droppedAttribute", "aql:droppedElements",
+                                                        this.setValue("aql:droppedAttribute.eContainer()", "superTypes", newEntityExpr),
+                                                        this.setValue(newEntityExpr, "attributes", "aql:droppedAttribute")
+                                                )
+                                        )
+                                )
+                                .build()
+                )
                 .build();
 
-        return new DiagramBuilders()
+        var palette = new DiagramBuilders().newDiagramPalette()
+                .nodeTools(newEntityNodeTool)
+                .dropNodeTool(dropAttributesTool)
+                .build();
+
+        var diagramDescription = new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
                 .palette(palette)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
+                .build();
+
+        return diagramDescription;
+    }
+
+    /**
+     * Create a new Entity with the specified name, and execute the given body in the context if the new instance.
+     */
+    private Operation withNewEntity(String entityName, String variableName, Operation... body) {
+        var fullBody = new ArrayList<Operation>();
+        fullBody.add(new ViewBuilders().newSetValue().featureName("name").valueExpression(entityName).build());
+        fullBody.addAll(Arrays.asList(body));
+
+        return new ViewBuilders().newCreateInstance()
+             .referenceName("types")
+             .typeName("domain::Entity")
+             .variableName(variableName)
+             .children(new ViewBuilders().newChangeContext()
+                     .expression("aql:" + variableName)
+                     .children(fullBody.toArray(new Operation[0]))
+                     .build())
+             .build();
+    }
+
+
+    private Operation forEach(String iteratorName, String iterationExpression, Operation... body) {
+        return new ViewBuilders().newFor()
+                .iteratorName(iteratorName)
+                .expression(iterationExpression)
+                .children(body)
+                .build();
+    }
+
+    private Operation setValue(String targetExpression, String featureName, String valueExpression) {
+        return new ViewBuilders().newChangeContext()
+                .expression(targetExpression)
+                .children(new ViewBuilders().newSetValue()
+                        .featureName(featureName)
+                        .valueExpression(valueExpression)
+                        .build()
+                )
                 .build();
     }
 

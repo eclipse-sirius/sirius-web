@@ -19,7 +19,7 @@ export type DropNodeContextValue = DropNodeContextState & {
 };
 
 export interface DropNodeContextState {
-  initialPosition: XYPosition | null;
+  initialPositions: Map<string, XYPosition>;
   droppableOnDiagram: boolean;
   dragging: boolean;
 }

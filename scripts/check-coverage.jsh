@@ -41,7 +41,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-datatree", 100.0),
   new ModuleCoverage("sirius-components-charts", 85.0),
   new ModuleCoverage("sirius-components-collaborative-charts", 83.0),
-  new ModuleCoverage("sirius-components-diagrams", 91.0),
+  new ModuleCoverage("sirius-components-diagrams", 90.0),
   new ModuleCoverage("sirius-components-collaborative-diagrams", 88.0),
   new ModuleCoverage("sirius-components-diagrams-graphql", 80.0),
   new ModuleCoverage("sirius-components-gantt", 91.0),

@@ -246,8 +246,16 @@ public final class DiagramDescription implements IRepresentationDescription {
      * </p>
      *
      * <ul>
-     *     <li><strong>droppedNode</strong> - The node being dropped on the diagram</li>
-     *     <li><strong>droppedElement</strong> - The semantic element used as a target by the node being dropped</li>
+     *     <li>
+     *         <strong>droppedNode</strong> - The node being dropped on the diagram. This variable is deprecated and
+     *         should be replaced by <strong>droppedNodes</strong>
+     *     </li>
+     *     <li>
+     *         <strong>droppedElement</strong> - The semantic element used as a target by the node being dropped. This
+     *         variable is deprecated and should be replaced by <strong>droppedElements</strong>
+     *     </li>
+     *     <li><strong>droppedNodes</strong> - All the nodes being dropped on the diagram</li>
+     *     <li><strong>droppedElements</strong> - All the semantic element used as a target by the nodes being dropped</li>
      *     <li><strong>targetNode</strong> - The node on which the node is being dropped or <code>null</code> if it
      *     is being dropped on the diagram directly</li>
      *     <li><strong>targetElement</strong> - The semantic element used as a target by the node on which the drop is

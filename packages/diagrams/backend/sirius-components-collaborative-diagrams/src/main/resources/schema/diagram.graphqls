@@ -484,7 +484,7 @@ extend type Mutation {
   invokeSingleClickOnDiagramElementTool(input: InvokeSingleClickOnDiagramElementToolInput!): InvokeSingleClickOnDiagramElementToolPayload!
   invokeSingleClickOnTwoDiagramElementsTool(input: InvokeSingleClickOnTwoDiagramElementsToolInput!): InvokeSingleClickOnTwoDiagramElementsToolPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
-  dropNode(input: DropNodeInput!): DropNodePayload!
+  dropNodes(input: DropNodesInput!): DropNodesPayload!
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
   hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
   fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
@@ -495,11 +495,11 @@ extend type Mutation {
   invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
 }
 
-input DropNodeInput {
+input DropNodesInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  droppedElementId: ID!
+  droppedElementIds: [ID!]!
   targetElementId: ID
   x: Float!
   y: Float!
@@ -636,7 +636,7 @@ type DropOnDiagramSuccessPayload {
   messages: [Message]!
 }
 
-union DropNodePayload = ErrorPayload | SuccessPayload
+union DropNodesPayload = ErrorPayload | SuccessPayload
 
 enum ReconnectEdgeKind {
   SOURCE

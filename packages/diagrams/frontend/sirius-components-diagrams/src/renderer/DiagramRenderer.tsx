@@ -51,7 +51,7 @@ import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useNodesDraggable } from './drag/useNodesDraggable';
 import { useDrop } from './drop/useDrop';
 import { useDropDiagramStyle } from './dropNode/useDropDiagramStyle';
-import { useDropNode } from './dropNode/useDropNode';
+import { useDropNodes } from './dropNode/useDropNodes';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
 import { useEdgeCrossingFades } from './edge/crossings/useEdgeCrossingFades';
@@ -99,7 +99,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
-  const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
+  const { onNodesDragStart, onNodesDrag, onNodesDragStop } = useDropNodes();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
 
@@ -356,9 +356,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const handleNodeDrag = useCallback(
     (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
-      onNodeDrag(event, node, nodes);
+      onNodesDrag(event, node, nodes);
     },
-    [onNodeDrag]
+    [onNodesDrag]
   );
 
   const { nodesDraggable } = useNodesDraggable();
@@ -406,8 +406,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDrop: onDrop,
     onDragOver: onDragOver,
     onNodeDrag: handleNodeDrag,
-    onNodeDragStart: onNodeDragStart,
-    onNodeDragStop: onNodeDragStop,
+    onNodeDragStart: onNodesDragStart,
+    onNodeDragStop: onNodesDragStop,
     onNodeMouseEnter: onNodeMouseEnter,
     onNodeMouseLeave: onNodeMouseLeave,
     onEdgeMouseEnter: onEdgeMouseEnter,
