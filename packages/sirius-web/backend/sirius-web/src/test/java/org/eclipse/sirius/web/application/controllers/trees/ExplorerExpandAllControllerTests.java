@@ -34,7 +34,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -59,6 +58,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -88,9 +88,6 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
-
-    @Autowired
-    private IIdentityService identityService;
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;

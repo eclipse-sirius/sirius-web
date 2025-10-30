@@ -12,9 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams.undo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
@@ -32,17 +41,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Integration tests of undo redo for view creation and deletion.
@@ -62,9 +63,6 @@ public class UndoUnsynchronizedNodesControllerTests extends AbstractIntegrationT
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
-
-    @Autowired
-    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
     @Autowired
     private UnsynchronizedDiagramDescriptionProvider unsynchronizedDiagramDescriptionProvider;

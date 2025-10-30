@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.forms.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -38,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -59,9 +59,6 @@ public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private FormWithFlexboxContainerDescriptionProvider formWithFlexboxContainerDescriptionProvider;
-
-    @Autowired
-    private EditCheckboxMutationRunner editCheckboxMutationRunner;
 
     @BeforeEach
     public void beforeEach() {

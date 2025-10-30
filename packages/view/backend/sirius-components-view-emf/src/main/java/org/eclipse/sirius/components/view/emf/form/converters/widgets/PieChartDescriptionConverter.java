@@ -70,8 +70,8 @@ public class PieChartDescriptionConverter implements IWidgetDescriptionConverter
             var pieChartDescription =  PieChartDescription.newPieChartDescription(descriptionId)
                     .label(viewPieChartDescription.getName())
                     .targetObjectIdProvider(new TargetObjectIdProvider(this.identityService))
-                    .keysProvider(new MultiValueProvider(interpreter, keysExpression, String.class))
-                    .valuesProvider(new MultiValueProvider(interpreter, valuesExpression, Number.class))
+                    .keysProvider(new MultiValueProvider<>(interpreter, keysExpression, String.class))
+                    .valuesProvider(new MultiValueProvider<>(interpreter, valuesExpression, Number.class))
                     .styleProvider(styleProvider)
                     .build();
 

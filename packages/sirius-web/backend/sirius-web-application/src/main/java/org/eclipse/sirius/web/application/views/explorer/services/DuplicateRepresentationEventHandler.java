@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,8 +38,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -66,20 +62,15 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
 
     private final IMessageService messageService;
 
-    private final ObjectMapper objectMapper;
-
     private final Counter counter;
 
-    private final Logger logger = LoggerFactory.getLogger(DuplicateRepresentationEventHandler.class);
-
     public DuplicateRepresentationEventHandler(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationContentSearchService representationContentSearchService, IRepresentationMetadataCreationService representationMetadataCreationService,
-                                               IRepresentationContentCreationService representationContentCreationService, IMessageService messageService,  ObjectMapper objectMapper, MeterRegistry meterRegistry) {
+                                               IRepresentationContentCreationService representationContentCreationService, IMessageService messageService, MeterRegistry meterRegistry) {
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.representationMetadataCreationService = Objects.requireNonNull(representationMetadataCreationService);
         this.representationContentCreationService = Objects.requireNonNull(representationContentCreationService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectMapper = Objects.requireNonNull(objectMapper);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())

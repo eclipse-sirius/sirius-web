@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -49,9 +48,6 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
     private GivenCreatedHierarchySubscription givenCreatedHierarchySubscription;

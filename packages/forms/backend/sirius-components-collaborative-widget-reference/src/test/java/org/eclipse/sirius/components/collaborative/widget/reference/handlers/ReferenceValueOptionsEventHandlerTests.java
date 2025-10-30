@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceValueOptionsQueryInput;
@@ -53,12 +48,9 @@ public class ReferenceValueOptionsEventHandlerTests {
 
     private static final String REF_WIDGET_ID = "RefWidget id";
 
-    private static final String CHANGE_DESCRIPTION_PARAMETER_KEY = "change_description_parameter_key";
-
     @Test
     public void testGetReferenceValueOptions() {
         String referenceValueId = "ReferenceValue Id";
-        String changeKind = ChangeKind.NOTHING;
 
         var input = new ReferenceValueOptionsQueryInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
                 .toString(), REF_WIDGET_ID);
@@ -67,9 +59,6 @@ public class ReferenceValueOptionsEventHandlerTests {
                 .label("")
                 .kind("")
                 .build();
-
-        EObject owner = EcorePackage.Literals.ECLASS;
-        EStructuralFeature.Setting setting = ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())

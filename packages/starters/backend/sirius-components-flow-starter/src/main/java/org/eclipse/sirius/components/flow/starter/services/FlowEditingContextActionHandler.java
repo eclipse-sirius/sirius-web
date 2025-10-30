@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,8 +32,6 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
@@ -44,8 +42,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FlowEditingContextActionHandler implements IEditingContextActionHandler {
-
-    private final Logger logger = LoggerFactory.getLogger(FlowEditingContextActionHandler.class);
 
     private final IEmptyFlowProvider emptyFlowProvider;
 

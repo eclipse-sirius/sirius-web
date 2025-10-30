@@ -29,7 +29,6 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,9 +50,6 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
-    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @Autowired
     private IRepresentationContentSearchService representationContentSearchService;
