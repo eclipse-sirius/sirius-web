@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
-import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
+import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('edge-handle', () => {
   let projectId;
@@ -60,5 +60,36 @@ test.describe('edge-handle', () => {
     });
 
     expect(csAfter.cx).toBe(handleCXBefore);
+  });
+
+  test('when we select and edge, the handle style is updated', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'Entity2');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 200, y: 50 });
+
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.click();
+
+    await expect(page.locator('[data-testid^="connectionHandle"]')).toHaveCount(2);
+    await expect(page.locator('[data-testid^="connectionHandle"]').first()).toHaveCSS(
+      'background-color',
+      'rgb(0, 0, 0)'
+    );
+    await expect(page.locator('[data-testid^="connectionHandle"]').last()).toHaveCSS(
+      'background-color',
+      'rgb(0, 0, 0)'
+    );
+
+    await page.locator('[data-testid^="rf__edge-"]').last().click();
+
+    await expect(page.locator('[data-testid^="connectionHandle"]')).toHaveCount(2);
+    await expect(page.locator('[data-testid^="connectionHandle"]').first()).toHaveCSS(
+      'background-color',
+      'rgb(0, 0, 0)'
+    );
+    await expect(page.locator('[data-testid^="connectionHandle"]').last()).toHaveCSS(
+      'background-color',
+      'rgb(0, 0, 0)'
+    );
   });
 });
