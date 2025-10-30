@@ -71,8 +71,9 @@ const handleStyle = (
         style.left = XYPosition.x;
         break;
       case Position.Right:
-      case Position.Bottom:
         style.top = XYPosition.y;
+        break;
+      case Position.Bottom:
         style.left = XYPosition.x;
         break;
     }
