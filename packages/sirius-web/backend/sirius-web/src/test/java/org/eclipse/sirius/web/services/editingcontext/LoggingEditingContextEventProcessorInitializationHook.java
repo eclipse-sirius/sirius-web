@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,8 +28,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LoggingEditingContextEventProcessorInitializationHook implements IEditingContextEventProcessorInitializationHook {
-
-    private final Logger logger = LoggerFactory.getLogger(LoggingEditingContextEventProcessorInitializationHook.class);
 
     @Override
     public void preProcess(IEditingContext editingContext) {

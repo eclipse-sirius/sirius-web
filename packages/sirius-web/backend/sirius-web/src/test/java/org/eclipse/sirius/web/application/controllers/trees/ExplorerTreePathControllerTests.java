@@ -56,6 +56,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -66,8 +67,6 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
-
-    private static final String DEFAULT_TREE_ID = ExplorerDescriptionProvider.PREFIX + "?" + ExplorerDescriptionProvider.TREE_DESCRIPTION_ID_PARAMETER + "=" + ExplorerDescriptionProvider.DESCRIPTION_ID;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;

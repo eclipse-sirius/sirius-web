@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,8 @@ public final class EdgeEnd {
         // Prevent instantiation
     }
 
-    public static EdgeEndBuilder newEdgeEnd(EdgeBuilder edgeBuilder, String targetObjectLabel) {
-        return new EdgeEndBuilder(edgeBuilder, targetObjectLabel);
+    public static EdgeEndBuilder newEdgeEnd(String targetObjectLabel) {
+        return new EdgeEndBuilder(targetObjectLabel);
     }
 
     public String getEndId() {
@@ -40,12 +40,9 @@ public final class EdgeEnd {
      * @author gcoutable
      */
     public static final class EdgeEndBuilder {
-        private EdgeBuilder edgeBuilder;
-
         private String endId;
 
-        private EdgeEndBuilder(EdgeBuilder edgeBuilder, String targetObjectLabel) {
-            this.edgeBuilder = Objects.requireNonNull(edgeBuilder);
+        private EdgeEndBuilder(String targetObjectLabel) {
             this.endId = targetObjectLabel;
         }
 

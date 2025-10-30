@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -50,8 +49,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private CollapsingState collapsingState = CollapsingState.EXPANDED;
 
-    private ILayoutStrategy childrenLayoutStrategy;
-
     private NodesBuilder<RectangleNodeBuilder<T>> borderNodesBuilder;
 
     private NodesBuilder<RectangleNodeBuilder<T>> childNodesBuilder;
@@ -76,8 +73,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         return this.borderNodesBuilder;
     }
 
-    public NodesBuilder<RectangleNodeBuilder<T>> childNodes(ILayoutStrategy layoutStrategy) {
-        this.childrenLayoutStrategy = Objects.requireNonNull(layoutStrategy);
+    public NodesBuilder<RectangleNodeBuilder<T>> childNodes() {
         this.childNodesBuilder = new NodesBuilder<>(this, false);
         return this.childNodesBuilder;
     }

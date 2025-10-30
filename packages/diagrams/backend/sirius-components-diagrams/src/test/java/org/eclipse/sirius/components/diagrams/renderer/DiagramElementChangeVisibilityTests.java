@@ -69,8 +69,6 @@ public class DiagramElementChangeVisibilityTests {
 
     private static final String LABEL_TEXT = "Node";
 
-    private static final String INSIDE_LABEL_ID = "insideLabelId";
-
     private static final int LABEL_FONT_SIZE = 40;
 
     private static final String COLOR = "#AFAFAF";

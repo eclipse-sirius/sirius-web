@@ -53,12 +53,12 @@ public final class EdgeBuilder {
     }
 
     public EdgeEndBuilder from(String sourceTargetObjectLabel) {
-        this.sourceEdgeBuilder = EdgeEnd.newEdgeEnd(this, sourceTargetObjectLabel);
+        this.sourceEdgeBuilder = EdgeEnd.newEdgeEnd(sourceTargetObjectLabel);
         return this.sourceEdgeBuilder;
     }
 
     public EdgeEndBuilder to(String targetTargetObjectLabel) {
-        this.targetEdgeBuilder = EdgeEnd.newEdgeEnd(this, targetTargetObjectLabel);
+        this.targetEdgeBuilder = EdgeEnd.newEdgeEnd(targetTargetObjectLabel);
         return this.targetEdgeBuilder;
     }
 
