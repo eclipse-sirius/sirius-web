@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.search.services.api;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.application.views.search.dto.SearchMatch;
 import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
+import org.eclipse.sirius.web.application.views.search.dto.SearchResult;
 
 /**
  * Service use to search for elements inside an editing context based on a user-supplied query.
@@ -24,5 +22,5 @@ import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
  * @author pcdavid
  */
 public interface ISearchService {
-    List<SearchMatch> search(IEditingContext editingContext, SearchQuery query);
+    SearchResult search(IEditingContext editingContext, SearchQuery query);
 }
