@@ -30,6 +30,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -188,7 +189,7 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
         assertThat(representationMetaDatas).hasSize(1);
         assertThat(representationMetaDatas.get(0)).extracting("label").isEqualTo("Component component diagram");
 
-        var optionalDiagram = this.representationSearchService.findById(null, representationMetaDatas.get(0).getId().toString(), Diagram.class);
+        var optionalDiagram = this.representationSearchService.findById(new IEditingContext.NoOp(), representationMetaDatas.get(0).getId().toString(), Diagram.class);
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();
@@ -279,7 +280,7 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
                     }
                   }
                 }
-                """.formatted(customNodesDiagramDescriptionProvider.getRepresentationDescriptionId());
+                """.formatted(this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId());
     }
 
     private String representation() {
@@ -375,7 +376,7 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
                     }
                   }
                 }
-                """.formatted(customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), customNodesDiagramDescriptionProvider.getCustomNodeDescriptionId());
+                """.formatted(this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), this.customNodesDiagramDescriptionProvider.getCustomNodeDescriptionId());
     }
 
     private String document() {
