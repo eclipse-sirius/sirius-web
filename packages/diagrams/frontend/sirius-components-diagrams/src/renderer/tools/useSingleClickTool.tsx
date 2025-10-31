@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useImpactAnalysisDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';

@@ -10,22 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.impactanalysis.services.api;
+package org.eclipse.sirius.web.application.impactanalysis.services;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 
 /**
- * Provides impact analysis messages.
+ * Represents the modification of a value in an object's feature.
  *
  * @author gdaniel
  */
-public interface IImpactAnalysisMessageService {
+public record FeatureModification(EObject source, String feature, Object oldValue, Object newValue) {
 
-    List<String> getUnresolvedProxyMessages(Map<EObject, Collection<Setting>> unresolvedProxies);
+    public FeatureModification {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(feature);
+        Objects.requireNonNull(oldValue);
+        Objects.requireNonNull(newValue);
+    }
 
 }

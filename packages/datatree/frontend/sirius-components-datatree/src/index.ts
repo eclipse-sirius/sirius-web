@@ -10,13 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseImpactAnalysisDialogValue {
-  showImpactAnalysisDialog: (
-    impactAnalysisReport: GQLImpactAnalysisReport | null,
-    loading: boolean,
-    toolLabel: string,
-    onConfirm: () => void
-  ) => void;
-}
+export * from './DataTree';
+export type * from './DataTree.types';

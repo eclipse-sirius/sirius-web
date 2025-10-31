@@ -54,6 +54,7 @@ public class CreateComponentNodeToolProvider implements INodeToolProvider {
                                 .children(createNewComponent)
                                 .build()
                 )
+                .withImpactAnalysis(true)
                 .build();
     }
 }

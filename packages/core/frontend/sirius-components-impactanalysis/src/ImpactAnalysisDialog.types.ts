@@ -10,21 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
+import { GQLDataTree } from '@eclipse-sirius/sirius-components-datatree';
 
-export interface ImpactAnalysisDialogContextValue {
-  showImpactAnalysisDialog: (
-    impactAnalysisReport: GQLImpactAnalysisReport | null,
-    loading: boolean,
-    toolLabel: string,
-    onConfirm: () => void
-  ) => void;
-}
-
-export interface ImpactAnalysisDialogContextProviderState {
+export interface ImpactAnalysisDialogProps {
   open: boolean;
-  onConfirm: () => void;
+  label: string;
   impactAnalysisReport: GQLImpactAnalysisReport | null;
   loading: boolean;
-  toolLabel: string | null;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+export interface GQLImpactAnalysisReport {
+  nbElementDeleted: number;
+  nbElementModified: number;
+  nbElementCreated: number;
+  additionalReports: string[];
+  impactTree: GQLDataTree;
+}
+
+export interface ReportViewerProps extends GQLImpactAnalysisReport {
+  label: string;
 }

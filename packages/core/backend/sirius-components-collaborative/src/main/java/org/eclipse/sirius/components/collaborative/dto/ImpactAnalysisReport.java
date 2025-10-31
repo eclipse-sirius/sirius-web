@@ -13,12 +13,20 @@
 package org.eclipse.sirius.components.collaborative.dto;
 
 import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.sirius.components.datatree.DataTree;
 
 /**
- * Report with data to display an impact analysis on diagram.
+ * Report with data to display an impact analysis.
  *
  * @author frouene
  */
-public record ImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports) {
+public record ImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports, DataTree impactTree) {
+
+    public ImpactAnalysisReport {
+        Objects.requireNonNull(additionalReports);
+        Objects.requireNonNull(impactTree);
+    }
 
 }
