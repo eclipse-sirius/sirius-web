@@ -1,0 +1,32 @@
+name: sirius-web
+
+services:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: "exit 0"
+      start_period: 1s
+  backend:
+    image: "eclipsesirius/sirius-web:${VERSION:-latest}"
+    pull_policy: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
+      SPRING_DATASOURCE_USERNAME: username
+      SPRING_DATASOURCE_PASSWORD: password
+      SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
+      SERVER_PORT: 8080
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      database:
+        condition: service_started
