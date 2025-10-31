@@ -27,12 +27,23 @@ const searchQuery = gql`
         search(query: $query) {
           ... on SearchSuccessPayload {
             result {
+              groups {
+                id
+                label
+                iconURL
+                sections {
+                  id
+                  label
+                  iconURL
+                }
+              }
               matches {
                 object {
                   id
                   label
                   iconURLs
                 }
+                memberships
               }
             }
           }
