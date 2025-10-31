@@ -38,8 +38,6 @@ import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.representations.Success;
 
 /**
  * Utility class used to help build diagrams for unit tests.
@@ -49,10 +47,6 @@ import org.eclipse.sirius.components.representations.Success;
 public class TestDiagramBuilder {
 
     public static final String IMAGE_PNG = "/image.png";
-
-    public static final String TOOL_IMAGE_URL = IMAGE_PNG;
-
-    public static final String TOOL_LABEL = "toolLabel";
 
     public Diagram getDiagram(String id) {
         return Diagram.newDiagram(id)
@@ -157,12 +151,4 @@ public class TestDiagramBuilder {
                 .build();
     }
 
-    public SingleClickOnDiagramElementTool getNodeTool(String id) {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
-                .label(TOOL_LABEL)
-                .iconURL(List.of(TOOL_IMAGE_URL))
-                .handler(variableManager -> new Success())
-                .targetDescriptions(List.of())
-                .build();
-    }
 }

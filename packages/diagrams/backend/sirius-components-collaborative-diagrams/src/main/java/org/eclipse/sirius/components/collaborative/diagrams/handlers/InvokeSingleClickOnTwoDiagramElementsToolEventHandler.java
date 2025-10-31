@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -24,12 +23,13 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.SingleClickOnTwoDiagramElementToolHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IToolHandlerProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
@@ -45,7 +45,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -68,25 +67,22 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
     private final IDiagramQueryService diagramQueryService;
 
-    private final IToolService toolService;
-
     private final ICollaborativeDiagramMessageService messageService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final List<IConnectorToolsProvider> connectorToolsProviders;
+    private final List<IToolHandlerProvider> toolHandlerProviders;
 
     private final Counter counter;
 
-    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolService toolService,
-            ICollaborativeDiagramMessageService messageService, IRepresentationDescriptionSearchService representationDescriptionSearchService, List<IConnectorToolsProvider> connectorToolsProviders,
-            MeterRegistry meterRegistry) {
+    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService,
+                                                                 ICollaborativeDiagramMessageService messageService, IRepresentationDescriptionSearchService representationDescriptionSearchService, List<IConnectorToolsProvider> connectorToolsProviders, List<IToolHandlerProvider> toolHandlerProviders,
+                                                                 MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.toolService = Objects.requireNonNull(toolService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.connectorToolsProviders = Objects.requireNonNull(connectorToolsProviders);
         this.messageService = Objects.requireNonNull(messageService);
+        this.toolHandlerProviders = Objects.requireNonNull(toolHandlerProviders);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -108,31 +104,50 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
         if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
             Diagram diagram = diagramContext.diagram();
-            var optionalTool = this.toolService.findToolById(editingContext, diagram, input.toolId())
-                    .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
-                    .map(SingleClickOnTwoDiagramElementsTool.class::cast)
-                    .or(this.findConnectorToolById(input.diagramSourceElementId(), input.diagramTargetElementId(), editingContext, diagram, input.toolId()));
-            if (optionalTool.isPresent()) {
-                IStatus status = this.executeTool(editingContext, diagramContext, input, optionalTool.get());
-                if (status instanceof Success success) {
-                    WorkbenchSelection newSelection = null;
-                    Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
-                    if (newSelectionParameter instanceof WorkbenchSelection workbenchSelection) {
-                        newSelection = workbenchSelection;
+
+            var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, input.diagramSourceElementId());
+            var targetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, input.diagramTargetElementId());
+
+            var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                    .filter(DiagramDescription.class::isInstance)
+                    .map(DiagramDescription.class::cast);
+
+            if (diagramDescription.isPresent() && sourceDiagramElement.isPresent() && targetDiagramElement.isPresent()) {
+                var optionalToolHandler = this.toolHandlerProviders.stream()
+                        .filter(toolHandlerProvider -> toolHandlerProvider.canHandle(editingContext, diagramDescription.get(), sourceDiagramElement.get().getDescriptionId(), input.toolId()))
+                        .findFirst()
+                        .flatMap(toolHandlerProvider -> toolHandlerProvider.getToolHandler(editingContext, diagramDescription.get(), sourceDiagramElement.get().getDescriptionId(), input.toolId()))
+                        .filter(SingleClickOnTwoDiagramElementToolHandler.class::isInstance)
+                        .map(SingleClickOnTwoDiagramElementToolHandler.class::cast)
+                        .filter(singleClickOnTwoDiagramElementToolHandler -> singleClickOnTwoDiagramElementToolHandler.targetCandidatesId().contains(targetDiagramElement.get().getDescriptionId()));
+
+                if (optionalToolHandler.isPresent()) {
+                    IStatus status = this.executeTool(editingContext, diagramContext, input, optionalToolHandler.get());
+                    if (status instanceof Success success) {
+                        WorkbenchSelection newSelection = getWorkbenchSelection(success);
+                        payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection, success.getMessages());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
+                    } else if (status instanceof Failure failure) {
+                        payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                     }
-                    payload = new InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload(diagramInput.id(), newSelection, success.getMessages());
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
-                } else if (status instanceof Failure failure) {
-                    payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                 }
             }
+
         }
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, InvokeSingleClickOnTwoDiagramElementsToolInput input, SingleClickOnTwoDiagramElementsTool tool) {
+    private WorkbenchSelection getWorkbenchSelection(Success success) {
+        Object newSelectionParameter = success.getParameters().get(Success.NEW_SELECTION);
+        if (newSelectionParameter instanceof WorkbenchSelection workbenchSelection) {
+            return workbenchSelection;
+        }
+        return null;
+    }
+
+    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, InvokeSingleClickOnTwoDiagramElementsToolInput input, SingleClickOnTwoDiagramElementToolHandler singleClickOnTwoDiagramElementToolHandler) {
         String sourceNodeId = input.diagramSourceElementId();
         String targetNodeId = input.diagramTargetElementId();
         IStatus result = new Failure("");
@@ -171,7 +186,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
                 input.variables().forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
 
-                result = tool.getHandler().apply(variableManager);
+                result = singleClickOnTwoDiagramElementToolHandler.handler().apply(variableManager);
             }
         }
         return result;
@@ -197,34 +212,6 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
                 //We do nothing, the variable type is not supported
             }
         }
-    }
-
-    private Supplier<Optional<SingleClickOnTwoDiagramElementsTool>> findConnectorToolById(String diagramSourceElementId, String diagramTargetElementId, IEditingContext editingContext, Diagram diagram,
-            String searchedToolId) {
-        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast);
-
-        if (diagramDescription.isPresent()) {
-            List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
-                    .filter(provider -> provider.canHandle(diagramDescription.get()))
-                    .toList();
-
-            if (!compatibleConnectorToolsProviders.isEmpty()) {
-                var diagramSourceElement = this.diagramQueryService.findNodeById(diagram, diagramSourceElementId);
-                var diagramTargetElement = this.diagramQueryService.findNodeById(diagram, diagramTargetElementId);
-                if (diagramSourceElement.isPresent() && diagramTargetElement.isPresent()) {
-                    return () -> compatibleConnectorToolsProviders.stream()
-                            .map(provider -> provider.getConnectorTools(diagramSourceElement.get(), diagramTargetElement.get(), diagram, editingContext))
-                            .flatMap(List::stream)
-                            .filter(tool -> tool.getId().equals(searchedToolId))
-                            .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
-                            .map(SingleClickOnTwoDiagramElementsTool.class::cast)
-                            .findFirst();
-                }
-            }
-        }
-        return () -> Optional.empty();
     }
 
 }

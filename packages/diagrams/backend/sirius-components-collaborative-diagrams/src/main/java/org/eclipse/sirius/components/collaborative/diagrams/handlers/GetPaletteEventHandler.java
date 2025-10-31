@@ -60,20 +60,20 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
 
     private final IObjectSearchService objectSearchService;
 
-    private final List<IPaletteProvider> toolSectionsProviders;
+    private final List<IPaletteProvider> paletteProviders;
 
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
     public GetPaletteEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-            IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, List<IPaletteProvider> toolSectionsProviders, ICollaborativeMessageService messageService,
+            IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, List<IPaletteProvider> paletteProviders, ICollaborativeMessageService messageService,
             MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.toolSectionsProviders = Objects.requireNonNull(toolSectionsProviders);
+        this.paletteProviders = Objects.requireNonNull(paletteProviders);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -105,14 +105,14 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
                     .map(DiagramDescription.class::cast);
             if (optionalDiagramDescription.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
-                var optionalToolSectionsProvider = this.toolSectionsProviders.stream().filter(toolSectionProvider -> toolSectionProvider.canHandle(diagramDescription)).findFirst();
+                var optionalPaletteProvider = this.paletteProviders.stream().filter(paletteProvider -> paletteProvider.canHandle(diagramDescription)).findFirst();
                 var optionalTargetElement = this.findTargetElement(diagram, diagramElementId, editingContext);
                 var optionalDiagramElement = this.findDiagramElement(diagram, diagramElementId);
                 var optionalDiagramElementDescription = this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null));
 
-                if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
-                    IPaletteProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    palette = toolSectionsProvider.handle(editingContext, diagramContext, diagramDescription, optionalDiagramElementDescription.get(), optionalDiagramElement.orElse(null), optionalTargetElement.get());
+                if (optionalPaletteProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
+                    IPaletteProvider paletteProvider = optionalPaletteProvider.get();
+                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, optionalDiagramElementDescription.get(), optionalDiagramElement.orElse(null), optionalTargetElement.get());
                 }
             }
         }
