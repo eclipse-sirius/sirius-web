@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DataTreeProps } from './DataTree.types';
-import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { DataTreeProps } from './DataTree.types';
 import { DataTreeItem } from './DataTreeItem';
 
-export const DataTree = ({ dataTree }: DataTreeProps) => {
+export const DataTree = ({ dataTree, onNodeClick }: DataTreeProps) => {
   const { nodes } = dataTree;
   const rootNodes = nodes.filter((node) => !node.parentId);
   return (
@@ -27,7 +27,15 @@ export const DataTree = ({ dataTree }: DataTreeProps) => {
       data-testid="datatree">
       {rootNodes.map((rootNode, index) => {
         const rootItemId = `${index}`;
-        return <DataTreeItem treeItemId={rootItemId} node={rootNode} nodes={nodes} key={rootItemId} />;
+        return (
+          <DataTreeItem
+            treeItemId={rootItemId}
+            node={rootNode}
+            nodes={nodes}
+            key={rootItemId}
+            onNodeClick={onNodeClick}
+          />
+        );
       })}
     </SimpleTreeView>
   );

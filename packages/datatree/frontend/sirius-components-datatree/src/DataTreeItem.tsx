@@ -31,7 +31,7 @@ const useDataTreeItemStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const DataTreeItem = ({ treeItemId, node, nodes }: DataTreeItemProps) => {
+export const DataTreeItem = ({ treeItemId, node, nodes, onNodeClick }: DataTreeItemProps) => {
   const { classes } = useDataTreeItemStyles();
 
   const labelText = getTextFromStyledString(node.label);
@@ -52,6 +52,7 @@ export const DataTreeItem = ({ treeItemId, node, nodes }: DataTreeItemProps) => 
       itemId={treeItemId}
       label={label}
       classes={{ content: classes.content }}
+      onClick={() => (onNodeClick ? onNodeClick(node) : null)}
       data-datatreeitemlabel={labelText}
       data-datatreeitemid={treeItemId}>
       {childNodes.map((childNode, index) => {
@@ -62,6 +63,7 @@ export const DataTreeItem = ({ treeItemId, node, nodes }: DataTreeItemProps) => 
             node={childNode}
             nodes={nodes}
             key={childTreeItemId}
+            onNodeClick={onNodeClick}
             aria-role="treeitem"
           />
         );

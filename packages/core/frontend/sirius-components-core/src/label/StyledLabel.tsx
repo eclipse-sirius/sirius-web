@@ -15,6 +15,20 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 import { GQLStyledString, GQLStyledStringFragmentStyle, StyledLabelInputProps } from './StyledLabel.type';
 
+export const DEFAULT_STYLE: GQLStyledStringFragmentStyle = {
+  font: '',
+  backgroundColor: '',
+  foregroundColor: '',
+  isStruckOut: false,
+  strikeoutColor: '',
+  underlineColor: '',
+  borderColor: '',
+  borderStyle: 'NONE',
+  underlineStyle: 'NONE',
+  isBold: false,
+  isItalic: false,
+};
+
 export const splitText = (label: string, userInput: string | null): string[] => {
   if (!userInput) {
     return [label];

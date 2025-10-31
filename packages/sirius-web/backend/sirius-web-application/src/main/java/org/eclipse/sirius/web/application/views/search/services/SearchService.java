@@ -54,7 +54,7 @@ public class SearchService implements ISearchService {
 
     private final Logger logger = LoggerFactory.getLogger(SearchService.class);
 
-    private ILabelService labelService;
+    private final ILabelService labelService;
 
     public SearchService(ILabelService labelService) {
         this.labelService = Objects.requireNonNull(labelService);
@@ -69,7 +69,7 @@ public class SearchService implements ISearchService {
             // The grouping criteria, initially with no sections.
             // Those will be filled by the actual matches.
             var groups = List.of(
-                new SearchResultGroup(MODELS_GROUP_ID, "Model", "search/Model.svg", new ArrayList<>()),
+                new SearchResultGroup(MODELS_GROUP_ID, "Model", "/search/Model.svg", new ArrayList<>()),
                 new SearchResultGroup(TYPE_GROUP_ID, "Type", "", new ArrayList<>())
             );
 
@@ -132,13 +132,13 @@ public class SearchService implements ISearchService {
                 var resource = eObject.eResource();
                 var documentName = this.getDocumentName(resource).orElse("");
                 var documentId = resource.getURI().toString();
-                var modelSection = this.getOrCreateSection(groups, MODELS_GROUP_ID, documentId, documentName, "search/Model.svg");
+                var modelSection = this.getOrCreateSection(groups, MODELS_GROUP_ID, documentId, documentName, List.of("/search/Model.svg"));
                 if (modelSection.isPresent()) {
                     memberships.add(MODELS_GROUP_ID + ":" + modelSection.get().id());
                 }
             }
             var type = eObject.eClass().getEPackage().getName() + "::" + eObject.eClass().getName();
-            var typeSection = this.getOrCreateSection(groups, TYPE_GROUP_ID, type, type, "");
+            var typeSection = this.getOrCreateSection(groups, TYPE_GROUP_ID, type, type, this.labelService.getImagePaths(eObject));
             if (typeSection.isPresent()) {
                 memberships.add(TYPE_GROUP_ID + ":" + typeSection.get().id());
             }
@@ -146,7 +146,7 @@ public class SearchService implements ISearchService {
         return memberships;
     }
 
-    private Optional<SearchResultSection> getOrCreateSection(List<SearchResultGroup> groups, String groupId, String sectionId, String label, String iconURL) {
+    private Optional<SearchResultSection> getOrCreateSection(List<SearchResultGroup> groups, String groupId, String sectionId, String label, List<String> iconURLs) {
         return groups.stream()
                 .filter(group -> group.id().equals(groupId))
                 .findFirst()
@@ -155,6 +155,10 @@ public class SearchService implements ISearchService {
                     if (existingSection.isPresent()) {
                         return existingSection;
                     } else {
+                        String iconURL = "";
+                        if (!iconURLs.isEmpty()) {
+                            iconURL = iconURLs.get(0);
+                        }
                         var newSection = new SearchResultSection(sectionId, label, iconURL);
                         group.sections().add(newSection);
                         return Optional.of(newSection);

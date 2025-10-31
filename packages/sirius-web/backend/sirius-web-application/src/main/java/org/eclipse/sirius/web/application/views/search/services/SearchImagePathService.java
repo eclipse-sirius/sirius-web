@@ -10,24 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLStyledString } from '@eclipse-sirius/sirius-components-core';
+package org.eclipse.sirius.web.application.views.search.services;
 
-export interface DataTreeProps {
-  dataTree: GQLDataTree;
-  onNodeClick: ((node: GQLDataTreeNode) => void) | null;
-}
+import java.util.List;
 
-export interface GQLDataTree {
-  id: string;
-  label: string;
-  iconURLs: string[];
-  nodes: GQLDataTreeNode[];
-}
+import org.eclipse.sirius.components.core.api.IImagePathService;
+import org.springframework.stereotype.Service;
 
-export interface GQLDataTreeNode {
-  id: string;
-  parentId: string | null;
-  label: GQLStyledString;
-  iconURLs: string[];
-  endIconsURLs: string[][];
+/**
+ * Used to allow the access to search-related images.
+ *
+ * @author pcdavid
+ */
+@Service
+public class SearchImagePathService implements IImagePathService {
+    @Override
+    public List<String> getPaths() {
+        return List.of("/search");
+    }
 }

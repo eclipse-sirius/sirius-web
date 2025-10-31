@@ -17,4 +17,5 @@ export interface DataTreeItemProps {
   treeItemId: string;
   node: GQLDataTreeNode;
   nodes: GQLDataTreeNode[];
+  onNodeClick: ((node: GQLDataTreeNode) => void) | null;
 }
