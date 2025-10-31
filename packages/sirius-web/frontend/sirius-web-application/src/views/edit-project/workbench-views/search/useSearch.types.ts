@@ -59,7 +59,26 @@ export interface GQLSearchSuccessPayload extends GQLSearchPayload {
 }
 
 export interface GQLSearchResult {
-  matches: GQLObject[];
+  groups: GQLSearchResultGroup[];
+  matches: GQLSearchMatch[];
+}
+
+export interface GQLSearchResultGroup {
+  id: string;
+  label: string;
+  iconURL: string;
+  sections: GQLSearchResultSection[];
+}
+
+export interface GQLSearchResultSection {
+  id: string;
+  label: string;
+  iconURL: string;
+}
+
+export interface GQLSearchMatch {
+  object: GQLObject;
+  memberships: string[];
 }
 
 export interface GQLObject {

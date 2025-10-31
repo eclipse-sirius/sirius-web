@@ -12,14 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.search.dto;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Returns the objects matching a search query.
+ * A section corresponds to a specific value for a given grouping.
  *
  * @author pcdavid
  */
-public record SearchResult(@NotNull List<@NotNull SearchResultGroup> groups, @NotNull List<@NotNull SearchMatch> matches) {
+public record SearchResultSection(@NotNull String id, @NotNull String label, @NotNull String iconURL) {
+
 }

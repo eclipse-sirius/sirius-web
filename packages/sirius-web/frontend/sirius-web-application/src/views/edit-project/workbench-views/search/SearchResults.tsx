@@ -157,7 +157,7 @@ const MatchRow = ({ matches, index, style }: RowComponentProps<{ matches: GQLObj
     },
   });
 
-  const matchedObject = matches[index];
+  const matchedObject = matches[index].object;
   return (
     <ListItem key={index} style={style} sx={matchItemStyle} onClick={() => onMatchSelected(matchedObject)}>
       <ListItemIcon sx={{ minWidth: '24px' }}>

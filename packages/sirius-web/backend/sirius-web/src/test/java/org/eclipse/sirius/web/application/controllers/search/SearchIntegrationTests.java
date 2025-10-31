@@ -141,6 +141,6 @@ public class SearchIntegrationTests extends AbstractIntegrationTests {
         String resultTypename = JsonPath.read(result.data(), "$.data.viewer.editingContext.search.result.__typename");
         assertThat(resultTypename).isEqualTo(SearchResult.class.getSimpleName());
 
-        return JsonPath.read(result.data(), "$.data.viewer.editingContext.search.result.matches[*].label");
+        return JsonPath.read(result.data(), "$.data.viewer.editingContext.search.result.matches[*].object.label");
     }
 }

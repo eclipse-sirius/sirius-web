@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.search.services.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.views.search.dto.SearchMatch;
 import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
 
 /**
@@ -23,5 +24,5 @@ import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
  * @author pcdavid
  */
 public interface ISearchService {
-    List<Object> search(IEditingContext editingContext, SearchQuery query);
+    List<SearchMatch> search(IEditingContext editingContext, SearchQuery query);
 }

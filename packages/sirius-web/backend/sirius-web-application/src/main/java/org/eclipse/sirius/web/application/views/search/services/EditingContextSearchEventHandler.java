@@ -15,8 +15,6 @@ package org.eclipse.sirius.web.application.views.search.services;
 import java.util.List;
 import java.util.Objects;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -26,11 +24,15 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.views.search.dto.SearchInput;
+import org.eclipse.sirius.web.application.views.search.dto.SearchMatch;
 import org.eclipse.sirius.web.application.views.search.dto.SearchResult;
 import org.eclipse.sirius.web.application.views.search.dto.SearchSuccessPayload;
 import org.eclipse.sirius.web.application.views.search.services.api.ISearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -67,8 +69,8 @@ public class EditingContextSearchEventHandler implements IEditingContextEventHan
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof SearchInput searchInput) {
-            List<Object> matches = this.searchService.search(editingContext, searchInput.query());
-            payload = new SearchSuccessPayload(input.id(), new SearchResult(matches));
+            List<SearchMatch> matches = this.searchService.search(editingContext, searchInput.query());
+            payload = new SearchSuccessPayload(input.id(), new SearchResult(List.of(), matches));
         }
 
         payloadSink.tryEmitValue(payload);

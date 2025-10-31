@@ -17,9 +17,10 @@ import java.util.List;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Returns the objects matching a search query.
+ * Used to present search matches according to a specific grouping criterion.
  *
  * @author pcdavid
  */
-public record SearchResult(@NotNull List<@NotNull SearchResultGroup> groups, @NotNull List<@NotNull SearchMatch> matches) {
+public record SearchResultGroup(@NotNull String id, @NotNull String label, @NotNull String iconURL, @NotNull List<@NotNull SearchResultSection> sections) {
+
 }

@@ -18,5 +18,24 @@ type SearchSuccessPayload {
 }
 
 type SearchResult {
-  matches: [Object!]!
+  groups: [SearchResultGroup!]!
+  matches: [SearchMatch!]!
+}
+
+type SearchMatch {
+  object: Object!
+  memberships: [String!]!
+}
+
+type SearchResultGroup {
+  id: String!
+  label: String!
+  iconURL: String!
+  sections: [SearchResultSection!]!
+}
+
+type SearchResultSection {
+  id: String!
+  label: String!
+  iconURL: String!
 }

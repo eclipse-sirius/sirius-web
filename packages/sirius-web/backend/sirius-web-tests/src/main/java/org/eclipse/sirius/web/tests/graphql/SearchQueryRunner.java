@@ -38,9 +38,11 @@ public class SearchQueryRunner implements IQueryRunner {
                         result {
                           __typename
                           matches {
-                            id
-                            label
-                            iconURLs
+                              object {
+                                id
+                                label
+                                iconURLs
+                              }
                           }
                         }
                       }

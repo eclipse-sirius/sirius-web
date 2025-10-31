@@ -28,9 +28,11 @@ const searchQuery = gql`
           ... on SearchSuccessPayload {
             result {
               matches {
-                id
-                label
-                iconURLs
+                object {
+                  id
+                  label
+                  iconURLs
+                }
               }
             }
           }

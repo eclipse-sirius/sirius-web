@@ -17,9 +17,9 @@ import java.util.List;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Returns the objects matching a search query.
+ * Represents a single element that matches a search query, with associated Group/Section membership details.
  *
  * @author pcdavid
  */
-public record SearchResult(@NotNull List<@NotNull SearchResultGroup> groups, @NotNull List<@NotNull SearchMatch> matches) {
+public record SearchMatch(@NotNull Object object, @NotNull List<String> memberships) {
 }

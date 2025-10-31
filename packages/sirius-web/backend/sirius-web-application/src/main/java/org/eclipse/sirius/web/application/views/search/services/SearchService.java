@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.views.search.dto.SearchMatch;
 import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
 import org.eclipse.sirius.web.application.views.search.services.api.ISearchService;
 import org.slf4j.Logger;
@@ -48,7 +49,8 @@ public class SearchService implements ISearchService {
         this.labelService = Objects.requireNonNull(labelService);
     }
 
-    public List<Object> search(IEditingContext editingContext, SearchQuery query) {
+    @Override
+    public List<SearchMatch> search(IEditingContext editingContext, SearchQuery query) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             long start = System.nanoTime();
             var textPredicate = this.toTextPredicate(query);
@@ -57,7 +59,7 @@ public class SearchService implements ISearchService {
             var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
             var result = stream.filter(obj -> this.matches(obj, query.searchInAttributes(), textPredicate))
                     .limit(MAX_RESULT_SIZE)
-                    .map(Object.class::cast).toList();
+                    .map(object -> new SearchMatch(object, List.of())).toList();
             var duration = Duration.ofNanos(System.nanoTime() - start);
             this.logger.debug("Search found {} matches in {}s", result.size(), duration.toMillis());
             return result;
