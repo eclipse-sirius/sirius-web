@@ -100,7 +100,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                                 .build(),
                         new ViewBuilders()
                                 .newChangeContext()
-                                .expression("aql:droppedElement")
+                                .expression("aql:droppedElements->first()")
                                 .children(new ViewBuilders()
                                         .newDeleteElement()
                                         .build())
