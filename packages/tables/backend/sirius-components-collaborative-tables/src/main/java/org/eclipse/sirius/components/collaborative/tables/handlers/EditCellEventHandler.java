@@ -37,8 +37,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -63,8 +61,6 @@ public class EditCellEventHandler implements ITableEventHandler {
     private final List<IEditCellHandler> editCellHandlers;
 
     private final Counter counter;
-
-    private final Logger logger = LoggerFactory.getLogger(EditCellEventHandler.class);
 
     public EditCellEventHandler(ITableQueryService tableQueryService, IFeedbackMessageService feedbackMessageService, ICollaborativeTableMessageService messageService,
             List<IEditCellHandler> editCellHandlers, MeterRegistry meterRegistry) {

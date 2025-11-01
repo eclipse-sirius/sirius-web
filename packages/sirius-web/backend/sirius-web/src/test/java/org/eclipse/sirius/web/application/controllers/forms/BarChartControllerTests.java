@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.charts.barchart.BarChart;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.forms.ChartWidget;
-import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -36,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -57,9 +57,6 @@ public class BarChartControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private FormWithBarChartDescriptionProvider formWithBarChartDescriptionProvider;
-
-    @Autowired
-    private EditCheckboxMutationRunner editCheckboxMutationRunner;
 
     @BeforeEach
     public void beforeEach() {

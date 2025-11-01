@@ -42,7 +42,6 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectEditingCo
 import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -72,9 +71,6 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
 
     @Autowired
     private IProjectSearchService projectSearchService;
-
-    @Autowired
-    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @Autowired
     private IRepresentationMetadataSearchService representationMetadataSearchService;
@@ -135,8 +131,8 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
         assertThat(newProjectEditingContext.getDomain().getResourceSet().getResources())
                 .hasSize(oldProjectEditingContext.getDomain().getResourceSet().getResources().size());
 
-        Set<String> oldIds = collectAllIdsOnSiriusResource(oldProjectEditingContext.getDomain().getResourceSet());
-        Set<String> newIds = collectAllIdsOnSiriusResource(newProjectEditingContext.getDomain().getResourceSet());
+        Set<String> oldIds = this.collectAllIdsOnSiriusResource(oldProjectEditingContext.getDomain().getResourceSet());
+        Set<String> newIds = this.collectAllIdsOnSiriusResource(newProjectEditingContext.getDomain().getResourceSet());
 
         assertThat(newIds)
                 .as("Both ResourceSet should contain the same number of semantic elements.")
@@ -156,7 +152,7 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
         Notifier newSystem = this.searchByLabel(newProjectEditingContext.getDomain().getResourceSet(), "NewSystem");
 
         List<RepresentationMetadata> representations = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(
-                AggregateReference.to(UUID.fromString(newProjectEditingContext.getId())), identityService.getId(newSystem));
+                AggregateReference.to(UUID.fromString(newProjectEditingContext.getId())), this.identityService.getId(newSystem));
         assertThat(representations).hasSize(1);
 
         // Check that all targetObjectIds have been updated
@@ -169,7 +165,7 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
         var iterator = resourceSet.getAllContents();
         while (iterator.hasNext()) {
             Notifier next = iterator.next();
-            StyledString label = labelService.getStyledLabel(next);
+            StyledString label = this.labelService.getStyledLabel(next);
             if (label != null && label.toString().equals(expectedLabel)) {
                 return next;
             }
@@ -181,7 +177,7 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
         return resourceSet.getResources().stream()
                 .filter(resource -> resource.getURI().toString().contains("siriusweb://"))
                 .flatMap(resource -> StreamSupport.stream(Spliterators.spliteratorUnknownSize(resource.getAllContents(), Spliterator.ORDERED), false))
-                .map(identityService::getId)
+                .map(this.identityService::getId)
                 .collect(Collectors.toSet());
     }
 }

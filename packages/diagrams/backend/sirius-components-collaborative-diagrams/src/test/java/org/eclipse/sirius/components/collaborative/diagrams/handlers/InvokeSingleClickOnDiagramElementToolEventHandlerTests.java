@@ -346,7 +346,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var edgeDescription = this.createEdgeDescription(EDGE_DESCRIPTION_ID);
         var edge1 = this.createEdge(EDGE_1_ID, EDGE_DESCRIPTION_ID, LINK_1_ID);
 
         var diagramQueryService = new IDiagramQueryService.NoOp() {
@@ -360,7 +359,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         };
 
         String selectionEntryId = "entryId";
-        String selectionEntryLabel = "entry label";
         String selectionEntryKind = "entryKind";
         var expectedSelectionEntry = new WorkbenchSelectionEntry(selectionEntryId, selectionEntryKind);
         var expectedWorkbenchSelection = new WorkbenchSelection(List.of(expectedSelectionEntry));

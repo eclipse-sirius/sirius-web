@@ -26,7 +26,6 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DropOnDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -41,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -65,9 +65,6 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
     @Autowired
     private DropOnDiagramMutationRunner dropOnDiagramMutationRunner;
-
-    @Autowired
-    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
     @Autowired
     private UnsynchronizedDiagramDescriptionProvider unsynchronizedDiagramDescriptionProvider;

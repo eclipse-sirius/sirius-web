@@ -97,7 +97,7 @@ public class TreeDescriptionConverter implements IWidgetDescriptionConverter {
 
             String valueExpression = Optional.ofNullable(viewTreeDescription.getCheckedValueExpression()).orElse("");
             BooleanValueProvider valueProvider = new BooleanValueProvider(interpreter, valueExpression);
-            BiFunction<VariableManager, Boolean, IStatus> newValueHandler = new NewValueHandler(interpreter, this.operationExecutor, this.feedbackMessageService, viewTreeDescription.getBody());
+            BiFunction<VariableManager, Boolean, IStatus> newValueHandler = new NewValueHandler<>(interpreter, this.operationExecutor, this.feedbackMessageService, viewTreeDescription.getBody());
 
             var treeDescription = TreeDescription.newTreeDescription(descriptionId)
                     .idProvider(new WidgetIdProvider())

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -39,7 +40,6 @@ import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.EllipseNodeStyle;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
-import org.eclipse.sirius.web.application.representation.services.RepresentationDescriptionSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -95,9 +95,6 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
 
     @Autowired
     private CustomNodesUnsynchonisedDiagramDescriptionProvider customNodesDiagramDescriptionProvider;
-
-    @Autowired
-    private RepresentationDescriptionSearchService representationDescriptionSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -279,7 +276,7 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
                     }
                   }
                 }
-                """.formatted(customNodesDiagramDescriptionProvider.getRepresentationDescriptionId());
+                """.formatted(this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId());
     }
 
     private String representation() {
@@ -375,7 +372,7 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
                     }
                   }
                 }
-                """.formatted(customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), customNodesDiagramDescriptionProvider.getCustomNodeDescriptionId());
+                """.formatted(this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), this.customNodesDiagramDescriptionProvider.getCustomNodeDescriptionId());
     }
 
     private String document() {
