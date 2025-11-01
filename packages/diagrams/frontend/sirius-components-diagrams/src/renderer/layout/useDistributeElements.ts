@@ -75,7 +75,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
         nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
         edges: getEdges(),
       };
-      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+      layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
         const overlapFreeNodesAfterLayout: Node<NodeData>[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
         setNodes(overlapFreeNodesAfterLayout);
         const finalDiagram: RawDiagram = {
@@ -148,7 +148,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
             nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
             edges: getEdges(),
           };
-          layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
             setNodes(laidOutDiagram.nodes);
             const finalDiagram: RawDiagram = {
               nodes: laidOutDiagram.nodes,

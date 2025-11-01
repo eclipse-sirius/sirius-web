@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ export class LayoutEngine implements ILayoutEngine {
     previousDiagram: RawDiagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: Dimensions
   ) {
     nodesToLayout.forEach((node) => {
@@ -46,7 +46,7 @@ export class LayoutEngine implements ILayoutEngine {
           node,
           visibleNodes,
           directChildren,
-          newlyAddedNode,
+          newlyAddedNodes,
           forceDimensions
         );
 

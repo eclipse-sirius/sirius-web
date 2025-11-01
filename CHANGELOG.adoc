@@ -36,7 +36,9 @@ The code responsible for the import has been refactor with:
 * `ISingleClickTreeItemContextMenuEntryExecutor#execute` (and its implementations) now requires an additional `ITreeInput` parameter which is used to differentiate regular entry execution from impact analysis ones
 * `InvokeDiagramImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
 * `InvokeTreeImpactAnalysisToolEventHandler` has been moved to `org.eclipse.sirius.web.application.impactanalysis.services` to match Sirius Web's architecture
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] During layout of custom nodes, all the newly created nodes are now used and not only the first one.
+This mean the `INodeLayoutHandler` interface change from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
+An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 
 === Dependency update
 
@@ -78,6 +80,7 @@ A new context menu entry is available on resources from _direct dependencies_ (n
 - https://github.com/eclipse-sirius/sirius-web/issues/5662[#5662] [diagram] Add a bottom padding for child nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/5733[#5733] [sirius-web] Extract frontend project creation into a hook
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] Rename Settings menu and export action
+- https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] Apply reference position to all newly created nodes
 
 
 == 2025.10.0
@@ -150,8 +153,6 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 - https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the parameters `EditingContextEventProcessor#REPRESENTATION_ID` and `EditingContextEventProcessor#REPRESENTATION_LABEL` which were supposed to be used as the key for some change description parameters in favor of a dedicated class holding those keys `ChangeDescriptionParameters`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5148[#5148] [core] Remove the change kind `ChangeKind#FOCUS_CHANGE` since it has not been used in months.
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] In order to handle undo on node appearance events you need to implement a `INodeAppearanceChangeUndoRecorder` the method `List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change)` is used to determine the list of `IAppearanceChange` that will be applied after an undo operation in order to get the previous style after a style change or if the node was deleted.
-
-
 
 === Dependency update
 
@@ -322,7 +323,6 @@ This new low level API is quite new and may be changed heavily in the near futur
 - https://github.com/eclipse-sirius/sirius-web/issues/5285[#5285] [core] Extract additional concerns from the `EditingContextEventProcessor` thanks to the introduction of new services.
 We have added the `IRepresentationEventProcessorProvider` in order to either retrieve an `IRepresentationEventProcessor` from the `IRepresentationEventProcessorRegistry` or create an initialize a new instance thanks to the `IRepresentationEventProcessorComposedFactory`.
 We have also added the `IInputDispatcher` which is in charge of dispatching an input to its proper handler.
-
 
 
 == v2025.8.0
