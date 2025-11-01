@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import graphql.relay.Relay;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -32,6 +31,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
@@ -39,6 +39,9 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDelet
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -58,6 +61,8 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.relay.Relay;
 import reactor.test.StepVerifier;
 
 /**
@@ -331,7 +336,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the project is created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenProjectIsCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -397,7 +402,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the semantic data are created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -415,6 +420,34 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         var exists = this.projectSearchService.existsById(projectId);
         assertThat(exists).isTrue();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project to create with libraries, when mutation is performed, then the libraries are present")
+    public void givenProjectToCreateWithLibrariesWhenMutationIsPerformedThenTheLibrariesArePresent() {
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_ID.toString()));
+        var result = this.createProjectMutationRunner.run(input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        List<Class<?>> expectedEvent = List.of(CreateProjectInput.class, SemanticDataCreatedEvent.class, SemanticDataUpdatedEvent.class);
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSizeGreaterThan(0);
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(event -> expectedEvent.contains(event.getClass()));
+
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        var projectDependencies = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById)
+                .stream()
+                .flatMap(semanticData -> semanticData.getDependencies().stream())
+                .map(SemanticDataDependency::dependencySemanticDataId)
+                .map(AggregateReference::getId)
+                .toList();
+        assertThat(projectDependencies).anyMatch(PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID::equals);
     }
 
     @Test
