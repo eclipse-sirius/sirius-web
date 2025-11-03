@@ -1,13 +1,24 @@
 import { XYPosition } from '@xyflow/react';
 import { Rect } from './geometry';
 
+// Utility helpers to detect where rectilinear polylines touch or cross axis-aligned rectangles.
+// The detour and layout logic rely on these functions to decide when edges need to bend around nodes.
+
+// Small tolerance used across comparisons so floating-point coordinates do not introduce jitter.
 const EPSILON = 0.0001;
 
+// Compact representation for a segment/rectangle intersection: the point itself and the parametric
+// coordinate t along the segment (0 at the start, 1 at the end). The t value lets us sort intersections.
 type SegmentIntersection = {
   point: XYPosition;
   t: number;
 };
 
+/**
+ * Convert a rectangle into explicit boundary coordinates.
+ * @param rect - Rectangle in absolute coordinates.
+ * @returns Object containing top/bottom/left/right values.
+ */
 const rectToBounds = (rect: Rect): { left: number; right: number; top: number; bottom: number } => ({
   left: rect.x,
   right: rect.x + rect.width,
@@ -15,6 +26,12 @@ const rectToBounds = (rect: Rect): { left: number; right: number; top: number; b
   bottom: rect.y + rect.height,
 });
 
+/**
+ * Test whether a point lies strictly inside a rectangle (excluding the border).
+ * @param point - Candidate point.
+ * @param bounds - Rectangle bounds produced by rectToBounds.
+ * @returns True when the point sits inside the bounds.
+ */
 const pointInRect = (
   point: XYPosition,
   bounds: { left: number; right: number; top: number; bottom: number }
@@ -24,14 +41,24 @@ const pointInRect = (
   point.y > bounds.top + EPSILON &&
   point.y < bounds.bottom - EPSILON;
 
+/**
+ * Compute the intersection between two closed segments (if any).
+ * @param a1 - First endpoint of segment A.
+ * @param a2 - Second endpoint of segment A.
+ * @param b1 - First endpoint of segment B.
+ * @param b2 - Second endpoint of segment B.
+ * @returns Intersection point and parametric value along segment A, or undefined when no overlap.
+ */
 const segmentIntersectionWithParam = (
   a1: XYPosition,
   a2: XYPosition,
   b1: XYPosition,
   b2: XYPosition
 ): SegmentIntersection | undefined => {
+  // Solve the intersection using the standard 2x2 determinant approach.
   const denominator = (a1.x - a2.x) * (b1.y - b2.y) - (a1.y - a2.y) * (b1.x - b2.x);
   if (Math.abs(denominator) <= EPSILON) {
+    // Segments are parallel or extremely close to parallel.
     return undefined;
   }
 
@@ -48,10 +75,12 @@ const segmentIntersectionWithParam = (
     p.y <= Math.max(start.y, end.y) + EPSILON;
 
   const candidate = { x, y };
+  // Reject intersections that lie outside either of the finite segments.
   if (!withinSegment(candidate, a1, a2) || !withinSegment(candidate, b1, b2)) {
     return undefined;
   }
 
+  // Compute the parametric coordinate along segment A so callers can sort intersections.
   const dx = a2.x - a1.x;
   const dy = a2.y - a1.y;
   const t =
@@ -66,11 +95,19 @@ const segmentIntersectionWithParam = (
   return { point: candidate, t };
 };
 
+/**
+ * Find all intersection points between a segment and the boundary of a rectangle.
+ * @param start - Segment start point.
+ * @param end - Segment end point.
+ * @param bounds - Rectangle bounds.
+ * @returns Ordered list of intersection points along the segment.
+ */
 const collectSegmentBoundaryPoints = (
   start: XYPosition,
   end: XYPosition,
   bounds: { left: number; right: number; top: number; bottom: number }
 ): SegmentIntersection[] => {
+  // Enumerate the four rectangle edges in clockwise order using their endpoints.
   const corners = [
     { x: bounds.left, y: bounds.top },
     { x: bounds.right, y: bounds.top },
@@ -98,6 +135,7 @@ const collectSegmentBoundaryPoints = (
       return;
     }
     if (Math.abs(last.t - candidate.t) <= EPSILON) {
+      // Skip duplicates caused by the segment touching a rectangle corner.
       return;
     }
     deduped.push(candidate);
@@ -105,12 +143,20 @@ const collectSegmentBoundaryPoints = (
   return deduped;
 };
 
+/**
+ * Determine whether a segment overlaps a rectangle (by either endpoint or intersection).
+ * @param start - Segment start point.
+ * @param end - Segment end point.
+ * @param bounds - Rectangle bounds.
+ * @returns True when the segment touches or crosses the rectangle interior.
+ */
 const segmentOverlapsRect = (
   start: XYPosition,
   end: XYPosition,
   bounds: { left: number; right: number; top: number; bottom: number }
 ): boolean => {
   if (pointInRect(start, bounds) || pointInRect(end, bounds)) {
+    // Quick exit if either endpoint lies inside the rectangle.
     return true;
   }
   const intersections = collectSegmentBoundaryPoints(start, end, bounds);
@@ -124,6 +170,15 @@ export type PolylineRectCollision = {
   exitIndex: number;
 };
 
+/**
+ * Compute entry/exit points for a single polyline segment relative to a rectangle.
+ * @param start - Segment start point.
+ * @param end - Segment end point.
+ * @param bounds - Rectangle bounds.
+ * @param insideStart - Whether the start point is inside the rectangle.
+ * @param insideEnd - Whether the end point is inside the rectangle.
+ * @returns Entry/exit points (when present) describing how the segment crosses the rectangle.
+ */
 const getEntryExitForSegment = (
   start: XYPosition,
   end: XYPosition,
@@ -133,15 +188,18 @@ const getEntryExitForSegment = (
 ): { entryPoint?: XYPosition; exitPoint?: XYPosition } => {
   const intersections = collectSegmentBoundaryPoints(start, end, bounds);
   if (insideStart && insideEnd) {
+    // Segment is entirely inside: treat start/end as the collision span.
     return { entryPoint: { ...start }, exitPoint: { ...end } };
   }
 
   if (insideStart && !insideEnd) {
+    // Segment leaves the rectangle: start is entry, first intersection is exit.
     const exitPoint = intersections[0]?.point ?? { ...end };
     return { entryPoint: { ...start }, exitPoint };
   }
 
   if (!insideStart && insideEnd) {
+    // Segment enters the rectangle: first intersection is entry.
     const entryPoint = intersections[0]?.point ?? { ...start };
     return { entryPoint, exitPoint: { ...end } };
   }
@@ -155,6 +213,12 @@ const getEntryExitForSegment = (
   return { entryPoint, exitPoint };
 };
 
+/**
+ * Scan a rectilinear polyline and capture each span that overlaps a rectangle.
+ * @param points - Polyline points (must contain at least two points to form a segment).
+ * @param rect - Rectangle to test against.
+ * @returns List of collision spans including entry/exit points and segment indices.
+ */
 export const collectPolylineRectCollisions = (
   points: XYPosition[],
   rect: Rect
@@ -178,6 +242,7 @@ export const collectPolylineRectCollisions = (
 
     const overlaps = segmentOverlapsRect(start, end, bounds);
     if (!overlaps) {
+      // Nothing to do if this segment does not touch the rectangle.
       continue;
     }
 
@@ -186,6 +251,7 @@ export const collectPolylineRectCollisions = (
     const { entryPoint, exitPoint } = getEntryExitForSegment(start, end, bounds, insideStart, insideEnd);
 
     if (!inside) {
+      // Record the entry point so we can emit a single collision for contiguous segments.
       pendingEntryPoint = entryPoint ?? (insideStart ? { ...start } : undefined);
       pendingEntryIndex = index;
       inside = true;
@@ -219,6 +285,8 @@ export const collectPolylineRectCollisions = (
           Math.abs(finalExitPoint.x - pendingEntryPoint.x) <= EPSILON &&
           Math.abs(finalExitPoint.y - pendingEntryPoint.y) <= EPSILON;
         if (!entryExitNearlySame && !segmentOnBoundary) {
+          // Register the span only when it has measurable length and is not already covered by a
+          // segment that runs purely along a rectangle boundary.
           collisions.push({
             entryPoint: pendingEntryPoint,
             exitPoint: finalExitPoint,
@@ -227,6 +295,7 @@ export const collectPolylineRectCollisions = (
           });
         }
       }
+      // Prepare for the next span in case the polyline immediately re-enters the rectangle.
       pendingEntryPoint = insideEnd && !isLastSegment ? { ...end } : undefined;
       pendingEntryIndex = insideEnd && !isLastSegment ? index : undefined;
       inside = insideEnd;
@@ -236,6 +305,12 @@ export const collectPolylineRectCollisions = (
   return collisions;
 };
 
+/**
+ * Convenience wrapper returning each intersection point individually.
+ * @param points - Polyline points.
+ * @param rect - Rectangle bounds.
+ * @returns Entry and exit points paired with their segment index.
+ */
 export const collectPolylineRectIntersections = (
   points: XYPosition[],
   rect: Rect
@@ -249,6 +324,12 @@ export const collectPolylineRectIntersections = (
   return intersections;
 };
 
+/**
+ * Expand a rectangle evenly on all sides by a padding amount.
+ * @param rect - Original rectangle.
+ * @param padding - Distance to extend on every side.
+ * @returns New rectangle with the expanded bounds.
+ */
 export const expandRect = (rect: Rect, padding: number): Rect => ({
   x: rect.x - padding,
   y: rect.y - padding,

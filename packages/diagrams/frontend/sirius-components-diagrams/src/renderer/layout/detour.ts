@@ -2,18 +2,39 @@ import { XYPosition } from '@xyflow/react';
 import { collectPolylineRectIntersections, expandRect } from './collision';
 import { Rect } from './geometry';
 
+// This module shapes the concrete polyline used to bypass a rectangular obstacle.
+// Each helper function does a single job, from working out which side of the
+// rectangle we touch, to measuring path length so we can pick the best detour.
+
 type DetourSide = 'top' | 'right' | 'bottom' | 'left';
 
+// Every rectangle has four edges; we keep the count in a constant so loops and
+// modular arithmetic can refer to it consistently.
 const edgeCount = 4;
 
+/**
+ * Build the list of corner vertices for a rectangle.
+ * @param rect - Rectangle expressed in absolute coordinates.
+ * @returns The four corners in clockwise order starting from the top-left.
+ */
 const perimeterVertices = (rect: Rect): XYPosition[] => [
+  // Top-left corner.
   { x: rect.x, y: rect.y },
+  // Top-right corner.
   { x: rect.x + rect.width, y: rect.y },
+  // Bottom-right corner.
   { x: rect.x + rect.width, y: rect.y + rect.height },
+  // Bottom-left corner.
   { x: rect.x, y: rect.y + rect.height },
 ];
 
+/**
+ * Translate an edge index into a human-readable side name.
+ * @param edgeIndex - Index along the rectangle perimeter (can be >= 4).
+ * @returns The logical side string we use for orientation decisions.
+ */
 const sideForEdge = (edgeIndex: number): DetourSide => {
+  // Wrap the index so we stay within 0..3 even when rotating around the shape.
   switch (edgeIndex % edgeCount) {
     case 0:
       return 'top';
@@ -26,23 +47,46 @@ const sideForEdge = (edgeIndex: number): DetourSide => {
   }
 };
 
+/**
+ * Compare two floating-point numbers with tolerance.
+ * @param a - First value to compare.
+ * @param b - Second value to compare.
+ * @param epsilon - Allowed delta before we treat the values as different.
+ * @returns True when the numbers are close enough to be considered equal.
+ */
 const almostEqual = (a: number, b: number, epsilon = 0.5): boolean => Math.abs(a - b) <= epsilon;
 
+/**
+ * Check whether a point lies on a given rectangle edge segment.
+ * @param start - First endpoint of the edge.
+ * @param end - Second endpoint of the edge.
+ * @param point - Point we want to test.
+ * @returns True when the point falls on the edge within a small tolerance.
+ */
 const edgeContainsPoint = (start: XYPosition, end: XYPosition, point: XYPosition): boolean =>
+  // Handle vertical edges by comparing x and clamping y within the segment span.
   (almostEqual(start.x, end.x) &&
     almostEqual(point.x, start.x) &&
     point.y >= Math.min(start.y, end.y) - 0.5 &&
     point.y <= Math.max(start.y, end.y) + 0.5) ||
+  // Handle horizontal edges by comparing y and clamping x.
   (almostEqual(start.y, end.y) &&
     almostEqual(point.y, start.y) &&
     point.x >= Math.min(start.x, end.x) - 0.5 &&
     point.x <= Math.max(start.x, end.x) + 0.5);
 
+/**
+ * Identify which edge index of the rectangle contains the given point.
+ * @param rect - Rectangle we are walking around.
+ * @param point - Point on or very near the rectangle perimeter.
+ * @returns Zero-based index of the matching edge.
+ */
 const edgeIndexForPoint = (rect: Rect, point: XYPosition): number => {
   const vertices = perimeterVertices(rect);
   for (let i = 0; i < edgeCount; i++) {
     const start = vertices[i];
     const end = vertices[(i + 1) % edgeCount];
+    // Skip safety-checks when a vertex is unexpectedly missing.
     if (!start || !end) {
       continue;
     }
@@ -50,9 +94,15 @@ const edgeIndexForPoint = (rect: Rect, point: XYPosition): number => {
       return i;
     }
   }
+  // Default to the first edge to keep the algorithm stable even on failure.
   return 0;
 };
 
+/**
+ * Measure the total length of a polyline.
+ * @param points - Ordered series of points describing the path.
+ * @returns Scalar distance travelled along the path segments.
+ */
 const pathLength = (points: XYPosition[]): number => {
   if (points.length < 2) {
     return 0;
@@ -64,11 +114,17 @@ const pathLength = (points: XYPosition[]): number => {
     if (!prev || !current) {
       continue;
     }
+    // Measure the straight-line distance between consecutive points and add it.
     distance += Math.hypot(current.x - prev.x, current.y - prev.y);
   }
   return distance;
 };
 
+/**
+ * Remove consecutive duplicate points from a polyline so segments stay valid.
+ * @param points - Original path points that may contain duplicates.
+ * @returns New array containing the same route without zero-length hops.
+ */
 const dedupeSequentialPoints = (points: XYPosition[]): XYPosition[] => {
   if (points.length === 0) {
     return points;
@@ -84,6 +140,7 @@ const dedupeSequentialPoints = (points: XYPosition[]): XYPosition[] => {
     if (!current) {
       continue;
     }
+    // Only keep the new point when it actually changes position.
     if (!previous || previous.x !== current.x || previous.y !== current.y) {
       result.push(current);
     }
@@ -91,6 +148,16 @@ const dedupeSequentialPoints = (points: XYPosition[]): XYPosition[] => {
   return result;
 };
 
+/**
+ * Walk around the rectangle perimeter from entry to exit along one direction.
+ * @param rect - Obstacle rectangle expressed in absolute coordinates.
+ * @param entryPoint - First point where the polyline meets the rectangle.
+ * @param exitPoint - Final point where the polyline leaves the rectangle.
+ * @param entryEdge - Edge index aligned with the entry point.
+ * @param exitEdge - Edge index aligned with the exit point.
+ * @param direction - +1 for clockwise, -1 for counter-clockwise traversal.
+ * @returns Points to follow along the perimeter and the corresponding side order.
+ */
 const buildPerimeterTrace = (
   rect: Rect,
   entryPoint: XYPosition,
@@ -107,17 +174,21 @@ const buildPerimeterTrace = (
   let guard = 0;
 
   while (guard < edgeCount + 2) {
+    // Record the side we are presently walking.
     sides.push(sideForEdge(currentEdge));
     if (currentEdge === exitEdge) {
+      // Once we reach the exit edge we append the exit point and stop.
       points.push(exitPoint);
       break;
     }
 
+    // Determine the next corner based on the traversal direction.
     const nextCornerIndex = direction === 1 ? (currentEdge + 1) % edgeCount : currentEdge;
     const nextCorner = vertices[nextCornerIndex];
     if (nextCorner) {
       points.push(nextCorner);
     }
+    // Step to the adjacent edge, wrapping around using modular arithmetic.
     currentEdge = (currentEdge + direction + edgeCount) % edgeCount;
     guard++;
   }
@@ -125,6 +196,15 @@ const buildPerimeterTrace = (
   return { points: dedupeSequentialPoints(points), sides };
 };
 
+/**
+ * Choose the shortest perimeter trace between entry and exit points.
+ * @param rect - Rectangle being avoided.
+ * @param entryPoint - Where we enter the rectangle.
+ * @param exitPoint - Where we leave the rectangle.
+ * @param entryEdge - Index of the edge containing the entry point.
+ * @param exitEdge - Index of the edge containing the exit point.
+ * @returns Optimal perimeter points and the parallel list of sides traversed.
+ */
 const selectShortestPerimeter = (
   rect: Rect,
   entryPoint: XYPosition,
@@ -135,12 +215,18 @@ const selectShortestPerimeter = (
   const clockwise = buildPerimeterTrace(rect, entryPoint, exitPoint, entryEdge, exitEdge, 1);
   const counterClockwise = buildPerimeterTrace(rect, entryPoint, exitPoint, entryEdge, exitEdge, -1);
 
+  // Pick whichever direction yields the shorter travel distance.
   const choice =
     pathLength(clockwise.points) <= pathLength(counterClockwise.points) ? clockwise : counterClockwise;
 
   return { points: choice.points, sideSequence: choice.sides.slice(0, Math.max(choice.points.length - 1, 0)) };
 };
 
+/**
+ * Convert a side name into a normal vector that points outward from the rectangle.
+ * @param side - Logical rectangle side we are offsetting.
+ * @returns Unit vector pointing away from the rectangle interior.
+ */
 const sideNormal = (side: DetourSide): XYPosition => {
   switch (side) {
     case 'top':
@@ -155,6 +241,13 @@ const sideNormal = (side: DetourSide): XYPosition => {
   }
 };
 
+/**
+ * Offset perimeter points outward to create extra spacing around the obstacle.
+ * @param points - Raw perimeter points including corners.
+ * @param sideSequence - Ordered list describing which side each segment follows.
+ * @param extraGap - Additional distance to move points away from the rectangle.
+ * @returns Adjusted point list with the requested spacing applied.
+ */
 const applyOffsetAlongPerimeter = (
   points: XYPosition[],
   sideSequence: DetourSide[],
@@ -173,6 +266,7 @@ const applyOffsetAlongPerimeter = (
     const start = adjusted[i];
     const end = adjusted[i + 1];
     if (start) {
+      // Move the starting point away from the obstacle along the outward normal.
       start.x += normal.x * extraGap;
       start.y += normal.y * extraGap;
     }
@@ -184,6 +278,11 @@ const applyOffsetAlongPerimeter = (
   return dedupeSequentialPoints(adjusted);
 };
 
+/**
+ * Ensure a polyline only contains horizontal or vertical segments.
+ * @param points - Candidate polyline that may contain diagonal steps.
+ * @returns Rectified list of points with missing elbows reinserted.
+ */
 // Re-introduce missing elbows when merging detours so every segment remains axis aligned.
 const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
   if (points.length === 0) {
@@ -205,6 +304,7 @@ const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
     }
 
     if (previous.x === target.x || previous.y === target.y) {
+      // Segment already aligned; simply append the target point.
       rectified.push(target);
       continue;
     }
@@ -215,10 +315,14 @@ const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
 
     let bridge: XYPosition | undefined;
     if (cameFromHorizontal && !cameFromVertical) {
+      // Continue the horizontal trend before turning vertically.
       bridge = { x: target.x, y: previous.y };
     } else if (cameFromVertical && !cameFromHorizontal) {
+      // Continue the vertical trend before turning horizontally.
       bridge = { x: previous.x, y: target.y };
     } else {
+      // We do not have a dominant direction; try both options and keep the one
+      // that best matches the upcoming point.
       const horizontalCandidate: XYPosition = { x: target.x, y: previous.y };
       const verticalCandidate: XYPosition = { x: previous.x, y: target.y };
 
@@ -263,13 +367,23 @@ const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
   return dedupeSequentialPoints(rectified);
 };
 
+/**
+ * Merge a detour polyline back into the original path while maintaining orthogonality.
+ * @param original - Original edge polyline before the obstacle fix.
+ * @param entryIndex - Index of the segment where the polyline enters the obstacle.
+ * @param exitIndex - Index of the segment where the polyline leaves the obstacle.
+ * @param detour - New points describing the path around the obstacle.
+ * @returns Updated polyline that incorporates the detour.
+ */
 const mergePolyline = (
   original: XYPosition[],
   entryIndex: number,
   exitIndex: number,
   detour: XYPosition[]
 ): XYPosition[] => {
+  // Keep the portion before we hit the obstacle untouched.
   const prefix = original.slice(0, entryIndex + 1);
+  // Keep the portion after we exit the obstacle untouched.
   const suffix = original.slice(exitIndex + 1);
 
   const cleanedDetour = detour.filter((point, idx, arr): point is XYPosition => {
@@ -283,10 +397,12 @@ const mergePolyline = (
     if (!previous) {
       return true;
     }
+    // Drop duplicates so the orthogonal rectifier does not see zero-length steps.
     return point.x !== previous.x || point.y !== previous.y;
   });
 
   if (cleanedDetour.length === 0) {
+    // No detour to merge; return a shallow copy of the original.
     return original.slice();
   }
 
@@ -305,6 +421,14 @@ export type DetourContext = {
   exitIndex: number;
 };
 
+/**
+ * Construct a detoured version of a polyline that avoids a rectangular obstacle.
+ * @param polyline - Original rectilinear polyline to adjust.
+ * @param obstacle - Rectangle the polyline currently intersects.
+ * @param options - Gap settings controlling how far the detour stands off.
+ * @param context - Optional precomputed collision context (entry/exit points).
+ * @returns A new polyline that skirts around the rectangle or null when no detour is required.
+ */
 export const buildDetourAroundRectangle = (
   polyline: XYPosition[],
   obstacle: Rect,
@@ -315,6 +439,7 @@ export const buildDetourAroundRectangle = (
     return null;
   }
 
+  // Widen the obstacle slightly so edges do not visually hug the node.
   const paddedRect = expandRect(obstacle, options.baseGap);
 
   let entryPoint = context?.entryPoint;
@@ -323,6 +448,7 @@ export const buildDetourAroundRectangle = (
   let exitIndex = context?.exitIndex;
 
   if (!context) {
+    // Derive entry/exit points automatically by intersecting the polyline with the padded rectangle.
     const intersections = collectPolylineRectIntersections(polyline, paddedRect);
     if (intersections.length < 2) {
       return null;
@@ -344,6 +470,7 @@ export const buildDetourAroundRectangle = (
     return null;
   }
 
+  // Work out the edges touched by the entry and exit to guide the perimeter walk.
   const entryEdge = edgeIndexForPoint(paddedRect, entryPoint);
   const exitEdge = edgeIndexForPoint(paddedRect, exitPoint);
 
