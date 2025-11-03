@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, EdgeMouseHandler, Node, NodeMouseHandler, XYPosition } from '@xyflow/react';
+import { Edge, EdgeMouseHandler, Node, NodeMouseHandler } from '@xyflow/react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 export interface UseOnRightClickElementValue {
@@ -19,8 +19,4 @@ export interface UseOnRightClickElementValue {
   onEdgeContextMenu: EdgeMouseHandler<Edge<EdgeData>>;
   onNodeContextMenu: NodeMouseHandler<Node<NodeData>>;
   onSelectionContextMenu: (event: React.MouseEvent, nodes: Node<NodeData>[]) => void;
-  groupPalettePosition: XYPosition | null;
-  isGroupPaletteOpened: boolean;
-  groupPaletteRefElementId: string | null;
-  hideGroupPalette: () => void;
 }

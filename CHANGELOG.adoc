@@ -41,6 +41,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
 
 
 
