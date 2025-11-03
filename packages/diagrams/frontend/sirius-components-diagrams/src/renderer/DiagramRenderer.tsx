@@ -71,6 +71,7 @@ import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
+import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
@@ -354,6 +355,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
+  const { isOpened } = useDiagramPalette();
   const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
   const {
     onEdgeContextMenu,
@@ -443,10 +445,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           refElementId={groupPaletteRefElementId}
           hidePalette={hideGroupPalette}
         />
-        <DiagramPalette
-          diagramElementId={diagramRefreshedEventPayload.diagram.id}
-          targetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
-        />
+        {isOpened ? (
+          <DiagramPalette
+            diagramElementId={diagramRefreshedEventPayload.diagram.id}
+            diagramTargetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
+          />
+        ) : null}
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}

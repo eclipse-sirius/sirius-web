@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ const defaultValue: DiagramPaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
+  diagramElementIds: [],
   hideDiagramPalette: () => {},
   showDiagramPalette: () => {},
   getLastToolInvoked: () => null,
@@ -37,11 +38,12 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
     x: null,
     y: null,
     isOpened: false,
+    diagramElementIds: [],
     lastToolsInvoked: [],
   });
 
-  const showPalette = useCallback((x: number, y: number) => {
-    setState((prevState) => ({ ...prevState, x, y, isOpened: true }));
+  const showPalette = useCallback((x: number, y: number, diagramElementIds: string[]) => {
+    setState((prevState) => ({ ...prevState, x, y, isOpened: true, diagramElementIds }));
   }, []);
 
   const hidePalette = useCallback(() => {
@@ -74,6 +76,7 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
+        diagramElementIds: state.diagramElementIds,
         showDiagramPalette: showPalette,
         hideDiagramPalette: hidePalette,
         getLastToolInvoked,

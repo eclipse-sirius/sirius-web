@@ -20,7 +20,9 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('appearance', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
+      PlaywrightProject.FLOW_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
@@ -129,7 +131,7 @@ test.describe('appearance', () => {
     );
   });
 
-  test('change edge center label appearance', async ({ page }) => {
+  test('change edge center label appearance on blur', async ({ page }) => {
     //Move the node so it's easier to select the edge
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();

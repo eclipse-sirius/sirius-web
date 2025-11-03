@@ -85,6 +85,7 @@ The following files have been moved from the frontend module `sirius-components-
 * `useImpactAnalysisDialog.types.ts`
 
 The `ImpactAnalysisReport` GraphQL type has been updated to contain `impactTree: DataTree!`, the corresponding query hooks and backend code has been updated to consume and provide this new value.
+- https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] `DiagramElementPalette` is no longer exported, when using custom nodes, the palette will still be opened when right clicking an element.
 
 
 === Dependency update
@@ -152,6 +153,7 @@ A new module `sirius-components-datatree` has been created to:
 The command palette can now be configured with the commands to display, and functions to trigger when the user enters a query or selects a command.
 This will allow to integrate the command palette in other contexts than the workbench.
 - https://github.com/eclipse-sirius/sirius-web/issues/5603[#5603] [sirius-web] Add a tree visualization of the impacts in the impact analysis dialog.
+- https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] Merge all frontend palette into one common component
 
 
 == 2025.10.0

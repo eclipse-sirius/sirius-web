@@ -80,6 +80,12 @@ export const Palette = ({
     controlledPosition: { x: paletteX, y: paletteY },
   });
 
+  useEffect(() => {
+    setState((prevState) => {
+      return { ...prevState, controlledPosition: { x: paletteX, y: paletteY } };
+    });
+  }, [paletteX, paletteY]);
+
   const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
 
   const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
@@ -97,24 +103,28 @@ export const Palette = ({
     });
   };
 
+  const updatedModalPosition = () => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        controlledPosition: getUpdatedModalPosition(
+          { x: prevState.controlledPosition.x, y: prevState.controlledPosition.y },
+          nodeRef
+        ),
+      };
+    });
+  };
+
   useEffect(() => {
     if (!nodeRef.current) return;
     // If the palette size changes when opening a section then update the position of the modal
     const resizeObserver = new ResizeObserver(() => {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          controlledPosition: getUpdatedModalPosition(
-            { x: prevState.controlledPosition.x, y: prevState.controlledPosition.y },
-            nodeRef
-          ),
-        };
-      });
+      updatedModalPosition();
     });
     resizeObserver.observe(nodeRef.current);
-
+    updatedModalPosition();
     return () => resizeObserver.disconnect();
-  }, []);
+  }, [paletteX, paletteY]);
 
   const draggableBounds = getUpdatedBounds(nodeRef);
 
@@ -166,6 +176,7 @@ export const Palette = ({
                 backgroundColor: `${theme.palette.secondary.main}08`,
               }}>
               <DragIndicatorIcon />
+
               <Tooltip title="Close">
                 <IconButton
                   size="small"

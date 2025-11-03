@@ -30,7 +30,6 @@ import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { NodeContextProvider } from '../renderer/node/NodeContext';
-import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
 import { useApplySelection } from '../renderer/selection/useApplySelection';
 import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
@@ -173,42 +172,40 @@ export const DiagramRepresentation = memo(
         <ReactFlowProvider>
           <DiagramDirectEditContextProvider>
             <DiagramPaletteContextProvider>
-              <DiagramElementPaletteContextProvider>
-                <ConnectorContextProvider>
-                  <DropNodeContextProvider>
-                    <NodeContextProvider>
-                      <MarkerDefinitions />
-                      <FullscreenContextProvider>
-                        <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-                          <DiagramContext.Provider
-                            value={{
-                              editingContextId,
-                              diagramId: representationId,
-                              readOnly,
-                              registerPostToolSelection,
-                              consumePostToolSelection,
-                              toolSelections: state.toolSelections,
-                            }}>
-                            <ApplySelectionWrapper representationId={representationId} ref={ref}>
-                              <ManageVisibilityContextProvider>
-                                <DialogContextProvider>
-                                  <DiagramToolExecutorContextProvider>
-                                    <DiagramSubscriptionProvider
-                                      diagramId={representationId}
-                                      editingContextId={editingContextId}
-                                      readOnly={readOnly}
-                                    />
-                                  </DiagramToolExecutorContextProvider>
-                                </DialogContextProvider>
-                              </ManageVisibilityContextProvider>
-                            </ApplySelectionWrapper>
-                          </DiagramContext.Provider>
-                        </DiagramDescriptionContext.Provider>
-                      </FullscreenContextProvider>
-                    </NodeContextProvider>
-                  </DropNodeContextProvider>
-                </ConnectorContextProvider>
-              </DiagramElementPaletteContextProvider>
+              <ConnectorContextProvider>
+                <DropNodeContextProvider>
+                  <NodeContextProvider>
+                    <MarkerDefinitions />
+                    <FullscreenContextProvider>
+                      <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+                        <DiagramContext.Provider
+                          value={{
+                            editingContextId,
+                            diagramId: representationId,
+                            readOnly,
+                            registerPostToolSelection,
+                            consumePostToolSelection,
+                            toolSelections: state.toolSelections,
+                          }}>
+                          <ApplySelectionWrapper representationId={representationId} ref={ref}>
+                            <ManageVisibilityContextProvider>
+                              <DialogContextProvider>
+                                <DiagramToolExecutorContextProvider>
+                                  <DiagramSubscriptionProvider
+                                    diagramId={representationId}
+                                    editingContextId={editingContextId}
+                                    readOnly={readOnly}
+                                  />
+                                </DiagramToolExecutorContextProvider>
+                              </DialogContextProvider>
+                            </ManageVisibilityContextProvider>
+                          </ApplySelectionWrapper>
+                        </DiagramContext.Provider>
+                      </DiagramDescriptionContext.Provider>
+                    </FullscreenContextProvider>
+                  </NodeContextProvider>
+                </DropNodeContextProvider>
+              </ConnectorContextProvider>
             </DiagramPaletteContextProvider>
           </DiagramDirectEditContextProvider>
         </ReactFlowProvider>
