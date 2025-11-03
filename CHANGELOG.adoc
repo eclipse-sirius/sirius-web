@@ -154,6 +154,7 @@ Some part of each namespace may not be supported yet.
 Do not hesitate to read the ADR-214 for further understanding.
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [sirius-web] The EditingContext expose a new method `Map<String, IViewConversionData> getViewConversionData()`
 This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
 
 
 === Improvements

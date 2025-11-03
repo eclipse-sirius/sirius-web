@@ -20,5 +20,5 @@ export interface PaletteExtensionSectionProps {
 export interface PaletteExtensionSectionComponentProps {
   onBackToMainList: () => void;
   onClose: () => void;
-  diagramElementId: string;
+  diagramElementIds: string[];
 }
