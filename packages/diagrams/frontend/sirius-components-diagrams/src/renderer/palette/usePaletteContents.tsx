@@ -76,7 +76,7 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementId: string): UsePaletteContentValue => {
+export const usePaletteContents = (diagramElementId: string, skip: boolean): UsePaletteContentValue => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
@@ -90,6 +90,7 @@ export const usePaletteContents = (diagramElementId: string): UsePaletteContentV
       diagramId,
       diagramElementId,
     },
+    skip,
   });
 
   const description: GQLRepresentationDescription | undefined =

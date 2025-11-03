@@ -76,11 +76,16 @@ const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
   );
 };
 
+/**
+ *
+ * @technical-debt The extension contributed with the prop children section should support a list of diagramElement
+ * They should also be contributed using a dedicated extension point see https://github.com/eclipse-sirius/sirius-web/pull/5413
+ */
 export const PaletteToolList = ({
   palette,
   onToolClick,
   onBackToMainList,
-  diagramElementId,
+  diagramElementIds,
   onClose,
   lastToolInvoked,
   children,
@@ -197,7 +202,7 @@ export const PaletteToolList = ({
               <div className={classes.toolList}>
                 <SectionComponent
                   onBackToMainList={handleBackToMainList}
-                  diagramElementId={diagramElementId}
+                  diagramElementIds={diagramElementIds}
                   onClose={onClose}
                 />
               </div>

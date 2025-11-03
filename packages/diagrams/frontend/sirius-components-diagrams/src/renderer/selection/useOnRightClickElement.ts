@@ -13,7 +13,6 @@
 import { Edge, Node, useStoreApi, XYPosition } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useGroupPalette } from '../palette/group-tool/useGroupPalette';
 import { useDiagramPalette } from '../palette/useDiagramPalette';
 import { UseOnRightClickElementValue } from './useOnRightClickElement.types';
 
@@ -27,14 +26,6 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRightClickElementValue => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { showDiagramPalette } = useDiagramPalette();
-
-  const {
-    hideGroupPalette,
-    position: groupPalettePosition,
-    isOpened: isGroupPaletteOpened,
-    refElementId: groupPaletteRefElementId,
-    onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
-  } = useGroupPalette();
 
   const openPalette = useCallback((event: React.MouseEvent<Element, MouseEvent> | MouseEvent, elements: string[]) => {
     const { domNode } = store.getState();
@@ -59,12 +50,12 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
 
       const shouldOpenGroupPalette = selectedElementsIds.length > 1 && isClickedElementAlreadySelected;
       if (shouldOpenGroupPalette) {
-        groupPaletteOnDiagramElementContextMenu(event, element);
+        openPalette(event, selectedElementsIds);
       } else {
         openPalette(event, [element.id]);
       }
     },
-    [selectedElementsIds, groupPaletteOnDiagramElementContextMenu]
+    [selectedElementsIds]
   );
 
   const onEdgeContextMenu = useCallback(
@@ -79,12 +70,12 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
 
       const shouldOpenGroupPalette = selectedElementsIds.length > 1 && isClickedElementAlreadySelected;
       if (shouldOpenGroupPalette) {
-        groupPaletteOnDiagramElementContextMenu(event, element);
+        openPalette(event, selectedElementsIds);
       } else {
         openPalette(event, [element.id]);
       }
     },
-    [selectedElementsIds, groupPaletteOnDiagramElementContextMenu]
+    [selectedElementsIds]
   );
 
   const onPaneContextMenu = useCallback((event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
@@ -102,13 +93,13 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
         store.getState().nodeLookup.get(lastElementSelectedId);
       if (selectedElement) {
         if (selectedElementsIds.length > 1) {
-          groupPaletteOnDiagramElementContextMenu(event, selectedElement);
+          openPalette(event, selectedElementsIds);
         } else {
           openPalette(event, [selectedElement[0].id]);
         }
       }
     },
-    [groupPaletteOnDiagramElementContextMenu, selectedElementsIds]
+    [selectedElementsIds]
   );
 
   return {
@@ -116,9 +107,5 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
     onEdgeContextMenu,
     onPaneContextMenu,
     onSelectionContextMenu,
-    groupPalettePosition: groupPalettePosition,
-    groupPaletteRefElementId: groupPaletteRefElementId,
-    isGroupPaletteOpened: isGroupPaletteOpened,
-    hideGroupPalette: hideGroupPalette,
   };
 };
