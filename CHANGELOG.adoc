@@ -80,6 +80,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5565[#5565] [sirius-web] Add support for removing a dependency to an imported library.
 A new context menu entry is available on resources from _direct dependencies_ (not transitive ones) to remove the dependency to their containing library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5748[#5748] [sirius-web] Add support for choosing libraries to import when creating a project (does not add libraries without https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745])
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
 
 
 

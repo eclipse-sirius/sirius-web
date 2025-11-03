@@ -11,6 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export interface PinUnPinToolProps {
-  diagramElementId: string;
+  diagramElementIds: string[];
   isPined: boolean;
 }

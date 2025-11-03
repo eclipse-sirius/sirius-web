@@ -64,7 +64,7 @@ const paletteWidth = 200;
 export const Palette = ({
   x: paletteX,
   y: paletteY,
-  diagramElementId,
+  diagramElementIds,
   palette,
   onToolClick,
   onClose,
@@ -190,7 +190,7 @@ export const Palette = ({
             </Box>
             <Divider />
             <PaletteQuickAccessToolBar
-              diagramElementId={diagramElementId}
+              diagramElementIds={diagramElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
               x={paletteX}
@@ -210,7 +210,7 @@ export const Palette = ({
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                diagramElementId={diagramElementId}>
+                diagramElementIds={diagramElementIds}>
                 {paletteToolListExtensions}
               </PaletteToolList>
             )}
