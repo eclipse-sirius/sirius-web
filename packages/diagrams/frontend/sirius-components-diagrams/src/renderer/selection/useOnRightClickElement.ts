@@ -10,18 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useStoreApi, XYPosition } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGroupPalette } from '../palette/group-tool/useGroupPalette';
-import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { useDiagramPalette } from '../palette/useDiagramPalette';
 import { UseOnRightClickElementValue } from './useOnRightClickElement.types';
 
+const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
+  return {
+    x: event.clientX - (bounds?.left ?? 0),
+    y: event.clientY - (bounds?.top ?? 0),
+  };
+};
+
 export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRightClickElementValue => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { onDiagramBackgroundContextMenu } = useDiagramPalette();
-  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu } = useDiagramElementPalette();
+  const { showDiagramPalette } = useDiagramPalette();
+
   const {
     hideGroupPalette,
     position: groupPalettePosition,
@@ -29,6 +35,17 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
     refElementId: groupPaletteRefElementId,
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
   } = useGroupPalette();
+
+  const openPalette = useCallback((event: React.MouseEvent<Element, MouseEvent> | MouseEvent, elements: string[]) => {
+    const { domNode } = store.getState();
+    const domElement = domNode?.getBoundingClientRect();
+
+    const palettePosition = computePalettePosition(event, domElement);
+    if (!event.altKey && !event.ctrlKey) {
+      event.preventDefault();
+      showDiagramPalette(palettePosition.x, palettePosition.y, elements);
+    }
+  }, []);
 
   const onNodeContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData>) => {
@@ -44,10 +61,10 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
       if (shouldOpenGroupPalette) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       } else {
-        elementPaletteOnDiagramElementContextMenu(event, element);
+        openPalette(event, [element.id]);
       }
     },
-    [selectedElementsIds, elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
+    [selectedElementsIds, groupPaletteOnDiagramElementContextMenu]
   );
 
   const onEdgeContextMenu = useCallback(
@@ -64,16 +81,16 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
       if (shouldOpenGroupPalette) {
         groupPaletteOnDiagramElementContextMenu(event, element);
       } else {
-        elementPaletteOnDiagramElementContextMenu(event, element);
+        openPalette(event, [element.id]);
       }
     },
-    [selectedElementsIds, elementPaletteOnDiagramElementContextMenu, groupPaletteOnDiagramElementContextMenu]
+    [selectedElementsIds, groupPaletteOnDiagramElementContextMenu]
   );
 
   const onPaneContextMenu = useCallback((event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
     if (!event.shiftKey) {
       store.getState().resetSelectedElements();
-      onDiagramBackgroundContextMenu(event);
+      openPalette(event, []);
     }
   }, []);
 
@@ -87,11 +104,11 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
         if (selectedElementsIds.length > 1) {
           groupPaletteOnDiagramElementContextMenu(event, selectedElement);
         } else {
-          elementPaletteOnDiagramElementContextMenu(event, selectedElement);
+          openPalette(event, [selectedElement[0].id]);
         }
       }
     },
-    [groupPaletteOnDiagramElementContextMenu, elementPaletteOnDiagramElementContextMenu, selectedElementsIds]
+    [groupPaletteOnDiagramElementContextMenu, selectedElementsIds]
   );
 
   return {

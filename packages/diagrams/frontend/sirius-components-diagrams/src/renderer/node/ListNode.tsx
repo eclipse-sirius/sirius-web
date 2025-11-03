@@ -27,7 +27,6 @@ import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles'
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
-import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
@@ -111,13 +110,6 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             </div>
             {actionsSection}
           </div>
-          {selected ? (
-            <DiagramElementPalette
-              diagramElementId={id}
-              targetObjectId={data.targetObjectId}
-              labelId={data.insideLabel ? data.insideLabel.id : null}
-            />
-          ) : null}
           {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
