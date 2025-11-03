@@ -225,6 +225,8 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         var initialPosition = new Position(50.0, 50.0);
         var modifiedPosition = new Position(100.0, 100.0);
+        var initialSize = new Size(0, 0);
+        var modifiedSize = new Size(50, 5);
 
         var diagramId = new AtomicReference<String>();
         var currentRevisionId = new AtomicReference<UUID>();
@@ -247,7 +249,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -273,7 +275,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable modifyDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -290,6 +292,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     var humansLabelLayout = diagram.getLayoutData().labelLayoutData().get(humansEdgeCenterLabelId.get());
                     assertThat(humansLabelLayout).isNotNull();
                     assertThat(humansLabelLayout.position()).isEqualTo(modifiedPosition);
+                    assertThat(humansLabelLayout.size()).isEqualTo(modifiedSize);
 
                     var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
                     var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();

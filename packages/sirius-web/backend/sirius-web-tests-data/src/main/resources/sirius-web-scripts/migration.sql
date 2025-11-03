@@ -599,6 +599,13 @@ INSERT INTO representation_content (
         "edgeLayoutData": {
         },
         "labelLayoutData": {
+          "a6bfa3c8-9cbb-3bd4-af78-314b83aadb21": {
+            "id": "a6bfa3c8-9cbb-3bd4-af78-314b83aadb21",
+            "position": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          }
         },
         "nodeLayoutData": {
             "9aab01cf-d990-3756-b487-a3e6a7420abd": {

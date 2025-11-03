@@ -105,6 +105,7 @@ This mechanisms was previously used to provide the menu entry to update/remove a
 The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
 An example of usage is available in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Any locales contributed by downstream projects should take account the renamed keys
+- https://github.com/eclipse-sirius/sirius-web/issues/5763[#5763] [diagram] `LabelLayoutData` record now has a Size parameter `record LabelLayoutData(String id, Position position, Size size)`, a migration participant has been added to migrate existing diagrams.
 
 
 === Dependency update
@@ -217,6 +218,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Rename the key of i18n keys to reflect the frontend modularity better
 - https://github.com/eclipse-sirius/sirius-web/issues/5704[#5704] [table] Display row resizer only on hover
+- https://github.com/eclipse-sirius/sirius-web/issues/5763[#5763] [diagram] Improve center label positioning on edges
 
 
 == 2025.10.0

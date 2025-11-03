@@ -13,12 +13,13 @@
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
+import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 
 /**
  * Input used to receive label layout data.
  *
  * @author frouene
  */
-public record LabelLayoutDataInput(String id, Position position) {
+public record LabelLayoutDataInput(String id, Position position, Size size) {
 
 }

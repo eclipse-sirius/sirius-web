@@ -74,7 +74,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private final ISubscriptionManager subscriptionManager;
 
     private final IDiagramCreationService diagramCreationService;
-
+    
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
@@ -155,7 +155,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
                         .collect(Collectors.toMap(
                                 LabelLayoutDataInput::id,
-                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position()),
+                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size()),
                                 (oldValue, newValue) -> newValue
                         ));
 
@@ -268,7 +268,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
      * Used to access the diagram context.
      *
      * @return The diagram context
-     *
      * @technical-debt This accessor has been added to let someone outside any diagram event handler contribute some
      * diagram events. For example, an editing context event handler could use this to contribute events for some
      * diagram. This is a temporary situation which will need an evolution in the core parts of the lifecycle of the

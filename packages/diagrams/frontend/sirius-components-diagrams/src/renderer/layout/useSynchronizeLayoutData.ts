@@ -135,6 +135,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             x: outsideLabelPosition.position.x,
             y: outsideLabelPosition.position.y,
           },
+          size: {
+            width: 0,
+            height: 0,
+          },
         });
       }
     });
@@ -148,6 +152,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             x: centerLabel.position.x,
             y: centerLabel.position.y,
           },
+          size: {
+            width: centerLabel.width,
+            height: centerLabel.height,
+          },
         });
       }
       if (edge.data && 'beginLabel' in edge.data) {
@@ -158,6 +166,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             position: {
               x: beginLabel.position.x,
               y: beginLabel.position.y,
+            },
+            size: {
+              width: 0,
+              height: 0,
             },
           });
         }
@@ -170,6 +182,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             position: {
               x: endLabel.position.x,
               y: endLabel.position.y,
+            },
+            size: {
+              width: 0,
+              height: 0,
             },
           });
         }

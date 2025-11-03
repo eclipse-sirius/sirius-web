@@ -127,6 +127,8 @@ export interface EdgeLabel {
   contentStyle: React.CSSProperties;
   position: XYPosition;
   appearanceData: LabelAppearanceData;
+  width: number;
+  height: number;
 }
 
 export interface OutsideLabel {

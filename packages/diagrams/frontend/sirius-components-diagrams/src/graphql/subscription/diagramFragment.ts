@@ -50,6 +50,7 @@ fragment diagramFragment on Diagram {
     labelLayoutData {
       id
       position { x y }
+      size { width height }
     }
   }
   nodes {

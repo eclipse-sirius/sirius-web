@@ -226,7 +226,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         oldLabelLayoutData.keySet().forEach(key -> {
             if (labelElementOldNewIds.get(key) != null) {
                 var oldLayoutLabelData = oldLabelLayoutData.get(key);
-                var newLabelLayout = new LabelLayoutData(labelElementOldNewIds.get(key), oldLayoutLabelData.position());
+                var newLabelLayout = new LabelLayoutData(labelElementOldNewIds.get(key), oldLayoutLabelData.position(), oldLayoutLabelData.size());
                 newLayoutData.labelLayoutData().put(labelElementOldNewIds.get(key), newLabelLayout);
             }
         });
