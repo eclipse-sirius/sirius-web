@@ -27,7 +27,13 @@ type EdgeWithPositions = Edge<EdgeData> &
 // Baseline padding applied when we expand an obstacle rectangle. A small gap
 // keeps the detour slightly away from the obstacle so the resulting segments do
 // not graze the node border visually.
-const DETOUR_BASE_GAP = 8;
+// Detection gap inflates obstacle rectangles slightly when searching for overlaps, ensuring we catch
+// near-miss paths that skim along a node.
+const DETECTION_GAP = 1;
+// Small tolerance used when comparing collision coordinates against a handle location.
+const HANDLE_ALIGNMENT_TOLERANCE = 0.5;
+// Detour gap controls how far away from an obstacle we reroute the edge when applying a detour.
+const DETOUR_GAP = 8;
 // When multiple edges collide with the same obstacle we keep spacing each
 // successive detour slightly further out so they do not overlap.
 const DETOUR_STACK_SPACING = 6;
@@ -243,15 +249,16 @@ const gatherCollisions = (
         return;
       }
 
-      const paddedRect = expandRect(rect, DETOUR_BASE_GAP);
+      const detectionRect = expandRect(rect, DETECTION_GAP);
+      const sourceHandlePoint = isSourceNode ? getHandlePoint(rect, edgeWithPositions.sourcePosition) : undefined;
       // Pre-compute the rectangle bounds once to avoid recalculating inside loops.
       const paddedBounds = {
-        left: paddedRect.x,
-        right: paddedRect.x + paddedRect.width,
-        top: paddedRect.y,
-        bottom: paddedRect.y + paddedRect.height,
+        left: detectionRect.x,
+        right: detectionRect.x + detectionRect.width,
+        top: detectionRect.y,
+        bottom: detectionRect.y + detectionRect.height,
       };
-      const collisionSpans = collectPolylineRectCollisions(polyline, paddedRect);
+      const collisionSpans = collectPolylineRectCollisions(polyline, detectionRect);
       if (collisionSpans.length === 0) {
         // No collision means this edge is safe relative to the current obstacle.
         return;
@@ -263,6 +270,46 @@ const gatherCollisions = (
       const adjustedSpans: PolylineRectCollision[] = [];
 
       collisionSpans.forEach((span) => {
+        if (isSourceNode && span.entryIndex === 0 && span.exitIndex === 0 && sourceHandlePoint) {
+          const sourceFace = edgeWithPositions.sourcePosition ?? Position.Right;
+          const entryAtHandle =
+            Math.abs(span.entryPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE &&
+            Math.abs(span.entryPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE;
+
+          if (entryAtHandle) {
+            const alignedAndOutward = (() => {
+              switch (sourceFace) {
+                case Position.Left:
+                  return (
+                    span.exitPoint.x <= rect.x + HANDLE_ALIGNMENT_TOLERANCE &&
+                    Math.abs(span.exitPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE
+                  );
+                case Position.Right:
+                  return (
+                    span.exitPoint.x >= rect.x + rect.width - HANDLE_ALIGNMENT_TOLERANCE &&
+                    Math.abs(span.exitPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE
+                  );
+                case Position.Top:
+                  return (
+                    span.exitPoint.y <= rect.y + HANDLE_ALIGNMENT_TOLERANCE &&
+                    Math.abs(span.exitPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE
+                  );
+                case Position.Bottom:
+                default:
+                  return (
+                    span.exitPoint.y >= rect.y + rect.height - HANDLE_ALIGNMENT_TOLERANCE &&
+                    Math.abs(span.exitPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE
+                  );
+              }
+            })();
+
+            if (alignedAndOutward) {
+              // Skip the synthetic collision caused by expanding the source rectangle on the side
+              // where the edge exits; the clearance logic already ensures we move outwards.
+              return;
+            }
+          }
+        }
         // Try to determine which face of the rectangle the polyline touches.
         let entrySide = determineCollisionSide(span.entryPoint, paddedBounds);
         let exitSide = determineCollisionSide(span.exitPoint, paddedBounds);
@@ -379,7 +426,7 @@ const applyDetours = (collisions: Map<string, CollisionCandidate[]>, polylines: 
       }
 
       const options: DetourOptions = {
-        baseGap: DETOUR_BASE_GAP,
+        baseGap: DETOUR_GAP,
         extraGap: order * DETOUR_STACK_SPACING,
       };
       order++;

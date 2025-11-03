@@ -441,6 +441,37 @@ export const buildDetourAroundRectangle = (
 
   // Widen the obstacle slightly so edges do not visually hug the node.
   const paddedRect = expandRect(obstacle, options.baseGap);
+  const bounds = {
+    left: paddedRect.x,
+    right: paddedRect.x + paddedRect.width,
+    top: paddedRect.y,
+    bottom: paddedRect.y + paddedRect.height,
+  };
+
+  const snapToPerimeter = (point: XYPosition): XYPosition => {
+    const clampedX = Math.min(Math.max(point.x, bounds.left), bounds.right);
+    const clampedY = Math.min(Math.max(point.y, bounds.top), bounds.bottom);
+
+    const candidates: XYPosition[] = [
+      { x: clampedX, y: bounds.top },
+      { x: bounds.right, y: clampedY },
+      { x: clampedX, y: bounds.bottom },
+      { x: bounds.left, y: clampedY },
+    ];
+
+    let best = candidates[0]!;
+    let bestDistance = Math.hypot(best.x - point.x, best.y - point.y);
+    for (let i = 1; i < candidates.length; i++) {
+      const candidate = candidates[i]!;
+      const distance = Math.hypot(candidate.x - point.x, candidate.y - point.y);
+      if (distance < bestDistance) {
+        best = candidate;
+        bestDistance = distance;
+      }
+    }
+
+    return best;
+  };
 
   let entryPoint = context?.entryPoint;
   let exitPoint = context?.exitPoint;
@@ -469,6 +500,9 @@ export const buildDetourAroundRectangle = (
   ) {
     return null;
   }
+
+  entryPoint = snapToPerimeter(entryPoint);
+  exitPoint = snapToPerimeter(exitPoint);
 
   // Work out the edges touched by the entry and exit to guide the perimeter walk.
   const entryEdge = edgeIndexForPoint(paddedRect, entryPoint);
