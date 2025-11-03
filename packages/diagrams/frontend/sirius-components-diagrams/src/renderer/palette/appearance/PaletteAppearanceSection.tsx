@@ -53,13 +53,16 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 export const PaletteAppearanceSection = ({
-  diagramElementId,
+  diagramElementIds,
   onBackToMainList,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const edge: Edge<EdgeData> | undefined = edgeLookup.get(diagramElementId);
-  const node: InternalNode<Node<NodeData>> | undefined = edge ? undefined : nodeLookup.get(diagramElementId);
+  if (diagramElementIds.length > 1) {
+    return null;
+  }
+  const edge: Edge<EdgeData> | undefined = edgeLookup.get(diagramElementIds[0] || '');
+  const node: InternalNode<Node<NodeData>> | undefined = edge ? undefined : nodeLookup.get(diagramElementIds[0] || '');
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -75,7 +78,7 @@ export const PaletteAppearanceSection = ({
     .map((data) => data.component)
     .map((PaletteAppearanceSectionComponent, index) => (
       <PaletteAppearanceSectionComponent
-        diagramElementId={diagramElementId}
+        diagramElementId={diagramElementIds[0] || ''}
         key={'paletteAppearanceSectionComponents_' + index.toString()}
       />
     ));

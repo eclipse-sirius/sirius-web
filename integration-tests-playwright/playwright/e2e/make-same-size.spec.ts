@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - make same size', () => {
   let projectId;
@@ -44,17 +44,17 @@ test.describe('diagram - make same size', () => {
     const c1Node = new PlaywrightNode(page, 'C1', 'List');
     const c2Node = new PlaywrightNode(page, 'C2', 'List');
 
-    await c1Node.click();
-    await c2Node.controlClick();
+    await c2Node.click();
+    await c1Node.controlClick();
 
     const c1PositionBefore = await c1Node.getReactFlowXYPosition('C1', false);
     const c1SizeBefore = await c1Node.getReactFlowSize('C1', false);
     const c2PositionBefore = await c2Node.getReactFlowXYPosition('C2', false);
 
-    await c1Node.openPalette();
-    await expect(page.getByTestId('GroupPalette')).toBeAttached();
-    await page.getByTestId('GroupPalette').getByTestId('expand').click();
-    await page.getByTestId('GroupPalette').getByTestId('Make same size').click();
+    await c2Node.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('toolSection-Layout').click();
+    await page.getByTestId('Palette').getByTestId('tool-Make same size').click();
 
     const c1PositionAfter = await c1Node.getReactFlowXYPosition('C1', false);
     const c1SizeAfter = await c1Node.getReactFlowSize('C1', false);

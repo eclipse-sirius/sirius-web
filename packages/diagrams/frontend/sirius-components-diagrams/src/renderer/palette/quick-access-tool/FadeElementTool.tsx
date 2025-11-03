@@ -27,7 +27,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolProps) => {
+export const FadeElementTool = ({ diagramElementIds, isFaded }: FadeElementToolProps) => {
   const { classes } = useStyle();
   const { fadeDiagramElements } = useFadeDiagramElements();
   if (isFaded) {
@@ -37,7 +37,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           className={classes.toolIcon}
           size="small"
           aria-label="Unfade element"
-          onClick={() => fadeDiagramElements([diagramElementId], false)}
+          onClick={() => fadeDiagramElements(diagramElementIds, false)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
@@ -50,7 +50,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           className={classes.toolIcon}
           size="small"
           aria-label="Fade element"
-          onClick={() => fadeDiagramElements([diagramElementId], true)}
+          onClick={() => fadeDiagramElements(diagramElementIds, true)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
