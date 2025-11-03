@@ -183,6 +183,7 @@ In particular, this can be used to customize the tree used for the model browser
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
 
 
 === Improvements

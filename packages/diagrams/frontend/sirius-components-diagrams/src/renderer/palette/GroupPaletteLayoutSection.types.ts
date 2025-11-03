@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,25 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-export interface GroupPaletteProps {
-  x?: number;
-  y?: number;
-  isOpened: boolean;
-  refElementId: string | null;
-  hidePalette: () => void;
-}
-
-export interface GroupPaletteState {
+export interface GroupPaletteLayoutSectionProps {
+  onBackToMainList: () => void;
+  onClose: () => void;
   selectedElementIds: string[];
-  isMinimalPalette: boolean;
-  isDistributeElementToolSectionExpand: boolean;
-  lastDistributeElementToolId: string | null;
-}
-
-export interface GroupPaletteSectionTool {
-  id: string;
-  title: string;
-  action: () => void;
-  icon: JSX.Element;
+  lastDistributeElementToolId: string;
 }

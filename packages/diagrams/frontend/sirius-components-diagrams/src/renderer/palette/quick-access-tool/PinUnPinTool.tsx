@@ -28,7 +28,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) => {
+export const PinUnPinTool = ({ diagramElementIds, isPined }: PinUnPinToolProps) => {
   const { classes } = useStyle();
   const { pinDiagramElements } = usePinDiagramElements();
   if (isPined) {
@@ -38,7 +38,7 @@ export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) =
           className={classes.toolIcon}
           size="small"
           aria-label="Unpin element"
-          onClick={() => pinDiagramElements([diagramElementId], false)}
+          onClick={() => pinDiagramElements(diagramElementIds, false)}
           data-testid="Unpin-element">
           <UnpinIcon sx={{ fontSize: 16 }} />
         </IconButton>
@@ -51,7 +51,7 @@ export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) =
           className={classes.toolIcon}
           size="small"
           aria-label="Pin element"
-          onClick={() => pinDiagramElements([diagramElementId], true)}
+          onClick={() => pinDiagramElements(diagramElementIds, true)}
           data-testid="Pin-element">
           <PinIcon sx={{ fontSize: 16 }} />
         </IconButton>
