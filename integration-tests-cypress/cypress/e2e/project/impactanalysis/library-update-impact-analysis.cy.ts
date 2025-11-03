@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Project } from '../../../pages/Project';
 import { Papaya } from '../../../usecases/Papaya';
+import { DataTree } from '../../../workbench/DataTree';
 import { Explorer } from '../../../workbench/Explorer';
 import { ImpactAnalysis } from '../../../workbench/ImpactAnalysis';
 
@@ -40,10 +41,13 @@ describe('Impact analysis - update library', () => {
       it('Then the impact analysis dialog is displayed with the good report', () => {
         const impactAnalysis = new ImpactAnalysis();
         impactAnalysis.getImpactAnalysisDialog().should('exist');
-        impactAnalysis
-          .getAdditionalReportData(0)
-          .should('exist')
-          .should('contain', '[BROKEN] Papaya - Interface.extends (previously set to Map<K, V>)');
+        const dataTree = new DataTree();
+        dataTree.getDataTree().should('exist');
+        dataTree.expandWithDoubleClick('Papaya');
+        dataTree.expandWithDoubleClick('Project');
+        dataTree.expandWithDoubleClick('Package');
+        dataTree.expandWithDoubleClick('Interface');
+        dataTree.getTreeItemByLabel('extends: Map<K, V>').should('exist');
       });
     });
   });

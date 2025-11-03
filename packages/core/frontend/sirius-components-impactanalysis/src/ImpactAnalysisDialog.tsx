@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataTree } from '@eclipse-sirius/sirius-components-datatree';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Box from '@mui/material/Box';
@@ -62,6 +63,8 @@ export const ImpactAnalysisDialog = ({
   return (
     <Dialog
       open={open}
+      maxWidth="md"
+      fullWidth
       onClose={onCancel}
       aria-labelledby="impact-analysis-dialog"
       data-testid="impact-analysis-dialog">
@@ -76,6 +79,7 @@ export const ImpactAnalysisDialog = ({
             nbElementDeleted={impactAnalysisReport.nbElementDeleted}
             nbElementModified={impactAnalysisReport.nbElementModified}
             additionalReports={impactAnalysisReport.additionalReports}
+            impactTree={impactAnalysisReport.impactTree}
             label={label}
           />
         ) : (
@@ -97,13 +101,25 @@ export const ImpactAnalysisDialog = ({
   );
 };
 
+const useReportViewer = makeStyles()((theme) => ({
+  datatree: {
+    border: '1px solid',
+    borderColor: theme.palette.divider,
+    height: 300,
+    overflow: 'auto',
+  },
+}));
+
 const ReportViewer = ({
   nbElementCreated,
   nbElementDeleted,
   nbElementModified,
   additionalReports,
+  impactTree,
   label,
 }: ReportViewerProps) => {
+  const { classes } = useReportViewer();
+
   const listStyle: SxProps<Theme> = {
     padding: '0',
   };
@@ -118,7 +134,7 @@ const ReportViewer = ({
     fontSize: theme.spacing(0.8),
   });
   return (
-    <Box>
+    <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(0.5) })}>
       <Typography>{`The ${label} tool will have the following effects on your model:`}</Typography>
       <List dense sx={listStyle}>
         {nbElementCreated > 0 && (
@@ -166,6 +182,11 @@ const ReportViewer = ({
             );
           })}
       </List>
+      {impactTree.nodes.length > 0 ? (
+        <div className={classes.datatree}>
+          <DataTree dataTree={impactTree} />
+        </div>
+      ) : null}
       <Typography>Are you sure you want to proceed?</Typography>
     </Box>
   );

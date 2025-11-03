@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { LazyQueryExecFunction } from '@apollo/client';
-import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-core';
+import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-impactanalysis';
 
 export interface UseInvokeImpactAnalysisValue {
   getImpactAnalysisReport: LazyQueryExecFunction<GQLGetImpactAnalysisReportData, GQLInvokeImpactAnalysisVariables>;

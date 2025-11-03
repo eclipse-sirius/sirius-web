@@ -1,7 +1,7 @@
 {
-  "name": "@eclipse-sirius/sirius-components-selection",
-  "version": "2025.10.1",
+  "name": "@eclipse-sirius/sirius-components-impactanalysis",
   "author": "Eclipse Sirius",
+  "version": "2025.10.1",
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
@@ -10,16 +10,16 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-selection.umd.js",
-  "module": "./dist/sirius-components-selection.es.js",
+  "main": "./dist/sirius-components-impactanalysis.umd.js",
+  "module": "./dist/sirius-components-impactanalysis.es.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-selection.umd.js",
-      "import": "./dist/sirius-components-selection.es.js"
+      "require": "./dist/sirius-components-impactanalysis.umd.js",
+      "import": "./dist/sirius-components-impactanalysis.es.js"
     }
   },
   "scripts": {
@@ -33,17 +33,8 @@
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-datatree": "*",
-    "@eclipse-sirius/sirius-components-diagrams": "*",
-    "@eclipse-sirius/sirius-components-impactanalysis": "*",
-    "@eclipse-sirius/sirius-components-trees": "*",
-    "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",
-    "react-draggable": "4.4.6",
-    "elkjs": "0.8.2",
-    "html-to-image": "1.11.11",
-    "pathfinding": "0.4.18",
-    "svg-path-parser": "1.1.0",
-    "@xyflow/react": "12.6.0",
+    "@mui/material": "7.0.2",
     "graphql": "16.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -54,27 +45,20 @@
     "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-datatree": "*",
-    "@eclipse-sirius/sirius-components-diagrams": "*",
-    "@eclipse-sirius/sirius-components-impactanalysis": "*",
-    "@eclipse-sirius/sirius-components-trees": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
-    "@mui/material": "7.0.2",
+    "graphql": "16.8.1",
+    "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2",
     "@mui/icons-material": "7.0.2",
-    "react-draggable": "4.4.6",
+    "@mui/material": "7.0.2",
+    "@types/node": "22.16.0",
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "5.0.0",
-    "elkjs": "0.8.2",
-    "html-to-image": "1.11.11",
-    "pathfinding": "0.4.18",
-    "svg-path-parser": "1.1.0",
-    "@xyflow/react": "12.6.0",
-    "graphql": "16.8.1",
     "prettier": "2.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-router-dom": "6.26.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
-    "react-resizable-panels": "3.0.2",
-    "tss-react": "4.9.16",
     "typescript": "5.4.5",
     "vite": "7.1.1"
   }

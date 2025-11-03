@@ -39,6 +39,20 @@ public class TreeImpactAnalysisReportQueryRunner implements IQueryRunner {
                           nbElementModified
                           nbElementCreated
                           additionalReports
+                          impactTree {
+                            id
+                            nodes {
+                              id
+                              parentId
+                              label {
+                                styledStringFragments {
+                                  text
+                                }
+                              }
+                              iconURLs
+                              endIconsURLs
+                            }
+                          }
                         }
                       }
                     }

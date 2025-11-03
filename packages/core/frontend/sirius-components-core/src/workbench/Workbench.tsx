@@ -14,7 +14,6 @@ import { ForwardedRef, forwardRef, RefObject, useEffect, useImperativeHandle, us
 import { makeStyles } from 'tss-react/mui';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
-import { ImpactAnalysisDialogContextProvider } from '../modals/impact-analysis/ImpactAnalysisDialogContext';
 import { GQLRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata.types';
 import { Selection } from '../selection/SelectionContext.types';
 import { useSelection } from '../selection/useSelection';
@@ -318,20 +317,18 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     return (
       <WorkbenchContext.Provider value={workbenchContextValue}>
-        <ImpactAnalysisDialogContextProvider>
-          <Panels
-            editingContextId={editingContextId}
-            readOnly={readOnly}
-            leftContributions={workbenchViewLeftSideContributions}
-            leftPanelConfiguration={leftPanelConfiguration}
-            leftPanelInitialSize={25}
-            rightContributions={workbenchViewRightSideContributions}
-            rightPanelConfiguration={rightPanelConfiguration}
-            rightPanelInitialSize={25}
-            mainArea={main}
-            ref={refPanelsHandle}
-          />
-        </ImpactAnalysisDialogContextProvider>
+        <Panels
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          leftContributions={workbenchViewLeftSideContributions}
+          leftPanelConfiguration={leftPanelConfiguration}
+          leftPanelInitialSize={25}
+          rightContributions={workbenchViewRightSideContributions}
+          rightPanelConfiguration={rightPanelConfiguration}
+          rightPanelInitialSize={25}
+          mainArea={main}
+          ref={refPanelsHandle}
+        />
       </WorkbenchContext.Provider>
     );
   }

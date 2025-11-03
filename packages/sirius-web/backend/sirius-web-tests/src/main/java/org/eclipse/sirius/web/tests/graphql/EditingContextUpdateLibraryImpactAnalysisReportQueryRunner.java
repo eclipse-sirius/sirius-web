@@ -36,6 +36,20 @@ public class EditingContextUpdateLibraryImpactAnalysisReportQueryRunner implemen
                             nbElementModified
                             nbElementCreated
                             additionalReports
+                            impactTree {
+                            id
+                            nodes {
+                              id
+                              parentId
+                              label {
+                                styledStringFragments {
+                                  text
+                                }
+                              }
+                              iconURLs
+                              endIconsURLs
+                            }
+                          }
                         }
                     }
                 }

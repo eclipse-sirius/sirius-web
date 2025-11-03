@@ -77,6 +77,14 @@ export interface OmniboxProps {
   onClose: () => void;
 }
 ----
+- https://github.com/eclipse-sirius/sirius-web/issues/5603[#5603] Add a tree visualization of the impacts in the impact analysis dialog.
+The following files have been moved from the frontend module `sirius-components-core` to `sirius-components-impactanalysis` to avoid circular dependencies:
+* `ImpactAnalysisDialog.tsx`
+* `ImpactAnalysisDialog.types.ts`
+* `useImpactAnalysisDialog.tsx`
+* `useImpactAnalysisDialog.types.ts`
+
+The `ImpactAnalysisReport` GraphQL type has been updated to contain `impactTree: DataTree!`, the corresponding query hooks and backend code has been updated to consume and provide this new value.
 
 
 === Dependency update
@@ -143,6 +151,7 @@ A new module `sirius-components-datatree` has been created to:
 - https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the command palette from the workbench
 The command palette can now be configured with the commands to display, and functions to trigger when the user enters a query or selects a command.
 This will allow to integrate the command palette in other contexts than the workbench.
+- https://github.com/eclipse-sirius/sirius-web/issues/5603[#5603] [sirius-web] Add a tree visualization of the impacts in the impact analysis dialog.
 
 
 == 2025.10.0

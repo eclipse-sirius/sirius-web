@@ -14,8 +14,6 @@ package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +22,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.ISingleClickTreeItemContextMenuEntryExecutor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
-import org.eclipse.sirius.components.collaborative.trees.dto.InvokeTreeImpactAnalysisInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.Failure;
@@ -42,8 +37,6 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IProxyRemovalService;
-import org.eclipse.sirius.web.application.impactanalysis.services.InvokeTreeImpactAnalysisToolEventHandler;
-import org.eclipse.sirius.web.application.impactanalysis.services.api.IImpactAnalysisMessageService;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
@@ -75,17 +68,13 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
 
     private final IProxyRemovalService proxyRemovalService;
 
-    private final IImpactAnalysisMessageService impactAnalysisMessageService;
-
     public RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor(IObjectSearchService objectSearchService, ILibrarySearchService librarySearchService,
-            ISemanticDataSearchService semanticDataSearchService, ISemanticDataUpdateService semanticDataUpdateService, IProxyRemovalService proxyRemovalService,
-            IImpactAnalysisMessageService impactAnalysisMessageService) {
+            ISemanticDataSearchService semanticDataSearchService, ISemanticDataUpdateService semanticDataUpdateService, IProxyRemovalService proxyRemovalService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.proxyRemovalService = Objects.requireNonNull(proxyRemovalService);
-        this.impactAnalysisMessageService = Objects.requireNonNull(impactAnalysisMessageService);
     }
 
     @Override
@@ -114,16 +103,11 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
                 }
 
                 long start = System.nanoTime();
-                Map<EObject, Collection<Setting>> removedProxies = this.proxyRemovalService.removeUnresolvedProxies(siriusWebEditingContext);
+                this.proxyRemovalService.removeUnresolvedProxies(siriusWebEditingContext);
                 Duration timeToRemoveProxies = Duration.ofNanos(System.nanoTime() - start);
                 this.logger.trace("Removed proxies in {}ms", timeToRemoveProxies.toMillis());
 
-                Map<String, Object> resultParameters = new HashMap<>();
-                if (treeInput instanceof InvokeTreeImpactAnalysisInput) {
-                    List<String> impactAnalysisMessages = this.impactAnalysisMessageService.getUnresolvedProxyMessages(removedProxies);
-                    resultParameters.put(InvokeTreeImpactAnalysisToolEventHandler.IMPACT_ANALYSIS_MESSAGES_PARAMETRER_KEY, impactAnalysisMessages);
-                }
-                result = new Success(ChangeKind.SEMANTIC_CHANGE, resultParameters);
+                result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             }
         }
         return result;

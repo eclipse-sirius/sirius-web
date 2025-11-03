@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.impactanalysis.services;
 
-export interface ImpactAnalysisDialogProps {
-  open: boolean;
-  label: string;
-  impactAnalysisReport: GQLImpactAnalysisReport | null;
-  loading: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
+import java.util.Objects;
 
-export interface GQLImpactAnalysisReport {
-  nbElementDeleted: number;
-  nbElementModified: number;
-  nbElementCreated: number;
-  additionalReports: string[];
-}
+import org.eclipse.emf.ecore.EObject;
 
-export interface ReportViewerProps extends GQLImpactAnalysisReport {
-  label: string;
+/**
+ * Represents the addition of a new value in an object's feature.
+ *
+ * @author gdaniel
+ */
+public record FeatureAddition(EObject source, String feature, Object newValue) {
+
+    public FeatureAddition {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(feature);
+        Objects.requireNonNull(newValue);
+    }
+
 }
