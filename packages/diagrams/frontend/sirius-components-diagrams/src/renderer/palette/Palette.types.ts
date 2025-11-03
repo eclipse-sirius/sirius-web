@@ -37,7 +37,7 @@ export interface PaletteProps {
   x: number;
   y: number;
   palette: GQLPalette;
-  diagramElementId: string;
+  diagramElementIds: string[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
   paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];

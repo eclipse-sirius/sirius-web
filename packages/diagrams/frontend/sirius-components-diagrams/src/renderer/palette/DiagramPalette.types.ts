@@ -12,6 +12,6 @@
  *******************************************************************************/
 
 export interface DiagramPaletteProps {
-  diagramElementId: string;
+  diagramId: string;
   diagramTargetObjectId: string;
 }
