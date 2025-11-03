@@ -13,12 +13,12 @@
 
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PinIcon } from '../../../icons/PinIcon';
 import { UnpinIcon } from '../../../icons/UnpinIcon';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
 import { PinUnPinToolProps } from './PinUnPinTool.types';
-import { useTranslation } from 'react-i18next';
 
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
@@ -29,7 +29,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) => {
+export const PinUnPinTool = ({ diagramElementIds, isPined }: PinUnPinToolProps) => {
   const { classes } = useStyle();
   const { pinDiagramElements } = usePinDiagramElements();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'pinUnPinTool' });
@@ -40,7 +40,7 @@ export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) =
           className={classes.toolIcon}
           size="small"
           aria-label={t('unpinElement')}
-          onClick={() => pinDiagramElements([diagramElementId], false)}
+          onClick={() => pinDiagramElements(diagramElementIds, false)}
           data-testid="Unpin-element">
           <UnpinIcon sx={{ fontSize: 16 }} />
         </IconButton>
@@ -53,7 +53,7 @@ export const PinUnPinTool = ({ diagramElementId, isPined }: PinUnPinToolProps) =
           className={classes.toolIcon}
           size="small"
           aria-label={t('pinElement')}
-          onClick={() => pinDiagramElements([diagramElementId], true)}
+          onClick={() => pinDiagramElements(diagramElementIds, true)}
           data-testid="Pin-element">
           <PinIcon sx={{ fontSize: 16 }} />
         </IconButton>

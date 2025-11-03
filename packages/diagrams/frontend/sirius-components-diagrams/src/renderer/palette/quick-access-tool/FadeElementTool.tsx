@@ -28,7 +28,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolProps) => {
+export const FadeElementTool = ({ diagramElementIds, isFaded }: FadeElementToolProps) => {
   const { classes } = useStyle();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'fadeElementTool' });
   const { fadeDiagramElements } = useFadeDiagramElements();
@@ -39,7 +39,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           className={classes.toolIcon}
           size="small"
           aria-label={t('unfadeElement')}
-          onClick={() => fadeDiagramElements([diagramElementId], false)}
+          onClick={() => fadeDiagramElements(diagramElementIds, false)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
@@ -52,7 +52,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           className={classes.toolIcon}
           size="small"
           aria-label={t('fadeElement')}
-          onClick={() => fadeDiagramElements([diagramElementId], true)}
+          onClick={() => fadeDiagramElements(diagramElementIds, true)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
