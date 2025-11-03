@@ -17,7 +17,6 @@ import { BaseEdge, Edge, XYPosition } from '@xyflow/react';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
-import { DiagramElementPalette } from '../../palette/DiagramElementPalette';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
@@ -71,7 +70,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
     targetNode,
     targetHandleId,
   }: MultiLabelEditableEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { label, faded } = data || {};
+    const { faded } = data || {};
     const { setEdges } = useStore();
     const theme = useTheme();
 
@@ -179,16 +178,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
-        {selected ? (
-          <>
-            <DiagramElementPalette
-              diagramElementId={id}
-              targetObjectId={data?.targetObjectId ?? ''}
-              labelId={label ? label.id : null}
-            />
-            <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle>
-          </>
-        ) : null}
+        {selected ? <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle> : null}
         {selected &&
           localBendingPoints &&
           localBendingPoints.map((point, index) => {

@@ -15,6 +15,7 @@ export { DiagramContext } from './contexts/DiagramContext';
 export type { DiagramContextValue } from './contexts/DiagramContext.types';
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
+export { convertBorderNodePosition } from './converter/convertBorderNodes';
 export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
@@ -76,7 +77,6 @@ export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNo
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
 export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
-export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
 export type {
   DiagramPaletteToolContributionComponentProps,
@@ -90,4 +90,3 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
-export { convertBorderNodePosition } from './converter/convertBorderNodes';

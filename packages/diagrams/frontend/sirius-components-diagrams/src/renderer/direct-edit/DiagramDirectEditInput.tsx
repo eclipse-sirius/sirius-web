@@ -17,7 +17,7 @@ import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
+import { useDiagramPalette } from '../palette/useDiagramPalette';
 import {
   DiagramDirectEditInputProps,
   DiagramDirectEditInputState,
@@ -83,7 +83,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
   const editionFinished = useRef<boolean>(false);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const { hideDiagramPalette } = useDiagramPalette();
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
@@ -100,7 +100,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
 
   useEffect(() => {
     // When opening the direct edit, close the current palette
-    hideDiagramElementPalette();
+    hideDiagramPalette();
   }, []);
 
   const [renameElement, { data: editLabelData, error: editLabelError }] = useMutation<

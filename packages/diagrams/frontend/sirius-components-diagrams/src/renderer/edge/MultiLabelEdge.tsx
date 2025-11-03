@@ -16,7 +16,6 @@ import { Theme, useTheme } from '@mui/material/styles';
 import { BaseEdge, Edge } from '@xyflow/react';
 import { memo, useEffect, useMemo } from 'react';
 import { useStore } from '../../representation/useStore';
-import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { DraggableEdgeLabels } from './DraggableEdgeLabels';
 import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
 
@@ -57,7 +56,7 @@ export const MultiLabelEdge = memo(
     edgeCenterY,
     svgPathString,
   }: MultiLabelEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { label, faded } = data || {};
+    const { faded } = data || {};
     const theme = useTheme();
     const { setEdges } = useStore();
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
@@ -88,13 +87,6 @@ export const MultiLabelEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data?.targetObjectId ?? ''}
-            labelId={label ? label.id : null}
-          />
-        ) : null}
         {data ? (
           <DraggableEdgeLabels
             id={id}

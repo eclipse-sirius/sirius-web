@@ -22,7 +22,7 @@ import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
-import { useDiagramElementPalette } from '../../useDiagramElementPalette';
+import { useDiagramPalette } from '../../useDiagramPalette';
 import { AppearanceColorPicker } from '../widget/AppearanceColorPicker';
 import { AppearanceNumberTextfield } from '../widget/AppearanceNumberTextfield ';
 import { AppearanceSelect } from '../widget/AppearanceSelect';
@@ -68,7 +68,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
   const { updateEdgeAppearance } = useEditEdgeAppearance();
   const { resetEdgeStyleProperties } = useResetEdgeAppearance();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const { hideDiagramPalette } = useDiagramPalette();
 
   const handleResetProperty = (customizedStyleProperty: string) => {
     resetEdgeStyleProperties(editingContextId, diagramId, edgeId, [customizedStyleProperty]);
@@ -135,11 +135,11 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
           disabled={isDisabled('EDGE_TYPE')}
           onEdit={(newValue) => {
             handleEditProperty({ edgeType: newValue });
-            hideDiagramElementPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
+            hideDiagramPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
           }}
           onReset={() => {
             handleResetProperty('EDGE_TYPE');
-            hideDiagramElementPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
+            hideDiagramPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
           }}></AppearanceSelect>
       </Box>
     </ListItem>

@@ -11,44 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition, useStoreApi } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { DiagramPaletteContext } from './contexts/DiagramPaletteContext';
 import { DiagramPaletteContextValue } from './contexts/DiagramPaletteContext.types';
 import { UseDiagramPaletteValue } from './useDiagramPalette.types';
 
-const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {
-  return {
-    x: event.clientX - (bounds?.left ?? 0),
-    y: event.clientY - (bounds?.top ?? 0),
-  };
-};
-
 export const useDiagramPalette = (): UseDiagramPaletteValue => {
-  const { x, y, isOpened, hideDiagramPalette, showDiagramPalette, getLastToolInvoked, setLastToolInvoked } =
-    useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
-  const store = useStoreApi();
-
-  const onDiagramBackgroundContextMenu = useCallback(
-    (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
-      const { domNode } = store.getState();
-      const element = domNode?.getBoundingClientRect();
-      const palettePosition = computePalettePosition(event, element);
-      if (!event.altKey) {
-        event.preventDefault();
-        showDiagramPalette(palettePosition.x, palettePosition.y);
-      }
-    },
-    [showDiagramPalette]
-  );
+  const {
+    x,
+    y,
+    isOpened,
+    diagramElementIds,
+    hideDiagramPalette,
+    showDiagramPalette,
+    getLastToolInvoked,
+    setLastToolInvoked,
+  } = useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
 
   return {
     x,
     y,
     isOpened,
+    diagramElementIds,
     hideDiagramPalette,
     showDiagramPalette,
-    onDiagramBackgroundContextMenu,
     getLastToolInvoked,
     setLastToolInvoked,
   };

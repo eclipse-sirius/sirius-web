@@ -27,7 +27,6 @@ import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles'
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
-import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { DraggableOutsideLabel } from './DraggableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
@@ -141,16 +140,6 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
 
     useRefreshConnectionHandles(id, data.connectionHandles);
 
-    const getLabelId = (data: FreeFormNodeData): string | null => {
-      let labelId: string | null = null;
-      if (data.insideLabel) {
-        labelId = data.insideLabel.id;
-      } else if (data.outsideLabels.BOTTOM_MIDDLE) {
-        labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
-      }
-      return labelId;
-    };
-
     let actionsSection: JSX.Element | null = null;
     if (data.isHovered) {
       actionsSection = <ActionsContainer diagramElementId={id} />;
@@ -178,13 +167,6 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             </div>
             {actionsSection}
           </div>
-          {selected ? (
-            <DiagramElementPalette
-              diagramElementId={id}
-              targetObjectId={data.targetObjectId}
-              labelId={getLabelId(data)}
-            />
-          ) : null}
           {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />

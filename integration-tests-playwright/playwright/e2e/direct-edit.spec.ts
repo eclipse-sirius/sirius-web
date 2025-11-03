@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
@@ -22,7 +23,9 @@ test.describe('diagram - direct edit', () => {
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
 
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
+      PlaywrightProject.FLOW_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
@@ -45,5 +48,27 @@ test.describe('diagram - direct edit', () => {
     await expect(playwrightNode.nodeLocator).not.toBeAttached();
     const editedNode = new PlaywrightNode(page, 'Edited');
     await expect(editedNode.nodeLocator).toBeAttached();
+  });
+
+  test('when opening the palette on a node, then we can use direct edit with the quicktool', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    await playwrightNode.openPalette();
+    await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
+    await expect(page.getByTestId('Palette')).toBeHidden();
+    await page.keyboard.type('Edited');
+    await page.keyboard.press('Enter');
+    const editedNode = new PlaywrightNode(page, 'Edited');
+    await expect(editedNode.nodeLocator).toBeAttached();
+  });
+
+  test('when opening the palette on an edge, then we can use direct edit with the quicktool', async ({ page }) => {
+    await expect(page.getByTestId('Label - 6')).toBeAttached();
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.openPalette();
+    await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
+    await expect(page.getByTestId('Palette')).toBeHidden();
+    await page.keyboard.type('10');
+    await page.keyboard.press('Enter');
+    await expect(page.getByTestId('Label - 10')).toBeAttached();
   });
 });
