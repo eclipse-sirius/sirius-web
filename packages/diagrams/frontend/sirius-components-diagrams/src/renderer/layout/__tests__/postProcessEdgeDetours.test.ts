@@ -125,9 +125,16 @@ const buildHarnessEdge = (fixture: DiagramFixture, edgeId: string): HarnessEdge 
   };
 };
 
-const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string): XYPosition[] => {
+const toHarnessEdges = (fixture: DiagramFixture): HarnessEdge[] =>
+  fixture.edges
+    .map((edge) => buildHarnessEdge(fixture, edge.id))
+    .filter((edge): edge is HarnessEdge => !!edge);
+
+const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdges?: HarnessEdge[]): XYPosition[] => {
   const nodes = toHarnessNodes(fixture);
-  const edge = buildHarnessEdge(fixture, edgeId);
+  const edge = harnessEdges
+    ? harnessEdges.find((candidate) => candidate.id === edgeId) ?? null
+    : buildHarnessEdge(fixture, edgeId);
   if (!edge) {
     throw new Error(`Edge "${edgeId}" not found in fixture ${fixture.id}`);
   }
@@ -149,7 +156,8 @@ const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string): XYPosition
     targetPoint,
   ];
 
-  const detoured = buildDetouredPolyline(edge, baselinePolyline, [edge], nodes);
+  const edgeUniverse = harnessEdges && harnessEdges.length > 0 ? harnessEdges : [edge];
+  const detoured = buildDetouredPolyline(edge, baselinePolyline, edgeUniverse, nodes);
   return [
     detoured[0]!,
     ...simplifyRectilinearBends(detoured.slice(1, -1), detoured[0]!, detoured[detoured.length - 1]!),
@@ -347,5 +355,24 @@ describe('buildDetouredPolyline', () => {
     expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
     expect(segmentCount).toBe(expectedSegments);
     expect(rectilinear).toBe(true);
+  });
+
+  it('keeps all manhattan edges orthogonal in messy-tool-diag harness', () => {
+    const fixture = loadFixture('messy-tool-diag.json');
+    const edges = toHarnessEdges(fixture);
+
+    const violations = edges
+      .filter((edge) => edge.type === 'manhattan')
+      .map((edge) => ({
+        edgeId: edge.id,
+        polyline: buildFinalPolyline(fixture, edge.id, edges),
+      }))
+      .filter(({ polyline }) => !isRectilinear(polyline))
+      .map(({ edgeId, polyline }) => ({
+        edgeId,
+        polyline,
+      }));
+
+    expect(violations).toEqual([]);
   });
 });

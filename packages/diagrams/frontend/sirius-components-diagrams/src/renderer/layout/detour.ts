@@ -184,13 +184,90 @@ const applyOffsetAlongPerimeter = (
   return dedupeSequentialPoints(adjusted);
 };
 
+// Re-introduce missing elbows when merging detours so every segment remains axis aligned.
+const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
+  if (points.length === 0) {
+    return points;
+  }
+
+  const deduped = dedupeSequentialPoints(points);
+  if (deduped.length <= 1) {
+    return deduped;
+  }
+
+  const rectified: XYPosition[] = [deduped[0]!];
+
+  for (let i = 1; i < deduped.length; i++) {
+    const target = deduped[i];
+    const previous = rectified[rectified.length - 1];
+    if (!target || !previous) {
+      continue;
+    }
+
+    if (previous.x === target.x || previous.y === target.y) {
+      rectified.push(target);
+      continue;
+    }
+
+    const penultimate = rectified.length >= 2 ? rectified[rectified.length - 2] : undefined;
+    const cameFromHorizontal = !!penultimate && penultimate.y === previous.y && penultimate.x !== previous.x;
+    const cameFromVertical = !!penultimate && penultimate.x === previous.x && penultimate.y !== previous.y;
+
+    let bridge: XYPosition | undefined;
+    if (cameFromHorizontal && !cameFromVertical) {
+      bridge = { x: target.x, y: previous.y };
+    } else if (cameFromVertical && !cameFromHorizontal) {
+      bridge = { x: previous.x, y: target.y };
+    } else {
+      const horizontalCandidate: XYPosition = { x: target.x, y: previous.y };
+      const verticalCandidate: XYPosition = { x: previous.x, y: target.y };
+
+      const lookahead = deduped[i + 1];
+      if (lookahead) {
+        const exitsHorizontally = lookahead.y === target.y && lookahead.x !== target.x;
+        const exitsVertically = lookahead.x === target.x && lookahead.y !== target.y;
+        if (exitsVertically && !exitsHorizontally) {
+          bridge = verticalCandidate;
+        } else if (exitsHorizontally && !exitsVertically) {
+          bridge = horizontalCandidate;
+        }
+      }
+
+      if (!bridge) {
+        bridge = horizontalCandidate;
+      }
+    }
+
+    if (bridge) {
+      if (bridge.x !== previous.x || bridge.y !== previous.y) {
+        rectified.push(bridge);
+      }
+
+      const latest = rectified[rectified.length - 1];
+      if (latest && (latest.x !== target.x && latest.y !== target.y)) {
+        const secondary: XYPosition = { x: target.x, y: latest.y };
+        if (secondary.x !== latest.x || secondary.y !== latest.y) {
+          rectified.push(secondary);
+        }
+      }
+
+      const lastBeforeTarget = rectified[rectified.length - 1];
+      if (!lastBeforeTarget || lastBeforeTarget.x !== target.x || lastBeforeTarget.y !== target.y) {
+        rectified.push(target);
+      }
+    } else {
+      rectified.push(target);
+    }
+  }
+
+  return dedupeSequentialPoints(rectified);
+};
+
 const mergePolyline = (
   original: XYPosition[],
   entryIndex: number,
   exitIndex: number,
-  entryPoint: XYPosition,
-  detour: XYPosition[],
-  exitPoint: XYPosition
+  detour: XYPosition[]
 ): XYPosition[] => {
   const prefix = original.slice(0, entryIndex + 1);
   const suffix = original.slice(exitIndex + 1);
@@ -209,7 +286,11 @@ const mergePolyline = (
     return point.x !== previous.x || point.y !== previous.y;
   });
 
-  return dedupeSequentialPoints([...prefix, entryPoint, ...cleanedDetour.slice(1, -1), exitPoint, ...suffix]);
+  if (cleanedDetour.length === 0) {
+    return original.slice();
+  }
+
+  return ensureOrthogonalSegments([...prefix, ...cleanedDetour, ...suffix]);
 };
 
 export type DetourOptions = {
@@ -275,5 +356,6 @@ export const buildDetourAroundRectangle = (
   );
 
   const detourPoints = applyOffsetAlongPerimeter(perimeterPoints, sideSequence, options.extraGap);
-  return mergePolyline(polyline, entryIndex, exitIndex, entryPoint, detourPoints, exitPoint);
+  const detourWithAnchors = [entryPoint, ...detourPoints, exitPoint];
+  return mergePolyline(polyline, entryIndex, exitIndex, detourWithAnchors);
 };
