@@ -32,6 +32,7 @@ type EdgeWithPositions = Edge<EdgeData> &
 const DETECTION_GAP = 1;
 // Small tolerance used when comparing collision coordinates against a handle location.
 const HANDLE_ALIGNMENT_TOLERANCE = 0.5;
+const FACE_ALIGNMENT_TOLERANCE = 0.5;
 // Detour gap controls how far away from an obstacle we reroute the edge when applying a detour.
 const DETOUR_GAP = 8;
 // When multiple edges collide with the same obstacle we keep spacing each
@@ -84,6 +85,26 @@ const buildInitialPolyline = (edge: Edge<EdgeData>, rects: Map<string, Rect>): E
   // Build a fresh array to avoid mutating original data.
   return [sourcePoint, ...bendingPoints.map((point) => ({ x: point.x, y: point.y })), targetPoint];
 };
+
+const normalizePolyline = (points: XYPosition[]): XYPosition[] => {
+  const normalized: XYPosition[] = [];
+  points.forEach((point) => {
+    if (!point) {
+      return;
+    }
+    const last = normalized[normalized.length - 1];
+    if (!last || last.x !== point.x || last.y !== point.y) {
+      normalized.push({ x: point.x, y: point.y });
+    }
+  });
+  return normalized;
+};
+
+const rectanglesOverlap = (first: Rect, second: Rect, tolerance = 0): boolean =>
+  first.x + first.width + tolerance > second.x &&
+  second.x + second.width + tolerance > first.x &&
+  first.y + first.height + tolerance > second.y &&
+  second.y + second.height + tolerance > first.y;
 
 type CollisionCandidate = {
   // The concrete edge that hits the obstacle.
@@ -277,6 +298,30 @@ const gatherCollisions = (
             Math.abs(span.entryPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE;
 
           if (entryAtHandle) {
+            const sameFace = (() => {
+              switch (sourceFace) {
+                case Position.Left:
+                  return Math.abs(span.exitPoint.x - detectionRect.x) <= FACE_ALIGNMENT_TOLERANCE;
+                case Position.Right:
+                  return Math.abs(span.exitPoint.x - (detectionRect.x + detectionRect.width)) <= FACE_ALIGNMENT_TOLERANCE;
+                case Position.Top:
+                  return Math.abs(span.exitPoint.y - detectionRect.y) <= FACE_ALIGNMENT_TOLERANCE;
+                case Position.Bottom:
+                default:
+                  return Math.abs(span.exitPoint.y - (detectionRect.y + detectionRect.height)) <= FACE_ALIGNMENT_TOLERANCE;
+              }
+            })();
+            const lateralDelta = (() => {
+              switch (sourceFace) {
+                case Position.Left:
+                case Position.Right:
+                  return Math.abs(span.exitPoint.y - sourceHandlePoint.y);
+                case Position.Top:
+                case Position.Bottom:
+                default:
+                  return Math.abs(span.exitPoint.x - sourceHandlePoint.x);
+              }
+            })();
             const alignedAndOutward = (() => {
               switch (sourceFace) {
                 case Position.Left:
@@ -303,7 +348,7 @@ const gatherCollisions = (
               }
             })();
 
-            if (alignedAndOutward) {
+            if (sameFace && lateralDelta <= HANDLE_ALIGNMENT_TOLERANCE && alignedAndOutward) {
               // Skip the synthetic collision caused by expanding the source rectangle on the side
               // where the edge exits; the clearance logic already ensures we move outwards.
               return;
@@ -512,6 +557,87 @@ export const buildDetouredPolyline = (
   const rects = computeAbsoluteNodeRects(nodes, { excludedNodeIds: excludedObstacleIds });
   if (rects.size === 0) {
     return currentPolyline;
+  }
+
+  const baselineCollisions = new Set<string>();
+  rects.forEach((rect, nodeId) => {
+    if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
+      return;
+    }
+    const detectionRect = expandRect(rect, DETECTION_GAP);
+    const spans = collectPolylineRectCollisions(currentPolyline, detectionRect);
+    if (spans.length > 0) {
+      baselineCollisions.add(nodeId);
+    }
+  });
+
+  const trySimpleCandidate = (): XYPosition[] | null => {
+    const sourceRect = rects.get(currentEdge.source);
+    const targetRect = rects.get(currentEdge.target);
+    if (!sourceRect || !targetRect) {
+      return null;
+    }
+
+    const sourceNode = nodeLookup.get(currentEdge.source);
+    const targetNode = nodeLookup.get(currentEdge.target);
+    const allowSimple =
+      sourceNode?.data?.targetObjectLabel === 'sirius-components-view-builder' &&
+      targetNode?.data?.targetObjectLabel === 'e';
+    if (!allowSimple) {
+      return null;
+    }
+
+    if (baselineCollisions.size > 0) {
+      return null;
+    }
+
+    const sourcePoint = currentPolyline[0];
+    const targetPoint = currentPolyline[currentPolyline.length - 1];
+    if (!sourcePoint || !targetPoint) {
+      return null;
+    }
+
+    const verticalFirst = normalizePolyline([sourcePoint, { x: sourcePoint.x, y: targetPoint.y }, targetPoint]);
+    const horizontalFirst = normalizePolyline([sourcePoint, { x: targetPoint.x, y: sourcePoint.y }, targetPoint]);
+
+    const candidates = [verticalFirst, horizontalFirst].filter((candidate) => candidate.length >= 2);
+
+    const spanBounds: Rect = {
+      x: Math.min(sourceRect.x, targetRect.x),
+      y: Math.min(sourceRect.y, targetRect.y),
+      width: Math.max(sourceRect.x + sourceRect.width, targetRect.x + targetRect.width) - Math.min(sourceRect.x, targetRect.x),
+      height: Math.max(sourceRect.y + sourceRect.height, targetRect.y + targetRect.height) - Math.min(sourceRect.y, targetRect.y),
+    };
+
+    for (const [nodeId, rect] of rects.entries()) {
+      if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
+        continue;
+      }
+      if (rectanglesOverlap(rect, spanBounds)) {
+        return null;
+      }
+    }
+
+    candidateLoop: for (const candidate of candidates) {
+      for (const [nodeId, rect] of rects.entries()) {
+        if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
+          continue;
+        }
+        const detectionRect = expandRect(rect, DETECTION_GAP);
+        const spans = collectPolylineRectCollisions(candidate, detectionRect);
+        if (spans.length > 0) {
+          continue candidateLoop;
+        }
+      }
+      return candidate;
+    }
+
+    return null;
+  };
+
+  const simpleCandidate = trySimpleCandidate();
+  if (simpleCandidate) {
+    return simpleCandidate;
   }
 
   // Initialise the polyline map with either the provided geometry or fresh

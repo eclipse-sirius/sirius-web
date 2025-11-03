@@ -375,4 +375,30 @@ describe('buildDetouredPolyline', () => {
 
     expect(violations).toEqual([]);
   });
+
+  it('routes component-diag edge e → sirius-components-view-builder with minimal turns', () => {
+    const fixture = loadFixture('component-diag.json');
+    const edges = toHarnessEdges(fixture);
+    const source = fixture.nodes.find((node) => node.label === 'sirius-components-view-builder');
+    const target = fixture.nodes.find((node) => node.label === 'e');
+    expect(source).toBeTruthy();
+    expect(target).toBeTruthy();
+    if (!source || !target) {
+      return;
+    }
+
+    const focusEdge =
+      edges.find((edge) => edge.source === source.id && edge.target === target.id) ??
+      edges.find((edge) => edge.source === target.id && edge.target === source.id);
+    expect(focusEdge).toBeTruthy();
+    if (!focusEdge) {
+      return;
+    }
+
+    const finalPolyline = buildFinalPolyline(fixture, focusEdge.id, edges);
+    const segmentCount = finalPolyline.length - 1;
+    expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
+    expect(segmentCount).toBeLessThanOrEqual(2);
+    expect(isRectilinear(finalPolyline)).toBe(true);
+  });
 });
