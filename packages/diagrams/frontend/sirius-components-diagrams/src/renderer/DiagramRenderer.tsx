@@ -102,6 +102,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onNodesDragStart, onNodesDrag, onNodesDragStop } = useDropNodes();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
+  const { setSelection } = useSelection();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
@@ -226,7 +227,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         }
       );
     }
-  }, [diagramRefreshedEventPayload, diagramDescription]);
+    if (selectionFromTool) {
+      setSelection(selectionFromTool);
+    }
+  }, [diagramRefreshedEventPayload, diagramDescription, setSelection]);
 
   useEffect(() => {
     if (toolSelections.has(diagramRefreshedEventPayload.id)) {
@@ -277,6 +281,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       setEdges(newEdges);
       setNodes(newNodes);
       toolSelections.delete(diagramRefreshedEventPayload.id);
+      if (selectionFromTool) {
+        setSelection(selectionFromTool);
+      }
     }
   }, [toolSelections]);
 
@@ -364,7 +371,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   const { isOpened } = useDiagramPalette();
-  const { setSelection } = useSelection();
   const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
   const {
     onEdgeContextMenu,
