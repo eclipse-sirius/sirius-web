@@ -21,6 +21,7 @@ import {
   WorkbenchConfiguration,
   WorkbenchHandle,
 } from '@eclipse-sirius/sirius-components-core';
+import { ImpactAnalysisDialogContextProvider } from '@eclipse-sirius/sirius-components-impactanalysis';
 import {
   TreeToolBarContext,
   TreeToolBarContextValue,
@@ -147,14 +148,16 @@ export const EditProjectView = () => {
                 <UndoRedo>
                   <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} />
                   <TreeToolBarProvider>
-                    <Workbench
-                      editingContextId={state.project.currentEditingContext.id}
-                      initialRepresentationSelected={state.representation}
-                      onRepresentationSelected={onRepresentationSelected}
-                      readOnly={!state.project.capabilities.canEdit}
-                      initialWorkbenchConfiguration={state.workbenchConfiguration}
-                      ref={refWorkbenchHandle}
-                    />
+                    <ImpactAnalysisDialogContextProvider>
+                      <Workbench
+                        editingContextId={state.project.currentEditingContext.id}
+                        initialRepresentationSelected={state.representation}
+                        onRepresentationSelected={onRepresentationSelected}
+                        readOnly={!state.project.capabilities.canEdit}
+                        initialWorkbenchConfiguration={state.workbenchConfiguration}
+                        ref={refWorkbenchHandle}
+                      />
+                    </ImpactAnalysisDialogContextProvider>
                   </TreeToolBarProvider>
                 </UndoRedo>
               </WorkbenchOmnibox>

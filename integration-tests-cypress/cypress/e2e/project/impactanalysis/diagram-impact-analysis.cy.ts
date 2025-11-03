@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Studio } from '../../../usecases/Studio';
+import { DataTree } from '../../../workbench/DataTree';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
@@ -38,6 +39,7 @@ describe('Impact analysis - diagram', () => {
         const diagram = new Diagram();
         const details = new Details();
         const impactAnalysis = new ImpactAnalysis();
+        const dataTree = new DataTree();
         explorer.createObject('Root', 'entity1s-Entity1');
         details.getTextField('Name').type('InitialName{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
@@ -48,6 +50,12 @@ describe('Impact analysis - diagram', () => {
         impactAnalysis.getImpactAnalysisDialog().should('exist');
         impactAnalysis.getNbElementModified().should('contain', 'Elements modified: 2');
         impactAnalysis.getNbElementCreated().should('contain', 'Elements added: 1');
+        dataTree.getDataTree().should('exist');
+        dataTree.expandWithDoubleClick('Others...');
+        dataTree.expandWithDoubleClick('Root');
+        dataTree.getTreeItemByLabel('entity1s: Entity1').should('exist');
+        dataTree.expandWithDoubleClick('newName');
+        dataTree.getTreeItemByLabel('name: InitialName -> newName').should('exist');
       });
     });
   });

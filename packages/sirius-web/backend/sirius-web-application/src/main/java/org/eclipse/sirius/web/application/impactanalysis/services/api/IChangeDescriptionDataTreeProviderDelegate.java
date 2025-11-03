@@ -10,23 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.web.application.impactanalysis.services.api;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
+import org.eclipse.emf.ecore.change.ChangeDescription;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.datatree.DataTree;
 
 /**
- * Report with data to display an impact analysis.
+ * Provides a data tree representing a given change description.
  *
- * @author frouene
+ * @author gdaniel
  */
-public record ImpactAnalysisReport(int nbElementDeleted, int nbElementModified, int nbElementCreated, List<String> additionalReports, DataTree impactTree) {
+public interface IChangeDescriptionDataTreeProviderDelegate {
 
-    public ImpactAnalysisReport {
-        Objects.requireNonNull(additionalReports);
-        Objects.requireNonNull(impactTree);
-    }
+    boolean canHandle(IEditingContext editingContext, ChangeDescription changeDescription);
+
+    Optional<DataTree> getDataTree(IEditingContext editingContext, ChangeDescription changeDescription);
 
 }

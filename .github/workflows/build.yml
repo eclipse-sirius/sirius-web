@@ -104,11 +104,13 @@ jobs:
           npx yalc add @eclipse-sirius/sirius-components-browser
           npx yalc add @eclipse-sirius/sirius-components-charts
           npx yalc add @eclipse-sirius/sirius-components-core
+          npx yalc add @eclipse-sirius/sirius-components-datatree
           npx yalc add @eclipse-sirius/sirius-components-deck
           npx yalc add @eclipse-sirius/sirius-components-diagrams
           npx yalc add @eclipse-sirius/sirius-components-formdescriptioneditors
           npx yalc add @eclipse-sirius/sirius-components-forms
           npx yalc add @eclipse-sirius/sirius-components-gantt
+          npx yalc add @eclipse-sirius/sirius-components-impactanalysis
           npx yalc add @eclipse-sirius/sirius-components-omnibox
           npx yalc add @eclipse-sirius/sirius-components-portals
           npx yalc add @eclipse-sirius/sirius-components-selection

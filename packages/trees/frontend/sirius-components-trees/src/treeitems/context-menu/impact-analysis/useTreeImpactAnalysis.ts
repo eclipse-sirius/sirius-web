@@ -12,7 +12,8 @@
  *******************************************************************************/
 
 import { gql, useLazyQuery } from '@apollo/client';
-import { GQLImpactAnalysisReport, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLImpactAnalysisReport } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { useEffect } from 'react';
 import {
   GQLGetImpactAnalysisReportData,
@@ -32,6 +33,33 @@ const getImpactAnalysisReportQuery = gql`
                 nbElementModified
                 nbElementCreated
                 additionalReports
+                impactTree {
+                  id
+                  nodes {
+                    id
+                    parentId
+                    label {
+                      styledStringFragments {
+                        text
+                        styledStringFragmentStyle {
+                          isStruckOut
+                          underlineStyle
+                          borderStyle
+                          font
+                          backgroundColor
+                          foregroundColor
+                          strikeoutColor
+                          underlineColor
+                          borderColor
+                          isBold
+                          isItalic
+                        }
+                      }
+                    }
+                    iconURLs
+                    endIconsURLs
+                  }
+                }
               }
             }
           }

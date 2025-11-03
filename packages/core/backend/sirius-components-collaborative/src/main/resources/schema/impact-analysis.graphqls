@@ -3,4 +3,5 @@ type ImpactAnalysisReport {
   nbElementModified: Int!
   nbElementCreated: Int!
   additionalReports: [String!]!
+  impactTree: DataTree!
 }

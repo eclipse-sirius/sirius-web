@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.impactanalysis.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
+import org.eclipse.sirius.web.application.impactanalysis.services.api.ITreeImpactAnalysisReportProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
@@ -60,14 +62,17 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
 
     private final List<ISingleClickTreeItemContextMenuEntryExecutor> singleClickTreeItemContextMenuEntryExecutors;
 
+    private final ITreeImpactAnalysisReportProvider treeImpactAnalysisReportProvider;
+
     private final IMessageService messageService;
 
     private final Counter counter;
 
-    public InvokeTreeImpactAnalysisToolEventHandler(IEditingContextSnapshotService editingContextSnapshotService, ITreeQueryService treeQueryService, List<ISingleClickTreeItemContextMenuEntryExecutor> singleClickTreeItemContextMenuEntryExecutors, IMessageService messageService, MeterRegistry meterRegistry) {
+    public InvokeTreeImpactAnalysisToolEventHandler(IEditingContextSnapshotService editingContextSnapshotService, ITreeQueryService treeQueryService, List<ISingleClickTreeItemContextMenuEntryExecutor> singleClickTreeItemContextMenuEntryExecutors, ITreeImpactAnalysisReportProvider treeImpactAnalysisReportProvider, IMessageService messageService, MeterRegistry meterRegistry) {
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
         this.singleClickTreeItemContextMenuEntryExecutors = Objects.requireNonNull(singleClickTreeItemContextMenuEntryExecutors);
+        this.treeImpactAnalysisReportProvider = Objects.requireNonNull(treeImpactAnalysisReportProvider);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -105,14 +110,18 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
                 var diff = changeRecorder.summarize();
                 changeRecorder.endRecording();
 
-                this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get());
-
                 if (entryExecutionResult instanceof Success success) {
-                    List<String> additionalMessages = (List<String>) success.getParameters().getOrDefault(IMPACT_ANALYSIS_MESSAGES_PARAMETRER_KEY, List.of());
-                    payload = new InvokeImpactAnalysisSuccessPayload(invokeTreeImpactAnalysisInput.id(), new ImpactAnalysisReport(diff.getObjectsToAttach().size(), diff.getObjectChanges().size(), diff.getObjectsToDetach().size(), additionalMessages), success.getMessages());
+                    Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.treeImpactAnalysisReportProvider.getReport(editingContext, diff, success);
+                    if (optionalImpactAnalysisReport.isPresent()) {
+                        payload = new InvokeImpactAnalysisSuccessPayload(treeInput.id(), optionalImpactAnalysisReport.get(), success.getMessages());
+                    } else {
+                        payload = new ErrorPayload(treeInput.id(), this.messageService.unexpectedError());
+                    }
                 } else if (entryExecutionResult instanceof Failure failure) {
                     payload = new ErrorPayload(invokeTreeImpactAnalysisInput.id(), failure.getMessages());
                 }
+
+                this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get());
             } else {
                 payload = new ErrorPayload(invokeTreeImpactAnalysisInput.id(), this.messageService.unexpectedError());
             }

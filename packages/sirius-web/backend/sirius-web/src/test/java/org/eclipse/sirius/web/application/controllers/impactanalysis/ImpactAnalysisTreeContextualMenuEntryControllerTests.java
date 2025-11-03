@@ -14,14 +14,21 @@ package org.eclipse.sirius.web.application.controllers.impactanalysis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
+import org.eclipse.sirius.components.datatree.DataTree;
+import org.eclipse.sirius.components.datatree.DataTreeNode;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -64,6 +71,9 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -102,6 +112,22 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
             assertThat(nbElementModified).isEqualTo(1);
             List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
             assertThat(additionalReports).isEmpty();
+
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+
+            assertThat(dataTree.id()).isEqualTo("impact_tree");
+            assertThat(dataTree.nodes()).anySatisfy(node -> {
+                assertThat(node.label().toString()).isEqualTo("abstract: false -> true");
+                assertThat(node.endIconsURLs()).hasSize(1);
+                List<String> endIconsURL = node.endIconsURLs().get(0);
+                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureModification.svg"));
+                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                    .findFirst();
+                assertThat(parentNode).isPresent()
+                    .get()
+                    .returns("Root", dataTreeNode -> dataTreeNode.label().toString());
+            });
         };
 
         StepVerifier.create(flux)

@@ -14,11 +14,15 @@ package org.eclipse.sirius.web.application.controllers.libraries;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -32,6 +36,8 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.datatree.DataTree;
+import org.eclipse.sirius.components.datatree.DataTreeNode;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
@@ -93,6 +99,9 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -129,10 +138,33 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
             assertThat(nbElementCreated).isEqualTo(0);
             int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(2);
-            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
-            assertThat(additionalReports).hasSize(2);
-            assertThat(additionalReports.get(0)).isEqualTo("[BROKEN] Sirius Web Architecture - AbstractTest.annotations (previously set to GivenSiriusWebServer)");
-            assertThat(additionalReports.get(1)).isEqualTo("[BROKEN] Sirius Web Architecture - IntegrationTest.annotations (previously set to GivenSiriusWebServer)");
+
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+
+            assertThat(dataTree.id()).isEqualTo("impact_tree");
+            assertThat(dataTree.nodes()).anySatisfy(node -> {
+                assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
+                assertThat(node.endIconsURLs()).hasSize(1);
+                List<String> endIconsURL = node.endIconsURLs().get(0);
+                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureDeletion.svg"));
+                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                    .findFirst();
+                assertThat(parentNode).isPresent()
+                    .get()
+                    .returns("AbstractTest", dataTreeNode -> dataTreeNode.label().toString());
+            });
+            assertThat(dataTree.nodes()).anySatisfy(node -> {
+                assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
+                assertThat(node.endIconsURLs()).hasSize(1);
+                List<String> endIconsURL = node.endIconsURLs().get(0);
+                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureDeletion.svg"));
+                Optional<DataTreeNode> parentNode = dataTree.nodes().stream().filter(dataTreeNode -> Objects.equals(dataTreeNode.id(), node.parentId()))
+                    .findFirst();
+                assertThat(parentNode).isPresent()
+                    .get()
+                    .returns("IntegrationTest", dataTreeNode -> dataTreeNode.label().toString());
+            });
         };
 
         StepVerifier.create(flux)
