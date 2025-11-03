@@ -60,6 +60,16 @@ export const DraggableEdgeLabels = ({
     onEdgeLabelMoveStop(eventData, id, labelPosition);
   };
 
+  let labelCenterOffset = {
+    x: edgeCenter?.x ?? 0,
+    y: edgeCenter?.y ?? 0,
+  };
+  if (data.label?.width) {
+    labelCenterOffset.x = labelCenterOffset.x - data.label.width / 2;
+  }
+  if (data.label?.height) {
+    labelCenterOffset.y = labelCenterOffset.y - data.label.height / 2;
+  }
   return (
     <EdgeLabelRenderer>
       {beginLabel && (
@@ -80,7 +90,7 @@ export const DraggableEdgeLabels = ({
       {label && edgeCenter && (
         <Draggable
           position={{ x: label.position.x, y: label.position.y }}
-          positionOffset={{ x: edgeCenter.x, y: edgeCenter.y }}
+          positionOffset={labelCenterOffset}
           onStop={(_e, eventData) => onStop(_e, eventData, 'center')}
           scale={zoom}
           nodeRef={centerLabelNodeRef}

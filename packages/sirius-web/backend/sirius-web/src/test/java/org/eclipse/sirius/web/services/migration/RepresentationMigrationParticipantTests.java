@@ -117,7 +117,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         List<String> edgesPositionBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.edges..position");
         assertThat(edgesPositionBeforeMigration).size().isGreaterThan(0);
 
-        List<String> layoutDataPositionBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.layoutData..position");
+        List<String> layoutDataPositionBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.layoutData.nodeLayoutData.*.position");
         assertThat(layoutDataPositionBeforeMigration).size().isGreaterThan(0);
 
         var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO.toString());
@@ -145,7 +145,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         List<String> updatedEdgesPosition = parseContext.parse(updatedRepresentationContent.getContent()).read("$.edges..position");
         assertThat(updatedEdgesPosition).size().isEqualTo(0);
 
-        List<String> updatedLayoutDataPosition = parseContext.parse(updatedRepresentationContent.getContent()).read("$.layoutData..position");
+        List<String> updatedLayoutDataPosition = parseContext.parse(updatedRepresentationContent.getContent()).read("$.layoutData.nodeLayoutData.*.position");
         assertThat(updatedLayoutDataPosition).size().isGreaterThan(0);
         assertThat(updatedLayoutDataPosition).isEqualTo(layoutDataPositionBeforeMigration);
     }
@@ -169,7 +169,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         List<String> edgesSizeBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.edges..size");
         assertThat(edgesSizeBeforeMigration).size().isGreaterThan(0);
 
-        List<String> layoutDataSizeBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.layoutData..size");
+        List<String> layoutDataSizeBeforeMigration = parseContext.parse(representationContentBeforeMigration.get().getContent()).read("$.layoutData.nodeLayoutData.*.size");
         assertThat(layoutDataSizeBeforeMigration).size().isGreaterThan(0);
 
         var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO.toString());
@@ -197,14 +197,14 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         List<String> updatedEdgesSize = parseContext.parse(updatedRepresentationContent.getContent()).read("$.edges..size");
         assertThat(updatedEdgesSize).size().isGreaterThan(0);
 
-        List<String> updatedLayoutDataSize = parseContext.parse(updatedRepresentationContent.getContent()).read("$.layoutData..size");
+        List<String> updatedLayoutDataSize = parseContext.parse(updatedRepresentationContent.getContent()).read("$.layoutData.nodeLayoutData.*.size");
         assertThat(updatedLayoutDataSize).size().isGreaterThan(0);
         assertThat(updatedLayoutDataSize).isEqualTo(layoutDataSizeBeforeMigration);
     }
 
     @ParameterizedTest
     @GivenSiriusWebServer
-    @ValueSource(strings = {"alignment", "routingPoints", "sourceAnchorRelativePosition", "targetAnchorRelativePosition", "userResizable", "customizedProperties"})
+    @ValueSource(strings = { "alignment", "routingPoints", "sourceAnchorRelativePosition", "targetAnchorRelativePosition", "userResizable", "customizedProperties" })
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position and size of diagram and nodes have been removed, but not from layout data")
     public void testRemoveAttributeFromDiagramContent(String attribute) {
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
@@ -234,5 +234,35 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
 
         List<String> updatedNodesAttribute = parseContext.parse(updatedRepresentationContent.getContent()).read("$.." + attribute);
         assertThat(updatedNodesAttribute).size().isEqualTo(0);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size of label is added to the layout data")
+    public void testLabelLayoutDataSizeMigration() {
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        assertThat(representationContentBeforeMigration).isPresent();
+
+        // Returns output path to access to attribute value instead of returning the value and prevent exception to be thrown when the path does not match.
+        var parseContext = JsonPath.using(Configuration.defaultConfiguration().setOptions(Option.AS_PATH_LIST, Option.SUPPRESS_EXCEPTIONS));
+
+        var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM.toString(), Diagram.class);
+        assertThat(optionalRepresentation).isPresent();
+
+        this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        assertThat(optionalUpdatedRepresentationContent).isPresent();
+
+        var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
+
+        List<String> updatedLabelLayoutDataSize = parseContext.parse(updatedRepresentationContent.getContent()).read("$.layoutData.labelLayoutData.*.size");
+        assertThat(updatedLabelLayoutDataSize).size().isEqualTo(1);
     }
 }

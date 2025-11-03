@@ -15,11 +15,12 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
-import { Node, NodeProps, ReactFlowProvider, XYPosition } from '@xyflow/react';
+import { Edge, Node, NodeProps, ReactFlowProvider, XYPosition } from '@xyflow/react';
 import { Fragment, createElement, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { FreeFormNode } from '../node/FreeFormNode';
@@ -32,9 +33,8 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getNewlyAddedBorderNodePosition, isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
-import { getNodeBorderNodeFootprint, getChildren } from './layoutNode';
+import { getChildren, getNodeBorderNodeFootprint } from './layoutNode';
 import { gap } from './layoutParams';
-import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 const emptyNodeProps = {
   selected: false,
@@ -121,6 +121,25 @@ export const prepareLayoutArea = (
         key: `${outsideLabel.id}-label`,
         role: 'button', // role applied by react flow
         style: { maxWidth: node.width },
+        children,
+      });
+      labelElements.push(element);
+    }
+  });
+  diagram.edges.forEach((edge) => {
+    if (hiddenContainer && edge.data?.label) {
+      const children: JSX.Element[] = [
+        createElement(Label, {
+          diagramElementId: edge.id,
+          label: edge.data.label,
+          faded: false,
+          key: edge.data.label.id,
+        }),
+      ];
+      const element: JSX.Element = createElement('div', {
+        id: `${edge.data.label.id}-label`,
+        key: `${edge.data.label.id}-label`,
+        role: 'button',
         children,
       });
       labelElements.push(element);
@@ -261,6 +280,8 @@ const layoutDiagram = (
   layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
+  layoutEdges(diagram.edges);
+
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
@@ -402,6 +423,18 @@ const layoutDiagram = (
             gap,
           y: 0,
         };
+      }
+    }
+  });
+};
+
+const layoutEdges = (edges: Edge<EdgeData>[]) => {
+  edges.forEach((edge) => {
+    if (edge.data?.label) {
+      const labelElement = document.getElementById(`${edge.data.label.id}-label`);
+      if (labelElement) {
+        edge.data.label.height = labelElement.getBoundingClientRect().height;
+        edge.data.label.width = labelElement.getBoundingClientRect().width;
       }
     }
   });

@@ -58,6 +58,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
 };
 
 const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLayoutData[]): EdgeLabel => {
+  const labelLayoutData = gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlEdgeLabel.id);
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,
@@ -68,7 +69,7 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
     contentStyle: {
       ...convertContentStyle(gqlEdgeLabel.style),
     },
-    position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlEdgeLabel.id)?.position ?? {
+    position: labelLayoutData?.position ?? {
       x: 0,
       y: 0,
     },
@@ -76,6 +77,8 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
       customizedStyleProperties: gqlEdgeLabel.customizedStyleProperties,
       gqlStyle: gqlEdgeLabel.style,
     },
+    width: labelLayoutData?.size.width ?? 0,
+    height: labelLayoutData?.size.height ?? 0,
   };
 };
 

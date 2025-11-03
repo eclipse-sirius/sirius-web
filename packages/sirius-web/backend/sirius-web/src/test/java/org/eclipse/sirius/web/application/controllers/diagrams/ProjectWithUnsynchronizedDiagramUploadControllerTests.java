@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
@@ -184,7 +185,7 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(representationMetaDatas).hasSize(1);
         assertThat(representationMetaDatas.get(0)).extracting("label").isEqualTo("Topography unsynchronized");
 
-        var optionalDiagram = this.representationSearchService.findById(null, representationMetaDatas.get(0).getId().toString(), Diagram.class);
+        var optionalDiagram = this.representationSearchService.findById(new IEditingContext.NoOp(), representationMetaDatas.get(0).getId().toString(), Diagram.class);
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();
