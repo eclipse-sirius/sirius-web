@@ -23,6 +23,7 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramPaletteProps } from './DiagramPalette.types';
+import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
 import { Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
@@ -31,7 +32,7 @@ import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
 
-export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }: DiagramPaletteProps) => {
+export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x: paletteX, y: paletteY, diagramElementIds, hideDiagramPalette } = useDiagramPalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
@@ -40,8 +41,9 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
   const { getNode, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
-  const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramElementId;
-  const { palette }: UsePaletteContentValue = usePaletteContents(elementId);
+  const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
+  const shouldSkip = diagramElementIds.length > 1;
+  let { palette }: UsePaletteContentValue = usePaletteContents(elementId, shouldSkip);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -80,7 +82,7 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
   }, [diagramElementIds]);
 
   const targetObjectId =
-    elementId === diagramElementId
+    elementId === diagramId
       ? diagramTargetObjectId
       : getNode(diagramElementIds[0] || '')?.data.targetObjectId ||
         getEdge(diagramElementIds[0] || '')?.data?.targetObjectId ||
@@ -118,6 +120,16 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
         />
       );
     }
+    if (diagramElementIds.length > 1) {
+      sectionComponents.push(
+        <PaletteExtensionSection
+          component={GroupPaletteLayoutSection}
+          id={'layout_section'}
+          title={'Layout'}
+          onClose={hideDiagramPalette}
+        />
+      );
+    }
 
     return sectionComponents;
   }, [diagramElementIds.join('-')]);
@@ -126,15 +138,19 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
     return null;
   }
 
-  const shouldRender = palette && isOpened && paletteX && paletteY && !currentlyEditedLabelId;
+  if (diagramElementIds.length > 1) {
+    palette = { id: diagramElementIds.join('-'), quickAccessTools: [], paletteEntries: [] };
+  }
 
-  return shouldRender ? (
+  const shouldRender = isOpened && !!paletteX && !!paletteY && !currentlyEditedLabelId;
+
+  return palette && shouldRender ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
         <Palette
           x={paletteX}
           y={paletteY}
-          diagramElementId={diagramElementIds[0] || diagramElementId}
+          diagramElementIds={diagramElementIds.length > 0 ? diagramElementIds : [diagramId]}
           palette={palette}
           onToolClick={onToolClick}
           onClose={hideDiagramPalette}
