@@ -46,4 +46,9 @@ export interface MultiLabelEdgeData extends EdgeData {
    * Defaults to true.
    */
   rectilinearFanOutEnabled?: boolean;
+  /**
+   * Enables the post-processing pass that separates overlapping rectilinear segments by offsetting them
+   * by a few pixels. Defaults to true.
+   */
+  rectilinearParallelSpacingEnabled?: boolean;
 }

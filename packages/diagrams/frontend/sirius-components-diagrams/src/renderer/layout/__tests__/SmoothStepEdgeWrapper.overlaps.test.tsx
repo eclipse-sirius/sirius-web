@@ -79,7 +79,10 @@ const toPositionEnum = (position: string | undefined): Position => {
   }
 };
 
-const buildEdgeData = (edgeId: string): MultiLabelEdgeData => ({
+const buildEdgeData = (
+  edgeId: string,
+  overrides: Partial<MultiLabelEdgeData> = {}
+): MultiLabelEdgeData => ({
   targetObjectId: edgeId,
   targetObjectKind: 'HarnessEdge',
   targetObjectLabel: edgeId,
@@ -93,6 +96,7 @@ const buildEdgeData = (edgeId: string): MultiLabelEdgeData => ({
     gqlStyle: {} as never,
   },
   isHovered: false,
+  ...overrides,
 });
 
 const toHarnessNodes = (fixture: DiagramFixture): HarnessNode[] =>
@@ -139,7 +143,11 @@ const toHarnessNodes = (fixture: DiagramFixture): HarnessNode[] =>
     } as HarnessNode;
   });
 
-const buildHarnessEdge = (fixture: DiagramFixture, edgeId: string): HarnessEdge | null => {
+const buildHarnessEdge = (
+  fixture: DiagramFixture,
+  edgeId: string,
+  overrides: Partial<MultiLabelEdgeData> = {}
+): HarnessEdge | null => {
   const edgeFixture = fixture.edges.find((candidate) => candidate.id === edgeId);
   if (!edgeFixture) {
     return null;
@@ -157,13 +165,15 @@ const buildHarnessEdge = (fixture: DiagramFixture, edgeId: string): HarnessEdge 
     targetHandle: edgeFixture.targetHandleId,
     sourcePosition: toPositionEnum(edgeFixture.sourcePosition),
     targetPosition: toPositionEnum(edgeFixture.targetPosition),
-    data: buildEdgeData(edgeFixture.id),
+    data: buildEdgeData(edgeFixture.id, overrides),
   } as HarnessEdge;
 };
 
-const toHarnessEdges = (fixture: DiagramFixture): HarnessEdge[] =>
+type EdgeOverridesLookup = Partial<Record<string, Partial<MultiLabelEdgeData>>>;
+
+const toHarnessEdges = (fixture: DiagramFixture, overrides: EdgeOverridesLookup = {}): HarnessEdge[] =>
   fixture.edges
-    .map((edge) => buildHarnessEdge(fixture, edge.id))
+    .map((edge) => buildHarnessEdge(fixture, edge.id, overrides[edge.id] ?? {}))
     .filter((edge): edge is HarnessEdge => !!edge);
 
 const buildInternalNode = (node: HarnessNode): InternalNodeStub => ({
@@ -271,6 +281,64 @@ const renderWithHarnessProviders = (
     ...options,
   });
 
+type RenderHarnessResult = {
+  nodes: HarnessNode[];
+  edges: HarnessEdge[];
+  polylines: Map<string, XYPosition[]>;
+};
+
+const renderHarnessFixture = (
+  fixture: DiagramFixture,
+  edgeOverrides: EdgeOverridesLookup = {}
+): RenderHarnessResult => {
+  const nodes = toHarnessNodes(fixture);
+  const edges = toHarnessEdges(fixture, edgeOverrides);
+
+  nodes.forEach((node) => {
+    mockInternalNodes.set(node.id, buildInternalNode(node));
+  });
+
+  const storeValue: StoreContextValue = {
+    getEdges: () => edges,
+    getEdge: (id: string) => edges.find((edge) => edge.id === id),
+    getNodes: () => nodes,
+    getNode: (id: string) => nodes.find((node) => node.id === id),
+    onEdgesChange: () => {},
+    onNodesChange: () => {},
+    setEdges: () => {},
+    setNodes: () => {},
+  };
+
+  const nodeContextValue: NodeTypeContextValue = {
+    nodeLayoutHandlers: [],
+    nodeConverters: [],
+    nodeTypeContributions: [],
+  };
+
+  edges.forEach((edge) => {
+    const props: EdgeProps<Edge<MultiLabelEdgeData>> = {
+      ...edge,
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
+      data: edge.data,
+      sourceHandleId: edge.sourceHandle ?? null,
+      targetHandleId: edge.targetHandle ?? null,
+      sourcePosition: edge.sourcePosition,
+      targetPosition: edge.targetPosition,
+    };
+
+    const { unmount } = renderWithHarnessProviders(<SmoothStepEdgeWrapper {...props} />, storeValue, nodeContextValue);
+    unmount();
+  });
+
+  return {
+    nodes,
+    edges,
+    polylines: new Map(capturedPolylines),
+  };
+};
+
 vi.mock('@xyflow/react', async () => {
   const actual = await vi.importActual<typeof import('@xyflow/react')>('@xyflow/react');
   return {
@@ -334,60 +402,49 @@ vi.mock('../../edge/rectilinear-edge/MultiLabelRectilinearEditableEdge', () => (
   },
 }));
 
-describe('SmoothStepEdgeWrapper overlap detection (current behaviour)', () => {
+describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
   beforeEach(() => {
     capturedPolylines.clear();
     mockInternalNodes.clear();
   });
 
-  it('produces overlapping segments for the grid-crossing fixture', () => {
+  it('separates overlapping segments for the grid-crossing fixture by default', () => {
     const fixture = loadFixture('grid-crossing.json');
-    const nodes = toHarnessNodes(fixture);
-    const edges = toHarnessEdges(fixture);
+    const { polylines } = renderHarnessFixture(fixture);
+    // eslint-disable-next-line no-console
+    console.log(
+      JSON.stringify(
+        Array.from(polylines.entries()).map(([edgeId, polyline]) => ({
+          edgeId,
+          points: polyline.map((point) => ({ x: point.x, y: point.y })),
+        })),
+        null,
+        2
+      )
+    );
 
-    nodes.forEach((node) => {
-      mockInternalNodes.set(node.id, buildInternalNode(node));
-    });
+    const allSegments = Array.from(polylines.entries()).flatMap(([edgeId, polyline]) =>
+      segmentsFromPolyline(edgeId, polyline),
+    );
+    expect(allSegments.length).toBeGreaterThan(0);
 
-    const storeValue: StoreContextValue = {
-      getEdges: () => edges,
-      getEdge: (id: string) => edges.find((edge) => edge.id === id),
-      getNodes: () => nodes,
-      getNode: (id: string) => nodes.find((node) => node.id === id),
-      onEdgesChange: () => {},
-      onNodesChange: () => {},
-      setEdges: () => {},
-      setNodes: () => {},
+    const overlaps = findOverlappingSegments(allSegments);
+    // eslint-disable-next-line no-console
+    console.log(overlaps);
+    expect(overlaps.length).toBe(0);
+  });
+
+  it('can be disabled to preserve the legacy overlapping behaviour', () => {
+    const fixture = loadFixture('grid-crossing.json');
+    const overrides: EdgeOverridesLookup = {
+      'edge-horizontal-top': { rectilinearParallelSpacingEnabled: false },
+      'edge-horizontal-bottom': { rectilinearParallelSpacingEnabled: false },
+      'edge-diagonal-down': { rectilinearParallelSpacingEnabled: false },
+      'edge-diagonal-up': { rectilinearParallelSpacingEnabled: false },
     };
+    const { polylines } = renderHarnessFixture(fixture, overrides);
 
-    const nodeContextValue: NodeTypeContextValue = {
-      nodeLayoutHandlers: [],
-      nodeConverters: [],
-      nodeTypeContributions: [],
-    };
-
-    edges.forEach((edge) => {
-      const props: EdgeProps<Edge<MultiLabelEdgeData>> = {
-        ...edge,
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        data: edge.data,
-        sourceHandleId: edge.sourceHandle ?? null,
-        targetHandleId: edge.targetHandle ?? null,
-        sourcePosition: edge.sourcePosition,
-        targetPosition: edge.targetPosition,
-      };
-
-      const { unmount } = renderWithHarnessProviders(
-        <SmoothStepEdgeWrapper {...props} />,
-        storeValue,
-        nodeContextValue,
-      );
-      unmount();
-    });
-
-    const allSegments = Array.from(capturedPolylines.entries()).flatMap(([edgeId, polyline]) =>
+    const allSegments = Array.from(polylines.entries()).flatMap(([edgeId, polyline]) =>
       segmentsFromPolyline(edgeId, polyline),
     );
     expect(allSegments.length).toBeGreaterThan(0);

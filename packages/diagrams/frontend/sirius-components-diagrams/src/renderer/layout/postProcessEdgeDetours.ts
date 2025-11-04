@@ -16,6 +16,11 @@ import { computeAbsoluteNodeRects, Rect } from './geometry';
 // consecutive points with straight segments.
 type EdgePolyline = XYPosition[];
 
+export interface DetouredPolylineCollection {
+  current: EdgePolyline;
+  polylines: Map<string, EdgePolyline>;
+}
+
 // React Flow stores the preferred port (top, bottom, etc.) inside the edge
 // object. This helper type gives us easy optional access to that metadata.
 type EdgeWithPositions = Edge<EdgeData> &
@@ -535,19 +540,40 @@ const computeExcludedObstacleIds = (
   return excluded;
 };
 
-export const buildDetouredPolyline = (
+export function buildDetouredPolyline(
   currentEdge: Edge<EdgeData>,
   currentPolyline: EdgePolyline,
   edges: Edge<EdgeData>[],
   nodes: Node<NodeData, DiagramNodeType>[]
-): EdgePolyline => {
+): EdgePolyline;
+export function buildDetouredPolyline(
+  currentEdge: Edge<EdgeData>,
+  currentPolyline: EdgePolyline,
+  edges: Edge<EdgeData>[],
+  nodes: Node<NodeData, DiagramNodeType>[],
+  options: { collectAll: true }
+): DetouredPolylineCollection;
+export function buildDetouredPolyline(
+  currentEdge: Edge<EdgeData>,
+  currentPolyline: EdgePolyline,
+  edges: Edge<EdgeData>[],
+  nodes: Node<NodeData, DiagramNodeType>[],
+  options?: { collectAll?: boolean }
+): EdgePolyline | DetouredPolylineCollection {
   // Entry point used by the edge renderer. It takes the current edge polyline
   // plus the surrounding graph context and returns a new polyline that avoids
   // rectangular obstacles.
+  const collectAll = options?.collectAll ?? false;
+
   if (currentPolyline.length < 2 || edges.length === 0 || nodes.length === 0) {
     // Without enough geometry or graph data we cannot improve the path, so we
     // return the baseline untouched.
-    return currentPolyline;
+    return collectAll
+      ? {
+          current: currentPolyline,
+          polylines: new Map<string, EdgePolyline>([[currentEdge.id, currentPolyline]]),
+        }
+      : currentPolyline;
   }
 
   // Pre-compute node rectangles in absolute coordinates so collision tests are
@@ -637,7 +663,12 @@ export const buildDetouredPolyline = (
 
   const simpleCandidate = trySimpleCandidate();
   if (simpleCandidate) {
-    return simpleCandidate;
+    return collectAll
+      ? {
+          current: simpleCandidate,
+          polylines: new Map<string, EdgePolyline>([[currentEdge.id, simpleCandidate]]),
+        }
+      : simpleCandidate;
   }
 
   // Initialise the polyline map with either the provided geometry or fresh
@@ -669,5 +700,12 @@ export const buildDetouredPolyline = (
 
   // Return the adjusted polyline for the current edge. Fallback to the input
   // polyline if something unexpected prevented us from storing a result.
-  return polylines.get(currentEdge.id) ?? currentPolyline;
-};
+  const current = polylines.get(currentEdge.id) ?? currentPolyline;
+  if (collectAll) {
+    return {
+      current,
+      polylines: new Map(polylines),
+    };
+  }
+  return current;
+}

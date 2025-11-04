@@ -25,6 +25,7 @@ import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
+import { buildSpacedPolyline, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -43,6 +44,14 @@ const DEFAULT_FAN_OUT_ENABLED = true;
 const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
 const MIN_DETOUR_SPAN = 6;
+const DEFAULT_PARALLEL_SPACING_ENABLED = true;
+
+type CachedPolyline = {
+  points: XYPosition[];
+  spacingEnabled: boolean;
+};
+
+const parallelSpacingCache: Map<string, CachedPolyline> = new Map();
 
 type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
   targetPosition?: Position;
@@ -965,6 +974,13 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         { x: targetX, y: targetY }
       );
 
+  const parallelSpacingEnabled =
+    data?.rectilinearParallelSpacingEnabled ?? DEFAULT_PARALLEL_SPACING_ENABLED;
+  const shouldCollectParallelPolylines = parallelSpacingEnabled && !customEdge && !!getEdges && !!getNodes;
+
+  let detouredPolyline: XYPosition[] | undefined;
+  let detourPolylines: Map<string, XYPosition[]> | undefined;
+
   if (!customEdge && getEdges) {
     const edgesForDetour = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
     const nodesForDetour = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
@@ -989,14 +1005,17 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           data,
         } as Edge<MultiLabelEdgeData>);
 
-      const detouredPolyline = buildDetouredPolyline(
-        currentEdge,
-        baselinePolyline,
-        edgesForDetour,
-        nodesAsNodes
-      );
+      if (shouldCollectParallelPolylines) {
+        const detourResult = buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes, {
+          collectAll: true,
+        });
+        detouredPolyline = detourResult.current;
+        detourPolylines = detourResult.polylines;
+      } else {
+        detouredPolyline = buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes);
+      }
 
-      if (!polylinesEqual(detouredPolyline, baselinePolyline)) {
+      if (detouredPolyline && !polylinesEqual(detouredPolyline, baselinePolyline)) {
         const firstPoint = detouredPolyline[0];
         const lastPoint = detouredPolyline[detouredPolyline.length - 1];
         if (firstPoint) {
@@ -1012,11 +1031,88 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     }
   }
 
+  if (shouldCollectParallelPolylines) {
+    const polylinesForSpacing = new Map<string, XYPosition[]>();
+
+    if (detourPolylines) {
+      detourPolylines.forEach((polyline, edgeId) => {
+        if (!polyline || polyline.length < 2) {
+          polylinesForSpacing.set(edgeId, polyline);
+          return;
+        }
+        const sourcePoint = polyline[0];
+        const targetPoint = polyline[polyline.length - 1];
+        if (!sourcePoint || !targetPoint) {
+          polylinesForSpacing.set(edgeId, polyline);
+          return;
+        }
+        const simplifiedBends = simplifyRectilinearBends(polyline.slice(1, -1), sourcePoint, targetPoint);
+        polylinesForSpacing.set(edgeId, [
+          { x: sourcePoint.x, y: sourcePoint.y },
+          ...simplifiedBends.map((point) => ({ x: point.x, y: point.y })),
+          { x: targetPoint.x, y: targetPoint.y },
+        ]);
+      });
+    }
+
+    parallelSpacingCache.forEach((cached, edgeId) => {
+      if (!cached.spacingEnabled || edgeId === id) {
+        return;
+      }
+      polylinesForSpacing.set(
+        edgeId,
+        cached.points.map((point) => ({ x: point.x, y: point.y }))
+      );
+    });
+
+    const referencePolyline =
+      detouredPolyline ?? [
+        { x: sourceX, y: sourceY },
+        ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
+        { x: targetX, y: targetY },
+      ];
+
+    polylinesForSpacing.set(
+      id,
+      referencePolyline.map((point) => ({ x: point.x, y: point.y }))
+    );
+
+    const hasOtherPolylines = Array.from(polylinesForSpacing.keys()).some((edgeId) => edgeId !== id);
+
+    if (hasOtherPolylines) {
+      const spacedPolyline = buildSpacedPolyline(id, polylinesForSpacing, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
+      if (!polylinesEqual(spacedPolyline, referencePolyline)) {
+        const firstPoint = spacedPolyline[0];
+        const lastPoint = spacedPolyline[spacedPolyline.length - 1];
+        if (firstPoint) {
+          sourceX = firstPoint.x;
+          sourceY = firstPoint.y;
+        }
+        if (lastPoint) {
+          targetX = lastPoint.x;
+          targetY = lastPoint.y;
+        }
+        rectifiedBendingPoints = spacedPolyline.slice(1, -1);
+      }
+    }
+  }
+
   const finalBendingPoints = simplifyRectilinearBends(
     rectifiedBendingPoints,
     { x: sourceX, y: sourceY },
     { x: targetX, y: targetY }
   );
+
+  const finalPolyline: XYPosition[] = [
+    { x: sourceX, y: sourceY },
+    ...finalBendingPoints.map((point) => ({ x: point.x, y: point.y })),
+    { x: targetX, y: targetY },
+  ];
+
+  parallelSpacingCache.set(id, {
+    points: finalPolyline.map((point) => ({ x: point.x, y: point.y })),
+    spacingEnabled: shouldCollectParallelPolylines,
+  });
 
   return (
     <MultiLabelRectilinearEditableEdge
