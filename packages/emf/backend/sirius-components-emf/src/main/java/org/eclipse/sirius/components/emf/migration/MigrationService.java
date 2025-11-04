@@ -58,14 +58,14 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     private void updateCandidates() {
         this.migrationParticipantsCandidates = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion))
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion, new MigrationVersionComparator()))
                 .toList();
     }
 
     public MigrationData getMostRecentParticipantMigrationData() {
         var migrationParticipantsCandidate = this.migrationParticipants.stream()
                 .filter(this::isCandidateVersion)
-                .sorted(Comparator.comparing(IMigrationParticipant::getVersion).reversed())
+                .sorted(Comparator.comparing(IMigrationParticipant::getVersion, new MigrationVersionComparator()).reversed())
                 .map(migrationParticipant -> new MigrationData("none", migrationParticipant.getVersion()))
                 .findFirst();
 
