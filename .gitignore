@@ -94,3 +94,4 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+.vscode/vscode-chrome-profile/
