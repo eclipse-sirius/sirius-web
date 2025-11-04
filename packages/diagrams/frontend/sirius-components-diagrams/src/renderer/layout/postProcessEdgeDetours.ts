@@ -590,19 +590,6 @@ export function buildDetouredPolyline(
     return currentPolyline;
   }
 
-  const baselineCollisions = new Set<string>();
-  //TOCHECK: baselineCollisions is populated but never consumed; if the info is redundant we can drop it, otherwise confirm the intended guard logic wasn’t lost.
-  rects.forEach((rect, nodeId) => {
-    if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
-      return;
-    }
-    const detectionRect = expandRect(rect, DETECTION_PADDING);
-    const spans = collectPolylineRectCollisions(currentPolyline, detectionRect);
-    if (spans.length > 0) {
-      baselineCollisions.add(nodeId);
-    }
-  });
-
   // Initialise the polyline map with either the provided geometry or fresh
   // straight polylines for the other edges. We need the entire edge set so that
   // we can stagger detours when many edges share the same passage.
