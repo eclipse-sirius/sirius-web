@@ -87,6 +87,7 @@ export const straightenAlmostStraightPolyline = (
   const perpendicularAxis = axis === 'vertical' ? 'x' : 'y';
   // Small epsilon that treats near-zero differences as zero to avoid floating point noise.
   const tolerance = 0.01;
+  //TOCHECK: tolerance is hard-coded; when callers pass a threshold below 0.01 we bail out early—should this scale with the provided threshold instead?
 
   // Capture the sequence of X/Y coordinates that we plan to collapse.
   const coordinates: number[] = [];

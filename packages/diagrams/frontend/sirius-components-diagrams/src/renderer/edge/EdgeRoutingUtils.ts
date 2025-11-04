@@ -157,6 +157,7 @@ export const doesPathOverlapNodes = (
       const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
       return rect !== null;
     })
+    //TOCHECK: getNodeRectangle is recomputed for each node despite being cached above; consider keeping the first result instead of calling again.
     .map((node) => ({ node, rect: getNodeRectangle(node, nodeMap, absolutePositionCache)! }));
 
   for (let index = 0; index < pathPoints.length - 1; index++) {

@@ -156,6 +156,7 @@ const getNodeAbsolutePosition = (
   nodeMap: Map<string, Node<NodeData>>,
   cache: Map<string, XYPosition>
 ): XYPosition => {
+  //TOCHECK: logic duplicates EdgeRoutingUtils/getNodeAbsolutePosition and layout/geometry helpers; consider consolidating to avoid divergence.
   const cachedPosition = cache.get(node.id);
   if (cachedPosition) {
     return cachedPosition;
@@ -254,6 +255,7 @@ const doesPathOverlapNodes = (
   nodeMap: Map<string, Node<NodeData>>,
   ignoredNodeIds: Set<string>
 ): PathOverlapResult => {
+  //TOCHECK: heavily overlaps with EdgeRoutingUtils.doesPathOverlapNodes; consolidating would reduce divergence between auto/standard routing.
   const absolutePositionCache = new Map<string, XYPosition>();
   const collidableNodes = nodes
     .filter((node) => {

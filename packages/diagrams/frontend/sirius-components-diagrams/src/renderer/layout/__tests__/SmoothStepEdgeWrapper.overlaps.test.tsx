@@ -58,6 +58,7 @@ const harnessFixturesDir = path.join(
   __dirname,
   '../../../../../../../dev/frontend/routing-harness/src/fixtures',
 );
+//TOCHECK: test data lives in the dev routing harness; consider copying snapshots locally so CI does not depend on that external directory structure.
 
 const loadFixture = (filename: string): DiagramFixture => {
   const content = readFileSync(path.join(harnessFixturesDir, filename), 'utf-8');

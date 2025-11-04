@@ -59,6 +59,7 @@ const segmentIntersectionWithParam = (
   const denominator = (a1.x - a2.x) * (b1.y - b2.y) - (a1.y - a2.y) * (b1.x - b2.x);
   if (Math.abs(denominator) <= EPSILON) {
     // Segments are parallel or extremely close to parallel.
+    //TOCHECK: returning undefined here means colinear overlaps (segment riding the rectangle edge) are ignored; confirm callers don't need to catch grazing cases.
     return undefined;
   }
 

@@ -168,6 +168,7 @@ const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdge
 const determineInitialAxis = (position: Position): Axis =>
   position === Position.Left || position === Position.Right ? 'horizontal' : 'vertical';
 
+//TOCHECK: Implementation mirrors production ensureRectilinearPath; consider importing the real helper so test behaviour stays aligned.
 const ensureRectilinearPath = (
   bendingPoints: XYPosition[],
   source: XYPosition,
@@ -212,6 +213,7 @@ const ensureRectilinearPath = (
 };
 
 const harnessFixturesDir = path.join(__dirname, '../../../../../../../dev/frontend/routing-harness/src/fixtures');
+//TOCHECK: Tests depend on fixtures living in the dev harness workspace; mirroring them locally would make the suite less brittle.
 
 const loadFixture = (filename: string): DiagramFixture => {
   const content = readFileSync(path.join(harnessFixturesDir, filename), 'utf-8');

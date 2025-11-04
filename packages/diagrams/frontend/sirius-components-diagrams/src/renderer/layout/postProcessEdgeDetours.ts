@@ -591,6 +591,7 @@ export function buildDetouredPolyline(
   }
 
   const baselineCollisions = new Set<string>();
+  //TOCHECK: baselineCollisions is populated but never consumed; if the info is redundant we can drop it, otherwise confirm the intended guard logic wasn’t lost.
   rects.forEach((rect, nodeId) => {
     if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
       return;
