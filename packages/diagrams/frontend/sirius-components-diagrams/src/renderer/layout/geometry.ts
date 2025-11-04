@@ -14,7 +14,7 @@ export type Rect = {
   height: number;
 };
 
-const LABEL_NODE_TYPES = new Set<DiagramNodeType>(['iconLabelNode']);
+const LABEL_NODE_TYPES = new Set<DiagramNodeType>(['iconLabelNode', 'edgeAnchorNodeCreationHandles']);
 
 const parseCssDimension = (value: unknown): number | null => {
   /**
@@ -81,8 +81,7 @@ const computeAbsolutePosition = (
     internals?: { positionAbsolute?: XYPosition };
   };
 
-  const directAbsolute =
-    nodeWithInternals.internals?.positionAbsolute ?? nodeWithInternals.positionAbsolute;
+  const directAbsolute = nodeWithInternals.internals?.positionAbsolute ?? nodeWithInternals.positionAbsolute;
   if (directAbsolute && Number.isFinite(directAbsolute.x) && Number.isFinite(directAbsolute.y)) {
     // ReactFlow/XYFlow already tracks absolute coordinates when layouts are computed.
     const absolute = { x: directAbsolute.x, y: directAbsolute.y };
