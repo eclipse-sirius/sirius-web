@@ -198,118 +198,116 @@ type FanArrangement = {
   index: number;
 };
 
-function determineFanArrangement(
+type EndpointRole = 'source' | 'target';
+
+type NodeSideEdge = {
+  edge: PositionAwareEdge;
+  role: EndpointRole;
+  handleId: string;
+  position?: Position;
+  oppositeNodeId: string;
+};
+
+const collectNodeSideEdges = (
+  edges: Edge<MultiLabelEdgeData>[],
+  nodeId: string
+): NodeSideEdge[] => {
+  /**
+   * Materialise every edge touching the specified node, labelling whether the node
+   * acts as source or target. The result lets the fan logic treat incoming and
+   * outgoing connections uniformly for a given node side.
+   */
+  const positionedEdges = edges as PositionAwareEdge[];
+  const descriptors: NodeSideEdge[] = [];
+
+  positionedEdges.forEach((edge) => {
+    if (edge.source === nodeId) {
+      descriptors.push({
+        edge,
+        role: 'source',
+        handleId: edge.sourceHandle ?? '',
+        position: edge.sourcePosition,
+        oppositeNodeId: edge.target,
+      });
+    }
+    if (edge.target === nodeId) {
+      descriptors.push({
+        edge,
+        role: 'target',
+        handleId: edge.targetHandle ?? '',
+        position: edge.targetPosition,
+        oppositeNodeId: edge.source,
+      });
+    }
+  });
+
+  return descriptors;
+};
+
+function determineFanArrangementForSide(
   edges: Edge<MultiLabelEdgeData>[],
   currentEdgeId: string,
-  targetId: string,
-  targetHandleId: string | null | undefined,
-  targetPosition: Position,
+  currentRole: EndpointRole,
+  nodeId: string,
+  position: Position,
+  handleId: string | null | undefined,
   getNode: (id: string) => Node<NodeData> | undefined
 ): FanArrangement {
   /**
-   * Figure out how many sibling edges terminate on the same face of the target node.
-   * The resulting offset keeps parallel edges visually distinct by nudging their
-   * first/last columns away from the port. The logic also clusters edges by handle
-   * so custom ports fan independently.
+   * Compute the symmetrical fan arrangement for a node face regardless of whether
+   * edges are entering or leaving that face. Incoming and outgoing edges that share
+   * the same side contribute to the spacing count so the visual spread is consistent.
    */
-  const normalizedHandleId = targetHandleId ?? '';
-  const positionedEdges = edges as PositionAwareEdge[];
+  const normalizedHandleId = handleId ?? '';
+  const sideDescriptors = collectNodeSideEdges(edges, nodeId);
 
-  const sameTargetEdges = positionedEdges.filter((edge) => edge.target === targetId);
-  if (sameTargetEdges.length <= 1) {
-    return { offset: 0, index: 0, count: sameTargetEdges.length };
+  const sameSideDescriptors = sideDescriptors.filter((descriptor) => {
+    const descriptorPosition = descriptor.position ?? position;
+    return descriptorPosition === position;
+  });
+
+  if (sameSideDescriptors.length <= 1) {
+    return { offset: 0, index: 0, count: sameSideDescriptors.length };
   }
 
-  const sameSideEdges = sameTargetEdges.filter((edge) => (edge.targetPosition ?? targetPosition) === targetPosition);
-  const candidateEdges = (() => {
-    if (sameSideEdges.length === 0) {
-      return sameTargetEdges;
+  const candidateDescriptors = (() => {
+    const sameHandleDescriptors = sameSideDescriptors.filter(
+      (descriptor) => descriptor.handleId === normalizedHandleId
+    );
+    if (sameHandleDescriptors.length > 1) {
+      return sameHandleDescriptors;
     }
-    const sameHandleEdges = sameSideEdges.filter((edge) => (edge.targetHandle ?? '') === normalizedHandleId);
-    if (sameHandleEdges.length > 1) {
-      return sameHandleEdges;
-    }
-    return sameSideEdges;
+    return sameSideDescriptors;
   })();
 
-  if (candidateEdges.length <= 1) {
-    return { offset: 0, index: 0, count: candidateEdges.length };
+  if (candidateDescriptors.length <= 1) {
+    return { offset: 0, index: 0, count: candidateDescriptors.length };
   }
 
-  const axis: 'x' | 'y' = isHorizontalPosition(targetPosition) ? 'y' : 'x';
-  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
-    const coordA = getNodeCenterCoordinate(getNode(edgeA.source), axis);
-    const coordB = getNodeCenterCoordinate(getNode(edgeB.source), axis);
+  const axis: 'x' | 'y' = isHorizontalPosition(position) ? 'y' : 'x';
+  const sortedDescriptors = candidateDescriptors.slice().sort((descriptorA, descriptorB) => {
+    const coordA = getNodeCenterCoordinate(getNode(descriptorA.oppositeNodeId), axis);
+    const coordB = getNodeCenterCoordinate(getNode(descriptorB.oppositeNodeId), axis);
     if (coordA !== coordB) {
       return coordA - coordB;
     }
-    return edgeA.id.localeCompare(edgeB.id);
+    if (descriptorA.role !== descriptorB.role) {
+      return descriptorA.role === 'source' ? -1 : 1;
+    }
+    return descriptorA.edge.id.localeCompare(descriptorB.edge.id);
   });
 
-  let edgeIndex = sortedEdges.findIndex((edge) => edge.id === currentEdgeId);
-  if (edgeIndex === -1) {
-    edgeIndex = 0;
+  let descriptorIndex = sortedDescriptors.findIndex(
+    (descriptor) => descriptor.edge.id === currentEdgeId && descriptor.role === currentRole
+  );
+  if (descriptorIndex === -1) {
+    descriptorIndex = 0;
   }
 
   return {
-    offset: symmetricOffset(edgeIndex, sortedEdges.length),
-    count: sortedEdges.length,
-    index: edgeIndex,
-  };
-}
-
-//TOCHECK: Very similar branching to determineFanArrangement; consider unifying to reduce duplication.
-function determineSourceFanArrangement(
-  edges: Edge<MultiLabelEdgeData>[],
-  currentEdgeId: string,
-  sourceId: string,
-  sourceHandleId: string | null | undefined,
-  sourcePosition: Position,
-  getNode: (id: string) => Node<NodeData> | undefined
-): FanArrangement {
-  const normalizedHandleId = sourceHandleId ?? '';
-  const positionedEdges = edges as PositionAwareEdge[];
-
-  const sameSourceEdges = positionedEdges.filter((edge) => edge.source === sourceId);
-  if (sameSourceEdges.length <= 1) {
-    return { offset: 0, index: 0, count: sameSourceEdges.length };
-  }
-
-  const sameSideEdges = sameSourceEdges.filter((edge) => (edge.sourcePosition ?? sourcePosition) === sourcePosition);
-  const candidateEdges = (() => {
-    if (sameSideEdges.length === 0) {
-      return sameSourceEdges;
-    }
-    const sameHandleEdges = sameSideEdges.filter((edge) => (edge.sourceHandle ?? '') === normalizedHandleId);
-    if (sameHandleEdges.length > 1) {
-      return sameHandleEdges;
-    }
-    return sameSideEdges;
-  })();
-
-  if (candidateEdges.length <= 1) {
-    return { offset: 0, index: 0, count: candidateEdges.length };
-  }
-
-  const axis: 'x' | 'y' = isHorizontalPosition(sourcePosition) ? 'y' : 'x';
-  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
-    const coordA = getNodeCenterCoordinate(getNode(edgeA.target), axis);
-    const coordB = getNodeCenterCoordinate(getNode(edgeB.target), axis);
-    if (coordA !== coordB) {
-      return coordA - coordB;
-    }
-    return edgeA.id.localeCompare(edgeB.id);
-  });
-
-  let edgeIndex = sortedEdges.findIndex((edge) => edge.id === currentEdgeId);
-  if (edgeIndex === -1) {
-    edgeIndex = 0;
-  }
-
-  return {
-    offset: symmetricOffset(edgeIndex, sortedEdges.length),
-    count: sortedEdges.length,
-    index: edgeIndex,
+    offset: symmetricOffset(descriptorIndex, sortedDescriptors.length),
+    count: sortedDescriptors.length,
+    index: descriptorIndex,
   };
 }
 
@@ -831,21 +829,23 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
 
   if (edgesFromStore.length > 0) {
     // Determine how many siblings leave the same side of the source node.
-    sourceArrangement = determineSourceFanArrangement(
+    sourceArrangement = determineFanArrangementForSide(
       edgesFromStore,
       id,
+      'source',
       source,
-      sourceHandleId,
       sourcePosition,
+      sourceHandleId,
       (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
     );
     // Symmetric calculation for the target side.
-    targetArrangement = determineFanArrangement(
+    targetArrangement = determineFanArrangementForSide(
       edgesFromStore,
       id,
+      'target',
       target,
-      targetHandleId,
       targetPosition,
+      targetHandleId,
       (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
     );
   }
