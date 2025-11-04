@@ -519,7 +519,7 @@ const applyFanOffsetGeneric = (
   };
 };
 
-function ensureRectilinearPath(
+export function ensureRectilinearPath(
   bendingPoints: XYPosition[],
   source: XYPosition,
   target: XYPosition,

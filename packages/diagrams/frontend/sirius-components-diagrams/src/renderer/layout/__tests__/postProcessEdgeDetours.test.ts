@@ -3,7 +3,7 @@ import path from 'node:path';
 import { Position, type Edge, type Node, type XYPosition } from '@xyflow/react';
 import { describe, expect, it } from 'vitest';
 import { buildDetouredPolyline } from '../postProcessEdgeDetours';
-import { simplifyRectilinearBends } from '../../edge/SmoothStepEdgeWrapper';
+import { simplifyRectilinearBends, ensureRectilinearPath } from '../../edge/SmoothStepEdgeWrapper';
 import type { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import type { DiagramNodeType } from '../../node/NodeTypes.types';
 import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
@@ -167,50 +167,6 @@ const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdge
 
 const determineInitialAxis = (position: Position): Axis =>
   position === Position.Left || position === Position.Right ? 'horizontal' : 'vertical';
-
-//TOCHECK: Implementation mirrors production ensureRectilinearPath; consider importing the real helper so test behaviour stays aligned.
-const ensureRectilinearPath = (
-  bendingPoints: XYPosition[],
-  source: XYPosition,
-  target: XYPosition,
-  initialAxis: Axis,
-): XYPosition[] => {
-  const rectified: XYPosition[] = [];
-  const checkpoints = [...bendingPoints, target];
-  let prev = source;
-  let axis: Axis = initialAxis;
-
-  for (let i = 0; i < checkpoints.length; i++) {
-    const current = checkpoints[i];
-    if (!current) {
-      continue;
-    }
-    let dx = current.x - prev.x;
-    let dy = current.y - prev.y;
-    let guard = 0;
-
-    while (!(axis === 'horizontal' ? dy === 0 : dx === 0) && (dx !== 0 || dy !== 0) && guard < 4) {
-      const intermediate = axis === 'horizontal' ? { x: current.x, y: prev.y } : { x: prev.x, y: current.y };
-      if (intermediate.x === prev.x && intermediate.y === prev.y) {
-        break;
-      }
-      rectified.push(intermediate);
-      prev = intermediate;
-      axis = axis === 'horizontal' ? 'vertical' : 'horizontal';
-      dx = current.x - prev.x;
-      dy = current.y - prev.y;
-      guard++;
-    }
-
-    if (i < checkpoints.length - 1 && (current.x !== prev.x || current.y !== prev.y)) {
-      rectified.push(current);
-    }
-    prev = current;
-    axis = axis === 'horizontal' ? 'vertical' : 'horizontal';
-  }
-
-  return rectified;
-};
 
 const harnessFixturesDir = path.join(__dirname, '../../../../../../../dev/frontend/routing-harness/src/fixtures');
 //TOCHECK: Tests depend on fixtures living in the dev harness workspace; mirroring them locally would make the suite less brittle.
