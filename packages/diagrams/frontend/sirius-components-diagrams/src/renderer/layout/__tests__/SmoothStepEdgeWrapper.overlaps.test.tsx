@@ -432,6 +432,14 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     // eslint-disable-next-line no-console
     console.log(overlaps);
     expect(overlaps.length).toBe(0);
+
+    const diagonalDown = polylines.get('edge-diagonal-down');
+    const diagonalUp = polylines.get('edge-diagonal-up');
+    expect(diagonalDown).toBeDefined();
+    expect(diagonalUp).toBeDefined();
+    const downColumn = diagonalDown?.[1]?.x ?? 0;
+    const upColumn = diagonalUp?.[1]?.x ?? 0;
+    expect(Math.abs(downColumn - upColumn)).toBeGreaterThanOrEqual(6);
   });
 
   it('can be disabled to preserve the legacy overlapping behaviour', () => {
@@ -458,5 +466,58 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
 
     expect(overlaps.length).toBeGreaterThan(0);
     expect(diagonalOverlapDetected).toBe(true);
+  });
+});
+
+// Dedicated suite that exercises the almost-straight straightening heuristic.
+describe('SmoothStepEdgeWrapper endpoint straightening post-processing', () => {
+  beforeEach(() => {
+    capturedPolylines.clear();
+    mockInternalNodes.clear();
+  });
+
+  // When the feature is on, the vertical edge should collapse onto a single X coordinate.
+  it('straightens nearly vertical edges by default', () => {
+    const fixture = loadFixture('almost-straight-vertical.json');
+    const { polylines } = renderHarnessFixture(fixture);
+    const polyline = polylines.get('edge-vertical-near');
+    expect(polyline).toBeDefined();
+    const xValues = (polyline ?? []).map((point) => point.x);
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    expect(maxX - minX).toBeLessThan(0.5);
+    expect((polyline ?? []).length).toBe(2);
+  });
+
+  // Opting out keeps the tiny zig-zag so we still hit the regression the old behaviour exposed.
+  it('can be disabled to preserve the tiny zig-zag', () => {
+    const fixture = loadFixture('almost-straight-vertical.json');
+    const overrides: EdgeOverridesLookup = {
+      'edge-vertical-near': { rectilinearStraightenEnabled: false },
+    };
+    const { polylines } = renderHarnessFixture(fixture, overrides);
+    const polyline = polylines.get('edge-vertical-near');
+    expect(polyline).toBeDefined();
+    const xValues = (polyline ?? []).map((point) => point.x);
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    expect(maxX - minX).toBeGreaterThan(0.5);
+    expect(maxX - minX).toBeLessThanOrEqual(20);
+  });
+
+  // Straightening must leave the fan offsets untouched when multiple edges share the same handle.
+  it('skips straightening when a fan already spreads the edges', () => {
+    const fixture = loadFixture('fan-out-right.json');
+    const { polylines } = renderHarnessFixture(fixture);
+    const top = polylines.get('edge-top');
+    const bottom = polylines.get('edge-bottom');
+    expect(top).toBeDefined();
+    expect(bottom).toBeDefined();
+    const topFirstBend = top?.[1];
+    const bottomFirstBend = bottom?.[1];
+    expect(topFirstBend).toBeDefined();
+    expect(bottomFirstBend).toBeDefined();
+    const deltaY = Math.abs((topFirstBend?.y ?? 0) - (bottomFirstBend?.y ?? 0));
+    expect(deltaY).toBeGreaterThan(0.5);
   });
 });

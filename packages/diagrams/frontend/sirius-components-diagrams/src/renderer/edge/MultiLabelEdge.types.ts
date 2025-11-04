@@ -51,4 +51,9 @@ export interface MultiLabelEdgeData extends EdgeData {
    * by a few pixels. Defaults to true.
    */
   rectilinearParallelSpacingEnabled?: boolean;
+  /**
+   * Enables the post-processing pass that straightens nearly straight polylines by shifting their endpoints
+   * when the deviation is small. Defaults to true.
+   */
+  rectilinearStraightenEnabled?: boolean;
 }

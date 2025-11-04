@@ -24,10 +24,11 @@ import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
-import { buildSpacedPolyline, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
+import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
+import { buildSpacedPolyline, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
+import { straightenAlmostStraightPolyline } from '../layout/postProcessEdgeStraighten';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
@@ -44,7 +45,11 @@ const DEFAULT_FAN_OUT_ENABLED = true;
 const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
 const MIN_DETOUR_SPAN = 6;
-const DEFAULT_PARALLEL_SPACING_ENABLED = true;
+const DEFAULT_PARALLEL_SPACING_ENABLED = false;
+// Enables the almost-straight post-processing pass unless an edge opts out.
+const DEFAULT_STRAIGHTEN_ENABLED = true;
+// Maximum deviation (in pixels) we tolerate before declaring that a zig-zag is meaningful.
+const DEFAULT_STRAIGHTEN_THRESHOLD = 20;
 
 type CachedPolyline = {
   points: XYPosition[];
@@ -197,9 +202,7 @@ function determineFanArrangement(
     return { offset: 0, index: 0, count: sameTargetEdges.length };
   }
 
-  const sameSideEdges = sameTargetEdges.filter(
-    (edge) => (edge.targetPosition ?? targetPosition) === targetPosition
-  );
+  const sameSideEdges = sameTargetEdges.filter((edge) => (edge.targetPosition ?? targetPosition) === targetPosition);
   const candidateEdges = (() => {
     if (sameSideEdges.length === 0) {
       return sameTargetEdges;
@@ -216,16 +219,14 @@ function determineFanArrangement(
   }
 
   const axis: 'x' | 'y' = isHorizontalPosition(targetPosition) ? 'y' : 'x';
-  const sortedEdges = candidateEdges
-    .slice()
-    .sort((edgeA, edgeB) => {
-      const coordA = getNodeCenterCoordinate(getNode(edgeA.source), axis);
-      const coordB = getNodeCenterCoordinate(getNode(edgeB.source), axis);
-      if (coordA !== coordB) {
-        return coordA - coordB;
-      }
-      return edgeA.id.localeCompare(edgeB.id);
-    });
+  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
+    const coordA = getNodeCenterCoordinate(getNode(edgeA.source), axis);
+    const coordB = getNodeCenterCoordinate(getNode(edgeB.source), axis);
+    if (coordA !== coordB) {
+      return coordA - coordB;
+    }
+    return edgeA.id.localeCompare(edgeB.id);
+  });
 
   let edgeIndex = sortedEdges.findIndex((edge) => edge.id === currentEdgeId);
   if (edgeIndex === -1) {
@@ -255,9 +256,7 @@ function determineSourceFanArrangement(
     return { offset: 0, index: 0, count: sameSourceEdges.length };
   }
 
-  const sameSideEdges = sameSourceEdges.filter(
-    (edge) => (edge.sourcePosition ?? sourcePosition) === sourcePosition
-  );
+  const sameSideEdges = sameSourceEdges.filter((edge) => (edge.sourcePosition ?? sourcePosition) === sourcePosition);
   const candidateEdges = (() => {
     if (sameSideEdges.length === 0) {
       return sameSourceEdges;
@@ -274,16 +273,14 @@ function determineSourceFanArrangement(
   }
 
   const axis: 'x' | 'y' = isHorizontalPosition(sourcePosition) ? 'y' : 'x';
-  const sortedEdges = candidateEdges
-    .slice()
-    .sort((edgeA, edgeB) => {
-      const coordA = getNodeCenterCoordinate(getNode(edgeA.target), axis);
-      const coordB = getNodeCenterCoordinate(getNode(edgeB.target), axis);
-      if (coordA !== coordB) {
-        return coordA - coordB;
-      }
-      return edgeA.id.localeCompare(edgeB.id);
-    });
+  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
+    const coordA = getNodeCenterCoordinate(getNode(edgeA.target), axis);
+    const coordB = getNodeCenterCoordinate(getNode(edgeB.target), axis);
+    if (coordA !== coordB) {
+      return coordA - coordB;
+    }
+    return edgeA.id.localeCompare(edgeB.id);
+  });
 
   let edgeIndex = sortedEdges.findIndex((edge) => edge.id === currentEdgeId);
   if (edgeIndex === -1) {
@@ -332,8 +329,7 @@ function alignTailCoordinate(points: XYPosition[], axis: 'x' | 'y', value: numbe
     if (coordinate === undefined || Math.abs(coordinate - base) > 0.01) {
       break;
     }
-    points[pointer] =
-      axis === 'x' ? { x: value, y: current.y } : { x: current.x, y: value };
+    points[pointer] = axis === 'x' ? { x: value, y: current.y } : { x: current.x, y: value };
     pointer--;
   }
 }
@@ -518,10 +514,7 @@ function ensureRectilinearPath(
     let guard = 0;
 
     while (!(axis === 'horizontal' ? dy === 0 : dx === 0) && (dx !== 0 || dy !== 0) && guard < 4) {
-      const intermediate =
-        axis === 'horizontal'
-          ? { x: current.x, y: prev.y }
-          : { x: prev.x, y: current.y };
+      const intermediate = axis === 'horizontal' ? { x: current.x, y: prev.y } : { x: prev.x, y: current.y };
       if (intermediate.x === prev.x && intermediate.y === prev.y) {
         break;
       }
@@ -794,6 +787,33 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   const customEdge = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
   const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   const fanOutEnabled = data?.rectilinearFanOutEnabled ?? DEFAULT_FAN_OUT_ENABLED;
+  // Fetch the complete edge list only once; we need it for fan calculations, detours, and spacing.
+  const edgesFromStore = (getEdges?.() ?? []) as Edge<MultiLabelEdgeData>[];
+
+  // Pre-compute the fan arrangement for both endpoints so subsequent passes can reuse the same metadata.
+  let sourceArrangement: FanArrangement | undefined;
+  let targetArrangement: FanArrangement | undefined;
+
+  if (edgesFromStore.length > 0) {
+    // Determine how many siblings leave the same side of the source node.
+    sourceArrangement = determineSourceFanArrangement(
+      edgesFromStore,
+      id,
+      source,
+      sourceHandleId,
+      sourcePosition,
+      (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+    );
+    // Symmetric calculation for the target side.
+    targetArrangement = determineFanArrangement(
+      edgesFromStore,
+      id,
+      target,
+      targetHandleId,
+      targetPosition,
+      (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+    );
+  }
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     // Preserve user-authored geometry; downstream component treats this as a custom edge.
     bendingPoints = data.bendingPoints;
@@ -893,55 +913,35 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             break;
         }
 
-        if (fanOutEnabled && getEdges) {
-          const edges = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
-          const arrangement = determineSourceFanArrangement(
-            edges,
-            id,
-            source,
-            sourceHandleId,
+        // Apply the fan-out only when multiple edges share the source side and the feature is enabled.
+        if (fanOutEnabled && sourceArrangement && sourceArrangement.count > 1) {
+          const fanResult = applyFanOffsetAtSource(
+            bendingPoints,
             sourcePosition,
-            (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+            { x: sourceX, y: sourceY },
+            sourceArrangement.offset,
+            minOutwardLength,
+            sourceArrangement
           );
-          if (arrangement.count > 1) {
-            const fanResult = applyFanOffsetAtSource(
-              bendingPoints,
-              sourcePosition,
-              { x: sourceX, y: sourceY },
-              arrangement.offset,
-              minOutwardLength,
-              arrangement
-            );
-            bendingPoints = fanResult.bendingPoints;
-            sourceX = fanResult.sourceX;
-            sourceY = fanResult.sourceY;
-          }
+          bendingPoints = fanResult.bendingPoints;
+          sourceX = fanResult.sourceX;
+          sourceY = fanResult.sourceY;
         }
 
-        if (fanInEnabled && getEdges) {
-          const edges = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
-          const arrangement = determineFanArrangement(
-            edges,
-            id,
-            target,
-            targetHandleId,
+        // Apply the fan-in only when the target side receives more than one edge.
+        if (fanInEnabled && targetArrangement && targetArrangement.count > 1) {
+          const fanResult = applyFanOffset(
+            bendingPoints,
             targetPosition,
-            (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+            { x: sourceX, y: sourceY },
+            { x: targetX, y: targetY },
+            targetArrangement.offset,
+            minOutwardLength,
+            targetArrangement
           );
-          if (arrangement.count > 1) {
-            const fanResult = applyFanOffset(
-              bendingPoints,
-              targetPosition,
-              { x: sourceX, y: sourceY },
-              { x: targetX, y: targetY },
-              arrangement.offset,
-              minOutwardLength,
-              arrangement
-            );
-            bendingPoints = fanResult.bendingPoints;
-            targetX = fanResult.targetX;
-            targetY = fanResult.targetY;
-          }
+          bendingPoints = fanResult.bendingPoints;
+          targetX = fanResult.targetX;
+          targetY = fanResult.targetY;
         }
 
         bendingPoints = enforceTargetClearance(
@@ -968,21 +968,68 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   // simplification pass could erase the detour we add).
   let rectifiedBendingPoints = customEdge
     ? baselineBendingPoints
-    : simplifyRectilinearBends(
-        baselineBendingPoints,
-        { x: sourceX, y: sourceY },
-        { x: targetX, y: targetY }
-      );
+    : simplifyRectilinearBends(baselineBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
 
-  const parallelSpacingEnabled =
-    data?.rectilinearParallelSpacingEnabled ?? DEFAULT_PARALLEL_SPACING_ENABLED;
-  const shouldCollectParallelPolylines = parallelSpacingEnabled && !customEdge && !!getEdges && !!getNodes;
+  // The straightening pass only runs for automatically routed edges; custom polylines remain untouched.
+  const straightenEnabled = (data?.rectilinearStraightenEnabled ?? DEFAULT_STRAIGHTEN_ENABLED) && !customEdge;
+  if (straightenEnabled) {
+    const sourceFanCount = sourceArrangement?.count ?? 1;
+    const targetFanCount = targetArrangement?.count ?? 1;
+    // Never collapse the micro zig-zag when a fan already spreads the edges around the ports.
+    const fansWouldBeFlattened = sourceFanCount > 1 || targetFanCount > 1;
+    // Both ends must share the same axis preference otherwise the edge is intentionally L-shaped.
+    const sourceIsHorizontal = isHorizontalPosition(sourcePosition);
+    const targetIsHorizontal = isHorizontalPosition(targetPosition);
+    if (!fansWouldBeFlattened && sourceIsHorizontal === targetIsHorizontal) {
+      // Horizontal handles imply we snap along Y, vertical handles snap along X.
+      const axis: Axis = sourceIsHorizontal ? 'horizontal' : 'vertical';
+      // Ask the helper to return a straightened version of the polyline (if applicable).
+      const straightenedPolyline = straightenAlmostStraightPolyline(
+        [
+          { x: sourceX, y: sourceY },
+          ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
+          { x: targetX, y: targetY },
+        ],
+        {
+          axis,
+          threshold: DEFAULT_STRAIGHTEN_THRESHOLD,
+          sourceCount: sourceArrangement?.count ?? 1,
+          targetCount: targetArrangement?.count ?? 1,
+        }
+      );
+      if (straightenedPolyline && straightenedPolyline.length >= 2) {
+        // Re-anchor both endpoints to the straightened coordinates.
+        const firstPoint = straightenedPolyline[0];
+        const lastPoint = straightenedPolyline[straightenedPolyline.length - 1];
+        if (firstPoint && lastPoint) {
+          sourceX = firstPoint.x;
+          sourceY = firstPoint.y;
+          targetX = lastPoint.x;
+          targetY = lastPoint.y;
+          // Discard the endpoints while keeping the interior bends for the simplifier.
+          rectifiedBendingPoints = straightenedPolyline.slice(1, -1);
+          // Run one additional simplification pass so redundant elbows vanish.
+          rectifiedBendingPoints = simplifyRectilinearBends(
+            rectifiedBendingPoints,
+            { x: sourceX, y: sourceY },
+            { x: targetX, y: targetY }
+          );
+        }
+      }
+    }
+  }
+
+  const parallelSpacingEnabled = data?.rectilinearParallelSpacingEnabled ?? DEFAULT_PARALLEL_SPACING_ENABLED;
+  // Parallel spacing piggybacks on the pre-fetched edge list; skip when the context does not provide it.
+  const shouldCollectParallelPolylines =
+    parallelSpacingEnabled && !customEdge && edgesFromStore.length > 0 && !!getNodes;
 
   let detouredPolyline: XYPosition[] | undefined;
   let detourPolylines: Map<string, XYPosition[]> | undefined;
 
-  if (!customEdge && getEdges) {
-    const edgesForDetour = (getEdges() ?? []) as Edge<MultiLabelEdgeData>[];
+  // Reuse the shared edge cache when building detours so we do not poll the store repeatedly.
+  if (!customEdge && edgesFromStore.length > 0) {
+    const edgesForDetour = edgesFromStore;
     const nodesForDetour = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
     if (edgesForDetour.length > 0 && nodesForDetour.length > 0) {
       const nodesAsNodes = nodesForDetour as Node<NodeData, DiagramNodeType>[];
@@ -1065,12 +1112,11 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       );
     });
 
-    const referencePolyline =
-      detouredPolyline ?? [
-        { x: sourceX, y: sourceY },
-        ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
-        { x: targetX, y: targetY },
-      ];
+    const referencePolyline = detouredPolyline ?? [
+      { x: sourceX, y: sourceY },
+      ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
+      { x: targetX, y: targetY },
+    ];
 
     polylinesForSpacing.set(
       id,

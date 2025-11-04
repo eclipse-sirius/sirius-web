@@ -46,6 +46,7 @@ const DETOUR_STACK_SPACING = 6;
 // We repeat the collision/detour process a few times to resolve dependencies.
 // Three passes are enough in practice because each pass strictly lowers overlap.
 const MAX_PASSES = 3;
+const DETECTION_PADDING = DETECTION_GAP;
 
 const getHandlePoint = (rect: Rect | undefined, position?: Position): XYPosition | undefined => {
   // Look up the anchor point on a node rectangle corresponding to a given port.
@@ -275,7 +276,7 @@ const gatherCollisions = (
         return;
       }
 
-      const detectionRect = expandRect(rect, DETECTION_GAP);
+      const detectionRect = expandRect(rect, DETECTION_PADDING);
       const sourceHandlePoint = isSourceNode ? getHandlePoint(rect, edgeWithPositions.sourcePosition) : undefined;
       // Pre-compute the rectangle bounds once to avoid recalculating inside loops.
       const paddedBounds = {
@@ -308,12 +309,16 @@ const gatherCollisions = (
                 case Position.Left:
                   return Math.abs(span.exitPoint.x - detectionRect.x) <= FACE_ALIGNMENT_TOLERANCE;
                 case Position.Right:
-                  return Math.abs(span.exitPoint.x - (detectionRect.x + detectionRect.width)) <= FACE_ALIGNMENT_TOLERANCE;
+                  return (
+                    Math.abs(span.exitPoint.x - (detectionRect.x + detectionRect.width)) <= FACE_ALIGNMENT_TOLERANCE
+                  );
                 case Position.Top:
                   return Math.abs(span.exitPoint.y - detectionRect.y) <= FACE_ALIGNMENT_TOLERANCE;
                 case Position.Bottom:
                 default:
-                  return Math.abs(span.exitPoint.y - (detectionRect.y + detectionRect.height)) <= FACE_ALIGNMENT_TOLERANCE;
+                  return (
+                    Math.abs(span.exitPoint.y - (detectionRect.y + detectionRect.height)) <= FACE_ALIGNMENT_TOLERANCE
+                  );
               }
             })();
             const lateralDelta = (() => {
@@ -590,7 +595,7 @@ export function buildDetouredPolyline(
     if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
       return;
     }
-    const detectionRect = expandRect(rect, DETECTION_GAP);
+    const detectionRect = expandRect(rect, DETECTION_PADDING);
     const spans = collectPolylineRectCollisions(currentPolyline, detectionRect);
     if (spans.length > 0) {
       baselineCollisions.add(nodeId);
@@ -631,8 +636,12 @@ export function buildDetouredPolyline(
     const spanBounds: Rect = {
       x: Math.min(sourceRect.x, targetRect.x),
       y: Math.min(sourceRect.y, targetRect.y),
-      width: Math.max(sourceRect.x + sourceRect.width, targetRect.x + targetRect.width) - Math.min(sourceRect.x, targetRect.x),
-      height: Math.max(sourceRect.y + sourceRect.height, targetRect.y + targetRect.height) - Math.min(sourceRect.y, targetRect.y),
+      width:
+        Math.max(sourceRect.x + sourceRect.width, targetRect.x + targetRect.width) -
+        Math.min(sourceRect.x, targetRect.x),
+      height:
+        Math.max(sourceRect.y + sourceRect.height, targetRect.y + targetRect.height) -
+        Math.min(sourceRect.y, targetRect.y),
     };
 
     for (const [nodeId, rect] of rects.entries()) {
@@ -649,7 +658,7 @@ export function buildDetouredPolyline(
         if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
           continue;
         }
-        const detectionRect = expandRect(rect, DETECTION_GAP);
+        const detectionRect = expandRect(rect, DETECTION_PADDING);
         const spans = collectPolylineRectCollisions(candidate, detectionRect);
         if (spans.length > 0) {
           continue candidateLoop;
