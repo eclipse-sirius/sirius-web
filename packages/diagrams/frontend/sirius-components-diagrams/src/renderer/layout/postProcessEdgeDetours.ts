@@ -92,26 +92,6 @@ const buildInitialPolyline = (edge: Edge<EdgeData>, rects: Map<string, Rect>): E
   return [sourcePoint, ...bendingPoints.map((point) => ({ x: point.x, y: point.y })), targetPoint];
 };
 
-const normalizePolyline = (points: XYPosition[]): XYPosition[] => {
-  const normalized: XYPosition[] = [];
-  points.forEach((point) => {
-    if (!point) {
-      return;
-    }
-    const last = normalized[normalized.length - 1];
-    if (!last || last.x !== point.x || last.y !== point.y) {
-      normalized.push({ x: point.x, y: point.y });
-    }
-  });
-  return normalized;
-};
-
-const rectanglesOverlap = (first: Rect, second: Rect, tolerance = 0): boolean =>
-  first.x + first.width + tolerance > second.x &&
-  second.x + second.width + tolerance > first.x &&
-  first.y + first.height + tolerance > second.y &&
-  second.y + second.height + tolerance > first.y;
-
 type CollisionCandidate = {
   // The concrete edge that hits the obstacle.
   edge: Edge<EdgeData>;
@@ -621,85 +601,6 @@ export function buildDetouredPolyline(
       baselineCollisions.add(nodeId);
     }
   });
-
-  const trySimpleCandidate = (): XYPosition[] | null => {
-    const sourceRect = rects.get(currentEdge.source);
-    const targetRect = rects.get(currentEdge.target);
-    if (!sourceRect || !targetRect) {
-      return null;
-    }
-
-    const sourceNode = nodeLookup.get(currentEdge.source);
-    const targetNode = nodeLookup.get(currentEdge.target);
-    const allowSimple =
-      sourceNode?.data?.targetObjectLabel === 'sirius-components-view-builder' &&
-      targetNode?.data?.targetObjectLabel === 'e';
-    //TOCHECK: Hard-coding targetObjectLabel === 'e' looks brittle; confirm this magic value is intentional.
-    if (!allowSimple) {
-      return null;
-    }
-
-    if (baselineCollisions.size > 0) {
-      return null;
-    }
-
-    const sourcePoint = currentPolyline[0];
-    const targetPoint = currentPolyline[currentPolyline.length - 1];
-    if (!sourcePoint || !targetPoint) {
-      return null;
-    }
-
-    const verticalFirst = normalizePolyline([sourcePoint, { x: sourcePoint.x, y: targetPoint.y }, targetPoint]);
-    const horizontalFirst = normalizePolyline([sourcePoint, { x: targetPoint.x, y: sourcePoint.y }, targetPoint]);
-
-    const candidates = [verticalFirst, horizontalFirst].filter((candidate) => candidate.length >= 2);
-
-    const spanBounds: Rect = {
-      x: Math.min(sourceRect.x, targetRect.x),
-      y: Math.min(sourceRect.y, targetRect.y),
-      width:
-        Math.max(sourceRect.x + sourceRect.width, targetRect.x + targetRect.width) -
-        Math.min(sourceRect.x, targetRect.x),
-      height:
-        Math.max(sourceRect.y + sourceRect.height, targetRect.y + targetRect.height) -
-        Math.min(sourceRect.y, targetRect.y),
-    };
-
-    for (const [nodeId, rect] of rects.entries()) {
-      if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
-        continue;
-      }
-      if (rectanglesOverlap(rect, spanBounds)) {
-        return null;
-      }
-    }
-
-    candidateLoop: for (const candidate of candidates) {
-      for (const [nodeId, rect] of rects.entries()) {
-        if (nodeId === currentEdge.source || nodeId === currentEdge.target) {
-          continue;
-        }
-        const detectionRect = expandRect(rect, DETECTION_PADDING);
-        const spans = collectPolylineRectCollisions(candidate, detectionRect);
-        if (spans.length > 0) {
-          continue candidateLoop;
-        }
-      }
-      return candidate;
-    }
-
-    return null;
-  };
-
-  const simpleCandidate = trySimpleCandidate();
-  if (simpleCandidate) {
-    return collectAll
-      ? {
-          current: simpleCandidate,
-          polylines: new Map<string, EdgePolyline>([[currentEdge.id, simpleCandidate]]),
-        }
-      : simpleCandidate;
-  }
 
   // Initialise the polyline map with either the provided geometry or fresh
   // straight polylines for the other edges. We need the entire edge set so that
