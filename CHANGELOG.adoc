@@ -44,7 +44,7 @@ This flag must be set in custom node converter, an example can be found in `Elli
 For now it consists only in adding missing attributes from `CreateProjectInput` in `CreateProjectFromTemplateInput`, using the project template label as the `CreateProjectFromTemplateInput#name` and project template natures as the `CreateProjectFromTemplateInput#natures`.
 As described in ADR-211, the final purpose is to only have one way to create a project, and thus, only one input to create a project will remain.
 Updates the GraphQL schema and frontend hooks accordingly.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] The extension point for adding global actions to a table has been renamed from `settingButtonMenuEntryExtensionPoint` to `toolsButtonMenuEntryExtensionPoint`
 
 === Dependency update
 
