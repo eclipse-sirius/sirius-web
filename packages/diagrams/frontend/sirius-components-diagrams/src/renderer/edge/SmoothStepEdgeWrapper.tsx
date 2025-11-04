@@ -311,6 +311,12 @@ function determineFanArrangementForSide(
   };
 }
 
+type FanOffsetResult = {
+  bendingPoints: XYPosition[];
+  x: number;
+  y: number;
+};
+
 function computeFanOutwardLength(arrangement: FanArrangement, minOutwardLength: number): number {
   const { count, index } = arrangement;
   if (count <= 1) {
@@ -372,97 +378,20 @@ function alignHeadCoordinate(points: XYPosition[], axis: 'x' | 'y', value: numbe
   }
 }
 
-type FanSourceApplicationResult = {
-  bendingPoints: XYPosition[];
-  sourceX: number;
-  sourceY: number;
-};
-
-function applyFanOffsetAtSource(
+const applyFanOffsetGeneric = (
+  role: EndpointRole,
   bendingPoints: XYPosition[],
-  sourcePosition: Position,
-  sourceCoordinates: { x: number; y: number },
-  perpendicularOffset: number,
-  minOutwardLength: number,
-  arrangement?: FanArrangement
-): FanSourceApplicationResult {
-  /**
-   * Offset the first column/row of the polyline so multiple edges leaving the same
-   * port do not stack perfectly on top of each other. The helper keeps the path
-   * rectilinear while respecting the minimum outward run length.
-   */
-  const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
-  const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
-  const outwardLength = hasFanArrangement
-    ? computeFanOutwardLength(arrangement as FanArrangement, minOutwardLength)
-    : Math.max(minOutwardLength, 1);
-
-  let sourceX = sourceCoordinates.x;
-  let sourceY = sourceCoordinates.y;
-
-  if (isHorizontalPosition(sourcePosition)) {
-    sourceY = sourceCoordinates.y + perpendicularOffset;
-    if (adjustedPoints.length === 0) {
-      const direction = sourcePosition === Position.Right ? 1 : -1;
-      const columnX = sourceCoordinates.x + direction * outwardLength;
-      adjustedPoints.push({ x: columnX, y: sourceY });
-    }
-    if (perpendicularOffset !== 0) {
-      alignHeadCoordinate(adjustedPoints, 'y', sourceY);
-    }
-    if (hasFanArrangement) {
-      const direction = sourcePosition === Position.Right ? 1 : -1;
-      const desiredX = sourceCoordinates.x + direction * outwardLength;
-      alignHeadCoordinate(adjustedPoints, 'x', desiredX);
-    }
-    return {
-      bendingPoints: adjustedPoints,
-      sourceX,
-      sourceY,
-    };
-  }
-
-  sourceX = sourceCoordinates.x + perpendicularOffset;
-  if (adjustedPoints.length === 0) {
-    const direction = sourcePosition === Position.Bottom ? 1 : -1;
-    const columnY = sourceCoordinates.y + direction * outwardLength;
-    adjustedPoints.push({ x: sourceX, y: columnY });
-  }
-  if (perpendicularOffset !== 0) {
-    alignHeadCoordinate(adjustedPoints, 'x', sourceX);
-  }
-  if (hasFanArrangement) {
-    const direction = sourcePosition === Position.Bottom ? 1 : -1;
-    const desiredY = sourceCoordinates.y + direction * outwardLength;
-    alignHeadCoordinate(adjustedPoints, 'y', desiredY);
-  }
-
-  return {
-    bendingPoints: adjustedPoints,
-    sourceX,
-    sourceY,
-  };
-}
-
-type FanApplicationResult = {
-  bendingPoints: XYPosition[];
-  targetX: number;
-  targetY: number;
-};
-
-function applyFanOffset(
-  bendingPoints: XYPosition[],
-  targetPosition: Position,
+  position: Position,
   sourceCoordinates: { x: number; y: number },
   targetCoordinates: { x: number; y: number },
   perpendicularOffset: number,
   minOutwardLength: number,
   arrangement?: FanArrangement
-): FanApplicationResult {
-  //TOCHECK: Logic is almost identical to applyFanOffsetAtSource; helper parameters could make this reusable.
+): FanOffsetResult => {
   /**
-   * Mirror of applyFanOffsetAtSource for the target end of the edge. Adjusts the
-   * final column/row so edges that converge on the same handle stay readable.
+   * Shared logic used to offset the first/last column of the rectilinear polyline.
+   * The behaviour mirrors the previous source/target helpers while making the axis
+   * adjustments configurable based on the endpoint role.
    */
   const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
   const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
@@ -470,55 +399,72 @@ function applyFanOffset(
     ? computeFanOutwardLength(arrangement as FanArrangement, minOutwardLength)
     : Math.max(minOutwardLength, 1);
 
-  let targetX = targetCoordinates.x;
-  let targetY = targetCoordinates.y;
+  const coordinates = role === 'source' ? sourceCoordinates : targetCoordinates;
+  const counterpartCoordinates = role === 'source' ? targetCoordinates : sourceCoordinates;
+  const align = role === 'source' ? alignHeadCoordinate : alignTailCoordinate;
+  const isHorizontal = isHorizontalPosition(position);
+  const outwardDirection = (() => {
+    switch (position) {
+      case Position.Right:
+      case Position.Bottom:
+        return 1;
+      case Position.Left:
+      case Position.Top:
+      default:
+        return -1;
+    }
+  })();
 
-  if (isHorizontalPosition(targetPosition)) {
-    targetY = targetCoordinates.y + perpendicularOffset;
+  let baseX = coordinates.x;
+  let baseY = coordinates.y;
+
+  if (isHorizontal) {
+    baseY = coordinates.y + perpendicularOffset;
     if (adjustedPoints.length === 0) {
-      const direction = targetPosition === Position.Right ? 1 : -1;
-      const columnX = targetCoordinates.x + direction * outwardLength;
-      adjustedPoints.push({ x: columnX, y: sourceCoordinates.y });
-      adjustedPoints.push({ x: columnX, y: targetY });
-    } else if (perpendicularOffset !== 0) {
-      alignTailCoordinate(adjustedPoints, 'y', targetY);
+      const columnX = coordinates.x + outwardDirection * outwardLength;
+      if (role === 'source') {
+        adjustedPoints.push({ x: columnX, y: baseY });
+      } else {
+        adjustedPoints.push({ x: columnX, y: counterpartCoordinates.y });
+        adjustedPoints.push({ x: columnX, y: baseY });
+      }
     }
-
+    if (perpendicularOffset !== 0) {
+      align(adjustedPoints, 'y', baseY);
+    }
     if (hasFanArrangement) {
-      const direction = targetPosition === Position.Left ? -1 : 1;
-      const desiredX = targetCoordinates.x + direction * outwardLength;
-      alignTailCoordinate(adjustedPoints, 'x', desiredX);
+      const desiredX = coordinates.x + outwardDirection * outwardLength;
+      align(adjustedPoints, 'x', desiredX);
     }
-
-    return {
-      bendingPoints: adjustedPoints,
-      targetX,
-      targetY,
-    };
+  } else {
+    baseX = coordinates.x + perpendicularOffset;
+    if (adjustedPoints.length === 0) {
+      const columnY = coordinates.y + outwardDirection * outwardLength;
+      if (role === 'source') {
+        adjustedPoints.push({ x: baseX, y: columnY });
+      } else {
+        adjustedPoints.push({ x: counterpartCoordinates.x, y: columnY });
+        adjustedPoints.push({ x: baseX, y: columnY });
+      }
+    }
+    if (perpendicularOffset !== 0) {
+      align(adjustedPoints, 'x', baseX);
+    }
+    if (hasFanArrangement) {
+      const desiredY = coordinates.y + outwardDirection * outwardLength;
+      align(adjustedPoints, 'y', desiredY);
+    }
   }
 
-  targetX = targetCoordinates.x + perpendicularOffset;
-  if (adjustedPoints.length === 0) {
-    const direction = targetPosition === Position.Bottom ? 1 : -1;
-    const columnY = targetCoordinates.y + direction * outwardLength;
-    adjustedPoints.push({ x: sourceCoordinates.x, y: columnY });
-    adjustedPoints.push({ x: targetX, y: columnY });
-  } else if (perpendicularOffset !== 0) {
-    alignTailCoordinate(adjustedPoints, 'x', targetX);
-  }
-
-  if (hasFanArrangement) {
-    const direction = targetPosition === Position.Top ? -1 : 1;
-    const desiredY = targetCoordinates.y + direction * outwardLength;
-    alignTailCoordinate(adjustedPoints, 'y', desiredY);
-  }
+  const finalX = isHorizontal ? coordinates.x : baseX;
+  const finalY = isHorizontal ? baseY : coordinates.y;
 
   return {
     bendingPoints: adjustedPoints,
-    targetX,
-    targetY: targetCoordinates.y,
+    x: finalX,
+    y: finalY,
   };
-}
+};
 
 function ensureRectilinearPath(
   bendingPoints: XYPosition[],
@@ -950,22 +896,25 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
 
         // Apply the fan-out only when multiple edges share the source side and the feature is enabled.
         if (fanOutEnabled && sourceArrangement && sourceArrangement.count > 1) {
-          const fanResult = applyFanOffsetAtSource(
+          const fanResult = applyFanOffsetGeneric(
+            'source',
             bendingPoints,
             sourcePosition,
             { x: sourceX, y: sourceY },
+            { x: targetX, y: targetY },
             sourceArrangement.offset,
             minOutwardLength,
             sourceArrangement
           );
           bendingPoints = fanResult.bendingPoints;
-          sourceX = fanResult.sourceX;
-          sourceY = fanResult.sourceY;
+          sourceX = fanResult.x;
+          sourceY = fanResult.y;
         }
 
         // Apply the fan-in only when the target side receives more than one edge.
         if (fanInEnabled && targetArrangement && targetArrangement.count > 1) {
-          const fanResult = applyFanOffset(
+          const fanResult = applyFanOffsetGeneric(
+            'target',
             bendingPoints,
             targetPosition,
             { x: sourceX, y: sourceY },
@@ -975,8 +924,8 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             targetArrangement
           );
           bendingPoints = fanResult.bendingPoints;
-          targetX = fanResult.targetX;
-          targetY = fanResult.targetY;
+          targetX = fanResult.x;
+          targetY = fanResult.y;
         }
 
         bendingPoints = enforceTargetClearance(
