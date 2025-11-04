@@ -149,16 +149,16 @@ export const doesPathOverlapNodes = (
   ignoredNodeIds: Set<string>
 ): PathOverlapResult => {
   const absolutePositionCache = new Map<string, XYPosition>();
-  const collidableNodes = nodes
-    .filter((node) => {
-      if (ignoredNodeIds.has(node.id)) {
-        return false;
-      }
-      const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
-      return rect !== null;
-    })
-    //TOCHECK: getNodeRectangle is recomputed for each node despite being cached above; consider keeping the first result instead of calling again.
-    .map((node) => ({ node, rect: getNodeRectangle(node, nodeMap, absolutePositionCache)! }));
+  const collidableNodes = nodes.reduce<Array<{ node: Node<NodeData>; rect: Rectangle }>>((accumulator, node) => {
+    if (ignoredNodeIds.has(node.id)) {
+      return accumulator;
+    }
+    const rect = getNodeRectangle(node, nodeMap, absolutePositionCache);
+    if (rect) {
+      accumulator.push({ node, rect });
+    }
+    return accumulator;
+  }, []);
 
   for (let index = 0; index < pathPoints.length - 1; index++) {
     const segmentStart = pathPoints[index];
