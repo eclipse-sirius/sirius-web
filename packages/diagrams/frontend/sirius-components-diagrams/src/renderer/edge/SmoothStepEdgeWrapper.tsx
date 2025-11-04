@@ -36,9 +36,13 @@ import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabel
 
 /**
  * Converts the default XYFlow smooth-step edges into annotated rectilinear polylines.
- * The component pulls node geometry from the store, synthesises bending points,
- * optionally fans edges to reduce overlap, applies detours around obstacles, and
- * finally hands the result to the multi-label rectilinear renderer.
+ * The wrapper coordinates every post-processing stage required by Sirius:
+ * - resolve custom handle coordinates provided by node layout handlers
+ * - derive a Manhattan polyline from either stored bends or XYFlow's quadratic path
+ * - fan edges per side so multiple connections remain readable
+ * - steer the polyline around detected node collisions and re-run spacing
+ * - straighten near-axis-aligned paths and cache the result for parallel-spacing reuse
+ * The final geometry (endpoints + bends) is then rendered by the multi-label edge component.
  */
 
 function isMultipleOfTwo(num: number): boolean {
@@ -52,6 +56,7 @@ const DEFAULT_FAN_OUT_ENABLED = true;
 const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
 const MIN_DETOUR_SPAN = 6;
+// Enables a segment overlap detection to make the edges then parallel, disabled currently as it seems to lead to regressions.
 const DEFAULT_PARALLEL_SPACING_ENABLED = false;
 // Enables the almost-straight post-processing pass unless an edge opts out.
 const DEFAULT_STRAIGHTEN_ENABLED = true;
@@ -80,6 +85,11 @@ function interpolateHalfway(from: number, to: number): number {
   return from + (to - from) * 0.5;
 }
 
+/**
+ * Decide where the first turn after the source node should occur based on the
+ * requested preference. The value is always finite and falls back to whichever
+ * coordinate keeps the path stable when the preference cannot be honoured.
+ */
 function computePreferredTurnCoordinate(
   defaultCoordinate: number,
   sourceCoordinate: number,
@@ -101,6 +111,11 @@ function computePreferredTurnCoordinate(
   }
 }
 
+/**
+ * Ensure the first segment leaving a node exits in the correct direction and
+ * travels at least `minOutwardLength` pixels before any lateral turns. This keeps
+ * markers from overlapping the node border and mitigates tiny zig-zags around ports.
+ */
 function enforceMinimumClearance(
   coordinate: number,
   origin: number,
@@ -155,6 +170,11 @@ function isHorizontalPosition(position: Position): boolean {
   return position === Position.Left || position === Position.Right;
 }
 
+/**
+ * Read the centre coordinate for either axis so we can sort edges consistently when
+ * computing the fan arrangements. Missing nodes default to 0 which naturally keeps
+ * orphan edges at the beginning of the ordering.
+ */
 function getNodeCenterCoordinate(node: Node<NodeData> | undefined, axis: 'x' | 'y'): number {
   if (!node) {
     return 0;
@@ -165,6 +185,11 @@ function getNodeCenterCoordinate(node: Node<NodeData> | undefined, axis: 'x' | '
   return node.position.y + (node.height ?? 0) / 2;
 }
 
+/**
+ * Compute a symmetric offset so the N parallel edges on a face are spread evenly.
+ * The index is relative to the sorted order and always yields values within the
+ * configured spread window.
+ */
 function symmetricOffset(index: number, count: number): number {
   if (count <= 1) {
     return 0;
@@ -174,6 +199,10 @@ function symmetricOffset(index: number, count: number): number {
   return clamp((index - half) * step, -FAN_MAX_SPREAD, FAN_MAX_SPREAD);
 }
 
+/**
+ * Shallow equality check for polylines. Used to avoid unnecessary re-renders and
+ * to decide whether cached geometry can be reused.
+ */
 function polylinesEqual(first: XYPosition[], second: XYPosition[]): boolean {
   if (first.length !== second.length) {
     return false;
@@ -188,10 +217,19 @@ function polylinesEqual(first: XYPosition[], second: XYPosition[]): boolean {
   return true;
 }
 
+/**
+ * Seeds the orthogonal path reconstruction with the correct starting axis based
+ * on the port orientation. Horizontal handles produce horizontal-first paths.
+ */
 function determineInitialAxis(position: Position): Axis {
   return isHorizontalPosition(position) ? 'horizontal' : 'vertical';
 }
 
+/**
+ * Metadata describing how an edge should be offset when several connections use
+ * the same face: `offset` tells how far we shift the column, `index` is the sorted
+ * position among siblings, `count` is the total number of siblings considered.
+ */
 type FanArrangement = {
   offset: number;
   count: number;
@@ -200,6 +238,11 @@ type FanArrangement = {
 
 type EndpointRole = 'source' | 'target';
 
+/**
+ * Lightweight descriptor capturing how a concrete Edge touches a node. It records
+ * whether the node acts as source/target, which handle/side is involved, and the
+ * opposite node id so we can sort siblings deterministically.
+ */
 type NodeSideEdge = {
   edge: PositionAwareEdge;
   role: EndpointRole;
@@ -208,10 +251,7 @@ type NodeSideEdge = {
   oppositeNodeId: string;
 };
 
-const collectNodeSideEdges = (
-  edges: Edge<MultiLabelEdgeData>[],
-  nodeId: string
-): NodeSideEdge[] => {
+const collectNodeSideEdges = (edges: Edge<MultiLabelEdgeData>[], nodeId: string): NodeSideEdge[] => {
   /**
    * Materialise every edge touching the specified node, labelling whether the node
    * acts as source or target. The result lets the fan logic treat incoming and
@@ -317,6 +357,11 @@ type FanOffsetResult = {
   y: number;
 };
 
+/**
+ * Translate the abstract fan arrangement into a concrete outward travel distance.
+ * Edges closer to the centre travel the minimum distance, whereas outer edges gain
+ * a bit more runway so the group forms a gentle fan rather than a flat stack.
+ */
 function computeFanOutwardLength(arrangement: FanArrangement, minOutwardLength: number): number {
   const { count, index } = arrangement;
   if (count <= 1) {
@@ -333,6 +378,10 @@ function computeFanOutwardLength(arrangement: FanArrangement, minOutwardLength: 
   return minOutwardLength + bonus;
 }
 
+/**
+ * Force the last few points of the polyline to share a column/row value. This keeps
+ * the fan offsets aligned when multiple bends sit flush against the node boundary.
+ */
 function alignTailCoordinate(points: XYPosition[], axis: 'x' | 'y', value: number): void {
   let pointer = points.length - 1;
   if (pointer < 0) {
@@ -357,6 +406,9 @@ function alignTailCoordinate(points: XYPosition[], axis: 'x' | 'y', value: numbe
   }
 }
 
+/**
+ * Same as alignTailCoordinate but applied to the first column/row leaving the source.
+ */
 function alignHeadCoordinate(points: XYPosition[], axis: 'x' | 'y', value: number): void {
   if (points.length === 0) {
     return;
@@ -456,6 +508,7 @@ const applyFanOffsetGeneric = (
     }
   }
 
+  // Return the adjusted endpoint coordinates so callers can re-anchor markers after the fan shift.
   const finalX = isHorizontal ? coordinates.x : baseX;
   const finalY = isHorizontal ? baseY : coordinates.y;
 
@@ -515,6 +568,13 @@ function ensureRectilinearPath(
   return rectified;
 }
 
+/**
+ * Collapse redundant bends while keeping the path orthogonal. This helper removes:
+ * - duplicate points introduced by earlier passes
+ * - straight collinear runs that add no visual information
+ * - tiny "S" detours that often appear after detouring around obstacles
+ * The result still starts/ends at the provided source/target coordinates.
+ */
 export function simplifyRectilinearBends(
   bendingPoints: XYPosition[],
   source: XYPosition,
@@ -614,6 +674,11 @@ export function simplifyRectilinearBends(
   return working.slice(1, working.length - 1);
 }
 
+/**
+ * Guarantee that the polyline approaches the target face with enough clearance.
+ * When the last column/row sits too close to the handle we propagate a correction
+ * backwards so arrowheads do not clip inside the node.
+ */
 function enforceTargetClearance(
   bendingPoints: XYPosition[],
   targetPosition: Position,
@@ -675,6 +740,15 @@ function enforceTargetClearance(
   return adjusted;
 }
 
+/**
+ * Primary edge renderer entry point. Each render reconciles store state, post-processing rules,
+ * and user supplied metadata to produce a final rectilinear polyline:
+ * - gather node layout handlers to determine custom handle coordinates
+ * - expand the default smooth-step curve into rectilinear bends when necessary
+ * - apply per-side fan spreading, obstacle detours, straightening, and parallel spacing
+ * - cache the resulting polyline so subsequent renders reuse neighbour geometry
+ * The resulting coordinates are forwarded to the editable multi-label rectilinear edge component.
+ */
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const {
     id,
