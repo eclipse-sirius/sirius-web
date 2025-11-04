@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.migration.MigrationVersionComparator;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -98,7 +99,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     private RepresentationMigrationData getInitialMigrationData(String kind) {
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion).reversed())
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion, new MigrationVersionComparator()).reversed())
                 .map(migrationParticipant -> new RepresentationMigrationData(NONE, migrationParticipant.getVersion()))
                 .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
     }
@@ -106,7 +107,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     private RepresentationMigrationData getLastMigrationData(String kind) {
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> migrationParticipant.getKind().equals(kind))
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion).reversed())
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion, new MigrationVersionComparator()).reversed())
                 .map(migrationParticipant -> new RepresentationMigrationData(migrationParticipant.getClass().getSimpleName(), migrationParticipant.getVersion()))
                 .findFirst().orElse(new RepresentationMigrationData(NONE, "0"));
     }

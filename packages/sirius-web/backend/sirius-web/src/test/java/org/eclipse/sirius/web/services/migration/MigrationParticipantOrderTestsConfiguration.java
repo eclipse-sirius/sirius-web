@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,11 +41,37 @@ public class MigrationParticipantOrderTestsConfiguration {
     }
 
     @Bean
+    public IRepresentationMigrationParticipant addSecondMostRecentRepresentationMigrationParticipant() {
+        return new IRepresentationMigrationParticipant() {
+
+            @Override
+            public String getVersion() {
+                return "9999.6.99-300012310900";
+            }
+
+            @Override
+            public String getKind() {
+                return "siriusComponents://representation?type=TreeMap";
+            }
+        };
+    }
+
+    @Bean
     public IMigrationParticipant addMostRecentMigrationParticipant() {
         return new IMigrationParticipant() {
             @Override
             public String getVersion() {
                 return "9999.12.99-300012310901";
+            }
+        };
+    }
+
+    @Bean
+    public IMigrationParticipant addSecondMostRecentMigrationParticipant() {
+        return new IMigrationParticipant() {
+            @Override
+            public String getVersion() {
+                return "9999.6.99-300012310901";
             }
         };
     }

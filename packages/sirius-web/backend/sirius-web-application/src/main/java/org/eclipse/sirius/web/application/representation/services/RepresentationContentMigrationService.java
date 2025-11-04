@@ -77,10 +77,11 @@ public class RepresentationContentMigrationService implements IRepresentationCon
     private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(String kind, RepresentationContent representationContent) {
         var migrationVersion = representationContent.getMigrationVersion();
 
+        MigrationVersionComparator migrationVersionComparator = new MigrationVersionComparator();
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> Objects.equals(migrationParticipant.getKind(), kind))
-                .filter(migrationParticipant -> new MigrationVersionComparator().compare(migrationParticipant.getVersion(), migrationVersion) > 0)
-                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion))
+                .filter(migrationParticipant -> migrationVersionComparator.compare(migrationParticipant.getVersion(), migrationVersion) > 0)
+                .sorted(Comparator.comparing(IRepresentationMigrationParticipant::getVersion, migrationVersionComparator))
                 .toList();
     }
 }
