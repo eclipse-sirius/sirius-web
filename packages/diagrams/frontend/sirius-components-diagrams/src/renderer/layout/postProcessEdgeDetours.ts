@@ -247,6 +247,11 @@ const gatherCollisions = (
   polylines: Map<string, EdgePolyline>,
   excludedObstacleIds?: Set<string>
 ): Map<string, CollisionCandidate[]> => {
+  /**
+   * Walk every edge/node combination and record where the current polylines collide
+   * with obstacle rectangles. Collisions are grouped by obstacle and approximate
+   * entry coordinate so we can later apply stacked detours in a consistent order.
+   */
   // Traverse every edge/node combination to find where polylines intersect
   // node rectangles. The result groups collisions by obstacle entry point so we
   // can space overlapping detours consistently.
@@ -445,6 +450,11 @@ const gatherCollisions = (
 };
 
 const applyDetours = (collisions: Map<string, CollisionCandidate[]>, polylines: Map<string, EdgePolyline>): boolean => {
+  /**
+   * Apply detours to the polylines involved in the provided collision groups.
+   * Returns true when at least one polyline changed so callers can decide to
+   * iterate another pass for secondary collisions.
+   */
   // Iterate over the discovered collisions and attempt to route around each
   // obstacle. Returns true when at least one polyline is updated so callers can
   // decide whether to perform another pass.
@@ -504,6 +514,11 @@ const collectAncestorIds = (
   nodeId: string | null | undefined,
   lookup: Map<string, Node<NodeData, DiagramNodeType>>
 ): Set<string> => {
+  /**
+   * Collect the IDs of container nodes that wrap the provided node. Edges may
+   * legitimately travel within their own ancestry chain, so we exclude those
+   * rectangles from obstacle consideration when computing detours.
+   */
   // Gather container IDs for a given node. Edges are allowed to cross their
   // own hierarchy so we exclude those ancestors from obstacle consideration.
   const ancestors = new Set<string>();
@@ -551,6 +566,11 @@ export function buildDetouredPolyline(
   edges: Edge<EdgeData>[],
   nodes: Node<NodeData, DiagramNodeType>[]
 ): EdgePolyline;
+/**
+ * Re-route the provided edge polyline so it avoids overlapping node rectangles.
+ * Overloads let callers either obtain just the updated polyline or the entire
+ * set of detoured polylines required for downstream spacing logic.
+ */
 export function buildDetouredPolyline(
   currentEdge: Edge<EdgeData>,
   currentPolyline: EdgePolyline,
@@ -614,6 +634,7 @@ export function buildDetouredPolyline(
     const allowSimple =
       sourceNode?.data?.targetObjectLabel === 'sirius-components-view-builder' &&
       targetNode?.data?.targetObjectLabel === 'e';
+    //TOCHECK: Hard-coding targetObjectLabel === 'e' looks brittle; confirm this magic value is intentional.
     if (!allowSimple) {
       return null;
     }

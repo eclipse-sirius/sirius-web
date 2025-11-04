@@ -34,6 +34,13 @@ import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
 
+/**
+ * Converts the default XYFlow smooth-step edges into annotated rectilinear polylines.
+ * The component pulls node geometry from the store, synthesises bending points,
+ * optionally fans edges to reduce overlap, applies detours around obstacles, and
+ * finally hands the result to the multi-label rectilinear renderer.
+ */
+
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
@@ -56,6 +63,11 @@ type CachedPolyline = {
   spacingEnabled: boolean;
 };
 
+/**
+ * Remembers the most recent polyline emitted for each edge so the parallel
+ * spacing pass can reuse neighbour geometry across renders without re-querying
+ * the store. Entries are shallow copies to avoid accidental shared mutations.
+ */
 const parallelSpacingCache: Map<string, CachedPolyline> = new Map();
 
 type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
@@ -194,6 +206,12 @@ function determineFanArrangement(
   targetPosition: Position,
   getNode: (id: string) => Node<NodeData> | undefined
 ): FanArrangement {
+  /**
+   * Figure out how many sibling edges terminate on the same face of the target node.
+   * The resulting offset keeps parallel edges visually distinct by nudging their
+   * first/last columns away from the port. The logic also clusters edges by handle
+   * so custom ports fan independently.
+   */
   const normalizedHandleId = targetHandleId ?? '';
   const positionedEdges = edges as PositionAwareEdge[];
 
@@ -240,6 +258,7 @@ function determineFanArrangement(
   };
 }
 
+//TOCHECK: Very similar branching to determineFanArrangement; consider unifying to reduce duplication.
 function determineSourceFanArrangement(
   edges: Edge<MultiLabelEdgeData>[],
   currentEdgeId: string,
@@ -369,6 +388,11 @@ function applyFanOffsetAtSource(
   minOutwardLength: number,
   arrangement?: FanArrangement
 ): FanSourceApplicationResult {
+  /**
+   * Offset the first column/row of the polyline so multiple edges leaving the same
+   * port do not stack perfectly on top of each other. The helper keeps the path
+   * rectilinear while respecting the minimum outward run length.
+   */
   const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
   const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
   const outwardLength = hasFanArrangement
@@ -437,6 +461,11 @@ function applyFanOffset(
   minOutwardLength: number,
   arrangement?: FanArrangement
 ): FanApplicationResult {
+  //TOCHECK: Logic is almost identical to applyFanOffsetAtSource; helper parameters could make this reusable.
+  /**
+   * Mirror of applyFanOffsetAtSource for the target end of the edge. Adjusts the
+   * final column/row so edges that converge on the same handle stay readable.
+   */
   const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
   const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
   const outwardLength = hasFanArrangement
@@ -499,6 +528,12 @@ function ensureRectilinearPath(
   target: XYPosition,
   initialAxis: Axis
 ): XYPosition[] {
+  /**
+   * Convert a list of bends produced by the smooth-step sampling into a strict
+   * orthogonal polyline, inserting elbows whenever the curve drifts off-axis.
+   * The function alternates between horizontal and vertical segments to keep
+   * the resulting path Manhattan-style.
+   */
   const rectified: XYPosition[] = [];
   const checkpoints = [...bendingPoints, target];
   let prev = source;

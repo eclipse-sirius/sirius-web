@@ -1,5 +1,11 @@
 import { XYPosition } from '@xyflow/react';
 
+/**
+ * Detects long overlapping segments between rectilinear edge polylines and nudges
+ * them apart so parallel edges remain legible. The algorithm groups segments by
+ * shared coordinates, assigns offset multiples, and rewrites the polylines with
+ * the requested spacing.
+ */
 type Axis = 'horizontal' | 'vertical';
 
 type PolylineSegment = {
@@ -45,6 +51,10 @@ const createCoordinateKey = (axis: Axis, coordinate: number, tolerance: number):
   return `${axis}${AXIS_KEY_SEPARATOR}${rounded}`;
 };
 
+/**
+ * Retrieve (or lazily create) the bucket describing all segments aligned on a
+ * given coordinate. The tolerance keeps near-identical floats in the same bin.
+ */
 const ensureGroup = (index: SegmentIndex, axis: Axis, coordinate: number, tolerance: number): CoordinateGroup => {
   const key = createCoordinateKey(axis, coordinate, tolerance);
   let group = index.get(key);
@@ -60,6 +70,11 @@ const ensureGroup = (index: SegmentIndex, axis: Axis, coordinate: number, tolera
 };
 
 const extractSegments = (polylines: Map<string, XYPosition[]>, tolerance: number, minOverlap: number): SegmentIndex => {
+  /**
+   * Scan every polyline and collect the axis-aligned segments that are long enough
+   * to matter. Each segment is grouped by its axis/coordinate so we can later
+   * detect overlapping edges that ought to be spaced apart.
+   */
   const index: SegmentIndex = new Map();
 
   for (const [edgeId, polyline] of polylines.entries()) {
@@ -87,6 +102,7 @@ const extractSegments = (polylines: Map<string, XYPosition[]>, tolerance: number
         }
         const start = Math.min(prev.y, current.y);
         const end = Math.max(prev.y, current.y);
+        //TOCHECK: Horizontal/vertical branch bodies are nearly identical; a shared helper could cut duplication.
         const segment: PolylineSegment = {
           edgeId,
           axis: 'vertical',
@@ -159,6 +175,10 @@ const segmentsOverlap = (first: PolylineSegment, second: PolylineSegment, minOve
 };
 
 const collectParticipants = (group: CoordinateGroup, minOverlap: number): Set<string> => {
+  /**
+   * Determine which edges should be offset on the provided coordinate. Only edges
+   * whose segments truly overlap along the shared axis participate in spacing.
+   */
   const participants = new Set<string>();
   const entries = Array.from(group.segmentsByEdge.entries());
 
@@ -194,6 +214,11 @@ const computeOffsetMultiple = (index: number, count: number): number => {
 };
 
 const assignOffsets = (index: SegmentIndex, options: ParallelEdgeSpacingOptions): CoordinateAssignments => {
+  /**
+   * Attribute offset multiples (…,-1,0,+1,…) to every edge that shares an axis-aligned
+   * segment with another edge. Edges are sorted for determinism so spacing remains
+   * stable across renders.
+   */
   const assignments: CoordinateAssignments = new Map();
 
   index.forEach((group, key) => {
@@ -227,6 +252,10 @@ const applyAssignments = (
   assignments: CoordinateAssignments,
   options: ParallelEdgeSpacingOptions
 ): Map<string, XYPosition[]> => {
+  /**
+   * Rewrite the polylines using the requested offsets. A copy-on-write approach is
+   * used so we only clone polylines that actually receive spacing adjustments.
+   */
   if (assignments.size === 0) {
     return polylines;
   }
@@ -314,6 +343,11 @@ export const buildSpacedPolyline = (
   polylines: Map<string, XYPosition[]>,
   options?: Partial<ParallelEdgeSpacingOptions>
 ): XYPosition[] => {
+  /**
+   * Entry point used by the edge renderer. It analyses the current edge alongside
+   * its neighbours and returns a spaced version of the polyline when overlaps are
+   * detected. Returns the untouched geometry when no spacing is needed.
+   */
   const mergedOptions: ParallelEdgeSpacingOptions = {
     ...DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS,
     ...options,

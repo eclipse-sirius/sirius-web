@@ -2,6 +2,11 @@ import { Node, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 
+/**
+ * Geometry helpers shared by the edge layout pipeline. The utilities below
+ * translate React Flow nodes into absolute rectangles so collision detection
+ * can operate directly in canvas coordinates.
+ */
 export type Rect = {
   x: number;
   y: number;
@@ -12,6 +17,10 @@ export type Rect = {
 const LABEL_NODE_TYPES = new Set<DiagramNodeType>(['iconLabelNode']);
 
 const parseCssDimension = (value: unknown): number | null => {
+  /**
+   * Convert a CSS dimension coming from React Flow into a plain number. Keeps the
+   * logic tolerant to strings, numeric values, and undefined/NaN inputs.
+   */
   if (typeof value === 'number' && Number.isFinite(value)) {
     return value;
   }
@@ -25,6 +34,10 @@ const parseCssDimension = (value: unknown): number | null => {
 };
 
 const getNodeSize = (node: Node<NodeData>): { width: number; height: number } => {
+  /**
+   * Resolve the rendered width/height for a node by checking the measured size,
+   * explicit style, or default graph metadata. Missing values fallback to zero.
+   */
   const width =
     parseCssDimension(node.width) ??
     parseCssDimension(node.measured?.width) ??
@@ -54,6 +67,10 @@ const computeAbsolutePosition = (
   nodeById: Map<string, Node<NodeData, DiagramNodeType>>,
   cache: Map<string, XYPosition>
 ): XYPosition => {
+  /**
+   * Walk up the node hierarchy to compute the absolute canvas position of the node.
+   * Results are memoized so repeated lookups within the same pass stay cheap.
+   */
   const cached = cache.get(node.id);
   if (cached) {
     return cached;
@@ -111,6 +128,11 @@ export const computeAbsoluteNodeRects = (
   nodes: Node<NodeData, DiagramNodeType>[],
   options: RectComputationOptions = {}
 ): Map<string, Rect> => {
+  /**
+   * Produce absolute rectangles for the provided React Flow nodes. Hidden nodes,
+   * excluded IDs, and label-only nodes are skipped so downstream layout code can
+   * focus on real obstacles.
+   */
   const filterHidden = options.filterHidden ?? true;
   const excludedNodeIds = options.excludedNodeIds ?? new Set<string>();
 
