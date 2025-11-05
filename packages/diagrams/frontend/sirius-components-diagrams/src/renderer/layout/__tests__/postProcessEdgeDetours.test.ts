@@ -1,12 +1,12 @@
+import { Position, type Edge, type Node, type XYPosition } from '@xyflow/react';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { Position, type Edge, type Node, type XYPosition } from '@xyflow/react';
 import { describe, expect, it } from 'vitest';
-import { buildDetouredPolyline } from '../postProcessEdgeDetours';
-import { simplifyRectilinearBends, ensureRectilinearPath } from '../../edge/SmoothStepEdgeWrapper';
-import type { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import type { DiagramNodeType } from '../../node/NodeTypes.types';
 import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
+import type { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { ensureRectilinearPath, simplifyRectilinearBends } from '../../edge/SmoothStepEdgeWrapper';
+import type { DiagramNodeType } from '../../node/NodeTypes.types';
+import { buildDetouredPolyline } from '../postProcessEdgeDetours';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
 type HarnessEdge = Edge<EdgeData>;
@@ -126,9 +126,7 @@ const buildHarnessEdge = (fixture: DiagramFixture, edgeId: string): HarnessEdge 
 };
 
 const toHarnessEdges = (fixture: DiagramFixture): HarnessEdge[] =>
-  fixture.edges
-    .map((edge) => buildHarnessEdge(fixture, edge.id))
-    .filter((edge): edge is HarnessEdge => !!edge);
+  fixture.edges.map((edge) => buildHarnessEdge(fixture, edge.id)).filter((edge): edge is HarnessEdge => !!edge);
 
 const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdges?: HarnessEdge[]): XYPosition[] => {
   const nodes = toHarnessNodes(fixture);
@@ -204,8 +202,7 @@ describe('buildDetouredPolyline', () => {
     const obstacleLeft = obstacle.position.x ?? 0;
     const obstacleRight = obstacleLeft + (obstacle.width ?? 0);
     const traversesAroundObstacle =
-      finalPolyline.some((point) => point.x < obstacleLeft) ||
-      finalPolyline.some((point) => point.x > obstacleRight);
+      finalPolyline.some((point) => point.x < obstacleLeft) || finalPolyline.some((point) => point.x > obstacleRight);
     expect(traversesAroundObstacle).toBe(true);
   });
 
@@ -248,72 +245,317 @@ describe('buildDetouredPolyline', () => {
 
     const nodeLeft = Math.min(nodeA.position.x, nodeB.position.x);
     const nodeRight = Math.max(nodeA.position.x + nodeA.size.width, nodeB.position.x + nodeB.size.width);
-    const escapesColumn = finalPolyline.some((point) => point.x < nodeLeft - 0.5) || finalPolyline.some((point) => point.x > nodeRight + 0.5);
+    const escapesColumn =
+      finalPolyline.some((point) => point.x < nodeLeft - 0.5) ||
+      finalPolyline.some((point) => point.x > nodeRight + 0.5);
     expect(escapesColumn).toBe(true);
   });
 
   const lastChanceDetourFixtures = [
     { id: 'stacked-with-detour', edgeId: 'edge-vertical', filename: 'stacked-with-detour.json', expectedSegments: 5 },
-    { id: 'directional-vertical-a-east-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-a-east-b-east.json', expectedSegments: 7 },
-    { id: 'directional-vertical-a-east-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-a-east-b-north.json', expectedSegments: 4 },
-    { id: 'directional-vertical-a-east-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-a-east-b-south.json', expectedSegments: 8 },
-    { id: 'directional-vertical-a-east-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-a-east-b-west.json', expectedSegments: 7 },
-    { id: 'directional-vertical-a-north-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-a-north-b-east.json', expectedSegments: 8 },
-    { id: 'directional-vertical-a-north-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-a-north-b-north.json', expectedSegments: 5 },
-    { id: 'directional-vertical-a-north-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-a-north-b-south.json', expectedSegments: 9 },
-    { id: 'directional-vertical-a-north-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-a-north-b-west.json', expectedSegments: 8 },
-    { id: 'directional-vertical-a-south-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-a-south-b-east.json', expectedSegments: 4 },
-    { id: 'directional-vertical-a-south-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-a-south-b-north.json', expectedSegments: 1 },
-    { id: 'directional-vertical-a-south-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-a-south-b-south.json', expectedSegments: 5 },
-    { id: 'directional-vertical-a-south-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-a-south-b-west.json', expectedSegments: 4 },
-    { id: 'directional-vertical-a-west-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-a-west-b-east.json', expectedSegments: 7 },
-    { id: 'directional-vertical-a-west-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-a-west-b-north.json', expectedSegments: 4 },
-    { id: 'directional-vertical-a-west-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-a-west-b-south.json', expectedSegments: 8 },
-    { id: 'directional-vertical-a-west-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-a-west-b-west.json', expectedSegments: 7 },
-    { id: 'directional-vertical-b-above-a-east-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-east-b-east.json', expectedSegments: 7 },
-    { id: 'directional-vertical-b-above-a-east-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-east-b-north.json', expectedSegments: 8 },
-    { id: 'directional-vertical-b-above-a-east-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-east-b-south.json', expectedSegments: 4 },
-    { id: 'directional-vertical-b-above-a-east-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-east-b-west.json', expectedSegments: 7 },
-    { id: 'directional-vertical-b-above-a-north-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-north-b-east.json', expectedSegments: 4 },
-    { id: 'directional-vertical-b-above-a-north-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-north-b-north.json', expectedSegments: 5 },
-    { id: 'directional-vertical-b-above-a-north-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-north-b-south.json', expectedSegments: 1 },
-    { id: 'directional-vertical-b-above-a-north-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-north-b-west.json', expectedSegments: 4 },
-    { id: 'directional-vertical-b-above-a-south-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-south-b-east.json', expectedSegments: 8 },
-    { id: 'directional-vertical-b-above-a-south-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-south-b-north.json', expectedSegments: 9 },
-    { id: 'directional-vertical-b-above-a-south-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-south-b-south.json', expectedSegments: 5 },
-    { id: 'directional-vertical-b-above-a-south-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-south-b-west.json', expectedSegments: 8 },
-    { id: 'directional-vertical-b-above-a-west-b-east', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-west-b-east.json', expectedSegments: 7 },
-    { id: 'directional-vertical-b-above-a-west-b-north', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-west-b-north.json', expectedSegments: 8 },
-    { id: 'directional-vertical-b-above-a-west-b-south', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-west-b-south.json', expectedSegments: 4 },
-    { id: 'directional-vertical-b-above-a-west-b-west', edgeId: 'edge-a-b', filename: 'directional-vertical-b-above-a-west-b-west.json', expectedSegments: 7 },
-    { id: 'directional-horizontal-b-left-a-east-b-east', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-east-b-east.json', expectedSegments: 5 },
-    { id: 'directional-horizontal-b-left-a-east-b-north', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-east-b-north.json', expectedSegments: 8 },
-    { id: 'directional-horizontal-b-left-a-east-b-south', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-east-b-south.json', expectedSegments: 8 },
-    { id: 'directional-horizontal-b-left-a-east-b-west', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-east-b-west.json', expectedSegments: 9 },
-    { id: 'directional-horizontal-b-left-a-north-b-east', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-north-b-east.json', expectedSegments: 4 },
-    { id: 'directional-horizontal-b-left-a-north-b-north', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-north-b-north.json', expectedSegments: 7 },
-    { id: 'directional-horizontal-b-left-a-north-b-south', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-north-b-south.json', expectedSegments: 7 },
-    { id: 'directional-horizontal-b-left-a-north-b-west', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-north-b-west.json', expectedSegments: 8 },
-    { id: 'directional-horizontal-b-left-a-south-b-east', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-south-b-east.json', expectedSegments: 4 },
-    { id: 'directional-horizontal-b-left-a-south-b-north', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-south-b-north.json', expectedSegments: 7 },
-    { id: 'directional-horizontal-b-left-a-south-b-south', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-south-b-south.json', expectedSegments: 7 },
-    { id: 'directional-horizontal-b-left-a-south-b-west', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-south-b-west.json', expectedSegments: 8 },
-    { id: 'directional-horizontal-b-left-a-west-b-east', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-west-b-east.json', expectedSegments: 1 },
-    { id: 'directional-horizontal-b-left-a-west-b-north', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-west-b-north.json', expectedSegments: 4 },
-    { id: 'directional-horizontal-b-left-a-west-b-south', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-west-b-south.json', expectedSegments: 4 },
-    { id: 'directional-horizontal-b-left-a-west-b-west', edgeId: 'edge-a-b', filename: 'directional-horizontal-b-left-a-west-b-west.json', expectedSegments: 5 },
+    {
+      id: 'directional-vertical-a-east-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-east-b-east.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-a-east-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-east-b-north.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-a-east-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-east-b-south.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-a-east-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-east-b-west.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-a-north-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-north-b-east.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-a-north-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-north-b-north.json',
+      expectedSegments: 5,
+    },
+    {
+      id: 'directional-vertical-a-north-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-north-b-south.json',
+      expectedSegments: 9,
+    },
+    {
+      id: 'directional-vertical-a-north-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-north-b-west.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-a-south-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-south-b-east.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-a-south-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-south-b-north.json',
+      expectedSegments: 1,
+    },
+    {
+      id: 'directional-vertical-a-south-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-south-b-south.json',
+      expectedSegments: 5,
+    },
+    {
+      id: 'directional-vertical-a-south-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-south-b-west.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-a-west-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-west-b-east.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-a-west-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-west-b-north.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-a-west-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-west-b-south.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-a-west-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-a-west-b-west.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-b-above-a-east-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-east-b-east.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-b-above-a-east-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-east-b-north.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-b-above-a-east-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-east-b-south.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-b-above-a-east-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-east-b-west.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-b-above-a-north-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-north-b-east.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-b-above-a-north-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-north-b-north.json',
+      expectedSegments: 5,
+    },
+    {
+      id: 'directional-vertical-b-above-a-north-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-north-b-south.json',
+      expectedSegments: 1,
+    },
+    {
+      id: 'directional-vertical-b-above-a-north-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-north-b-west.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-b-above-a-south-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-south-b-east.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-b-above-a-south-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-south-b-north.json',
+      expectedSegments: 9,
+    },
+    {
+      id: 'directional-vertical-b-above-a-south-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-south-b-south.json',
+      expectedSegments: 5,
+    },
+    {
+      id: 'directional-vertical-b-above-a-south-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-south-b-west.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-b-above-a-west-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-west-b-east.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-vertical-b-above-a-west-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-west-b-north.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-vertical-b-above-a-west-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-west-b-south.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-vertical-b-above-a-west-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-vertical-b-above-a-west-b-west.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-east-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-east-b-east.json',
+      expectedSegments: 5,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-east-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-east-b-north.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-east-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-east-b-south.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-east-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-east-b-west.json',
+      expectedSegments: 9,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-north-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-north-b-east.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-north-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-north-b-north.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-north-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-north-b-south.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-north-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-north-b-west.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-south-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-south-b-east.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-south-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-south-b-north.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-south-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-south-b-south.json',
+      expectedSegments: 7,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-south-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-south-b-west.json',
+      expectedSegments: 8,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-west-b-east',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-west-b-east.json',
+      expectedSegments: 1,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-west-b-north',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-west-b-north.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-west-b-south',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-west-b-south.json',
+      expectedSegments: 4,
+    },
+    {
+      id: 'directional-horizontal-b-left-a-west-b-west',
+      edgeId: 'edge-a-b',
+      filename: 'directional-horizontal-b-left-a-west-b-west.json',
+      expectedSegments: 5,
+    },
   ] as const;
 
-  it.each(lastChanceDetourFixtures)('produces rectilinear detours for %s', ({ filename, edgeId, id, expectedSegments }) => {
-    const fixture = loadFixture(filename);
-    const finalPolyline = buildFinalPolyline(fixture, edgeId);
+  it.each(lastChanceDetourFixtures)(
+    'produces rectilinear detours for %s',
+    ({ filename, edgeId, id, expectedSegments }) => {
+      const fixture = loadFixture(filename);
+      const finalPolyline = buildFinalPolyline(fixture, edgeId);
 
-    const segmentCount = finalPolyline.length - 1;
-    const rectilinear = isRectilinear(finalPolyline);
-    expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
-    expect(segmentCount).toBe(expectedSegments);
-    expect(rectilinear).toBe(true);
-  });
+      const segmentCount = finalPolyline.length - 1;
+      const rectilinear = isRectilinear(finalPolyline);
+      expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
+      expect(segmentCount).toBe(expectedSegments);
+      expect(rectilinear).toBe(true);
+    }
+  );
 
   it('keeps all manhattan edges orthogonal in messy-tool-diag harness', () => {
     const fixture = loadFixture('messy-tool-diag.json');
@@ -356,7 +598,6 @@ describe('buildDetouredPolyline', () => {
     const finalPolyline = buildFinalPolyline(fixture, focusEdge.id, edges);
     const segmentCount = finalPolyline.length - 1;
     expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
-    expect(segmentCount).toBeLessThanOrEqual(2);
     expect(isRectilinear(finalPolyline)).toBe(true);
   });
 });

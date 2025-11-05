@@ -41,7 +41,7 @@ import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabel
  * - derive a Manhattan polyline from either stored bends or XYFlow's quadratic path
  * - fan edges per side so multiple connections remain readable
  * - steer the polyline around detected node collisions and re-run spacing
- * - straighten near-axis-aligned paths and cache the result for parallel-spacing reuse
+ * - straighten near-axis-aligned paths
  * The final geometry (endpoints + bends) is then rendered by the multi-label edge component.
  */
 
@@ -62,18 +62,6 @@ const DEFAULT_PARALLEL_SPACING_ENABLED = false;
 const DEFAULT_STRAIGHTEN_ENABLED = true;
 // Maximum deviation (in pixels) we tolerate before declaring that a zig-zag is meaningful.
 const DEFAULT_STRAIGHTEN_THRESHOLD = 20;
-
-type CachedPolyline = {
-  points: XYPosition[];
-  spacingEnabled: boolean;
-};
-
-/**
- * Remembers the most recent polyline emitted for each edge so the parallel
- * spacing pass can reuse neighbour geometry across renders without re-querying
- * the store. Entries are shallow copies to avoid accidental shared mutations.
- */
-const parallelSpacingCache: Map<string, CachedPolyline> = new Map();
 
 type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
   targetPosition?: Position;
@@ -200,8 +188,7 @@ function symmetricOffset(index: number, count: number): number {
 }
 
 /**
- * Shallow equality check for polylines. Used to avoid unnecessary re-renders and
- * to decide whether cached geometry can be reused.
+ * Shallow equality check for polylines. Used to avoid unnecessary re-renders.
  */
 function polylinesEqual(first: XYPosition[], second: XYPosition[]): boolean {
   if (first.length !== second.length) {
@@ -746,7 +733,6 @@ function enforceTargetClearance(
  * - gather node layout handlers to determine custom handle coordinates
  * - expand the default smooth-step curve into rectilinear bends when necessary
  * - apply per-side fan spreading, obstacle detours, straightening, and parallel spacing
- * - cache the resulting polyline so subsequent renders reuse neighbour geometry
  * The resulting coordinates are forwarded to the editable multi-label rectilinear edge component.
  */
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
@@ -1160,16 +1146,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       });
     }
 
-    parallelSpacingCache.forEach((cached, edgeId) => {
-      if (!cached.spacingEnabled || edgeId === id) {
-        return;
-      }
-      polylinesForSpacing.set(
-        edgeId,
-        cached.points.map((point) => ({ x: point.x, y: point.y }))
-      );
-    });
-
     const referencePolyline = detouredPolyline ?? [
       { x: sourceX, y: sourceY },
       ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
@@ -1206,17 +1182,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     { x: sourceX, y: sourceY },
     { x: targetX, y: targetY }
   );
-
-  const finalPolyline: XYPosition[] = [
-    { x: sourceX, y: sourceY },
-    ...finalBendingPoints.map((point) => ({ x: point.x, y: point.y })),
-    { x: targetX, y: targetY },
-  ];
-
-  parallelSpacingCache.set(id, {
-    points: finalPolyline.map((point) => ({ x: point.x, y: point.y })),
-    spacingEnabled: shouldCollectParallelPolylines,
-  });
 
   return (
     <MultiLabelRectilinearEditableEdge

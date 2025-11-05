@@ -20,6 +20,7 @@ import { NodeTypeContext } from '../../../contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
 import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
 import { SmoothStepEdgeWrapper } from '../../edge/SmoothStepEdgeWrapper';
+import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../postProcessEdgeParallelism';
 import type { MultiLabelEdgeData } from '../../edge/MultiLabelEdge.types';
 import type { NodeData } from '../../DiagramRenderer.types';
 import type { DiagramNodeType } from '../../node/NodeTypes.types';
@@ -436,8 +437,8 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
 
     const diagonalDown = polylines.get('edge-diagonal-down');
     const diagonalUp = polylines.get('edge-diagonal-up');
-    expect(diagonalDown).toBeDefined();
-    expect(diagonalUp).toBeDefined();
+    expect(diagonalDown, 'expected fixture to produce the edge-diagonal-down polyline').toBeDefined();
+    expect(diagonalUp, 'expected fixture to produce the edge-diagonal-up polyline').toBeDefined();
     const downColumn = diagonalDown?.[1]?.x ?? 0;
     const upColumn = diagonalUp?.[1]?.x ?? 0;
     expect(Math.abs(downColumn - upColumn)).toBeGreaterThanOrEqual(6);
@@ -467,6 +468,85 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
 
     expect(overlaps.length).toBeGreaterThan(0);
     expect(diagonalOverlapDetected).toBe(true);
+  });
+
+  it('detects the shared bottom column between the diagonal edges', () => {
+    const fixture = loadFixture('grid-crossing.json');
+    const disabledOverrides: EdgeOverridesLookup = {
+      'edge-diagonal-down': { rectilinearParallelSpacingEnabled: false },
+      'edge-diagonal-up': { rectilinearParallelSpacingEnabled: false },
+    };
+    const { polylines: disabledPolylines } = renderHarnessFixture(fixture, disabledOverrides);
+
+    const diagonalDownDisabled = disabledPolylines.get('edge-diagonal-down');
+    const diagonalUpDisabled = disabledPolylines.get('edge-diagonal-up');
+    expect(diagonalDownDisabled, 'expected fixture to produce the edge-diagonal-down polyline').toBeDefined();
+    expect(diagonalUpDisabled, 'expected fixture to produce the edge-diagonal-up polyline').toBeDefined();
+
+    const baselineSegments = [
+      ...segmentsFromPolyline('edge-diagonal-down', diagonalDownDisabled ?? []),
+      ...segmentsFromPolyline('edge-diagonal-up', diagonalUpDisabled ?? []),
+    ];
+    const detectedOverlaps = findOverlappingSegments(baselineSegments, 0.5, 4);
+    const diagonalColumn = detectedOverlaps.find(
+      ({ edgeId, otherEdgeId }) =>
+        (edgeId === 'edge-diagonal-down' && otherEdgeId === 'edge-diagonal-up') ||
+        (edgeId === 'edge-diagonal-up' && otherEdgeId === 'edge-diagonal-down'),
+    );
+    expect(
+      detectedOverlaps.length,
+      'expected the disabled configuration to keep overlapping segments',
+    ).toBeGreaterThan(0);
+    expect(diagonalColumn, 'expected an overlap segment shared by the diagonal edges').toBeDefined();
+
+    const enabledOverrides: EdgeOverridesLookup = {
+      'edge-diagonal-down': { rectilinearParallelSpacingEnabled: true },
+      'edge-diagonal-up': { rectilinearParallelSpacingEnabled: true },
+    };
+    const { polylines: enabledPolylines } = renderHarnessFixture(fixture, enabledOverrides);
+
+    const diagonalDownEnabled = enabledPolylines.get('edge-diagonal-down');
+    const diagonalUpEnabled = enabledPolylines.get('edge-diagonal-up');
+    expect(diagonalDownEnabled, 'expected spacing-enabled pass to produce the edge-diagonal-down polyline').toBeDefined();
+    expect(diagonalUpEnabled, 'expected spacing-enabled pass to produce the edge-diagonal-up polyline').toBeDefined();
+
+    const spacedSegments = [
+      ...segmentsFromPolyline('edge-diagonal-down', diagonalDownEnabled ?? []),
+      ...segmentsFromPolyline('edge-diagonal-up', diagonalUpEnabled ?? []),
+    ];
+    const remainingOverlaps = findOverlappingSegments(spacedSegments, 0.5, 4);
+    expect(remainingOverlaps, 'expected the spacing pass to remove the shared segment').toHaveLength(0);
+
+    const allSpacedSegments = Array.from(enabledPolylines.entries()).flatMap(([edgeId, polyline]) =>
+      segmentsFromPolyline(edgeId, polyline ?? []),
+    );
+    const allSpacedOverlaps = findOverlappingSegments(allSpacedSegments, 0.5, 4);
+    expect(
+      allSpacedOverlaps,
+      'expected no overlaps to remain across any spaced polylines',
+    ).toHaveLength(0);
+
+    const { coordinate: originalColumn, overlapStart, overlapEnd } = diagonalColumn!;
+    const downColumnAfter =
+      segmentsFromPolyline('edge-diagonal-down', diagonalDownEnabled ?? []).find(
+        (segment) =>
+          segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd,
+      )?.coordinate ?? 0;
+    const upColumnAfter =
+      segmentsFromPolyline('edge-diagonal-up', diagonalUpEnabled ?? []).find(
+        (segment) =>
+          segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd,
+      )?.coordinate ?? 0;
+
+    const spacing = DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.spacing;
+    expect(
+      Math.abs(upColumnAfter - downColumnAfter),
+      'expected the columns to separate by at least the configured spacing',
+    ).toBeGreaterThanOrEqual(spacing);
+    expect(
+      Math.max(Math.abs(downColumnAfter - originalColumn), Math.abs(upColumnAfter - originalColumn)),
+      'expected at least one edge to move off the original column by one spacing unit',
+    ).toBeGreaterThanOrEqual(spacing);
   });
 });
 
