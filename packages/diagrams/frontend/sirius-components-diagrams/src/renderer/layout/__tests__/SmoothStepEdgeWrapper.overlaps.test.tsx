@@ -444,6 +444,40 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     expect(Math.abs(downColumn - upColumn)).toBeGreaterThanOrEqual(6);
   });
 
+  it('removes overlapping segments for the grid-crossing-overlap fixture', () => {
+    const fixture = loadFixture('grid-crossing-overlap.json');
+    const { polylines } = renderHarnessFixture(fixture);
+    // eslint-disable-next-line no-console
+    console.log(
+      JSON.stringify(
+        Array.from(polylines.entries()).map(([edgeId, polyline]) => ({
+          edgeId,
+          points: polyline.map((point) => ({ x: point.x, y: point.y })),
+        })),
+        null,
+        2
+      )
+    );
+
+    const relevantEdgeIds = ['gedge-diagonal-down', 'edge-diagonal-up'];
+    const relevantSegments = relevantEdgeIds.flatMap((edgeId) => {
+      const polyline = polylines.get(edgeId);
+      expect(polyline, `expected fixture to produce the ${edgeId} polyline`).toBeDefined();
+      const segments = segmentsFromPolyline(edgeId, polyline ?? []);
+      expect(
+        segments.length,
+        `expected ${edgeId} to produce at least one segment for overlap detection`
+      ).toBeGreaterThan(0);
+      return segments;
+    });
+
+    const overlaps = findOverlappingSegments(relevantSegments);
+    expect(
+      overlaps,
+      'expected the parallel spacing pass to eliminate the shared segments between the diagonal edges'
+    ).toHaveLength(0);
+  });
+
   it('can be disabled to preserve the legacy overlapping behaviour', () => {
     const fixture = loadFixture('grid-crossing.json');
     const overrides: EdgeOverridesLookup = {

@@ -56,4 +56,9 @@ export interface MultiLabelEdgeData extends EdgeData {
    * when the deviation is small. Defaults to true.
    */
   rectilinearStraightenEnabled?: boolean;
+  /**
+   * Enables the final simplification pass that removes redundant bends once the polyline is fully processed.
+   * Defaults to true. When set to false, the polyline keeps all bends emitted by earlier stages.
+   */
+  rectilinearSimplifyEnabled?: boolean;
 }

@@ -27,7 +27,7 @@ import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
 import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
-import { buildSpacedPolyline, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
+import { buildSpacedPolylines, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
 import { straightenAlmostStraightPolyline } from '../layout/postProcessEdgeStraighten';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
@@ -57,7 +57,7 @@ const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
 const MIN_DETOUR_SPAN = 6;
 // Enables a segment overlap detection to make the edges then parallel, disabled currently as it seems to lead to regressions.
-const DEFAULT_PARALLEL_SPACING_ENABLED = false;
+const DEFAULT_PARALLEL_SPACING_ENABLED = true;
 // Enables the almost-straight post-processing pass unless an edge opts out.
 const DEFAULT_STRAIGHTEN_ENABLED = true;
 // Maximum deviation (in pixels) we tolerate before declaring that a zig-zag is meaningful.
@@ -68,6 +68,57 @@ type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
   sourcePosition?: Position;
 };
 type Axis = 'horizontal' | 'vertical';
+
+type ParallelSpacingSnapshot = {
+  contextSignature: string;
+  polylines: Map<string, XYPosition[]>;
+};
+
+let parallelSpacingSnapshot: ParallelSpacingSnapshot | null = null;
+
+const clonePolylineMap = (polylines: Map<string, XYPosition[]>): Map<string, XYPosition[]> =>
+  new Map(
+    Array.from(polylines.entries()).map(([edgeId, points]) => [
+      edgeId,
+      points.map((point) => ({ x: point.x, y: point.y })),
+    ])
+  );
+
+const createSpacingContextSignature = (
+  edges: Edge<MultiLabelEdgeData>[],
+  resolveNode: (id: string) => Node<NodeData> | undefined
+): string => {
+  const serialisable = edges
+    .map((edge) => {
+      const sourceNode = resolveNode(edge.source);
+      const targetNode = resolveNode(edge.target);
+      const sourcePosition = sourceNode?.position ?? { x: 0, y: 0 };
+      const targetPosition = targetNode?.position ?? { x: 0, y: 0 };
+      const sourceDimensions = {
+        width: sourceNode?.width ?? 0,
+        height: sourceNode?.height ?? 0,
+      };
+      const targetDimensions = {
+        width: targetNode?.width ?? 0,
+        height: targetNode?.height ?? 0,
+      };
+      return {
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+        sourceX: Number(sourcePosition.x.toFixed(2)),
+        sourceY: Number(sourcePosition.y.toFixed(2)),
+        sourceWidth: Number(sourceDimensions.width.toFixed(2)),
+        sourceHeight: Number(sourceDimensions.height.toFixed(2)),
+        targetX: Number(targetPosition.x.toFixed(2)),
+        targetY: Number(targetPosition.y.toFixed(2)),
+        targetWidth: Number(targetDimensions.width.toFixed(2)),
+        targetHeight: Number(targetDimensions.height.toFixed(2)),
+      };
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+  return JSON.stringify(serialisable);
+};
 
 function interpolateHalfway(from: number, to: number): number {
   return from + (to - from) * 0.5;
@@ -1067,6 +1118,16 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   // Parallel spacing piggybacks on the pre-fetched edge list; skip when the context does not provide it.
   const shouldCollectParallelPolylines =
     parallelSpacingEnabled && !customEdge && edgesFromStore.length > 0 && !!getNodes;
+  if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
+    console.log('[parallel-spacing] eligibility', {
+      id,
+      parallelSpacingEnabled,
+      customEdge,
+      edgesFromStore: edgesFromStore.length,
+      shouldCollectParallelPolylines,
+    });
+  }
 
   let detouredPolyline: XYPosition[] | undefined;
   let detourPolylines: Map<string, XYPosition[]> | undefined;
@@ -1123,10 +1184,21 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   if (shouldCollectParallelPolylines) {
-    const polylinesForSpacing = new Map<string, XYPosition[]>();
+    const spacingContextSignature = createSpacingContextSignature(
+      edgesFromStore,
+      (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+    );
+    const snapshotMatches = parallelSpacingSnapshot?.contextSignature === spacingContextSignature;
+    const polylinesForSpacing = snapshotMatches
+      ? clonePolylineMap(parallelSpacingSnapshot!.polylines)
+      : new Map<string, XYPosition[]>();
 
     if (detourPolylines) {
       detourPolylines.forEach((polyline, edgeId) => {
+        const shouldOverride = !snapshotMatches || edgeId === id || !polylinesForSpacing.has(edgeId);
+        if (!shouldOverride) {
+          return;
+        }
         if (!polyline || polyline.length < 2) {
           polylinesForSpacing.set(edgeId, polyline);
           return;
@@ -1157,11 +1229,40 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       referencePolyline.map((point) => ({ x: point.x, y: point.y }))
     );
 
+    if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.log('[parallel-spacing] candidates', id, Array.from(polylinesForSpacing.keys()));
+    }
+
     const hasOtherPolylines = Array.from(polylinesForSpacing.keys()).some((edgeId) => edgeId !== id);
 
     if (hasOtherPolylines) {
-      const spacedPolyline = buildSpacedPolyline(id, polylinesForSpacing, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
-      if (!polylinesEqual(spacedPolyline, referencePolyline)) {
+      let spacedPolylines: Map<string, XYPosition[]> | undefined;
+      const snapshotPolylineForCurrent = snapshotMatches ? parallelSpacingSnapshot?.polylines.get(id) : undefined;
+      const needsRecompute =
+        !snapshotMatches ||
+        !snapshotPolylineForCurrent ||
+        !polylinesEqual(snapshotPolylineForCurrent, referencePolyline);
+
+      if (!needsRecompute && parallelSpacingSnapshot) {
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
+          console.log('[parallel-spacing] reuse snapshot', id);
+        }
+        spacedPolylines = parallelSpacingSnapshot.polylines;
+      } else {
+        spacedPolylines = buildSpacedPolylines(polylinesForSpacing, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
+        parallelSpacingSnapshot = {
+          contextSignature: spacingContextSignature,
+          polylines: clonePolylineMap(spacedPolylines),
+        };
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
+          console.log('[parallel-spacing] recomputed', id, Array.from(spacedPolylines.keys()));
+        }
+      }
+      const spacedPolyline = spacedPolylines?.get(id);
+      if (spacedPolyline && !polylinesEqual(spacedPolyline, referencePolyline)) {
         const firstPoint = spacedPolyline[0];
         const lastPoint = spacedPolyline[spacedPolyline.length - 1];
         if (firstPoint) {
@@ -1173,15 +1274,19 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           targetY = lastPoint.y;
         }
         rectifiedBendingPoints = spacedPolyline.slice(1, -1);
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
+          console.log('[parallel-spacing] rectified after spacing', id, rectifiedBendingPoints);
+        }
       }
     }
   }
 
-  const finalBendingPoints = simplifyRectilinearBends(
-    rectifiedBendingPoints,
-    { x: sourceX, y: sourceY },
-    { x: targetX, y: targetY }
-  );
+  const simplifyEnabled = data?.rectilinearSimplifyEnabled ?? true;
+  const shouldSkipFinalSimplification = shouldCollectParallelPolylines || !simplifyEnabled;
+  const finalBendingPoints = shouldSkipFinalSimplification
+    ? rectifiedBendingPoints
+    : simplifyRectilinearBends(rectifiedBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
 
   return (
     <MultiLabelRectilinearEditableEdge

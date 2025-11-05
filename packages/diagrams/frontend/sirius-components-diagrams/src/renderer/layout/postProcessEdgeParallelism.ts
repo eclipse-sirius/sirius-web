@@ -338,30 +338,27 @@ const applyAssignments = (
   return result;
 };
 
-export const buildSpacedPolyline = (
-  currentEdgeId: string,
+const buildSpacedPolylineMap = (
   polylines: Map<string, XYPosition[]>,
   options?: Partial<ParallelEdgeSpacingOptions>
-): XYPosition[] => {
+): Map<string, XYPosition[]> => {
   /**
-   * Entry point used by the edge renderer. It analyses the current edge alongside
-   * its neighbours and returns a spaced version of the polyline when overlaps are
-   * detected. Returns the untouched geometry when no spacing is needed.
+   * Analyse the provided polylines and apply spacing adjustments when overlapping
+   * segments are detected. Returns either the untouched geometry or a new map
+   * containing the offset polylines.
    */
   const mergedOptions: ParallelEdgeSpacingOptions = {
     ...DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS,
     ...options,
   };
-
-  if (!polylines.has(currentEdgeId) || polylines.size <= 1) {
-    return polylines.get(currentEdgeId) ?? [];
+  if (polylines.size <= 1) {
+    return polylines;
   }
 
   if (process.env.NODE_ENV === 'test') {
     // eslint-disable-next-line no-console
     console.log(
-      '[parallel-spacing] input polylines',
-      currentEdgeId,
+      '[parallel-spacing] input polylines map',
       JSON.stringify(
         Array.from(polylines.entries()).map(([edgeId, points]) => ({
           edgeId,
@@ -378,7 +375,6 @@ export const buildSpacedPolyline = (
     // eslint-disable-next-line no-console
     console.log(
       '[parallel-spacing] index',
-      currentEdgeId,
       Array.from(segmentIndex.entries()).map(([key, group]) => ({
         key,
         axis: group.axis,
@@ -401,9 +397,44 @@ export const buildSpacedPolyline = (
         }))
       );
     }
-    return polylines.get(currentEdgeId) ?? [];
+    return polylines;
   }
 
   const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
-  return adjusted.get(currentEdgeId) ?? polylines.get(currentEdgeId) ?? [];
+  if (process.env.NODE_ENV !== 'production') {
+    const serialisedAssignments = Array.from(assignments.entries()).map(([key, offsets]) => ({
+      key,
+      offsets: Array.from(offsets.entries()),
+    }));
+    const serialisedPolylines = Array.from(adjusted.entries()).map(([edgeId, points]) => ({
+      edgeId,
+      points: points.map((point) => ({ x: point.x, y: point.y })),
+    }));
+    // eslint-disable-next-line no-console
+    console.log('[parallel-spacing] assignments', JSON.stringify(serialisedAssignments, null, 2));
+    // eslint-disable-next-line no-console
+    console.log('[parallel-spacing] adjusted', JSON.stringify(serialisedPolylines, null, 2));
+  }
+  return adjusted;
+};
+
+export const buildSpacedPolylines = (
+  polylines: Map<string, XYPosition[]>,
+  options?: Partial<ParallelEdgeSpacingOptions>
+): Map<string, XYPosition[]> => buildSpacedPolylineMap(polylines, options);
+
+export const buildSpacedPolyline = (
+  currentEdgeId: string,
+  polylines: Map<string, XYPosition[]>,
+  options?: Partial<ParallelEdgeSpacingOptions>
+): XYPosition[] => {
+  /**
+   * Legacy helper retained for callers that operate on a single edge. It delegates
+   * to the batched spacing routine and extracts the polyline for `currentEdgeId`.
+   */
+  const spaced = buildSpacedPolylineMap(polylines, options);
+  if (!spaced.has(currentEdgeId)) {
+    return polylines.get(currentEdgeId) ?? [];
+  }
+  return spaced.get(currentEdgeId) ?? [];
 };
