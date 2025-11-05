@@ -293,6 +293,7 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
               representations={state.representationsMetadata}
               displayedRepresentation={displayedRepresentationMetadata}
               onRepresentationClick={onRepresentationClick}
+              ref={refRepresentationNavigationHandle}
               onClose={onClose}
             />
             <RepresentationComponent
