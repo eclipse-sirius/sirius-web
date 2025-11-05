@@ -50,6 +50,7 @@ const toIconLabelNode = (
     pinned,
     style,
     labelEditable,
+    deletable,
     customizedStyleProperties,
   } = gqlNode;
 
@@ -80,6 +81,7 @@ const toIconLabelNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     labelEditable: labelEditable,
+    deletable: deletable,
     connectionHandles,
     isNew,
     resizedByUser,

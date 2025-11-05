@@ -115,6 +115,7 @@ type Node {
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
+  deletable: Boolean!
   customizedStyleProperties: [NodeStyleProperty!]!
   initialBorderNodePosition: BorderNodePosition!
 }
@@ -301,6 +302,7 @@ type Edge {
   state: ViewModifier!
   style: EdgeStyle!
   centerLabelEditable: Boolean!
+  deletable: Boolean!
   customizedStyleProperties: [EdgeStyleProperty!]!
 }
 

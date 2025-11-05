@@ -237,6 +237,7 @@ export const convertDiagram = (
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
+      deletable: gqlEdge.deletable,
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
       edgePath,
       isHovered: false,
