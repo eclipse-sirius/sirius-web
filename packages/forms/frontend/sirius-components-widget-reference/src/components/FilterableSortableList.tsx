@@ -245,7 +245,7 @@ export const FilterableSortableList = ({
                       <DragHandleIcon />
                     </ListItemIcon>
                     <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
-                      <IconOverlay iconURL={iconURL} alt={kind} />
+                      <IconOverlay iconURLs={iconURL} alt={kind} />
                     </ListItemIcon>
                     <ListItemText
                       id={labelId}

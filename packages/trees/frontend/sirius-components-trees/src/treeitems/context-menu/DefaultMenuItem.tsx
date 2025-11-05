@@ -174,7 +174,7 @@ export const DefaultMenuItem = ({ editingContextId, treeId, item, entry, readOnl
       aria-disabled>
       <ListItemIcon>
         {entry.iconURL.length > 0 ? (
-          <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
+          <IconOverlay iconURLs={entry.iconURL} alt={entry.label} title={entry.label} />
         ) : (
           <div style={{ marginRight: '16px' }} />
         )}

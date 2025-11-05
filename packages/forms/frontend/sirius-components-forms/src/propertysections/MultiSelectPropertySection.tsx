@@ -192,7 +192,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
               <Checkbox checked={widget.values.indexOf(option.id) > -1} />
               {option.iconURL.length > 0 && (
                 <ListItemIcon className={classes.iconRoot}>
-                  <IconOverlay iconURL={option.iconURL} alt={option.label} />
+                  <IconOverlay iconURLs={option.iconURL} alt={option.label} />
                 </ListItemIcon>
               )}
               <ListItemText

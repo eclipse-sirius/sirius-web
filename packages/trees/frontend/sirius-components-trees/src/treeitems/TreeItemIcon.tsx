@@ -16,7 +16,7 @@ import { TreeItemIconProps } from './TreeItemIcon.types';
 
 export const TreeItemIcon = ({ item }: TreeItemIconProps) => {
   if (item.iconURL?.length > 0) {
-    return <IconOverlay iconURL={item.iconURL} alt={item.kind} />;
+    return <IconOverlay iconURLs={item.iconURL} alt={item.kind} />;
   } else {
     return <CropDinIcon />;
   }

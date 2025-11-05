@@ -11,11 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getTextFromStyledString, IconOverlay, StyledLabel } from '@eclipse-sirius/sirius-components-core';
+import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
 import { makeStyles } from 'tss-react/mui';
 import { DataTreeItemProps } from './DataTreeItem.types';
-import { IconOverlay, StyledLabel } from '@eclipse-sirius/sirius-components-core';
-import { TreeItem as MuiTreeItem } from '@mui/x-tree-view/TreeItem';
-import { getTextFromStyledString } from '@eclipse-sirius/sirius-components-core';
 
 const useDataTreeItemStyles = makeStyles()((theme) => ({
   label: {
@@ -39,10 +38,10 @@ export const DataTreeItem = ({ treeItemId, node, nodes }: DataTreeItemProps) => 
 
   const label = (
     <div className={classes.label}>
-      <IconOverlay iconURL={node.iconURLs} alt={labelText} />
+      <IconOverlay iconURLs={node.iconURLs} alt={labelText} />
       <StyledLabel styledString={node.label} selected={false} textToHighlight={''} marked={false} />
       {node.endIconsURLs.map((iconURLs, index) => (
-        <IconOverlay iconURL={iconURLs} alt={labelText} key={index} />
+        <IconOverlay iconURLs={iconURLs} alt={labelText} key={index} />
       ))}
     </div>
   );

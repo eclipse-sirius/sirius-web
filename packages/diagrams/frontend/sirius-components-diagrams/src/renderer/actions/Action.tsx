@@ -45,7 +45,7 @@ export const Action = ({ action, diagramElementId }: ActionProps) => {
   } else {
     return (
       <IconButton className={classes.actionIcon} size="small" onClick={() => invokeAction(action)}>
-        <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+        <IconOverlay iconURLs={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
       </IconButton>
     );
   }

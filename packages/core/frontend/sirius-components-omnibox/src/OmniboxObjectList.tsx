@@ -64,7 +64,7 @@ export const OmniboxObjectList = forwardRef(
           .map((node) => {
             return {
               id: node.id,
-              icon: <IconOverlay iconURL={node.iconURLs} alt={node.kind} />,
+              icon: <IconOverlay iconURLs={node.iconURLs} alt={node.kind} />,
               kind: node.kind,
               label: node.label,
             };

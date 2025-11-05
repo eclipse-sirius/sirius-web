@@ -198,7 +198,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
               }>
               {option.iconURL.length > 0 && (
                 <ListItemIcon className={classes.iconRoot}>
-                  <IconOverlay iconURL={option.iconURL} alt={option.label} />
+                  <IconOverlay iconURLs={option.iconURL} alt={option.label} />
                 </ListItemIcon>
               )}
 

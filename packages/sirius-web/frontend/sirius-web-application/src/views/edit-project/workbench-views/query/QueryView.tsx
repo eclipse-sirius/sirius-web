@@ -262,7 +262,7 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
         <List dense>
           <ListItem sx={listItemStyle}>
             <ListItemIcon sx={listItemIconStyle}>
-              <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
+              <IconOverlay iconURLs={objectValue.iconURLs} alt="Icon of the object" />
             </ListItemIcon>
             <ListItemText primary={objectValue.label} />
           </ListItem>
@@ -288,7 +288,7 @@ const ObjectRow = ({ data, index, style }: ListChildComponentProps) => {
   return (
     <ListItem key={index} style={style} sx={listItemStyle}>
       <ListItemIcon sx={listItemIconStyle}>
-        <IconOverlay iconURL={object.iconURLs} alt="Icon of the object" />
+        <IconOverlay iconURLs={object.iconURLs} alt="Icon of the object" />
       </ListItemIcon>
       <ListItemText primary={object.label} />
     </ListItem>

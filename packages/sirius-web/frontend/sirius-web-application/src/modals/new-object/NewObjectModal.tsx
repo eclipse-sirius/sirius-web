@@ -194,7 +194,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
                   {childCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <IconOverlay iconURL={childCreationDescription.iconURL} alt={childCreationDescription.label} />
+                      <IconOverlay iconURLs={childCreationDescription.iconURL} alt={childCreationDescription.label} />
                     </ListItemIcon>
                   )}
                   <ListItemText primary={childCreationDescription.label} />

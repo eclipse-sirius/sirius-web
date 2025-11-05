@@ -410,7 +410,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
                 <MenuItem value={creationDescription.id} key={creationDescription.id}>
                   {creationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <IconOverlay iconURL={creationDescription.iconURL} alt={creationDescription.label} />
+                      <IconOverlay iconURLs={creationDescription.iconURL} alt={creationDescription.label} />
                     </ListItemIcon>
                   )}
                   <ListItemText primary={creationDescription.label} />

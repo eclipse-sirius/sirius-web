@@ -276,7 +276,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                   {rootObjectCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
                       <IconOverlay
-                        iconURL={rootObjectCreationDescription.iconURL}
+                        iconURLs={rootObjectCreationDescription.iconURL}
                         alt={rootObjectCreationDescription.label}
                       />
                     </ListItemIcon>

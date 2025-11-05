@@ -130,7 +130,7 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
           {matches.map((matchedObject, index) => (
             <ListItem key={index} className={classes.matchItem} onClick={() => onMatchSelected(matchedObject)}>
               <ListItemIcon>
-                <IconOverlay iconURL={matchedObject.iconURLs} alt="Icon of the object" />
+                <IconOverlay iconURLs={matchedObject.iconURLs} alt="Icon of the object" />
               </ListItemIcon>
               <ListItemText primary={matchedObject.label} />
             </ListItem>

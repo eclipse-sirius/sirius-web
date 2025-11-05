@@ -93,7 +93,7 @@ export const Group = ({ editingContextId, formId, group, readOnly }: GroupProps)
           return (
             <ToggleButton className={classes.button} value={widget.id} key={widget.id}>
               <IconOverlay
-                iconURL={widget.iconURL}
+                iconURLs={widget.iconURL}
                 alt={widget.label}
                 customIconStyle={{ marginRight: theme.spacing(1) }}
               />

@@ -98,7 +98,7 @@ export const OmniboxCommandList = forwardRef(
                 onClick={() => handleOnActionClick(command)}
                 onKeyDown={handleListItemKeyDown}>
                 <ListItemIcon>
-                  <IconOverlay iconURL={command.iconURLs} alt={command.label} />
+                  <IconOverlay iconURLs={command.iconURLs} alt={command.label} />
                 </ListItemIcon>
                 <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
               </ListItemButton>

@@ -301,7 +301,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
           <ListItemIcon>
-            <IconOverlay iconURL={tool.iconURL} alt={tool.label} title={tool.label} />
+            <IconOverlay iconURLs={tool.iconURL} alt={tool.label} title={tool.label} />
           </ListItemIcon>
           <Typography>{tool.label}</Typography>
         </MenuItem>

@@ -89,7 +89,7 @@ export const RepresentationsArea = ({ editingContextId }: RepresentationAreaProp
                   })
                 }>
                 <ListItemIcon>
-                  <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                  <IconOverlay iconURLs={representation.iconURLs} alt="representation icon" />
                 </ListItemIcon>
                 <ListItemText primary={representation.label} />
               </ListItemButton>
