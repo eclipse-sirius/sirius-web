@@ -166,10 +166,10 @@ const TreeItem = ({ treeItemId, node, nodes, readOnly, editingContextId, formId,
           }}
         />
       ) : null}
-      <IconOverlay iconURL={node.iconURL} alt={node.label} />
+      <IconOverlay iconURLs={node.iconURL} alt={node.label} />
       <Typography style={treeItemLabelStyle(theme, readOnly)}>{node.label}</Typography>
-      {node.endIconsURL.map((iconURL, index) => (
-        <IconOverlay iconURL={iconURL} alt={node.label} key={index} />
+      {node.endIconsURL.map((iconURLs, index) => (
+        <IconOverlay iconURLs={iconURLs} alt={node.label} key={index} />
       ))}
     </div>
   );

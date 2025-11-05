@@ -21,7 +21,7 @@ export const IconLabelCell = ({ cell }: IconLabelCellProps) => {
 
   return (
     <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
-      <IconOverlay iconURL={cell.iconURLs} alt={cell.label} />
+      <IconOverlay iconURLs={cell.iconURLs} alt={cell.label} />
       {cell.label}
     </Box>
   );

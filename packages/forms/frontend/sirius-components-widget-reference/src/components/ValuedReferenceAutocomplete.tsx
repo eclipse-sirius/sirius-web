@@ -236,7 +236,7 @@ export const ValuedReferenceAutocomplete = ({
       onChange={handleAutocompleteChange}
       renderOption={(props: HTMLAttributes<HTMLLIElement>, option: GQLReferenceValue) => (
         <li {...props} key={option.id}>
-          <IconOverlay iconURL={option.iconURL} alt={option.kind} />
+          <IconOverlay iconURLs={option.iconURL} alt={option.kind} />
           <span className={classes.optionLabel} data-testid={`option-${option.label}`}>
             {option.label}
           </span>
@@ -254,7 +254,7 @@ export const ValuedReferenceAutocomplete = ({
               data-testid={`reference-value-${option.label}`}
               icon={
                 <div>
-                  <IconOverlay iconURL={option.iconURL} alt={option.kind} />
+                  <IconOverlay iconURLs={option.iconURL} alt={option.kind} />
                 </div>
               }
               clickable

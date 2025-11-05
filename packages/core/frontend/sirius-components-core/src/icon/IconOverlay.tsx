@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,16 +17,16 @@ import { ServerContextValue } from '../contexts/ServerContext.types';
 import { IconOverlayProps } from './IconOverlay.types';
 
 export const IconOverlay = memo(
-  ({ iconURL, alt, title, customIconWidth, customIconHeight, customIconStyle }: IconOverlayProps) => {
+  ({ iconURLs, alt, title, customIconWidth, customIconHeight, customIconStyle }: IconOverlayProps) => {
     const iconWidth: number = customIconWidth || 16;
     const iconHeight: number = customIconHeight || 16;
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
     return (
       <>
-        {iconURL?.length > 0 && (
+        {iconURLs.length > 0 && (
           <div style={{ position: 'relative', minWidth: iconWidth, minHeight: iconHeight, ...customIconStyle }}>
-            {iconURL.map((url: string, index) => (
+            {iconURLs.map((url: string, index) => (
               <Tooltip title={title || ''} key={'tooltip_' + index}>
                 <img
                   height={iconHeight}

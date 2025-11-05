@@ -132,7 +132,7 @@ const ShowDocumentationCommand = ({ command, onKeyDown, onClose }: OmniboxComman
   return (
     <ListItemButton key={command.id} data-testid={command.label} onClick={handleClick} onKeyDown={onKeyDown}>
       <ListItemIcon>
-        <IconOverlay iconURL={command.iconURLs} alt={command.label} />
+        <IconOverlay iconURLs={command.iconURLs} alt={command.label} />
       </ListItemIcon>
       <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
     </ListItemButton>

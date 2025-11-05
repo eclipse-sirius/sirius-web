@@ -65,7 +65,7 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
         onClick={(event) => handleToolClick(event, tool)}
         data-testid={`tool-${tool.label}`}>
         <ListItemIcon className={classes.listItemIcon}>
-          <IconOverlay iconURL={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
+          <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
         </ListItemIcon>
         <ListItemText primary={tool.label} className={classes.listItemText} />
       </ListItemButton>

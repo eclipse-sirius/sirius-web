@@ -126,7 +126,7 @@ export const RepresentationNavigation = forwardRef<
                   <div className={classes.tabLabel}>
                     {representation.iconURLs && (
                       <div className={classes.tabRepresentationIcon}>
-                        <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                        <IconOverlay iconURLs={representation.iconURLs} alt="representation icon" />
                       </div>
                     )}
                     <div className={classes.tabLabelText}>{representation.label}</div>

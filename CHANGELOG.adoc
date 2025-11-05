@@ -49,6 +49,7 @@ As described in ADR-211, the final purpose is to only have one way to create a p
 Updates the GraphQL schema and frontend hooks accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/5368[#5368] [table] The extension point for adding global actions to a table has been renamed from `settingButtonMenuEntryExtensionPoint` to `toolsButtonMenuEntryExtensionPoint`
 - https://github.com/eclipse-sirius/sirius-web/issues/5745[#5745] [sirius-web] Change the input to create a project and update the GraphQL schema accordingly.
+- [core] Update the signature of `IconOverlay` by renaming the props `iconURL` to `iconURLs` to highlight the fact that a collection of URLs is expected.
 
 
 === Dependency update

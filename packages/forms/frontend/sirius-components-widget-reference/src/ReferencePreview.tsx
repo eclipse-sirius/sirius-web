@@ -115,7 +115,7 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
                 data-testid={`reference-value-${label}`}
                 icon={
                   <div>
-                    <IconOverlay iconURL={[iconURL]} alt={''} />
+                    <IconOverlay iconURLs={[iconURL]} alt={''} />
                   </div>
                 }
                 {...tagProps}

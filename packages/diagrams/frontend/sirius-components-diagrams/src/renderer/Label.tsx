@@ -162,7 +162,7 @@ export const Label = memo(({ diagramElementId, label, faded, highlighted }: Labe
         data-id={`${label.id}-content`}
         data-testid={`Label content - ${label.text}`}
         style={labelContentStyle(theme, label, !!highlighted)}>
-        <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
+        <IconOverlay iconURLs={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
         <div style={labelOverflowStyle(label)} data-svg="text">
           {label.text}
         </div>

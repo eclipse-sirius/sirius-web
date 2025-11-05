@@ -47,7 +47,7 @@ export const useSelectionTargets = (): UseSelectionTargetValue => {
       label: representation.label,
       icon:
         representation.iconURLs.length > 0 ? (
-          <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+          <IconOverlay iconURLs={representation.iconURLs} alt="representation icon" />
         ) : (
           <WebAssetOutlinedIcon />
         ),

@@ -162,7 +162,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
           onClick={() => onToolClick(tool)}
           selected={index === selectedIndex}>
           <ListItemIcon className={classes.listItemIcon}>
-            <IconOverlay iconURL={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
+            <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
           </ListItemIcon>
           <ListItemText primary={<HighlightedLabel label={tool.label} textToHighlight={searchToolValue} />} />
         </ListItemButton>

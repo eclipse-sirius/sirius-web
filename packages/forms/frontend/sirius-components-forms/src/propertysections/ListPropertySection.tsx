@@ -252,7 +252,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   const getTableCellContent = (item: GQLListItem): JSX.Element => {
     return (
       <>
-        <IconOverlay iconURL={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />
+        <IconOverlay iconURLs={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />
         <Typography
           className={`${classes.canBeSelectedItem} ${classes.style}`}
           onClick={() => clickHandler(item)}

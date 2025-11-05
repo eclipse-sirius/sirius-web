@@ -41,7 +41,7 @@ export const RowHeader = ({ row, isExpanded, onClick, enableSubRows }: RowHeader
         {row.headerIndexLabel}
       </Typography>
       <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1) })}>
-        <IconOverlay iconURL={row.headerIconURLs} alt={row.headerLabel} />
+        <IconOverlay iconURLs={row.headerIconURLs} alt={row.headerLabel} />
         <Typography noWrap>{row.headerLabel}</Typography>
       </Box>
     </Box>

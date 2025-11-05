@@ -132,7 +132,7 @@ export const RowContextMenuContent = ({
             aria-disabled>
             <ListItemIcon>
               {entry.iconURLs.length > 0 ? (
-                <IconOverlay iconURL={entry.iconURLs} alt={entry.label} title={entry.label} />
+                <IconOverlay iconURLs={entry.iconURLs} alt={entry.label} title={entry.label} />
               ) : (
                 <div style={{ marginRight: '16px' }} />
               )}

@@ -30,7 +30,7 @@ export const Tool = ({ tool, onClick }: ToolProps) => {
   const { classes } = useToolStyle();
   let image: JSX.Element | null = null;
   if (iconURL.length > 0) {
-    image = <IconOverlay iconURL={iconURL} alt={label} title={label} />;
+    image = <IconOverlay iconURLs={iconURL} alt={label} title={label} />;
   }
   const onToolClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.stopPropagation();
