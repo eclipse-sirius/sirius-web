@@ -32,8 +32,8 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
-import { ROUTING_TRACE_NOOP_COLLECTOR, useRoutingTraceCollector } from './RoutingTraceContext';
 import type { RoutingTracePhase } from './RoutingTraceContext';
+import { ROUTING_TRACE_NOOP_COLLECTOR, useRoutingTraceCollector } from './RoutingTraceContext';
 
 /**
  * Converts the default XYFlow smooth-step edges into annotated rectilinear polylines.
@@ -1352,14 +1352,9 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           if (traceAdjustments) {
             traceAdjustments.detoured = true;
           }
-          traceRoutingDecision(
-            'detour',
-            'Inserted detour to avoid detected obstacles',
-            detouredPolyline,
-            {
-              addedBends: Math.max(detouredPolyline.length - baselinePolyline.length, 0),
-            }
-          );
+          traceRoutingDecision('detour', 'Inserted detour to avoid detected obstacles', detouredPolyline, {
+            addedBends: Math.max(detouredPolyline.length - baselinePolyline.length, 0),
+          });
         }
       }
     }
@@ -1395,8 +1390,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     baselinePolylines.set(id, referenceClone);
 
     const baselineFingerprint = createPolylinesFingerprint(baselinePolylines);
-    const canReuseSpacing =
-      hasContextSnapshot && parallelSpacingSnapshot?.baselineFingerprint === baselineFingerprint;
+    const canReuseSpacing = hasContextSnapshot && parallelSpacingSnapshot?.baselineFingerprint === baselineFingerprint;
 
     let spacedPolylines: Map<string, XYPosition[]>;
     if (canReuseSpacing && parallelSpacingSnapshot) {
@@ -1424,15 +1418,10 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           if (traceAdjustments) {
             traceAdjustments.parallelSpacing = true;
           }
-          traceRoutingDecision(
-            'parallel-spacing',
-            'Shifted polyline to resolve overlapping segments',
-            spacedPolyline,
-            {
-              spacing: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.spacing,
-              tolerance: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.tolerance,
-            }
-          );
+          traceRoutingDecision('parallel-spacing', 'Shifted polyline to resolve overlapping segments', spacedPolyline, {
+            spacing: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.spacing,
+            tolerance: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.tolerance,
+          });
         }
       }
     }
@@ -1448,10 +1437,34 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   const simplifyEnabled = data?.rectilinearSimplifyEnabled ?? true;
-  const shouldSkipFinalSimplification = true;
-  const finalBendingPoints = shouldSkipFinalSimplification
-    ? rectifiedBendingPoints
-    : simplifyRectilinearBends(rectifiedBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
+  let finalBendingPoints = rectifiedBendingPoints;
+  if (simplifyEnabled && !customEdge) {
+    const postProcessSimplified = simplifyRectilinearBends(
+      rectifiedBendingPoints,
+      { x: sourceX, y: sourceY },
+      { x: targetX, y: targetY }
+    );
+    const removedAfterPostProcess = rectifiedBendingPoints.length - postProcessSimplified.length;
+    if (removedAfterPostProcess > 0) {
+      if (traceAdjustments) {
+        traceAdjustments.simplified = true;
+      }
+      if (traceRoutingDecision) {
+        traceRoutingDecision(
+          'simplify',
+          `Removed ${removedAfterPostProcess} residual bend${
+            removedAfterPostProcess === 1 ? '' : 's'
+          } after post-processing`,
+          buildPolyline(sourceX, sourceY, postProcessSimplified, targetX, targetY),
+          {
+            stage: 'post-processing',
+            removedBends: removedAfterPostProcess,
+          }
+        );
+      }
+    }
+    finalBendingPoints = postProcessSimplified;
+  }
 
   if (traceRoutingDecision) {
     traceRoutingDecision(
