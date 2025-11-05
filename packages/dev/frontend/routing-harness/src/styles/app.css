@@ -201,3 +201,80 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+.edge-debug {
+  margin-top: 12px;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  color: #1b243f;
+}
+
+.edge-debug__content {
+  margin-top: 8px;
+  border: 1px dashed rgba(13, 19, 33, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(247, 249, 253, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edge-debug__overlaps {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.edge-debug__overlaps--ok {
+  color: #2f6b2f;
+}
+
+.edge-debug__overlaps--warn {
+  color: #a1352d;
+}
+
+.edge-debug__overlaps ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.edge-debug__entry {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 1px 0 rgba(13, 19, 33, 0.06);
+}
+
+.edge-debug__entry-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #16213d;
+}
+
+.edge-debug__row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.edge-debug__label {
+  min-width: 52px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #4a5675;
+  font-size: 11px;
+}
+
+.edge-debug__row code {
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #1b243f;
+}

@@ -14,6 +14,13 @@ export default function App() {
   const [fixtures, setFixtures] = useState<LoadedFixture[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDebug] = useState<boolean>(() => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    const param = new URL(window.location.href).searchParams.get('debug');
+    return param === 'spacing' || param === 'routing';
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -93,7 +100,7 @@ export default function App() {
               {description ? <p className="fixture__description">{description}</p> : null}
             </header>
             <div className="fixture__viewer">
-              <DiagramViewer fixture={fixture} onMetricsChange={handleMetricsChange} />
+              <DiagramViewer fixture={fixture} onMetricsChange={handleMetricsChange} showDebug={showDebug} />
             </div>
           </section>
         );
