@@ -67,6 +67,8 @@ public final class NodeElementProps implements IProps {
 
     private boolean labelEditable;
 
+    private boolean deletable;
+
     private boolean pinned;
 
     private Set<String> customizedStyleProperties;
@@ -144,6 +146,10 @@ public final class NodeElementProps implements IProps {
         return this.labelEditable;
     }
 
+    public boolean isDeletable() {
+        return this.deletable;
+    }
+
     public boolean isPinned() {
         return this.pinned;
     }
@@ -197,6 +203,8 @@ public final class NodeElementProps implements IProps {
         private List<Element> children;
 
         private boolean labelEditable;
+
+        private boolean deletable;
 
         private boolean pinned;
 
@@ -281,6 +289,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder deletable(boolean deletable) {
+            this.deletable = deletable;
+            return this;
+        }
+
         public Builder pinned(boolean pinned) {
             this.pinned = pinned;
             return this;
@@ -307,6 +320,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.style = Objects.requireNonNull(this.style);
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
+            nodeElementProps.deletable = this.deletable;
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             nodeElementProps.pinned = this.pinned;

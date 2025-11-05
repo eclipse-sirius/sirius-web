@@ -53,6 +53,7 @@ const createEdgeAnchorNodeCreationHandles = (
       isBorderNode: false,
       borderNodePosition: null,
       labelEditable: false,
+      deletable: false,
       style: {},
       connectionHandles: [],
       isNew: false,

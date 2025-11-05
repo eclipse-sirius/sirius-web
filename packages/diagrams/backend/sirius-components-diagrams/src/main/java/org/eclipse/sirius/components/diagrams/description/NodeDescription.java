@@ -559,7 +559,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.reusedBorderNodeDescriptionIds = Objects.requireNonNull(this.reusedBorderNodeDescriptionIds);
             nodeDescription.reusedChildNodeDescriptionIds = Objects.requireNonNull(this.reusedChildNodeDescriptionIds);
             nodeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
-            nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
+            nodeDescription.deleteHandler = this.deleteHandler; // Optional on purpose
             nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
             nodeDescription.keepAspectRatio = this.keepAspectRatio;
             nodeDescription.isCollapsedByDefaultPredicate = Objects.requireNonNull(this.isCollapsedByDefaultPredicate);

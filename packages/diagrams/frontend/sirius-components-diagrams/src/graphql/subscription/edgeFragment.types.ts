@@ -29,6 +29,7 @@ export interface GQLEdge {
   style: GQLEdgeStyle;
   routingPoints: GQLRoutingPoint[];
   centerLabelEditable: boolean;
+  deletable: boolean;
   customizedStyleProperties: string[];
 }
 
