@@ -207,6 +207,7 @@ public class EdgeComponent implements IComponent {
                     .style(appearance.style())
                     .children(labelChildren)
                     .centerLabelEditable(edgeDescription.getLabelEditHandler() != null)
+                    .deletable(edgeDescription.getDeleteHandler() != null)
                     .customizedStyleProperties(appearance.customizedStyleProperties())
                     .build();
 

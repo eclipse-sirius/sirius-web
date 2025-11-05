@@ -318,7 +318,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
             edgeDescription.sourceProvider = Objects.requireNonNull(this.sourceProvider);
             edgeDescription.targetProvider = Objects.requireNonNull(this.targetProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
-            edgeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
+            edgeDescription.deleteHandler = this.deleteHandler; // Optional on purpose
             edgeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
             return edgeDescription;
         }
