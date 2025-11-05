@@ -122,6 +122,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .collapsingState(nodeElementProps.getCollapsingState())
                     .outsideLabels(outsideLabels)
                     .labelEditable(nodeElementProps.isLabelEditable())
+                    .deletable(nodeElementProps.isDeletable())
                     .customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties());
 
             if (insideLabel != null) {
@@ -161,6 +162,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .state(edgeElementProps.getState())
                     .modifiers(edgeElementProps.getModifiers())
                     .centerLabelEditable(edgeElementProps.isCenterLabelEditable())
+                    .deletable(edgeElementProps.isDeletable())
                     .customizedStyleProperties(edgeElementProps.getCustomizedStyleProperties())
                     .build();
         }

@@ -162,13 +162,9 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     private boolean hasDeleteTool(Object diagramElementDescription) {
         boolean result = true;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            if (nodeDescription.getDeleteHandler() instanceof IViewNodeDeleteHandler viewNodeDeleteHandler) {
-                result = viewNodeDeleteHandler.hasSemanticDeleteTool();
-            }
+            result = nodeDescription.getDeleteHandler() != null;
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            if (edgeDescription.getDeleteHandler() instanceof IViewNodeDeleteHandler viewElementDeleteHandler) {
-                result = viewElementDeleteHandler.hasSemanticDeleteTool();
-            }
+            result = edgeDescription.getDeleteHandler() != null;
         }
         return result;
     }
