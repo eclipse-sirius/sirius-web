@@ -77,7 +77,7 @@ class ProjectNavigationBar {
   }
 
   public getShareButton(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy.getByTestId('share');
+    return cy.getByTestId('share-project');
   }
 
   public getShareDialog(): ShareProjectDialog {

@@ -172,6 +172,23 @@ describe('Workbench Configuration Resolution', () => {
           workbench = new Workbench();
         });
 
+        it('Then the share URL contains the workbench configuration', () => {
+          // Wait for the diagram to be actually loaded, otherwise if we start interacting
+          // with the project menu and *then* the diagram appears, the menu does not open.
+          cy.getByTestId('FreeForm - Motion_Engine').should('be.visible');
+          cy.getByTestId(`navbar-title`).should('be.visible');
+          cy.getByTestId('navigation-bar').findByTestId('more').should('exist').click();
+          cy.getByTestId('share-project').should('exist').click();
+          cy.getByTestId('share-path')
+            .should('exist')
+            .should(
+              'include.text',
+              encodeURIComponent(
+                `"representationEditors":[{"representationId":"${topography2Id}","isActive":true},{"representationId":"${topography1Id}","isActive":false}]`
+              )
+            );
+        });
+
         it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {
           cy.url().should('not.include', 'workbenchConfiguration=');
         });
