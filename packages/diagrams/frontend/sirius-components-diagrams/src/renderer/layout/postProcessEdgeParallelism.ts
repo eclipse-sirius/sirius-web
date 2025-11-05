@@ -401,20 +401,6 @@ const buildSpacedPolylineMap = (
   }
 
   const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
-  if (process.env.NODE_ENV !== 'production') {
-    const serialisedAssignments = Array.from(assignments.entries()).map(([key, offsets]) => ({
-      key,
-      offsets: Array.from(offsets.entries()),
-    }));
-    const serialisedPolylines = Array.from(adjusted.entries()).map(([edgeId, points]) => ({
-      edgeId,
-      points: points.map((point) => ({ x: point.x, y: point.y })),
-    }));
-    // eslint-disable-next-line no-console
-    console.log('[parallel-spacing] assignments', JSON.stringify(serialisedAssignments, null, 2));
-    // eslint-disable-next-line no-console
-    console.log('[parallel-spacing] adjusted', JSON.stringify(serialisedPolylines, null, 2));
-  }
   return adjusted;
 };
 

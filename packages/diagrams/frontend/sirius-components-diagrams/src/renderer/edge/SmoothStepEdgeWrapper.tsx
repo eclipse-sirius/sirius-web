@@ -1118,17 +1118,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   // Parallel spacing piggybacks on the pre-fetched edge list; skip when the context does not provide it.
   const shouldCollectParallelPolylines =
     parallelSpacingEnabled && !customEdge && edgesFromStore.length > 0 && !!getNodes;
-  if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
-    console.log('[parallel-spacing] eligibility', {
-      id,
-      parallelSpacingEnabled,
-      customEdge,
-      edgesFromStore: edgesFromStore.length,
-      shouldCollectParallelPolylines,
-    });
-  }
-
   let detouredPolyline: XYPosition[] | undefined;
   let detourPolylines: Map<string, XYPosition[]> | undefined;
 
@@ -1229,11 +1218,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       referencePolyline.map((point) => ({ x: point.x, y: point.y }))
     );
 
-    if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
-      console.log('[parallel-spacing] candidates', id, Array.from(polylinesForSpacing.keys()));
-    }
-
     const hasOtherPolylines = Array.from(polylinesForSpacing.keys()).some((edgeId) => edgeId !== id);
 
     if (hasOtherPolylines) {
@@ -1245,10 +1229,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         !polylinesEqual(snapshotPolylineForCurrent, referencePolyline);
 
       if (!needsRecompute && parallelSpacingSnapshot) {
-        if (process.env.NODE_ENV !== 'production') {
-          // eslint-disable-next-line no-console
-          console.log('[parallel-spacing] reuse snapshot', id);
-        }
         spacedPolylines = parallelSpacingSnapshot.polylines;
       } else {
         spacedPolylines = buildSpacedPolylines(polylinesForSpacing, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
@@ -1256,10 +1236,6 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           contextSignature: spacingContextSignature,
           polylines: clonePolylineMap(spacedPolylines),
         };
-        if (process.env.NODE_ENV !== 'production') {
-          // eslint-disable-next-line no-console
-          console.log('[parallel-spacing] recomputed', id, Array.from(spacedPolylines.keys()));
-        }
       }
       const spacedPolyline = spacedPolylines?.get(id);
       if (spacedPolyline && !polylinesEqual(spacedPolyline, referencePolyline)) {
@@ -1274,16 +1250,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           targetY = lastPoint.y;
         }
         rectifiedBendingPoints = spacedPolyline.slice(1, -1);
-        if (process.env.NODE_ENV !== 'production') {
-          // eslint-disable-next-line no-console
-          console.log('[parallel-spacing] rectified after spacing', id, rectifiedBendingPoints);
-        }
       }
     }
   }
 
   const simplifyEnabled = data?.rectilinearSimplifyEnabled ?? true;
-  const shouldSkipFinalSimplification = shouldCollectParallelPolylines || !simplifyEnabled;
+  const shouldSkipFinalSimplification = true;
   const finalBendingPoints = shouldSkipFinalSimplification
     ? rectifiedBendingPoints
     : simplifyRectilinearBends(rectifiedBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
