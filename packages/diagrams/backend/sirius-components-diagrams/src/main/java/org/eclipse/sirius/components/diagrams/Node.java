@@ -70,6 +70,8 @@ public final class Node implements IDiagramElement {
 
     private boolean labelEditable;
 
+    private boolean deletable;
+
     private boolean pinned;
 
     private Set<String> customizedStyleProperties;
@@ -180,6 +182,10 @@ public final class Node implements IDiagramElement {
         return this.labelEditable;
     }
 
+    public boolean isDeletable() {
+        return this.deletable;
+    }
+
     public boolean isPinned() {
         return this.pinned;
     }
@@ -245,6 +251,8 @@ public final class Node implements IDiagramElement {
 
         private boolean labelEditable;
 
+        private boolean deletable;
+
         private boolean pinned;
 
         private Set<String> customizedStyleProperties;
@@ -273,6 +281,7 @@ public final class Node implements IDiagramElement {
             this.defaultWidth = node.getDefaultWidth();
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
+            this.deletable = node.isDeletable();
             this.pinned = node.isPinned();
             this.customizedStyleProperties = node.getCustomizedStyleProperties();
         }
@@ -367,6 +376,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder deletable(boolean deletable) {
+            this.deletable = deletable;
+            return this;
+        }
+
         public Builder pinned(boolean pinned) {
             this.pinned = pinned;
             return this;
@@ -398,9 +412,11 @@ public final class Node implements IDiagramElement {
             node.defaultWidth = this.defaultWidth; // Optional on purpose
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;
+            node.deletable = this.deletable;
             node.pinned = this.pinned;
             node.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return node;
         }
     }
 }
+

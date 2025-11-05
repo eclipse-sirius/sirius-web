@@ -58,6 +58,8 @@ public final class EdgeElementProps implements IProps {
 
     private boolean centerLabelEditable;
 
+    private boolean deletable;
+
     private List<Element> children;
 
     private Set<String> customizedStyleProperties;
@@ -118,6 +120,10 @@ public final class EdgeElementProps implements IProps {
         return this.centerLabelEditable;
     }
 
+    public boolean isDeletable() {
+        return this.deletable;
+    }
+
     public Set<String> getCustomizedStyleProperties() {
         return this.customizedStyleProperties;
     }
@@ -164,6 +170,8 @@ public final class EdgeElementProps implements IProps {
         private EdgeStyle style;
 
         private boolean centerLabelEditable;
+
+        private boolean deletable;
 
         private List<Element> children = new ArrayList<>();
 
@@ -228,6 +236,11 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder deletable(boolean deletable) {
+            this.deletable = deletable;
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = children;
             return this;
@@ -252,9 +265,11 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.state = Objects.requireNonNull(this.state);
             edgeElementProps.style = Objects.requireNonNull(this.style);
             edgeElementProps.centerLabelEditable = this.centerLabelEditable;
+            edgeElementProps.deletable = this.deletable;
             edgeElementProps.children = this.children;
             edgeElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return edgeElementProps;
         }
     }
 }
+
