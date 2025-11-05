@@ -31,6 +31,7 @@ export interface GQLNode<T extends GQLNodeStyle> {
   defaultWidth: number | null;
   defaultHeight: number | null;
   labelEditable: boolean;
+  deletable: boolean;
   customizedStyleProperties: string[];
   initialBorderNodePosition: GQLBorderNodePosition;
 }

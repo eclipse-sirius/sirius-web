@@ -223,6 +223,7 @@ public class NodeComponent implements IComponent {
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
                 .labelEditable(nodeDescription.getLabelEditHandler() != null)
+                .deletable(nodeDescription.getDeleteHandler() != null)
                 .customizedStyleProperties(appearance.customizedStyleProperties())
                 .build();
 

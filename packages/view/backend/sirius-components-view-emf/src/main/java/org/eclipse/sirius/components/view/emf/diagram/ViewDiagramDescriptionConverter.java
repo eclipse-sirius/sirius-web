@@ -324,7 +324,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .reusedChildNodeDescriptionIds(reusedChildNodeDescriptionIds)
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .userResizable(userResizableDirection)
-                .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .isCollapsedByDefaultPredicate(isCollapsedByDefaultPredicate)
                 .isHiddenByDefaultPredicate(isHiddenByDefaultPredicate)
@@ -333,6 +332,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .defaultHeightProvider(defaultHeightProvider)
                 .keepAspectRatio(viewNodeDescription.isKeepAspectRatio())
                 .initialChildBorderNodePositions(initialBorderNodePositions);
+
+        this.createDeleteHandler(viewNodeDescription, converterContext).ifPresent(builder::deleteHandler);
 
         if (insideLabel != null) {
             builder.insideLabelDescription(insideLabel);
@@ -597,8 +598,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .synchronizationPolicy(synchronizationPolicy)
                 .sourceProvider(sourceProvider)
                 .targetProvider(targetProvider)
-                .styleProvider(styleProvider)
-                .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
+                .styleProvider(styleProvider);
+
+        var optionalDeleteHandler = this.createDeleteHandler(viewEdgeDescription, converterContext);
+        if (optionalDeleteHandler.isPresent()) {
+            builder.deleteHandler(optionalDeleteHandler.get());
+        }
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), LabelIdProvider.EDGE_BEGIN_LABEL_SUFFIX, interpreter, stylesFactory)
                 .ifPresent(builder::beginLabelDescription);
@@ -613,33 +618,21 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        Function<VariableManager, IStatus> handler = variableManager -> {
-            IStatus result;
-            VariableManager childVariableManager = variableManager.createChild();
-            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+    private Optional<Function<VariableManager, IStatus>> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var optionalDeleteTool = new ToolFinder().findDeleteTool(diagramElementDescription);
+        if (optionalDeleteTool.isPresent()) {
+            var deleteTool = optionalDeleteTool.get();
+            Function<VariableManager, IStatus> handler = variableManager -> {
+                VariableManager childVariableManager = variableManager.createChild();
+                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+                childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+                return this.toolExecutor.executeTool(deleteTool, converterContext.getInterpreter(), childVariableManager);
+            };
 
-            var optionalDeleteTool = new ToolFinder().findDeleteTool(diagramElementDescription);
-            if (optionalDeleteTool.isPresent()) {
-                result = this.toolExecutor.executeTool(optionalDeleteTool.get(), converterContext.getInterpreter(), childVariableManager);
-            } else {
-                result = new Failure("No deletion tool configured");
-            }
-            return result;
-        };
-
-        return new IViewNodeDeleteHandler() {
-            @Override
-            public boolean hasSemanticDeleteTool() {
-                return new ToolFinder().findDeleteTool(diagramElementDescription).isPresent();
-            }
-
-            @Override
-            public IStatus apply(VariableManager variableManager) {
-                return handler.apply(variableManager);
-            }
-        };
+            return Optional.of(handler::apply);
+        } else {
+            return Optional.empty();
+        }
     }
 
     private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription,
