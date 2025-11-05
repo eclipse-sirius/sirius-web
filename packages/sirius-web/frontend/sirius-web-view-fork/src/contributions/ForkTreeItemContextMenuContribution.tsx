@@ -58,7 +58,7 @@ const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is Create
   payload.__typename === 'CreateProjectSuccessPayload';
 
 export const ForkTreeItemContextMenuContribution = forwardRef(
-  ({ editingContextId, item }: TreeItemContextMenuComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ editingContextId, item, readOnly }: TreeItemContextMenuComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [createProject, { data, error }] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
     const { addErrorMessage } = useMultiToast();
     const navigate = useNavigate();
@@ -110,7 +110,7 @@ export const ForkTreeItemContextMenuContribution = forwardRef(
 
     return (
       <Fragment key="fork-tree-item-context-menu-contribution">
-        <MenuItem onClick={handleClickOpen} ref={ref} key="new-fork" data-testid="fork-action">
+        <MenuItem onClick={handleClickOpen} ref={ref} disabled={readOnly} key="new-fork" data-testid="fork-action">
           <ListItemIcon>
             <EditNoteIcon fontSize="small" />
           </ListItemIcon>
