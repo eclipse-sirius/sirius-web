@@ -21,7 +21,6 @@ import {
   XYPosition,
 } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { useStore } from '../../representation/useStore';
@@ -33,6 +32,8 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
+import { ROUTING_TRACE_NOOP_COLLECTOR, useRoutingTraceCollector } from './RoutingTraceContext';
+import type { RoutingTracePhase } from './RoutingTraceContext';
 
 /**
  * Converts the default XYFlow smooth-step edges into annotated rectilinear polylines.
@@ -71,7 +72,10 @@ type Axis = 'horizontal' | 'vertical';
 
 type ParallelSpacingSnapshot = {
   contextSignature: string;
-  polylines: Map<string, XYPosition[]>;
+  baselineFingerprint: string;
+  spacedFingerprint: string;
+  baselinePolylines: Map<string, XYPosition[]>;
+  spacedPolylines: Map<string, XYPosition[]>;
 };
 
 let parallelSpacingSnapshot: ParallelSpacingSnapshot | null = null;
@@ -83,6 +87,19 @@ const clonePolylineMap = (polylines: Map<string, XYPosition[]>): Map<string, XYP
       points.map((point) => ({ x: point.x, y: point.y })),
     ])
   );
+
+const createPolylinesFingerprint = (polylines: Map<string, XYPosition[]>): string => {
+  const serialisable = Array.from(polylines.entries())
+    .map(([edgeId, points]) => ({
+      edgeId,
+      points: points.map((point) => ({
+        x: Number(point.x.toFixed(2)),
+        y: Number(point.y.toFixed(2)),
+      })),
+    }))
+    .sort((a, b) => a.edgeId.localeCompare(b.edgeId));
+  return JSON.stringify(serialisable);
+};
 
 const createSpacingContextSignature = (
   edges: Edge<MultiLabelEdgeData>[],
@@ -118,6 +135,33 @@ const createSpacingContextSignature = (
     })
     .sort((a, b) => a.id.localeCompare(b.id));
   return JSON.stringify(serialisable);
+};
+
+const QUADRATIC_SEGMENT_PATTERN =
+  /Q\s*(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*,\s*(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s+(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*,\s*(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)/gi;
+
+/**
+ * Extract the corner coordinates from a smooth-step path string. The XYFlow implementation
+ * always emits quadratic segments for the rounded bends, so we only need to read the `Q`
+ * commands and collect their end points to reconstruct the rectilinear polyline.
+ */
+const extractQuadraticCornerPoints = (path: string): XYPosition[] => {
+  if (!path || path.includes('NaN')) {
+    return [];
+  }
+
+  const points: XYPosition[] = [];
+  QUADRATIC_SEGMENT_PATTERN.lastIndex = 0;
+
+  for (const match of path.matchAll(QUADRATIC_SEGMENT_PATTERN)) {
+    const x = Number(match[3]);
+    const y = Number(match[4]);
+    if (Number.isFinite(x) && Number.isFinite(y)) {
+      points.push({ x, y });
+    }
+  }
+
+  return points;
 };
 
 function interpolateHalfway(from: number, to: number): number {
@@ -254,6 +298,43 @@ function polylinesEqual(first: XYPosition[], second: XYPosition[]): boolean {
   }
   return true;
 }
+
+const normalisePolyline = (polyline: XYPosition[] | undefined): XYPosition[] | undefined => {
+  if (!polyline) {
+    return undefined;
+  }
+  if (polyline.length < 2) {
+    return polyline.map((point) => ({ x: point.x, y: point.y }));
+  }
+  const sourcePoint = polyline[0];
+  const targetPoint = polyline[polyline.length - 1];
+  if (!sourcePoint || !targetPoint) {
+    return polyline.map((point) => ({ x: point.x, y: point.y }));
+  }
+  const simplifiedBends = simplifyRectilinearBends(polyline.slice(1, -1), sourcePoint, targetPoint);
+  return [
+    { x: sourcePoint.x, y: sourcePoint.y },
+    ...simplifiedBends.map((point) => ({ x: point.x, y: point.y })),
+    { x: targetPoint.x, y: targetPoint.y },
+  ];
+};
+
+const buildPolyline = (
+  sourceX: number,
+  sourceY: number,
+  bends: XYPosition[],
+  targetX: number,
+  targetY: number
+): XYPosition[] => {
+  const result: XYPosition[] = new Array(bends.length + 2);
+  result[0] = { x: sourceX, y: sourceY };
+  for (let i = 0; i < bends.length; i++) {
+    const bend = bends[i]!;
+    result[i + 1] = { x: bend.x, y: bend.y };
+  }
+  result[result.length - 1] = { x: targetX, y: targetY };
+  return result;
+};
 
 /**
  * Seeds the orthogonal path reconstruction with the correct starting axis based
@@ -809,6 +890,30 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     return null;
   }
 
+  const routingTraceCollector = useRoutingTraceCollector();
+  const tracingEnabled = routingTraceCollector !== ROUTING_TRACE_NOOP_COLLECTOR;
+  const traceRoutingDecision = tracingEnabled
+    ? (phase: RoutingTracePhase, message: string, polyline: XYPosition[], metadata?: Record<string, unknown>) => {
+        routingTraceCollector({
+          edgeId: id,
+          phase,
+          message,
+          polyline: polyline.map((point) => ({ x: point.x, y: point.y })),
+          metadata,
+        });
+      }
+    : undefined;
+  const traceAdjustments = tracingEnabled
+    ? {
+        fanOut: false,
+        fanIn: false,
+        simplified: false,
+        straightened: false,
+        detoured: false,
+        parallelSpacing: false,
+      }
+    : null;
+
   // The rendering flow:
   // 1. Resolve layout handlers to let nodes customize handle positions when needed.
   // 2. Compute handle coordinates for both endpoints (honouring node-specific overrides).
@@ -909,6 +1014,14 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     // Preserve user-authored geometry; downstream component treats this as a custom edge.
     bendingPoints = data.bendingPoints;
+    if (traceRoutingDecision) {
+      traceRoutingDecision(
+        'initial',
+        'Using custom bending points from edge data',
+        buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+        { customEdge: true, bendCount: bendingPoints.length }
+      );
+    }
   } else {
     // Fallback: translate the smooth quadratic path from React Flow into Manhattan-style bends.
     const [smoothEdgePath] = getSmoothStepPath({
@@ -920,11 +1033,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetPosition,
     });
 
-    const quadraticCurvePoints: XYPosition[] = smoothEdgePath.includes('NaN')
-      ? []
-      : parse(smoothEdgePath)
-          .filter((segment) => segment.code === 'Q' && typeof segment.x === 'number' && typeof segment.y === 'number')
-          .map((segment) => ({ x: segment.x as number, y: segment.y as number }));
+    const quadraticCurvePoints = extractQuadraticCornerPoints(smoothEdgePath);
 
     if (quadraticCurvePoints.length > 0) {
       // When no custom bends are given, we shape the first turn according to the chosen strategy.
@@ -1020,6 +1129,21 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           bendingPoints = fanResult.bendingPoints;
           sourceX = fanResult.x;
           sourceY = fanResult.y;
+          if (traceRoutingDecision) {
+            if (traceAdjustments) {
+              traceAdjustments.fanOut = true;
+            }
+            traceRoutingDecision(
+              'fan-out',
+              'Applied fan-out spacing at source handle',
+              buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+              {
+                count: sourceArrangement.count,
+                index: sourceArrangement.index,
+                offset: sourceArrangement.offset,
+              }
+            );
+          }
         }
 
         // Apply the fan-in only when the target side receives more than one edge.
@@ -1037,6 +1161,21 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           bendingPoints = fanResult.bendingPoints;
           targetX = fanResult.x;
           targetY = fanResult.y;
+          if (traceRoutingDecision) {
+            if (traceAdjustments) {
+              traceAdjustments.fanIn = true;
+            }
+            traceRoutingDecision(
+              'fan-in',
+              'Applied fan-in spacing at target handle',
+              buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+              {
+                count: targetArrangement.count,
+                index: targetArrangement.index,
+                offset: targetArrangement.offset,
+              }
+            );
+          }
         }
 
         bendingPoints = enforceTargetClearance(
@@ -1047,6 +1186,15 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
         );
       }
     }
+  }
+
+  if (!customEdge && traceRoutingDecision) {
+    traceRoutingDecision(
+      'initial',
+      'Derived bending points from smooth-step path',
+      buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+      { customEdge: false, bendCount: bendingPoints.length }
+    );
   }
 
   const baselineBendingPoints = customEdge
@@ -1064,6 +1212,24 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   let rectifiedBendingPoints = customEdge
     ? baselineBendingPoints
     : simplifyRectilinearBends(baselineBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
+
+  if (traceRoutingDecision) {
+    const removedBends = baselineBendingPoints.length - rectifiedBendingPoints.length;
+    if (traceAdjustments && removedBends !== 0) {
+      traceAdjustments.simplified = true;
+    }
+    traceRoutingDecision(
+      'simplify',
+      removedBends !== 0
+        ? `Simplified polyline by removing ${removedBends} bend${removedBends === 1 ? '' : 's'}`
+        : 'Baseline polyline after simplification',
+      buildPolyline(sourceX, sourceY, rectifiedBendingPoints, targetX, targetY),
+      {
+        customEdge,
+        removedBends,
+      }
+    );
+  }
 
   // The straightening pass only runs for automatically routed edges; custom polylines remain untouched.
   const straightenEnabled = (data?.rectilinearStraightenEnabled ?? DEFAULT_STRAIGHTEN_ENABLED) && !customEdge;
@@ -1109,6 +1275,20 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
             { x: sourceX, y: sourceY },
             { x: targetX, y: targetY }
           );
+          if (traceRoutingDecision) {
+            if (traceAdjustments) {
+              traceAdjustments.straightened = true;
+            }
+            traceRoutingDecision(
+              'straighten',
+              `Straightened polyline along ${axis} axis`,
+              buildPolyline(sourceX, sourceY, rectifiedBendingPoints, targetX, targetY),
+              {
+                axis,
+                threshold: DEFAULT_STRAIGHTEN_THRESHOLD,
+              }
+            );
+          }
         }
       }
     }
@@ -1168,6 +1348,19 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           targetY = lastPoint.y;
         }
         rectifiedBendingPoints = detouredPolyline.slice(1, -1);
+        if (traceRoutingDecision) {
+          if (traceAdjustments) {
+            traceAdjustments.detoured = true;
+          }
+          traceRoutingDecision(
+            'detour',
+            'Inserted detour to avoid detected obstacles',
+            detouredPolyline,
+            {
+              addedBends: Math.max(detouredPolyline.length - baselinePolyline.length, 0),
+            }
+          );
+        }
       }
     }
   }
@@ -1177,67 +1370,44 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       edgesFromStore,
       (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
     );
-    const snapshotMatches = parallelSpacingSnapshot?.contextSignature === spacingContextSignature;
-    const polylinesForSpacing = snapshotMatches
-      ? clonePolylineMap(parallelSpacingSnapshot!.polylines)
+    const hasContextSnapshot = parallelSpacingSnapshot?.contextSignature === spacingContextSignature;
+    const baselinePolylines = hasContextSnapshot
+      ? clonePolylineMap(parallelSpacingSnapshot!.baselinePolylines)
       : new Map<string, XYPosition[]>();
 
-    if (detourPolylines) {
-      detourPolylines.forEach((polyline, edgeId) => {
-        const shouldOverride = !snapshotMatches || edgeId === id || !polylinesForSpacing.has(edgeId);
-        if (!shouldOverride) {
-          return;
-        }
-        if (!polyline || polyline.length < 2) {
-          polylinesForSpacing.set(edgeId, polyline);
-          return;
-        }
-        const sourcePoint = polyline[0];
-        const targetPoint = polyline[polyline.length - 1];
-        if (!sourcePoint || !targetPoint) {
-          polylinesForSpacing.set(edgeId, polyline);
-          return;
-        }
-        const simplifiedBends = simplifyRectilinearBends(polyline.slice(1, -1), sourcePoint, targetPoint);
-        polylinesForSpacing.set(edgeId, [
-          { x: sourcePoint.x, y: sourcePoint.y },
-          ...simplifiedBends.map((point) => ({ x: point.x, y: point.y })),
-          { x: targetPoint.x, y: targetPoint.y },
-        ]);
-      });
-    }
+    detourPolylines?.forEach((polyline, edgeId) => {
+      const normalised = normalisePolyline(polyline);
+      if (!normalised) {
+        return;
+      }
+      const shouldOverride = edgeId === id || !baselinePolylines.has(edgeId);
+      if (shouldOverride) {
+        baselinePolylines.set(edgeId, normalised);
+      }
+    });
 
     const referencePolyline = detouredPolyline ?? [
       { x: sourceX, y: sourceY },
       ...rectifiedBendingPoints.map((point) => ({ x: point.x, y: point.y })),
       { x: targetX, y: targetY },
     ];
+    const referenceClone = referencePolyline.map((point) => ({ x: point.x, y: point.y }));
+    baselinePolylines.set(id, referenceClone);
 
-    polylinesForSpacing.set(
-      id,
-      referencePolyline.map((point) => ({ x: point.x, y: point.y }))
-    );
+    const baselineFingerprint = createPolylinesFingerprint(baselinePolylines);
+    const canReuseSpacing =
+      hasContextSnapshot && parallelSpacingSnapshot?.baselineFingerprint === baselineFingerprint;
 
-    const hasOtherPolylines = Array.from(polylinesForSpacing.keys()).some((edgeId) => edgeId !== id);
+    let spacedPolylines: Map<string, XYPosition[]>;
+    if (canReuseSpacing && parallelSpacingSnapshot) {
+      spacedPolylines = clonePolylineMap(parallelSpacingSnapshot.spacedPolylines);
+    } else {
+      spacedPolylines = buildSpacedPolylines(baselinePolylines, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
+    }
 
+    const hasOtherPolylines = Array.from(baselinePolylines.keys()).some((edgeId) => edgeId !== id);
     if (hasOtherPolylines) {
-      let spacedPolylines: Map<string, XYPosition[]> | undefined;
-      const snapshotPolylineForCurrent = snapshotMatches ? parallelSpacingSnapshot?.polylines.get(id) : undefined;
-      const needsRecompute =
-        !snapshotMatches ||
-        !snapshotPolylineForCurrent ||
-        !polylinesEqual(snapshotPolylineForCurrent, referencePolyline);
-
-      if (!needsRecompute && parallelSpacingSnapshot) {
-        spacedPolylines = parallelSpacingSnapshot.polylines;
-      } else {
-        spacedPolylines = buildSpacedPolylines(polylinesForSpacing, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
-        parallelSpacingSnapshot = {
-          contextSignature: spacingContextSignature,
-          polylines: clonePolylineMap(spacedPolylines),
-        };
-      }
-      const spacedPolyline = spacedPolylines?.get(id);
+      const spacedPolyline = spacedPolylines.get(id);
       if (spacedPolyline && !polylinesEqual(spacedPolyline, referencePolyline)) {
         const firstPoint = spacedPolyline[0];
         const lastPoint = spacedPolyline[spacedPolyline.length - 1];
@@ -1250,8 +1420,31 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
           targetY = lastPoint.y;
         }
         rectifiedBendingPoints = spacedPolyline.slice(1, -1);
+        if (traceRoutingDecision) {
+          if (traceAdjustments) {
+            traceAdjustments.parallelSpacing = true;
+          }
+          traceRoutingDecision(
+            'parallel-spacing',
+            'Shifted polyline to resolve overlapping segments',
+            spacedPolyline,
+            {
+              spacing: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.spacing,
+              tolerance: DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.tolerance,
+            }
+          );
+        }
       }
     }
+
+    const spacedFingerprint = createPolylinesFingerprint(spacedPolylines);
+    parallelSpacingSnapshot = {
+      contextSignature: spacingContextSignature,
+      baselineFingerprint,
+      spacedFingerprint,
+      baselinePolylines: clonePolylineMap(baselinePolylines),
+      spacedPolylines: clonePolylineMap(spacedPolylines),
+    };
   }
 
   const simplifyEnabled = data?.rectilinearSimplifyEnabled ?? true;
@@ -1259,6 +1452,20 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   const finalBendingPoints = shouldSkipFinalSimplification
     ? rectifiedBendingPoints
     : simplifyRectilinearBends(rectifiedBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
+
+  if (traceRoutingDecision) {
+    traceRoutingDecision(
+      'final',
+      'Final polyline emitted to the renderer',
+      buildPolyline(sourceX, sourceY, finalBendingPoints, targetX, targetY),
+      {
+        customEdge,
+        simplifyEnabled,
+        parallelSpacingEnabled: shouldCollectParallelPolylines,
+        adjustments: traceAdjustments ? { ...traceAdjustments } : undefined,
+      }
+    );
+  }
 
   return (
     <MultiLabelRectilinearEditableEdge

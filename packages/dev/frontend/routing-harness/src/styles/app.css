@@ -64,6 +64,7 @@
   overflow: hidden;
   background: #f8f9fc;
   display: flex;
+  flex-direction: column;
 }
 
 .harness-diagram-wrapper {
@@ -277,4 +278,82 @@
   white-space: pre-wrap;
   word-break: break-word;
   color: #1b243f;
+}
+
+.routing-log {
+  margin-top: 12px;
+  border: 1px solid rgba(13, 19, 33, 0.08);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(13, 19, 33, 0.08);
+}
+
+.routing-log > summary {
+  cursor: pointer;
+  padding: 10px 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.routing-log__content {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.routing-log__content--empty {
+  font-style: italic;
+  color: #63708f;
+}
+
+.routing-log__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.routing-log__copy-button {
+  appearance: none;
+  border: 1px solid rgba(27, 36, 63, 0.25);
+  background: #ffffff;
+  color: #1b243f;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.routing-log__copy-button:hover {
+  border-color: rgba(27, 36, 63, 0.45);
+  box-shadow: 0 2px 6px rgba(13, 19, 33, 0.08);
+}
+
+.routing-log__copy-button:active {
+  transform: translateY(1px);
+}
+
+.routing-log__copy-feedback {
+  min-width: 72px;
+  font-size: 12px;
+  color: #4a5675;
+  text-align: left;
+}
+
+.routing-log__textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(13, 19, 33, 0.12);
+  background: #f8f9fc;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #1b243f;
+  resize: vertical;
+  white-space: pre;
+  overflow: auto;
 }

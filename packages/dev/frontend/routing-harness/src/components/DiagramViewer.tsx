@@ -1,9 +1,13 @@
 import { Background, ReactFlow, type ReactFlowInstance, type XYPosition } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NodeTypeContext } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext.types';
 import { edgeTypes } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes';
+import {
+  RoutingTraceProvider,
+  type RoutingTraceEvent,
+} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/RoutingTraceContext';
 import { StoreContextProvider } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/StoreContext';
 import { useStore } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/useStore';
 import type { DiagramFixture, RoutingMetrics } from '../types';
@@ -12,6 +16,7 @@ import { computeRoutingMetrics } from '../lib/metrics';
 import { HarnessNode } from './HarnessNode';
 import { BendpointOverlay } from './BendpointOverlay';
 import { EdgeDebugPanel, type EdgeDebugEntry, type OverlapInfo, type SegmentInfo } from './EdgeDebugPanel';
+import { RoutingLogPanel, type RoutingTraceLogEntry } from './RoutingLogPanel';
 
 const nodeContextValue: NodeTypeContextValue = {
   nodeConverters: [],
@@ -151,6 +156,11 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange, showDebug = false }: Di
   const { getNodes, getEdges, onNodesChange, onEdgesChange, setNodes, setEdges } = useStore();
   const diagram = useMemo(() => convertFixtureToDiagram(fixture), [fixture]);
   const instanceRef = useRef<ReactFlowInstance | null>(null);
+  const [traceEvents, setTraceEvents] = useState<RoutingTraceLogEntry[]>([]);
+
+  useEffect(() => {
+    setTraceEvents([]);
+  }, [fixture.id]);
 
   useEffect(() => {
     setNodes(diagram.nodes);
@@ -192,6 +202,16 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange, showDebug = false }: Di
     return findOverlaps(debugEntries);
   }, [debugEntries, showDebug]);
 
+  const handleTraceEvent = useCallback((event: RoutingTraceEvent) => {
+    setTraceEvents((previous) => {
+      const timestamp =
+        typeof performance !== 'undefined' && typeof performance.now === 'function'
+          ? performance.now()
+          : Date.now();
+      return [...previous, { ...event, sequence: previous.length, timestamp }];
+    });
+  }, []);
+
   const fitToWidth = useCallback(() => {
     if (!instanceRef.current) {
       return;
@@ -232,30 +252,33 @@ const DiagramRuntime = memo(({ fixture, onMetricsChange, showDebug = false }: Di
   }, [edges, fixture.id, onMetricsChange]);
 
   return (
-    <div className="harness-diagram-wrapper">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        nodesDraggable={false}
-        nodesConnectable={false}
-        edgesFocusable={false}
-        fitView
-        fitViewOptions={{ padding: 0.2 }}
-        onInit={handleInit}
-        proOptions={{ hideAttribution: true }}
-        panOnDrag={true}
-        zoomOnScroll={true}>
-        <Background gap={12} />
-      </ReactFlow>
-      <BendpointOverlay edges={edges} />
-      {showDebug && debugEntries.length > 0 ? (
-        <EdgeDebugPanel fixtureId={fixture.id} entries={debugEntries} overlaps={debugOverlaps} />
-      ) : null}
-    </div>
+    <RoutingTraceProvider collector={handleTraceEvent}>
+      <div className="harness-diagram-wrapper">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          edgesFocusable={false}
+          fitView
+          fitViewOptions={{ padding: 0.2 }}
+          onInit={handleInit}
+          proOptions={{ hideAttribution: true }}
+          panOnDrag={true}
+          zoomOnScroll={true}>
+          <Background gap={12} />
+        </ReactFlow>
+        <BendpointOverlay edges={edges} />
+        {showDebug && debugEntries.length > 0 ? (
+          <EdgeDebugPanel fixtureId={fixture.id} entries={debugEntries} overlaps={debugOverlaps} />
+        ) : null}
+      </div>
+      <RoutingLogPanel fixtureId={fixture.id} events={traceEvents} />
+    </RoutingTraceProvider>
   );
 });
 
