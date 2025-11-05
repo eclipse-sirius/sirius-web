@@ -15,6 +15,7 @@ import { memo, useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
+import { DiagramPaletteContributionContext } from './extensions/DiagramPaletteContributionContext';
 import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
@@ -41,15 +42,17 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
   return isOpened && x && y ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
-        <Palette
-          x={x}
-          y={y}
-          diagramElementId={diagramElementId}
-          targetObjectId={targetObjectId}
-          onDirectEditClick={() => {}}
-          onClose={hideDiagramPalette}
-          children={[]}
-        />
+        <DiagramPaletteContributionContext.Provider value={{ toolXYPosition: { x, y } }}>
+          <Palette
+            x={x}
+            y={y}
+            diagramElementId={diagramElementId}
+            targetObjectId={targetObjectId}
+            onDirectEditClick={() => {}}
+            onClose={hideDiagramPalette}
+            children={[]}
+          />
+        </DiagramPaletteContributionContext.Provider>
       </div>
     </PalettePortal>
   ) : null;

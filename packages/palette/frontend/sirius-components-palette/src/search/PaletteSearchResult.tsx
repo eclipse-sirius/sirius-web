@@ -169,7 +169,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
       </Tooltip>
     );
   };
-
+  //TODO make search work
   return (
     <Box className={classes.toolListContainer}>
       {filteredToolList.length > 0 ? (
