@@ -24,15 +24,7 @@ import { Fragment, forwardRef, useEffect } from 'react';
 
 export const ExpandAllTreeItemContextMenuContribution = forwardRef(
   (
-    {
-      editingContextId,
-      treeId,
-      item,
-      readOnly,
-      onExpandedElementChange,
-      expanded,
-      onClose,
-    }: TreeItemContextMenuComponentProps,
+    { editingContextId, treeId, item, onExpandedElementChange, expanded, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
@@ -70,7 +62,6 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
           onClick={() => {
             onExpandAll(item);
           }}
-          disabled={readOnly}
           ref={ref}
           aria-disabled>
           <ListItemIcon>

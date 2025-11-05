@@ -105,6 +105,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5697[#5697] [diagram] Prevent `arrangeAll` from failing on diagrams with specific edge-node configurations
 - https://github.com/eclipse-sirius/sirius-web/issues/5671[#5671] [diagram] Prevent "Make Same Size" action from breaking list layout
 - https://github.com/eclipse-sirius/sirius-web/issues/5695[#5695] [diagram] Correctly update the selection when opening or closing the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/5694[#5694] [trees] Ensure that expand all is available in read only workbenches
 
 
 === New Features
