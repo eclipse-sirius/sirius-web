@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DiagramViewer, type DiagramViewerHandle } from './components/DiagramViewer';
 import { loadFixture, loadManifest } from './lib/fixtureLoader';
 import type { DiagramFixture, FixtureManifestEntry } from './types';
@@ -24,6 +24,19 @@ export default function App() {
     const param = new URL(window.location.href).searchParams.get('debug');
     return param === 'spacing' || param === 'routing';
   });
+  const exportRange = useMemo<{ start: number; count: number | null }>(() => {
+    if (typeof window === 'undefined') {
+      return { start: 0, count: null };
+    }
+    const url = new URL(window.location.href);
+    const startParam = Number.parseInt(url.searchParams.get('batchStart') ?? url.searchParams.get('exportStart') ?? '', 10);
+    const countParam = Number.parseInt(url.searchParams.get('batchCount') ?? url.searchParams.get('exportCount') ?? '', 10);
+
+    const start = Number.isFinite(startParam) && startParam > 0 ? Math.max(0, startParam) : 0;
+    const count = Number.isFinite(countParam) && countParam > 0 ? Math.max(1, countParam) : null;
+
+    return { start, count };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -82,6 +95,40 @@ export default function App() {
     }
   }, []);
 
+  const fixturesToDisplay = useMemo<LoadedFixture[]>(() => {
+    if (fixtures.length === 0) {
+      return [];
+    }
+    const startIndex = Math.min(exportRange.start, fixtures.length);
+    if (startIndex >= fixtures.length) {
+      return [];
+    }
+    const endIndex =
+      exportRange.count !== null ? Math.min(startIndex + exportRange.count, fixtures.length) : fixtures.length;
+    return fixtures.slice(startIndex, endIndex);
+  }, [fixtures, exportRange]);
+  const totalFixtures = fixtures.length;
+  const hasExportRange = exportRange.start > 0 || exportRange.count !== null;
+  const rangeStartIndex = Math.min(exportRange.start, totalFixtures);
+  const rangeEndIndex =
+    fixturesToDisplay.length > 0 ? rangeStartIndex + fixturesToDisplay.length : rangeStartIndex;
+  const rangeSummary =
+    hasExportRange && totalFixtures > 0
+      ? fixturesToDisplay.length > 0
+        ? `Showing fixtures ${rangeStartIndex + 1}\u2013${rangeEndIndex} of ${totalFixtures}`
+        : `No fixtures in selected range (start ${rangeStartIndex + 1}).`
+      : null;
+
+  useEffect(() => {
+    const handles = viewerHandlesRef.current;
+    const allowed = new Set(fixturesToDisplay.map(({ entry }) => entry.id));
+    for (const key of Array.from(handles.keys())) {
+      if (!allowed.has(key)) {
+        handles.delete(key);
+      }
+    }
+  }, [fixturesToDisplay]);
+
   const registerViewerHandle = useCallback((fixtureId: string, handle: DiagramViewerHandle | null) => {
     const handles = viewerHandlesRef.current;
     if (handle) {
@@ -102,7 +149,7 @@ export default function App() {
   }, []);
 
   const handleExportAll = useCallback(async () => {
-    if (isExporting || fixtures.length === 0 || error) {
+    if (isExporting || fixturesToDisplay.length === 0 || error) {
       return;
     }
 
@@ -112,7 +159,7 @@ export default function App() {
     try {
       let exportedCount = 0;
 
-      for (const { entry } of fixtures) {
+      for (const { entry } of fixturesToDisplay) {
         const handle = viewerHandlesRef.current.get(entry.id);
         if (!handle) {
           throw new Error(`Fixture "${entry.id}" is not ready for export.`);
@@ -136,7 +183,7 @@ export default function App() {
     } finally {
       setIsExporting(false);
     }
-  }, [downloadImage, error, fixtures, isExporting]);
+  }, [downloadImage, error, fixturesToDisplay, isExporting]);
 
   useEffect(() => {
     if (!exportFeedback) {
@@ -156,9 +203,10 @@ export default function App() {
           className="app__export-button"
           onClick={handleExportAll}
           data-testid="export-all-button"
-          disabled={Boolean(error) || isLoading || isExporting || fixtures.length === 0}>
-          {isExporting ? 'Exporting diagrams…' : `Export all diagrams (${fixtures.length})`}
+          disabled={Boolean(error) || isLoading || isExporting || fixturesToDisplay.length === 0}>
+          {isExporting ? 'Exporting diagrams…' : `Export diagrams (${fixturesToDisplay.length})`}
         </button>
+        {rangeSummary ? <span className="app__range-summary">{rangeSummary}</span> : null}
         {exportFeedback ? (
           <span className={`app__export-feedback app__export-feedback--${exportFeedback.type}`}>
             {exportFeedback.message}
@@ -167,10 +215,13 @@ export default function App() {
       </div>
       {error ? <div className="app__status app__status--error">{error}</div> : null}
       {!error && isLoading ? <div className="app__status">Loading fixtures…</div> : null}
-      {!isLoading && !error && fixtures.length === 0 ? (
+      {!isLoading && !error && totalFixtures === 0 ? (
         <div className="app__status">No fixtures available.</div>
       ) : null}
-      {fixtures.map(({ entry, fixture }) => {
+      {!isLoading && !error && totalFixtures > 0 && fixturesToDisplay.length === 0 ? (
+        <div className="app__status">No fixtures in the selected range.</div>
+      ) : null}
+      {fixturesToDisplay.map(({ entry, fixture }) => {
         const title = fixture.name ?? entry.name ?? entry.id;
         const description = fixture.description ?? entry.description;
         const key = fixture.id ?? entry.id;

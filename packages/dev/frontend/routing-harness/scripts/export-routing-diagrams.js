@@ -200,36 +200,13 @@ const waitForDownloads = (page, expectedCount, timeoutMs) =>
     page.on('download', handleDownload);
   });
 
-const computeFixtureSlice = (fixtures, { limit, batchIndex, batchSize }) => {
-  const total = fixtures.length;
-  let end = total;
-  if (limit && limit > 0) {
-    end = Math.min(end, limit);
-  }
-
-  if (batchIndex !== null || batchSize !== null) {
-    if (batchIndex === null || batchSize === null) {
-      throw new Error('Both --batch-index and --batch-size must be provided together.');
-    }
-    const start = batchIndex * batchSize;
-    if (start >= total) {
-      throw new Error(
-        `Batch ${batchIndex} is out of range for ${total} fixtures (batch size ${batchSize}).`
-      );
-    }
-    const batchEnd = Math.min(start + batchSize, end);
-    return fixtures.slice(start, batchEnd);
-  }
-
-  return fixtures.slice(0, end);
-};
-
 const main = async () => {
   const options = parseArgs(process.argv.slice(2));
   const outputDir = resolve(process.cwd(), options.outDir);
   const shouldStartServer = !options.url;
   const baseUrl = options.url ?? `http://127.0.0.1:${options.port}`;
   let previewProcess = null;
+  let browser = null;
 
   try {
     if (shouldStartServer) {
@@ -262,8 +239,12 @@ const main = async () => {
     await mkdir(outputDir, { recursive: true });
 
     console.log('[harness-export] Launching browser…');
-    const browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({ acceptDownloads: true });
+    browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({
+      acceptDownloads: true,
+      viewport: { width: 1600, height: 1200 },
+      deviceScaleFactor: 1,
+    });
     const page = await context.newPage();
 
     if (options.verbose) {
@@ -277,22 +258,42 @@ const main = async () => {
       });
     }
 
-    console.log(`[harness-export] Navigating to ${baseUrl}`);
-    await page.goto(baseUrl, { waitUntil: 'networkidle' });
-    await page.waitForSelector('.fixture');
+    const navigationUrl = new URL(baseUrl);
+    if (options.batchIndex !== null && options.batchSize !== null) {
+      const start = options.batchIndex * options.batchSize;
+      const count =
+        options.limit && options.limit > 0 ? Math.min(options.batchSize, options.limit) : options.batchSize;
+      navigationUrl.searchParams.set('batchStart', String(start));
+      navigationUrl.searchParams.set('batchCount', String(count));
+    } else if (options.limit && options.limit > 0) {
+      navigationUrl.searchParams.set('batchCount', String(options.limit));
+    }
 
-    const fixtures = await page.evaluate(() =>
+    const visitUrl = navigationUrl.toString();
+    console.log(`[harness-export] Navigating to ${visitUrl}`);
+    await page.goto(visitUrl, { waitUntil: 'networkidle' });
+    const waitTimeout = Math.min(options.timeoutMs, 30_000);
+    await Promise.race([
+      page.waitForSelector('.fixture', { timeout: waitTimeout }),
+      page.waitForFunction(
+        () => {
+          const status = Array.from(document.querySelectorAll('.app__status')).map((el) => el.textContent ?? '');
+          return status.some((text) => text.includes('No fixtures in the selected range.') || text.includes('No fixtures available.'));
+        },
+        { timeout: waitTimeout }
+      ),
+    ]);
+
+    const fixturesToExport = await page.evaluate(() =>
       Array.from(document.querySelectorAll('[data-fixture-id]')).map((section) => ({
         id: section.getAttribute('data-fixture-id') ?? '',
         fileName: section.getAttribute('data-fixture-file') ?? '',
       }))
     );
 
-    if (!fixtures || fixtures.length === 0) {
-      throw new Error('No fixtures detected on the harness page.');
+    if (!fixturesToExport || fixturesToExport.length === 0) {
+      throw new Error('No fixtures detected on the harness page (check batch parameters).');
     }
-
-    const fixturesToExport = computeFixtureSlice(fixtures, options);
 
     await page.waitForFunction(() => {
       const button = document.querySelector('[data-testid="export-all-button"]');
@@ -300,7 +301,7 @@ const main = async () => {
     });
 
     console.log(
-      `[harness-export] Found ${fixtures.length} fixture(s). Triggering export (${fixturesToExport.length} planned)…`
+      `[harness-export] Found ${fixturesToExport.length} fixture(s) for export…`
     );
     const downloadsPromise = waitForDownloads(page, fixturesToExport.length, options.timeoutMs);
     await page.click('[data-testid="export-all-button"]');
@@ -325,9 +326,13 @@ const main = async () => {
     });
 
     await browser.close();
+    browser = null;
 
     console.log(`[harness-export] Export completed. Files available in ${outputDir}`);
   } finally {
+    if (browser) {
+      await browser.close().catch(() => {});
+    }
     await killProcess(previewProcess);
   }
 };

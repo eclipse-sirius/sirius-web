@@ -458,6 +458,20 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
       onMetricsChange(computeRoutingMetrics(fixture.id, edges));
     }, [edges, fixture.id, onMetricsChange]);
 
+    const waitForEdgePaths = useCallback(async (maxAttempts = 20) => {
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        const snapshot = instanceRef.current?.getEdges() ?? [];
+        const allReady = snapshot.every(
+          (edge) => typeof edge.data?.edgePath === 'string' && edge.data.edgePath.length > 0
+        );
+        if (allReady) {
+          return snapshot;
+        }
+        await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      }
+      return instanceRef.current?.getEdges() ?? [];
+    }, []);
+
     const exportDiagramAsPng = useCallback(async (): Promise<string> => {
       const instance = instanceRef.current;
       const wrapper = wrapperRef.current;
@@ -468,12 +482,13 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
       fitToContent();
       await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
 
+      await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      const edgesSnapshot = await waitForEdgePaths();
       const nodesSnapshot = instance.getNodes();
-      const edgesSnapshot = instance.getEdges();
       const contentBounds = computeDiagramBounds(nodesSnapshot, edgesSnapshot, CONTENT_MARGIN);
 
-      const exportWidth = Math.max(contentBounds.width, 1);
-      const exportHeight = Math.max(contentBounds.height, 1);
+      const exportWidth = Math.max(Math.round(contentBounds.width), 1);
+      const exportHeight = Math.max(Math.round(contentBounds.height), 1);
 
       const viewport: Viewport = getViewportForBounds(contentBounds, exportWidth, exportHeight, 0.5, 2, 0.05);
 
@@ -511,7 +526,7 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
           edgesLayer.removeChild(clonedMarkerDefs);
         }
       }
-    }, [fitToContent]);
+    }, [fitToContent, waitForEdgePaths]);
 
     useImperativeHandle(
       ref,
