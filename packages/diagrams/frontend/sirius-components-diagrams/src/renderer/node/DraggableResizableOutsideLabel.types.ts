@@ -12,9 +12,15 @@
  *******************************************************************************/
 import { OutsideLabel } from '../DiagramRenderer.types';
 
-export interface DraggableOutsideLabelProps {
+export interface DraggableResizableOutsideLabelProps {
   id: string;
   label: OutsideLabel;
   faded: boolean;
-  highlighted: boolean;
+  selected: boolean;
+  hovered: boolean;
 }
+
+export type LabelSize = {
+  width: number;
+  height: number;
+};

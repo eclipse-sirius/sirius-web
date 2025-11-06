@@ -65,8 +65,12 @@ public class DiagramEdgeDomainProvider implements IDomainProvider {
         domain.getTypes().add(entity7);
 
         this.addAttribute(entity1, "name", DataType.STRING);
+        this.addAttribute(entity1, "outsideName", DataType.STRING);
         this.addAttribute(entity2, "name", DataType.STRING);
+        this.addAttribute(entity2, "outsideName", DataType.STRING);
         this.addAttribute(entity3, "name", DataType.STRING);
+        this.addAttribute(entity3, "beginName", DataType.STRING);
+        this.addAttribute(entity3, "endName", DataType.STRING);
         this.addAttribute(entity4, "name", DataType.STRING);
         this.addAttribute(entity5, "name", DataType.STRING);
         this.addAttribute(entity6, "name", DataType.STRING);

@@ -27,7 +27,7 @@ import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles'
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
-import { DraggableOutsideLabel } from './DraggableOutsideLabel';
+import { DraggableResizableOutsideLabel } from './DraggableResizableOutsideLabel';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
@@ -172,11 +172,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
         {data.outsideLabels.BOTTOM_MIDDLE && (
-          <DraggableOutsideLabel
+          <DraggableResizableOutsideLabel
             id={id}
             label={data.outsideLabels.BOTTOM_MIDDLE}
             faded={data.faded}
-            highlighted={selected || data.isHovered}
+            selected={selected}
+            hovered={data.isHovered}
           />
         )}
       </>

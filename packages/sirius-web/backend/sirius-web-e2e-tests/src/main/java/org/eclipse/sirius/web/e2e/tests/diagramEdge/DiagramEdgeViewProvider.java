@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -81,7 +82,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
         var nodeDescription1 = this.getNodeDescription(colorProvider, "Entity1");
         var nodeDescription2 = this.getNodeDescription(colorProvider, "Entity2");
 
-        var edgeDescription1 = this.getEdgeDescription(colorProvider, "E1toE2A", nodeDescription1, nodeDescription2);
+        var edgeDescription1 = this.getEdgeDescriptionWithLabel(colorProvider, "E1toE2A", nodeDescription1, nodeDescription2);
         var edgeDescription2 = this.getEdgeDescription(colorProvider, "E1toE2B", nodeDescription1, nodeDescription2);
         var edgeDescription3 = this.getEdgeDescription(colorProvider, "EdgeToE2", edgeDescription1, nodeDescription2);
 
@@ -162,6 +163,30 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
+                .outsideLabels(
+                        new DiagramBuilders()
+                                .newOutsideLabelDescription()
+                                .labelExpression("aql:self.outsideName")
+                                .textAlign(LabelTextAlign.LEFT)
+                                .overflowStrategy(LabelOverflowStrategy.WRAP)
+                                .style(
+                                        new DiagramBuilders()
+                                                .newOutsideLabelStyle()
+                                                .fontSize(14)
+                                                .italic(false)
+                                                .bold(false)
+                                                .underline(false)
+                                                .strikeThrough(false)
+                                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                .borderRadius(3)
+                                                .borderSize(0)
+                                                .borderLineStyle(LineStyle.SOLID)
+                                                .labelColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
+                                                .build()
+                                )
+                                .build()
+                )
                 .build();
     }
 
@@ -174,6 +199,52 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .centerLabelExpression("")
+                .sourceExpression("aql:self.source")
+                .sourceDescriptions(sourceDescription)
+                .targetExpression("aql:self.target")
+                .targetDescriptions(targetDescription)
+                .style(
+                        new DiagramBuilders()
+                                .newEdgeStyle()
+                                .fontSize(14)
+                                .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_BLUE))
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
+                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                .borderRadius(3)
+                                .borderSize(0)
+                                .borderLineStyle(LineStyle.SOLID)
+                                .edgeType(EdgeType.MANHATTAN)
+                                .build()
+                )
+                .conditionalStyles(
+                        new DiagramBuilders()
+                                .newConditionalEdgeStyle()
+                                .condition("aql:self.name=='TestConditionalEdgeStyle'")
+                                .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
+                                .edgeType(EdgeType.SMART_MANHATTAN)
+                                .build()
+                )
+                .conditionalStyles(
+                        new DiagramBuilders()
+                                .newConditionalEdgeStyle()
+                                .condition("aql:self.name=='TestObliqueEdgeType'")
+                                .edgeType(EdgeType.OBLIQUE)
+                                .build()
+                )
+                .build();
+    }
+
+    private EdgeDescription getEdgeDescriptionWithLabel(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
+        return new DiagramBuilders()
+                .newEdgeDescription()
+                .name(entityName)
+                .isDomainBasedEdge(true)
+                .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .centerLabelExpression("aql:self.name")
+                .beginLabelExpression("aql:self.beginName")
+                .endLabelExpression("aql:self.endName")
                 .sourceExpression("aql:self.source")
                 .sourceDescriptions(sourceDescription)
                 .targetExpression("aql:self.target")

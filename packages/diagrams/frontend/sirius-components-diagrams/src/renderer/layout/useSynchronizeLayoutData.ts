@@ -140,9 +140,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             y: outsideLabelPosition.position.y,
           },
           size: {
-            width: 0,
-            height: 0,
+            width: outsideLabelPosition.width,
+            height: outsideLabelPosition.height,
           },
+          resizedByUser: outsideLabelPosition.resizedByUser,
         });
       }
     });
@@ -160,6 +161,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             width: centerLabel.width,
             height: centerLabel.height,
           },
+          resizedByUser: centerLabel.resizedByUser,
         });
       }
       if (edge.data && 'beginLabel' in edge.data) {
@@ -172,9 +174,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
               y: beginLabel.position.y,
             },
             size: {
-              width: 0,
-              height: 0,
+              width: beginLabel.width,
+              height: beginLabel.height,
             },
+            resizedByUser: beginLabel.resizedByUser,
           });
         }
       }
@@ -188,9 +191,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
               y: endLabel.position.y,
             },
             size: {
-              width: 0,
-              height: 0,
+              width: endLabel.width,
+              height: endLabel.height,
             },
+            resizedByUser: endLabel.resizedByUser,
           });
         }
       }

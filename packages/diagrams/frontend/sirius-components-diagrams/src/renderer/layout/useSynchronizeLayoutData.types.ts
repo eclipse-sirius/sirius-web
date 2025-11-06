@@ -59,6 +59,7 @@ export interface GQLLabelLayoutData {
   id: string;
   position: GQLPosition;
   size: GQLSize;
+  resizedByUser: boolean;
 }
 
 export interface GQLSize {

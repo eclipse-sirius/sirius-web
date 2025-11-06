@@ -125,6 +125,7 @@ export const convertOutsideLabels = (
       overflowStrategy,
     } = gqlOutsideLabel;
 
+    const labelLayoutData = gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id);
     allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = {
       id,
       text,
@@ -143,7 +144,10 @@ export const convertOutsideLabels = (
         customizedStyleProperties: gqlOutsideLabel.customizedStyleProperties,
         gqlStyle: gqlOutsideLabel.style,
       },
-      position: gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id)?.position ?? { x: 0, y: 0 },
+      position: labelLayoutData?.position ?? { x: 0, y: 0 },
+      width: labelLayoutData?.size.width ?? 0,
+      height: labelLayoutData?.size.height ?? 0,
+      resizedByUser: labelLayoutData?.resizedByUser ?? false,
     };
 
     return allOutsideLabels;
