@@ -41,6 +41,7 @@ const defaultOptions = {
   verbose: false,
   batchIndex: null,
   batchSize: null,
+  algorithm: null,
 };
 
 const helpText = `Routing Harness Exporter
@@ -55,6 +56,7 @@ Options:
   --verbose          Log browser console messages and page errors
   --batch-index <n>  Zero-based index of the batch to export (requires --batch-size)
   --batch-size <n>   Number of fixtures per batch when using --batch-index
+  --algorithm <id>   Override the routing algorithm (manhattan | smartManhattan | oblique)
   -h, --help         Show this help message
 `;
 
@@ -115,6 +117,9 @@ const parseArgs = (argv) => {
         options.batchSize = value;
         break;
       }
+      case '--algorithm':
+        options.algorithm = argv[++index] ?? null;
+        break;
       case '-h':
       case '--help':
         console.log(helpText);
@@ -259,6 +264,9 @@ const main = async () => {
     }
 
     const navigationUrl = new URL(baseUrl);
+    if (options.algorithm) {
+      navigationUrl.searchParams.set('algorithm', options.algorithm);
+    }
     if (options.batchIndex !== null && options.batchSize !== null) {
       const start = options.batchIndex * options.batchSize;
       const count =

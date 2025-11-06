@@ -14,15 +14,24 @@ import '@xyflow/react/dist/style.css';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { NodeTypeContext } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext.types';
-import { edgeTypes } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes';
+import {
+  edgeTypes as defaultEdgeTypes,
+  type EdgeComponentsMap,
+} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes';
+import { ObliqueEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/ObliqueEdgeWrapper';
+import { SmartStepEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmartStepEdgeWrapper';
+import { SmoothStepEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmoothStepEdgeWrapper';
 import {
   RoutingTraceProvider,
   type RoutingTraceEvent,
 } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/RoutingTraceContext';
 import { StoreContextProvider } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/StoreContext';
 import { useStore } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/useStore';
-import type { EdgeData, NodeData } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/DiagramRenderer.types';
-import type { DiagramFixture, RoutingMetrics } from '../types';
+import type {
+  EdgeData,
+  NodeData,
+} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/DiagramRenderer.types';
+import type { DiagramFixture, FixtureEdge, RoutingMetrics } from '../types';
 import { convertFixtureToDiagram } from '../lib/diagramConversion';
 import { computeRoutingMetrics } from '../lib/metrics';
 import { HarnessNode } from './HarnessNode';
@@ -53,6 +62,14 @@ const PNG_SIGNATURE_LENGTH = 8;
 const PNG_CHUNK_HEADER_SIZE = 8; // length (4) + type (4)
 const PNG_CHUNK_FOOTER_SIZE = 4; // CRC
 const PNG_TIME_CHUNK = 'tIME';
+
+export type EdgeRoutingAlgorithm = FixtureEdge['type'];
+
+const EDGE_WRAPPER_OVERRIDES: EdgeComponentsMap = {
+  manhattan: SmoothStepEdgeWrapper,
+  smartManhattan: SmartStepEdgeWrapper,
+  oblique: ObliqueEdgeWrapper,
+};
 
 const base64ToUint8Array = (base64: string): Uint8Array => {
   const binary = atob(base64);
@@ -237,6 +254,7 @@ interface DiagramViewerProps {
   fixture: DiagramFixture;
   onMetricsChange: (metrics: RoutingMetrics) => void;
   showDebug?: boolean;
+  edgeAlgorithmOverride?: EdgeRoutingAlgorithm;
 }
 
 export interface DiagramViewerHandle {
@@ -345,7 +363,7 @@ const computeDiagramBounds = (
 };
 
 const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
-  ({ fixture, onMetricsChange, showDebug = false }, ref) => {
+  ({ fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride }, ref) => {
     const { getNodes, getEdges, onNodesChange, onEdgesChange, setNodes, setEdges } = useStore();
     const diagram = useMemo(() => convertFixtureToDiagram(fixture), [fixture]);
     const instanceRef = useRef<ReactFlowInstance | null>(null);
@@ -366,6 +384,21 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 
     const nodes = getNodes();
     const edges = getEdges();
+
+    const resolvedEdgeTypes = useMemo<EdgeComponentsMap>(() => {
+      if (!edgeAlgorithmOverride) {
+        return defaultEdgeTypes;
+      }
+      const overrideWrapper = EDGE_WRAPPER_OVERRIDES[edgeAlgorithmOverride];
+      if (!overrideWrapper) {
+        return defaultEdgeTypes;
+      }
+      return {
+        manhattan: overrideWrapper,
+        smartManhattan: overrideWrapper,
+        oblique: overrideWrapper,
+      };
+    }, [edgeAlgorithmOverride]);
 
     const debugEntries = useMemo<EdgeDebugEntry[]>(() => {
       if (!showDebug) {
@@ -546,7 +579,7 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
+            edgeTypes={resolvedEdgeTypes}
             nodesDraggable={false}
             nodesConnectable={false}
             edgesFocusable={false}
@@ -572,12 +605,18 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 DiagramRuntime.displayName = 'DiagramRuntime';
 
 export const DiagramViewer = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
-  ({ fixture, onMetricsChange, showDebug = false }, ref) => {
+  ({ fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride }, ref) => {
     return (
       <ReactFlowProvider>
         <NodeTypeContext.Provider value={nodeContextValue}>
           <StoreContextProvider>
-            <DiagramRuntime ref={ref} fixture={fixture} onMetricsChange={onMetricsChange} showDebug={showDebug} />
+            <DiagramRuntime
+              ref={ref}
+              fixture={fixture}
+              onMetricsChange={onMetricsChange}
+              showDebug={showDebug}
+              edgeAlgorithmOverride={edgeAlgorithmOverride}
+            />
           </StoreContextProvider>
         </NodeTypeContext.Provider>
       </ReactFlowProvider>

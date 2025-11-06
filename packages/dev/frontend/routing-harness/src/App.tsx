@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DiagramViewer, type DiagramViewerHandle } from './components/DiagramViewer';
+import { DiagramViewer, type DiagramViewerHandle, type EdgeRoutingAlgorithm } from './components/DiagramViewer';
 import { loadFixture, loadManifest } from './lib/fixtureLoader';
 import type { DiagramFixture, FixtureManifestEntry } from './types';
 import './styles/app.css';
@@ -9,6 +9,16 @@ interface LoadedFixture {
   entry: FixtureManifestEntry;
   fixture: DiagramFixture;
 }
+
+const EDGE_ROUTING_ALGORITHMS: EdgeRoutingAlgorithm[] = ['manhattan', 'smartManhattan', 'oblique'];
+
+const findEdgeRoutingAlgorithm = (value: string | null): EdgeRoutingAlgorithm | undefined => {
+  if (!value) {
+    return undefined;
+  }
+  const normalized = value.trim().toLowerCase();
+  return EDGE_ROUTING_ALGORITHMS.find((candidate) => candidate.toLowerCase() === normalized);
+};
 
 export default function App() {
   const [fixtures, setFixtures] = useState<LoadedFixture[]>([]);
@@ -24,6 +34,13 @@ export default function App() {
     const param = new URL(window.location.href).searchParams.get('debug');
     return param === 'spacing' || param === 'routing';
   });
+  const edgeAlgorithmOverride = useMemo<EdgeRoutingAlgorithm | undefined>(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+    const url = new URL(window.location.href);
+    return findEdgeRoutingAlgorithm(url.searchParams.get('algorithm'));
+  }, []);
   const exportRange = useMemo<{ start: number; count: number | null }>(() => {
     if (typeof window === 'undefined') {
       return { start: 0, count: null };
@@ -207,6 +224,9 @@ export default function App() {
           {isExporting ? 'Exporting diagrams…' : `Export diagrams (${fixturesToDisplay.length})`}
         </button>
         {rangeSummary ? <span className="app__range-summary">{rangeSummary}</span> : null}
+        {edgeAlgorithmOverride ? (
+          <span className="app__range-summary">Edge routing override: {edgeAlgorithmOverride}</span>
+        ) : null}
         {exportFeedback ? (
           <span className={`app__export-feedback app__export-feedback--${exportFeedback.type}`}>
             {exportFeedback.message}
@@ -242,6 +262,7 @@ export default function App() {
                 fixture={fixture}
                 onMetricsChange={handleMetricsChange}
                 showDebug={showDebug}
+                edgeAlgorithmOverride={edgeAlgorithmOverride}
               />
             </div>
           </section>
