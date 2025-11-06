@@ -16,7 +16,7 @@ export interface DiagramToolExecutorContextValue {
   executeTool: (
     x: number,
     y: number,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     onDirectEditClick: () => void,
     tool: GQLTool

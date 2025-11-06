@@ -104,7 +104,7 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
     editingContextId: string,
     diagramId: string,
     tool: GQLSingleClickOnDiagramElementTool,
-    diagramElementId: string,
+    diagramElementIds: string[],
     variables: GQLToolVariable[],
     x: number,
     y: number
@@ -114,7 +114,7 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: diagramId,
-      diagramElementId,
+      diagramElementIds,
       toolId,
       startingPositionX: x,
       startingPositionY: y,
@@ -148,37 +148,39 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
     editingContextId: string,
     representationId: string,
     toolId: string,
-    diagramElementId: string,
+    diagramElementIds: string[],
     variables: GQLToolVariable[]
   ) => {
-    const getImpactAnalysisVariables: GQLInvokeImpactAnalysisToolVariables = {
-      editingContextId,
-      representationId,
-      toolId,
-      diagramElementId,
-      variables,
-    };
-    getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+    if (diagramElementIds.length === 1 && diagramElementIds[0]) {
+      const getImpactAnalysisVariables: GQLInvokeImpactAnalysisToolVariables = {
+        editingContextId,
+        representationId,
+        toolId,
+        diagramElementId: diagramElementIds[0],
+        variables,
+      };
+      getImpactAnalysisReport({ variables: getImpactAnalysisVariables });
+    }
   };
 
   const invokeSingleClickTool = (
     editingContextId: string,
     diagramId: string,
     tool: GQLTool,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     x: number,
     y: number
   ) => {
     if (isSingleClickOnDiagramElementTool(tool)) {
       const executeTool = (variables: GQLToolVariable[]) =>
-        invokeTool(editingContextId, diagramId, tool, diagramElementId, variables, x, y);
+        invokeTool(editingContextId, diagramId, tool, diagramElementIds, variables, x, y);
 
       let executeProcess: (variables: GQLToolVariable[]) => void = executeTool;
       if (tool.withImpactAnalysis) {
         const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) => {
           setState((prevState) => ({ ...prevState, currentTool: tool, onToolExecution: () => executeTool(variables) }));
-          invokeGetDiagramAnalysisReport(editingContextId, diagramId, tool.id, diagramElementId, variables);
+          invokeGetDiagramAnalysisReport(editingContextId, diagramId, tool.id, diagramElementIds, variables);
         };
         executeProcess = executeToolWithImpactAnalysis;
 

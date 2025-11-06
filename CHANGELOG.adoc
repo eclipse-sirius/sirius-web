@@ -35,6 +35,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
+https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the concept of GroupPalette in the view dsl and the API `ISingleClickOnMultipleDiagramElementHandler` to execute a group tool.
 
 
 === Improvements

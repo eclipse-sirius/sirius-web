@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
+import { GQLTool } from '../palette/Palette.types';
 import {
   DiagramToolExecutorContextProviderProps,
   DiagramToolExecutorContextValue,
 } from './DiagramToolExecutorContext.types';
 import { useInvokePaletteTool } from './useInvokePaletteTool';
-import { GQLTool } from '../palette/Palette.types';
 
 const defaultValue: DiagramToolExecutorContextValue = {
   executeTool: () => {},
@@ -30,12 +30,12 @@ export const DiagramToolExecutorContextProvider = ({ children }: DiagramToolExec
   const executeTool = (
     x: number,
     y: number,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     onDirectEditClick: () => void,
     tool: GQLTool
   ) => {
-    invokeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
+    invokeTool(x, y, diagramElementIds, targetObjectId, onDirectEditClick, tool);
   };
 
   return <DiagramToolExecutorContext.Provider value={{ executeTool }}>{children}</DiagramToolExecutorContext.Provider>;

@@ -41,7 +41,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
         var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
 
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClick = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
-                "", "", 0, 0, List.of());
+                List.of(), "", 0, 0, List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputInvokeSingleClick)).isTrue();
         DropNodesInput inputDropNode = new DropNodesInput(UUID.randomUUID(), "", "", List.of(""), "", 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropNode)).isTrue();
@@ -59,12 +59,12 @@ public class GenericDiagramToolReferencePositionProviderTests {
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         // Test click on diagram
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClickOnDiagram = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
-                diagramId, "", 3, 2, List.of());
+                List.of(diagramId), "", 3, 2, List.of());
         var result = diagramToolReferencePositionProvider.getReferencePosition(inputInvokeSingleClickOnDiagram, diagramContext);
         this.assertResult(result, null, new Position(3, 2));
         // Test click on container
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClickOnContainer = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
-                CONTAINER_ID, "", 3, 2, List.of());
+                List.of(CONTAINER_ID), "", 3, 2, List.of());
         result = diagramToolReferencePositionProvider.getReferencePosition(inputInvokeSingleClickOnContainer, diagramContext);
         this.assertResult(result, CONTAINER_ID, new Position(3, 2));
     }

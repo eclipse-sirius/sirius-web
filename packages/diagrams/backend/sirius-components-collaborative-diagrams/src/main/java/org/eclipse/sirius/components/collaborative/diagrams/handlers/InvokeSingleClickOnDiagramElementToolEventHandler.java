@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnMultipleDiagramElementHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnOneDiagramElementHandler;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -60,11 +61,14 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
     private final List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandlers;
 
+    private final List<ISingleClickOnMultipleDiagramElementHandler> singleClickOnMultipleDiagramElementHandlers;
+
     private final Counter counter;
 
-    public InvokeSingleClickOnDiagramElementToolEventHandler(ICollaborativeDiagramMessageService messageService, List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandlers, MeterRegistry meterRegistry) {
+    public InvokeSingleClickOnDiagramElementToolEventHandler(ICollaborativeDiagramMessageService messageService, List<ISingleClickOnOneDiagramElementHandler> singleClickOnOneDiagramElementHandlers, List<ISingleClickOnMultipleDiagramElementHandler> singleClickOnMultipleDiagramElementHandlers, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
         this.singleClickOnOneDiagramElementHandlers = Objects.requireNonNull(singleClickOnOneDiagramElementHandlers);
+        this.singleClickOnMultipleDiagramElementHandlers = Objects.requireNonNull(singleClickOnMultipleDiagramElementHandlers);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
             .tag(Monitoring.NAME, this.getClass().getSimpleName())
             .register(meterRegistry);
@@ -84,11 +88,20 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            IStatus status = this.singleClickOnOneDiagramElementHandlers.stream()
-                    .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId()))
-                    .findFirst()
-                    .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId(), input.variables()))
-                    .orElse(new Failure(this.messageService.handlerNotFound()));
+            IStatus status;
+            if (input.diagramElementIds().size() == 1) {
+                status = this.singleClickOnOneDiagramElementHandlers.stream()
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds().get(0)))
+                        .findFirst()
+                        .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds().get(0), input.variables()))
+                        .orElse(new Failure("No handler found"));
+            } else {
+                status = this.singleClickOnMultipleDiagramElementHandlers.stream()
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds()))
+                        .findFirst()
+                        .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds(), input.variables()))
+                        .orElse(new Failure("No handler found"));
+            }
 
             if (status instanceof Success success) {
                 WorkbenchSelection newSelection = null;

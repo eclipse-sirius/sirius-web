@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author pcdavid
  */
-public record InvokeSingleClickOnDiagramElementToolInput(UUID id, String editingContextId, String representationId, String diagramElementId, String toolId, double startingPositionX,
+public record InvokeSingleClickOnDiagramElementToolInput(UUID id, String editingContextId, String representationId, List<String> diagramElementIds, String toolId, double startingPositionX,
         double startingPositionY, List<ToolVariable> variables) implements IDiagramInput {
 }

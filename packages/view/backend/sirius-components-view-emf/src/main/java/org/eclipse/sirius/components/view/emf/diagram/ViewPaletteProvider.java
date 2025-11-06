@@ -62,14 +62,6 @@ import org.springframework.stereotype.Service;
 /**
  * Used to provide the tools of the palette for diagram created from a view description.
  * <p>
- * "Node tools" (SingleClickOnDiagramElementTool) and "Edge tools" (SingleClickOnTwoDiagramElementsTool) are obtained
- * from the ToolSection produced by ToolConverter for the target element (diagram, node or edge).
- * <p>
- * For nodes and edges (but not diagrams), the "extra tools" which can be exposed in the palette but are not implemented
- * as ITools but as plain Java handlers (label edit and delete) are added as pseudo-entries if the target element has
- * specified an explicit behavior for them. At runtime their invocation goes through distinct GraphQL mutation
- * operations than plain ITool invocation, so the body we provide here for them is never actually invoked.
- * <p>
  * Drop tools and edge reconnection tools are handled in a separate way, as they do not ever appear in the palette of
  * any element since they can only be triggered by direct gestures/interactions.
  *
@@ -107,13 +99,23 @@ public class ViewPaletteProvider implements IPaletteProvider {
     }
 
     @Override
-    public boolean canHandle(DiagramDescription diagramDescription) {
-        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
+    public boolean canHandle(DiagramDescription diagramDescription, List<String> diagramElementIds) {
+        return diagramElementIds.size() == 1 && this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override
-    public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object diagramElementDescription, Object diagramElement, Object targetElement) {
+    public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElementDescriptions, List<Object> diagramElements, List<Object> targetElements) {
         Palette palette = null;
+        if (diagramElementDescriptions.size() != 1 || diagramElements.size() != 1) {
+            return palette;
+        }
+        var diagramElementDescription = diagramElementDescriptions.get(0);
+        var diagramElement = diagramElements.get(0);
+        Object targetElement = null;
+        if (targetElements.size() == 1) {
+            targetElement = targetElements.get(0);
+        }
+
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetElement);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
