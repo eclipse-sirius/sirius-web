@@ -104,7 +104,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "https://www.eclipse.org/sirius/widgets/reference",
                         "https://www.eclipse.org/sirius/widgets/tablewidget"
                       ],
-                      "representations":{}
+                      "representations":{},
+                      "dependencies": []
                     }
                     """;
 
@@ -229,7 +230,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                           "type": "siriusComponents://representation?type=Portal",
                           "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                         }
-                      }
+                      },
+                      "dependencies": []
                     }
                     """;
 

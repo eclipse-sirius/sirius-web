@@ -21,6 +21,8 @@ import java.util.UUID;
  */
 public final class PapayaIdentifiers {
 
+    public static final String PAPAYA_SAMPLE_PROJECT = "c3d7df85-e0bd-472c-aec1-c05cc88276e4";
+
     public static final UUID PAPAYA_EDITING_CONTEXT_ID = UUID.fromString("cc89c500-c27e-4968-9c67-15cf767c6ef0");
 
     public static final UUID PROJECT_OBJECT = UUID.fromString("aa0b7b22-ade2-4148-9ee2-c5972bd72ab7");

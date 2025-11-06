@@ -166,6 +166,7 @@ This will allow to integrate the command palette in other contexts than the work
 - https://github.com/eclipse-sirius/sirius-web/issues/5603[#5603] [sirius-web] Add a tree visualization of the impacts in the impact analysis dialog.
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] Merge all frontend palette into one common component
 - https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular, image and edge appearance sections with the corresponding contribution point
+- https://github.com/eclipse-sirius/sirius-web/issues/5050[#5050] [sirius-web] Keep the dependencies of a project during the download / upload.
 
 
 == 2025.10.0
