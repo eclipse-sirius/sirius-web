@@ -11,7 +11,11 @@
  *   --url <url>        Use an already running harness instead of starting a local preview server
  *   --port <number>    Port for the preview server when --url is not provided (default: 5180)
  *   --skip-build       Skip running `npm run build` before launching the preview server
- *   --timeout <ms>     Max time to wait for each download (default: 90000)
+ *   --timeout <ms>     Max time to wait for all downloads (default: 90000)
+ *   --limit <count>    Restrict export to the first <count> fixtures (useful for debugging)
+ *   --verbose          Log browser console output and page errors
+ *   --batch-index <n>  Zero-based index of the batch to export (requires --batch-size)
+ *   --batch-size <n>   Number of fixtures per batch when using --batch-index
  *   -h, --help         Show this help message
  */
 
@@ -33,6 +37,10 @@ const defaultOptions = {
   skipBuild: false,
   timeoutMs: 90_000,
   url: null,
+  limit: null,
+  verbose: false,
+  batchIndex: null,
+  batchSize: null,
 };
 
 const helpText = `Routing Harness Exporter
@@ -42,7 +50,11 @@ Options:
   --url <url>        Use an already running harness instead of starting a local preview server
   --port <number>    Port for the preview server when --url is not provided (default: ${defaultOptions.port})
   --skip-build       Skip running "npm run build" before launching the preview server
-  --timeout <ms>     Max time (in ms) to wait for each download (default: ${defaultOptions.timeoutMs})
+  --timeout <ms>     Max time (in ms) to wait for all downloads (default: ${defaultOptions.timeoutMs})
+  --limit <count>    Restrict export to the first <count> fixtures
+  --verbose          Log browser console messages and page errors
+  --batch-index <n>  Zero-based index of the batch to export (requires --batch-size)
+  --batch-size <n>   Number of fixtures per batch when using --batch-index
   -h, --help         Show this help message
 `;
 
@@ -74,6 +86,33 @@ const parseArgs = (argv) => {
           throw new Error(`Invalid timeout value: "${argv[index]}"`);
         }
         options.timeoutMs = value;
+        break;
+      }
+      case '--limit': {
+        const value = Number(argv[++index]);
+        if (!Number.isFinite(value) || value <= 0) {
+          throw new Error(`Invalid limit value: "${argv[index]}"`);
+        }
+        options.limit = Math.floor(value);
+        break;
+      }
+      case '--verbose':
+        options.verbose = true;
+        break;
+      case '--batch-index': {
+        const value = Number(argv[++index]);
+        if (!Number.isInteger(value) || value < 0) {
+          throw new Error(`Invalid batch index: "${argv[index]}"`);
+        }
+        options.batchIndex = value;
+        break;
+      }
+      case '--batch-size': {
+        const value = Number(argv[++index]);
+        if (!Number.isInteger(value) || value <= 0) {
+          throw new Error(`Invalid batch size: "${argv[index]}"`);
+        }
+        options.batchSize = value;
         break;
       }
       case '-h':
@@ -128,6 +167,63 @@ const killProcess = async (child) => {
   });
 };
 
+const waitForDownloads = (page, expectedCount, timeoutMs) =>
+  new Promise((resolve, reject) => {
+    if (expectedCount <= 0) {
+      resolve([]);
+      return;
+    }
+
+    const downloads = [];
+    let timer = null;
+
+    const cleanup = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      page.off('download', handleDownload);
+    };
+
+    const handleDownload = (download) => {
+      downloads.push(download);
+      if (downloads.length >= expectedCount) {
+        cleanup();
+        resolve(downloads);
+      }
+    };
+
+    timer = setTimeout(() => {
+      cleanup();
+      reject(new Error(`Timed out waiting for ${expectedCount} downloads (received ${downloads.length}).`));
+    }, timeoutMs);
+
+    page.on('download', handleDownload);
+  });
+
+const computeFixtureSlice = (fixtures, { limit, batchIndex, batchSize }) => {
+  const total = fixtures.length;
+  let end = total;
+  if (limit && limit > 0) {
+    end = Math.min(end, limit);
+  }
+
+  if (batchIndex !== null || batchSize !== null) {
+    if (batchIndex === null || batchSize === null) {
+      throw new Error('Both --batch-index and --batch-size must be provided together.');
+    }
+    const start = batchIndex * batchSize;
+    if (start >= total) {
+      throw new Error(
+        `Batch ${batchIndex} is out of range for ${total} fixtures (batch size ${batchSize}).`
+      );
+    }
+    const batchEnd = Math.min(start + batchSize, end);
+    return fixtures.slice(start, batchEnd);
+  }
+
+  return fixtures.slice(0, end);
+};
+
 const main = async () => {
   const options = parseArgs(process.argv.slice(2));
   const outputDir = resolve(process.cwd(), options.outDir);
@@ -170,6 +266,17 @@ const main = async () => {
     const context = await browser.newContext({ acceptDownloads: true });
     const page = await context.newPage();
 
+    if (options.verbose) {
+      page.on('console', (msg) => {
+        const type = msg.type();
+        const text = msg.text();
+        console.log(`[browser:${type}] ${text}`);
+      });
+      page.on('pageerror', (error) => {
+        console.error('[browser:error]', error);
+      });
+    }
+
     console.log(`[harness-export] Navigating to ${baseUrl}`);
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
     await page.waitForSelector('.fixture');
@@ -185,16 +292,27 @@ const main = async () => {
       throw new Error('No fixtures detected on the harness page.');
     }
 
+    const fixturesToExport = computeFixtureSlice(fixtures, options);
+
     await page.waitForFunction(() => {
       const button = document.querySelector('[data-testid="export-all-button"]');
       return Boolean(button) && !button.hasAttribute('disabled');
     });
 
-    console.log(`[harness-export] Found ${fixtures.length} fixture(s). Triggering export…`);
+    console.log(
+      `[harness-export] Found ${fixtures.length} fixture(s). Triggering export (${fixturesToExport.length} planned)…`
+    );
+    const downloadsPromise = waitForDownloads(page, fixturesToExport.length, options.timeoutMs);
     await page.click('[data-testid="export-all-button"]');
+    const downloads = await downloadsPromise;
 
-    for (const fixture of fixtures) {
-      const download = await page.waitForEvent('download', { timeout: options.timeoutMs });
+    if (downloads.length !== fixturesToExport.length) {
+      throw new Error(`Expected ${fixturesToExport.length} downloads but received ${downloads.length}.`);
+    }
+
+    for (let index = 0; index < fixturesToExport.length; index += 1) {
+      const fixture = fixturesToExport[index];
+      const download = downloads[index];
       const baseName = (fixture.fileName || fixture.id || 'diagram').replace(/\.json$/i, '');
       const targetPath = join(outputDir, `${baseName}.png`);
       await download.saveAs(targetPath);
