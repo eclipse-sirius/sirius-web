@@ -48,6 +48,77 @@ const DEFAULT_AXIS_TOLERANCE = 0.25;
 
 const CONTENT_MARGIN = 48;
 
+const PNG_DATA_URL_PREFIX = 'data:image/png;base64,';
+const PNG_SIGNATURE_LENGTH = 8;
+const PNG_CHUNK_HEADER_SIZE = 8; // length (4) + type (4)
+const PNG_CHUNK_FOOTER_SIZE = 4; // CRC
+const PNG_TIME_CHUNK = 'tIME';
+
+const base64ToUint8Array = (base64: string): Uint8Array => {
+  const binary = atob(base64);
+  const length = binary.length;
+  const bytes = new Uint8Array(length);
+  for (let index = 0; index < length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+};
+
+const uint8ArrayToBase64 = (bytes: Uint8Array): string => {
+  let binary = '';
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+};
+
+const sanitizePngDataUrl = (dataUrl: string): string => {
+  if (!dataUrl.startsWith(PNG_DATA_URL_PREFIX)) {
+    return dataUrl;
+  }
+  try {
+    const base64 = dataUrl.slice(PNG_DATA_URL_PREFIX.length);
+    const bytes = base64ToUint8Array(base64);
+    if (bytes.length <= PNG_SIGNATURE_LENGTH + PNG_CHUNK_HEADER_SIZE + PNG_CHUNK_FOOTER_SIZE) {
+      return dataUrl;
+    }
+
+    const signature = bytes.slice(0, PNG_SIGNATURE_LENGTH);
+    const chunks: number[] = [...signature];
+    let offset = PNG_SIGNATURE_LENGTH;
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+
+    while (offset + PNG_CHUNK_HEADER_SIZE <= bytes.length) {
+      const length = view.getUint32(offset);
+      const typeArray = bytes.slice(offset + 4, offset + 8);
+      const type = String.fromCharCode(...typeArray);
+      const chunkTotalLength = PNG_CHUNK_HEADER_SIZE + length + PNG_CHUNK_FOOTER_SIZE;
+      const nextOffset = offset + chunkTotalLength;
+
+      if (nextOffset > bytes.length) {
+        break;
+      }
+
+      if (type !== PNG_TIME_CHUNK) {
+        chunks.push(...bytes.slice(offset, nextOffset));
+      }
+
+      offset = nextOffset;
+      if (type === 'IEND') {
+        break;
+      }
+    }
+
+    const sanitizedBytes = new Uint8Array(chunks);
+    const sanitizedBase64 = uint8ArrayToBase64(sanitizedBytes);
+    return `${PNG_DATA_URL_PREFIX}${sanitizedBase64}`;
+  } catch (error) {
+    return dataUrl;
+  }
+};
+
 const parseEdgePath = (path?: string): XYPosition[] => {
   if (!path || typeof path !== 'string') {
     return [];
@@ -434,7 +505,7 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
           },
           pixelRatio: 2,
         });
-        return dataUrl;
+        return sanitizePngDataUrl(dataUrl);
       } finally {
         if (clonedMarkerDefs && edgesLayer) {
           edgesLayer.removeChild(clonedMarkerDefs);
