@@ -1,6 +1,7 @@
 import {
   Background,
   ReactFlow,
+  ReactFlowProvider,
   getViewportForBounds,
   type Edge as ReactFlowEdge,
   type Node as ReactFlowNode,
@@ -29,6 +30,7 @@ import { BendpointOverlay } from './BendpointOverlay';
 import { EdgeDebugPanel, type EdgeDebugEntry, type OverlapInfo, type SegmentInfo } from './EdgeDebugPanel';
 import { RoutingLogPanel, type RoutingTraceLogEntry } from './RoutingLogPanel';
 import { toPng } from 'html-to-image';
+import { HarnessMarkerDefinitions } from './HarnessMarkerDefinitions';
 
 const nodeContextValue: NodeTypeContextValue = {
   nodeConverters: [],
@@ -405,7 +407,9 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
       const viewport: Viewport = getViewportForBounds(contentBounds, exportWidth, exportHeight, 0.5, 2, 0.05);
 
       const edgesLayer = wrapper.querySelector<HTMLElement>('.react-flow__edges');
-      const markerDefs = wrapper.querySelector<HTMLElement>('#edge-markers');
+      const markerDefs =
+        wrapper.querySelector<HTMLElement>('#harness-edge-markers') ??
+        wrapper.querySelector<HTMLElement>('#edge-markers');
       const viewportElement = wrapper.querySelector<HTMLElement>('.react-flow__viewport');
 
       if (!viewportElement) {
@@ -448,6 +452,7 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 
     return (
       <RoutingTraceProvider collector={handleTraceEvent}>
+        <HarnessMarkerDefinitions />
         <div className="harness-diagram-wrapper" ref={wrapperRef}>
           <ReactFlow
             nodes={nodes}
@@ -483,11 +488,13 @@ DiagramRuntime.displayName = 'DiagramRuntime';
 export const DiagramViewer = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
   ({ fixture, onMetricsChange, showDebug = false }, ref) => {
     return (
-      <NodeTypeContext.Provider value={nodeContextValue}>
-        <StoreContextProvider>
-          <DiagramRuntime ref={ref} fixture={fixture} onMetricsChange={onMetricsChange} showDebug={showDebug} />
-        </StoreContextProvider>
-      </NodeTypeContext.Provider>
+      <ReactFlowProvider>
+        <NodeTypeContext.Provider value={nodeContextValue}>
+          <StoreContextProvider>
+            <DiagramRuntime ref={ref} fixture={fixture} onMetricsChange={onMetricsChange} showDebug={showDebug} />
+          </StoreContextProvider>
+        </NodeTypeContext.Provider>
+      </ReactFlowProvider>
     );
   }
 );

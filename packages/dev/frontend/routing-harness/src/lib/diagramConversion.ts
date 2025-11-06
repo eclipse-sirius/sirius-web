@@ -154,9 +154,12 @@ const resolveHandleId = (prefix: 'source' | 'target', edge: FixtureEdge, fallbac
   return `${prefix}-${fallback}`;
 };
 
+const buildMarkerId = (type: string, edgeId: string) => `${type}--${edgeId}--markerEnd`;
+
 export const convertFixtureToDiagram = (
   fixture: DiagramFixture
 ): { nodes: Node<NodeData>[]; edges: Edge<EdgeData>[] } => {
+
   const nodes: Node<NodeData>[] = fixture.nodes.map((node) => ({
     id: node.id,
     type: 'harnessNode',
@@ -192,6 +195,7 @@ export const convertFixtureToDiagram = (
         strokeWidth: 2,
       },
       selectable: false,
+      markerEnd: buildMarkerId('InputFillClosedArrow', edge.id),
     };
   });
 
