@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,13 +36,16 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectContentIm
 import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.eclipse.sirius.web.domain.events.IDomainEvent;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,6 +62,8 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
 
     private final IEditingContextSearchService editingContextSearchService;
 
+    private final ISemanticDataUpdateService semanticDataUpdateService;
+
     private final IUploadFileLoader uploadDocumentLoader;
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
@@ -67,10 +73,11 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
     private final Logger logger = LoggerFactory.getLogger(SemanticDataProjectContentImportParticipant.class);
 
     public SemanticDataProjectContentImportParticipant(
-            IEditingContextSearchService editingContextSearchService, IUploadFileLoader uploadDocumentLoader, List<IUploadDocumentReportProvider> uploadDocumentReportProviders,
+            IEditingContextSearchService editingContextSearchService, IUploadFileLoader uploadDocumentLoader, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, ISemanticDataUpdateService semanticDataUpdateService,
             IEditingContextPersistenceService editingContextPersistenceService, IRewriteProxiesService rewriteProxiesService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentLoader = Objects.requireNonNull(uploadDocumentLoader);
+        this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.rewriteProxiesService = Objects.requireNonNull(rewriteProxiesService);
     }
@@ -89,6 +96,19 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 && projectSemanticDataCreatedEvent.causedBy() instanceof SemanticDataCreatedEvent semanticDataCreatedEvent
                 && semanticDataCreatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent
                 && projectCreatedEvent.causedBy() instanceof InitializeProjectInput initializeProjectInput) {
+            var dependenciesEntry = initializeProjectInput.projectContent().manifest().get("dependencies");
+            if (dependenciesEntry instanceof List<?> list) {
+                var dependencies = list.stream()
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
+                        .map(new UUIDParser()::parse)
+                        .flatMap(Optional::stream)
+                        .map(AggregateReference::<SemanticData, UUID> to)
+                        .toList();
+
+                this.semanticDataUpdateService.addDependencies(event, AggregateReference.to(semanticDataCreatedEvent.semanticData().getId()), dependencies);
+            }
+
             var documentsToUpload = this.getDocuments(projectContent);
             if (!documentsToUpload.isEmpty()) {
                 var editingContextId = semanticDataCreatedEvent.semanticData().getId().toString();
