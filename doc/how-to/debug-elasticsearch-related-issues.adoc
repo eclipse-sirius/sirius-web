@@ -29,8 +29,11 @@ Then start Elasticsearch:
 ----
 docker pull elasticsearch:VERSION
 docker network create elastic
-docker run -d --name elasticsearch --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -v VOLUME_PATH_ON_YOUR_COMPUTER elasticsearch:VERSION
+docker run -d --name elasticsearch -m 2g --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -v VOLUME_PATH_ON_YOUR_COMPUTER elasticsearch:VERSION
 ----
+
+Note the `-m 2g` parameter to limit the memory available to Elasticsearch; otherwise, at least under Linux, it tends to use a significant portion of the system's memory.
+Of course, you can adjust the actual value depending on your needs, but 2G should be enough for simple local development and testing.
 
 Reset the password for the account `elastic`:
 
@@ -84,11 +87,14 @@ After all that, you may need to add the Elasticsearch certificate to the keystor
 sudo keytool -J-Duser.language=en -import -trustcacerts -alias elasticsearch-siriusweb -keystore PATH_OF_THE_JVM/lib/security/cacerts -file PATH_TO_THE_CERTIFICATE/http_ca.crt
 ----
 
+TIP: `keytool` will ask you for a password for the JVM's keystore.
+If you never set a custom password, https://docs.oracle.com/en/java/javase/17/docs//specs/man/keytool.html[the default is `changeit`].
+
 You can then configure your `application.properties` as follows
 
 [source, properties]
 ----
-spring.elasticsearch.uris=http://localhost:9200
+spring.elasticsearch.uris=https://localhost:9200
 spring.elasticsearch.username=elastic
 spring.elasticsearch.password=<Your password>
 ----
@@ -97,7 +103,7 @@ Or add the following program arguments to your launch configuration:
 
 [source, bash]
 ----
---spring.elasticsearch.uris=http://localhost:9200 
+--spring.elasticsearch.uris=https://localhost:9200 
 --spring.elasticsearch.username=elastic 
 --spring.elasticsearch.password=<Your password>
 ----
