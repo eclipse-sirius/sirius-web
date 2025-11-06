@@ -27,6 +27,7 @@
     "build": "vite build && tsc",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "i18n": "i18next-cli",
     "publish:local": "yalc push"
   },
   "peerDependencies": {
@@ -45,6 +46,7 @@
     "svg-path-parser": "1.1.0",
     "@xyflow/react": "12.6.0",
     "graphql": "16.8.1",
+    "i18next-cli": "1.22.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-i18next": "16.2.3",

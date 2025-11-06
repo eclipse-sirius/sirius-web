@@ -22,9 +22,11 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "test": "turbo run test",
+    "i18n": "turbo run i18n --continue -- ",
     "coverage": "turbo run coverage"
   },
   "devDependencies": {
-    "turbo": "2.4.4"
+    "turbo": "2.4.4",
+    "i18next-cli": "1.22.0"
   }
 }

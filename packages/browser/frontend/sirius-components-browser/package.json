@@ -27,6 +27,7 @@
     "build": "vite build && tsc",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "i18n": "i18next-cli",
     "publish:local": "yalc push"
   },
   "peerDependencies": {
@@ -66,6 +67,7 @@
     "@vitest/coverage-v8": "3.2.4",
     "jsdom": "16.7.0",
     "graphql": "16.8.1",
+    "i18next-cli": "1.22.0",
     "prettier": "2.7.1",
     "lexical": "0.8.1",
     "rollup-plugin-peer-deps-external": "2.2.4",

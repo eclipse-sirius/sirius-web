@@ -1,0 +1,6 @@
+{
+  "languages": ["en"],
+  "defaultNS": "siriusWebApplication",
+  "input": "src/**/*.{ts,tsx}",
+  "output": "../../backend/sirius-web-application/src/main/resources/i18n/{{language}}/{{namespace}}.json"
+}
