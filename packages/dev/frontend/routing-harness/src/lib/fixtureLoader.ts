@@ -8,18 +8,21 @@ const fixtureModules = import.meta.glob('../fixtures/*.json', {
 const fixturesById = new Map<string, DiagramFixture>();
 const manifestEntries: FixtureManifestEntry[] = [];
 
-Object.entries(fixtureModules).forEach(([, fixture]) => {
+Object.entries(fixtureModules).forEach(([modulePath, fixture]) => {
   const id = fixture.id ?? '';
   if (!id) {
     console.warn('[routing-harness] Ignoring fixture without id:', fixture);
     return;
   }
+  const fileName = modulePath.split('/').pop() ?? `${id}.json`;
+  const normalizedFileName = fileName.endsWith('.json') ? fileName : `${fileName}.json`;
   fixturesById.set(id, fixture);
   manifestEntries.push({
     id,
     name: fixture.name ?? id,
     description: fixture.description,
     categories: fixture.categories,
+    fileName: normalizedFileName,
   });
 });
 

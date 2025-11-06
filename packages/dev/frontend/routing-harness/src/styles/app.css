@@ -12,6 +12,50 @@
   flex: 1 1 auto;
 }
 
+.app__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.app__export-button {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #556cd6, #3c91e6);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  box-shadow: 0 6px 16px rgba(60, 145, 230, 0.4);
+}
+
+.app__export-button:hover:enabled {
+  transform: translateY(-1px);
+}
+
+.app__export-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.app__export-feedback {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.app__export-feedback--success {
+  color: #1b5e20;
+}
+
+.app__export-feedback--error {
+  color: #b00020;
+}
+
 .app__status {
   display: flex;
   align-items: center;

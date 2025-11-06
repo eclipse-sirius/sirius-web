@@ -7,6 +7,7 @@ export interface FixtureManifestEntry {
   name: string;
   description?: string;
   categories?: string[];
+  fileName: string;
 }
 
 export interface FixtureNode {
