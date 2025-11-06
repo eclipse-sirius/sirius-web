@@ -129,7 +129,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             hiddenNodeId.set(siriusWebDomainNode.getId());
         });
 
-        Runnable revealNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), hiddenNodeId.get(), this.visibilityDiagramDescriptionProvider.getRevealNodeToolId(), 0, 0, List.of())
+        Runnable revealNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(hiddenNodeId.get()), this.visibilityDiagramDescriptionProvider.getRevealNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -164,7 +164,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
                 .ifPresent(revealedNodeId::set);
         });
 
-        Runnable hideNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), revealedNodeId.get(), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
+        Runnable hideNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(revealedNodeId.get()), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
@@ -199,7 +199,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
                 .ifPresent(unfadedNodeId::set);
         });
 
-        Runnable fadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), unfadedNodeId.get(), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
+        Runnable fadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(unfadedNodeId.get()), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
@@ -232,7 +232,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             fadedNodeId.set(siriusWebApplicationNode.getId());
         });
 
-        Runnable unfadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), fadedNodeId.get(), this.visibilityDiagramDescriptionProvider.getUnfadeNodeToolId(), 0, 0, List.of())
+        Runnable unfadeNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(fadedNodeId.get()), this.visibilityDiagramDescriptionProvider.getUnfadeNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -266,16 +266,16 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
             nodeToHideId.set(revealedNodes.get(1).getId());
         });
 
-        Runnable fadeNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
+        Runnable fadeNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(nodeToFadeId.get()), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
-        Runnable hideNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
+        Runnable hideNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(nodeToHideId.get()), this.visibilityDiagramDescriptionProvider.getHideNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
-        Runnable resetFadedNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
+        Runnable resetFadedNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(nodeToFadeId.get()), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
-        Runnable resetHiddenNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
+        Runnable resetHiddenNodeVisibility = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(nodeToHideId.get()), this.visibilityDiagramDescriptionProvider.getResetNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {

@@ -10,21 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.diagram.tools.api;
+package org.eclipse.sirius.components.collaborative.diagrams.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.representations.IStatus;
+
+import java.util.List;
 
 /**
- * Used to provide the variable manager used to evaluate single click on one diagram element tools.
+ * Used to execute a group tool on a diagram.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface ISingleClickOnOneDiagramElementVariableManagerProvider {
-    Optional<VariableManager> getVariableManager(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementId, List<ToolVariable> variables);
+public interface ISingleClickOnMultipleDiagramElementHandler {
+
+    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds);
+
+    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds, List<ToolVariable> variables);
 }

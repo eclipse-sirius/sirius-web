@@ -144,7 +144,7 @@ public class ViewPaletteProviderTests {
         DiagramDescription diagramDescription = this.createDiagramDescription();
 
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), diagramDescription, diagramDescription, diagram, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), diagramDescription, List.of(diagramDescription), List.of(diagram), List.of());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://diagramPalette?diagramId=sourceElementId");
@@ -167,7 +167,7 @@ public class ViewPaletteProviderTests {
 
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var node = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), this.createNodeDescription(), node, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), List.of(this.createNodeDescription()), List.of(node), List.of());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
@@ -204,7 +204,7 @@ public class ViewPaletteProviderTests {
 
         var diagram = new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
         var edge = new TestDiagramBuilder().getEdge(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), edgeDescription, edge, null);
+        var result = viewPaletteProvider.handle(new IEditingContext.NoOp(), new DiagramContext(diagram), this.createDiagramDescription(), List.of(edgeDescription), List.of(edge), List.of());
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");

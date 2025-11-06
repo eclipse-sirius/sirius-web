@@ -22,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author pcdavid
  */
-public record InvokeSingleClickOnDiagramElementToolInput(UUID id, String editingContextId, String representationId, String diagramElementId, String toolId, double startingPositionX,
+public record InvokeSingleClickOnDiagramElementToolInput(UUID id, String editingContextId, String representationId, List<String> diagramElementIds, String toolId, double startingPositionX,
         double startingPositionY, List<ToolVariable> variables) implements IDiagramInput {
 }

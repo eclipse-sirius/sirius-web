@@ -117,7 +117,7 @@ public class UndoVisibilityDiagramControllerTests extends AbstractIntegrationTes
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    revealedNodeId.get(),
+                    List.of(revealedNodeId.get()),
                     this.visibilityDiagramDescriptionProvider.getHideNodeToolId(),
                     0,
                     0,
@@ -189,7 +189,7 @@ public class UndoVisibilityDiagramControllerTests extends AbstractIntegrationTes
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    unfadedNodeId.get(),
+                    List.of(unfadedNodeId.get()),
                     this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(),
                     0,
                     0,
@@ -254,7 +254,7 @@ public class UndoVisibilityDiagramControllerTests extends AbstractIntegrationTes
             nodeToFadeId.set(revealedNodes.get(0).getId());
         });
 
-        Runnable fadeNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
+        Runnable fadeNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(nodeToFadeId.get()), this.visibilityDiagramDescriptionProvider.getFadeNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         var inputId = new AtomicReference<UUID>(null);
@@ -262,7 +262,7 @@ public class UndoVisibilityDiagramControllerTests extends AbstractIntegrationTes
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    nodeToFadeId.get(),
+                    List.of(nodeToFadeId.get()),
                     this.visibilityDiagramDescriptionProvider.getResetNodeToolId(),
                     0,
                     0,

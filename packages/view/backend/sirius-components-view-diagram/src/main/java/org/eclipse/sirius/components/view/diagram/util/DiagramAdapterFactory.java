@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -214,6 +215,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDiagramPalette(DiagramPalette object) {
             return DiagramAdapterFactory.this.createDiagramPaletteAdapter();
+        }
+
+        @Override
+        public Adapter caseGroupPalette(GroupPalette object) {
+            return DiagramAdapterFactory.this.createGroupPaletteAdapter();
         }
 
         @Override
@@ -741,6 +747,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDiagramPaletteAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.GroupPalette
+     * <em>Group Palette</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.GroupPalette
+     * @generated
+     */
+    public Adapter createGroupPaletteAdapter() {
         return null;
     }
 

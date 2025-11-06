@@ -120,7 +120,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
             collapsedNodeId.set(siriusWebDomainNode.getId());
         });
 
-        Runnable expandNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), collapsedNodeId.get(), this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId(), 0, 0, List.of())
+        Runnable expandNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(collapsedNodeId.get()), this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId(), 0, 0, List.of())
                     .isSuccess();
 
         var updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -155,7 +155,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                     .ifPresent(expandedNodeId::set);
         });
 
-        Runnable collapseNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), expandedNodeId.get(), this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId(), 0, 0, List.of())
+        Runnable collapseNodes = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(expandedNodeId.get()), this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId(), 0, 0, List.of())
                     .isSuccess();
 
         var updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,8 +68,8 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
     private final Counter counter;
 
     public GetPaletteEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-            IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, List<IPaletteProvider> paletteProviders, ICollaborativeMessageService messageService,
-            MeterRegistry meterRegistry) {
+                                  IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, List<IPaletteProvider> paletteProviders, ICollaborativeMessageService messageService,
+                                  MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
@@ -96,25 +97,33 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
 
-        if (diagramInput instanceof GetPaletteInput toolSectionsInput) {
-            String diagramElementId = toolSectionsInput.diagramElementId();
-
+        if (diagramInput instanceof GetPaletteInput getPaletteInput) {
+            var diagramElementIds = getPaletteInput.diagramElementIds();
             Diagram diagram = diagramContext.diagram();
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
             if (optionalDiagramDescription.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
-                var optionalPaletteProvider = this.paletteProviders.stream().filter(paletteProvider -> paletteProvider.canHandle(diagramDescription)).findFirst();
-                var optionalTargetElement = this.findTargetElement(diagram, diagramElementId, editingContext);
-                var optionalDiagramElement = this.findDiagramElement(diagram, diagramElementId);
-                var optionalDiagramElementDescription = this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null));
+                var optionalPaletteProvider = this.paletteProviders.stream().filter(paletteProvider -> paletteProvider.canHandle(diagramDescription, diagramElementIds)).findFirst();
 
-                if (optionalPaletteProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
+                List<Object> targetElements = new ArrayList<>();
+                List<Object> diagramElements = new ArrayList<>();
+                List<Object> diagramElementDescriptions = new ArrayList<>();
+
+                for (String diagramElementId : diagramElementIds) {
+                    this.findTargetElement(diagram, diagramElementId, editingContext).ifPresent(targetElements::add);
+                    var optionalDiagramElement = this.findDiagramElement(diagram, diagramElementId);
+                    optionalDiagramElement.ifPresent(diagramElements::add);
+                    this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null)).ifPresent(diagramElementDescriptions::add);
+                }
+
+                if (optionalPaletteProvider.isPresent() && !targetElements.isEmpty() && !diagramElementDescriptions.isEmpty()) {
                     IPaletteProvider paletteProvider = optionalPaletteProvider.get();
-                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, optionalDiagramElementDescription.get(), optionalDiagramElement.orElse(null), optionalTargetElement.get());
+                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, diagramElementDescriptions, diagramElements, targetElements);
                 }
             }
+
         }
         if (palette != null) {
             payload = new GetPaletteSuccessPayload(diagramInput.id(), palette);

@@ -263,4 +263,17 @@ public class ToolFinder {
             return Optional.empty();
         }
     }
+
+    public Optional<NodeTool> getGroupNodeToolByIdFromDiagramDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String toolId) {
+        if (diagramDescription.getPalette() != null) {
+            return diagramDescription.getGroupPalette().getNodeTools().stream()
+                    .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                    .findFirst()
+                    .or(() -> diagramDescription.getGroupPalette().getQuickAccessTools().stream()
+                            .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                            .findFirst());
+        }   else {
+            return Optional.empty();
+        }
+    }
 }
