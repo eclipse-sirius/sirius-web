@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
 
@@ -45,6 +46,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getArrangeLayoutDirection
  * <em>Arrange Layout Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
+ * Palette</em>}</li>
  * </ul>
  *
  * @generated
@@ -120,6 +123,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected ArrangeLayoutDirection arrangeLayoutDirection = ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getGroupPalette() <em>Group Palette</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGroupPalette()
+     * @generated
+     * @ordered
+     */
+    protected GroupPalette groupPalette;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -266,6 +279,54 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public GroupPalette getGroupPalette() {
+        return this.groupPalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetGroupPalette(GroupPalette newGroupPalette, NotificationChain msgs) {
+        GroupPalette oldGroupPalette = this.groupPalette;
+        this.groupPalette = newGroupPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, oldGroupPalette, newGroupPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGroupPalette(GroupPalette newGroupPalette) {
+        if (newGroupPalette != this.groupPalette) {
+            NotificationChain msgs = null;
+            if (this.groupPalette != null)
+                msgs = ((InternalEObject) this.groupPalette).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, null, msgs);
+            if (newGroupPalette != null)
+                msgs = ((InternalEObject) newGroupPalette).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, null, msgs);
+            msgs = this.basicSetGroupPalette(newGroupPalette, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, newGroupPalette, newGroupPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
@@ -274,6 +335,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.basicSetGroupPalette(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -296,6 +359,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getEdgeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.getArrangeLayoutDirection();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.getGroupPalette();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -326,6 +391,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection((ArrangeLayoutDirection) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -353,6 +421,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection(ARRANGE_LAYOUT_DIRECTION_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -375,6 +446,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.arrangeLayoutDirection != ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.groupPalette != null;
         }
         return super.eIsSet(featureID);
     }

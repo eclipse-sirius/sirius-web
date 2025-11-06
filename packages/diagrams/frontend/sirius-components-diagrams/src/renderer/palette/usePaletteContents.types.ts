@@ -29,7 +29,7 @@ export interface GQLRepresentationDescription {
 export interface GQLGetToolSectionsVariables {
   editingContextId: string;
   diagramId: string;
-  diagramElementId: string;
+  diagramElementIds: string[];
 }
 
 export interface GQLGetToolSectionsData {

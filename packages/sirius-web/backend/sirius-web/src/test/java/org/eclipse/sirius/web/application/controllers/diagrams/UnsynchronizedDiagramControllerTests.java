@@ -114,7 +114,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
             assertThat(diagram.getNodes()).isEmpty();
         });
 
-        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
+        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {

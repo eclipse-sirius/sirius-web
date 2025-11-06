@@ -24,20 +24,20 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ControllerCallsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.EventCausedByEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.PublicationChannelEdgeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ServiceCallsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.PublicationEdgeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.SubscriptionEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ServiceCallsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.SubscriptionChannelEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.SubscriptionEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationConcernNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationLayerNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationServiceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.CommandNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ControllerNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationLayerNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationServiceNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.EventNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainLayerNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainServiceNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationConcernNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.EventNodeDescriptionProvider;
 
 /**
  * Used to provide the view model used to create lifecycle diagrams.

@@ -138,7 +138,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     public void givenDiagramAndDiagramFilterWhenToolCollapsingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> collapseNodes = (diagram, nodeId) -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), nodeId, collapseToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), List.of(nodeId), collapseToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

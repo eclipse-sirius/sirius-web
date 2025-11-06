@@ -103,6 +103,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/nodeDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/edgeDescriptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/arrangeLayoutDirection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/groupPalette"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/name"/>
@@ -233,6 +234,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/quickAccessTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/toolSections"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//GroupPalette">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//GroupPalette/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//GroupPalette/quickAccessTools"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodePalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/deleteTool"/>

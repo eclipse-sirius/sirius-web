@@ -657,6 +657,29 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.GroupPalette}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected GroupPaletteItemProvider groupPaletteItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.GroupPalette}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createGroupPaletteAdapter() {
+        if (this.groupPaletteItemProvider == null) {
+            this.groupPaletteItemProvider = new GroupPaletteItemProvider(this);
+        }
+
+        return this.groupPaletteItemProvider;
+    }
+
+    /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodePalette}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -1117,6 +1140,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.conditionalEdgeStyleItemProvider.dispose();
         if (this.diagramPaletteItemProvider != null)
             this.diagramPaletteItemProvider.dispose();
+        if (this.groupPaletteItemProvider != null)
+            this.groupPaletteItemProvider.dispose();
         if (this.nodePaletteItemProvider != null)
             this.nodePaletteItemProvider.dispose();
         if (this.edgePaletteItemProvider != null)

@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -158,6 +159,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createConditionalEdgeStyle();
             case DiagramPackage.DIAGRAM_PALETTE:
                 return this.createDiagramPalette();
+            case DiagramPackage.GROUP_PALETTE:
+                return this.createGroupPalette();
             case DiagramPackage.NODE_PALETTE:
                 return this.createNodePalette();
             case DiagramPackage.EDGE_PALETTE:
@@ -473,6 +476,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public DiagramPalette createDiagramPalette() {
         DiagramPaletteImpl diagramPalette = new DiagramPaletteImpl();
         return diagramPalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public GroupPalette createGroupPalette() {
+        GroupPaletteImpl groupPalette = new GroupPaletteImpl();
+        return groupPalette;
     }
 
     /**

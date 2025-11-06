@@ -89,6 +89,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//DiagramPalette"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groupPalette" eType="#//GroupPalette"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeDescriptions" upperBound="-1"
         eType="#//NodeDescription" containment="true" eKeys="#//DiagramElementDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeDescriptions" upperBound="-1"
@@ -301,6 +303,12 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
         eType="#//DiagramToolSection" containment="true" eKeys="#//ToolSection/name"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GroupPalette">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="quickAccessTools" upperBound="-1"
+        eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
