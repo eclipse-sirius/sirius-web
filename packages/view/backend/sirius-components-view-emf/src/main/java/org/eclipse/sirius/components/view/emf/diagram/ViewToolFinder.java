@@ -57,4 +57,10 @@ public class ViewToolFinder implements IViewToolFinder {
                 .or(() -> this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, diagramElementDescriptionId)
                         .flatMap(viewEdgeDescription -> new ToolFinder().getEdgeToolByIdFromEdgeDescription(viewEdgeDescription, toolId)));
     }
+
+    @Override
+    public Optional<NodeTool> findGroupNodeTool(IEditingContext editingContext, String diagramDescriptionId, String toolId) {
+        return this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescriptionId)
+                        .flatMap(viewDiagramDescription -> new ToolFinder().getGroupNodeToolByIdFromDiagramDescription(viewDiagramDescription, toolId));
+    }
 }

@@ -43,7 +43,7 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const invokeTool = (
     x: number,
     y: number,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     onDirectEditClick: () => void,
     tool: GQLTool
@@ -53,18 +53,26 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
         onDirectEditClick();
         break;
       case 'semantic-delete':
-        showDeletionConfirmation(() => {
-          invokeDelete(diagramElementId);
-        });
+        if (diagramElementIds.length === 1) {
+          showDeletionConfirmation(() => {
+            if (diagramElementIds[0]) {
+              invokeDelete(diagramElementIds[0]);
+            }
+          });
+        }
         break;
       case 'expand':
-        collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.EXPANDED);
+        if (diagramElementIds[0]) {
+          collapseExpandElement(editingContextId, diagramId, diagramElementIds[0], GQLCollapsingState.EXPANDED);
+        }
         break;
       case 'collapse':
-        collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.COLLAPSED);
+        if (diagramElementIds[0]) {
+          collapseExpandElement(editingContextId, diagramId, diagramElementIds[0], GQLCollapsingState.COLLAPSED);
+        }
         break;
       default:
-        invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, targetObjectId, x, y);
+        invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementIds, targetObjectId, x, y);
         break;
     }
   };

@@ -101,7 +101,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         var expectedNodeSelected = new AtomicReference<Node>();
 
         Runnable createNode = () -> {
-            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
+            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
                     .isSuccess()
                     .hasSelection(workbenchSelection -> {
                         assertThat(workbenchSelection.getEntries()).hasSize(1);
@@ -149,7 +149,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         });
 
         Runnable createNode = () -> {
-            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolWithComputedNewSelectionId(), 0, 0, List.of())
+            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolWithComputedNewSelectionId(), 0, 0, List.of())
                     .isSuccess()
                     .hasSelection(workbenchSelection -> assertThat(workbenchSelection.getEntries()).hasSize(2));
         };
@@ -186,7 +186,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var toolVariable = new ToolVariable("selectedObject", PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString(), ToolVariableType.OBJECT_ID);
-            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), this.modelOperationDiagramDescriptionProvider.getRenameElementToolId(), 0, 0, List.of(toolVariable))
+            this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.modelOperationDiagramDescriptionProvider.getRenameElementToolId(), 0, 0, List.of(toolVariable))
                     .isSuccess();
         };
 

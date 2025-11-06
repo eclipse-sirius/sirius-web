@@ -42,8 +42,8 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
   const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
-  const shouldSkip = diagramElementIds.length > 1;
-  let { palette }: UsePaletteContentValue = usePaletteContents(elementId, shouldSkip);
+  const elementsIds = diagramElementIds[0] ? diagramElementIds : [diagramId];
+  let { palette }: UsePaletteContentValue = usePaletteContents(elementsIds);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -95,7 +95,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
       x = (paletteX - viewportX) / viewportZoom;
       y = (paletteY - viewportY) / viewportZoom;
     }
-    executeTool(x, y, elementId, targetObjectId, handleDirectEditClick, tool);
+    executeTool(x, y, elementsIds, targetObjectId, handleDirectEditClick, tool);
   };
 
   const extensionSections = useMemo(() => {
@@ -136,10 +136,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
 
   if (readOnly) {
     return null;
-  }
-
-  if (diagramElementIds.length > 1) {
-    palette = { id: diagramElementIds.join('-'), quickAccessTools: [], paletteEntries: [] };
   }
 
   const shouldRender = isOpened && !!paletteX && !!paletteY && !currentlyEditedLabelId;

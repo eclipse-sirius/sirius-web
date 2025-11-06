@@ -107,7 +107,7 @@ public class UndoUnsynchronizedNodesControllerTests extends AbstractIntegrationT
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    diagramId.get(),
+                    List.of(diagramId.get()),
                     this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(),
                     0,
                     0,
@@ -172,7 +172,7 @@ public class UndoUnsynchronizedNodesControllerTests extends AbstractIntegrationT
             this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    diagramId.get(),
+                    List.of(diagramId.get()),
                     this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(),
                     0,
                     0,
@@ -185,7 +185,7 @@ public class UndoUnsynchronizedNodesControllerTests extends AbstractIntegrationT
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    nodeId.get(),
+                    List.of(nodeId.get()),
                     this.unsynchronizedDiagramDescriptionProvider.getRemoveViewToolId(),
                     0,
                     0,

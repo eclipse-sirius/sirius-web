@@ -86,7 +86,7 @@ public class EdgePaletteControllerTests extends AbstractIntegrationTests {
             Map<String, Object> variables = Map.of(
                     "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", diagramId.get(),
-                    "diagramElementId", edgeId.get()
+                    "diagramElementIds", List.of(edgeId.get())
             );
             var result = this.paletteQueryRunner.run(variables);
 

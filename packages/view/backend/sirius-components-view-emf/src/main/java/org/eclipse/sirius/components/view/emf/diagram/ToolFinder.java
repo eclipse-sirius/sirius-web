@@ -204,9 +204,8 @@ public class ToolFinder {
                 .or(() -> viewNodeDescription.getPalette().getNodeTools().stream()
                         .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                         .findFirst());
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     public Optional<NodeTool> getNodeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
@@ -222,9 +221,7 @@ public class ToolFinder {
                         .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                         .findFirst());
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
     public Optional<NodeTool> getNodeToolByIdFromDiagramDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String toolId) {
@@ -239,9 +236,8 @@ public class ToolFinder {
                 .or(() -> diagramDescription.getPalette().getNodeTools().stream()
                         .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                         .findFirst());
-        }   else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     public Optional<EdgeTool> getEdgeToolByIdFromNodeDescription(NodeDescription viewNodeDescription, String toolId) {
@@ -249,9 +245,8 @@ public class ToolFinder {
             return viewNodeDescription.getPalette().getEdgeTools().stream()
                 .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                 .findFirst();
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     public Optional<EdgeTool> getEdgeToolByIdFromEdgeDescription(EdgeDescription viewEdgeDescription, String toolId) {
@@ -259,8 +254,19 @@ public class ToolFinder {
             return viewEdgeDescription.getPalette().getEdgeTools().stream()
                 .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
                 .findFirst();
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
+    }
+
+    public Optional<NodeTool> getGroupNodeToolByIdFromDiagramDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String toolId) {
+        if (diagramDescription.getGroupPalette() != null) {
+            return diagramDescription.getGroupPalette().getNodeTools().stream()
+                    .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                    .findFirst()
+                    .or(() -> diagramDescription.getGroupPalette().getQuickAccessTools().stream()
+                            .filter(tool -> this.idProvider.apply(tool).toString().equals(toolId))
+                            .findFirst());
+        }
+        return Optional.empty();
     }
 }

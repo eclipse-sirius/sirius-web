@@ -419,7 +419,7 @@ type DiagramDescription implements RepresentationDescription {
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
-  palette(diagramElementId: ID!): Palette!
+  palette(diagramElementIds: [ID!]): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
@@ -575,7 +575,7 @@ input InvokeSingleClickOnDiagramElementToolInput {
   editingContextId: ID!
   representationId: ID!
   variables: [ToolVariable!]!
-  diagramElementId: ID!
+  diagramElementIds: [ID!]
   startingPositionX: Float!
   startingPositionY: Float!
   toolId: ID!

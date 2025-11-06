@@ -34,12 +34,12 @@ public class InvokeSingleClickOnDiagramElementToolExecutor {
         this.invokeSingleClickOnDiagramElementToolMutationRunner = Objects.requireNonNull(invokeSingleClickOnDiagramElementToolMutationRunner);
     }
 
-    public InvokeSingleClickOnDiagramElementToolAssert execute(String editingContextId, String representationId, String diagramElementId, String toolId, double startingPositionX, double startingPositionY, List<ToolVariable> variables) {
+    public InvokeSingleClickOnDiagramElementToolAssert execute(String editingContextId, String representationId, List<String> diagramElementIds, String toolId, double startingPositionX, double startingPositionY, List<ToolVariable> variables) {
         var input = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
                 editingContextId,
                 representationId,
-                diagramElementId,
+                diagramElementIds,
                 toolId,
                 startingPositionX,
                 startingPositionY,

@@ -40,8 +40,8 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
     @Override
     public ReferencePosition getReferencePosition(IInput diagramInput, DiagramContext diagramContext) {
         ReferencePosition referencePosition = null;
-        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            String parentId = this.getParentId(diagramContext, input.diagramElementId());
+        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input && !input.diagramElementIds().isEmpty()) {
+            String parentId = this.getParentId(diagramContext, input.diagramElementIds().get(0));
             referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()), input.getClass().getSimpleName());
         } else if (diagramInput instanceof DropNodesInput input) {
             referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()), input.getClass().getSimpleName());

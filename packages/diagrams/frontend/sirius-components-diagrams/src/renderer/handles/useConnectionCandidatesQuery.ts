@@ -27,13 +27,13 @@ import {
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementIds: [ID!]) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              palette(diagramElementId: $diagramElementId) {
+              palette(diagramElementIds: $diagramElementIds) {
                 paletteEntries {
                   ...ConnectionToolFields
                   ... on ToolSection {
@@ -89,7 +89,7 @@ export const useConnectionCandidatesQuery = (
     variables: {
       editingContextId,
       diagramId,
-      diagramElementId: nodeId,
+      diagramElementIds: [nodeId],
     },
     skip: shouldSkip,
   });

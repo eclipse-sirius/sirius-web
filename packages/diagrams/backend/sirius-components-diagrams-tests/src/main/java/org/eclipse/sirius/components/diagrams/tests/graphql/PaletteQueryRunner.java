@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,13 +28,13 @@ import org.springframework.stereotype.Service;
 public class PaletteQueryRunner implements IQueryRunner {
 
     private static final String PALETTE_QUERY = """
-            query getPalette($editingContextId: ID!, $representationId: ID!, $diagramElementId: ID!) {
+            query getPalette($editingContextId: ID!, $representationId: ID!, $diagramElementIds: [ID!]) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
                   representation(representationId: $representationId) {
                     description {
                       ... on DiagramDescription {
-                        palette(diagramElementId: $diagramElementId) {
+                        palette(diagramElementIds: $diagramElementIds) {
                           id
                           quickAccessTools {
                             ...ToolFields

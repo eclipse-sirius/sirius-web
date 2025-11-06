@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -134,5 +135,28 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Group Palette</em>' containment reference.
+     * @see #setGroupPalette(GroupPalette)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_GroupPalette()
+     * @model containment="true"
+     * @generated
+     */
+    GroupPalette getGroupPalette();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette
+     * <em>Group Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Group Palette</em>' containment reference.
+     * @see #getGroupPalette()
+     * @generated
+     */
+    void setGroupPalette(GroupPalette value);
 
 } // DiagramDescription

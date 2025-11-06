@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +38,7 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "DiagramDescription", field = "palette")
 public class DiagramDescriptionPaletteDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Palette>> {
 
-    private static final String DIAGRAM_ELEMENT_ID = "diagramElementId";
+    private static final String DIAGRAM_ELEMENT_IDS = "diagramElementIds";
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
@@ -50,10 +51,10 @@ public class DiagramDescriptionPaletteDataFetcher implements IDataFetcherWithFie
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
-        String diagramElementId = environment.getArgument(DIAGRAM_ELEMENT_ID);
+        List<String> diagramElementIds = environment.getArgument(DIAGRAM_ELEMENT_IDS);
 
         if (editingContextId != null && representationId != null) {
-            GetPaletteInput input = new GetPaletteInput(UUID.randomUUID(), editingContextId, representationId, diagramElementId);
+            GetPaletteInput input = new GetPaletteInput(UUID.randomUUID(), editingContextId, representationId, diagramElementIds);
 
             return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                     .filter(GetPaletteSuccessPayload.class::isInstance)

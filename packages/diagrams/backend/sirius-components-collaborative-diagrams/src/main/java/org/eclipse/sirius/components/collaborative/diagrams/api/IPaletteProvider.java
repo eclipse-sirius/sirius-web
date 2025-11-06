@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -25,7 +27,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
  */
 public interface IPaletteProvider {
 
-    boolean canHandle(DiagramDescription diagramDescription);
+    boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<String> diagramElementIds);
 
-    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object diagramElementDescription, Object diagramElement, Object targetElement);
+    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElements);
 }
