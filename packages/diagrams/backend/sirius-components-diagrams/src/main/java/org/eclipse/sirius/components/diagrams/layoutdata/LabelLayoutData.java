@@ -20,7 +20,8 @@ package org.eclipse.sirius.components.diagrams.layoutdata;
 public record LabelLayoutData(
         String id,
         Position position,
-        Size size
+        Size size,
+        boolean resizedByUser
 ) {
 
 }

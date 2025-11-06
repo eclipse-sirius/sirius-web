@@ -79,6 +79,8 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
     },
     width: labelLayoutData?.size.width ?? 0,
     height: labelLayoutData?.size.height ?? 0,
+    resizedByUser: labelLayoutData?.resizedByUser ?? false,
+    overflowStrategy: 'WRAP', // all edge labels use the wrap strategy
   };
 };
 

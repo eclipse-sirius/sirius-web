@@ -131,6 +131,8 @@ export interface EdgeLabel {
   appearanceData: LabelAppearanceData;
   width: number;
   height: number;
+  resizedByUser: boolean;
+  overflowStrategy: LabelOverflowStrategy;
 }
 
 export interface OutsideLabel {
@@ -142,6 +144,9 @@ export interface OutsideLabel {
   overflowStrategy: LabelOverflowStrategy;
   appearanceData: LabelAppearanceData;
   position: XYPosition;
+  width: number;
+  height: number;
+  resizedByUser: boolean;
 }
 
 export type ReactFlowPropsCustomizer = (

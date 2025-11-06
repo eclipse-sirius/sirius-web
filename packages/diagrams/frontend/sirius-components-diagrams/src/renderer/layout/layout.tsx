@@ -20,7 +20,8 @@ import { Fragment, createElement, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
+import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { FreeFormNode } from '../node/FreeFormNode';
@@ -120,13 +121,13 @@ export const prepareLayoutArea = (
         id: `${outsideLabel.id}-label`,
         key: `${outsideLabel.id}-label`,
         role: 'button', // role applied by react flow
-        style: { maxWidth: node.width },
+        style: { maxWidth: outsideLabel.overflowStrategy === 'NONE' ? undefined : node.width },
         children,
       });
       labelElements.push(element);
     }
   });
-  diagram.edges.forEach((edge) => {
+  diagram.edges.forEach((edge: Edge<MultiLabelEdgeData>) => {
     if (hiddenContainer && edge.data?.label) {
       const children: JSX.Element[] = [
         createElement(Label, {
@@ -139,6 +140,40 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${edge.data.label.id}-label`,
         key: `${edge.data.label.id}-label`,
+        role: 'button',
+        children,
+      });
+      labelElements.push(element);
+    }
+    if (hiddenContainer && edge.data?.beginLabel) {
+      const children: JSX.Element[] = [
+        createElement(Label, {
+          diagramElementId: edge.id,
+          label: edge.data.beginLabel,
+          faded: false,
+          key: edge.data.beginLabel.id,
+        }),
+      ];
+      const element: JSX.Element = createElement('div', {
+        id: `${edge.data.beginLabel.id}-label`,
+        key: `${edge.data.beginLabel.id}-label`,
+        role: 'button',
+        children,
+      });
+      labelElements.push(element);
+    }
+    if (hiddenContainer && edge.data?.endLabel) {
+      const children: JSX.Element[] = [
+        createElement(Label, {
+          diagramElementId: edge.id,
+          label: edge.data.endLabel,
+          faded: false,
+          key: edge.data.endLabel.id,
+        }),
+      ];
+      const element: JSX.Element = createElement('div', {
+        id: `${edge.data.endLabel.id}-label`,
+        key: `${edge.data.endLabel.id}-label`,
         role: 'button',
         children,
       });
@@ -280,7 +315,7 @@ const layoutDiagram = (
   layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
-  layoutEdges(diagram.edges);
+  layoutEdges(previousDiagram, diagram.edges);
 
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
@@ -428,13 +463,51 @@ const layoutDiagram = (
   });
 };
 
-const layoutEdges = (edges: Edge<EdgeData>[]) => {
+const layoutEdges = (previousDiagram: RawDiagram | null, edges: Edge<MultiLabelEdgeData>[]) => {
   edges.forEach((edge) => {
+    const previousEdge: Edge<MultiLabelEdgeData> | undefined = (previousDiagram?.edges ?? []).find(
+      (prevEdge) => prevEdge.id === edge.id
+    );
+    if (edge.data?.beginLabel) {
+      const labelElement = document.getElementById(`${edge.data.beginLabel.id}-label`);
+      if (labelElement) {
+        const labelHeight = labelElement.getBoundingClientRect().height;
+        const labelWidth = labelElement.getBoundingClientRect().width;
+        if (!edge.data.beginLabel.resizedByUser) {
+          edge.data.beginLabel.width = labelWidth;
+          edge.data.beginLabel.height = labelHeight;
+        } else if (previousEdge) {
+          edge.data.beginLabel.width = previousEdge.data?.beginLabel?.width ?? labelWidth;
+          edge.data.beginLabel.height = previousEdge.data?.beginLabel?.height ?? labelHeight;
+        }
+      }
+    }
     if (edge.data?.label) {
       const labelElement = document.getElementById(`${edge.data.label.id}-label`);
       if (labelElement) {
-        edge.data.label.height = labelElement.getBoundingClientRect().height;
-        edge.data.label.width = labelElement.getBoundingClientRect().width;
+        const labelHeight = labelElement.getBoundingClientRect().height;
+        const labelWidth = labelElement.getBoundingClientRect().width;
+        if (!edge.data.label.resizedByUser) {
+          edge.data.label.width = labelWidth;
+          edge.data.label.height = labelHeight;
+        } else if (previousEdge) {
+          edge.data.label.width = previousEdge.data?.label?.width ?? labelWidth;
+          edge.data.label.height = previousEdge.data?.label?.height ?? labelHeight;
+        }
+      }
+    }
+    if (edge.data?.endLabel) {
+      const labelElement = document.getElementById(`${edge.data.endLabel.id}-label`);
+      if (labelElement) {
+        const labelHeight = labelElement.getBoundingClientRect().height;
+        const labelWidth = labelElement.getBoundingClientRect().width;
+        if (!edge.data.endLabel.resizedByUser) {
+          edge.data.endLabel.width = labelWidth;
+          edge.data.endLabel.height = labelHeight;
+        } else if (previousEdge) {
+          edge.data.endLabel.width = previousEdge.data?.endLabel?.width ?? labelWidth;
+          edge.data.endLabel.height = previousEdge.data?.endLabel?.height ?? labelHeight;
+        }
       }
     }
   });

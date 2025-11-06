@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { EdgeLabelRenderer, Position, ReactFlowState, useStore } from '@xyflow/react';
-import { useContext, useMemo, useRef } from 'react';
-import Draggable, { DraggableData } from 'react-draggable';
+import { useContext, useMemo } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { Label } from '../Label';
 import { useLabelMove } from '../move/useLabelMove';
+import { useLabelResize } from '../move/useLabelResize';
 import { DraggableEdgeLabelsProps } from './DraggableEdgeLabels.types';
+import { DraggableResizableLabel } from './DraggableResizableLabel';
+import 'react-resizable/css/styles.css';
 
 const getTranslateFromHandlePositon = (position: Position) => {
   switch (position) {
@@ -48,17 +49,11 @@ export const DraggableEdgeLabels = ({
 }: DraggableEdgeLabelsProps) => {
   const { beginLabel, endLabel, label, faded } = data || {};
   const zoom = useStore(zoomSelector);
-  const { onEdgeLabelMoveStop } = useLabelMove();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const beginLabelNodeRef = useRef<HTMLInputElement | null>(null);
-  const centerLabelNodeRef = useRef<HTMLInputElement | null>(null);
-  const endLabelNodeRef = useRef<HTMLInputElement | null>(null);
+  const { onEdgeLabelMoveStop } = useLabelMove();
+  const { onEdgeLabelResizeStop } = useLabelResize();
   const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
   const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
-
-  const onStop = (_e, eventData: DraggableData, labelPosition: 'begin' | 'center' | 'end') => {
-    onEdgeLabelMoveStop(eventData, id, labelPosition);
-  };
 
   let labelCenterOffset = {
     x: edgeCenter?.x ?? 0,
@@ -73,49 +68,51 @@ export const DraggableEdgeLabels = ({
   return (
     <EdgeLabelRenderer>
       {beginLabel && (
-        <Draggable
+        <DraggableResizableLabel
+          id={id}
+          label={beginLabel}
           position={{ x: beginLabel.position.x, y: beginLabel.position.y }}
           positionOffset={{ x: sourceX, y: sourceY }}
-          onStop={(_e, eventData) => onStop(_e, eventData, 'begin')}
-          scale={zoom}
-          nodeRef={beginLabelNodeRef}
-          disabled={readOnly}>
-          <div style={{ position: 'absolute', zIndex: 1001 }} ref={beginLabelNodeRef}>
-            <div style={{ transform: sourceLabelTranslation, padding: 5 }}>
-              <Label diagramElementId={id} label={beginLabel} faded={!!faded} highlighted={selected} />
-            </div>
-          </div>
-        </Draggable>
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'begin')}
+          onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'begin')}
+          zoom={zoom}
+          readOnly={readOnly}
+          selected={selected}
+          faded={faded}
+          resizeHandlePosition={'ne'}
+          transform={sourceLabelTranslation}
+        />
       )}
       {label && edgeCenter && (
-        <Draggable
+        <DraggableResizableLabel
+          id={id}
+          label={label}
           position={{ x: label.position.x, y: label.position.y }}
           positionOffset={labelCenterOffset}
-          onStop={(_e, eventData) => onStop(_e, eventData, 'center')}
-          scale={zoom}
-          nodeRef={centerLabelNodeRef}
-          disabled={readOnly}>
-          <div style={{ position: 'absolute', zIndex: 1001 }} ref={centerLabelNodeRef}>
-            <div style={{ padding: 5 }}>
-              <Label diagramElementId={id} label={label} faded={!!faded} highlighted={selected} />
-            </div>
-          </div>
-        </Draggable>
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'center')}
+          onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'center')}
+          zoom={zoom}
+          readOnly={readOnly}
+          selected={selected}
+          faded={faded}
+          resizeHandlePosition={'se'}
+        />
       )}
       {endLabel && (
-        <Draggable
+        <DraggableResizableLabel
+          id={id}
+          label={endLabel}
           position={{ x: endLabel.position.x, y: endLabel.position.y }}
           positionOffset={{ x: targetX, y: targetY }}
-          onStop={(_e, eventData) => onStop(_e, eventData, 'end')}
-          scale={zoom}
-          nodeRef={endLabelNodeRef}
-          disabled={readOnly}>
-          <div style={{ position: 'absolute', zIndex: 1001 }} ref={endLabelNodeRef}>
-            <div style={{ transform: targetLabelTranslation, padding: 5 }}>
-              <Label diagramElementId={id} label={endLabel} faded={!!faded} highlighted={selected} />
-            </div>
-          </div>
-        </Draggable>
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'end')}
+          onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'end')}
+          zoom={zoom}
+          readOnly={readOnly}
+          selected={selected}
+          faded={faded}
+          resizeHandlePosition={'nw'}
+          transform={targetLabelTranslation}
+        />
       )}
     </EdgeLabelRenderer>
   );

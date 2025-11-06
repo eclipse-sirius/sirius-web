@@ -67,7 +67,8 @@ const labelStyle = (theme: Theme, style: React.CSSProperties, faded: Boolean): R
 const labelContentStyle = (
   theme: Theme,
   label: EdgeLabel | InsideLabel | OutsideLabel,
-  highlighted: boolean
+  width?: number,
+  height?: number
 ): React.CSSProperties => {
   const labelContentStyle: React.CSSProperties = {
     display: 'flex',
@@ -92,10 +93,11 @@ const labelContentStyle = (
       ? getCSSColor(String(label.contentStyle.borderColor), theme)
       : undefined,
   };
-  if (highlighted && (label.text.length > 0 || label.iconURL.length > 0)) {
-    style.borderWidth = `1px`;
-    style.borderColor = theme.palette.selected;
-    style.borderStyle = 'dashed';
+  if (width) {
+    style.width = `${width}px`;
+  }
+  if (height) {
+    style.height = `${height}px`;
   }
   return style;
 };
@@ -131,7 +133,7 @@ const directEditInputWidth = (element: HTMLDivElement | null, zoom: number): num
 
 const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
 
-export const Label = memo(({ diagramElementId, label, faded, highlighted }: LabelProps) => {
+export const Label = memo(({ diagramElementId, label, faded, width, height }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -163,7 +165,7 @@ export const Label = memo(({ diagramElementId, label, faded, highlighted }: Labe
         ref={labelElementRef}
         data-id={`${label.id}-content`}
         data-testid={`Label content - ${label.text}`}
-        style={labelContentStyle(theme, label, !!highlighted)}>
+        style={labelContentStyle(theme, label, width, height)}>
         <IconOverlay iconURLs={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
         <div style={labelOverflowStyle(label)} data-svg="text">
           {label.text}

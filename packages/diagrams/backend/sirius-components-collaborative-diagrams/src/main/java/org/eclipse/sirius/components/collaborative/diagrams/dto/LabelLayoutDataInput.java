@@ -20,6 +20,6 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Size;
  *
  * @author frouene
  */
-public record LabelLayoutDataInput(String id, Position position, Size size) {
+public record LabelLayoutDataInput(String id, Position position, Size size, boolean resizedByUser) {
 
 }

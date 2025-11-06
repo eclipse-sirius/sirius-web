@@ -249,7 +249,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize, false);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -275,7 +275,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable modifyDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize, true);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);

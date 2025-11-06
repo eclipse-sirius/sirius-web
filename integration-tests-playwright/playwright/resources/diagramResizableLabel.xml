@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramedges:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramedges="domain://diagramEdges">
+  <entity1s name="Entity1" outsideName="entity1-outside-label"/>
+  <entity2s name="Entity2" outsideName="entity2-outside-label"/>
+  <toEdge1 name="edge center label" beginName="begin &#xA;label" endName="end label" source="//@entity1s.0" target="//@entity2s.0"/>
+</diagramedges:Root>
