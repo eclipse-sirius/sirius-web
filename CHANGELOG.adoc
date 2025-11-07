@@ -125,6 +125,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 - https://github.com/eclipse-sirius/sirius-web/issues/5694[#5694] [trees] Ensure that expand all is available in read only workbenches
 - https://github.com/eclipse-sirius/sirius-web/issues/5245[#5245] [sirius-web] Ensure that representations cannot be forked in read only workbenches
 - https://github.com/eclipse-sirius/sirius-web/issues/5737[#5737] [sirius-web] Fix a regression where sharing a workbench URL did not include all the opened representations
+- https://github.com/eclipse-sirius/sirius-web/issues/5787[#5787] [diagram] Fix an issue where the reset button on the appearance section was not working correctly
 
 
 === New Features

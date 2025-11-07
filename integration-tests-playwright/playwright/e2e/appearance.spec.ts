@@ -149,8 +149,8 @@ test.describe('appearance', () => {
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Font Size"] input').fill('16');
 
-    //Unselect the edge by selecting the node in order to test the validation on blur
-    await playwrightNode.click();
+    await page.getByTestId('toolSection-Appearance-Border Radius').click();
+
     await page.waitForFunction(
       () => {
         const label = document.querySelector(`[data-testid="Label - 6"]`);
@@ -197,5 +197,18 @@ test.describe('appearance', () => {
       },
       { timeout: 2000 }
     );
+  });
+
+  test('change node background and reset the value', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.openPalette();
+
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Background"] input').first().fill('red');
+    await page.keyboard.press('Enter');
+    await expect(playwrightNode.nodeStyleLocator).toHaveCSS('background', /^rgb\(255, 0, 0/);
+    await page.locator('[data-testid="toolSection-Appearance-Background-Reset"]').first().click();
+    await expect(playwrightNode.nodeStyleLocator).toHaveCSS('background', /^rgb\(240, 240, 240/);
   });
 });
