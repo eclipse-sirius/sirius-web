@@ -1,6 +1,21 @@
 {
   "version": "0.2.0",
   "configurations": [
+	    {
+       "type": "chrome",
+       "request": "launch",
+       "name": "Sirius Web (Chrome)",
+       "url": "http://localhost:5174",
+       "webRoot": "${workspaceFolder}",
+       "userDataDir": "${workspaceFolder}/.vscode/vscode-chrome-profile",
+       "runtimeArgs": ["--auto-open-devtools-for-tabs"],
+       "sourceMaps": true,
+       "sourceMapPathOverrides": {
+         "vite:///*": "${workspaceFolder}/*",
+         "/@fs/*": "/*"
+       },
+       "preLaunchTask": "start sirius-web dev server"
+     },
     {
       "type": "node",
       "request": "launch",
