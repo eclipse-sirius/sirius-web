@@ -16,16 +16,16 @@ import {
   type Node,
   type XYPosition,
 } from '@xyflow/react';
-import { NodeTypeContext } from '../../../contexts/NodeContext';
-import type { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
-import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
-import { SmoothStepEdgeWrapper } from '../../edge/SmoothStepEdgeWrapper';
-import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../../edge/routing/postProcessing';
-import type { MultiLabelEdgeData } from '../../edge/MultiLabelEdge.types';
-import type { NodeData } from '../../DiagramRenderer.types';
-import type { DiagramNodeType } from '../../node/NodeTypes.types';
-import { StoreContext } from '../../../representation/StoreContext';
-import type { StoreContextValue } from '../../../representation/StoreContext.types';
+import { NodeTypeContext } from '../../../../contexts/NodeContext';
+import type { NodeTypeContextValue } from '../../../../contexts/NodeContext.types';
+import type { DiagramFixture } from '../../../../../../../../../../dev/frontend/routing-harness/src/types';
+import { SmoothStepEdgeWrapper } from '../../SmoothStepEdgeWrapper';
+import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../postProcessing';
+import type { MultiLabelEdgeData } from '../../MultiLabelEdge.types';
+import type { NodeData } from '../../../DiagramRenderer.types';
+import type { DiagramNodeType } from '../../../node/NodeTypes.types';
+import { StoreContext } from '../../../../representation/StoreContext';
+import type { StoreContextValue } from '../../../../representation/StoreContext.types';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
 type HarnessEdge = Edge<MultiLabelEdgeData>;
@@ -56,8 +56,8 @@ type InternalNodeStub = HarnessNode & {
 };
 
 const harnessFixturesDir = path.join(
-  __dirname,
-  '../../../../../../../dev/frontend/routing-harness/src/fixtures',
+  process.cwd(),
+  'packages/dev/frontend/routing-harness/src/fixtures',
 );
 //TOCHECK: test data lives in the dev routing harness; consider copying snapshots locally so CI does not depend on that external directory structure.
 
@@ -349,8 +349,8 @@ vi.mock('@xyflow/react', async () => {
   };
 });
 
-vi.mock('../../edge/EdgeLayout', async () => {
-  const actual = await vi.importActual<typeof import('../../edge/EdgeLayout')>('../../edge/EdgeLayout');
+vi.mock('../../EdgeLayout', async () => {
+  const actual = await vi.importActual<typeof import('../../EdgeLayout')>('../../EdgeLayout');
   const xyflow = await vi.importActual<typeof import('@xyflow/react')>('@xyflow/react');
   const { Position: PositionEnum } = xyflow;
 
@@ -385,7 +385,7 @@ vi.mock('../../edge/EdgeLayout', async () => {
   };
 });
 
-vi.mock('../../edge/rectilinear-edge/MultiLabelRectilinearEditableEdge', () => ({
+vi.mock('../../rectilinear-edge/MultiLabelRectilinearEditableEdge', () => ({
   MultiLabelRectilinearEditableEdge: (props: {
     id: string;
     sourceX: number;

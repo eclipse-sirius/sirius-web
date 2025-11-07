@@ -2,11 +2,11 @@ import { Position, type Edge, type Node, type XYPosition } from '@xyflow/react';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
-import type { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { ensureRectilinearPath, simplifyRectilinearBends } from '../../edge/SmoothStepEdgeWrapper';
-import type { DiagramNodeType } from '../../node/NodeTypes.types';
-import { buildDetouredPolyline } from '../../edge/routing/postProcessing';
+import type { DiagramFixture } from '../../../../../../../../../../dev/frontend/routing-harness/src/types';
+import type { EdgeData, NodeData } from '../../../DiagramRenderer.types';
+import { ensureRectilinearPath, simplifyRectilinearBends } from '../../SmoothStepEdgeWrapper';
+import type { DiagramNodeType } from '../../../node/NodeTypes.types';
+import { buildDetouredPolyline } from '../postProcessing';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
 type HarnessEdge = Edge<EdgeData>;
@@ -166,7 +166,10 @@ const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdge
 const determineInitialAxis = (position: Position): Axis =>
   position === Position.Left || position === Position.Right ? 'horizontal' : 'vertical';
 
-const harnessFixturesDir = path.join(__dirname, '../../../../../../../dev/frontend/routing-harness/src/fixtures');
+const harnessFixturesDir = path.join(
+  process.cwd(),
+  'packages/dev/frontend/routing-harness/src/fixtures'
+);
 //TOCHECK: Tests depend on fixtures living in the dev harness workspace; mirroring them locally would make the suite less brittle.
 
 const loadFixture = (filename: string): DiagramFixture => {

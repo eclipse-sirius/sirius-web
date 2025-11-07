@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { XYPosition } from '@xyflow/react';
-import { buildSpacedPolyline } from '../../edge/routing/postProcessing';
+import { buildSpacedPolyline } from '../postProcessing';
 
 const toPolyline = (points: Array<[number, number]>): XYPosition[] =>
   points.map(([x, y]) => ({ x, y }));
