@@ -1,3 +1,11 @@
+/**
+ * Geometry helpers used by the routing pipeline. The functions below take raw XYFlow nodes and
+ * convert them into absolute rectangles or overlap reports so higher-level code can focus on
+ * polylines instead of graph internals.
+ *
+ * Nothing in this module mutates the incoming nodes – every coordinate that leaves the file is a
+ * fresh object, which makes the helpers safe to memoize or reuse across renders.
+ */
 import { Node, XYPosition } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
 import { DiagramNodeType } from '../../node/NodeTypes.types';
@@ -79,6 +87,10 @@ const getParentId = (node: Node<NodeData> | undefined): string | undefined => {
   return undefined;
 };
 
+/**
+ * Collect every ancestor id for the provided node. Used to keep routing from treating a node's own
+ * containers as obstacles when building detours.
+ */
 export const collectAncestorIds = (nodeId: string, nodeMap: Map<string, Node<NodeData>>): Set<string> => {
   const ancestors = new Set<string>();
   let currentId: string | undefined = nodeId;
@@ -190,6 +202,10 @@ export const doesSegmentOverlapRect = (start: XYPosition, end: XYPosition, rect:
   return segRight > rect.left && segLeft < rect.right && segBottom > rect.top && segTop < rect.bottom;
 };
 
+/**
+ * Test whether an axis-aligned polyline overlaps any node rectangle in the provided set and return
+ * the first collision (when present).
+ */
 export const doesPathOverlapNodes = (
   pathPoints: XYPosition[],
   nodes: Node<NodeData>[],
@@ -237,6 +253,10 @@ type RectComputationOptions = {
   excludedNodeIds?: Set<string>;
 };
 
+/**
+ * Convert XYFlow nodes into axis-aligned rectangles expressed in absolute coordinates. Hidden
+ * nodes, label-only nodes, and explicitly excluded ids are skipped.
+ */
 export const computeAbsoluteNodeRects = (
   nodes: Node<NodeData, DiagramNodeType>[],
   options: RectComputationOptions = {}

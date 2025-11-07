@@ -1918,24 +1918,29 @@ const buildSpacedPolylineMap = (
     return polylines;
   }
 
-  const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
+const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
   return adjusted;
 };
 
+/**
+ * Convenience wrapper that runs the spacing algorithm on an entire batch of polylines. The returned
+ * map only contains clones for edges that were actually offset so callers can keep reusing their
+ * original geometry without extra copies.
+ */
 export const buildSpacedPolylines = (
   polylines: Map<string, XYPosition[]>,
   options?: Partial<ParallelEdgeSpacingOptions>
 ): Map<string, XYPosition[]> => buildSpacedPolylineMap(polylines, options);
 
+/**
+ * Single-edge variant of `buildSpacedPolylines`. Used by callers that only need the updated geometry
+ * for one edge but still want the same spacing semantics.
+ */
 export const buildSpacedPolyline = (
   currentEdgeId: string,
   polylines: Map<string, XYPosition[]>,
   options?: Partial<ParallelEdgeSpacingOptions>
 ): XYPosition[] => {
-  /**
-   * Legacy helper retained for callers that operate on a single edge. It delegates
-   * to the batched spacing routine and extracts the polyline for `currentEdgeId`.
-   */
   const spaced = buildSpacedPolylineMap(polylines, options);
   if (!spaced.has(currentEdgeId)) {
     return polylines.get(currentEdgeId) ?? [];
