@@ -193,6 +193,8 @@ This will allow to integrate the command palette in other contexts than the work
 * Duplicate a representation
 As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5702[#5702] [table] Improve the rendering of components used in table cells
+- https://github.com/eclipse-sirius/sirius-web/issues/5788[#5788] [sirius-web] Add resource changes in the impact analysis tree.
+
 
 
 == 2025.10.0
