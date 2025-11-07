@@ -245,58 +245,122 @@ const gatherCollisions = (
    * with obstacle rectangles. Collisions are grouped by obstacle and approximate
    * entry coordinate so we can later apply stacked detours in a consistent order.
    */
-  // Traverse every edge/node combination to find where polylines intersect
-  // node rectangles. The result groups collisions by obstacle entry point so we
-  // can space overlapping detours consistently.
   const collisions = new Map<string, CollisionCandidate[]>();
 
+  type EdgeCollisionCandidate = {
+    edge: EdgeWithPositions;
+    polyline: EdgePolyline;
+    bounds: PolylineBounds;
+  };
+
+  type RectCollisionCandidate = {
+    nodeId: string;
+    rect: Rect;
+    detectionRect: Rect;
+    paddedBounds: { left: number; right: number; top: number; bottom: number };
+  };
+
+  const edgeCandidates: EdgeCollisionCandidate[] = [];
+  edges.forEach((edge) => {
+    if (edge.hidden || edge.source === edge.target) {
+      return;
+    }
+    const polyline = polylines.get(edge.id);
+    if (!polyline || polyline.length < 2) {
+      return;
+    }
+    const bounds = measurePolylineBounds(polyline);
+    if (!bounds) {
+      return;
+    }
+    edgeCandidates.push({
+      edge: edge as EdgeWithPositions,
+      polyline,
+      bounds,
+    });
+  });
+  if (edgeCandidates.length === 0 || rects.size === 0) {
+    return collisions;
+  }
+  edgeCandidates.sort((first, second) => first.bounds.minX - second.bounds.minX);
+
+  const rectEntries: RectCollisionCandidate[] = [];
   rects.forEach((rect, nodeId) => {
-    // Skip nodes that belong to the current edge (e.g. ancestors) so we do not
-    // detour around containers that are supposed to host the edge.
     if (excludedObstacleIds?.has(nodeId)) {
       return;
     }
-
-    edges.forEach((edge) => {
-      const isSourceNode = edge.source === nodeId;
-      const isTargetNode = edge.target === nodeId;
-      // Hidden edges or self-loops are ignored because they either do not draw
-      // or would produce degenerate detours.
-      if (edge.hidden || (isSourceNode && isTargetNode)) {
-        return;
-      }
-
-      const edgeWithPositions = edge as EdgeWithPositions;
-
-      const polyline = polylines.get(edge.id);
-      if (!polyline || polyline.length < 2) {
-        // Without at least a start and end point we cannot reason about the path.
-        return;
-      }
-
-      const detectionRect = expandRect(rect, DETECTION_PADDING);
-      const sourceHandlePoint = isSourceNode ? getHandlePoint(rect, edgeWithPositions.sourcePosition) : undefined;
-      // Pre-compute the rectangle bounds once to avoid recalculating inside loops.
-      const paddedBounds = {
+    const detectionRect = expandRect(rect, DETECTION_PADDING);
+    rectEntries.push({
+      nodeId,
+      rect,
+      detectionRect,
+      paddedBounds: {
         left: detectionRect.x,
         right: detectionRect.x + detectionRect.width,
         top: detectionRect.y,
         bottom: detectionRect.y + detectionRect.height,
-      };
-      const collisionSpans = collectPolylineRectCollisions(polyline, detectionRect);
-      if (collisionSpans.length === 0) {
-        // No collision means this edge is safe relative to the current obstacle.
-        return;
+      },
+    });
+  });
+  if (rectEntries.length === 0) {
+    return collisions;
+  }
+  rectEntries.sort((first, second) => first.paddedBounds.left - second.paddedBounds.left);
+
+  const activeEdges: EdgeCollisionCandidate[] = [];
+  let candidateIndex = 0;
+
+  rectEntries.forEach((rectEntry) => {
+    const minXThreshold = rectEntry.paddedBounds.left - EPSILON;
+    const maxXThreshold = rectEntry.paddedBounds.right + EPSILON;
+
+    while (
+      candidateIndex < edgeCandidates.length &&
+      edgeCandidates[candidateIndex]!.bounds.minX <= maxXThreshold
+    ) {
+      activeEdges.push(edgeCandidates[candidateIndex]!);
+      candidateIndex++;
+    }
+
+    let writeIndex = 0;
+    for (let readIndex = 0; readIndex < activeEdges.length; readIndex++) {
+      const candidate = activeEdges[readIndex]!;
+      if (candidate.bounds.maxX >= minXThreshold) {
+        activeEdges[writeIndex++] = candidate;
+      }
+    }
+    activeEdges.length = writeIndex;
+
+    for (let edgeIndex = 0; edgeIndex < activeEdges.length; edgeIndex++) {
+      const candidate = activeEdges[edgeIndex]!;
+      const { bounds, edge, polyline } = candidate;
+      if (
+        bounds.maxY < rectEntry.paddedBounds.top - EPSILON ||
+        bounds.minY > rectEntry.paddedBounds.bottom + EPSILON
+      ) {
+        continue;
       }
 
-      const preferredTargetSide = isTargetNode ? preferredTargetEntrySide(edgeWithPositions.targetPosition) : null;
-      const preferredSourceSide = isSourceNode ? preferredSourceExitSide(edgeWithPositions.sourcePosition) : null;
+      const isSourceNode = edge.source === rectEntry.nodeId;
+      const isTargetNode = edge.target === rectEntry.nodeId;
+      if (isSourceNode && isTargetNode) {
+        continue;
+      }
+
+      const sourceHandlePoint = isSourceNode ? getHandlePoint(rectEntry.rect, edge.sourcePosition) : undefined;
+      const collisionSpans = collectPolylineRectCollisions(polyline, rectEntry.detectionRect);
+      if (collisionSpans.length === 0) {
+        continue;
+      }
+
+      const preferredTargetSide = isTargetNode ? preferredTargetEntrySide(edge.targetPosition) : null;
+      const preferredSourceSide = isSourceNode ? preferredSourceExitSide(edge.sourcePosition) : null;
 
       const adjustedSpans: PolylineRectCollision[] = [];
 
       collisionSpans.forEach((span) => {
         if (isSourceNode && span.entryIndex === 0 && span.exitIndex === 0 && sourceHandlePoint) {
-          const sourceFace = edgeWithPositions.sourcePosition ?? Position.Right;
+          const sourceFace = edge.sourcePosition ?? Position.Right;
           const entryAtHandle =
             Math.abs(span.entryPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE &&
             Math.abs(span.entryPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE;
@@ -305,17 +369,19 @@ const gatherCollisions = (
             const sameFace = (() => {
               switch (sourceFace) {
                 case Position.Left:
-                  return Math.abs(span.exitPoint.x - detectionRect.x) <= FACE_ALIGNMENT_TOLERANCE;
+                  return Math.abs(span.exitPoint.x - rectEntry.detectionRect.x) <= FACE_ALIGNMENT_TOLERANCE;
                 case Position.Right:
                   return (
-                    Math.abs(span.exitPoint.x - (detectionRect.x + detectionRect.width)) <= FACE_ALIGNMENT_TOLERANCE
+                    Math.abs(span.exitPoint.x - (rectEntry.detectionRect.x + rectEntry.detectionRect.width)) <=
+                    FACE_ALIGNMENT_TOLERANCE
                   );
                 case Position.Top:
-                  return Math.abs(span.exitPoint.y - detectionRect.y) <= FACE_ALIGNMENT_TOLERANCE;
+                  return Math.abs(span.exitPoint.y - rectEntry.detectionRect.y) <= FACE_ALIGNMENT_TOLERANCE;
                 case Position.Bottom:
                 default:
                   return (
-                    Math.abs(span.exitPoint.y - (detectionRect.y + detectionRect.height)) <= FACE_ALIGNMENT_TOLERANCE
+                    Math.abs(span.exitPoint.y - (rectEntry.detectionRect.y + rectEntry.detectionRect.height)) <=
+                    FACE_ALIGNMENT_TOLERANCE
                   );
               }
             })();
@@ -334,109 +400,93 @@ const gatherCollisions = (
               switch (sourceFace) {
                 case Position.Left:
                   return (
-                    span.exitPoint.x <= rect.x + HANDLE_ALIGNMENT_TOLERANCE &&
+                    span.exitPoint.x <= rectEntry.rect.x + HANDLE_ALIGNMENT_TOLERANCE &&
                     Math.abs(span.exitPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE
                   );
                 case Position.Right:
                   return (
-                    span.exitPoint.x >= rect.x + rect.width - HANDLE_ALIGNMENT_TOLERANCE &&
+                    span.exitPoint.x >= rectEntry.rect.x + rectEntry.rect.width - HANDLE_ALIGNMENT_TOLERANCE &&
                     Math.abs(span.exitPoint.y - sourceHandlePoint.y) <= HANDLE_ALIGNMENT_TOLERANCE
                   );
                 case Position.Top:
                   return (
-                    span.exitPoint.y <= rect.y + HANDLE_ALIGNMENT_TOLERANCE &&
+                    span.exitPoint.y <= rectEntry.rect.y + HANDLE_ALIGNMENT_TOLERANCE &&
                     Math.abs(span.exitPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE
                   );
                 case Position.Bottom:
                 default:
                   return (
-                    span.exitPoint.y >= rect.y + rect.height - HANDLE_ALIGNMENT_TOLERANCE &&
+                    span.exitPoint.y >= rectEntry.rect.y + rectEntry.rect.height - HANDLE_ALIGNMENT_TOLERANCE &&
                     Math.abs(span.exitPoint.x - sourceHandlePoint.x) <= HANDLE_ALIGNMENT_TOLERANCE
                   );
               }
             })();
-
             if (sameFace && lateralDelta <= HANDLE_ALIGNMENT_TOLERANCE && alignedAndOutward) {
-              // Skip the synthetic collision caused by expanding the source rectangle on the side
-              // where the edge exits; the clearance logic already ensures we move outwards.
               return;
             }
           }
         }
-        // Try to determine which face of the rectangle the polyline touches.
-        let entrySide = determineCollisionSide(span.entryPoint, paddedBounds);
-        let exitSide = determineCollisionSide(span.exitPoint, paddedBounds);
+
+        const spanCopy = {
+          entryPoint: { ...span.entryPoint },
+          exitPoint: { ...span.exitPoint },
+          entryIndex: span.entryIndex,
+          exitIndex: span.exitIndex,
+        };
+        adjustedSpans.push(spanCopy);
+      });
+
+      if (adjustedSpans.length === 0) {
+        continue;
+      }
+
+      adjustedSpans.forEach((span) => {
+        let entrySide = determineCollisionSide(span.entryPoint, rectEntry.paddedBounds);
+        let exitSide = determineCollisionSide(span.exitPoint, rectEntry.paddedBounds);
 
         if (!entrySide) {
-          // Fall back to preferred source/target faces, otherwise choose the
-          // closest side. This ensures we do not accidentally route through the
-          // node interior when precision is poor.
           entrySide =
             (isSourceNode && preferredSourceSide) ||
             (isTargetNode && preferredTargetSide) ||
-            closestCollisionSide(span.entryPoint, paddedBounds);
+            closestCollisionSide(span.entryPoint, rectEntry.paddedBounds);
         }
 
         if (!exitSide) {
-          // Same fallback but applied to the exit face.
           exitSide =
             (isTargetNode && preferredTargetSide) ||
             (isSourceNode && preferredSourceSide) ||
-            closestCollisionSide(span.exitPoint, paddedBounds);
+            closestCollisionSide(span.exitPoint, rectEntry.paddedBounds);
         }
 
         if (isTargetNode && preferredTargetSide && entrySide === preferredTargetSide) {
-          // If we are entering the target on the correct face already we skip
-          // the detour because it would snap the edge back onto that face.
           return;
         }
         if (isSourceNode && preferredSourceSide && exitSide === preferredSourceSide) {
-          // Same logic for the source: nothing to fix if we are already leaving
-          // via the desired face.
           return;
         }
 
         if (isTargetNode && preferredTargetSide) {
-          // Ensure we always exit on the preferred face so the edge can reach
-          // the handle cleanly after the detour.
           exitSide = preferredTargetSide;
         }
 
-        // Adjust the collision points so they lie exactly on the selected faces.
-        const entryPoint = projectPointToSide(span.entryPoint, paddedBounds, entrySide);
-        const exitPoint = projectPointToSide(span.exitPoint, paddedBounds, exitSide);
+        const entryPoint = projectPointToSide(span.entryPoint, rectEntry.paddedBounds, entrySide);
+        const exitPoint = projectPointToSide(span.exitPoint, rectEntry.paddedBounds, exitSide);
 
-        adjustedSpans.push({
-          entryPoint,
-          exitPoint,
-          entryIndex: span.entryIndex,
-          exitIndex: span.exitIndex,
-        });
-      });
-
-      if (adjustedSpans.length === 0) {
-        return;
-      }
-
-      adjustedSpans.forEach((span) => {
-        // The key combines the obstacle with an approximate entry coordinate.
-        // Grouping like this lets us apply incremental spacing for overlapping
-        // detours hitting the same side.
-        const key = `${nodeId}::${Math.round(span.entryPoint.x)}::${Math.round(span.entryPoint.y)}`;
+        const key = `${rectEntry.nodeId}::${Math.round(entryPoint.x)}::${Math.round(entryPoint.y)}`;
         const candidates = collisions.get(key) ?? [];
         candidates.push({
           edge,
           polyline,
-          entryPoint: span.entryPoint,
-          exitPoint: span.exitPoint,
+          entryPoint,
+          exitPoint,
           entryIndex: span.entryIndex,
           exitIndex: span.exitIndex,
-          entryOrder: computeEntryOrder(span.entryPoint, rect),
-          obstacle: rect,
+          entryOrder: computeEntryOrder(entryPoint, rectEntry.rect),
+          obstacle: rectEntry.rect,
         });
         collisions.set(key, candidates);
       });
-    });
+    }
   });
 
   return collisions;
@@ -658,6 +708,40 @@ const EPSILON = 0.0001;
 type SegmentIntersection = {
   point: XYPosition;
   t: number;
+};
+
+type PolylineBounds = {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+};
+
+const measurePolylineBounds = (polyline: EdgePolyline): PolylineBounds | undefined => {
+  if (polyline.length === 0) {
+    return undefined;
+  }
+  let minX = polyline[0]!.x;
+  let maxX = minX;
+  let minY = polyline[0]!.y;
+  let maxY = minY;
+  for (let index = 1; index < polyline.length; index++) {
+    const point = polyline[index];
+    if (!point) {
+      continue;
+    }
+    if (point.x < minX) {
+      minX = point.x;
+    } else if (point.x > maxX) {
+      maxX = point.x;
+    }
+    if (point.y < minY) {
+      minY = point.y;
+    } else if (point.y > maxY) {
+      maxY = point.y;
+    }
+  }
+  return { minX, maxX, minY, maxY };
 };
 
 const insertIntersectionSorted = (
