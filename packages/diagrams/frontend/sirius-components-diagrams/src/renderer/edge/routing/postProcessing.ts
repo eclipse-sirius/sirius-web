@@ -660,6 +660,21 @@ type SegmentIntersection = {
   t: number;
 };
 
+const insertIntersectionSorted = (
+  intersections: SegmentIntersection[],
+  candidate: SegmentIntersection
+): void => {
+  let index = 0;
+  while (index < intersections.length && intersections[index]!.t < candidate.t - EPSILON) {
+    index++;
+  }
+  if (index < intersections.length && Math.abs(intersections[index]!.t - candidate.t) <= EPSILON) {
+    // Skip duplicates caused by tangential contacts (corner touches, shared endpoints, etc.).
+    return;
+  }
+  intersections.splice(index, 0, candidate);
+};
+
 /**
  * Convert a rectangle into explicit boundary coordinates.
  * @param rect - Rectangle in absolute coordinates.
@@ -754,7 +769,99 @@ const collectSegmentBoundaryPoints = (
   end: XYPosition,
   bounds: { left: number; right: number; top: number; bottom: number }
 ): SegmentIntersection[] => {
-  // Enumerate the four rectangle edges in clockwise order using their endpoints.
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const isVertical = Math.abs(dx) <= EPSILON;
+  const isHorizontal = Math.abs(dy) <= EPSILON;
+
+  if (isVertical && isHorizontal) {
+    // Degenerate segment reduced to a single point: there cannot be a boundary intersection
+    // (a point would have been caught earlier through the pointInRect checks).
+    return [];
+  }
+
+  if (isVertical) {
+    return collectAxisAlignedSegmentBoundaryPoints(start, end, bounds, 'vertical');
+  }
+
+  if (isHorizontal) {
+    return collectAxisAlignedSegmentBoundaryPoints(start, end, bounds, 'horizontal');
+  }
+
+  return collectGeneralSegmentBoundaryPoints(start, end, bounds);
+};
+
+const collectAxisAlignedSegmentBoundaryPoints = (
+  start: XYPosition,
+  end: XYPosition,
+  bounds: { left: number; right: number; top: number; bottom: number },
+  orientation: 'vertical' | 'horizontal'
+): SegmentIntersection[] => {
+  const intersections: SegmentIntersection[] = [];
+
+  if (orientation === 'vertical') {
+    const x = start.x;
+    if (x < bounds.left - EPSILON || x > bounds.right + EPSILON) {
+      return intersections;
+    }
+    const minY = Math.min(start.y, end.y);
+    const maxY = Math.max(start.y, end.y);
+    if (maxY < bounds.top - EPSILON || minY > bounds.bottom + EPSILON) {
+      return intersections;
+    }
+
+    const span = end.y - start.y;
+    const clampedX = x < bounds.left ? bounds.left : x > bounds.right ? bounds.right : x;
+    const addIntersectionAtY = (yEdge: number) => {
+      if (yEdge < minY - EPSILON || yEdge > maxY + EPSILON) {
+        return;
+      }
+      const t = span === 0 ? 0 : (yEdge - start.y) / span;
+      insertIntersectionSorted(intersections, {
+        point: { x: clampedX, y: yEdge },
+        t,
+      });
+    };
+
+    addIntersectionAtY(bounds.top);
+    addIntersectionAtY(bounds.bottom);
+    return intersections;
+  }
+
+  const y = start.y;
+  if (y < bounds.top - EPSILON || y > bounds.bottom + EPSILON) {
+    return intersections;
+  }
+  const minX = Math.min(start.x, end.x);
+  const maxX = Math.max(start.x, end.x);
+  if (maxX < bounds.left - EPSILON || minX > bounds.right + EPSILON) {
+    return intersections;
+  }
+
+  const span = end.x - start.x;
+  const clampedY = y < bounds.top ? bounds.top : y > bounds.bottom ? bounds.bottom : y;
+  const addIntersectionAtX = (xEdge: number) => {
+    if (xEdge < minX - EPSILON || xEdge > maxX + EPSILON) {
+      return;
+    }
+    const t = span === 0 ? 0 : (xEdge - start.x) / span;
+    insertIntersectionSorted(intersections, {
+      point: { x: xEdge, y: clampedY },
+      t,
+    });
+  };
+
+  addIntersectionAtX(bounds.left);
+  addIntersectionAtX(bounds.right);
+  return intersections;
+};
+
+const collectGeneralSegmentBoundaryPoints = (
+  start: XYPosition,
+  end: XYPosition,
+  bounds: { left: number; right: number; top: number; bottom: number }
+): SegmentIntersection[] => {
+  const intersections: SegmentIntersection[] = [];
   const corners = [
     { x: bounds.left, y: bounds.top },
     { x: bounds.right, y: bounds.top },
@@ -769,45 +876,14 @@ const collectSegmentBoundaryPoints = (
     [corners[3]!, corners[0]!],
   ];
 
-  const intersections = edges
-    .map(([edgeStart, edgeEnd]) => segmentIntersectionWithParam(start, end, edgeStart, edgeEnd))
-    .filter((candidate): candidate is SegmentIntersection => !!candidate)
-    .sort((first, second) => first.t - second.t);
-
-  const deduped: SegmentIntersection[] = [];
-  intersections.forEach((candidate) => {
-    const last = deduped[deduped.length - 1];
-    if (!last) {
-      deduped.push(candidate);
-      return;
+  edges.forEach(([edgeStart, edgeEnd]) => {
+    const candidate = segmentIntersectionWithParam(start, end, edgeStart, edgeEnd);
+    if (candidate) {
+      insertIntersectionSorted(intersections, candidate);
     }
-    if (Math.abs(last.t - candidate.t) <= EPSILON) {
-      // Skip duplicates caused by the segment touching a rectangle corner.
-      return;
-    }
-    deduped.push(candidate);
   });
-  return deduped;
-};
 
-/**
- * Determine whether a segment overlaps a rectangle (by either endpoint or intersection).
- * @param start - Segment start point.
- * @param end - Segment end point.
- * @param bounds - Rectangle bounds.
- * @returns True when the segment touches or crosses the rectangle interior.
- */
-const segmentOverlapsRect = (
-  start: XYPosition,
-  end: XYPosition,
-  bounds: { left: number; right: number; top: number; bottom: number }
-): boolean => {
-  if (pointInRect(start, bounds) || pointInRect(end, bounds)) {
-    // Quick exit if either endpoint lies inside the rectangle.
-    return true;
-  }
-  const intersections = collectSegmentBoundaryPoints(start, end, bounds);
-  return intersections.length > 0;
+  return intersections;
 };
 
 export type PolylineRectCollision = {
@@ -831,9 +907,10 @@ const getEntryExitForSegment = (
   end: XYPosition,
   bounds: { left: number; right: number; top: number; bottom: number },
   insideStart: boolean,
-  insideEnd: boolean
+  insideEnd: boolean,
+  providedIntersections?: SegmentIntersection[]
 ): { entryPoint?: XYPosition; exitPoint?: XYPosition } => {
-  const intersections = collectSegmentBoundaryPoints(start, end, bounds);
+  const intersections = providedIntersections ?? collectSegmentBoundaryPoints(start, end, bounds);
   if (insideStart && insideEnd) {
     // Segment is entirely inside: treat start/end as the collision span.
     return { entryPoint: { ...start }, exitPoint: { ...end } };
@@ -887,15 +964,34 @@ export const collectPolylineRectCollisions = (
       continue;
     }
 
-    const overlaps = segmentOverlapsRect(start, end, bounds);
+    const insideStart = pointInRect(start, bounds);
+    const insideEnd = pointInRect(end, bounds);
+    let intersections: SegmentIntersection[] | undefined;
+    let overlaps = false;
+
+    if (insideStart || insideEnd) {
+      overlaps = true;
+      if (insideStart !== insideEnd) {
+        intersections = collectSegmentBoundaryPoints(start, end, bounds);
+      }
+    } else {
+      intersections = collectSegmentBoundaryPoints(start, end, bounds);
+      overlaps = intersections.length > 0;
+    }
+
     if (!overlaps) {
       // Nothing to do if this segment does not touch the rectangle.
       continue;
     }
 
-    const insideStart = pointInRect(start, bounds);
-    const insideEnd = pointInRect(end, bounds);
-    const { entryPoint, exitPoint } = getEntryExitForSegment(start, end, bounds, insideStart, insideEnd);
+    const { entryPoint, exitPoint } = getEntryExitForSegment(
+      start,
+      end,
+      bounds,
+      insideStart,
+      insideEnd,
+      intersections
+    );
 
     if (!inside) {
       // Record the entry point so we can emit a single collision for contiguous segments.
