@@ -6,7 +6,7 @@ import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-h
 import type { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { ensureRectilinearPath, simplifyRectilinearBends } from '../../edge/SmoothStepEdgeWrapper';
 import type { DiagramNodeType } from '../../node/NodeTypes.types';
-import { buildDetouredPolyline } from '../postProcessEdgeDetours';
+import { buildDetouredPolyline } from '../../edge/routing/postProcessing';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
 type HarnessEdge = Edge<EdgeData>;

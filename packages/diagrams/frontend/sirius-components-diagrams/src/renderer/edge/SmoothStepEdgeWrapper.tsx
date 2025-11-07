@@ -25,9 +25,12 @@ import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { useStore } from '../../representation/useStore';
 import { NodeData } from '../DiagramRenderer.types';
-import { buildDetouredPolyline } from '../layout/postProcessEdgeDetours';
-import { buildSpacedPolylines, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../layout/postProcessEdgeParallelism';
-import { straightenAlmostStraightPolyline } from '../layout/postProcessEdgeStraighten';
+import {
+  buildDetouredPolyline,
+  buildSpacedPolylines,
+  DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS,
+  straightenAlmostStraightPolyline,
+} from './routing/postProcessing';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData, RectilinearTurnPreference } from './MultiLabelEdge.types';

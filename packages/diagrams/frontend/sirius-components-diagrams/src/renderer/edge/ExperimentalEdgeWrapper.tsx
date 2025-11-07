@@ -31,7 +31,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
-import { collectAncestorIds, doesPathOverlapNodes, type PathCollision } from './EdgeRoutingUtils';
+import { collectAncestorIds, doesPathOverlapNodes, type PathCollision } from './routing/geometry';
 
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;

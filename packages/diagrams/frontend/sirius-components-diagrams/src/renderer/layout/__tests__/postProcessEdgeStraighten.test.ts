@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { straightenAlmostStraightPolyline } from '../postProcessEdgeStraighten';
+import { straightenAlmostStraightPolyline } from '../../edge/routing/postProcessing';
 
 // Unit-level coverage for the straightening helper.
 describe('straightenAlmostStraightPolyline', () => {

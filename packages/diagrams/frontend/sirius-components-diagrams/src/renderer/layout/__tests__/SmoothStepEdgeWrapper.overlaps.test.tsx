@@ -20,7 +20,7 @@ import { NodeTypeContext } from '../../../contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../contexts/NodeContext.types';
 import type { DiagramFixture } from '../../../../../../../dev/frontend/routing-harness/src/types';
 import { SmoothStepEdgeWrapper } from '../../edge/SmoothStepEdgeWrapper';
-import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../postProcessEdgeParallelism';
+import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../../edge/routing/postProcessing';
 import type { MultiLabelEdgeData } from '../../edge/MultiLabelEdge.types';
 import type { NodeData } from '../../DiagramRenderer.types';
 import type { DiagramNodeType } from '../../node/NodeTypes.types';
