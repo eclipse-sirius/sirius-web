@@ -27,7 +27,6 @@ import Draggable, { DraggableData } from 'react-draggable';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import {
-  GQLPalette,
   GQLPaletteDivider,
   GQLPaletteEntry,
   GQLSingleClickOnDiagramElementTool,
@@ -48,16 +47,6 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
   entry.__typename === 'PaletteDivider';
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
-
-export const getPaletteToolCount = (palette: GQLPalette): number => {
-  return (
-    palette.paletteEntries.filter(isSingleClickOnDiagramElementTool).length +
-    palette.quickAccessTools.filter(isSingleClickOnDiagramElementTool).length +
-    palette.paletteEntries
-      .filter(isToolSection)
-      .filter((toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0).length
-  );
-};
 
 const paletteWidth = 200;
 

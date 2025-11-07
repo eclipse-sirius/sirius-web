@@ -22,7 +22,7 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramPaletteProps } from './DiagramPalette.types';
-import { getPaletteToolCount, Palette } from './Palette';
+import { Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
@@ -124,8 +124,7 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
     return null;
   }
 
-  const shouldRender =
-    palette && isOpened && paletteX && paletteY && getPaletteToolCount(palette) > 0 && !currentlyEditedLabelId;
+  const shouldRender = palette && isOpened && paletteX && paletteY && !currentlyEditedLabelId;
 
   return shouldRender ? (
     <PalettePortal>
