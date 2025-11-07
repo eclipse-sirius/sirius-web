@@ -9,6 +9,7 @@
 
 === Architectural decision records
 
+- [ADR-218] Ensure Elasticsearch query results contain enough information
 
 
 === Deprecation warning
