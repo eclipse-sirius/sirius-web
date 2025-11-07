@@ -12,32 +12,7 @@
       "size": {
         "width": 257,
         "height": 70
-      },
-      "handles": [
-        {
-          "id": "handle--target--6b8c126a-0b65-3b9b-8c52-d34444dbd92f--0",
-          "type": "target",
-          "position": "bottom",
-          "x": 128,
-          "y": 71,
-          "isHidden": true,
-          "isVirtualHandle": false
-        },
-        {
-          "id": "handle--source--6b8c126a-0b65-3b9b-8c52-d34444dbd92f--0",
-          "type": "source",
-          "position": "right",
-          "isHidden": true,
-          "isVirtualHandle": true
-        },
-        {
-          "id": "handle--target--6b8c126a-0b65-3b9b-8c52-d34444dbd92f--1",
-          "type": "target",
-          "position": "left",
-          "isHidden": true,
-          "isVirtualHandle": true
-        }
-      ]
+      }
     },
     {
       "id": "6d1e2770-d08d-36c2-ba02-f6ac3d5e6d4d",
@@ -49,32 +24,7 @@
       "size": {
         "width": 285,
         "height": 70
-      },
-      "handles": [
-        {
-          "id": "handle--source--6d1e2770-d08d-36c2-ba02-f6ac3d5e6d4d--0",
-          "type": "source",
-          "position": "bottom",
-          "x": 140,
-          "y": 70,
-          "isHidden": true,
-          "isVirtualHandle": false
-        },
-        {
-          "id": "handle--source--6d1e2770-d08d-36c2-ba02-f6ac3d5e6d4d--1",
-          "type": "source",
-          "position": "right",
-          "isHidden": true,
-          "isVirtualHandle": true
-        },
-        {
-          "id": "handle--target--6d1e2770-d08d-36c2-ba02-f6ac3d5e6d4d--0",
-          "type": "target",
-          "position": "left",
-          "isHidden": true,
-          "isVirtualHandle": true
-        }
-      ]
+      }
     }
   ],
   "edges": [
@@ -85,8 +35,6 @@
       "type": "manhattan",
       "sourcePosition": "right",
       "targetPosition": "left",
-      "sourceHandleId": "handle--source--6d1e2770-d08d-36c2-ba02-f6ac3d5e6d4d--0",
-      "targetHandleId": "handle--target--6b8c126a-0b65-3b9b-8c52-d34444dbd92f--0",
       "sourcePoint": {
         "x": 276.3035888671875,
         "y": 257.2857131958008

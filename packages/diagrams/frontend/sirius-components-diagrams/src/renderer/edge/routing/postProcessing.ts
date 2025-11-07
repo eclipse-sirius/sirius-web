@@ -125,6 +125,42 @@ type CollisionCandidate = {
 
 type CollisionSide = 'top' | 'right' | 'bottom' | 'left' | null;
 
+type RectCollisionCandidate = {
+  nodeId: string;
+  rect: Rect;
+  detectionRect: Rect;
+  paddedBounds: { left: number; right: number; top: number; bottom: number };
+};
+
+type CachedRectEntry = RectCollisionCandidate & { signature: string };
+const rectEntryCache = new Map<string, CachedRectEntry>();
+
+const createRectSignature = (rect: Rect): string =>
+  `${rect.x}:${rect.y}:${rect.width}:${rect.height}:${DETECTION_PADDING}`;
+
+const getCachedRectEntry = (nodeId: string, rect: Rect): RectCollisionCandidate => {
+  const signature = createRectSignature(rect);
+  const cached = rectEntryCache.get(nodeId);
+  if (cached && cached.signature === signature) {
+    return cached;
+  }
+  const detectionRect = expandRect(rect, DETECTION_PADDING);
+  const entry: CachedRectEntry = {
+    nodeId,
+    rect,
+    detectionRect,
+    paddedBounds: {
+      left: detectionRect.x,
+      right: detectionRect.x + detectionRect.width,
+      top: detectionRect.y,
+      bottom: detectionRect.y + detectionRect.height,
+    },
+    signature,
+  };
+  rectEntryCache.set(nodeId, entry);
+  return entry;
+};
+
 const computeEntryOrder = (entryPoint: XYPosition, obstacle: Rect): number => {
   // Deterministically order collisions by walking clockwise around the
   // obstacle. This prevents random reshuffling when we iterate maps.
@@ -253,13 +289,6 @@ const gatherCollisions = (
     bounds: PolylineBounds;
   };
 
-  type RectCollisionCandidate = {
-    nodeId: string;
-    rect: Rect;
-    detectionRect: Rect;
-    paddedBounds: { left: number; right: number; top: number; bottom: number };
-  };
-
   const edgeCandidates: EdgeCollisionCandidate[] = [];
   edges.forEach((edge) => {
     if (edge.hidden || edge.source === edge.target) {
@@ -289,18 +318,8 @@ const gatherCollisions = (
     if (excludedObstacleIds?.has(nodeId)) {
       return;
     }
-    const detectionRect = expandRect(rect, DETECTION_PADDING);
-    rectEntries.push({
-      nodeId,
-      rect,
-      detectionRect,
-      paddedBounds: {
-        left: detectionRect.x,
-        right: detectionRect.x + detectionRect.width,
-        top: detectionRect.y,
-        bottom: detectionRect.y + detectionRect.height,
-      },
-    });
+    const entry = getCachedRectEntry(nodeId, rect);
+    rectEntries.push(entry);
   });
   if (rectEntries.length === 0) {
     return collisions;
@@ -717,7 +736,13 @@ type PolylineBounds = {
   maxY: number;
 };
 
+const polylineBoundsMemo = new WeakMap<EdgePolyline, PolylineBounds>();
+
 const measurePolylineBounds = (polyline: EdgePolyline): PolylineBounds | undefined => {
+  const cached = polylineBoundsMemo.get(polyline);
+  if (cached) {
+    return cached;
+  }
   if (polyline.length === 0) {
     return undefined;
   }
@@ -741,7 +766,9 @@ const measurePolylineBounds = (polyline: EdgePolyline): PolylineBounds | undefin
       maxY = point.y;
     }
   }
-  return { minX, maxX, minY, maxY };
+  const bounds = { minX, maxX, minY, maxY };
+  polylineBoundsMemo.set(polyline, bounds);
+  return bounds;
 };
 
 const insertIntersectionSorted = (
