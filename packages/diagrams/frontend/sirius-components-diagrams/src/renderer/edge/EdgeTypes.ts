@@ -13,18 +13,21 @@
 
 import { Edge, EdgeProps } from '@xyflow/react';
 import { FC } from 'react';
+import { ExperimentalStepEdgeWrapper } from './ExperimentalEdgeWrapper';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { ObliqueEdgeWrapper } from './ObliqueEdgeWrapper';
 import { SmartStepEdgeWrapper } from './SmartStepEdgeWrapper';
 import { SmoothStepEdgeWrapper } from './SmoothStepEdgeWrapper';
-import { ObliqueEdgeWrapper } from './ObliqueEdgeWrapper';
 
 export const edgeTypes: EdgeComponentsMap = {
+  experimental: ExperimentalStepEdgeWrapper,
   manhattan: SmoothStepEdgeWrapper,
   smartManhattan: SmartStepEdgeWrapper,
   oblique: ObliqueEdgeWrapper,
 };
 
 export interface EdgeDataMap {
+  experimental: MultiLabelEdgeData;
   manhattan: MultiLabelEdgeData;
   smartManhattan: MultiLabelEdgeData;
   oblique: MultiLabelEdgeData;

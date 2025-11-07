@@ -1,45 +1,59 @@
+import { ExperimentalStepEdgeWrapper } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/ExperimentalEdgeWrapper";
 import {
   Background,
   ReactFlow,
   ReactFlowProvider,
   getViewportForBounds,
   type Edge as ReactFlowEdge,
+  type ReactFlowInstance,
   type Node as ReactFlowNode,
   type Rect,
-  type ReactFlowInstance,
   type Viewport,
   type XYPosition,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { NodeTypeContext } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext';
-import type { NodeTypeContextValue } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext.types';
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { toPng } from "html-to-image";
 import {
-  edgeTypes as defaultEdgeTypes,
-  type EdgeComponentsMap,
-} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes';
-import { ObliqueEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/ObliqueEdgeWrapper';
-import { SmartStepEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmartStepEdgeWrapper';
-import { SmoothStepEdgeWrapper } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmoothStepEdgeWrapper';
-import {
-  RoutingTraceProvider,
-  type RoutingTraceEvent,
-} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/RoutingTraceContext';
-import { StoreContextProvider } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/StoreContext';
-import { useStore } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/useStore';
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { NodeTypeContext } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext";
+import type { NodeTypeContextValue } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/contexts/NodeContext.types";
 import type {
   EdgeData,
   NodeData,
-} from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/DiagramRenderer.types';
-import type { DiagramFixture, FixtureEdge, RoutingMetrics } from '../types';
-import { convertFixtureToDiagram } from '../lib/diagramConversion';
-import { computeRoutingMetrics } from '../lib/metrics';
-import { HarnessNode } from './HarnessNode';
-import { BendpointOverlay } from './BendpointOverlay';
-import { EdgeDebugPanel, type EdgeDebugEntry, type OverlapInfo, type SegmentInfo } from './EdgeDebugPanel';
-import { RoutingLogPanel, type RoutingTraceLogEntry } from './RoutingLogPanel';
-import { toPng } from 'html-to-image';
-import { HarnessMarkerDefinitions } from './HarnessMarkerDefinitions';
+} from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/DiagramRenderer.types";
+import {
+  edgeTypes as defaultEdgeTypes,
+  type EdgeComponentsMap,
+} from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/EdgeTypes";
+import { ObliqueEdgeWrapper } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/ObliqueEdgeWrapper";
+import {
+  RoutingTraceProvider,
+  type RoutingTraceEvent,
+} from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/RoutingTraceContext";
+import { SmartStepEdgeWrapper } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmartStepEdgeWrapper";
+import { SmoothStepEdgeWrapper } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/edge/SmoothStepEdgeWrapper";
+import { StoreContextProvider } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/StoreContext";
+import { useStore } from "../../../../../diagrams/frontend/sirius-components-diagrams/src/representation/useStore";
+import { convertFixtureToDiagram } from "../lib/diagramConversion";
+import { computeRoutingMetrics } from "../lib/metrics";
+import type { DiagramFixture, FixtureEdge, RoutingMetrics } from "../types";
+import { BendpointOverlay } from "./BendpointOverlay";
+import {
+  EdgeDebugPanel,
+  type EdgeDebugEntry,
+  type OverlapInfo,
+  type SegmentInfo,
+} from "./EdgeDebugPanel";
+import { HarnessMarkerDefinitions } from "./HarnessMarkerDefinitions";
+import { HarnessNode } from "./HarnessNode";
+import { RoutingLogPanel, type RoutingTraceLogEntry } from "./RoutingLogPanel";
 
 const nodeContextValue: NodeTypeContextValue = {
   nodeConverters: [],
@@ -57,15 +71,16 @@ const DEFAULT_AXIS_TOLERANCE = 0.25;
 
 const CONTENT_MARGIN = 48;
 
-const PNG_DATA_URL_PREFIX = 'data:image/png;base64,';
+const PNG_DATA_URL_PREFIX = "data:image/png;base64,";
 const PNG_SIGNATURE_LENGTH = 8;
 const PNG_CHUNK_HEADER_SIZE = 8; // length (4) + type (4)
 const PNG_CHUNK_FOOTER_SIZE = 4; // CRC
-const PNG_TIME_CHUNK = 'tIME';
+const PNG_TIME_CHUNK = "tIME";
 
-export type EdgeRoutingAlgorithm = FixtureEdge['type'];
+export type EdgeRoutingAlgorithm = FixtureEdge["type"];
 
 const EDGE_WRAPPER_OVERRIDES: EdgeComponentsMap = {
+  experimental: ExperimentalStepEdgeWrapper,
   manhattan: SmoothStepEdgeWrapper,
   smartManhattan: SmartStepEdgeWrapper,
   oblique: ObliqueEdgeWrapper,
@@ -82,7 +97,7 @@ const base64ToUint8Array = (base64: string): Uint8Array => {
 };
 
 const uint8ArrayToBase64 = (bytes: Uint8Array): string => {
-  let binary = '';
+  let binary = "";
   const chunkSize = 0x8000;
   for (let i = 0; i < bytes.length; i += chunkSize) {
     const chunk = bytes.subarray(i, i + chunkSize);
@@ -98,7 +113,10 @@ const sanitizePngDataUrl = (dataUrl: string): string => {
   try {
     const base64 = dataUrl.slice(PNG_DATA_URL_PREFIX.length);
     const bytes = base64ToUint8Array(base64);
-    if (bytes.length <= PNG_SIGNATURE_LENGTH + PNG_CHUNK_HEADER_SIZE + PNG_CHUNK_FOOTER_SIZE) {
+    if (
+      bytes.length <=
+      PNG_SIGNATURE_LENGTH + PNG_CHUNK_HEADER_SIZE + PNG_CHUNK_FOOTER_SIZE
+    ) {
       return dataUrl;
     }
 
@@ -111,7 +129,8 @@ const sanitizePngDataUrl = (dataUrl: string): string => {
       const length = view.getUint32(offset);
       const typeArray = bytes.slice(offset + 4, offset + 8);
       const type = String.fromCharCode(...typeArray);
-      const chunkTotalLength = PNG_CHUNK_HEADER_SIZE + length + PNG_CHUNK_FOOTER_SIZE;
+      const chunkTotalLength =
+        PNG_CHUNK_HEADER_SIZE + length + PNG_CHUNK_FOOTER_SIZE;
       const nextOffset = offset + chunkTotalLength;
 
       if (nextOffset > bytes.length) {
@@ -123,7 +142,7 @@ const sanitizePngDataUrl = (dataUrl: string): string => {
       }
 
       offset = nextOffset;
-      if (type === 'IEND') {
+      if (type === "IEND") {
         break;
       }
     }
@@ -137,7 +156,7 @@ const sanitizePngDataUrl = (dataUrl: string): string => {
 };
 
 const parseEdgePath = (path?: string): XYPosition[] => {
-  if (!path || typeof path !== 'string') {
+  if (!path || typeof path !== "string") {
     return [];
   }
 
@@ -149,10 +168,12 @@ const parseEdgePath = (path?: string): XYPosition[] => {
 
   const points: XYPosition[] = [];
   tokens.forEach((token) => {
-    const parts = token.split(COORDINATE_SEPARATOR).filter((part) => part.length > 0);
+    const parts = token
+      .split(COORDINATE_SEPARATOR)
+      .filter((part) => part.length > 0);
     if (parts.length >= 2) {
-      const x = Number.parseFloat(parts[0] ?? '');
-      const y = Number.parseFloat(parts[1] ?? '');
+      const x = Number.parseFloat(parts[0] ?? "");
+      const y = Number.parseFloat(parts[1] ?? "");
       if (Number.isFinite(x) && Number.isFinite(y)) {
         points.push({ x, y });
       }
@@ -162,7 +183,10 @@ const parseEdgePath = (path?: string): XYPosition[] => {
   return points;
 };
 
-const buildSegments = (points: XYPosition[], tolerance = DEFAULT_AXIS_TOLERANCE): SegmentInfo[] => {
+const buildSegments = (
+  points: XYPosition[],
+  tolerance = DEFAULT_AXIS_TOLERANCE
+): SegmentInfo[] => {
   const segments: SegmentInfo[] = [];
 
   for (let index = 1; index < points.length; index++) {
@@ -181,7 +205,7 @@ const buildSegments = (points: XYPosition[], tolerance = DEFAULT_AXIS_TOLERANCE)
 
     if (deltaX <= tolerance) {
       segments.push({
-        axis: 'vertical',
+        axis: "vertical",
         coordinate: current.x,
         start: Math.min(prev.y, current.y),
         end: Math.max(prev.y, current.y),
@@ -191,7 +215,7 @@ const buildSegments = (points: XYPosition[], tolerance = DEFAULT_AXIS_TOLERANCE)
 
     if (deltaY <= tolerance) {
       segments.push({
-        axis: 'horizontal',
+        axis: "horizontal",
         coordinate: current.y,
         start: Math.min(prev.x, current.x),
         end: Math.max(prev.x, current.x),
@@ -262,14 +286,25 @@ export interface DiagramViewerHandle {
 }
 
 const collectNodePoints = (node: ReactFlowNode<NodeData>): XYPosition[] => {
-  const absolutePosition = node.positionAbsolute ?? node.position ?? { x: 0, y: 0 };
+  const absolutePosition = node.positionAbsolute ??
+    node.position ?? { x: 0, y: 0 };
   const width =
-    (typeof node.width === 'number' && Number.isFinite(node.width) ? node.width : undefined) ??
-    (typeof node.data?.defaultWidth === 'number' && Number.isFinite(node.data.defaultWidth) ? node.data.defaultWidth : undefined) ??
+    (typeof node.width === "number" && Number.isFinite(node.width)
+      ? node.width
+      : undefined) ??
+    (typeof node.data?.defaultWidth === "number" &&
+    Number.isFinite(node.data.defaultWidth)
+      ? node.data.defaultWidth
+      : undefined) ??
     0;
   const height =
-    (typeof node.height === 'number' && Number.isFinite(node.height) ? node.height : undefined) ??
-    (typeof node.data?.defaultHeight === 'number' && Number.isFinite(node.data.defaultHeight) ? node.data.defaultHeight : undefined) ??
+    (typeof node.height === "number" && Number.isFinite(node.height)
+      ? node.height
+      : undefined) ??
+    (typeof node.data?.defaultHeight === "number" &&
+    Number.isFinite(node.data.defaultHeight)
+      ? node.data.defaultHeight
+      : undefined) ??
     0;
 
   const x = absolutePosition.x;
@@ -287,12 +322,17 @@ const collectNodePoints = (node: ReactFlowNode<NodeData>): XYPosition[] => {
 
 const collectEdgePoints = (edge: ReactFlowEdge<EdgeData>): XYPosition[] => {
   const points: XYPosition[] = [];
-  if (typeof edge.sourceX === 'number' && Number.isFinite(edge.sourceX) && typeof edge.sourceY === 'number' && Number.isFinite(edge.sourceY)) {
+  if (
+    typeof edge.sourceX === "number" &&
+    Number.isFinite(edge.sourceX) &&
+    typeof edge.sourceY === "number" &&
+    Number.isFinite(edge.sourceY)
+  ) {
     points.push({ x: edge.sourceX, y: edge.sourceY });
   }
   if (Array.isArray(edge.data?.bendingPoints)) {
     edge.data.bendingPoints.forEach((point) => {
-      if (point && typeof point.x === 'number' && typeof point.y === 'number') {
+      if (point && typeof point.x === "number" && typeof point.y === "number") {
         points.push(point);
       }
     });
@@ -301,7 +341,12 @@ const collectEdgePoints = (edge: ReactFlowEdge<EdgeData>): XYPosition[] => {
   if (parsedPath.length > 0) {
     points.push(...parsedPath);
   }
-  if (typeof edge.targetX === 'number' && Number.isFinite(edge.targetX) && typeof edge.targetY === 'number' && Number.isFinite(edge.targetY)) {
+  if (
+    typeof edge.targetX === "number" &&
+    Number.isFinite(edge.targetX) &&
+    typeof edge.targetY === "number" &&
+    Number.isFinite(edge.targetY)
+  ) {
     points.push({ x: edge.targetX, y: edge.targetY });
   }
   return points;
@@ -338,7 +383,12 @@ const computeDiagramBounds = (
   let maxY = minY;
 
   points.forEach((point) => {
-    if (typeof point?.x === 'number' && Number.isFinite(point.x) && typeof point?.y === 'number' && Number.isFinite(point.y)) {
+    if (
+      typeof point?.x === "number" &&
+      Number.isFinite(point.x) &&
+      typeof point?.y === "number" &&
+      Number.isFinite(point.y)
+    ) {
       minX = Math.min(minX, point.x);
       minY = Math.min(minY, point.y);
       maxX = Math.max(maxX, point.x);
@@ -363,8 +413,18 @@ const computeDiagramBounds = (
 };
 
 const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
-  ({ fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride }, ref) => {
-    const { getNodes, getEdges, onNodesChange, onEdgesChange, setNodes, setEdges } = useStore();
+  (
+    { fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride },
+    ref
+  ) => {
+    const {
+      getNodes,
+      getEdges,
+      onNodesChange,
+      onEdgesChange,
+      setNodes,
+      setEdges,
+    } = useStore();
     const diagram = useMemo(() => convertFixtureToDiagram(fixture), [fixture]);
     const instanceRef = useRef<ReactFlowInstance | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -407,7 +467,10 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 
       return edges
         .map<EdgeDebugEntry | null>((edge) => {
-          const path = typeof edge.data?.edgePath === 'string' ? edge.data.edgePath : undefined;
+          const path =
+            typeof edge.data?.edgePath === "string"
+              ? edge.data.edgePath
+              : undefined;
           const points = parseEdgePath(path);
           if (points.length < 2) {
             return null;
@@ -432,10 +495,14 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
     const handleTraceEvent = useCallback((event: RoutingTraceEvent) => {
       setTraceEvents((previous) => {
         const timestamp =
-          typeof performance !== 'undefined' && typeof performance.now === 'function'
+          typeof performance !== "undefined" &&
+          typeof performance.now === "function"
             ? performance.now()
             : Date.now();
-        return [...previous, { ...event, sequence: previous.length, timestamp }];
+        return [
+          ...previous,
+          { ...event, sequence: previous.length, timestamp },
+        ];
       });
     }, []);
 
@@ -454,9 +521,20 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 
       const nodesSnapshot = instance.getNodes();
       const edgesSnapshot = instance.getEdges();
-      const contentBounds = computeDiagramBounds(nodesSnapshot, edgesSnapshot, CONTENT_MARGIN);
+      const contentBounds = computeDiagramBounds(
+        nodesSnapshot,
+        edgesSnapshot,
+        CONTENT_MARGIN
+      );
 
-      const viewport = getViewportForBounds(contentBounds, viewportWidth, viewportHeight, 0.5, 2, 0.05);
+      const viewport = getViewportForBounds(
+        contentBounds,
+        viewportWidth,
+        viewportHeight,
+        0.5,
+        2,
+        0.05
+      );
       instance.setViewport(viewport, { duration: 0 });
     }, []);
 
@@ -481,9 +559,9 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
           fitToContent();
         });
       };
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
       };
     }, [fitToContent]);
 
@@ -495,12 +573,16 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
       for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
         const snapshot = instanceRef.current?.getEdges() ?? [];
         const allReady = snapshot.every(
-          (edge) => typeof edge.data?.edgePath === 'string' && edge.data.edgePath.length > 0
+          (edge) =>
+            typeof edge.data?.edgePath === "string" &&
+            edge.data.edgePath.length > 0
         );
         if (allReady) {
           return snapshot;
         }
-        await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+        await new Promise<void>((resolve) =>
+          window.requestAnimationFrame(() => resolve())
+        );
       }
       return instanceRef.current?.getEdges() ?? [];
     }, []);
@@ -509,30 +591,48 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
       const instance = instanceRef.current;
       const wrapper = wrapperRef.current;
       if (!instance || !wrapper) {
-        throw new Error('Diagram is not ready for export.');
+        throw new Error("Diagram is not ready for export.");
       }
 
       fitToContent();
-      await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      await new Promise<void>((resolve) =>
+        window.requestAnimationFrame(() => resolve())
+      );
 
-      await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+      await new Promise<void>((resolve) =>
+        window.requestAnimationFrame(() => resolve())
+      );
       const edgesSnapshot = await waitForEdgePaths();
       const nodesSnapshot = instance.getNodes();
-      const contentBounds = computeDiagramBounds(nodesSnapshot, edgesSnapshot, CONTENT_MARGIN);
+      const contentBounds = computeDiagramBounds(
+        nodesSnapshot,
+        edgesSnapshot,
+        CONTENT_MARGIN
+      );
 
       const exportWidth = Math.max(Math.round(contentBounds.width), 1);
       const exportHeight = Math.max(Math.round(contentBounds.height), 1);
 
-      const viewport: Viewport = getViewportForBounds(contentBounds, exportWidth, exportHeight, 0.5, 2, 0.05);
+      const viewport: Viewport = getViewportForBounds(
+        contentBounds,
+        exportWidth,
+        exportHeight,
+        0.5,
+        2,
+        0.05
+      );
 
-      const edgesLayer = wrapper.querySelector<HTMLElement>('.react-flow__edges');
+      const edgesLayer =
+        wrapper.querySelector<HTMLElement>(".react-flow__edges");
       const markerDefs =
-        wrapper.querySelector<HTMLElement>('#harness-edge-markers') ??
-        wrapper.querySelector<HTMLElement>('#edge-markers');
-      const viewportElement = wrapper.querySelector<HTMLElement>('.react-flow__viewport');
+        wrapper.querySelector<HTMLElement>("#harness-edge-markers") ??
+        wrapper.querySelector<HTMLElement>("#edge-markers");
+      const viewportElement = wrapper.querySelector<HTMLElement>(
+        ".react-flow__viewport"
+      );
 
       if (!viewportElement) {
-        throw new Error('Unable to locate the diagram viewport for export.');
+        throw new Error("Unable to locate the diagram viewport for export.");
       }
 
       let clonedMarkerDefs: Node | null = null;
@@ -543,7 +643,7 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
 
       try {
         const dataUrl = await toPng(viewportElement, {
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           width: exportWidth,
           height: exportHeight,
           style: {
@@ -588,12 +688,17 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
             onInit={handleInit}
             proOptions={{ hideAttribution: true }}
             panOnDrag={true}
-            zoomOnScroll={true}>
+            zoomOnScroll={true}
+          >
             <Background gap={12} />
           </ReactFlow>
           <BendpointOverlay edges={edges} />
           {showDebug && debugEntries.length > 0 ? (
-            <EdgeDebugPanel fixtureId={fixture.id} entries={debugEntries} overlaps={debugOverlaps} />
+            <EdgeDebugPanel
+              fixtureId={fixture.id}
+              entries={debugEntries}
+              overlaps={debugOverlaps}
+            />
           ) : null}
         </div>
         <RoutingLogPanel fixtureId={fixture.id} events={traceEvents} />
@@ -602,10 +707,16 @@ const DiagramRuntime = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
   }
 );
 
-DiagramRuntime.displayName = 'DiagramRuntime';
+DiagramRuntime.displayName = "DiagramRuntime";
 
-export const DiagramViewer = forwardRef<DiagramViewerHandle, DiagramViewerProps>(
-  ({ fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride }, ref) => {
+export const DiagramViewer = forwardRef<
+  DiagramViewerHandle,
+  DiagramViewerProps
+>(
+  (
+    { fixture, onMetricsChange, showDebug = false, edgeAlgorithmOverride },
+    ref
+  ) => {
     return (
       <ReactFlowProvider>
         <NodeTypeContext.Provider value={nodeContextValue}>
@@ -623,4 +734,4 @@ export const DiagramViewer = forwardRef<DiagramViewerHandle, DiagramViewerProps>
     );
   }
 );
-DiagramViewer.displayName = 'DiagramViewer';
+DiagramViewer.displayName = "DiagramViewer";

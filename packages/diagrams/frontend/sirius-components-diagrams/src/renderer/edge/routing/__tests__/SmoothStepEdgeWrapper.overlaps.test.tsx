@@ -1,31 +1,19 @@
+import { render, RenderOptions } from '@testing-library/react';
+import { Position, type Edge, type EdgeProps, type Node, type XYPosition } from '@xyflow/react';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import React, { PropsWithChildren } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
-import {
-  Position,
-  type Edge,
-  type EdgeProps,
-  type Node,
-  type XYPosition,
-} from '@xyflow/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { DiagramFixture } from '../../../../../../../../../../dev/frontend/routing-harness/src/types';
 import { NodeTypeContext } from '../../../../contexts/NodeContext';
 import type { NodeTypeContextValue } from '../../../../contexts/NodeContext.types';
-import type { DiagramFixture } from '../../../../../../../../../../dev/frontend/routing-harness/src/types';
-import { SmoothStepEdgeWrapper } from '../../SmoothStepEdgeWrapper';
-import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../postProcessing';
-import type { MultiLabelEdgeData } from '../../MultiLabelEdge.types';
-import type { NodeData } from '../../../DiagramRenderer.types';
-import type { DiagramNodeType } from '../../../node/NodeTypes.types';
 import { StoreContext } from '../../../../representation/StoreContext';
 import type { StoreContextValue } from '../../../../representation/StoreContext.types';
+import type { NodeData } from '../../../DiagramRenderer.types';
+import type { DiagramNodeType } from '../../../node/NodeTypes.types';
+import { ExperimentalStepEdgeWrapper } from '../../ExperimentalEdgeWrapper';
+import type { MultiLabelEdgeData } from '../../MultiLabelEdge.types';
+import { DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS } from '../postProcessing';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
 type HarnessEdge = Edge<MultiLabelEdgeData>;
@@ -55,10 +43,7 @@ type InternalNodeStub = HarnessNode & {
   };
 };
 
-const harnessFixturesDir = path.join(
-  process.cwd(),
-  'packages/dev/frontend/routing-harness/src/fixtures',
-);
+const harnessFixturesDir = path.join(process.cwd(), 'packages/dev/frontend/routing-harness/src/fixtures');
 //TOCHECK: test data lives in the dev routing harness; consider copying snapshots locally so CI does not depend on that external directory structure.
 
 const loadFixture = (filename: string): DiagramFixture => {
@@ -81,10 +66,7 @@ const toPositionEnum = (position: string | undefined): Position => {
   }
 };
 
-const buildEdgeData = (
-  edgeId: string,
-  overrides: Partial<MultiLabelEdgeData> = {}
-): MultiLabelEdgeData => ({
+const buildEdgeData = (edgeId: string, overrides: Partial<MultiLabelEdgeData> = {}): MultiLabelEdgeData => ({
   targetObjectId: edgeId,
   targetObjectKind: 'HarnessEdge',
   targetObjectLabel: edgeId,
@@ -234,7 +216,7 @@ const segmentsFromPolyline = (edgeId: string, polyline: XYPosition[]): PolylineS
 const findOverlappingSegments = (
   segments: PolylineSegment[],
   tolerance = 0.5,
-  minOverlapLength = 1,
+  minOverlapLength = 1
 ): SegmentOverlap[] => {
   const overlaps: SegmentOverlap[] = [];
   for (let i = 0; i < segments.length; i++) {
@@ -272,7 +254,7 @@ const renderWithHarnessProviders = (
   ui: React.ReactElement,
   storeValue: StoreContextValue,
   nodeContextValue: NodeTypeContextValue,
-  options?: RenderOptions,
+  options?: RenderOptions
 ) =>
   render(ui, {
     wrapper: ({ children }: PropsWithChildren) => (
@@ -330,7 +312,11 @@ const renderHarnessFixture = (
       targetPosition: edge.targetPosition,
     };
 
-    const { unmount } = renderWithHarnessProviders(<SmoothStepEdgeWrapper {...props} />, storeValue, nodeContextValue);
+    const { unmount } = renderWithHarnessProviders(
+      <ExperimentalStepEdgeWrapper {...props} />,
+      storeValue,
+      nodeContextValue
+    );
     unmount();
   });
 
@@ -378,10 +364,8 @@ vi.mock('../../EdgeLayout', async () => {
 
   return {
     ...actual,
-    getHandleCoordinatesByPosition: (
-      node: InternalNodeStub | undefined,
-      handlePosition: Position,
-    ): XYPosition => computeHandleCoordinates(node, handlePosition),
+    getHandleCoordinatesByPosition: (node: InternalNodeStub | undefined, handlePosition: Position): XYPosition =>
+      computeHandleCoordinates(node, handlePosition),
   };
 });
 
@@ -404,7 +388,7 @@ vi.mock('../../rectilinear-edge/MultiLabelRectilinearEditableEdge', () => ({
   },
 }));
 
-describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
+describe('ExperimentalStepEdgeWrapper parallel spacing post-processing', () => {
   beforeEach(() => {
     capturedPolylines.clear();
     mockInternalNodes.clear();
@@ -426,7 +410,7 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     );
 
     const allSegments = Array.from(polylines.entries()).flatMap(([edgeId, polyline]) =>
-      segmentsFromPolyline(edgeId, polyline),
+      segmentsFromPolyline(edgeId, polyline)
     );
     expect(allSegments.length).toBeGreaterThan(0);
 
@@ -489,7 +473,7 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     const { polylines } = renderHarnessFixture(fixture, overrides);
 
     const allSegments = Array.from(polylines.entries()).flatMap(([edgeId, polyline]) =>
-      segmentsFromPolyline(edgeId, polyline),
+      segmentsFromPolyline(edgeId, polyline)
     );
     expect(allSegments.length).toBeGreaterThan(0);
 
@@ -497,7 +481,7 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     const diagonalOverlapDetected = overlaps.some(
       ({ edgeId, otherEdgeId }) =>
         (edgeId === 'edge-diagonal-down' && otherEdgeId === 'edge-diagonal-up') ||
-        (edgeId === 'edge-diagonal-up' && otherEdgeId === 'edge-diagonal-down'),
+        (edgeId === 'edge-diagonal-up' && otherEdgeId === 'edge-diagonal-down')
     );
 
     expect(overlaps.length).toBeGreaterThan(0);
@@ -525,12 +509,11 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     const diagonalColumn = detectedOverlaps.find(
       ({ edgeId, otherEdgeId }) =>
         (edgeId === 'edge-diagonal-down' && otherEdgeId === 'edge-diagonal-up') ||
-        (edgeId === 'edge-diagonal-up' && otherEdgeId === 'edge-diagonal-down'),
+        (edgeId === 'edge-diagonal-up' && otherEdgeId === 'edge-diagonal-down')
     );
-    expect(
-      detectedOverlaps.length,
-      'expected the disabled configuration to keep overlapping segments',
-    ).toBeGreaterThan(0);
+    expect(detectedOverlaps.length, 'expected the disabled configuration to keep overlapping segments').toBeGreaterThan(
+      0
+    );
     expect(diagonalColumn, 'expected an overlap segment shared by the diagonal edges').toBeDefined();
 
     const enabledOverrides: EdgeOverridesLookup = {
@@ -541,7 +524,10 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
 
     const diagonalDownEnabled = enabledPolylines.get('edge-diagonal-down');
     const diagonalUpEnabled = enabledPolylines.get('edge-diagonal-up');
-    expect(diagonalDownEnabled, 'expected spacing-enabled pass to produce the edge-diagonal-down polyline').toBeDefined();
+    expect(
+      diagonalDownEnabled,
+      'expected spacing-enabled pass to produce the edge-diagonal-down polyline'
+    ).toBeDefined();
     expect(diagonalUpEnabled, 'expected spacing-enabled pass to produce the edge-diagonal-up polyline').toBeDefined();
 
     const spacedSegments = [
@@ -552,40 +538,35 @@ describe('SmoothStepEdgeWrapper parallel spacing post-processing', () => {
     expect(remainingOverlaps, 'expected the spacing pass to remove the shared segment').toHaveLength(0);
 
     const allSpacedSegments = Array.from(enabledPolylines.entries()).flatMap(([edgeId, polyline]) =>
-      segmentsFromPolyline(edgeId, polyline ?? []),
+      segmentsFromPolyline(edgeId, polyline ?? [])
     );
     const allSpacedOverlaps = findOverlappingSegments(allSpacedSegments, 0.5, 4);
-    expect(
-      allSpacedOverlaps,
-      'expected no overlaps to remain across any spaced polylines',
-    ).toHaveLength(0);
+    expect(allSpacedOverlaps, 'expected no overlaps to remain across any spaced polylines').toHaveLength(0);
 
     const { coordinate: originalColumn, overlapStart, overlapEnd } = diagonalColumn!;
     const downColumnAfter =
       segmentsFromPolyline('edge-diagonal-down', diagonalDownEnabled ?? []).find(
-        (segment) =>
-          segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd,
+        (segment) => segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd
       )?.coordinate ?? 0;
     const upColumnAfter =
       segmentsFromPolyline('edge-diagonal-up', diagonalUpEnabled ?? []).find(
-        (segment) =>
-          segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd,
+        (segment) => segment.axis === 'vertical' && segment.start <= overlapStart && segment.end >= overlapEnd
       )?.coordinate ?? 0;
 
     const spacing = DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS.spacing;
     expect(
       Math.abs(upColumnAfter - downColumnAfter),
-      'expected the columns to separate by at least the configured spacing',
+      'expected the columns to separate by at least the configured spacing'
     ).toBeGreaterThanOrEqual(spacing);
     expect(
       Math.max(Math.abs(downColumnAfter - originalColumn), Math.abs(upColumnAfter - originalColumn)),
-      'expected at least one edge to move off the original column by one spacing unit',
+      'expected at least one edge to move off the original column by one spacing unit'
     ).toBeGreaterThanOrEqual(spacing);
   });
 });
 
 // Dedicated suite that exercises the almost-straight straightening heuristic.
-describe('SmoothStepEdgeWrapper endpoint straightening post-processing', () => {
+describe('ExperimentalStepEdgeWrapper endpoint straightening post-processing', () => {
   beforeEach(() => {
     capturedPolylines.clear();
     mockInternalNodes.clear();

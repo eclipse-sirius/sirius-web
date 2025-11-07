@@ -1,6 +1,6 @@
-import type { XYPosition } from '@xyflow/react';
+import type { XYPosition } from "@xyflow/react";
 
-export type FixtureHandlePosition = 'top' | 'right' | 'bottom' | 'left';
+export type FixtureHandlePosition = "top" | "right" | "bottom" | "left";
 
 export interface FixtureManifestEntry {
   id: string;
@@ -25,7 +25,7 @@ export interface FixtureEdge {
   id: string;
   source: string;
   target: string;
-  type: 'manhattan' | 'smartManhattan' | 'oblique';
+  type: "manhattan" | "smartManhattan" | "oblique" | "experimental";
   sourcePosition?: FixtureHandlePosition;
   targetPosition?: FixtureHandlePosition;
   sourceHandleId?: string;
@@ -37,7 +37,7 @@ export interface FixtureEdge {
 
 export interface FixtureHandle {
   id: string;
-  type: 'source' | 'target';
+  type: "source" | "target";
   position: FixtureHandlePosition;
   x?: number;
   y?: number;

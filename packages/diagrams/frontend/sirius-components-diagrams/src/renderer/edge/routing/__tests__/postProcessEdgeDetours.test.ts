@@ -4,8 +4,8 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { DiagramFixture } from '../../../../../../../../../../dev/frontend/routing-harness/src/types';
 import type { EdgeData, NodeData } from '../../../DiagramRenderer.types';
-import { ensureRectilinearPath, simplifyRectilinearBends } from '../../SmoothStepEdgeWrapper';
 import type { DiagramNodeType } from '../../../node/NodeTypes.types';
+import { ensureRectilinearPath, simplifyRectilinearBends } from '../../ExperimentalEdgeWrapper';
 import { buildDetouredPolyline } from '../postProcessing';
 
 type HarnessNode = Node<NodeData, DiagramNodeType>;
@@ -166,10 +166,7 @@ const buildFinalPolyline = (fixture: DiagramFixture, edgeId: string, harnessEdge
 const determineInitialAxis = (position: Position): Axis =>
   position === Position.Left || position === Position.Right ? 'horizontal' : 'vertical';
 
-const harnessFixturesDir = path.join(
-  process.cwd(),
-  'packages/dev/frontend/routing-harness/src/fixtures'
-);
+const harnessFixturesDir = path.join(process.cwd(), 'packages/dev/frontend/routing-harness/src/fixtures');
 //TOCHECK: Tests depend on fixtures living in the dev harness workspace; mirroring them locally would make the suite less brittle.
 
 const loadFixture = (filename: string): DiagramFixture => {
@@ -565,7 +562,7 @@ describe('buildDetouredPolyline', () => {
     const edges = toHarnessEdges(fixture);
 
     const violations = edges
-      .filter((edge) => edge.type === 'manhattan')
+      .filter((edge) => edge.type === 'experimental')
       .map((edge) => ({
         edgeId: edge.id,
         polyline: buildFinalPolyline(fixture, edge.id, edges),
