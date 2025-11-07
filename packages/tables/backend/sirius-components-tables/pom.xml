@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.1</version>
+		<version>2025.10.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-tables</artifactId>
-	<version>2025.10.1</version>
+	<version>2025.10.2</version>
 	<name>sirius-components-tables</name>
 	<description>Sirius Components Tables</description>
 
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

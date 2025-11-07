@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.1</version>
+		<version>2025.10.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-reference</artifactId>
-	<version>2025.10.1</version>
+	<version>2025.10.2</version>
 	<name>sirius-components-collaborative-formdescriptioneditors-widget-reference</name>
 	<description>Sirius Components Collaborative FormDescriptionEditors Widget Reference</description>
 
@@ -32,22 +32,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.10.1</version>
+			<version>2025.10.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
