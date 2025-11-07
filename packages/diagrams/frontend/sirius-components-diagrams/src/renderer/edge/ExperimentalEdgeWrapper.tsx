@@ -66,6 +66,9 @@ const DEFAULT_PARALLEL_SPACING_ENABLED = true;
 const DEFAULT_STRAIGHTEN_ENABLED = true;
 // Maximum deviation (in pixels) we tolerate before declaring that a zig-zag is meaningful.
 const DEFAULT_STRAIGHTEN_THRESHOLD = 20;
+const SELF_LOOP_MIN_OFFSET = 24;
+const SELF_LOOP_MAX_OFFSET = 80;
+const SELF_LOOP_OFFSET_RATIO = 0.25;
 
 type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
   targetPosition?: Position;
@@ -255,6 +258,200 @@ function clamp(value: number, min: number, max: number): number {
 function isHorizontalPosition(position: Position): boolean {
   return position === Position.Left || position === Position.Right;
 }
+
+type NodeBounds = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+  width: number;
+  height: number;
+  centerX: number;
+  centerY: number;
+};
+
+const deriveNodeBounds = (node: InternalNode<Node<NodeData>> | undefined): NodeBounds | null => {
+  if (!node) {
+    return null;
+  }
+  const width = node.width ?? 0;
+  const height = node.height ?? 0;
+  const absolute =
+    node.internals?.positionAbsolute ??
+    (node as unknown as { positionAbsolute?: XYPosition }).positionAbsolute ??
+    node.position ??
+    null;
+  if (!absolute) {
+    return null;
+  }
+  const left = absolute.x;
+  const top = absolute.y;
+  return {
+    left,
+    top,
+    right: left + width,
+    bottom: top + height,
+    width,
+    height,
+    centerX: left + width / 2,
+    centerY: top + height / 2,
+  };
+};
+
+const displaceFromHandle = (x: number, y: number, position: Position, offset: number): XYPosition => {
+  switch (position) {
+    case Position.Left:
+      return { x: x - offset, y };
+    case Position.Right:
+      return { x: x + offset, y };
+    case Position.Top:
+      return { x, y: y - offset };
+    case Position.Bottom:
+      return { x, y: y + offset };
+    default:
+      return { x, y };
+  }
+};
+
+const choosePerpendicularDirectionForLoop = (position: Position, anchor: XYPosition, bounds: NodeBounds): 1 | -1 => {
+  if (isHorizontalPosition(position)) {
+    const reference = bounds.centerY;
+    return anchor.y <= reference ? -1 : 1;
+  }
+  const reference = bounds.centerX;
+  return anchor.x <= reference ? -1 : 1;
+};
+
+const segmentCrossesRect = (
+  start: XYPosition,
+  end: XYPosition,
+  rect: Pick<NodeBounds, 'left' | 'right' | 'top' | 'bottom'>
+): boolean => {
+  if (start.x === end.x) {
+    const x = start.x;
+    if (x <= rect.left || x >= rect.right) {
+      return false;
+    }
+    const minY = Math.min(start.y, end.y);
+    const maxY = Math.max(start.y, end.y);
+    return maxY > rect.top && minY < rect.bottom;
+  }
+  if (start.y === end.y) {
+    const y = start.y;
+    if (y <= rect.top || y >= rect.bottom) {
+      return false;
+    }
+    const minX = Math.min(start.x, end.x);
+    const maxX = Math.max(start.x, end.x);
+    return maxX > rect.left && minX < rect.right;
+  }
+  return false;
+};
+
+const chooseDetourCoordinate = (a: number, b: number, minBound: number, maxBound: number, offset: number): number => {
+  const before = minBound - offset;
+  const after = maxBound + offset;
+  const distanceToBefore = Math.abs(a - before) + Math.abs(b - before);
+  const distanceToAfter = Math.abs(a - after) + Math.abs(b - after);
+  return distanceToBefore <= distanceToAfter ? before : after;
+};
+
+const buildDetourBetweenAnchors = (
+  sourceAnchor: XYPosition,
+  targetAnchor: XYPosition,
+  rect: Pick<NodeBounds, 'left' | 'right' | 'top' | 'bottom'>,
+  offset: number
+): XYPosition[] => {
+  const connectors: XYPosition[] = [];
+
+  const horizontalFirst = { x: targetAnchor.x, y: sourceAnchor.y };
+  if (
+    !segmentCrossesRect(sourceAnchor, horizontalFirst, rect) &&
+    !segmentCrossesRect(horizontalFirst, targetAnchor, rect)
+  ) {
+    connectors.push(horizontalFirst);
+    return connectors;
+  }
+
+  const verticalFirst = { x: sourceAnchor.x, y: targetAnchor.y };
+  if (
+    !segmentCrossesRect(sourceAnchor, verticalFirst, rect) &&
+    !segmentCrossesRect(verticalFirst, targetAnchor, rect)
+  ) {
+    connectors.push(verticalFirst);
+    return connectors;
+  }
+
+  const needsVerticalDetour =
+    (sourceAnchor.x <= rect.left && targetAnchor.x >= rect.right) ||
+    (sourceAnchor.x >= rect.right && targetAnchor.x <= rect.left);
+  if (needsVerticalDetour) {
+    const detourY = chooseDetourCoordinate(sourceAnchor.y, targetAnchor.y, rect.top, rect.bottom, offset);
+    connectors.push({ x: sourceAnchor.x, y: detourY });
+    connectors.push({ x: targetAnchor.x, y: detourY });
+    return connectors;
+  }
+
+  const detourX = chooseDetourCoordinate(sourceAnchor.x, targetAnchor.x, rect.left, rect.right, offset);
+  connectors.push({ x: detourX, y: sourceAnchor.y });
+  connectors.push({ x: detourX, y: targetAnchor.y });
+  return connectors;
+};
+
+const buildSelfLoopPolyline = (
+  sourcePosition: Position,
+  targetPosition: Position,
+  source: XYPosition,
+  target: XYPosition,
+  bounds: NodeBounds
+): XYPosition[] => {
+  const nodeSpan = Math.max(bounds.width, bounds.height);
+  const offsetCandidate = nodeSpan * SELF_LOOP_OFFSET_RATIO;
+  const anchorOffset = clamp(offsetCandidate, SELF_LOOP_MIN_OFFSET, SELF_LOOP_MAX_OFFSET);
+  const sourceAnchor = displaceFromHandle(source.x, source.y, sourcePosition, anchorOffset);
+  const targetAnchor = displaceFromHandle(target.x, target.y, targetPosition, anchorOffset);
+
+  const polyline: XYPosition[] = [];
+  const pushPoint = (point: XYPosition | null | undefined) => {
+    if (!point) {
+      return;
+    }
+    const last = polyline[polyline.length - 1];
+    if (last && last.x === point.x && last.y === point.y) {
+      return;
+    }
+    polyline.push({ x: point.x, y: point.y });
+  };
+
+  pushPoint(source);
+  pushPoint(sourceAnchor);
+
+  if (sourcePosition === targetPosition) {
+    const axisIsHorizontal = isHorizontalPosition(sourcePosition);
+    const outwardDirection = sourcePosition === Position.Left || sourcePosition === Position.Top ? -1 : 1;
+    const perpendicularDirection = choosePerpendicularDirectionForLoop(sourcePosition, sourceAnchor, bounds);
+    const loopSpan = clamp(anchorOffset * 1.25, anchorOffset, anchorOffset * 1.75);
+    const loopDepth = clamp(anchorOffset * 0.85, anchorOffset * 0.6, anchorOffset * 1.3);
+    const firstLeg = axisIsHorizontal
+      ? { x: sourceAnchor.x + outwardDirection * loopSpan, y: sourceAnchor.y }
+      : { x: sourceAnchor.x, y: sourceAnchor.y + outwardDirection * loopSpan };
+    const secondLeg = axisIsHorizontal
+      ? { x: firstLeg.x, y: firstLeg.y + perpendicularDirection * loopDepth }
+      : { x: firstLeg.x + perpendicularDirection * loopDepth, y: firstLeg.y };
+    const thirdLeg = axisIsHorizontal ? { x: sourceAnchor.x, y: secondLeg.y } : { x: secondLeg.x, y: sourceAnchor.y };
+    pushPoint(firstLeg);
+    pushPoint(secondLeg);
+    pushPoint(thirdLeg);
+  } else {
+    const connectors = buildDetourBetweenAnchors(sourceAnchor, targetAnchor, bounds, anchorOffset);
+    connectors.forEach(pushPoint);
+  }
+
+  pushPoint(targetAnchor);
+  pushPoint(target);
+
+  return polyline;
+};
 
 /**
  * Read the centre coordinate for either axis so we can sort edges consistently when
@@ -983,6 +1180,8 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
 
   let bendingPoints: XYPosition[] = [];
   const customEdge = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
+  const isSelfLoop = source === target;
+  let selfLoopRouted = false;
   const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   const fanOutEnabled = data?.rectilinearFanOutEnabled ?? DEFAULT_FAN_OUT_ENABLED;
   // Fetch the complete edge list only once; we need it for fan calculations, detours, and spacing.
@@ -1026,172 +1225,212 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
       );
     }
   } else {
-    // Fallback: translate the smooth quadratic path from React Flow into Manhattan-style bends.
-    const [smoothEdgePath] = getSmoothStepPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-    });
-
-    const quadraticCurvePoints = extractQuadraticCornerPoints(smoothEdgePath);
-
-    if (quadraticCurvePoints.length > 0) {
-      // When no custom bends are given, we shape the first turn according to the chosen strategy.
-      const turnPreference: RectilinearTurnPreference = data?.rectilinearTurnPreference ?? DEFAULT_TURN_PREFERENCE;
-      const minOutwardLengthCandidate = data?.rectilinearMinOutwardLength;
-      const minOutwardLength =
-        typeof minOutwardLengthCandidate === 'number' &&
-        Number.isFinite(minOutwardLengthCandidate) &&
-        minOutwardLengthCandidate > 0
-          ? minOutwardLengthCandidate
-          : DEFAULT_MIN_OUTWARD_LENGTH;
-      const firstPoint = quadraticCurvePoints[0];
-      if (firstPoint) {
-        switch (sourcePosition) {
-          case Position.Right:
-          case Position.Left:
-            // Seed the first bend so the polyline departs horizontally from a left/right handle.
-            {
-              const defaultTurnX = firstPoint.x ?? sourceX;
-              const outwardDirection = sourcePosition === Position.Left ? -1 : 1;
-              const preferredTurnX = enforceMinimumClearance(
-                computePreferredTurnCoordinate(defaultTurnX, sourceX, targetX, turnPreference),
-                sourceX,
-                defaultTurnX,
-                outwardDirection,
-                minOutwardLength
-              );
-              quadraticCurvePoints[0] = { x: preferredTurnX, y: firstPoint.y };
-              bendingPoints.push({ x: preferredTurnX, y: sourceY });
-            }
-            for (let i = 1; i < quadraticCurvePoints.length; i++) {
-              const currentPoint = quadraticCurvePoints[i];
-              const previousPoint = quadraticCurvePoints[i - 1];
-              if (!currentPoint || !previousPoint) {
-                continue;
-              }
-              const { x: currentX, y: currentY } = currentPoint;
-              const { x: previousX, y: previousY } = previousPoint;
-              // Even/odd index alternation swaps axis, keeping the path rectilinear.
-              if (isMultipleOfTwo(i)) {
-                bendingPoints.push({ x: currentX, y: previousY });
-              } else {
-                bendingPoints.push({ x: previousX, y: currentY });
-              }
-            }
-            break;
-          case Position.Top:
-          case Position.Bottom:
-            // Seed the first bend so the polyline departs vertically from a top/bottom handle.
-            {
-              const defaultTurnY = firstPoint.y ?? sourceY;
-              const outwardDirection = sourcePosition === Position.Top ? -1 : 1;
-              const preferredTurnY = enforceMinimumClearance(
-                computePreferredTurnCoordinate(defaultTurnY, sourceY, targetY, turnPreference),
-                sourceY,
-                defaultTurnY,
-                outwardDirection,
-                minOutwardLength
-              );
-              quadraticCurvePoints[0] = { x: firstPoint.x, y: preferredTurnY };
-              bendingPoints.push({ x: sourceX, y: preferredTurnY });
-            }
-            for (let i = 1; i < quadraticCurvePoints.length; i++) {
-              const currentPoint = quadraticCurvePoints[i];
-              const previousPoint = quadraticCurvePoints[i - 1];
-              if (!currentPoint || !previousPoint) {
-                continue;
-              }
-              const { x: currentX, y: currentY } = currentPoint;
-              const { x: previousX, y: previousY } = previousPoint;
-              // Even/odd index alternation swaps axis, keeping the path rectilinear.
-              if (isMultipleOfTwo(i)) {
-                bendingPoints.push({ x: previousX, y: currentY });
-              } else {
-                bendingPoints.push({ x: currentX, y: previousY });
-              }
-            }
-            break;
-        }
-
-        // Apply the fan-out only when multiple edges share the source side and the feature is enabled.
-        if (fanOutEnabled && sourceArrangement && sourceArrangement.count > 1) {
-          const fanResult = applyFanOffsetGeneric(
-            'source',
-            bendingPoints,
-            sourcePosition,
-            { x: sourceX, y: sourceY },
-            { x: targetX, y: targetY },
-            sourceArrangement.offset,
-            minOutwardLength,
-            sourceArrangement
-          );
-          bendingPoints = fanResult.bendingPoints;
-          sourceX = fanResult.x;
-          sourceY = fanResult.y;
+    if (isSelfLoop) {
+      const sourceBounds = deriveNodeBounds(sourceNode);
+      const targetBounds = deriveNodeBounds(targetNode);
+      const loopBounds = sourceBounds ?? targetBounds;
+      if (loopBounds) {
+        const selfLoopPolyline = buildSelfLoopPolyline(
+          sourcePosition,
+          targetPosition,
+          { x: sourceX, y: sourceY },
+          { x: targetX, y: targetY },
+          loopBounds
+        );
+        if (selfLoopPolyline.length >= 2) {
+          const firstPoint = selfLoopPolyline[0];
+          const lastPoint = selfLoopPolyline[selfLoopPolyline.length - 1];
+          if (firstPoint) {
+            sourceX = firstPoint.x;
+            sourceY = firstPoint.y;
+          }
+          if (lastPoint) {
+            targetX = lastPoint.x;
+            targetY = lastPoint.y;
+          }
+          bendingPoints = selfLoopPolyline.slice(1, -1);
+          selfLoopRouted = true;
           if (traceRoutingDecision) {
-            if (traceAdjustments) {
-              traceAdjustments.fanOut = true;
-            }
-            traceRoutingDecision(
-              'fan-out',
-              'Applied fan-out spacing at source handle',
-              buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
-              {
-                count: sourceArrangement.count,
-                index: sourceArrangement.index,
-                offset: sourceArrangement.offset,
-              }
-            );
+            traceRoutingDecision('initial', 'Routed self-loop polyline', selfLoopPolyline, {
+              customEdge: false,
+              bendCount: bendingPoints.length,
+              strategy: 'self-loop',
+            });
           }
         }
+      }
+    }
 
-        // Apply the fan-in only when the target side receives more than one edge.
-        if (fanInEnabled && targetArrangement && targetArrangement.count > 1) {
-          const fanResult = applyFanOffsetGeneric(
-            'target',
+    if (!selfLoopRouted) {
+      // Fallback: translate the smooth quadratic path from React Flow into Manhattan-style bends.
+      const [smoothEdgePath] = getSmoothStepPath({
+        sourceX,
+        sourceY,
+        sourcePosition,
+        targetX,
+        targetY,
+        targetPosition,
+      });
+
+      const quadraticCurvePoints = extractQuadraticCornerPoints(smoothEdgePath);
+
+      if (quadraticCurvePoints.length > 0) {
+        // When no custom bends are given, we shape the first turn according to the chosen strategy.
+        const turnPreference: RectilinearTurnPreference = data?.rectilinearTurnPreference ?? DEFAULT_TURN_PREFERENCE;
+        const minOutwardLengthCandidate = data?.rectilinearMinOutwardLength;
+        const minOutwardLength =
+          typeof minOutwardLengthCandidate === 'number' &&
+          Number.isFinite(minOutwardLengthCandidate) &&
+          minOutwardLengthCandidate > 0
+            ? minOutwardLengthCandidate
+            : DEFAULT_MIN_OUTWARD_LENGTH;
+        const firstPoint = quadraticCurvePoints[0];
+        if (firstPoint) {
+          switch (sourcePosition) {
+            case Position.Right:
+            case Position.Left:
+              // Seed the first bend so the polyline departs horizontally from a left/right handle.
+              {
+                const defaultTurnX = firstPoint.x ?? sourceX;
+                const outwardDirection = sourcePosition === Position.Left ? -1 : 1;
+                const preferredTurnX = enforceMinimumClearance(
+                  computePreferredTurnCoordinate(defaultTurnX, sourceX, targetX, turnPreference),
+                  sourceX,
+                  defaultTurnX,
+                  outwardDirection,
+                  minOutwardLength
+                );
+                quadraticCurvePoints[0] = { x: preferredTurnX, y: firstPoint.y };
+                bendingPoints.push({ x: preferredTurnX, y: sourceY });
+              }
+              for (let i = 1; i < quadraticCurvePoints.length; i++) {
+                const currentPoint = quadraticCurvePoints[i];
+                const previousPoint = quadraticCurvePoints[i - 1];
+                if (!currentPoint || !previousPoint) {
+                  continue;
+                }
+                const { x: currentX, y: currentY } = currentPoint;
+                const { x: previousX, y: previousY } = previousPoint;
+                // Even/odd index alternation swaps axis, keeping the path rectilinear.
+                if (isMultipleOfTwo(i)) {
+                  bendingPoints.push({ x: currentX, y: previousY });
+                } else {
+                  bendingPoints.push({ x: previousX, y: currentY });
+                }
+              }
+              break;
+            case Position.Top:
+            case Position.Bottom:
+              // Seed the first bend so the polyline departs vertically from a top/bottom handle.
+              {
+                const defaultTurnY = firstPoint.y ?? sourceY;
+                const outwardDirection = sourcePosition === Position.Top ? -1 : 1;
+                const preferredTurnY = enforceMinimumClearance(
+                  computePreferredTurnCoordinate(defaultTurnY, sourceY, targetY, turnPreference),
+                  sourceY,
+                  defaultTurnY,
+                  outwardDirection,
+                  minOutwardLength
+                );
+                quadraticCurvePoints[0] = { x: firstPoint.x, y: preferredTurnY };
+                bendingPoints.push({ x: sourceX, y: preferredTurnY });
+              }
+              for (let i = 1; i < quadraticCurvePoints.length; i++) {
+                const currentPoint = quadraticCurvePoints[i];
+                const previousPoint = quadraticCurvePoints[i - 1];
+                if (!currentPoint || !previousPoint) {
+                  continue;
+                }
+                const { x: currentX, y: currentY } = currentPoint;
+                const { x: previousX, y: previousY } = previousPoint;
+                // Even/odd index alternation swaps axis, keeping the path rectilinear.
+                if (isMultipleOfTwo(i)) {
+                  bendingPoints.push({ x: previousX, y: currentY });
+                } else {
+                  bendingPoints.push({ x: currentX, y: previousY });
+                }
+              }
+              break;
+          }
+
+          // Apply the fan-out only when multiple edges share the source side and the feature is enabled.
+          if (fanOutEnabled && sourceArrangement && sourceArrangement.count > 1) {
+            const fanResult = applyFanOffsetGeneric(
+              'source',
+              bendingPoints,
+              sourcePosition,
+              { x: sourceX, y: sourceY },
+              { x: targetX, y: targetY },
+              sourceArrangement.offset,
+              minOutwardLength,
+              sourceArrangement
+            );
+            bendingPoints = fanResult.bendingPoints;
+            sourceX = fanResult.x;
+            sourceY = fanResult.y;
+            if (traceRoutingDecision) {
+              if (traceAdjustments) {
+                traceAdjustments.fanOut = true;
+              }
+              traceRoutingDecision(
+                'fan-out',
+                'Applied fan-out spacing at source handle',
+                buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+                {
+                  count: sourceArrangement.count,
+                  index: sourceArrangement.index,
+                  offset: sourceArrangement.offset,
+                }
+              );
+            }
+          }
+
+          // Apply the fan-in only when the target side receives more than one edge.
+          if (fanInEnabled && targetArrangement && targetArrangement.count > 1) {
+            const fanResult = applyFanOffsetGeneric(
+              'target',
+              bendingPoints,
+              targetPosition,
+              { x: sourceX, y: sourceY },
+              { x: targetX, y: targetY },
+              targetArrangement.offset,
+              minOutwardLength,
+              targetArrangement
+            );
+            bendingPoints = fanResult.bendingPoints;
+            targetX = fanResult.x;
+            targetY = fanResult.y;
+            if (traceRoutingDecision) {
+              if (traceAdjustments) {
+                traceAdjustments.fanIn = true;
+              }
+              traceRoutingDecision(
+                'fan-in',
+                'Applied fan-in spacing at target handle',
+                buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
+                {
+                  count: targetArrangement.count,
+                  index: targetArrangement.index,
+                  offset: targetArrangement.offset,
+                }
+              );
+            }
+          }
+
+          bendingPoints = enforceTargetClearance(
             bendingPoints,
             targetPosition,
-            { x: sourceX, y: sourceY },
             { x: targetX, y: targetY },
-            targetArrangement.offset,
-            minOutwardLength,
-            targetArrangement
+            minOutwardLength
           );
-          bendingPoints = fanResult.bendingPoints;
-          targetX = fanResult.x;
-          targetY = fanResult.y;
-          if (traceRoutingDecision) {
-            if (traceAdjustments) {
-              traceAdjustments.fanIn = true;
-            }
-            traceRoutingDecision(
-              'fan-in',
-              'Applied fan-in spacing at target handle',
-              buildPolyline(sourceX, sourceY, bendingPoints, targetX, targetY),
-              {
-                count: targetArrangement.count,
-                index: targetArrangement.index,
-                offset: targetArrangement.offset,
-              }
-            );
-          }
         }
-
-        bendingPoints = enforceTargetClearance(
-          bendingPoints,
-          targetPosition,
-          { x: targetX, y: targetY },
-          minOutwardLength
-        );
       }
     }
   }
 
-  if (!customEdge && traceRoutingDecision) {
+  const hasFixedGeometry = customEdge || selfLoopRouted;
+
+  if (!hasFixedGeometry && traceRoutingDecision) {
     traceRoutingDecision(
       'initial',
       'Derived bending points from smooth-step path',
@@ -1200,7 +1439,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
     );
   }
 
-  const baselineBendingPoints = customEdge
+  const baselineBendingPoints = hasFixedGeometry
     ? bendingPoints
     : ensureRectilinearPath(
         bendingPoints,
@@ -1212,7 +1451,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   // Run the rectilinear simplification before invoking the last-chance detour so the
   // detour logic works on the definitive orthogonal backbone (otherwise a later
   // simplification pass could erase the detour we add).
-  let rectifiedBendingPoints = customEdge
+  let rectifiedBendingPoints = hasFixedGeometry
     ? baselineBendingPoints
     : simplifyRectilinearBends(baselineBendingPoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY });
 
@@ -1235,7 +1474,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   }
 
   // The straightening pass only runs for automatically routed edges; custom polylines remain untouched.
-  const straightenEnabled = (data?.rectilinearStraightenEnabled ?? DEFAULT_STRAIGHTEN_ENABLED) && !customEdge;
+  const straightenEnabled = (data?.rectilinearStraightenEnabled ?? DEFAULT_STRAIGHTEN_ENABLED) && !hasFixedGeometry;
   if (straightenEnabled) {
     const sourceFanCount = sourceArrangement?.count ?? 1;
     const targetFanCount = targetArrangement?.count ?? 1;
@@ -1300,12 +1539,12 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   const parallelSpacingEnabled = data?.rectilinearParallelSpacingEnabled ?? DEFAULT_PARALLEL_SPACING_ENABLED;
   // Parallel spacing piggybacks on the pre-fetched edge list; skip when the context does not provide it.
   const shouldCollectParallelPolylines =
-    parallelSpacingEnabled && !customEdge && edgesFromStore.length > 0 && !!getNodes;
+    parallelSpacingEnabled && !hasFixedGeometry && edgesFromStore.length > 0 && !!getNodes;
   let detouredPolyline: XYPosition[] | undefined;
   let detourPolylines: Map<string, XYPosition[]> | undefined;
 
   // Reuse the shared edge cache when building detours so we do not poll the store repeatedly.
-  if (!customEdge && edgesFromStore.length > 0) {
+  if (!hasFixedGeometry && edgesFromStore.length > 0) {
     const edgesForDetour = edgesFromStore;
     const nodesForDetour = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
     if (edgesForDetour.length > 0 && nodesForDetour.length > 0) {
@@ -1441,7 +1680,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
 
   const simplifyEnabled = data?.rectilinearSimplifyEnabled ?? true;
   let finalBendingPoints = rectifiedBendingPoints;
-  if (simplifyEnabled && !customEdge) {
+  if (simplifyEnabled && !hasFixedGeometry) {
     const postProcessSimplified = simplifyRectilinearBends(
       rectifiedBendingPoints,
       { x: sourceX, y: sourceY },
