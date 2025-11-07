@@ -28,14 +28,6 @@ export const AppearanceNumberTextfield = ({
   });
 
   useEffect(() => {
-    return () => {
-      if (state.value != initialValue) {
-        onEdit(state.value);
-      }
-    };
-  }, [state.value]);
-
-  useEffect(() => {
     setState((prevState) => ({
       ...prevState,
       value: prevState.focused ? prevState.value : initialValue,
