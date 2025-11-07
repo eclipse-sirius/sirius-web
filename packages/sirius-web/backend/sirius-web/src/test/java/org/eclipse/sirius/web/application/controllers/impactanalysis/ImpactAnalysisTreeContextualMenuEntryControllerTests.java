@@ -117,6 +117,9 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
             DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
+
+            assertThat(dataTree.nodes().stream().filter(node -> node.parentId() == null).toList()).hasSize(1);
+
             assertThat(dataTree.nodes()).anySatisfy(node -> {
                 assertThat(node.label().toString()).isEqualTo("abstract: false -> true");
                 assertThat(node.endIconsURLs()).hasSize(1);

@@ -165,6 +165,7 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
             DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
+            assertThat(dataTree.nodes().stream().filter(node -> node.parentId() == null)).hasSize(1);
             assertThat(dataTree.nodes()).anySatisfy(node -> {
                 assertThat(node.label().toString()).isEqualTo("elements: a");
                 assertThat(node.endIconsURLs()).hasSize(1);

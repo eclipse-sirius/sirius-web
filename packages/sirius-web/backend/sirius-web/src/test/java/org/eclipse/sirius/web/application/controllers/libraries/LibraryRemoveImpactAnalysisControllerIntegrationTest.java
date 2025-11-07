@@ -145,6 +145,13 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).anySatisfy(node -> {
+                assertThat(node.label().toString()).isEqualTo("Sirius Web Tests Data (sirius-web-tests-data@1.0.0)");
+                assertThat(node.parentId()).isNull();
+                assertThat(node.endIconsURLs()).hasSize(1);
+                List<String> endIconsURL = node.endIconsURLs().get(0);
+                assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureDeletion.svg"));
+            });
+            assertThat(dataTree.nodes()).anySatisfy(node -> {
                 assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
                 assertThat(node.endIconsURLs()).hasSize(1);
                 List<String> endIconsURL = node.endIconsURLs().get(0);

@@ -27,7 +27,9 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.ChangeKind;
 import org.eclipse.emf.ecore.change.FeatureChange;
 import org.eclipse.emf.ecore.change.ListChange;
+import org.eclipse.emf.ecore.change.ResourceChange;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -39,6 +41,7 @@ import org.eclipse.sirius.components.datatree.DataTree;
 import org.eclipse.sirius.components.datatree.DataTreeNode;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.impactanalysis.services.api.IDefaultChangeDescriptionDataTreeProvider;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,13 +72,14 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             List<String> allImpactedObjectIds = this.getAllImpactedObjectIds(changeDescription);
             List<DataTreeNode> dataTreeNodes = new ArrayList<>();
+            dataTreeNodes.addAll(this.createAllResourcesDataTreeNodes(emfEditingContext.getDomain().getResourceSet(), changeDescription.getResourceChanges()));
             for (Resource resource : emfEditingContext.getDomain().getResourceSet().getResources()) {
                 String resourceId = this.getId(resource);
                 if (allImpactedObjectIds.contains(resourceId)) {
-                    dataTreeNodes.add(new DataTreeNode(resourceId, null, this.getStyledLabel(resource), this.getIconURL(resource), List.of(List.of())));
-                    List<Object> children = this.getChildren(resource, editingContext, changeDescription);
+                    dataTreeNodes.add(new DataTreeNode(resourceId, null, this.getStyledLabel(resource), this.getIconURLs(resource), List.of(List.of())));
+                    List<Object> children = this.getChildren(resource, changeDescription);
                     for (Object child : children) {
-                        dataTreeNodes.addAll(this.getDataTreeNode(child, resource, emfEditingContext, changeDescription, allImpactedObjectIds));
+                        dataTreeNodes.addAll(this.getObjectChangeDataTreeNode(child, resource, changeDescription, allImpactedObjectIds));
                     }
                 }
             }
@@ -85,15 +89,109 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
         return result;
     }
 
-    private List<DataTreeNode> getDataTreeNode(Object object, Object parent, IEditingContext editingContext, ChangeDescription changeDescription, List<String> allImpactObjectIds) {
+    private List<DataTreeNode> createAllResourcesDataTreeNodes(ResourceSet resourceSet, List<ResourceChange> resourceChanges) {
+        List<DataTreeNode> result = new ArrayList<>();
+        for (ResourceChange resourceChange : resourceChanges) {
+            for (ListChange listChange : resourceChange.getListChanges()) {
+                if (listChange.getKind() == ChangeKind.ADD_LITERAL) {
+                    Resource changedResource = resourceChange.getResource();
+                    List<?> resourceContent = resourceChange.getValue();
+                    result.addAll(this.createResourceDataTreeNodes(changedResource, resourceContent, listChange.getKind()));
+                    resourceSet.getResources().stream()
+                        .filter(resource -> Objects.equals(resource.getURI(), changedResource.getURI()))
+                        .findFirst()
+                        .ifPresent(resourceWithSameURI -> {
+                            // There is a resource in the editing context with the same ID, this change is not
+                            // tracked by the change description.
+                            // This is for example the case when updating a library: the old version is removed, the
+                            // new one is added, but the change description will only contain the removal.
+                            result.addAll(this.createResourceDataTreeNodes(resourceWithSameURI, resourceWithSameURI.getContents(), ChangeKind.REMOVE_LITERAL));
+                        });
+                } else if (listChange.getKind() == ChangeKind.REMOVE_LITERAL) {
+                    Resource changedResource = resourceChange.getResource();
+                    List<?> resourceContent = resourceChange.getValue();
+                    result.addAll(this.createResourceDataTreeNodes(changedResource, resourceContent, listChange.getKind()));
+                } else if (listChange.getKind() == ChangeKind.MOVE_LITERAL) {
+                    // MOVE_LITERAL is not supported for now.
+                }
+            }
+        }
+        return result;
+    }
+
+    private List<DataTreeNode> createResourceDataTreeNodes(Resource resource, List<?> resourceContent, ChangeKind changeKind) {
+        List<DataTreeNode> result = new ArrayList<>();
+        // We need to add a suffix to the ids to ensure they remain unique in case we display 2 resources with the same
+        // ID. This is for example the case when updating a library, where both the old and new version have the
+        // same ID.
+        String idSuffix = "#" + changeKind.getName();
+        String resourceId = this.getId(resource) + idSuffix;
+        String resourceLabel = this.labelService.getStyledLabel(resource) + this.getLibraryLabelFragment(resource).orElse("");
+        Optional<StyledString> optionalStyledString = this.getResourceNodeStyledString(resourceLabel, changeKind);
+        Optional<List<List<String>>> optionalEndIconsURLs = this.getResourceNodeEndIconsURLs(changeKind);
+        if (optionalStyledString.isPresent() && optionalEndIconsURLs.isPresent()) {
+            result.add(new DataTreeNode(resourceId, null, optionalStyledString.get(), this.getIconURLs(resource), optionalEndIconsURLs.get()));
+            for (Object resourceObject : resourceContent) {
+                result.addAll(this.createResourceChangeContentDataTreeNode(resourceObject, resource, changeKind));
+            }
+        }
+        return result;
+    }
+
+    private List<DataTreeNode> createResourceChangeContentDataTreeNode(Object object, Object parent, ChangeKind changeKind) {
+        List<DataTreeNode> result = new ArrayList<>();
+        String idSuffix = "#" + changeKind.getName();
+        String objectId = this.getId(object) + idSuffix;
+        String objectLabel = this.labelService.getStyledLabel(object).toString();
+        Optional<StyledString> optionalStyledString = this.getResourceNodeStyledString(objectLabel, changeKind);
+        Optional<List<List<String>>> optionalEndIconsURLs = this.getResourceNodeEndIconsURLs(changeKind);
+        if (optionalStyledString.isPresent() && optionalEndIconsURLs.isPresent()) {
+            result.add(new DataTreeNode(objectId, this.getId(parent) + idSuffix, optionalStyledString.get(), this.getIconURLs(object), optionalEndIconsURLs.get()));
+            List<Object> children = this.contentService.getContents(object);
+            for (Object child : children) {
+                result.addAll(this.createResourceChangeContentDataTreeNode(child, object, changeKind));
+            }
+        }
+        return result;
+    }
+
+    private Optional<StyledString> getResourceNodeStyledString(String label, ChangeKind changeKind) {
+        Optional<StyledString> result = Optional.empty();
+        if (changeKind == ChangeKind.ADD_LITERAL) {
+            result = Optional.of(this.getDeletionStyledString(label));
+        } else if (changeKind == ChangeKind.REMOVE_LITERAL) {
+            result = Optional.of(this.getAdditionStyledString(label));
+        }
+        return result;
+    }
+
+    private Optional<List<List<String>>> getResourceNodeEndIconsURLs(ChangeKind changeKind) {
+        Optional<List<List<String>>> result = Optional.empty();
+        if (changeKind == ChangeKind.ADD_LITERAL) {
+            result = Optional.of(this.getDeletionEndIconsURLs());
+        } else if (changeKind == ChangeKind.REMOVE_LITERAL) {
+            result = Optional.of(this.getAdditionEndIconsURLs());
+        }
+        return result;
+    }
+
+    private Optional<String> getLibraryLabelFragment(Resource resource) {
+        return resource.eAdapters().stream()
+            .filter(LibraryMetadataAdapter.class::isInstance)
+            .map(LibraryMetadataAdapter.class::cast)
+            .map(libraryMetadataAdapter -> " (" + libraryMetadataAdapter.getName() + "@" + libraryMetadataAdapter.getVersion() + ")")
+            .findFirst();
+    }
+
+    private List<DataTreeNode> getObjectChangeDataTreeNode(Object object, Object parent, ChangeDescription changeDescription, List<String> allImpactObjectIds) {
         List<DataTreeNode> result = new ArrayList<>();
         String objectId = this.getId(object);
         if (this.isFeatureChange(object)
                 || allImpactObjectIds.contains(objectId)) {
-            result.add(new DataTreeNode(objectId, this.getId(parent), this.getStyledLabel(object), this.getIconURL(object), this.getEndIconsURL(object, changeDescription)));
-            List<Object> children = this.getChildren(object, editingContext, changeDescription);
+            result.add(new DataTreeNode(objectId, this.getId(parent), this.getStyledLabel(object), this.getIconURLs(object), this.getEndIconsURL(object, changeDescription)));
+            List<Object> children = this.getChildren(object, changeDescription);
             for (Object child : children) {
-                result.addAll(this.getDataTreeNode(child, object, editingContext, changeDescription, allImpactObjectIds));
+                result.addAll(this.getObjectChangeDataTreeNode(child, object, changeDescription, allImpactObjectIds));
             }
         }
         return result;
@@ -117,7 +215,7 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
         return result;
     }
 
-    private List<String> getIconURL(Object object) {
+    private List<String> getIconURLs(Object object) {
         List<String> result = List.of();
         if (this.isFeatureChange(object)) {
             if (object instanceof FeatureAddition featureAddition) {
@@ -133,30 +231,47 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
         return result;
     }
 
-    public StyledString getStyledLabel(Object object) {
+    private StyledString getStyledLabel(Object object) {
         final StyledString result;
         if (this.isFeatureChange(object)) {
             String label = "";
-            String foregroundColor = "";
             if (object instanceof FeatureAddition featureAddition) {
                 label = featureAddition.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureAddition.newValue());
-                foregroundColor = "#48752C";
+                result = this.getAdditionStyledString(label);
             } else if (object instanceof FeatureDeletion featureDeletion) {
                 label = featureDeletion.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureDeletion.oldValue());
-                foregroundColor = "#BB271A";
+                result = this.getDeletionStyledString(label);
             } else if (object instanceof FeatureModification featureModification) {
                 label = featureModification.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureModification.oldValue()) + " -> " + this.getFeatureObjectLabel(featureModification.newValue());
-                foregroundColor = "#000000";
+                result = this.getModificationStyledString(label);
+            } else {
+                result = this.getStyledString("", "#000000");
             }
-            result = new StyledString(List.of(
-                    new StyledStringFragment(label, StyledStringFragmentStyle.newDefaultStyledStringFragmentStyle()
-                            .foregroundColor(foregroundColor)
-                            .build())
-                    ));
         } else {
             result = this.labelService.getStyledLabel(object);
         }
         return result;
+    }
+
+    private StyledString getAdditionStyledString(String label) {
+        return this.getStyledString(label, "#48752C");
+    }
+
+    private StyledString getDeletionStyledString(String label) {
+        return this.getStyledString(label, "#BB271A");
+    }
+
+    private StyledString getModificationStyledString(String label) {
+        return this.getStyledString(label, "#000000");
+
+    }
+
+    private StyledString getStyledString(String label, String foregroundColor) {
+        return new StyledString(List.of(
+                new StyledStringFragment(label, StyledStringFragmentStyle.newDefaultStyledStringFragmentStyle()
+                        .foregroundColor(foregroundColor)
+                        .build())
+                ));
     }
 
     private String getFeatureObjectLabel(Object object) {
@@ -172,18 +287,30 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
     private List<List<String>> getEndIconsURL(Object object, ChangeDescription changeDescription) {
         List<List<String>> result = new ArrayList<>();
         if (object instanceof FeatureAddition featureAddition) {
-            result.add(List.of("/impact-analysis/FeatureAddition.svg"));
+            result = this.getAdditionEndIconsURLs();
         } else if (object instanceof FeatureDeletion featureDeletion) {
-            result.add(List.of("/impact-analysis/FeatureDeletion.svg"));
+            result = this.getDeletionEndIconsURLs();
         } else if (object instanceof FeatureModification featureModification) {
-            result.add(List.of("/impact-analysis/FeatureModification.svg"));
+            result = this.getModificationEndIconsURLs();
         } else if (changeDescription.getObjectChanges().keySet().contains(object)) {
             result.add(List.of("/impact-analysis/ChangeMarker.svg"));
         }
         return result;
     }
 
-    private List<Object> getChildren(Object object, IEditingContext editingContext, ChangeDescription changeDescription) {
+    private List<List<String>> getAdditionEndIconsURLs() {
+        return List.of(List.of("/impact-analysis/FeatureAddition.svg"));
+    }
+
+    private List<List<String>> getDeletionEndIconsURLs() {
+        return List.of(List.of("/impact-analysis/FeatureDeletion.svg"));
+    }
+
+    private List<List<String>> getModificationEndIconsURLs() {
+        return List.of(List.of("/impact-analysis/FeatureModification.svg"));
+    }
+
+    private List<Object> getChildren(Object object, ChangeDescription changeDescription) {
         List<Object> children = new ArrayList<>();
         for (Entry<EObject, EList<FeatureChange>> changes : changeDescription.getObjectChanges().entrySet()) {
             if (changes.getKey().equals(object)) {
