@@ -84,8 +84,10 @@ type ParallelSpacingSnapshot = {
   spacedPolylines: Map<string, XYPosition[]>;
 };
 
+// TOCHECK: Global snapshot state survives across diagram lifecycles and shared renders, so stale spacing data or cross-diagram bleeding can occur and memory is never reclaimed.
 let parallelSpacingSnapshot: ParallelSpacingSnapshot | null = null;
 
+// TOCHECK: Deep-cloning every polyline map on each pass is O(E * bendCount) copying and may dominate render time when many edges move simultaneously.
 const clonePolylineMap = (polylines: Map<string, XYPosition[]>): Map<string, XYPosition[]> =>
   new Map(
     Array.from(polylines.entries()).map(([edgeId, points]) => [
@@ -94,6 +96,7 @@ const clonePolylineMap = (polylines: Map<string, XYPosition[]>): Map<string, XYP
     ])
   );
 
+// TOCHECK: Sorting + JSON stringifying every polyline to create a fingerprint is expensive (O(E log E) with large payloads) and runs on each rerender.
 const createPolylinesFingerprint = (polylines: Map<string, XYPosition[]>): string => {
   const serialisable = Array.from(polylines.entries())
     .map(([edgeId, points]) => ({
@@ -111,6 +114,7 @@ const createSpacingContextSignature = (
   edges: Edge<MultiLabelEdgeData>[],
   resolveNode: (id: string) => Node<NodeData> | undefined
 ): string => {
+  // TOCHECK: We recompute and stringify the entire edge/node coordinate set per reroute, which scales poorly on large diagrams and allocates big JSON strings.
   const serialisable = edges
     .map((edge) => {
       const sourceNode = resolveNode(edge.source);
@@ -576,6 +580,7 @@ const collectNodeSideEdges = (edges: Edge<MultiLabelEdgeData>[], nodeId: string)
    * acts as source or target. The result lets the fan logic treat incoming and
    * outgoing connections uniformly for a given node side.
    */
+  // TOCHECK: We rescan the full edge list for every node-side computation; when called per edge this quickly becomes quadratic in the number of edges.
   const positionedEdges = edges as PositionAwareEdge[];
   const descriptors: NodeSideEdge[] = [];
 
@@ -644,6 +649,7 @@ function determineFanArrangementForSide(
   }
 
   const axis: 'x' | 'y' = isHorizontalPosition(position) ? 'y' : 'x';
+  // TOCHECK: Sorting sibling descriptors on every render is O(k log k) per side and repeats for both endpoints; consider caching per node face instead.
   const sortedDescriptors = candidateDescriptors.slice().sort((descriptorA, descriptorB) => {
     const coordA = getNodeCenterCoordinate(getNode(descriptorA.oppositeNodeId), axis);
     const coordB = getNodeCenterCoordinate(getNode(descriptorB.oppositeNodeId), axis);
@@ -789,6 +795,7 @@ const applyFanOffsetGeneric = (
   let baseX = coordinates.x;
   let baseY = coordinates.y;
 
+  // TOCHECK: Cloning the entire bend list even when no fan adjustment is required adds avoidable allocations on every rerender.
   if (isHorizontal) {
     baseY = coordinates.y + perpendicularOffset;
     if (adjustedPoints.length === 0) {
@@ -864,6 +871,7 @@ export function ensureRectilinearPath(
     let dy = current.y - prev.y;
     let guard = 0;
 
+    // TOCHECK: The guard hard-caps to four iterations, so we silently bail when more elbows are required and the resulting path might skip needed bends.
     while (!(axis === 'horizontal' ? dy === 0 : dx === 0) && (dx !== 0 || dy !== 0) && guard < 4) {
       const intermediate = axis === 'horizontal' ? { x: current.x, y: prev.y } : { x: prev.x, y: current.y };
       if (intermediate.x === prev.x && intermediate.y === prev.y) {
@@ -920,6 +928,7 @@ export function simplifyRectilinearBends(
   while (mutated && working.length >= 3) {
     mutated = false;
 
+    // TOCHECK: Nested scans with splice-based mutation make this simplifier O(n^2) and cause repeated array copies for long polylines.
     for (let i = 1; i < working.length - 1; i++) {
       const prev = working[i - 1];
       const curr = working[i];
@@ -1185,6 +1194,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   const fanOutEnabled = data?.rectilinearFanOutEnabled ?? DEFAULT_FAN_OUT_ENABLED;
   // Fetch the complete edge list only once; we need it for fan calculations, detours, and spacing.
+  // TOCHECK: Pulling the entire edge array from the store for every edge render duplicates large structures and scales poorly with thousands of edges.
   const edgesFromStore = (getEdges?.() ?? []) as Edge<MultiLabelEdgeData>[];
 
   // Pre-compute the fan arrangement for both endpoints so subsequent passes can reuse the same metadata.
@@ -1546,6 +1556,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   // Reuse the shared edge cache when building detours so we do not poll the store repeatedly.
   if (!hasFixedGeometry && edgesFromStore.length > 0) {
     const edgesForDetour = edgesFromStore;
+    // TOCHECK: Materialising the full node list per edge render churns large arrays and repeated Node conversions; we might only need the nodes touched by this edge.
     const nodesForDetour = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
     if (edgesForDetour.length > 0 && nodesForDetour.length > 0) {
       const nodesAsNodes = nodesForDetour as Node<NodeData, DiagramNodeType>[];
@@ -1556,6 +1567,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
       ];
 
       const currentEdge =
+        // TOCHECK: Linear search through the entire edge list for every render hurts large diagrams; consider indexing by id.
         edgesForDetour.find((edge) => edge.id === id) ??
         ({
           id,
@@ -1638,6 +1650,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
     if (canReuseSpacing && parallelSpacingSnapshot) {
       spacedPolylines = clonePolylineMap(parallelSpacingSnapshot.spacedPolylines);
     } else {
+      // TOCHECK: Building spaced polylines re-traverses the entire graph even when only the current edge changes; we do not short-circuit small updates.
       spacedPolylines = buildSpacedPolylines(baselinePolylines, DEFAULT_PARALLEL_EDGE_SPACING_OPTIONS);
     }
 
