@@ -574,42 +574,45 @@ type NodeSideEdge = {
   oppositeNodeId: string;
 };
 
-const collectNodeSideEdges = (edges: Edge<MultiLabelEdgeData>[], nodeId: string): NodeSideEdge[] => {
-  /**
-   * Materialise every edge touching the specified node, labelling whether the node
-   * acts as source or target. The result lets the fan logic treat incoming and
-   * outgoing connections uniformly for a given node side.
-   */
-  // TOCHECK: We rescan the full edge list for every node-side computation; when called per edge this quickly becomes quadratic in the number of edges.
+type NodeSideEdgeMap = Map<string, NodeSideEdge[]>;
+type NodeSideDescriptorCache = Map<string, NodeSideEdge[]>;
+
+const buildNodeSideEdgeMap = (edges: Edge<MultiLabelEdgeData>[]): NodeSideEdgeMap => {
   const positionedEdges = edges as PositionAwareEdge[];
-  const descriptors: NodeSideEdge[] = [];
+  const descriptorsByNode: NodeSideEdgeMap = new Map();
+
+  const addDescriptor = (nodeId: string, descriptor: NodeSideEdge) => {
+    const existing = descriptorsByNode.get(nodeId);
+    if (existing) {
+      existing.push(descriptor);
+    } else {
+      descriptorsByNode.set(nodeId, [descriptor]);
+    }
+  };
 
   positionedEdges.forEach((edge) => {
-    if (edge.source === nodeId) {
-      descriptors.push({
-        edge,
-        role: 'source',
-        handleId: edge.sourceHandle ?? '',
-        position: edge.sourcePosition,
-        oppositeNodeId: edge.target,
-      });
-    }
-    if (edge.target === nodeId) {
-      descriptors.push({
-        edge,
-        role: 'target',
-        handleId: edge.targetHandle ?? '',
-        position: edge.targetPosition,
-        oppositeNodeId: edge.source,
-      });
-    }
+    addDescriptor(edge.source, {
+      edge,
+      role: 'source',
+      handleId: edge.sourceHandle ?? '',
+      position: edge.sourcePosition,
+      oppositeNodeId: edge.target,
+    });
+    addDescriptor(edge.target, {
+      edge,
+      role: 'target',
+      handleId: edge.targetHandle ?? '',
+      position: edge.targetPosition,
+      oppositeNodeId: edge.source,
+    });
   });
 
-  return descriptors;
+  return descriptorsByNode;
 };
 
 function determineFanArrangementForSide(
-  edges: Edge<MultiLabelEdgeData>[],
+  nodeSideEdgeMap: NodeSideEdgeMap,
+  descriptorCache: NodeSideDescriptorCache,
   currentEdgeId: string,
   currentRole: EndpointRole,
   nodeId: string,
@@ -623,46 +626,53 @@ function determineFanArrangementForSide(
    * the same side contribute to the spacing count so the visual spread is consistent.
    */
   const normalizedHandleId = handleId ?? '';
-  const sideDescriptors = collectNodeSideEdges(edges, nodeId);
+  const nodeDescriptors = nodeSideEdgeMap.get(nodeId);
+  if (!nodeDescriptors || nodeDescriptors.length === 0) {
+    return { offset: 0, index: 0, count: 0 };
+  }
 
-  const sameSideDescriptors = sideDescriptors.filter((descriptor) => {
-    const descriptorPosition = descriptor.position ?? position;
-    return descriptorPosition === position;
-  });
+  const cacheKey = `${nodeId}:${position}`;
+  let sameSideDescriptors = descriptorCache.get(cacheKey);
+  if (!sameSideDescriptors) {
+    const axis: 'x' | 'y' = isHorizontalPosition(position) ? 'y' : 'x';
+    sameSideDescriptors = nodeDescriptors
+      .filter((descriptor) => {
+        const descriptorPosition = descriptor.position ?? position;
+        return descriptorPosition === position;
+      })
+      .sort((descriptorA, descriptorB) => {
+        const coordA = getNodeCenterCoordinate(getNode(descriptorA.oppositeNodeId), axis);
+        const coordB = getNodeCenterCoordinate(getNode(descriptorB.oppositeNodeId), axis);
+        if (coordA !== coordB) {
+          return coordA - coordB;
+        }
+        if (descriptorA.role !== descriptorB.role) {
+          return descriptorA.role === 'source' ? -1 : 1;
+        }
+        return descriptorA.edge.id.localeCompare(descriptorB.edge.id);
+      });
+    descriptorCache.set(cacheKey, sameSideDescriptors);
+  }
 
   if (sameSideDescriptors.length <= 1) {
     return { offset: 0, index: 0, count: sameSideDescriptors.length };
   }
 
   const candidateDescriptors = (() => {
-    const sameHandleDescriptors = sameSideDescriptors.filter(
+    const sameHandleDescriptors = sameSideDescriptors!.filter(
       (descriptor) => descriptor.handleId === normalizedHandleId
     );
     if (sameHandleDescriptors.length > 1) {
       return sameHandleDescriptors;
     }
-    return sameSideDescriptors;
+    return sameSideDescriptors!;
   })();
 
   if (candidateDescriptors.length <= 1) {
     return { offset: 0, index: 0, count: candidateDescriptors.length };
   }
 
-  const axis: 'x' | 'y' = isHorizontalPosition(position) ? 'y' : 'x';
-  // TOCHECK: Sorting sibling descriptors on every render is O(k log k) per side and repeats for both endpoints; consider caching per node face instead.
-  const sortedDescriptors = candidateDescriptors.slice().sort((descriptorA, descriptorB) => {
-    const coordA = getNodeCenterCoordinate(getNode(descriptorA.oppositeNodeId), axis);
-    const coordB = getNodeCenterCoordinate(getNode(descriptorB.oppositeNodeId), axis);
-    if (coordA !== coordB) {
-      return coordA - coordB;
-    }
-    if (descriptorA.role !== descriptorB.role) {
-      return descriptorA.role === 'source' ? -1 : 1;
-    }
-    return descriptorA.edge.id.localeCompare(descriptorB.edge.id);
-  });
-
-  let descriptorIndex = sortedDescriptors.findIndex(
+  let descriptorIndex = candidateDescriptors.findIndex(
     (descriptor) => descriptor.edge.id === currentEdgeId && descriptor.role === currentRole
   );
   if (descriptorIndex === -1) {
@@ -670,8 +680,8 @@ function determineFanArrangementForSide(
   }
 
   return {
-    offset: symmetricOffset(descriptorIndex, sortedDescriptors.length),
-    count: sortedDescriptors.length,
+    offset: symmetricOffset(descriptorIndex, candidateDescriptors.length),
+    count: candidateDescriptors.length,
     index: descriptorIndex,
   };
 }
@@ -770,7 +780,18 @@ const applyFanOffsetGeneric = (
    * The behaviour mirrors the previous source/target helpers while making the axis
    * adjustments configurable based on the endpoint role.
    */
-  const adjustedPoints = bendingPoints.map((point) => ({ ...point }));
+  let adjustedPoints: XYPosition[] = bendingPoints;
+  let cloned = false;
+  if (adjustedPoints.length === 0) {
+    adjustedPoints = [];
+    cloned = true;
+  }
+  const ensureMutable = () => {
+    if (!cloned) {
+      adjustedPoints = bendingPoints.map((point) => ({ x: point.x, y: point.y }));
+      cloned = true;
+    }
+  };
   const hasFanArrangement = arrangement ? arrangement.count > 1 : false;
   const outwardLength = hasFanArrangement
     ? computeFanOutwardLength(arrangement as FanArrangement, minOutwardLength)
@@ -795,7 +816,6 @@ const applyFanOffsetGeneric = (
   let baseX = coordinates.x;
   let baseY = coordinates.y;
 
-  // TOCHECK: Cloning the entire bend list even when no fan adjustment is required adds avoidable allocations on every rerender.
   if (isHorizontal) {
     baseY = coordinates.y + perpendicularOffset;
     if (adjustedPoints.length === 0) {
@@ -808,9 +828,11 @@ const applyFanOffsetGeneric = (
       }
     }
     if (perpendicularOffset !== 0) {
+      ensureMutable();
       align(adjustedPoints, 'y', baseY);
     }
     if (hasFanArrangement) {
+      ensureMutable();
       const desiredX = coordinates.x + outwardDirection * outwardLength;
       align(adjustedPoints, 'x', desiredX);
     }
@@ -826,9 +848,11 @@ const applyFanOffsetGeneric = (
       }
     }
     if (perpendicularOffset !== 0) {
+      ensureMutable();
       align(adjustedPoints, 'x', baseX);
     }
     if (hasFanArrangement) {
+      ensureMutable();
       const desiredY = coordinates.y + outwardDirection * outwardLength;
       align(adjustedPoints, 'y', desiredY);
     }
@@ -1194,34 +1218,45 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   const fanOutEnabled = data?.rectilinearFanOutEnabled ?? DEFAULT_FAN_OUT_ENABLED;
   // Fetch the complete edge list only once; we need it for fan calculations, detours, and spacing.
-  // TOCHECK: Pulling the entire edge array from the store for every edge render duplicates large structures and scales poorly with thousands of edges.
   const edgesFromStore = (getEdges?.() ?? []) as Edge<MultiLabelEdgeData>[];
 
   // Pre-compute the fan arrangement for both endpoints so subsequent passes can reuse the same metadata.
   let sourceArrangement: FanArrangement | undefined;
   let targetArrangement: FanArrangement | undefined;
 
+  let nodeSideEdgeMap: NodeSideEdgeMap | null = null;
+  let nodeSideDescriptorCache: NodeSideDescriptorCache | null = null;
   if (edgesFromStore.length > 0) {
+    nodeSideEdgeMap = buildNodeSideEdgeMap(edgesFromStore);
+    nodeSideDescriptorCache = new Map();
     // Determine how many siblings leave the same side of the source node.
-    sourceArrangement = determineFanArrangementForSide(
-      edgesFromStore,
-      id,
-      'source',
-      source,
-      sourcePosition,
-      sourceHandleId,
-      (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
-    );
+    sourceArrangement =
+      nodeSideEdgeMap && nodeSideDescriptorCache
+        ? determineFanArrangementForSide(
+            nodeSideEdgeMap,
+            nodeSideDescriptorCache,
+            id,
+            'source',
+            source,
+            sourcePosition,
+            sourceHandleId,
+            (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+          )
+        : undefined;
     // Symmetric calculation for the target side.
-    targetArrangement = determineFanArrangementForSide(
-      edgesFromStore,
-      id,
-      'target',
-      target,
-      targetPosition,
-      targetHandleId,
-      (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
-    );
+    targetArrangement =
+      nodeSideEdgeMap && nodeSideDescriptorCache
+        ? determineFanArrangementForSide(
+            nodeSideEdgeMap,
+            nodeSideDescriptorCache,
+            id,
+            'target',
+            target,
+            targetPosition,
+            targetHandleId,
+            (nodeId) => getNode(nodeId) as Node<NodeData> | undefined
+          )
+        : undefined;
   }
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     // Preserve user-authored geometry; downstream component treats this as a custom edge.
