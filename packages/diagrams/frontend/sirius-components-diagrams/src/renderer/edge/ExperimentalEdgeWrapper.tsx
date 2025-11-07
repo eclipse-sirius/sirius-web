@@ -1,0 +1,879 @@
+/*******************************************************************************
+ * Copyright (c) 2024, 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+import {
+  Edge,
+  EdgeProps,
+  getSmoothStepPath,
+  InternalNode,
+  Node,
+  Position,
+  useInternalNode,
+  XYPosition,
+} from '@xyflow/react';
+import { memo, useContext } from 'react';
+import parse from 'svg-path-parser';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { useStore } from '../../representation/useStore';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { edgeBendPointOffset } from '../layout/layoutParams';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
+import { collectAncestorIds, doesPathOverlapNodes, type PathCollision } from './routing/geometry';
+
+function isMultipleOfTwo(num: number): boolean {
+  return num % 2 === 0;
+}
+
+// Constants below are tuned around the diagram auto-layout heuristics: nodes keep a 50px gap,
+// so we stay within that corridor to avoid hitting obstacles while still fanning edges apart.
+const AUTO_LAYOUT_NODE_GAP = 50;
+const MIN_TARGET_OFFSET = 12; // keeps a visible elbow without touching the node border
+const MAX_TARGET_OFFSET = AUTO_LAYOUT_NODE_GAP - 10;
+const MAX_PERPENDICULAR_OFFSET = AUTO_LAYOUT_NODE_GAP - MIN_TARGET_OFFSET;
+const PERPENDICULAR_STEP = 12; // spacing between parallel edges on the same side
+const STRAIGHT_AXIS_TOLERANCE = 14; // treat paths within 14px as visually straight
+const MAX_AUTO_ROUTE_DETOUR_ITERATIONS = 8;
+
+type AutoBendAnchor = 'source' | 'target' | 'midpoint';
+const ANCHOR_PREFERENCE_ORDER: AutoBendAnchor[] = ['target', 'midpoint', 'source'];
+
+const clamp = (value: number, lower: number, upper: number): number => Math.max(lower, Math.min(upper, value));
+
+const isHorizontalPosition = (position: Position): boolean => position === Position.Left || position === Position.Right;
+
+const getApproachPoint = (targetX: number, targetY: number, targetPosition: Position, offset: number): XYPosition => {
+  if (targetPosition === Position.Left) {
+    return { x: targetX - offset, y: targetY };
+  }
+
+  if (targetPosition === Position.Right) {
+    return { x: targetX + offset, y: targetY };
+  }
+
+  if (targetPosition === Position.Top) {
+    return { x: targetX, y: targetY - offset };
+  }
+
+  return { x: targetX, y: targetY + offset };
+};
+
+const dedupeConsecutivePoints = (points: XYPosition[]): XYPosition[] => {
+  if (points.length === 0) {
+    return points;
+  }
+  const deduped: XYPosition[] = [];
+  for (const point of points) {
+    const previous = deduped[deduped.length - 1];
+    if (!previous || previous.x !== point.x || previous.y !== point.y) {
+      deduped.push(point);
+    }
+  }
+  return deduped;
+};
+
+const arePointsEqual = (a: XYPosition, b: XYPosition): boolean => a.x === b.x && a.y === b.y;
+
+const arePathsEqual = (pathA: XYPosition[], pathB: XYPosition[]): boolean => {
+  if (pathA.length !== pathB.length) {
+    return false;
+  }
+  for (let i = 0; i < pathA.length; i++) {
+    const pointA = pathA[i];
+    const pointB = pathB[i];
+    if (!pointA || !pointB || !arePointsEqual(pointA, pointB)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const getAnchorPreferenceOrder = (preferredAnchor: AutoBendAnchor): AutoBendAnchor[] => [
+  preferredAnchor,
+  ...ANCHOR_PREFERENCE_ORDER.filter((anchor) => anchor !== preferredAnchor),
+];
+
+const removeRedundantBendPoints = (points: XYPosition[], start: XYPosition, end: XYPosition): XYPosition[] => {
+  if (points.length === 0) {
+    return points;
+  }
+
+  const path = [start, ...points, end];
+  const cleaned: XYPosition[] = [];
+
+  for (let index = 1; index < path.length - 1; index++) {
+    const previous = path[index - 1];
+    const current = path[index];
+    const next = path[index + 1];
+
+    if (!previous || !current || !next) {
+      continue;
+    }
+
+    const isDuplicate =
+      (current.x === previous.x && current.y === previous.y) ||
+      (current.x === next.x && current.y === next.y);
+    if (isDuplicate) {
+      continue;
+    }
+
+    const isColinear =
+      (previous.x === current.x && current.x === next.x) ||
+      (previous.y === current.y && current.y === next.y);
+    if (isColinear) {
+      continue;
+    }
+
+    cleaned.push(current);
+  }
+
+  return cleaned;
+};
+
+type DetourSpacingContext = {
+  index: number;
+  count: number;
+};
+
+const adjustDetourLegPositions = (
+  entry: number,
+  exit: number,
+  segmentMin: number,
+  segmentMax: number,
+  direction: number,
+  laneShift: number
+): { entry: number; exit: number } => {
+  if (laneShift <= 0) {
+    return { entry, exit };
+  }
+
+  let adjustedEntry = entry;
+  let adjustedExit = exit;
+
+  if (direction >= 0) {
+    const entryCapacity = Math.max(0, segmentMax - entry);
+    const exitCapacity = Math.max(0, exit - segmentMin);
+    const entryShift = Math.min(laneShift, entryCapacity);
+    const exitShift = Math.min(laneShift, exitCapacity);
+    adjustedEntry = clamp(entry + entryShift, segmentMin, segmentMax);
+    adjustedExit = clamp(exit - exitShift, segmentMin, segmentMax);
+    if (adjustedEntry > adjustedExit) {
+      const midpoint = (adjustedEntry + adjustedExit) / 2;
+      adjustedEntry = midpoint;
+      adjustedExit = midpoint;
+    }
+  } else {
+    const entryCapacity = Math.max(0, entry - segmentMin);
+    const exitCapacity = Math.max(0, segmentMax - exit);
+    const entryShift = Math.min(laneShift, entryCapacity);
+    const exitShift = Math.min(laneShift, exitCapacity);
+    adjustedEntry = clamp(entry - entryShift, segmentMin, segmentMax);
+    adjustedExit = clamp(exit + exitShift, segmentMin, segmentMax);
+    if (adjustedEntry < adjustedExit) {
+      const midpoint = (adjustedEntry + adjustedExit) / 2;
+      adjustedEntry = midpoint;
+      adjustedExit = midpoint;
+    }
+  }
+
+  return { entry: adjustedEntry, exit: adjustedExit };
+};
+
+const tryBuildDetourAroundCollision = (
+  pathPoints: XYPosition[],
+  collision: PathCollision | undefined,
+  spacingContext?: DetourSpacingContext
+): XYPosition[] | undefined => {
+  if (!collision) {
+    return undefined;
+  }
+
+  const { segmentStart, segmentEnd, segmentIndex, rect } = collision;
+  if (!segmentStart || !segmentEnd) {
+    return undefined;
+  }
+
+  const prefix = pathPoints.slice(0, segmentIndex + 1);
+  const suffix = pathPoints.slice(segmentIndex + 1);
+  const clearance = edgeBendPointOffset;
+  const candidatePaths: XYPosition[][] = [];
+  const count = spacingContext?.count ?? 1;
+  const index = clamp(spacingContext?.index ?? 0, 0, Math.max(0, count - 1));
+  const spacingStep =
+    count > 1 ? Math.min(PERPENDICULAR_STEP, MAX_PERPENDICULAR_OFFSET / Math.max(1, count - 1)) : 0;
+
+  const adjustCoordinateForSpacing = (base: number, direction: 'negative' | 'positive'): number => {
+    if (spacingStep <= 0) {
+      return base;
+    }
+    if (direction === 'negative') {
+      return base - (Math.max(0, count - 1 - index) * spacingStep);
+    }
+    return base + index * spacingStep;
+  };
+
+  if (segmentStart.y === segmentEnd.y) {
+    const segmentY = segmentStart.y;
+    const segmentMinX = Math.min(segmentStart.x, segmentEnd.x);
+    const segmentMaxX = Math.max(segmentStart.x, segmentEnd.x);
+    const direction = segmentEnd.x >= segmentStart.x ? 1 : -1;
+    const entryX =
+      direction >= 0
+        ? Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX))
+        : Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX));
+    const exitX =
+      direction >= 0
+        ? Math.min(segmentMaxX, Math.max(rect.right + clearance, segmentMinX))
+        : Math.max(segmentMinX, Math.min(rect.left - clearance, segmentMaxX));
+
+    if ((direction >= 0 && entryX >= exitX) || (direction < 0 && entryX <= exitX)) {
+      return undefined;
+    }
+
+    const detourCandidates = [
+      { coordinate: Math.round(rect.top - clearance), direction: 'negative' as const },
+      { coordinate: Math.round(rect.bottom + clearance), direction: 'positive' as const },
+    ].filter((candidate) => candidate.coordinate !== segmentY);
+
+    let entryXWithSpacing = entryX;
+    let exitXWithSpacing = exitX;
+    if (spacingStep > 0 && count > 1) {
+      const laneShift = spacingStep * index;
+      if (laneShift !== 0) {
+        const adjusted = adjustDetourLegPositions(entryX, exitX, segmentMinX, segmentMaxX, direction, laneShift);
+        entryXWithSpacing = adjusted.entry;
+        exitXWithSpacing = adjusted.exit;
+      }
+    }
+
+    for (const candidate of detourCandidates) {
+      const detourY = Math.round(adjustCoordinateForSpacing(candidate.coordinate, candidate.direction));
+      const entryPoint: XYPosition = { x: entryXWithSpacing, y: segmentY };
+      const exitPoint: XYPosition = { x: exitXWithSpacing, y: segmentY };
+      const detourPath = dedupeConsecutivePoints([
+        ...prefix,
+        entryPoint,
+        { x: entryPoint.x, y: detourY },
+        { x: exitPoint.x, y: detourY },
+        exitPoint,
+        ...suffix,
+      ]);
+      if (!arePathsEqual(detourPath, pathPoints)) {
+        candidatePaths.push(detourPath);
+      }
+    }
+  } else if (segmentStart.x === segmentEnd.x) {
+    const segmentX = segmentStart.x;
+    const segmentMinY = Math.min(segmentStart.y, segmentEnd.y);
+    const segmentMaxY = Math.max(segmentStart.y, segmentEnd.y);
+    const direction = segmentEnd.y >= segmentStart.y ? 1 : -1;
+    const entryY =
+      direction >= 0
+        ? Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY))
+        : Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY));
+    const exitY =
+      direction >= 0
+        ? Math.min(segmentMaxY, Math.max(rect.bottom + clearance, segmentMinY))
+        : Math.max(segmentMinY, Math.min(rect.top - clearance, segmentMaxY));
+
+    if ((direction >= 0 && entryY >= exitY) || (direction < 0 && entryY <= exitY)) {
+      return undefined;
+    }
+
+    const detourCandidates = [
+      { coordinate: Math.round(rect.left - clearance), direction: 'negative' as const },
+      { coordinate: Math.round(rect.right + clearance), direction: 'positive' as const },
+    ].filter((candidate) => candidate.coordinate !== segmentX);
+
+    let entryYWithSpacing = entryY;
+    let exitYWithSpacing = exitY;
+    if (spacingStep > 0 && count > 1) {
+      const laneShift = spacingStep * index;
+      if (laneShift !== 0) {
+        const adjusted = adjustDetourLegPositions(entryY, exitY, segmentMinY, segmentMaxY, direction, laneShift);
+        entryYWithSpacing = adjusted.entry;
+        exitYWithSpacing = adjusted.exit;
+      }
+    }
+
+    for (const candidate of detourCandidates) {
+      const detourX = Math.round(adjustCoordinateForSpacing(candidate.coordinate, candidate.direction));
+      const entryPoint: XYPosition = { x: segmentX, y: entryYWithSpacing };
+      const exitPoint: XYPosition = { x: segmentX, y: exitYWithSpacing };
+      const detourPath = dedupeConsecutivePoints([
+        ...prefix,
+        entryPoint,
+        { x: detourX, y: entryPoint.y },
+        { x: detourX, y: exitPoint.y },
+        exitPoint,
+        ...suffix,
+      ]);
+      if (!arePathsEqual(detourPath, pathPoints)) {
+        candidatePaths.push(detourPath);
+      }
+    }
+  }
+
+  return candidatePaths[0];
+};
+
+const getNodeCenterCoordinate = (node: Node<NodeData> | undefined, axis: 'x' | 'y'): number => {
+  if (!node) {
+    return 0;
+  }
+  if (axis === 'x') {
+    return node.position.x + (node.width ?? 0) / 2;
+  }
+  return node.position.y + (node.height ?? 0) / 2;
+};
+
+type TargetOffsetResult = {
+  offset: number;
+  index: number;
+  count: number;
+};
+
+type PositionAwareEdge = Edge<EdgeData> & { targetPosition?: Position };
+
+const computeTargetOffset = (
+  edges: Edge<EdgeData>[],
+  edgeId: string,
+  targetId: string,
+  targetHandleId: string | null | undefined,
+  targetPosition: Position,
+  getNode: (id: string) => Node<NodeData> | undefined
+): TargetOffsetResult => {
+  const normalizedHandleId = targetHandleId ?? '';
+  const edgesWithTarget = edges as PositionAwareEdge[];
+
+  // Keep only edges that enter through the same side; the other sides can overlap safely.
+  const sameSideEdges = edgesWithTarget.filter(
+    (edge) => edge.target === targetId && (edge.targetPosition ?? targetPosition) === targetPosition
+  );
+
+  const targetEdgesFallback = edgesWithTarget.filter((edge) => edge.target === targetId);
+  const edgesForTarget = sameSideEdges.length > 0 ? sameSideEdges : targetEdgesFallback;
+
+  if (edgesForTarget.length === 0) {
+    return { offset: MIN_TARGET_OFFSET, index: 0, count: 1 };
+  }
+
+  // Prefer grouping by exact handle when several edges share it, otherwise fan out all edges on the side.
+  const handleEdges = edgesForTarget.filter((edge) => (edge.targetHandle ?? '') === normalizedHandleId);
+  const candidateEdges = handleEdges.length > 1 ? handleEdges : edgesForTarget;
+
+  const targetAxis: 'x' | 'y' = isHorizontalPosition(targetPosition) ? 'y' : 'x';
+
+  const sortedEdges = candidateEdges.slice().sort((edgeA, edgeB) => {
+    const coordA = getNodeCenterCoordinate(getNode(edgeA.source), targetAxis);
+    const coordB = getNodeCenterCoordinate(getNode(edgeB.source), targetAxis);
+    if (coordA !== coordB) {
+      return coordA - coordB;
+    }
+    return edgeA.id.localeCompare(edgeB.id);
+  });
+
+  const targetNode = getNode(targetId);
+  const targetAxisCoordinate = getNodeCenterCoordinate(targetNode, targetAxis);
+
+  const categorizeEdgeSide = (edge: PositionAwareEdge): number => {
+    const sourceNode = getNode(edge.source);
+    const sourceCoord = getNodeCenterCoordinate(sourceNode, targetAxis);
+    const delta = sourceCoord - targetAxisCoordinate;
+    if (delta > 0) {
+      return 1;
+    }
+    if (delta < 0) {
+      return -1;
+    }
+    return 0;
+  };
+
+  const currentEdge =
+    sortedEdges.find((edge) => edge.id === edgeId) ?? candidateEdges.find((edge) => edge.id === edgeId);
+  const currentSide = currentEdge ? categorizeEdgeSide(currentEdge) : 0;
+
+  const edgesSameSide = sortedEdges.filter((edge) => {
+    const side = categorizeEdgeSide(edge);
+    if (currentSide === 0) {
+      return side === 0;
+    }
+    if (side === 0) {
+      return true;
+    }
+    return side === currentSide;
+  });
+
+  const sideEdges = edgesSameSide.length > 0 ? edgesSameSide : sortedEdges;
+
+  const sideIndex = sideEdges.findIndex((edge) => edge.id === edgeId);
+  const effectiveIndex = sideIndex === -1 ? 0 : sideIndex;
+  const sideCount = sideEdges.length;
+
+  if (sideCount <= 1) {
+    return { offset: MIN_TARGET_OFFSET, index: effectiveIndex, count: sideCount };
+  }
+
+  const step = (MAX_TARGET_OFFSET - MIN_TARGET_OFFSET) / (sideCount - 1);
+  // For edges on the “positive” side (right or bottom) flip the index so
+  // the outermost edge stays closest to the node, reducing crossings.
+  const orientedIndex = currentSide > 0 && sideCount > 1 ? sideCount - 1 - effectiveIndex : effectiveIndex;
+  const offset = MIN_TARGET_OFFSET + orientedIndex * step;
+
+  return {
+    offset: clamp(offset, MIN_TARGET_OFFSET, MAX_TARGET_OFFSET),
+    index: effectiveIndex,
+    count: sideCount,
+  };
+};
+
+type AutoBendPointContext = {
+  sourceX: number;
+  sourceY: number;
+  targetX: number;
+  targetY: number;
+  sourcePosition: Position;
+  targetPosition: Position;
+  offset: number;
+  index: number;
+  count: number;
+  anchor: 'source' | 'target' | 'midpoint';
+};
+
+const resolveAutoBendAnchor = (): 'source' | 'target' | 'midpoint' => {
+  // Default behaviour keeps the bendpoints near the target as it produces fewer crossings for most diagrams.
+  // This helper centralises the decision so future heuristics can route specific edges from the source side
+  // or from the middle without refactoring the routing again.
+  return 'target';
+};
+
+const buildAutoBendingPoints = (rawPoints: XYPosition[], context: AutoBendPointContext): XYPosition[] => {
+  const { sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, offset, index, count, anchor } = context;
+  const approachOffset = clamp(offset, MIN_TARGET_OFFSET, MAX_TARGET_OFFSET);
+  const approachPoint = getApproachPoint(targetX, targetY, targetPosition, approachOffset);
+  const sourceApproachPoint = getApproachPoint(sourceX, sourceY, sourcePosition, approachOffset);
+  const deltaFromTarget = isHorizontalPosition(targetPosition) ? sourceY - targetY : sourceX - targetX;
+  const directionSign = deltaFromTarget === 0 ? 1 : Math.sign(deltaFromTarget);
+  const maxSpread = MAX_PERPENDICULAR_OFFSET;
+  const perEdgeStep = count > 1 ? Math.min(PERPENDICULAR_STEP, maxSpread / (count - 1)) : 0;
+  const perpendicularShift = clamp(directionSign * perEdgeStep * index, -maxSpread, maxSpread);
+
+  if (anchor === 'midpoint') {
+    const midpointPoints: XYPosition[] = [];
+    if (isHorizontalPosition(targetPosition)) {
+      const middleX = Math.round((sourceX + targetX) / 2);
+      midpointPoints.push({ x: middleX, y: sourceY });
+      if (perpendicularShift !== 0) {
+        midpointPoints.push({ x: middleX, y: sourceY + perpendicularShift });
+        midpointPoints.push({ x: middleX, y: targetY + perpendicularShift });
+      }
+      midpointPoints.push({ x: middleX, y: targetY });
+    } else {
+      const middleY = Math.round((sourceY + targetY) / 2);
+      midpointPoints.push({ x: sourceX, y: middleY });
+      if (perpendicularShift !== 0) {
+        midpointPoints.push({ x: sourceX + perpendicularShift, y: middleY });
+        midpointPoints.push({ x: targetX + perpendicularShift, y: middleY });
+      }
+      midpointPoints.push({ x: targetX, y: middleY });
+    }
+    return dedupeConsecutivePoints(midpointPoints);
+  }
+
+  // Tail points define the last two turns right before the node. We shift them per edge so parallel edges
+  // don’t overlap, but we always finish exactly on the handle to stay rectilinear.
+  let tailPoints: XYPosition[];
+  if (anchor === 'target') {
+    tailPoints = isHorizontalPosition(targetPosition)
+      ? perpendicularShift !== 0
+        ? [
+            { x: approachPoint.x, y: targetY + perpendicularShift },
+            { x: approachPoint.x, y: targetY },
+          ]
+        : [{ x: approachPoint.x, y: targetY }]
+      : perpendicularShift !== 0
+      ? [
+          { x: targetX + perpendicularShift, y: approachPoint.y },
+          { x: targetX, y: approachPoint.y },
+        ]
+      : [{ x: targetX, y: approachPoint.y }];
+  } else {
+    tailPoints = isHorizontalPosition(sourcePosition)
+      ? perpendicularShift !== 0
+        ? [
+            { x: sourceApproachPoint.x, y: sourceY },
+            { x: sourceApproachPoint.x, y: sourceY + perpendicularShift },
+          ]
+        : [{ x: sourceApproachPoint.x, y: sourceY }]
+      : perpendicularShift !== 0
+      ? [
+          { x: sourceX, y: sourceApproachPoint.y },
+          { x: sourceX + perpendicularShift, y: sourceApproachPoint.y },
+        ]
+      : [{ x: sourceX, y: sourceApproachPoint.y }];
+  }
+
+  if (rawPoints.length <= 2) {
+    const basePoints: XYPosition[] = [];
+    if (anchor === 'target') {
+      if (isHorizontalPosition(targetPosition)) {
+        basePoints.push({ x: approachPoint.x, y: sourceY });
+      } else {
+        basePoints.push({ x: sourceX, y: approachPoint.y });
+      }
+      return dedupeConsecutivePoints([...basePoints, ...tailPoints]);
+    } else {
+      if (isHorizontalPosition(targetPosition)) {
+        basePoints.push({ x: sourceApproachPoint.x, y: targetY });
+      } else {
+        basePoints.push({ x: targetX, y: sourceApproachPoint.y });
+      }
+      return dedupeConsecutivePoints([...tailPoints, ...basePoints]);
+    }
+  }
+
+  const adjustedPoints = rawPoints.map((point) => ({ ...point }));
+  const stablePoints =
+    anchor === 'target' ? adjustedPoints.slice(0, Math.max(0, adjustedPoints.length - 2)) : adjustedPoints.slice(2);
+  const resultPoints: XYPosition[] =
+    anchor === 'target' ? [...stablePoints, ...tailPoints] : [...tailPoints, ...stablePoints];
+
+  return dedupeConsecutivePoints(resultPoints);
+};
+
+export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
+  const {
+    id,
+    source,
+    target,
+    markerEnd,
+    markerStart,
+    sourcePosition,
+    targetPosition,
+    sourceHandleId,
+    targetHandleId,
+    data,
+  } = props;
+  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const { getEdges, getNode, getNodes } = useStore();
+  const hasCustomBendPoints = !!(data && data.bendingPoints && data.bendingPoints.length > 0);
+
+  const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
+  const targetNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(target);
+
+  if (!sourceNode || !targetNode) {
+    return null;
+  }
+
+  const sourceLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+    nodeLayoutHandler.canHandle(sourceNode as Node<NodeData, DiagramNodeType>)
+  );
+  const targetLayoutHandler = nodeLayoutHandlers.find((nodeLayoutHandler) =>
+    nodeLayoutHandler.canHandle(targetNode as Node<NodeData, DiagramNodeType>)
+  );
+
+  let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(
+    sourceNode,
+    sourcePosition,
+    sourceHandleId ?? '',
+    sourceLayoutHandler?.calculateCustomNodeEdgeHandlePosition
+  );
+  let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(
+    targetNode,
+    targetPosition,
+    targetHandleId ?? '',
+    targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
+  );
+
+  // trick to have the source of the edge positioned at the very border of a node
+  // if the edge has a marker, then only the marker need to touch the node
+  const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
+  switch (sourcePosition) {
+    case Position.Right:
+      sourceX = sourceX + handleSourceRadius;
+      break;
+    case Position.Left:
+      sourceX = sourceX - handleSourceRadius;
+      break;
+    case Position.Top:
+      sourceY = sourceY - handleSourceRadius;
+      break;
+    case Position.Bottom:
+      sourceY = sourceY + handleSourceRadius;
+      break;
+  }
+  // trick to have the target of the edge positioned at the very border of a node
+  // if the edge has a marker, then only the marker need to touch the node
+  const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
+  switch (targetPosition) {
+    case Position.Right:
+      targetX = targetX + handleTargetRadius;
+      break;
+    case Position.Left:
+      targetX = targetX - handleTargetRadius;
+      break;
+    case Position.Top:
+      targetY = targetY - handleTargetRadius;
+      break;
+    case Position.Bottom:
+      targetY = targetY + handleTargetRadius;
+      break;
+  }
+
+  let collisionNodes: Node<NodeData>[] = [];
+  let collisionNodeMap: Map<string, Node<NodeData>> = new Map();
+  let collisionIgnoredNodeIds: Set<string> = new Set([source, target]);
+
+  let bendingPoints: XYPosition[] = [];
+  if (hasCustomBendPoints && data?.bendingPoints) {
+    bendingPoints = data.bendingPoints;
+  } else {
+    const edges = getEdges();
+    const {
+      offset: computedOffset,
+      index: targetEdgeIndex,
+      count: targetEdgeCount,
+    } = computeTargetOffset(edges, id, target, targetHandleId, targetPosition, getNode);
+
+    const [smoothEdgePath] = getSmoothStepPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+
+    const quadraticCurvePoints: {
+      x: number;
+      y: number;
+    }[] = smoothEdgePath.includes('NaN') ? [] : parse(smoothEdgePath).filter((segment) => segment.code === 'Q');
+
+    const autoRawPoints: XYPosition[] = [];
+    if (quadraticCurvePoints.length > 0) {
+      const firstPoint = quadraticCurvePoints[0];
+      if (firstPoint) {
+        switch (sourcePosition) {
+          case Position.Right:
+          case Position.Left:
+            autoRawPoints.push({ x: firstPoint.x, y: sourceY });
+            for (let i = 1; i < quadraticCurvePoints.length; i++) {
+              const currentPoint = quadraticCurvePoints[i];
+              const previousPoint = quadraticCurvePoints[i - 1];
+              if (currentPoint && previousPoint) {
+                if (isMultipleOfTwo(i)) {
+                  autoRawPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                } else {
+                  autoRawPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                }
+              }
+            }
+            break;
+          case Position.Top:
+          case Position.Bottom:
+            autoRawPoints.push({ x: sourceX, y: firstPoint.y });
+            for (let i = 1; i < quadraticCurvePoints.length; i++) {
+              const currentPoint = quadraticCurvePoints[i];
+              const previousPoint = quadraticCurvePoints[i - 1];
+              if (currentPoint && previousPoint) {
+                if (isMultipleOfTwo(i)) {
+                  autoRawPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                } else {
+                  autoRawPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                }
+              }
+            }
+            break;
+        }
+      }
+    }
+
+    collisionNodes = getNodes() ?? [];
+    const nodeEntries: Array<[string, Node<NodeData>]> = collisionNodes.map((node) => [node.id, node]);
+    collisionNodeMap = new Map<string, Node<NodeData>>(nodeEntries);
+    collisionIgnoredNodeIds = new Set<string>([source, target]);
+    collectAncestorIds(source, collisionNodeMap).forEach((ancestorId) => collisionIgnoredNodeIds.add(ancestorId));
+    collectAncestorIds(target, collisionNodeMap).forEach((ancestorId) => collisionIgnoredNodeIds.add(ancestorId));
+    const anchorPreference = getAnchorPreferenceOrder(resolveAutoBendAnchor());
+    let fallbackBendingPoints: XYPosition[] = [];
+    let selectedBendingPoints: XYPosition[] | undefined;
+
+    for (const anchor of anchorPreference) {
+      const candidatePoints = buildAutoBendingPoints(autoRawPoints, {
+        sourceX,
+        sourceY,
+        targetX,
+        targetY,
+        sourcePosition,
+        targetPosition,
+        offset: computedOffset,
+        index: targetEdgeIndex,
+        count: targetEdgeCount,
+        anchor,
+      });
+      let pathPoints = dedupeConsecutivePoints([
+        { x: sourceX, y: sourceY },
+        ...candidatePoints,
+        { x: targetX, y: targetY },
+      ]);
+      const originalPathPoints = pathPoints;
+      const originalOverlapResult = doesPathOverlapNodes(
+        pathPoints,
+        collisionNodes,
+        collisionNodeMap,
+        collisionIgnoredNodeIds
+      );
+      let overlapResult = originalOverlapResult;
+      let detourIterations = 0;
+      while (overlapResult.overlaps && detourIterations < MAX_AUTO_ROUTE_DETOUR_ITERATIONS) {
+        const detouredPath = tryBuildDetourAroundCollision(pathPoints, overlapResult.collision, {
+          index: targetEdgeIndex,
+          count: targetEdgeCount,
+        });
+        if (!detouredPath || arePathsEqual(detouredPath, pathPoints)) {
+          break;
+        }
+        pathPoints = detouredPath;
+        overlapResult = doesPathOverlapNodes(pathPoints, collisionNodes, collisionNodeMap, collisionIgnoredNodeIds);
+        detourIterations++;
+      }
+
+      if (!overlapResult.overlaps) {
+        selectedBendingPoints = pathPoints.slice(1, pathPoints.length - 1);
+        break;
+      }
+
+      // Detours that still collide often add more clutter; revert to the original path when they fail.
+      fallbackBendingPoints = originalOverlapResult.overlaps
+        ? originalPathPoints.slice(1, originalPathPoints.length - 1)
+        : pathPoints.slice(1, pathPoints.length - 1);
+    }
+
+    bendingPoints = selectedBendingPoints ?? fallbackBendingPoints;
+  }
+
+  if (!hasCustomBendPoints) {
+    // When collapsing an auto-routed edge into a straight segment, recheck for collisions so we
+    // avoid "fixing" the path into a line that still passes through another node.
+    const attemptStraightAlignment = (applyAlignment: () => void) => {
+      const previousSourceX = sourceX;
+      const previousSourceY = sourceY;
+      const previousTargetX = targetX;
+      const previousTargetY = targetY;
+      const previousBendingPoints = bendingPoints.map((point) => ({ ...point }));
+
+      applyAlignment();
+      bendingPoints = [];
+
+      const collisionCheckPath = dedupeConsecutivePoints([
+        { x: sourceX, y: sourceY },
+        ...bendingPoints,
+        { x: targetX, y: targetY },
+      ]);
+      const collisionCheck = doesPathOverlapNodes(
+        collisionCheckPath,
+        collisionNodes,
+        collisionNodeMap,
+        collisionIgnoredNodeIds
+      );
+
+      if (collisionCheck.overlaps) {
+        sourceX = previousSourceX;
+        sourceY = previousSourceY;
+        targetX = previousTargetX;
+        targetY = previousTargetY;
+        bendingPoints = previousBendingPoints;
+      }
+    };
+
+    const deltaX = Math.abs(sourceX - targetX);
+    const deltaY = Math.abs(sourceY - targetY);
+
+    const alignVertical = deltaX <= STRAIGHT_AXIS_TOLERANCE && deltaY > STRAIGHT_AXIS_TOLERANCE;
+    const alignHorizontal = deltaY <= STRAIGHT_AXIS_TOLERANCE && deltaX > STRAIGHT_AXIS_TOLERANCE;
+    const alignPoint = deltaX <= STRAIGHT_AXIS_TOLERANCE && deltaY <= STRAIGHT_AXIS_TOLERANCE;
+
+    if (alignVertical || alignHorizontal || alignPoint) {
+      attemptStraightAlignment(() => {
+        if (alignVertical || alignPoint) {
+          const alignX = Math.round((sourceX + targetX) / 2);
+          sourceX = alignX;
+          targetX = alignX;
+        }
+        if (alignHorizontal || alignPoint) {
+          const alignY = Math.round((sourceY + targetY) / 2);
+          sourceY = alignY;
+          targetY = alignY;
+        }
+      });
+    } else {
+      const pathPoints: XYPosition[] = [{ x: sourceX, y: sourceY }, ...bendingPoints, { x: targetX, y: targetY }];
+      if (pathPoints.length >= 2) {
+        const xValues = pathPoints.map((point) => point.x);
+        const yValues = pathPoints.map((point) => point.y);
+
+        const xSpan = Math.max(...xValues) - Math.min(...xValues);
+        const ySpan = Math.max(...yValues) - Math.min(...yValues);
+
+        // SmoothStep occasionally adds tiny detours: if the resulting points almost form a straight line,
+        // collapse them to a true straight segment instead of displaying a micro zig-zag.
+        if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan > STRAIGHT_AXIS_TOLERANCE) {
+          attemptStraightAlignment(() => {
+            const alignX = Math.round((sourceX + targetX) / 2);
+            sourceX = alignX;
+            targetX = alignX;
+          });
+        } else if (ySpan <= STRAIGHT_AXIS_TOLERANCE && xSpan > STRAIGHT_AXIS_TOLERANCE) {
+          attemptStraightAlignment(() => {
+            const alignY = Math.round((sourceY + targetY) / 2);
+            sourceY = alignY;
+            targetY = alignY;
+          });
+        } else if (xSpan <= STRAIGHT_AXIS_TOLERANCE && ySpan <= STRAIGHT_AXIS_TOLERANCE) {
+          attemptStraightAlignment(() => {
+            const alignX = Math.round((sourceX + targetX) / 2);
+            const alignY = Math.round((sourceY + targetY) / 2);
+            sourceX = alignX;
+            targetX = alignX;
+            sourceY = alignY;
+            targetY = alignY;
+          });
+        }
+      }
+    }
+  }
+
+  if (!hasCustomBendPoints && bendingPoints.length > 0) {
+    bendingPoints = removeRedundantBendPoints(
+      bendingPoints,
+      { x: sourceX, y: sourceY },
+      { x: targetX, y: targetY }
+    );
+  }
+
+  return (
+    <MultiLabelRectilinearEditableEdge
+      {...props}
+      sourceX={sourceX}
+      sourceY={sourceY}
+      targetX={targetX}
+      targetY={targetY}
+      bendingPoints={bendingPoints}
+      customEdge={hasCustomBendPoints}
+      sourceNode={sourceNode}
+      targetNode={targetNode}
+    />
+  );
+});

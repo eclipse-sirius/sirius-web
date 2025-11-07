@@ -13,6 +13,7 @@
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import GridOffIcon from '@mui/icons-material/GridOff';
@@ -43,6 +44,7 @@ import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from '.
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
+import { useMakeItNice } from '../layout/useMakeItNice';
 
 export const DiagramPanel = memo(
   ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
@@ -87,6 +89,7 @@ export const DiagramPanel = memo(
     const { fadeDiagramElements } = useFadeDiagramElements();
     const { hideDiagramElements } = useHideDiagramElements();
     const { pinDiagramElements } = usePinDiagramElements();
+    const { makeItNice } = useMakeItNice();
 
     const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
     const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
@@ -177,6 +180,18 @@ export const DiagramPanel = memo(
               </Tooltip>
             )}
             <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
+            <Tooltip title="Make it nice">
+              <span>
+                <IconButton
+                  size="small"
+                  aria-label="make it nice"
+                  onClick={makeItNice}
+                  data-testid="make-it-nice"
+                  disabled={readOnly}>
+                  <AutoAwesomeIcon />
+                </IconButton>
+              </span>
+            </Tooltip>
             <Tooltip title="Reveal hidden elements">
               <span>
                 <IconButton

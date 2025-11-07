@@ -15,10 +15,18 @@ import { Dimensions, Node, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { defaultHeight, defaultWidth } from './layoutParams';
 
+/**
+ * Helpers to infer previous node geometry when React Flow refreshes the diagram.
+ * We use this information to preserve layout continuity when nodes are re-rendered.
+ */
 export const computePreviousPosition = (
   previousNode: Node<NodeData, string> | undefined,
   node: Node<NodeData, string>
 ): XYPosition | null => {
+  /**
+   * Determine which position should be treated as the "previous" location for a node.
+   * New nodes return null so layout algorithms can apply their own placement rules.
+   */
   let previousPosition: XYPosition | null = null;
   if (node.data.isNew) {
     /*
@@ -53,6 +61,11 @@ export const computePreviousSize = (
   previousNode: Node<NodeData, string> | undefined,
   node: Node<NodeData, string>
 ): Dimensions => {
+  /**
+   * Pick the most relevant width/height to use as the historical size of a node.
+   * Defaults are applied when the node is brand new or when previous measurements
+   * are missing.
+   */
   let previousDimensions: Dimensions;
   const nodeDefaultHeight: number = node.data.defaultHeight ?? defaultHeight;
   const nodeDefaultWidth: number = node.data.defaultWidth ?? defaultWidth;

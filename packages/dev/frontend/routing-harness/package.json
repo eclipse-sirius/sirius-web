@@ -1,0 +1,29 @@
+{
+  "name": "@eclipse-sirius/routing-harness",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "vite build",
+    "preview": "vite preview",
+    "export:diagrams": "node ./scripts/export-routing-diagrams.js"
+  },
+  "dependencies": {
+    "@eclipse-sirius/sirius-components-diagrams": "file:../../../diagrams/frontend/sirius-components-diagrams",
+    "@eclipse-sirius/sirius-components-core": "file:../../../core/frontend/sirius-components-core",
+    "@apollo/client": "3.10.4",
+    "@xyflow/react": "12.6.0",
+    "html-to-image": "1.11.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.0",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@vitejs/plugin-react": "5.0.0",
+    "typescript": "5.4.5",
+    "vite": "7.1.1"
+  }
+}

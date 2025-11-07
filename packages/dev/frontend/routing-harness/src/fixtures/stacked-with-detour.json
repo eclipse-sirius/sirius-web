@@ -1,0 +1,36 @@
+{
+  "id": "stacked-with-detour",
+  "name": "Stacked With Detour",
+  "description": "Vertical edge forced to bend around a middle obstacle.",
+  "categories": ["obstacle"],
+  "nodes": [
+    {
+      "id": "top",
+      "label": "Top",
+      "position": { "x": 320, "y": 80 },
+      "size": { "width": 160, "height": 80 }
+    },
+    {
+      "id": "obstacle",
+      "label": "Obstacle",
+      "position": { "x": 320, "y": 220 },
+      "size": { "width": 200, "height": 120 }
+    },
+    {
+      "id": "bottom",
+      "label": "Bottom",
+      "position": { "x": 320, "y": 420 },
+      "size": { "width": 160, "height": 80 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-vertical",
+      "source": "top",
+      "target": "bottom",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    }
+  ]
+}

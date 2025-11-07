@@ -1,0 +1,1140 @@
+{
+  "id": "sirius-components-diagram",
+  "name": "Sirius Components with a crossing red edge",
+  "nodes": [
+    {
+      "id": "9b55a43d-c851-3e1e-9c39-f3aa896f6d46",
+      "label": "sirius-components-view-edit",
+      "position": {
+        "x": 343,
+        "y": 442
+      },
+      "size": {
+        "width": 250,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--0",
+          "type": "target",
+          "position": "top",
+          "x": 220,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--1",
+          "type": "target",
+          "position": "top",
+          "x": 30,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--2",
+          "type": "target",
+          "position": "top",
+          "x": 94,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--3",
+          "type": "target",
+          "position": "top",
+          "x": 157,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--4",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "2e640629-bb00-3ad0-b1da-57277a09a924",
+      "label": "Component",
+      "position": {
+        "x": 12,
+        "y": 12
+      },
+      "size": {
+        "width": 150,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--2e640629-bb00-3ad0-b1da-57277a09a924--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--2e640629-bb00-3ad0-b1da-57277a09a924--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "93750836-5f5f-396b-b230-a1a1ec40504c",
+      "label": "sirius-components-view-form-edit",
+      "position": {
+        "x": 1362,
+        "y": 252
+      },
+      "size": {
+        "width": 285,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--93750836-5f5f-396b-b230-a1a1ec40504c--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 88,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--93750836-5f5f-396b-b230-a1a1ec40504c--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 197,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--93750836-5f5f-396b-b230-a1a1ec40504c--0",
+          "type": "target",
+          "position": "top",
+          "x": 142,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--93750836-5f5f-396b-b230-a1a1ec40504c--2",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--93750836-5f5f-396b-b230-a1a1ec40504c--1",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "585a1744-145c-384a-a87f-b79b8a870629",
+      "label": "sirius-components-widget-reference-view-edit",
+      "position": {
+        "x": 1985,
+        "y": 132
+      },
+      "size": {
+        "width": 361,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 180,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 77,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--2",
+          "type": "source",
+          "position": "bottom",
+          "x": 284,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--3",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--585a1744-145c-384a-a87f-b79b8a870629--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "7960330c-e04b-3705-b4f9-ae0c7d29959a",
+      "label": "sirius-components-view-deck",
+      "position": {
+        "x": 713,
+        "y": 442
+      },
+      "size": {
+        "width": 257,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--0",
+          "type": "target",
+          "position": "top",
+          "x": 128,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--1",
+          "type": "target",
+          "position": "top",
+          "x": 51,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--2",
+          "type": "target",
+          "position": "top",
+          "x": 206,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--7960330c-e04b-3705-b4f9-ae0c7d29959a--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--3",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "ebf26e51-a6b0-389e-bb86-7244a2aa30c5",
+      "label": "sirius-components-view-builder",
+      "position": {
+        "x": 1042,
+        "y": 252
+      },
+      "size": {
+        "width": 270,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 34,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 168,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--2",
+          "type": "source",
+          "position": "bottom",
+          "x": 236,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--3",
+          "type": "source",
+          "position": "bottom",
+          "x": 101,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--4",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "ff3ea763-4c67-3290-91fe-c684c5653696",
+      "label": "sirius-components-view-deck-edit",
+      "position": {
+        "x": 12,
+        "y": 252
+      },
+      "size": {
+        "width": 285,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--ff3ea763-4c67-3290-91fe-c684c5653696--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 88,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ff3ea763-4c67-3290-91fe-c684c5653696--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 197,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ff3ea763-4c67-3290-91fe-c684c5653696--2",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--ff3ea763-4c67-3290-91fe-c684c5653696--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "label": "sirius-components-view-form",
+      "position": {
+        "x": 1770,
+        "y": 442
+      },
+      "size": {
+        "width": 257,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--0",
+          "type": "target",
+          "position": "top",
+          "x": 73,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--1",
+          "type": "target",
+          "position": "top",
+          "x": 184,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--2",
+          "type": "target",
+          "position": "top",
+          "x": 17,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--3",
+          "type": "target",
+          "position": "top",
+          "x": 128,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--4",
+          "type": "target",
+          "position": "top",
+          "x": 240,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--602083de-9fa0-3d36-be7a-df3ec27ecae2--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--5",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "dcd96573-7dee-3c1e-830f-6ee6d3e37368",
+      "label": "sirius-components-view-gantt-edit",
+      "position": {
+        "x": 347,
+        "y": 252
+      },
+      "size": {
+        "width": 287,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--dcd96573-7dee-3c1e-830f-6ee6d3e37368--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 90,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--dcd96573-7dee-3c1e-830f-6ee6d3e37368--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 199,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--dcd96573-7dee-3c1e-830f-6ee6d3e37368--2",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--dcd96573-7dee-3c1e-830f-6ee6d3e37368--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "2c29601a-cd33-33f9-ab62-ee2165ce03b6",
+      "label": "sirius-components-view-emf",
+      "position": {
+        "x": 1697,
+        "y": 252
+      },
+      "size": {
+        "width": 251,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 30,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 157,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--2",
+          "type": "source",
+          "position": "bottom",
+          "x": 201,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--3",
+          "type": "source",
+          "position": "bottom",
+          "x": 94,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--4",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--2c29601a-cd33-33f9-ab62-ee2165ce03b6--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "9952ec3b-6756-38b0-a599-80bf654e2a8d",
+      "label": "sirius-components-view-gantt",
+      "position": {
+        "x": 1020,
+        "y": 442
+      },
+      "size": {
+        "width": 259,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--0",
+          "type": "target",
+          "position": "top",
+          "x": 123,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--1",
+          "type": "target",
+          "position": "top",
+          "x": 51,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--2",
+          "type": "target",
+          "position": "top",
+          "x": 208,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--9952ec3b-6756-38b0-a599-80bf654e2a8d--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--3",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "00f3edee-745d-3ed5-a58d-bd3eaa7a36e8",
+      "label": "sirius-components-view-diagram-edit",
+      "position": {
+        "x": 685,
+        "y": 252
+      },
+      "size": {
+        "width": 306,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 95,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--1",
+          "type": "source",
+          "position": "bottom",
+          "x": 211,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--2",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "cccc1466-6b6d-33a6-aef5-56d032ccc32e",
+      "label": "sirius-components-view-diagram",
+      "position": {
+        "x": 1330,
+        "y": 442
+      },
+      "size": {
+        "width": 278,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--0",
+          "type": "target",
+          "position": "top",
+          "x": 139,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--1",
+          "type": "target",
+          "position": "top",
+          "x": 222,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--2",
+          "type": "target",
+          "position": "top",
+          "x": 56,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--cccc1466-6b6d-33a6-aef5-56d032ccc32e--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--3",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "d79ccb91-a07a-372d-be25-9bee8c1bf266",
+      "label": "sirius-components-widget-reference-view",
+      "position": {
+        "x": 1999,
+        "y": 252
+      },
+      "size": {
+        "width": 333,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--d79ccb91-a07a-372d-be25-9bee8c1bf266--0",
+          "type": "target",
+          "position": "top",
+          "x": 166,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--d79ccb91-a07a-372d-be25-9bee8c1bf266--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 166,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--d79ccb91-a07a-372d-be25-9bee8c1bf266--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--d79ccb91-a07a-372d-be25-9bee8c1bf266--1",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "1774506b-c0bc-34eb-af8f-fbe917570b2a",
+      "source": "93750836-5f5f-396b-b230-a1a1ec40504c",
+      "target": "9b55a43d-c851-3e1e-9c39-f3aa896f6d46",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--93750836-5f5f-396b-b230-a1a1ec40504c--0",
+      "targetHandleId": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--0",
+      "sourcePoint": {
+        "x": 1449.8839111328125,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 563.017822265625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "ace45053-5e95-3a5d-b97e-55deb7bccef8",
+      "source": "93750836-5f5f-396b-b230-a1a1ec40504c",
+      "target": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--93750836-5f5f-396b-b230-a1a1ec40504c--1",
+      "targetHandleId": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--0",
+      "sourcePoint": {
+        "x": 1558.767822265625,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1842.615966796875,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "158ce489-50a1-3ae5-bb04-b07c57e9b773",
+      "source": "585a1744-145c-384a-a87f-b79b8a870629",
+      "target": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--0",
+      "targetHandleId": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--1",
+      "sourcePoint": {
+        "x": 2165.267822265625,
+        "y": 201.99105834960938
+      },
+      "targetPoint": {
+        "x": 1954.232177734375,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "02e96139-80a6-3f09-97ab-d41a88574ec0",
+      "source": "585a1744-145c-384a-a87f-b79b8a870629",
+      "target": "93750836-5f5f-396b-b230-a1a1ec40504c",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--1",
+      "targetHandleId": "handle--target--93750836-5f5f-396b-b230-a1a1ec40504c--0",
+      "sourcePoint": {
+        "x": 2061.634033203125,
+        "y": 201.99105834960938
+      },
+      "targetPoint": {
+        "x": 1504.325927734375,
+        "y": 251
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "88816bb4-7945-3e2f-82a8-9042d918fca7",
+      "source": "585a1744-145c-384a-a87f-b79b8a870629",
+      "target": "d79ccb91-a07a-372d-be25-9bee8c1bf266",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--585a1744-145c-384a-a87f-b79b8a870629--2",
+      "targetHandleId": "handle--target--d79ccb91-a07a-372d-be25-9bee8c1bf266--0",
+      "sourcePoint": {
+        "x": 2268.90185546875,
+        "y": 201.99105834960938
+      },
+      "targetPoint": {
+        "x": 2165.365966796875,
+        "y": 251
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "b0ac830e-0109-31ab-888b-e571ecc3bca8",
+      "source": "ebf26e51-a6b0-389e-bb86-7244a2aa30c5",
+      "target": "7960330c-e04b-3705-b4f9-ae0c7d29959a",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--0",
+      "targetHandleId": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--0",
+      "sourcePoint": {
+        "x": 1076.1517333984375,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 841.3570556640625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "5696d4ff-ac40-3be4-a217-8f588e4599be",
+      "source": "ebf26e51-a6b0-389e-bb86-7244a2aa30c5",
+      "target": "cccc1466-6b6d-33a6-aef5-56d032ccc32e",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--1",
+      "targetHandleId": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--0",
+      "sourcePoint": {
+        "x": 1210.455322265625,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1469.2320556640625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "88cf0570-037f-3b5e-bf62-d19b7b17d2b6",
+      "source": "ebf26e51-a6b0-389e-bb86-7244a2aa30c5",
+      "target": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--2",
+      "targetHandleId": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--2",
+      "sourcePoint": {
+        "x": 1277.6070556640625,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1786.807861328125,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "254e643d-be4b-3931-9003-fe7f72055bed",
+      "source": "ebf26e51-a6b0-389e-bb86-7244a2aa30c5",
+      "target": "9952ec3b-6756-38b0-a599-80bf654e2a8d",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ebf26e51-a6b0-389e-bb86-7244a2aa30c5--3",
+      "targetHandleId": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--0",
+      "sourcePoint": {
+        "x": 1143.303466796875,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1143.303466796875,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "f31794a5-0102-3bf0-a53f-c7dd44a3fa45",
+      "source": "ff3ea763-4c67-3290-91fe-c684c5653696",
+      "target": "9b55a43d-c851-3e1e-9c39-f3aa896f6d46",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ff3ea763-4c67-3290-91fe-c684c5653696--0",
+      "targetHandleId": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--1",
+      "sourcePoint": {
+        "x": 99.83038330078125,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 373.25445556640625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "7f8baeee-fd1f-3dd3-8a2c-fa6a1a6b3560",
+      "source": "ff3ea763-4c67-3290-91fe-c684c5653696",
+      "target": "7960330c-e04b-3705-b4f9-ae0c7d29959a",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ff3ea763-4c67-3290-91fe-c684c5653696--1",
+      "targetHandleId": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--1",
+      "sourcePoint": {
+        "x": 208.66070556640625,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 763.678466796875,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "21ab317d-850a-36fd-ab30-7350c955ed4e",
+      "source": "dcd96573-7dee-3c1e-830f-6ee6d3e37368",
+      "target": "9b55a43d-c851-3e1e-9c39-f3aa896f6d46",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--dcd96573-7dee-3c1e-830f-6ee6d3e37368--0",
+      "targetHandleId": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--2",
+      "sourcePoint": {
+        "x": 436.5089111328125,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 436.5089111328125,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "6e709804-1b7b-3ceb-9186-2cfc2f7c38a3",
+      "source": "dcd96573-7dee-3c1e-830f-6ee6d3e37368",
+      "target": "9952ec3b-6756-38b0-a599-80bf654e2a8d",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--dcd96573-7dee-3c1e-830f-6ee6d3e37368--1",
+      "targetHandleId": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--1",
+      "sourcePoint": {
+        "x": 545.5089721679688,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1071.361572265625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "1923ded1-a4ee-3d3e-b3be-b59a0a8bb867",
+      "source": "2c29601a-cd33-33f9-ab62-ee2165ce03b6",
+      "target": "7960330c-e04b-3705-b4f9-ae0c7d29959a",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--0",
+      "targetHandleId": "handle--target--7960330c-e04b-3705-b4f9-ae0c7d29959a--2",
+      "sourcePoint": {
+        "x": 1727.482177734375,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 919.03564453125,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "a69bbf2a-80cc-36b8-b753-43fe03b17796",
+      "source": "2c29601a-cd33-33f9-ab62-ee2165ce03b6",
+      "target": "cccc1466-6b6d-33a6-aef5-56d032ccc32e",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--1",
+      "targetHandleId": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--1",
+      "sourcePoint": {
+        "x": 1854.446533203125,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1552.3480224609375,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "6d06accc-af3b-3d83-805b-16ea66c9bae6",
+      "source": "2c29601a-cd33-33f9-ab62-ee2165ce03b6",
+      "target": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--2",
+      "targetHandleId": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--3",
+      "sourcePoint": {
+        "x": 1898.424072265625,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1898.424072265625,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "06f5a6d9-e0b2-350a-b4f4-82196a559f29",
+      "source": "2c29601a-cd33-33f9-ab62-ee2165ce03b6",
+      "target": "9952ec3b-6756-38b0-a599-80bf654e2a8d",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--2c29601a-cd33-33f9-ab62-ee2165ce03b6--3",
+      "targetHandleId": "handle--target--9952ec3b-6756-38b0-a599-80bf654e2a8d--2",
+      "sourcePoint": {
+        "x": 1790.96435546875,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1228.084716796875,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "238c5673-235a-3c60-bafa-56e484950e93",
+      "source": "00f3edee-745d-3ed5-a58d-bd3eaa7a36e8",
+      "target": "9b55a43d-c851-3e1e-9c39-f3aa896f6d46",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--0",
+      "targetHandleId": "handle--target--9b55a43d-c851-3e1e-9c39-f3aa896f6d46--3",
+      "sourcePoint": {
+        "x": 780.0892333984375,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 499.763427734375,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "ccca1a93-270d-376f-9cec-216e95c7421c",
+      "source": "00f3edee-745d-3ed5-a58d-bd3eaa7a36e8",
+      "target": "cccc1466-6b6d-33a6-aef5-56d032ccc32e",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--00f3edee-745d-3ed5-a58d-bd3eaa7a36e8--1",
+      "targetHandleId": "handle--target--cccc1466-6b6d-33a6-aef5-56d032ccc32e--2",
+      "sourcePoint": {
+        "x": 896.1785888671875,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 1386.115966796875,
+        "y": 441
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "9e9acb54-d6cd-316d-b0d8-a2ef66e52154",
+      "source": "d79ccb91-a07a-372d-be25-9bee8c1bf266",
+      "target": "602083de-9fa0-3d36-be7a-df3ec27ecae2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--d79ccb91-a07a-372d-be25-9bee8c1bf266--0",
+      "targetHandleId": "handle--target--602083de-9fa0-3d36-be7a-df3ec27ecae2--4",
+      "sourcePoint": {
+        "x": 2165.365966796875,
+        "y": 321.9910583496094
+      },
+      "targetPoint": {
+        "x": 2010.0400390625,
+        "y": 441
+      },
+      "bendingPoints": []
+    }
+  ]
+}

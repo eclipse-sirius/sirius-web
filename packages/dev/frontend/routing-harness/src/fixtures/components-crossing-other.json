@@ -1,0 +1,231 @@
+{
+  "id": "components-crossing-other",
+  "name": "Components with crossing",
+  "nodes": [
+    {
+      "id": "47fe4d45-7f8a-301e-8599-c3eb5f7a2060",
+      "label": "sirius-components-view-deck",
+      "position": {
+        "x": -239,
+        "y": -12
+      },
+      "size": {
+        "width": 257,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--0",
+          "type": "source",
+          "position": "bottom",
+          "x": 194,
+          "y": 70,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--0",
+          "type": "target",
+          "position": "bottom",
+          "x": 131,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--1",
+          "type": "target",
+          "position": "bottom",
+          "x": 63,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--2",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "3a3fd205-673f-33ed-8d73-e3130a6f9160",
+      "label": "sirius-components-view-builder",
+      "position": {
+        "x": -239,
+        "y": 608
+      },
+      "size": {
+        "width": 270,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--3a3fd205-673f-33ed-8d73-e3130a6f9160--0",
+          "type": "source",
+          "position": "top",
+          "x": 131,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--3a3fd205-673f-33ed-8d73-e3130a6f9160--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--3a3fd205-673f-33ed-8d73-e3130a6f9160--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "2016d3a8-48c4-3ec7-8055-bb2cef185c06",
+      "label": "sirius-components-view-deck-edit",
+      "position": {
+        "x": -365,
+        "y": 239
+      },
+      "size": {
+        "width": 435,
+        "height": 223
+      },
+      "handles": [
+        {
+          "id": "handle--source--2016d3a8-48c4-3ec7-8055-bb2cef185c06--0",
+          "type": "source",
+          "position": "top",
+          "x": 217,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--2016d3a8-48c4-3ec7-8055-bb2cef185c06--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--2016d3a8-48c4-3ec7-8055-bb2cef185c06--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "201356b6-cd79-39bd-b85e-40b247f86bc8",
+      "label": "sirius-components-view",
+      "position": {
+        "x": 122,
+        "y": 159
+      },
+      "size": {
+        "width": 223,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--201356b6-cd79-39bd-b85e-40b247f86bc8--0",
+          "type": "target",
+          "position": "top",
+          "x": 111,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--201356b6-cd79-39bd-b85e-40b247f86bc8--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--201356b6-cd79-39bd-b85e-40b247f86bc8--1",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "95f8ab8c-5db9-35eb-93f9-b4a87cc44442",
+      "source": "47fe4d45-7f8a-301e-8599-c3eb5f7a2060",
+      "target": "201356b6-cd79-39bd-b85e-40b247f86bc8",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--0",
+      "targetHandleId": "handle--target--201356b6-cd79-39bd-b85e-40b247f86bc8--0",
+      "sourcePoint": {
+        "x": -45.33733968484728,
+        "y": 58.32084371455117
+      },
+      "targetPoint": {
+        "x": 233.56258420198776,
+        "y": 157.816345375391
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "2112bd7d-d141-3743-a05e-e959e35c59ea",
+      "source": "3a3fd205-673f-33ed-8d73-e3130a6f9160",
+      "target": "47fe4d45-7f8a-301e-8599-c3eb5f7a2060",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--3a3fd205-673f-33ed-8d73-e3130a6f9160--0",
+      "targetHandleId": "handle--target--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--0",
+      "sourcePoint": {
+        "x": -108,
+        "y": 608.0919954545456
+      },
+      "targetPoint": {
+        "x": -108,
+        "y": 59.32084371455117
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "520e2fdc-b55f-30b2-9a31-889fc3ede2a8",
+      "source": "2016d3a8-48c4-3ec7-8055-bb2cef185c06",
+      "target": "47fe4d45-7f8a-301e-8599-c3eb5f7a2060",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--2016d3a8-48c4-3ec7-8055-bb2cef185c06--0",
+      "targetHandleId": "handle--target--47fe4d45-7f8a-301e-8599-c3eb5f7a2060--1",
+      "sourcePoint": {
+        "x": -147.454040669723,
+        "y": 239.20861333380066
+      },
+      "targetPoint": {
+        "x": -176.73020706945107,
+        "y": 59.32084371455117
+      },
+      "bendingPoints": []
+    }
+  ]
+}

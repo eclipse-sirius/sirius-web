@@ -1,0 +1,389 @@
+{
+  "id": "components-simple",
+  "name": "Simple Components",
+  "nodes": [
+    {
+      "id": "3ed0399d-24b6-3473-b59d-e07558877095",
+      "label": "sirius-components-view-edit",
+      "position": {
+        "x": 501,
+        "y": 239
+      },
+      "size": {
+        "width": 250,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--3ed0399d-24b6-3473-b59d-e07558877095--0",
+          "type": "source",
+          "position": "top",
+          "x": 125,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--3ed0399d-24b6-3473-b59d-e07558877095--0",
+          "type": "target",
+          "position": "bottom",
+          "x": 125,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--3ed0399d-24b6-3473-b59d-e07558877095--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--3ed0399d-24b6-3473-b59d-e07558877095--1",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "88704d1c-2071-3982-b099-0f2a3ca3d72d",
+      "label": "sirius-components-view-deck",
+      "position": {
+        "x": 244,
+        "y": 2
+      },
+      "size": {
+        "width": 257,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--88704d1c-2071-3982-b099-0f2a3ca3d72d--0",
+          "type": "source",
+          "position": "right",
+          "x": 257,
+          "y": 32,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--88704d1c-2071-3982-b099-0f2a3ca3d72d--0",
+          "type": "target",
+          "position": "bottom",
+          "x": 172,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--88704d1c-2071-3982-b099-0f2a3ca3d72d--1",
+          "type": "target",
+          "position": "bottom",
+          "x": 85,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--88704d1c-2071-3982-b099-0f2a3ca3d72d--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--88704d1c-2071-3982-b099-0f2a3ca3d72d--2",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "ccc5fce2-37b3-3721-9ee2-3437744f8ffb",
+      "label": "sirius-components-view-builder",
+      "position": {
+        "x": 345,
+        "y": 442
+      },
+      "size": {
+        "width": 270,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--ccc5fce2-37b3-3721-9ee2-3437744f8ffb--0",
+          "type": "source",
+          "position": "top",
+          "x": 135,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--ccc5fce2-37b3-3721-9ee2-3437744f8ffb--1",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--ccc5fce2-37b3-3721-9ee2-3437744f8ffb--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d",
+      "label": "sirius-components-view-deck-edit",
+      "position": {
+        "x": 112,
+        "y": 567
+      },
+      "size": {
+        "width": 285,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--0",
+          "type": "source",
+          "position": "top",
+          "x": 191,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--1",
+          "type": "source",
+          "position": "top",
+          "x": 94,
+          "y": 0,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--2",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "772b335e-12cc-3dae-bb8c-a3db9eedea6b",
+      "label": "Component",
+      "position": {
+        "x": 235,
+        "y": 143
+      },
+      "size": {
+        "width": 150,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--772b335e-12cc-3dae-bb8c-a3db9eedea6b--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--772b335e-12cc-3dae-bb8c-a3db9eedea6b--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "7ceb5c82-f489-3518-840a-7f906fc3f642",
+      "label": "High",
+      "position": {
+        "x": 195,
+        "y": 282
+      },
+      "size": {
+        "width": 150,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--source--7ceb5c82-f489-3518-840a-7f906fc3f642--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--7ceb5c82-f489-3518-840a-7f906fc3f642--0",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    },
+    {
+      "id": "851ce9fb-9f5f-39ee-9828-3f7c5e425fda",
+      "label": "sirius-components-view",
+      "position": {
+        "x": 546,
+        "y": 95
+      },
+      "size": {
+        "width": 223,
+        "height": 70
+      },
+      "handles": [
+        {
+          "id": "handle--target--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--0",
+          "type": "target",
+          "position": "bottom",
+          "x": 111,
+          "y": 71,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--target--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--1",
+          "type": "target",
+          "position": "top",
+          "x": 111,
+          "y": -1,
+          "isHidden": true,
+          "isVirtualHandle": false
+        },
+        {
+          "id": "handle--source--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--0",
+          "type": "source",
+          "position": "right",
+          "isHidden": true,
+          "isVirtualHandle": true
+        },
+        {
+          "id": "handle--target--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--2",
+          "type": "target",
+          "position": "left",
+          "isHidden": true,
+          "isVirtualHandle": true
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e651ca97-a809-3b69-9ab8-9459bf9368d5",
+      "source": "3ed0399d-24b6-3473-b59d-e07558877095",
+      "target": "851ce9fb-9f5f-39ee-9828-3f7c5e425fda",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--3ed0399d-24b6-3473-b59d-e07558877095--0",
+      "targetHandleId": "handle--target--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--0",
+      "sourcePoint": {
+        "x": 626.1785888671875,
+        "y": 239.28571319580078
+      },
+      "targetPoint": {
+        "x": 657.3013671992329,
+        "y": 166.1606070502536
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "bd404a75-726b-3c1a-b74f-87fe85633263",
+      "source": "88704d1c-2071-3982-b099-0f2a3ca3d72d",
+      "target": "851ce9fb-9f5f-39ee-9828-3f7c5e425fda",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--88704d1c-2071-3982-b099-0f2a3ca3d72d--0",
+      "targetHandleId": "handle--target--851ce9fb-9f5f-39ee-9828-3f7c5e425fda--1",
+      "sourcePoint": {
+        "x": 501,
+        "y": 33.666372366369124
+      },
+      "targetPoint": {
+        "x": 657.3013671992329,
+        "y": 94.1606070502536
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "6df86a87-9c85-3d86-a0e9-adfba0f9f8cd",
+      "source": "ccc5fce2-37b3-3721-9ee2-3437744f8ffb",
+      "target": "88704d1c-2071-3982-b099-0f2a3ca3d72d",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--ccc5fce2-37b3-3721-9ee2-3437744f8ffb--0",
+      "targetHandleId": "handle--target--88704d1c-2071-3982-b099-0f2a3ca3d72d--0",
+      "sourcePoint": {
+        "x": 479.9464111328125,
+        "y": 442.01268694413017
+      },
+      "targetPoint": {
+        "x": 416.39288330078125,
+        "y": 72.84494597476757
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "25b4cafb-cd3e-3d6a-94c8-69c354e189c0",
+      "source": "b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d",
+      "target": "3ed0399d-24b6-3473-b59d-e07558877095",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--0",
+      "targetHandleId": "handle--target--3ed0399d-24b6-3473-b59d-e07558877095--0",
+      "sourcePoint": {
+        "x": 302.9570149273828,
+        "y": 566.8715612707227
+      },
+      "targetPoint": {
+        "x": 626.1785888671875,
+        "y": 310.2857437133789
+      },
+      "bendingPoints": []
+    },
+    {
+      "id": "91fc9ae9-85a1-33fa-8f18-75103e5fa529",
+      "source": "b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d",
+      "target": "88704d1c-2071-3982-b099-0f2a3ca3d72d",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left",
+      "sourceHandleId": "handle--source--b0f19275-fa79-3bd8-8d82-60ffcc0dbb2d--1",
+      "targetHandleId": "handle--target--88704d1c-2071-3982-b099-0f2a3ca3d72d--1",
+      "sourcePoint": {
+        "x": 206.08201492738277,
+        "y": 566.8715612707227
+      },
+      "targetPoint": {
+        "x": 328.79461669921875,
+        "y": 72.84494597476757
+      },
+      "bendingPoints": []
+    }
+  ]
+}

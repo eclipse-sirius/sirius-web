@@ -1,0 +1,21 @@
+npm install
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 0
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 1
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 2
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 3
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 4
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 5
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 6
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 7
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 8
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 9
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 10
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 11
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 12
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 13
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 14
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 15
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 16
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 17
+npm run export:diagrams -- --skip-build --batch-size 10 --batch-index 18
+npm run export:diagrams -- --skip-build --batch-size 7 --batch-index 19

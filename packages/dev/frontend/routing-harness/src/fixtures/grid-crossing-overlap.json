@@ -1,0 +1,50 @@
+{
+  "id": "grid-crossing-overlap",
+  "name": "Grid Crossing Overlap",
+  "description": "Dense arrangement that forces several detours and straightening checks. A to F, D to C",
+  "categories": ["density"],
+  "nodes": [
+    {
+      "id": "as",
+      "label": "A",
+      "position": { "x": 120, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "c",
+      "label": "C",
+      "position": { "x": 560, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "d",
+      "label": "D",
+      "position": { "x": 120, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "f",
+      "label": "F",
+      "position": { "x": 560, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "gedge-diagonal-down",
+      "source": "as",
+      "target": "f",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    },
+    {
+      "id": "edge-diagonal-up",
+      "source": "d",
+      "target": "c",
+      "type": "manhattan",
+      "sourcePosition": "top",
+      "targetPosition": "right"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "directional-diagonal-b-nw-of-a-south-b-west",
+  "name": "B north-west of A - A South to B West",
+  "description": "Diagonal layout: B north-west of A, edge from A using the SOUTH side to B using the WEST side.",
+  "categories": [
+    "directional",
+    "cardinal",
+    "diagonal"
+  ],
+  "nodes": [
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 520,
+        "y": 420
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 220,
+        "y": 200
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "left"
+    }
+  ]
+}

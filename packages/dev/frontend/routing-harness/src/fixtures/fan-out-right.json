@@ -1,0 +1,44 @@
+{
+  "id": "fan-out-right",
+  "name": "Fan out right",
+  "description": "Two edges leaving the same handle; used to verify straightening keeps the fan offset intact.",
+  "categories": ["fan"],
+  "nodes": [
+    {
+      "id": "source",
+      "label": "Source",
+      "position": { "x": 200, "y": 200 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "target-top",
+      "label": "Target Top",
+      "position": { "x": 520, "y": 140 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "target-bottom",
+      "label": "Target Bottom",
+      "position": { "x": 520, "y": 260 },
+      "size": { "width": 140, "height": 72 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-top",
+      "source": "source",
+      "target": "target-top",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-bottom",
+      "source": "source",
+      "target": "target-bottom",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    }
+  ]
+}

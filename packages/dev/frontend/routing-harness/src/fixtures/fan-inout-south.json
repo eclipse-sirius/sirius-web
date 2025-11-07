@@ -1,0 +1,50 @@
+{
+  "id": "fan-inout-south",
+  "name": "Fan-In-Out  SOUTH",
+  "description": "Multiple sources and targets converging into a single side to exercise offset spacing.",
+  "categories": ["stress"],
+  "nodes": [
+    {
+      "id": "source-north",
+      "label": "North",
+      "position": { "x": 10, "y": 0 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "source-middle",
+      "label": "Middle",
+      "position": { "x": 350, "y": 0 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "source-south",
+      "label": "South",
+      "position": { "x": 600, "y": 0 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "target",
+      "label": "Target",
+      "position": { "x": 300, "y": 220 },
+      "size": { "width": 160, "height": 96 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-north",
+      "source": "source-north",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    },
+    {
+      "id": "edge-middle",
+      "source": "target",
+      "target": "source-middle",
+      "type": "manhattan",
+      "sourcePosition": "top",
+      "targetPosition": "bottom"
+    }
+  ]
+}

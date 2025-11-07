@@ -1,0 +1,30 @@
+{
+  "id": "almost-straight-vertical",
+  "name": "Almost straight vertical",
+  "description": "Two nodes aligned vertically with a slight horizontal offset to exercise endpoint straightening.",
+  "categories": ["straightening"],
+  "nodes": [
+    {
+      "id": "a",
+      "label": "A",
+      "position": { "x": 120, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "b",
+      "label": "B",
+      "position": { "x": 130, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-vertical-near",
+      "source": "a",
+      "target": "b",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    }
+  ]
+}

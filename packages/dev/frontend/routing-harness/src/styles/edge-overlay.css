@@ -1,0 +1,23 @@
+.bendpoint-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.react-flow__edge-path {
+  stroke: #0f0f0f;
+  stroke-width: 2px;
+}
+
+.react-flow__edge-path::after {
+  content: '';
+}
+
+.harness-diagram-wrapper .react-flow__edges {
+  /* Keep routing lines visible on top of node bodies for harness inspection */
+  z-index: 3;
+}
+
+.harness-diagram-wrapper .react-flow__nodes {
+  z-index: 2;
+}

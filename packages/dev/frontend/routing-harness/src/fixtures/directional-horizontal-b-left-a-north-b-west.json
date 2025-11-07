@@ -1,0 +1,46 @@
+{
+  "id": "directional-horizontal-b-left-a-north-b-west",
+  "name": "B left of A - A North to B West",
+  "description": "Horizontal layout: B left of A, edge from A using the NORTH side to B using the WEST side.",
+  "categories": [
+    "directional",
+    "cardinal",
+    "horizontal"
+  ],
+  "nodes": [
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 220,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 620,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "top",
+      "targetPosition": "left"
+    }
+  ]
+}

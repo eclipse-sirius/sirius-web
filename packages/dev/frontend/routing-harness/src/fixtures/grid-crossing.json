@@ -1,0 +1,78 @@
+{
+  "id": "grid-crossing",
+  "name": "Grid Crossing",
+  "description": "Dense arrangement that forces several detours and straightening checks. A to C, D to F, A to F, D to C",
+  "categories": ["density"],
+  "nodes": [
+    {
+      "id": "a",
+      "label": "A",
+      "position": { "x": 120, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "b",
+      "label": "B",
+      "position": { "x": 340, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "c",
+      "label": "C",
+      "position": { "x": 560, "y": 100 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "d",
+      "label": "D",
+      "position": { "x": 120, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "e",
+      "label": "E",
+      "position": { "x": 340, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    },
+    {
+      "id": "f",
+      "label": "F",
+      "position": { "x": 560, "y": 320 },
+      "size": { "width": 140, "height": 72 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-horizontal-top",
+      "source": "a",
+      "target": "c",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-horizontal-bottom",
+      "source": "d",
+      "target": "f",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-diagonal-down",
+      "source": "a",
+      "target": "f",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    },
+    {
+      "id": "edge-diagonal-up",
+      "source": "d",
+      "target": "c",
+      "type": "manhattan",
+      "sourcePosition": "top",
+      "targetPosition": "right"
+    }
+  ]
+}

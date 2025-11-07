@@ -1,0 +1,45 @@
+{
+  "id": "directional-a-south-b-north",
+  "name": "A South to B North",
+  "description": "Edge from A using the SOUTH side to B using the NORTH side.",
+  "categories": [
+    "directional",
+    "cardinal"
+  ],
+  "nodes": [
+    {
+      "id": "A",
+      "label": "A",
+      "position": {
+        "x": 220,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "position": {
+        "x": 620,
+        "y": 240
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "A",
+      "target": "B",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
+      "targetPosition": "top"
+    }
+  ]
+}

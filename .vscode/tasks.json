@@ -5,7 +5,7 @@
       "label": "typescript compile watch mode",
       "type": "shell",
       "command": "npx",
-      "args": ["tsc", "--build", "tsconfig-noEmit.json", "--watch"],
+      "args": ["tsc", "--project", "packages/sirius-web/frontend/sirius-web/tsconfig.json", "--watch"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -30,6 +30,26 @@
           "message": 5
         }
       }
-    }
+    } , {
+       "label": "start sirius-web dev server",
+       "type": "shell",
+       "command": "npm",
+       "args": ["run", "start", "--workspace", "@eclipse-sirius/sirius-web"],
+       "options": { "cwd": "${workspaceFolder}" },
+       "isBackground": true,
+       "presentation": {
+         "reveal": "always",
+         "panel": "dedicated"
+       },
+       "problemMatcher": {
+         "pattern": [{ "regexp": "." }],
+         "background": {
+           "activeOnStart": true,
+           "beginsPattern": ".*starting dev server.*",
+           "endsPattern": ".*ready in.*"
+         }
+       }
+     }
+
   ]
 }

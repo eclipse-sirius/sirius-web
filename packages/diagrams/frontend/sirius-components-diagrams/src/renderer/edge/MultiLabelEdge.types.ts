@@ -19,7 +19,46 @@ export type MultiLabelEdgeProps<T extends Edge<Record<string, unknown>, string |
   svgPathString: string;
 } & EdgeProps<T>;
 
+export type RectilinearTurnPreference = 'target' | 'source' | 'middle';
+
 export interface MultiLabelEdgeData extends EdgeData {
   beginLabel?: EdgeLabel;
   endLabel?: EdgeLabel;
+  /**
+   * Controls where the first rectilinear turn should occur when no custom bending points were provided.
+   * - target: turn closer to the target handle (default).
+   * - source: turn closer to the source handle.
+   * - middle: turn halfway between source and target.
+   */
+  rectilinearTurnPreference?: RectilinearTurnPreference;
+  /**
+   * Minimum length (in diagram units/pixels) of the initial segment that travels outward from the source handle
+   * before the first turn is allowed. Defaults to 4 when unspecified.
+   */
+  rectilinearMinOutwardLength?: number;
+  /**
+   * Enables the automatic fan-in spacing that spreads parallel edges when they arrive on the same node side.
+   * Defaults to true.
+   */
+  rectilinearFanInEnabled?: boolean;
+  /**
+   * Enables the automatic fan-out spacing that spreads parallel edges when they leave the same node side.
+   * Defaults to true.
+   */
+  rectilinearFanOutEnabled?: boolean;
+  /**
+   * Enables the post-processing pass that separates overlapping rectilinear segments by offsetting them
+   * by a few pixels. Defaults to true.
+   */
+  rectilinearParallelSpacingEnabled?: boolean;
+  /**
+   * Enables the post-processing pass that straightens nearly straight polylines by shifting their endpoints
+   * when the deviation is small. Defaults to true.
+   */
+  rectilinearStraightenEnabled?: boolean;
+  /**
+   * Enables the final simplification pass that removes redundant bends once the polyline is fully processed.
+   * Defaults to true. When set to false, the polyline keeps all bends emitted by earlier stages.
+   */
+  rectilinearSimplifyEnabled?: boolean;
 }
