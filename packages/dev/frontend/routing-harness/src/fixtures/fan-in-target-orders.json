@@ -35,6 +35,12 @@
       "size": { "width": 140, "height": 72 }
     },
     {
+      "id": "targetbuddy",
+      "label": "Target buddy",
+      "position": { "x": 500, "y": -40 },
+      "size": { "width": 160, "height": 96 }
+    },
+    {
       "id": "target",
       "label": "Target",
       "position": { "x": 300, "y": 0 },
@@ -80,6 +86,14 @@
       "target": "target",
       "type": "manhattan",
       "sourcePosition": "top",
+      "targetPosition": "bottom"
+    },
+    {
+      "id": "edge-targetbuddy",
+      "source": "targetbuddy",
+      "target": "target",
+      "type": "manhattan",
+      "sourcePosition": "bottom",
       "targetPosition": "bottom"
     }
   ]
