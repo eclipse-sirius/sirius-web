@@ -38,6 +38,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -299,7 +300,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .build();
 
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
-                .contributionId("expandAll")
+                .contributionId(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
                 .build();
 

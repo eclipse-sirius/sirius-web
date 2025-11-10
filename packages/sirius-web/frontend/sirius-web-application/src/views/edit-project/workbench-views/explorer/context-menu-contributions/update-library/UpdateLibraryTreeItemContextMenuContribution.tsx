@@ -16,8 +16,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Fragment, forwardRef, useState } from 'react';
-import { UpdateLibraryModal } from './update-library/UpdateLibraryModal';
-import { useObject } from './useObject';
+import { useObject } from '../useObject';
+import { UpdateLibraryModal } from './UpdateLibraryModal';
 
 export const UpdateLibraryTreeItemContextMenuContribution = forwardRef(
   (

@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
@@ -333,7 +334,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     representationId,
                     PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT.toString(),
-                    "removeLibrary");
+                    ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY);
             this.singleClickTreeItemContextMenuEntryMutationRunner.run(input);
         };
 

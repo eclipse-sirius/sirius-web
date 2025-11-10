@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -89,16 +90,83 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
     @Test
     @GivenSiriusWebServer
+    @DisplayName("Given a Papaya project, when the context menu actions are requested on an object, then the correct actions are returned")
+    public void givenPapayaProjectWhenTheContextMenuActionsAreRequestedOnAnObjectThenTheCorrectActionsAreReturned() {
+        var expandedItemIds = List.of(
+                PapayaIdentifiers.PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT.toString(),
+                PapayaIdentifiers.PROJECT_OBJECT.toString(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString()
+        );
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedItemIds, List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
+
+        Runnable getDocumentContextMenuActions = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", treeId.get(),
+                    "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT
+            );
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionIds).isNotEmpty()
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT::equals)
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT::equals);
+        };
+
+        Runnable getObjectContextMenuActions = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", treeId.get(),
+                    "treeItemId", PapayaIdentifiers.PROJECT_OBJECT
+            );
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionIds).isNotEmpty()
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT::equals)
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION::equals)
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT::equals);
+        };
+
+        Runnable getRepresentationContextMenuActions = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", treeId.get(),
+                    "treeItemId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION
+            );
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionIds).isNotEmpty()
+                    .anyMatch(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION::equals);
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(getDocumentContextMenuActions)
+                .then(getObjectContextMenuActions)
+                .then(getRepresentationContextMenuActions)
+                .thenCancel()
+                .verify(Duration.ofSeconds(30));
+    }
+
+    @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the context menu actions are requested on an Entity, then the correct actions are returned")
     public void givenAStudioWhenTheContextMenuActionsAreRequestedOnAnEntityThenTheCorrectActionsAreReturned() {
-
         // 1- retrieve the tree description id of the DSL Domain explorer example
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
-        var explorerResult = TreeItemContextMenuControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
+        var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty().hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
@@ -116,6 +184,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
         var helpId = new AtomicReference<String>();
         var toggleAbstractAction = new AtomicReference<String>();
+
         // 3- retrieve all context menu actions defined for an Entity tree item
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
@@ -128,16 +197,16 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
             List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
-            assertThat(actionLabels).isNotEmpty().hasSize(3);
-            assertThat(actionIds).isNotEmpty().hasSize(3);
-            // The ExpandAll action doesn't have a label, it only contains the ID of the frontend component to use.
-            assertThat(actionLabels.get(0)).isEqualTo("");
-            assertThat(actionIds.get(0)).isEqualTo("expandAll");
-            assertThat(actionLabels.get(1)).isEqualTo("Help");
-            assertThat(actionLabels.get(2)).isEqualTo("Toggle abstract");
+            assertThat(actionLabels).isNotEmpty().hasSizeGreaterThanOrEqualTo(3);
+            assertThat(actionIds).isNotEmpty().hasSizeGreaterThanOrEqualTo(3);
 
-            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
-            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[2].id"));
+            assertThat(actionIds).anyMatch(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL::equals);
+
+            var helpIdIndex = actionLabels.indexOf("Help");
+            var toggleAbstractActionIdIndex = actionLabels.indexOf("Toggle abstract");
+
+            helpId.set(actionIds.get(helpIdIndex));
+            toggleAbstractAction.set(actionIds.get(toggleAbstractActionIdIndex));
         };
 
         // 4- invoke fetch action data query to retrieve the fetch action data
@@ -147,7 +216,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
                     "representationId", treeId.get(),
                     "treeItemId", ROOT_ENTITY_ID,
                     "menuEntryId", helpId.get()
-                    );
+            );
             var result = this.treeItemFetchContextActionDataQueryRunner.run(variables);
 
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
@@ -166,7 +235,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
                     treeId.get(),
                     ROOT_ENTITY_ID,
                     toggleAbstractAction.get()
-                    );
+            );
             var result = this.singleClickTreeItemContexteMenuEntryMutationRunner.run(toggleAbstractActionParameters);
             String typename = JsonPath.read(result, "$.data.invokeSingleClickTreeItemContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -205,8 +274,8 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty();
-            assertThat(actionIds).anyMatch(id -> Objects.equals(id, "updateLibrary"));
-            assertThat(actionIds).anyMatch(id -> Objects.equals(id, "removeLibrary"));
+            assertThat(actionIds).anyMatch(id -> Objects.equals(id, ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY));
+            assertThat(actionIds).anyMatch(id -> Objects.equals(id, ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY));
         };
 
         StepVerifier.create(flux)

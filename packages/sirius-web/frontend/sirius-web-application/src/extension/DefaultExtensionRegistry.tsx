@@ -60,7 +60,6 @@ import {
   GQLTreeItemContextMenuEntry,
   TreeItemContextMenuOverrideContribution,
   TreeRepresentation,
-  treeItemContextMenuEntryExtensionPoint,
   treeItemContextMenuEntryOverrideExtensionPoint,
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
@@ -84,7 +83,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
-import { matchRoutes, Navigate, PathRouteProps, useLocation } from 'react-router-dom';
+import { Navigate, PathRouteProps, matchRoutes, useLocation } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
@@ -101,12 +100,14 @@ import { ViewerContextProvider } from '../viewer/ViewerContext';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
-import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
-import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
-import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
-import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ObjectTreeItemContextMenuContribution';
-import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
-import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
+import { DownloadDocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/download-document/DownloadDocumentTreeItemContextMenuContribution';
+import { DuplicateObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-object/DuplicateObjectTreeItemContextMenuContribution';
+import { DuplicateRepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-representation/DuplicateRepresentationTreeItemContextMenuContribution';
+import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllTreeItemContextMenuContribution';
+import { NewObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectTreeItemContextMenuContribution';
+import { NewRepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-representation/NewRepresentationTreeItemContextMenuContribution';
+import { NewRootObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectTreeItemContextMenuContribution';
+import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryTreeItemContextMenuContribution';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
@@ -295,30 +296,6 @@ defaultExtensionRegistry.putData<DiagramDialogContribution[]>(diagramDialogContr
 
 /*******************************************************************************
  *
- * Tree item context menu
- *
- * Used to register new components in the tree item context menu
- *
- *******************************************************************************/
-defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`,
-  Component: DocumentTreeItemContextMenuContribution,
-});
-defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object`,
-  Component: ObjectTreeItemContextMenuContribution,
-});
-defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_diagram`,
-  Component: DiagramTreeItemContextMenuContribution,
-});
-defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_representation`,
-  Component: RepresentationTreeItemContextMenuContribution,
-});
-
-/*******************************************************************************
- *
  * Tree item context menu overrides
  *
  * Used to register components in the tree item context menu that override
@@ -328,13 +305,49 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
   {
     canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('updateLibrary');
+      return entry.id.includes('new-root-object');
+    },
+    component: NewRootObjectTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('download-document');
+    },
+    component: DownloadDocumentTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('new-object');
+    },
+    component: NewObjectTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('new-representation');
+    },
+    component: NewRepresentationTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('duplicate-object');
+    },
+    component: DuplicateObjectTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('duplicate-representation');
+    },
+    component: DuplicateRepresentationTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('update-library');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,
   },
   {
     canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('expandAll');
+      return entry.id.includes('expand-all');
     },
     component: ExpandAllTreeItemContextMenuContribution,
   },

@@ -33,7 +33,7 @@ import {
 import { Theme } from '@mui/material/styles';
 import { ForwardedRef, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
+import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
 import { ExplorerViewConfiguration, ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';

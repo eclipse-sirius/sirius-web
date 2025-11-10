@@ -94,6 +94,11 @@ And the props of `PaletteAppearanceSectionContributionComponentProps` has been r
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
 The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+- https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] Tree based representations have always enjoyed some hardcoded entries in the context menu.
+Those menu entries are not hardcoded in the frontend anymore and, just like in diagrams, will be retrieved from the backend.
+As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
+The values in questions are accessible thanks to public constants in `ExplorerTreeItemContextMenuEntryProvider` with `expand-all`, `new-root-object`, `download-document`, `new-object`, `new-representation`, `duplicate-object`, `duplicate-representation`, `update-library`, `remove-library`.
+This mechanisms was previously used to provide the menu entry to update/remove a library with the identifier `updateLibrary` / `removeLibrary` and which have been updated to be aligned with the other identifiers with `update-library`, `remove-library`.
 
 
 === Dependency update
@@ -174,6 +179,14 @@ This will allow to integrate the command palette in other contexts than the work
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] Merge all frontend palette into one common component
 - https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular, image and edge appearance sections with the corresponding contribution point
 - https://github.com/eclipse-sirius/sirius-web/issues/5050[#5050] [sirius-web] Keep the dependencies of a project during the download / upload.
+- https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] In order to provide a more dynamic context menu for the tree based representation just like the palette in diagrams does it, the following tree context menu entries are not hardcoded in the frontend anymore and are now retrieved when relevant from the backend:
+* Create a new root object
+* Download a document
+* Create a new object
+* Create a new representation
+* Duplicate an object
+* Duplicate a representation
+As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
 
 
 == 2025.10.0

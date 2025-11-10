@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.forms.EStringIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.WidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -91,14 +92,17 @@ public class StudioDetailsViewDescriptionProvider implements IPropertiesDescript
 
     private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
+    private final WidgetReadOnlyProvider widgetReadOnlyProvider;
+
     public StudioDetailsViewDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-                                                List<ITextfieldCustomizer> customizers, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
+                                                List<ITextfieldCustomizer> customizers, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders, WidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.customizers = Objects.requireNonNull(customizers);
         this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     @Override
@@ -188,7 +192,7 @@ public class StudioDetailsViewDescriptionProvider implements IPropertiesDescript
 
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
         for (ITextfieldCustomizer customizer : this.customizers) {
-            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, semanticTargetIdProvider).getIfDescription());
+            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
         }
         ITextfieldCustomizer fallbackCustomizer = new ITextfieldCustomizer.NoOp() {
             @Override
@@ -196,7 +200,7 @@ public class StudioDetailsViewDescriptionProvider implements IPropertiesDescript
                 return StudioDetailsViewDescriptionProvider.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
             }
         };
-        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
         this.emfFormIfDescriptionProviders.stream()
                 .map(IEMFFormIfDescriptionProvider::getIfDescriptions)
                 .flatMap(Collection::stream)

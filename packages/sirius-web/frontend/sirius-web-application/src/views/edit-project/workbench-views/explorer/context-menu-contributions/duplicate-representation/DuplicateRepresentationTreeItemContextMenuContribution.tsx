@@ -16,12 +16,12 @@ import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Fragment, forwardRef, useEffect } from 'react';
-import { useDuplicateRepresentation } from './useDuplicateRepresentation';
+import { forwardRef, useEffect } from 'react';
+import { useDuplicateRepresentation } from '../useDuplicateRepresentation';
 
-export const RepresentationTreeItemContextMenuContribution = forwardRef(
+export const DuplicateRepresentationTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, treeId, item, readOnly, onClose }: TreeItemContextMenuComponentProps,
+    { editingContextId, item, readOnly, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { setSelection } = useSelection();
@@ -42,26 +42,19 @@ export const RepresentationTreeItemContextMenuContribution = forwardRef(
         onClose();
       }
     }, [duplicatedRepresentationMetadata, setSelection]);
-
-    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusComponents://representation')) {
-      return null;
-    }
-
     return (
-      <Fragment key="representation-tree-item-context-menu-contribution">
-        <MenuItem
-          key="duplicate-representation"
-          onClick={onDuplicate}
-          data-testid="duplicate-representation"
-          disabled={readOnly}
-          ref={ref}
-          aria-disabled>
-          <ListItemIcon>
-            <AddToPhotosIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Duplicate representation" />
-        </MenuItem>
-      </Fragment>
+      <MenuItem
+        key="duplicate-representation"
+        onClick={onDuplicate}
+        data-testid="duplicate-representation"
+        disabled={readOnly}
+        ref={ref}
+        aria-disabled>
+        <ListItemIcon>
+          <AddToPhotosIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Duplicate representation" />
+      </MenuItem>
     );
   }
 );
