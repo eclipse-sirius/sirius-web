@@ -25,6 +25,8 @@ public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_EDITING_CONTEXT_ID = UUID.fromString("cc89c500-c27e-4968-9c67-15cf767c6ef0");
 
+    public static final UUID PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT = UUID.fromString("a4495c9c-d00c-4f0e-a591-1176d102a4a1");
+
     public static final UUID PROJECT_OBJECT = UUID.fromString("aa0b7b22-ade2-4148-9ee2-c5972bd72ab7");
 
     public static final UUID SIRIUS_WEB_PLANNING_PROJECT_OBJECT = UUID.fromString("1135f77e-0d16-4b10-8a4b-c492ac80221f");

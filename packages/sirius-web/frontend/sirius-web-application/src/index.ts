@@ -34,14 +34,6 @@ export {
 } from './graphql/useCreateApolloClientExtensionPoints';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
-export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectModal';
-export { type DuplicateObjectModalProps } from './modals/duplicate-object/DuplicateObjectModal.types';
-export { NewObjectModal } from './modals/new-object/NewObjectModal';
-export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
-export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
-export { type NewRepresentationModalProps } from './modals/new-representation/NewRepresentationModal.types';
-export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal';
-export { type NewRootObjectModalProps } from './modals/new-root-object/NewRootObjectModal.types';
 export { NavigationBar } from './navigationBar/NavigationBar';
 export {
   type NavigationBarIconProps,
@@ -103,10 +95,18 @@ export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProj
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';
-export { ExpandAllTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
+export { DuplicateObjectModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-object/DuplicateObjectModal';
+export { type DuplicateObjectModalProps } from './views/edit-project/workbench-views/explorer/context-menu-contributions/duplicate-object/DuplicateObjectModal.types';
+export { ExpandAllTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/expand-all/ExpandAllTreeItemContextMenuContribution';
+export { NewObjectModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectModal';
+export { type NewObjectModalProps } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-object/NewObjectModal.types';
+export { NewRepresentationModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-representation/NewRepresentationModal';
+export { type NewRepresentationModalProps } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-representation/NewRepresentationModal.types';
+export { NewRootObjectModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectModal';
+export { type NewRootObjectModalProps } from './views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectModal.types';
 export { UpdateLibraryModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal';
 export * from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal.types';
-export { UpdateLibraryTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
+export { UpdateLibraryTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryTreeItemContextMenuContribution';
 export { useExplorerSubscription } from './views/edit-project/workbench-views/explorer/useExplorerSubscription';
 export {
   type GQLTreeEventPayload,

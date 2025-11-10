@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -41,7 +42,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -55,12 +55,15 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
     private final IIdentityService identityService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final ILabelService labelService;
 
     private final List<IValidationService> validationServices;
 
-    public FixedColorPropertiesConfigurer(IIdentityService identityService, ILabelService labelService, List<IValidationService> validationServices) {
+    public FixedColorPropertiesConfigurer(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, List<IValidationService> validationServices) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.labelService = Objects.requireNonNull(labelService);
         this.validationServices = Objects.requireNonNull(validationServices);
     }
@@ -202,7 +205,7 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
             var optionalSelf = variableManager.get(VariableManager.SELF, UserColor.class);
             if (optionalSelf.isPresent()) {
                 UserColor color = optionalSelf.get();
-                return ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(color.eResource().getURI().toString());
+                return this.readOnlyObjectPredicate.test(color);
             }
             return false;
         };

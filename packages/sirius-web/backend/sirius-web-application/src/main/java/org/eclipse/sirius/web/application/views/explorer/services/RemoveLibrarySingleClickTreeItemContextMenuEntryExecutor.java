@@ -96,7 +96,7 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
                 }
 
                 if (treeInput instanceof InvokeSingleClickTreeItemContextMenuEntryInput invokeSingleClickTreeItemContextMenuEntryInput
-                        && Objects.equals(invokeSingleClickTreeItemContextMenuEntryInput.menuEntryId(), "removeLibrary")) {
+                        && Objects.equals(invokeSingleClickTreeItemContextMenuEntryInput.menuEntryId(), ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)) {
                     // Do not update the semantic data bounded context if we are not performing an actual library
                     // removal (this is for example the case when performing an impact analysis).
                     this.semanticDataUpdateService.removeDependencies(treeInput, AggregateReference.to(UUID.fromString(editingContext.getId())), List.of(optionalLibrary.get().getSemanticData()));

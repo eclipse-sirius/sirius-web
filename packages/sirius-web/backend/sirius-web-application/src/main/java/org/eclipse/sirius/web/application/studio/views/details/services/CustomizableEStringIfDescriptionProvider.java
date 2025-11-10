@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.forms.EStructuralFeatureLabelProvider;
+import org.eclipse.sirius.components.emf.forms.WidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -54,11 +55,14 @@ public class CustomizableEStringIfDescriptionProvider {
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public CustomizableEStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer, Function<VariableManager, String> semanticTargetIdProvider) {
+    private final WidgetReadOnlyProvider widgetReadOnlyProvider;
+
+    public CustomizableEStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer, Function<VariableManager, String> semanticTargetIdProvider, WidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.customizer = Objects.requireNonNull(customizer);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
+        this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
 
     public IfDescription getIfDescription() {
@@ -86,7 +90,7 @@ public class CustomizableEStringIfDescriptionProvider {
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
-                .isReadOnlyProvider(variableManager -> false)
+                .isReadOnlyProvider(this.widgetReadOnlyProvider)
                 .valueProvider(this.getValueProvider())
                 .newValueHandler(this.getNewValueHandler())
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())

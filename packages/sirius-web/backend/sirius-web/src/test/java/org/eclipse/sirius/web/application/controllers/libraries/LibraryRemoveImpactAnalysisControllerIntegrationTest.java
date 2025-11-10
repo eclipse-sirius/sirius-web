@@ -48,6 +48,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
@@ -128,7 +129,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID,
                     "representationId", representationId,
                     "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT,
-                    "menuEntryId", "removeLibrary"
+                    "menuEntryId", ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY
             );
 
             String result = this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
@@ -218,7 +219,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID,
                     "representationId", representationId,
                     "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT,
-                    "menuEntryId", "removeLibrary"
+                    "menuEntryId", ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY
             );
             this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
         };
