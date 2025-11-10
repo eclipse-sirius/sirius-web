@@ -401,12 +401,17 @@ const computeDiagramBounds = (
   const paddedMaxX = maxX + margin;
   const paddedMaxY = maxY + margin;
 
-  const width = Math.max(paddedMaxX - paddedMinX, 1);
-  const height = Math.max(paddedMaxY - paddedMinY, 1);
+  const normalizedMinX = Math.floor(paddedMinX);
+  const normalizedMinY = Math.floor(paddedMinY);
+  const normalizedMaxX = Math.ceil(paddedMaxX);
+  const normalizedMaxY = Math.ceil(paddedMaxY);
+
+  const width = Math.max(normalizedMaxX - normalizedMinX, 1);
+  const height = Math.max(normalizedMaxY - normalizedMinY, 1);
 
   return {
-    x: paddedMinX,
-    y: paddedMinY,
+    x: normalizedMinX,
+    y: normalizedMinY,
     width,
     height,
   };
