@@ -1,6 +1,6 @@
 {
   "id": "component-diag-cleaned",
-  "name": "Simple Component Diag Diagram - cleaned",
+  "name": "Simple Component Diag Diagram -TODO",
   "description": "Mostly hierarchical",
   "categories": ["stress"],
   "nodes": [
@@ -41,18 +41,6 @@
       }
     },
     {
-      "id": "sirius-components-view",
-      "label": "sirius-components-view",
-      "position": {
-        "x": 77,
-        "y": 608
-      },
-      "size": {
-        "width": 223,
-        "height": 70
-      }
-    },
-    {
       "id": "sirius-components-view-deck",
       "label": "sirius-components-view-deck",
       "position": {
@@ -63,53 +51,9 @@
         "width": 257,
         "height": 70
       }
-    },
-    {
-      "id": "e",
-      "label": "e",
-      "position": {
-        "x": 12,
-        "y": 488
-      },
-      "size": {
-        "width": 150,
-        "height": 70
-      }
     }
   ],
   "edges": [
-    {
-      "id": "df22c098-5ee3-3090-97e3-cc3f909318c4",
-      "source": "e",
-      "target": "sirius-components-view-builder",
-      "type": "manhattan",
-      "sourcePosition": "top",
-      "targetPosition": "bottom",
-      "sourcePoint": {
-        "x": 241.9285888671875,
-        "y": 438
-      },
-      "targetPoint": {
-        "x": 425.59820556640625,
-        "y": 487
-      }
-    },
-    {
-      "id": "61d4eb0b-ebc8-37cd-b9a5-e8f547b2f5c3",
-      "source": "e",
-      "target": "sirius-components-view",
-      "type": "manhattan",
-      "sourcePosition": "bottom",
-      "targetPosition": "top",
-      "sourcePoint": {
-        "x": 149.96429443359375,
-        "y": 438
-      },
-      "targetPoint": {
-        "x": 87,
-        "y": 487
-      }
-    },
     {
       "id": "b768bc42-90fc-3572-b1b5-e333086beb2f",
       "source": "sirius-components-view",
