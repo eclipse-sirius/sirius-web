@@ -1,6 +1,6 @@
-import type { ReactFlowState } from '@xyflow/react';
-import { useStore } from '@xyflow/react';
-import { useCallback } from 'react';
+import type { ReactFlowState } from "@xyflow/react";
+import { useStore } from "@xyflow/react";
+import { useCallback } from "react";
 
 interface HarnessMarkerProps {
   id: string;
@@ -12,7 +12,7 @@ const markerSelector = (state: ReactFlowState): HarnessMarkerProps[] => {
   const markers: HarnessMarkerProps[] = [];
 
   state.edges.forEach((edge) => {
-    if (typeof edge.markerEnd !== 'string') {
+    if (typeof edge.markerEnd !== "string") {
       return;
     }
     if (uniqueIds.has(edge.markerEnd)) {
@@ -20,9 +20,10 @@ const markerSelector = (state: ReactFlowState): HarnessMarkerProps[] => {
     }
 
     const color =
-      typeof edge.style?.stroke === 'string' && edge.style.stroke.trim().length > 0
+      typeof edge.style?.stroke === "string" &&
+      edge.style.stroke.trim().length > 0
         ? edge.style.stroke
-        : '#0f0f0f';
+        : "#0f0f0f";
 
     uniqueIds.add(edge.markerEnd);
     markers.push({
@@ -34,7 +35,10 @@ const markerSelector = (state: ReactFlowState): HarnessMarkerProps[] => {
   return markers;
 };
 
-const markerEquality = (prev: HarnessMarkerProps[], next: HarnessMarkerProps[]) => {
+const markerEquality = (
+  prev: HarnessMarkerProps[],
+  next: HarnessMarkerProps[]
+) => {
   if (prev.length !== next.length) {
     return false;
   }
@@ -53,19 +57,29 @@ export const HarnessMarkerDefinitions = () => {
   }
 
   return (
-    <svg id="harness-edge-markers" style={{ position: 'absolute', inset: 0, width: 0, height: 0 }}>
+    <svg
+      id="harness-edge-markers"
+      style={{ position: "absolute", inset: 0, width: 0, height: 0 }}
+    >
       <defs>
         {markers.map(({ id, color }) => (
           <marker
             key={id}
             id={id}
-            markerUnits="strokeWidth"
-            markerWidth={6}
-            markerHeight={6}
-            refX={5}
-            refY={3}
-            orient="auto-start-reverse">
-            <path d="M 0 0 L 5 3 L 0 6 z" fill={color} stroke={color} strokeWidth={1} />
+            markerUnits="strokeWidth" // size follows the line's stroke
+            markerWidth={3} // smaller than your 5x5
+            markerHeight={3}
+            viewBox="0 0 10 10"
+            refX={9} // tip of the arrow
+            refY={5}
+            orient="auto-start-reverse"
+          >
+            <path
+              d="M0 0 L10 5 L0 10 Z"
+              fill={color}
+              stroke={color}
+              strokeWidth={1}
+            />
           </marker>
         ))}
       </defs>
