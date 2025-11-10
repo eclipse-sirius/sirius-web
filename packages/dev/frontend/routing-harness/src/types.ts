@@ -14,6 +14,11 @@ export interface FixtureNode {
   id: string;
   label: string;
   position: XYPosition;
+  /**
+   * Optional parent container ID. When present the harness recreates the same
+   * node hierarchy as Sirius Web so routing can ignore ancestor collisions.
+   */
+  parentId?: string;
   size: {
     width: number;
     height: number;

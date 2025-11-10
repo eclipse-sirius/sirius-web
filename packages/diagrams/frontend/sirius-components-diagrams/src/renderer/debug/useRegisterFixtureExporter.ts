@@ -34,6 +34,7 @@ type FixtureNode = {
   id: string;
   label: string;
   position: XYPosition;
+  parentId?: string;
   size: { width: number; height: number };
   handles?: FixtureHandle[];
 };
@@ -338,6 +339,11 @@ const buildFixture = (
     });
 
     const handles = Array.from(handleEntries.values());
+    const parentId =
+      node.parentNode ??
+      node.parentId ??
+      reactFlowNodesById.get(node.id)?.parentNode ??
+      reactFlowNodesById.get(node.id)?.parentId;
 
     acc.push({
       id: node.id,
@@ -346,6 +352,7 @@ const buildFixture = (
         x: Math.round(absolute.x),
         y: Math.round(absolute.y),
       },
+      ...(parentId ? { parentId } : {}),
       size: {
         width: Math.round(width),
         height: Math.round(height),

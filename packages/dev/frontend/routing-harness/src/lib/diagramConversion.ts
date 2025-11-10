@@ -1,4 +1,4 @@
-import type { Edge, Node } from '@xyflow/react';
+import type { Edge, Node, XYPosition } from '@xyflow/react';
 import { Position } from '@xyflow/react';
 import type { EdgeData, NodeData } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/DiagramRenderer.types';
 import type { ConnectionHandle } from '../../../../../diagrams/frontend/sirius-components-diagrams/src/renderer/handles/ConnectionHandles.types';
@@ -156,20 +156,58 @@ const resolveHandleId = (prefix: 'source' | 'target', edge: FixtureEdge, fallbac
 
 const buildMarkerId = (type: string, edgeId: string) => `${type}--${edgeId}--markerEnd`;
 
+const buildAbsolutePositionLookup = (nodes: FixtureNode[]): Map<string, XYPosition> => {
+  return nodes.reduce((acc, node) => {
+    acc.set(node.id, { x: node.position.x, y: node.position.y });
+    return acc;
+  }, new Map<string, XYPosition>());
+};
+
+const resolveRelativePosition = (
+  node: FixtureNode,
+  absoluteLookup: Map<string, XYPosition>
+): XYPosition => {
+  if (!node.parentId) {
+    return { x: node.position.x, y: node.position.y };
+  }
+  const parentAbsolute = absoluteLookup.get(node.parentId);
+  if (!parentAbsolute) {
+    return { x: node.position.x, y: node.position.y };
+  }
+  return {
+    x: node.position.x - parentAbsolute.x,
+    y: node.position.y - parentAbsolute.y,
+  };
+};
+
 export const convertFixtureToDiagram = (
   fixture: DiagramFixture
 ): { nodes: Node<NodeData>[]; edges: Edge<EdgeData>[] } => {
+  const absoluteLookup = buildAbsolutePositionLookup(fixture.nodes);
 
-  const nodes: Node<NodeData>[] = fixture.nodes.map((node) => ({
-    id: node.id,
-    type: 'harnessNode',
-    position: { x: node.position.x, y: node.position.y },
-    data: buildNodeData(node),
-    width: node.size.width,
-    height: node.size.height,
-    draggable: false,
-    selectable: false,
-  }));
+  const nodes: Node<NodeData>[] = fixture.nodes.map((node) => {
+    const relativePosition = resolveRelativePosition(node, absoluteLookup);
+    const parentId = node.parentId;
+    const harnessNode = {
+      id: node.id,
+      type: 'harnessNode',
+      position: relativePosition,
+      data: buildNodeData(node),
+      width: node.size.width,
+      height: node.size.height,
+      draggable: false,
+      selectable: false,
+      positionAbsolute: { x: node.position.x, y: node.position.y },
+      parentNode: parentId,
+    } as Node<NodeData> & { parentId?: string };
+
+    if (parentId) {
+      harnessNode.parentId = parentId;
+      harnessNode.extent = 'parent';
+    }
+
+    return harnessNode;
+  });
 
   const edges: Edge<EdgeData>[] = fixture.edges.map((edge) => {
     const sourcePosition = toPositionEnum(edge.sourcePosition);
