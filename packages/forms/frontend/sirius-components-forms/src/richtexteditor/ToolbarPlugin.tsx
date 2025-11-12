@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,10 +67,10 @@ const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
   grouped: {
     margin: theme.spacing(0.5),
     border: 'none',
-    '&:not(:first-child)': {
+    '&:not(:first-of-type)': {
       borderRadius: theme.shape.borderRadius,
     },
-    '&:first-child': {
+    '&:first-of-type': {
       borderRadius: theme.shape.borderRadius,
     },
   },
