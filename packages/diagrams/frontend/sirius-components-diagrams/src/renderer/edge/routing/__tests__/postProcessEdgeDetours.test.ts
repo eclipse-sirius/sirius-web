@@ -257,7 +257,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-east-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-east-b-east.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-vertical-a-east-b-north',
@@ -275,7 +275,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-east-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-east-b-west.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-north-b-east',
@@ -329,7 +329,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-west-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-west-b-east.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-west-b-north',
@@ -347,13 +347,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-west-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-west-b-west.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-vertical-b-above-a-east-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-east-b-east.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-vertical-b-above-a-east-b-north',
@@ -371,7 +371,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-east-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-east-b-west.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-north-b-east',
@@ -425,7 +425,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-west-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-west-b-east.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-west-b-north',
@@ -443,7 +443,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-west-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-west-b-west.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-horizontal-b-left-a-east-b-east',
@@ -479,13 +479,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-north-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-north-b-north.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-horizontal-b-left-a-north-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-north-b-south.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-north-b-west',
@@ -503,13 +503,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-south-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-south-b-north.json',
-      expectedSegments: 7,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-south-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-south-b-south.json',
-      expectedSegments: 7,
+      expectedSegments: 3,
     },
     {
       id: 'directional-horizontal-b-left-a-south-b-west',
@@ -551,9 +551,15 @@ describe('buildDetouredPolyline', () => {
 
       const segmentCount = finalPolyline.length - 1;
       const rectilinear = isRectilinear(finalPolyline);
-      expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
-      expect(segmentCount).toBe(expectedSegments);
-      expect(rectilinear).toBe(true);
+      expect(
+        finalPolyline.length,
+        `${id} should always include both endpoints even when simplification removes internal bends`
+      ).toBeGreaterThanOrEqual(2);
+      expect(
+        segmentCount,
+        `${id} expected ${expectedSegments} rectilinear segments after detour + simplification to keep the path readable`
+      ).toBe(expectedSegments);
+      expect(rectilinear, `${id} must remain manhattan so arrowheads stay aligned to node faces`).toBe(true);
     }
   );
 

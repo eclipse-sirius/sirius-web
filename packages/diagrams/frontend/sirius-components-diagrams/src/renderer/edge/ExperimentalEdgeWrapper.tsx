@@ -60,6 +60,9 @@ const DEFAULT_FAN_OUT_ENABLED = true;
 const FAN_SPACING = 12;
 const FAN_MAX_SPREAD = 50;
 const MIN_DETOUR_SPAN = 6;
+// Collapses staircase-like zig-zags when the perpendicular excursion stays within this many pixels.
+// We keep the threshold relatively small so meaningful doglegs survive while smooth-step noise vanishes.
+const MONOTONIC_NOTCH_MAX_SPAN = 24;
 // Enables a segment overlap detection to make the edges then parallel, disabled currently as it seems to lead to regressions.
 const DEFAULT_PARALLEL_SPACING_ENABLED = true;
 // Enables the almost-straight post-processing pass unless an edge opts out.
@@ -1002,6 +1005,17 @@ export function simplifyRectilinearBends(
           mutated = true;
           break;
         }
+
+        // Same-direction horizontal legs indicate a monotonic notch rather than a true detour.
+        const sameDirection = dir1 !== 0 && dir3 !== 0 && dir1 === dir3;
+        const isNotch = sameDirection && spanMiddle <= MONOTONIC_NOTCH_MAX_SPAN;
+        if (isNotch) {
+          // Snap the elbow directly onto the downstream column and discard the tiny excursion.
+          const notchPoint = { x: d.x, y: b.y };
+          working.splice(i + 1, 2, notchPoint);
+          mutated = true;
+          break;
+        }
       }
 
       const verticalAB = a.x === b.x && a.y !== b.y;
@@ -1016,6 +1030,16 @@ export function simplifyRectilinearBends(
         const isSmallDetour = Math.max(span1, span3, spanMiddle) <= MIN_DETOUR_SPAN;
         if (dir1 !== 0 && dir3 !== 0 && dir1 === -dir3 && a.y === d.y && isSmallDetour) {
           working.splice(i + 1, 2);
+          mutated = true;
+          break;
+        }
+
+        const sameDirection = dir1 !== 0 && dir3 !== 0 && dir1 === dir3;
+        const isNotch = sameDirection && spanMiddle <= MONOTONIC_NOTCH_MAX_SPAN;
+        if (isNotch) {
+          // Collapse the shallow vertical notch so the path keeps its single turn.
+          const notchPoint = { x: b.x, y: d.y };
+          working.splice(i + 1, 2, notchPoint);
           mutated = true;
           break;
         }
