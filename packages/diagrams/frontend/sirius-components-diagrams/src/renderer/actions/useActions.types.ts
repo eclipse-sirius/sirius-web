@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseActionsProps {
-  diagramElementId: string;
-}
-
 export interface UseActionsValue {
   actions: GQLAction[];
 }

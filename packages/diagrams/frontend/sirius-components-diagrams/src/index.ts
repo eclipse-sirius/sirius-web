@@ -34,7 +34,6 @@ export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graph
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
-export type { ActionProps } from './renderer/actions/Action.types';
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoints';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
 export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
@@ -93,3 +92,8 @@ export type { GQLDiagramDescription } from './representation/DiagramRepresentati
 export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
 export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
 export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
+export { ActionsContainer } from './renderer/actions/ActionsContainer';
+export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.types';
+export { Action } from './renderer/actions/Action';
+export type { ActionProps } from './renderer/actions/Action.types';
+export { useActions } from './renderer/actions/useActions';
