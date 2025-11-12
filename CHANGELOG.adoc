@@ -142,6 +142,8 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5699[#5699] [table] Preserve column order and visibility during CSV export
 - https://github.com/eclipse-sirius/sirius-web/issues/5386[#5661] [diagram] Fix an issue with manually placed handle position
 - https://github.com/eclipse-sirius/sirius-web/issues/5791[#5791] [diagram] Fix a bug where opening a diagram could steal the selection performed in the workbench
+- https://github.com/eclipse-sirius/sirius-web/issues/5799[#5799] [forms] Fix a warning on the frontend when rendering a Rich Text widget
+
 
 === New Features
 
