@@ -15,43 +15,13 @@ import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Theme } from '@mui/material/styles';
-import { Edge, InternalNode, Node, useStoreApi, XYPosition } from '@xyflow/react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { MultiLabelEdgeData } from '../../edge/MultiLabelEdge.types';
 import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteToolExtensionPoints';
 import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
-import { AdjustSizeTool } from './AdjustSizeTool';
-import { FadeElementTool } from './FadeElementTool';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
-import { PinUnPinTool } from './PinUnPinTool';
-import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
-import { ResetLabelPositionTool } from './ResetLabelPositionTool';
-import { ResetManuallyLaidOutHandlesTool } from './ResetManuallyLaidOutHandlesTool';
 import { Tool } from './Tool';
-
-const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
-  return !!diagramElement.data && 'pinned' in diagramElement.data;
-};
-const isFadable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
-  return !!diagramElement.data && 'faded' in diagramElement.data;
-};
-const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Edge<EdgeData> => {
-  return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
-};
-const isPositionSet = (position: XYPosition | undefined) => position && position.x && position.y;
-const containsNodeOutsideLabels = (diagramElement: InternalNode<Node<NodeData>> | undefined) => {
-  return diagramElement && isPositionSet(diagramElement.data.outsideLabels.BOTTOM_MIDDLE?.position);
-};
-const containsEdgeOutsideLabels = (diagramElement: Edge<MultiLabelEdgeData> | undefined) => {
-  return (
-    diagramElement &&
-    diagramElement.data &&
-    (isPositionSet(diagramElement.data.endLabel?.position) ||
-      isPositionSet(diagramElement.data.label?.position) ||
-      isPositionSet(diagramElement.data.beginLabel?.position))
-  );
-};
 
 const useStyle = makeStyles()((theme: Theme) => ({
   quickAccessTools: {
@@ -77,56 +47,11 @@ export const PaletteQuickAccessToolBar = ({
 
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   let diagramElement = edgeLookup.get(diagramElementId) || nodeLookup.get(diagramElementId);
-  const node = nodeLookup.get(diagramElementId);
-  const edge = edgeLookup.get(diagramElementId);
 
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)
   );
-
-  if (diagramElement) {
-    if (isPinnable(diagramElement)) {
-      quickAccessToolComponents.push(
-        <PinUnPinTool
-          diagramElementId={diagramElementId}
-          isPined={diagramElement.data.pinned}
-          key="tool_pinUnPinTool"
-        />
-      );
-    }
-    if (isFadable(diagramElement)) {
-      quickAccessToolComponents.push(
-        <FadeElementTool
-          diagramElementId={diagramElementId}
-          isFaded={diagramElement.data.faded}
-          key="tool_fadeElementTool"
-        />
-      );
-    }
-    if (
-      isBendable(diagramElement) &&
-      diagramElement.data?.bendingPoints &&
-      diagramElement.data.bendingPoints.length > 0
-    ) {
-      quickAccessToolComponents.push(
-        <ResetEditedEdgePathTool diagramElementId={diagramElementId} key="tool_resetEditedEdgePathTool" />
-      );
-    }
-
-    if (containsNodeOutsideLabels(node) || containsEdgeOutsideLabels(edge))
-      quickAccessToolComponents.push(
-        <ResetLabelPositionTool
-          diagramElementId={diagramElementId}
-          key="tool_resetLabelPosition"></ResetLabelPositionTool>
-      );
-
-    quickAccessToolComponents.push(
-      <ResetManuallyLaidOutHandlesTool diagramElementId={diagramElementId} key="tool_resetManuallyLaidOutHandlesTool" />
-    );
-
-    quickAccessToolComponents.push(<AdjustSizeTool diagramElementId={diagramElementId} key="tool_adjustSizeTool" />);
-  }
 
   const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
     diagramPaletteToolExtensionPoint
@@ -146,16 +71,12 @@ export const PaletteQuickAccessToolBar = ({
       )
     );
 
-  if (quickAccessToolComponents.length > 0) {
-    return (
-      <>
-        <div>
-          <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
-        </div>
-        <Divider />
-      </>
-    );
-  } else {
-    return null;
-  }
+  return quickAccessToolComponents.length > 0 ? (
+    <>
+      <div>
+        <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
+      </div>
+      <Divider />
+    </>
+  ) : null;
 };

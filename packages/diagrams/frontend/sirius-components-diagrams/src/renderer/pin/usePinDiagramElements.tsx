@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
-  GQLErrorPayload,
   GQLPinDiagramElementData,
   GQLPinDiagramElementInput,
   GQLPinDiagramElementPayload,
@@ -47,25 +46,25 @@ const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErr
 
 export const usePinDiagramElements = (): UsePinDiagramElements => {
   const { t } = useTranslation('sirius-components-diagrams');
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  const [pinElementMutation, { data: pinDiagramElementData, error: pinDiagramElementError }] = useMutation<
+  const [pinElementMutation, { data, loading, error }] = useMutation<
     GQLPinDiagramElementData,
     GQLPinDiagramElementVariables
   >(pinDiagramElementMutation);
 
   useEffect(() => {
-    if (pinDiagramElementError) {
+    if (error) {
       addErrorMessage(t('errors.unexpected'));
     }
-    if (pinDiagramElementData) {
-      const { pinDiagramElement } = pinDiagramElementData;
+    if (data) {
+      const { pinDiagramElement } = data;
       if (isErrorPayload(pinDiagramElement)) {
-        addErrorMessage(pinDiagramElement.message);
+        addMessages(pinDiagramElement.messages);
       }
     }
-  }, [pinDiagramElementData, pinDiagramElementError]);
+  }, [data, error]);
 
   const pinDiagramElements = useCallback(
     (nodeId: string[], pinned: boolean) => {
@@ -83,5 +82,5 @@ export const usePinDiagramElements = (): UsePinDiagramElements => {
     [editingContextId, diagramId, readOnly, pinElementMutation]
   );
 
-  return { pinDiagramElements };
+  return { pinDiagramElements, loading, data: data ?? null };
 };

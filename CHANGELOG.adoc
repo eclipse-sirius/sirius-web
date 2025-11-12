@@ -54,6 +54,10 @@ Updates the GraphQL schema and frontend hooks accordingly.
 - [core] Update the signature of `IconOverlay` by renaming the props `iconURL` to `iconURLs` to highlight the fact that a collection of URLs is expected.
 - https://github.com/eclipse-sirius/sirius-web/issues/5722[#5722] [core] Decouple the omnibox from the workbench
 The `omnibox.graphqls` schema has been changed to make explicit the fact that the current APIs are aimed at the integration of the omnibox in the workbench:
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] `IPaletteToolsProvider` signature method has been changed to `List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);`.
+The parameter `DiagramContext diagramContext` has been added.
+
+
 
 [source, graphqls]
 ----
@@ -174,6 +178,9 @@ This will allow to integrate the command palette in other contexts than the work
 - https://github.com/eclipse-sirius/sirius-web/issues/5766[#5766] [diagram] Merge all frontend palette into one common component
 - https://github.com/eclipse-sirius/sirius-web/issues/5563[#5563] [diagram] Contribute rectangular, image and edge appearance sections with the corresponding contribution point
 - https://github.com/eclipse-sirius/sirius-web/issues/5050[#5050] [sirius-web] Keep the dependencies of a project during the download / upload.
+- https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
+
 
 
 == 2025.10.0
