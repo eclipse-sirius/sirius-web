@@ -21,7 +21,7 @@ describe('Project Browser - Omnibox', () => {
     it('Then the omnibox can be displayed and used to create a new project', () => {
       const omnibox = new Omnibox();
       omnibox.display();
-      omnibox.sendQuery('').findByTestId('New project').click();
+      omnibox.sendQuery('').findByTestId('Blank project').click();
       omnibox.shouldBeClosed();
       cy.location().should((location) => {
         expect(location.pathname).to.eq('/new/project');
