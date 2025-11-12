@@ -199,7 +199,7 @@ As a result, some of those menu items are not contributed anymore on invalid use
 - https://github.com/eclipse-sirius/sirius-web/issues/5788[#5788] [sirius-web] Add resource changes in the impact analysis tree.
 - https://github.com/eclipse-sirius/sirius-web/issues/5802[#5802] [tree] Add `ITreeInput` parameter to `ISingleClickTreeItemContextMenuEntryExecutor#canExecute`.
 The executor typically needs to check the `menuEntryId` of the input to ensure it is reacting to the correct input.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5784[#5784] [diagram] Export `Action` components and related types to enable reuse in custom nodes
 
 
 
