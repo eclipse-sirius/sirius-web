@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteWorkbenchOmniboxCommandMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxSearchQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
@@ -44,6 +43,7 @@ import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.papaya.omnibox.PapayaCreateSampleProjectCommandProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxCommandsQueryRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,14 +165,14 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
         var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
         List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
-        assertThat(allCommandLabels).hasSize(1).contains("New project");
+        assertThat(allCommandLabels).hasSize(1).contains("Blank project");
 
         Map<String, Object> secondQueryVariables = Map.of(
-                "query", "New"
+                "query", "Blank"
         );
         var secondQueryResult = this.projectsOmniboxCommandsQueryRunner.run(secondQueryVariables);
         List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
-        assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "New project"));
+        assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Blank project"));
 
         Map<String, Object> thirdQueryVariables = Map.of(
                 "query", "yello"
