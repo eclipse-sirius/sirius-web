@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.2</version>
+		<version>2025.10.3</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-table-customcells</artifactId>
-	<version>2025.10.2</version>
+	<version>2025.10.3</version>
 	<name>sirius-components-view-table-customcells</name>
 	<description>Support for additional table custom cells</description>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.10.2</version>
+			<version>2025.10.3</version>
 		</dependency>
 	</dependencies>
 
