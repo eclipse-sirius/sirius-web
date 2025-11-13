@@ -18,13 +18,13 @@
     <parent>
         <groupId>org.eclipse.sirius</groupId>
         <artifactId>sirius-web-parent</artifactId>
-        <version>2025.10.3</version>
+        <version>2025.10.4</version>
         <relativePath>../../../releng/backend/sirius-web-parent</relativePath>
     </parent>
 
     <groupId>org.eclipse.sirius</groupId>
     <artifactId>sirius-components-core-graphql</artifactId>
-    <version>2025.10.3</version>
+    <version>2025.10.4</version>
     <name>sirius-components-core-graphql</name>
     <description>Sirius Components Core Graphql</description>
 
@@ -36,23 +36,23 @@
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-graphql-api</artifactId>
-            <version>2025.10.3</version>
+            <version>2025.10.4</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-collaborative</artifactId>
-            <version>2025.10.3</version>
+            <version>2025.10.4</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-tests</artifactId>
-            <version>2025.10.3</version>
+            <version>2025.10.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-components-spring-tests</artifactId>
-            <version>2025.10.3</version>
+            <version>2025.10.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
