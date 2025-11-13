@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
  */
 public interface ISingleClickTreeItemContextMenuEntryExecutor {
 
-    boolean canExecute(TreeDescription treeDescription);
+    boolean canExecute(TreeDescription treeDescription, ITreeInput treeInput);
 
     IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId, ITreeInput treeInput);
 }

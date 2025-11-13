@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.ISingleClickTreeItemContextMenuEntryExecutor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.InvokeTreeImpactAnalysisInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.Failure;
@@ -78,14 +79,21 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
     }
 
     @Override
-    public boolean canExecute(TreeDescription treeDescription) {
-        return Objects.equals(treeDescription.getId(), ExplorerDescriptionProvider.DESCRIPTION_ID);
+    public boolean canExecute(TreeDescription treeDescription, ITreeInput treeInput) {
+        boolean result = false;
+        if (treeInput instanceof InvokeSingleClickTreeItemContextMenuEntryInput invokeSingleClickTreeItemContextMenuEntryInput) {
+            result = Objects.equals(invokeSingleClickTreeItemContextMenuEntryInput.menuEntryId(), ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY);
+        } else if (treeInput instanceof InvokeTreeImpactAnalysisInput invokeTreeImpactAnalysisInput) {
+            result = Objects.equals(invokeTreeImpactAnalysisInput.menuEntryId(), ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY);
+        }
+        return result;
     }
 
     @Override
     public IStatus execute(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem, String treeItemMenuContextEntryId, ITreeInput treeInput) {
         IStatus result = new Failure("Something went wrong while handling the action");
-        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+        if (editingContext instanceof EditingContext siriusWebEditingContext
+                && (treeInput instanceof InvokeSingleClickTreeItemContextMenuEntryInput || treeInput instanceof InvokeTreeImpactAnalysisInput)) {
             Optional<Library> optionalLibrary = this.getLibrary(editingContext, treeItem.getId());
             if (optionalLibrary.isPresent()) {
                 Library library = optionalLibrary.get();

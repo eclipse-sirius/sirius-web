@@ -102,7 +102,7 @@ public class InvokeTreeImpactAnalysisToolEventHandler implements ITreeEventHandl
 
                 IStatus entryExecutionResult = this.treeQueryService.findTreeItem(tree, invokeTreeImpactAnalysisInput.treeItemId())
                         .flatMap(treeItem -> this.singleClickTreeItemContextMenuEntryExecutors.stream()
-                                .filter(executor -> executor.canExecute(treeDescription))
+                                .filter(executor -> executor.canExecute(treeDescription, treeInput))
                                 .findFirst()
                                 .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, invokeTreeImpactAnalysisInput.menuEntryId(), invokeTreeImpactAnalysisInput)))
                         .orElseGet(() -> new Failure(this.messageService.notFound()));
