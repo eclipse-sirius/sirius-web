@@ -51,7 +51,7 @@ export const ProjectImagesSettings = ({}: ProjectSettingTabProps) => {
   });
 
   const { classes } = useProjectImagesSettingsStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectImagesSettings' });
   const { projectId } = useParams<ProjectImagesSettingsParams>();
 
   const { data, loading, refreshImages } = useProjectImages(projectId);

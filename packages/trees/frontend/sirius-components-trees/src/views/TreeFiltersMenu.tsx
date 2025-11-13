@@ -33,7 +33,7 @@ const useTreeFiltersMenuStyles = makeStyles()((_) => ({
 
 export const TreeFiltersMenu = ({ filters, onTreeFilterMenuItemClick }: TreeFilterMenuProps) => {
   const { classes } = useTreeFiltersMenuStyles();
-  const { t } = useTranslation('sirius-components-trees');
+  const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treeFiltersMenu' });
   const [open, setOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
 

@@ -22,7 +22,7 @@ import { RenameProjectModalProps, RenameProjectModalState } from './RenameProjec
 import { useRenameProject } from './useRenameProject';
 
 export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProjectModalProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.rename' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'renameProjectModal' });
 
   const [state, setState] = useState<RenameProjectModalState>({
     newName: project.name,

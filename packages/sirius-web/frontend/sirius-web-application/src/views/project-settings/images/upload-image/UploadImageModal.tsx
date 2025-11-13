@@ -66,7 +66,7 @@ const isNameInvalid = (name: string) => name && name.trim().length < 3;
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
   const { classes } = useUploadImageModalStyle();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.upload' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadImageModal' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage } = useMultiToast();
 

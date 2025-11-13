@@ -49,7 +49,7 @@ const useCreateProjectAreaStyles = makeStyles()((theme) => ({
 
 export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
   const { classes } = useCreateProjectAreaStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'createProjectArea' });
 
   const createProjectAreaCards = useComponents(createProjectAreaCardExtensionPoint);
 

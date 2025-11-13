@@ -90,7 +90,7 @@ const isUploadProjectSuccessPayload = (payload: GQLUploadProjectPayload): payloa
 export const UploadProjectView = () => {
   const { classes } = useUploadProjectViewStyles();
   const { addErrorMessage } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.upload' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadProjectView' });
   const [state, setState] = useState<UploadProjectViewState>({
     file: null,
     loading: false,

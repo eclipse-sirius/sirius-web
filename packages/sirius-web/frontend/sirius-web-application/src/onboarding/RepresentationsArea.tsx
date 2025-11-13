@@ -48,7 +48,7 @@ export const RepresentationsArea = ({ editingContextId }: RepresentationAreaProp
   });
 
   const { classes } = useRepresentationAreaStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.edit' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'representationsArea' });
   const { setSelection } = useSelection();
 
   const { data } = useRepresentationMetadata(editingContextId, state.startCursor, state.endCursor, state.pageSize);

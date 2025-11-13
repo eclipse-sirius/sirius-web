@@ -76,7 +76,7 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
 };
 
 const useDropNodeMutation = () => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useDropNodeMutation' });
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<

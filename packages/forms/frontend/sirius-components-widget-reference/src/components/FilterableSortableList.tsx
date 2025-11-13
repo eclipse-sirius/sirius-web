@@ -105,7 +105,7 @@ export const FilterableSortableList = ({
   moveElement,
 }: FilterableSortableListProps) => {
   const { classes } = useStyles();
-  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'edit' });
+  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'filterableSortableList' });
 
   const [state, setState] = useState<FilterableSortableListState>({
     filterBarText: '',

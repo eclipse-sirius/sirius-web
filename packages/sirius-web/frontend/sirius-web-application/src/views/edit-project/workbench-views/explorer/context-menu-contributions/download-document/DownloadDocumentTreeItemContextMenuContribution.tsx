@@ -24,7 +24,9 @@ export const DownloadDocumentTreeItemContextMenuContribution = forwardRef(
     { editingContextId, item, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLAnchorElement>
   ) => {
-    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.edit' });
+    const { t } = useTranslation('sirius-web-application', {
+      keyPrefix: 'downloadDocumentTreeItemContextMenuContribution',
+    });
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
     return (

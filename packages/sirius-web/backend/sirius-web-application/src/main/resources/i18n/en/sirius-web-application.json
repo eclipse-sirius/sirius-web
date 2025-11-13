@@ -1,152 +1,195 @@
 {
-  "core": {
+  "createProjectArea": {
+    "createNewProject": "Create a new project"
+  },
+  "deleteImageModal": {
+    "content": "This action will delete the image and might break projects which use it. It cannot be reversed.",
+    "submit": "Delete",
+    "title": "Delete the image"
+  },
+  "deleteProjectModal": {
+    "content": "This action will delete everything in the project. All data and all representations will be lost. It cannot be reversed.",
+    "submit": "Delete",
+    "title": "Delete the project \"{{name}}\""
+  },
+  "diagramFilter": {
+    "filter": "Filter elements"
+  },
+  "downloadDocumentTreeItemContextMenuContribution": {
+    "download": "Download"
+  },
+  "duplicateObjectTreeItemContextMenuContribution": {
+    "duplicate": "Duplicate object"
+  },
+  "fileUpload": {
     "clickToSelectFile": "Click here to select a file"
   },
-  "diagrams": {
-    "panel": {
-      "filter": "Filter elements"
+  "imageRow": {
+    "copyId": "Copy ID to clipboard"
+  },
+  "imageTable": {
+    "id": "ID",
+    "label": "Label",
+    "delete": "Delete"
+  },
+  "listProjectsArea": {
+    "existingProjects": "Existing Projects"
+  },
+  "newDocumentArea": {
+    "createModel": "Create a new Model",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    },
+    "noAccessToCreateModel": "You need edit access to create models",
+    "selectModelToCreate": "Select the model to create"
+  },
+  "newDocumentModal": {
+    "modelType": {
+      "label": "Model type"
+    },
+    "name": {
+      "helperText": "The name cannot be empty",
+      "label": "Name",
+      "placeholder": "Enter the name of the model"
+    },
+    "submit": "Create",
+    "title": "Create a new model"
+  },
+  "newDocumentModalContribution": {
+    "newModel": "New model"
+  },
+  "newObjectModal": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    },
+    "submit": "Create",
+    "title": "Create a new object",
+    "type": {
+      "label": "Object type"
     }
   },
-  "errors": {
-    "unexpected": "An unexpected error has occurred, please refresh the page"
+  "newObjectTreeItemContextMenuContribution": {
+    "newObject": "New object"
   },
-  "image": {
-    "delete": {
-      "content": "This action will delete the image and might break projects which use it. It cannot be reversed.",
-      "submit": "Delete",
-      "title": "Delete the image"
+  "newProjectView": {
+    "description": "Get started by creating a new project",
+    "submit": "Create",
+    "title": "Create a new project"
+  },
+  "newRepresentationArea": {
+    "createRepresentation": "Create a new Representation",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
     },
-    "list": {
-      "copyId": "Copy ID to clipboard",
-      "delete": "Delete",
-      "empty": "No project images available, start by uploading one",
-      "id": "ID",
+    "noAccessToCreateRepresentation": "You need edit access to create representations",
+    "noRepresentations": "There are no representations available for the current selection",
+    "selectRepresentationToCreate": "Select the representation to create"
+  },
+  "newRepresentationModal": {
+    "name": {
+      "helperText": "The name cannot be empty",
+      "label": "Name",
+      "placeholder": "Enter the name of the representation"
+    },
+    "submit": "Create",
+    "title": "Create a new representation",
+    "type": {
+      "label": "Representation type"
+    }
+  },
+  "newRepresentationTreeItemContextMenuContribution": {
+    "newRepresentation": "New representation"
+  },
+  "newRootObjectModal": {
+    "domain": {
+      "label": "Domain"
+    },
+    "submit": "Create",
+    "suggestedType": {
+      "label": "Show only suggested root type"
+    },
+    "title": "Create a new root object",
+    "type": {
+      "label": "Object type"
+    }
+  },
+  "newRootObjectTreeItemContextMenuContribution": {
+    "newObject": "New object"
+  },
+  "projectActionButton": {
+    "more": "More"
+  },
+  "projectImagesSettings": {
+    "empty": "No project images available, start by uploading one",
+    "title": "Project Images",
+    "upload": "Upload"
+  },
+  "projectTemplatesModal": {
+    "messages": {
+      "loading": "Loading..."
+    },
+    "selectProjectTemplate": "Select a project template"
+  },
+  "renameImageModal": {
+    "name": {
+      "helperText": "The name must contain at least 3 characters",
+      "label": "Name",
+      "placeholder": "Enter the new image name"
+    },
+    "submit": "Rename",
+    "title": "Rename the image"
+  },
+  "renameProjectModal": {
+    "name": {
+      "helperText": "The name is required and must contain less than 1024 characters",
+      "label": "Name",
+      "placeholder": "Enter a new project name"
+    },
+    "submit": "Rename",
+    "title": "Rename the project"
+  },
+  "representationsArea": {
+    "openRepresentation": "Open an existing Representation",
+    "selectRepresentationToOpen": "Select the representation to open"
+  },
+  "uploadDocumentModal": {
+    "cancel": "Close",
+    "title": "Upload new model"
+  },
+  "uploadDocumentModalContribution": {
+    "uploadModel": "Upload model"
+  },
+  "uploadImageModal": {
+    "label": {
       "label": "Label",
-      "title": "Project Images",
-      "upload": "Upload"
+      "placeholder": "Label for the image"
     },
-    "rename": {
-      "name": {
-        "helperText": "The name must contain at least 3 characters",
-        "label": "Name",
-        "placeholder": "Enter the new image name"
-      },
-      "submit": "Rename",
-      "title": "Rename the image"
-    },
-    "upload": {
-      "label": {
-        "label": "Label",
-        "placeholder": "Label for the image"
-      },
-      "submit": "Upload",
-      "title": "Upload new image"
+    "submit": "Upload",
+    "title": "Upload new image"
+  },
+  "uploadProjectView": {
+    "description": "Start with an existing project",
+    "submit": "Upload",
+    "title": "Upload a project"
+  },
+  "useCreateDocument": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "messages": {
-    "loading": "Loading..."
-  },
-  "model": {
-    "create": {
-      "modelType": {
-        "label": "Model type"
-      },
-      "name": {
-        "helperText": "The name cannot be empty",
-        "label": "Name",
-        "placeholder": "Enter the name of the model"
-      },
-      "submit": "Create",
-      "title": "Create a new model"
-    },
-    "upload": {
-      "cancel": "Close",
-      "title": "Upload new model"
+  "useCreateProjectFromTemplate": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "object": {
-    "create": {
-      "submit": "Create",
-      "title": "Create a new object",
-      "type": {
-        "label": "Object type"
-      }
-    },
-    "newRoot": {
-      "domain": {
-        "label": "Domain"
-      },
-      "submit": "Create",
-      "suggestedType": {
-        "label": "Show only suggested root type"
-      },
-      "title": "Create a new root object",
-      "type": {
-        "label": "Object type"
-      }
+  "useDeleteProject": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "project": {
-    "create": {
-      "description": "Get started by creating a new project",
-      "submit": "Create",
-      "title": "Create a new project"
-    },
-    "delete": {
-      "content": "This action will delete everything in the project. All data and all representations will be lost. It cannot be reversed.",
-      "submit": "Delete",
-      "title": "Delete the project \"{{name}}\""
-    },
-    "edit": {
-      "createModel": "Create a new Model",
-      "createRepresentation": "Create a new Representation",
-      "download": "Download",
-      "duplicate": "Duplicate object",
-      "newModel": "New model",
-      "newObject": "New object",
-      "newRepresentation": "New representation",
-      "noAccessToCreateModel": "You need edit access to create models",
-      "noAccessToCreateRepresentation": "You need edit access to create representations",
-      "noRepresentations": "There are no representations available for the current selection",
-      "openRepresentation": "Open an existing Representation",
-      "selectModelToCreate": "Select the model to create",
-      "selectRepresentationToCreate": "Select the representation to create",
-      "selectRepresentationToOpen": "Select the representation to open",
-      "uploadModel": "Upload model"
-    },
-    "list": {
-      "createNewProject": "Create a new project",
-      "existingProjects": "Existing Projects",
-      "more": "More",
-      "selectProjectTemplate": "Select a project template"
-    },
-    "rename": {
-      "name": {
-        "helperText": "The name is required and must contain less than 1024 characters",
-        "label": "Name",
-        "placeholder": "Enter a new project name"
-      },
-      "submit": "Rename",
-      "title": "Rename the project"
-    },
-    "upload": {
-      "description": "Start with an existing project",
-      "submit": "Upload",
-      "title": "Upload a project"
-    }
-  },
-  "representation": {
-    "create": {
-      "name": {
-        "helperText": "The name cannot be empty",
-        "label": "Name",
-        "placeholder": "Enter the name of the representation"
-      },
-      "submit": "Create",
-      "title": "Create a new representation",
-      "type": {
-        "label": "Representation type"
-      }
+  "useRenameProject": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   }
 }

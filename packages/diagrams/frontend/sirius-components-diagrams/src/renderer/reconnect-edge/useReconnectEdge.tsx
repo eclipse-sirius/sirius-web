@@ -73,7 +73,7 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
   payload.__typename === 'SuccessPayload';
 
 export const useReconnectEdge = (): UseReconnectEdge => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useReconnectEdge' });
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();

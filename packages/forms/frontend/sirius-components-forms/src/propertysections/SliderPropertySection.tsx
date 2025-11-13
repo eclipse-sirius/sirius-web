@@ -70,7 +70,7 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   readOnly,
 }: PropertySectionComponentProps<GQLSlider>) => {
   const { classes } = useSliderSectionStyles();
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'sliderPropertySection' });
 
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
     editSliderMutation

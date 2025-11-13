@@ -104,6 +104,7 @@ This mechanisms was previously used to provide the menu entry to update/remove a
 - https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] During layout of custom nodes, all the newly created nodes are now used and not only the first one.
 The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
 An example of usage is available in `EllipseNodeLayoutHandler.ts`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Any locales contributed by downstream projects should take account the renamed keys
 
 
 === Dependency update
@@ -213,6 +214,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5635[#5635] [diagram] Improve the position of border nodes when they are used as edge handles
 - https://github.com/eclipse-sirius/sirius-web/issues/5821[#5821] [sirius-web] Provide a way to customize the tree displayed in the object duplication modal.
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
+- https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Rename the key of i18n keys to reflect the frontend modularity better
 
 
 

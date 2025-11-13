@@ -149,7 +149,7 @@ export const SplitButtonPropertySection = ({
   });
 
   const { classes: containerClasses } = useContainerStyle();
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'splitButtonPropertySection' });
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation

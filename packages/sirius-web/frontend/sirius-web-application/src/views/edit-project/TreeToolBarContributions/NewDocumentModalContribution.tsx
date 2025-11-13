@@ -20,7 +20,7 @@ import { NewDocumentModal } from '../../../modals/new-document/NewDocumentModal'
 type Modal = 'NewDocument';
 
 export const NewDocumentModalContribution = ({ disabled, editingContextId }: TreeToolBarContributionComponentProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.edit' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newDocumentModalContribution' });
 
   const [modal, setModal] = useState<Modal | null>(null);
 

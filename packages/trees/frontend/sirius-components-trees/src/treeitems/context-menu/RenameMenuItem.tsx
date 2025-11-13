@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { RenameMenuItemProps } from './RenameMenuItem.types';
 
 export const RenameMenuItem = ({ item, readOnly, onClick }: RenameMenuItemProps) => {
-  const { t } = useTranslation('sirius-components-trees');
+  const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'renameMenuItem' });
   if (!item.editable) {
     return null;
   }

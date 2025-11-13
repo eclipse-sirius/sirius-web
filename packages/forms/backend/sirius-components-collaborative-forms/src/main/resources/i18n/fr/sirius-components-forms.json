@@ -1,6 +1,57 @@
 {
-  "errors": {
-    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  "buttonPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
   },
-  "none": "Aucun"
+  "checkboxPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "listPropertySection": {
+    "none": "Aucun",
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "multiSelectPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "radioPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "richTextPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "selectPropertySection": {
+    "none": "Aucun",
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "sliderPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "splitButtonPropertySection": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "treePropertySection": {
+    "none": "Aucun"
+  },
+  "toolbarAction": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  }
 }

@@ -1,11 +1,29 @@
 {
-  "edit": {
-    "enterNewValue": "Enter the new value"
+  "diagramDirectEditInput": {
+    "enterNewValue": "Enter the new value",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
   },
-  "errors": {
-    "unexpected": "An unexpected error has occurred, please refresh the page"
+  "diagramPanel": {
+    "exitFullScreen": "Exit full screen mode",
+    "exitSnapToGrid": "Exit snap to grid mode",
+    "fitToScreen": "Fit to screen",
+    "hideHelperLines": "Hide helper lines",
+    "revealFaded": "Reveal faded elements",
+    "revealHidden": "Reveal hidden elements",
+    "shareDiagram": "Share diagram",
+    "showHelperLines": "Show helper lines",
+    "toggleFullScreen": "Toggle full screen mode",
+    "toggleSnapToGrid": "Toggle snap to grid mode",
+    "unpinAll": "Unpin all elements",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
   },
-  "palette": {
+  "exportImageButton": {
+    "exportDiagram": "Export the diagram as an image"
+  },
+  "groupPalette": {
     "alignBottom": "Align bottom",
     "alignCenter": "Align center",
     "alignLeft": "Align left",
@@ -24,20 +42,39 @@
     "makeSameSize": "Make same size",
     "pinElements": "Pin elements"
   },
-  "panel": {
-    "exitFullScreen": "Exit full screen mode",
-    "exitSnapToGrid": "Exit snap to grid mode",
-    "exportDiagram": "Export the diagram as an image",
-    "fitToScreen": "Fit to screen",
-    "hideHelperLines": "Hide helper lines",
-    "revealFaded": "Reveal faded elements",
-    "revealHidden": "Reveal hidden elements",
-    "shareDiagram": "Share diagram",
-    "showHelperLines": "Show helper lines",
-    "toggleFullScreen": "Toggle full screen mode",
-    "toggleSnapToGrid": "Toggle snap to grid mode",
-    "unpinAll": "Unpin all elements",
-    "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+  "useDrop": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "useDropNodeMutation": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "useFadeDiagramElements": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "useHideDiagramElements": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "usePinDiagramElements": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "useReconnectEdge": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "useSynchronizeLayoutData": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
   }
 }

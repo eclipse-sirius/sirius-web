@@ -46,7 +46,7 @@ const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErr
   payload.__typename === 'ErrorPayload';
 
 export const usePinDiagramElements = (): UsePinDiagramElements => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'usePinDiagramElements' });
   const { addErrorMessage } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 

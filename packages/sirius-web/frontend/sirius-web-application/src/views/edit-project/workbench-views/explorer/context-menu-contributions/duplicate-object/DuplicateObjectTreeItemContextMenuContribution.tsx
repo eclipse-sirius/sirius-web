@@ -30,7 +30,9 @@ export const DuplicateObjectTreeItemContextMenuContribution = forwardRef(
       isModalOpen: false,
     });
 
-    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.edit' });
+    const { t } = useTranslation('sirius-web-application', {
+      keyPrefix: 'duplicateObjectTreeItemContextMenuContribution',
+    });
 
     const { setSelection } = useSelection();
     const onObjectCreated = (selection: Selection) => {

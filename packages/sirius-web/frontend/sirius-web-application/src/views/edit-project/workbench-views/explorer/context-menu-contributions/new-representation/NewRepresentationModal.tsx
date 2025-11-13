@@ -105,7 +105,7 @@ export const NewRepresentationModal = ({
   onClose,
 }: NewRepresentationModalProps) => {
   const { classes } = useNewRepresentationModalStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'representation.create' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newRepresentationModal' });
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<NewRepresentationState>({
     representationDescriptions: [],

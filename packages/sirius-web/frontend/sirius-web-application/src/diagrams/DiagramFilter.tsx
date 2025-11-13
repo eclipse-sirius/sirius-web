@@ -32,7 +32,7 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'diagrams.panel' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'diagramFilter' });
 
   return (
     <>

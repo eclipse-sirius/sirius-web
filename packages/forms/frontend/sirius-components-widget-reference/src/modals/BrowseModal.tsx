@@ -34,7 +34,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
   const [selectedTreeItemIds, setSelectedTreeItemIds] = useState<string[]>(
     widget.referenceValues.map((value) => value.id)
   );
-  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'select' });
+  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'browseModal' });
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
     if (widget.reference.manyValued) {

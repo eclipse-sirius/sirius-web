@@ -62,7 +62,7 @@ const isSuccessPayload = (payload: GQLLayoutDiagramPayload): payload is GQLSucce
   payload.__typename === 'SuccessPayload';
 
 export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useSynchronizeLayoutData' });
   const { diagramId: representationId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();

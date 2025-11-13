@@ -44,7 +44,7 @@ const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayl
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
   const { addErrorMessage } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.delete' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'deleteImageModal' });
 
   const [deleteImage, { loading, data, error }] = useMutation<GQLDeleteImageMutationData>(deleteImageMutation);
   useEffect(() => {

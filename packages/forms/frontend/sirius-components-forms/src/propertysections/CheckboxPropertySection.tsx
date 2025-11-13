@@ -102,7 +102,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'checkboxPropertySection' });
 
   const [editCheckbox, { loading, error, data }] = useMutation<GQLEditCheckboxMutationData>(editCheckboxMutation);
   const onChange = (event) => {

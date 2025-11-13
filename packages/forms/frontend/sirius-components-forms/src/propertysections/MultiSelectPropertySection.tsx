@@ -128,7 +128,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'multiSelectPropertySection' });
 
   const [editMultiSelect, { loading, error, data }] =
     useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);

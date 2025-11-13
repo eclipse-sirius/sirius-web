@@ -52,7 +52,7 @@ export const DiagramPanel = memo(
       arrangeAllDone: false,
       arrangeAllInProgress: false,
     });
-    const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'panel' });
+    const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPanel' });
 
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(

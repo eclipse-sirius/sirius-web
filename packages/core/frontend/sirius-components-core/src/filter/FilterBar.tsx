@@ -37,7 +37,7 @@ const useFilterBarStyles = makeStyles()((theme: Theme) => ({
 }));
 export const FilterBar = ({ onTextChange, onTextClear, text }: FilterBarProps) => {
   const { classes } = useFilterBarStyles();
-  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'filter' });
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'filterBar' });
 
   return (
     <div className={classes.filterbar}>

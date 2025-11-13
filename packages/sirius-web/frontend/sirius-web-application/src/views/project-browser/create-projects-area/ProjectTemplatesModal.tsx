@@ -68,7 +68,7 @@ const useProjectTemplatesModalStyles = makeStyles()((theme) => ({
 
 export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) => {
   const { classes: styles } = useProjectTemplatesModalStyles();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectTemplatesModal' });
 
   const [state, setState] = useState<ProjectTemplatesModalState>({
     page: 0,
@@ -160,7 +160,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
       data-testid="project-templates-modal"
       maxWidth="md"
       fullWidth>
-      <DialogTitle id="dialog-title">{t('project.list.selectProjectTemplate')}</DialogTitle>
+      <DialogTitle id="dialog-title">{t('selectProjectTemplate')}</DialogTitle>
       <DialogContent className={styles.content}>{content}</DialogContent>
     </Dialog>
   );

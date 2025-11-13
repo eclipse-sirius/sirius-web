@@ -78,7 +78,7 @@ export const TransferModal = ({
     options: [],
     selectedTreeItemIds: [],
   });
-  const { t } = useTranslation('sirius-components-widget-reference');
+  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'transferModal' });
 
   const {
     loading: childReferenceValueOptionsLoading,
@@ -234,7 +234,7 @@ export const TransferModal = ({
       maxWidth="lg"
       fullWidth
       data-testid="transfer-modal">
-      <DialogTitle id="dialog-title">{t('edit.title')}</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <Box
           sx={(theme) => ({
@@ -251,7 +251,7 @@ export const TransferModal = ({
               descriptionId={widget.descriptionId}
               isContainment={widget.reference.containment}
               markedItemIds={state.right.map((entry) => entry.id)}
-              title={t('edit.choices')}
+              title={t('choices')}
               leafType={'reference'}
               ownerKind={widget.reference.ownerKind}
               onTreeItemClick={onTreeItemClick}
@@ -313,7 +313,7 @@ export const TransferModal = ({
           type="button"
           data-testid="close-transfer-modal"
           onClick={() => onClose()}>
-          {t('edit.close')}
+          {t('close')}
         </Button>
       </DialogActions>
     </Dialog>

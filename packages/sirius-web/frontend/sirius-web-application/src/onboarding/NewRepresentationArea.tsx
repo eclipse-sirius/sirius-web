@@ -75,7 +75,7 @@ export const NewRepresentationArea = ({
     message: null,
   });
   const { classes } = useNewRepresentationAreaStyles();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newRepresentationArea' });
   const { selection, setSelection } = useSelection();
 
   const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
@@ -118,17 +118,15 @@ export const NewRepresentationArea = ({
   };
 
   const subtitle =
-    selectedItem && representationDescriptions.length > 0
-      ? t('project.edit.selectRepresentationToCreate')
-      : t('project.edit.noRepresentations');
+    selectedItem && representationDescriptions.length > 0 ? t('selectRepresentationToCreate') : t('noRepresentations');
 
   return (
     <>
       <Card>
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{t('project.edit.createRepresentation')}</Typography>
+          <Typography variant="h6">{t('createRepresentation')}</Typography>
           <Typography className={classes.subtitles} color="textSecondary">
-            {readOnly ? t('project.edit.noAccessToCreateRepresentation') : subtitle}
+            {readOnly ? t('noAccessToCreateRepresentation') : subtitle}
           </Typography>
           <List dense={true}>
             {readOnly
