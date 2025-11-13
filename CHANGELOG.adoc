@@ -100,6 +100,7 @@ Those menu entries are not hardcoded in the frontend anymore and, just like in d
 As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
 The values in questions are accessible thanks to public constants in `ExplorerTreeItemContextMenuEntryProvider` with `expand-all`, `new-root-object`, `download-document`, `new-object`, `new-representation`, `duplicate-object`, `duplicate-representation`, `update-library`, `remove-library`.
 This mechanisms was previously used to provide the menu entry to update/remove a library with the identifier `updateLibrary` / `removeLibrary` and which have been updated to be aligned with the other identifiers with `update-library`, `remove-library`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5802[#5802] [tree] `ISingleClickTreeItemContextMenuEntryExecutor#canExecute` now requires a new `ITreeInput` parameter to let executors check the input they can react to.
 
 
 === Dependency update
@@ -196,6 +197,8 @@ This will allow to integrate the command palette in other contexts than the work
 As a result, some of those menu items are not contributed anymore on invalid use cases such as being able to create a new object in a read only library.
 - https://github.com/eclipse-sirius/sirius-web/issues/5702[#5702] [table] Improve the rendering of components used in table cells
 - https://github.com/eclipse-sirius/sirius-web/issues/5788[#5788] [sirius-web] Add resource changes in the impact analysis tree.
+- https://github.com/eclipse-sirius/sirius-web/issues/5802[#5802] [tree] Add `ITreeInput` parameter to `ISingleClickTreeItemContextMenuEntryExecutor#canExecute`.
+The executor typically needs to check the `menuEntryId` of the input to ensure it is reacting to the correct input.
 
 
 

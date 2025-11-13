@@ -75,7 +75,7 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
     }
 
     @Override
-    public boolean canExecute(TreeDescription treeDescription) {
+    public boolean canExecute(TreeDescription treeDescription, ITreeInput treeInput) {
         return this.viewRepresentationDescriptionPredicate.test(treeDescription);
     }
 
