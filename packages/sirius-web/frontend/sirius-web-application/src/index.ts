@@ -148,6 +148,8 @@ export { projectFilterCustomizersExtensionPoint } from './views/project-browser/
 export { type ProjectFilterCustomizer } from './views/project-browser/list-projects-area/useProjectsExtensionPoints.types';
 export { projectsTableColumnCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints';
 export { type ProjectsTableColumnCustomizer } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints.types';
+export { ProjectBrowserOmnibox } from './views/project-browser/ProjectBrowserOmnibox';
+export { type ProjectBrowserOmniboxProps } from './views/project-browser/ProjectBrowserOmnibox.types';
 export { ProjectBrowserView } from './views/project-browser/ProjectBrowserView';
 export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
 export { UploadImageModal } from './views/project-settings/images/upload-image/UploadImageModal';
