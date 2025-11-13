@@ -101,7 +101,7 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const { classes } = useRadioPropertySectionStyles(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'radioPropertySection' });
 
   const [editRadio, { loading, error, data }] = useMutation<GQLEditRadioMutationData>(editRadioMutation);
 

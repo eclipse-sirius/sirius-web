@@ -42,7 +42,7 @@ export const ExportImageButton = () => {
   const { exportToSVG, exportToPNG } = useExportToImage();
   const { experimentalExportToSvg: protoExportToSvg } = useExperimentalSvgExport();
 
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'panel' });
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'exportImageButton' });
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {

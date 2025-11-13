@@ -47,7 +47,7 @@ export const useCreateDocument = (): UseCreateDocumentValue => {
     GQLCreateDocumentMutationVariables
   >(createDocumentMutation);
 
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useCreateDocument' });
 
   const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {

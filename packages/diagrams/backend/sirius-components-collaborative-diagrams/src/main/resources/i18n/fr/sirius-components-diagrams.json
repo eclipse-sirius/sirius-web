@@ -1,11 +1,29 @@
 {
-  "edit": {
-    "enterNewValue": "Saisir la nouvelle valeur"
+  "diagramDirectEditInput": {
+    "enterNewValue": "Saisir la nouvelle valeur",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
   },
-  "errors": {
-    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  "diagramPanel": {
+    "exitFullScreen": "Quitter le mode plein écran",
+    "exitSnapToGrid": "Quitter le mode alignement sur la grille",
+    "fitToScreen": "Ajuster à l’écran",
+    "hideHelperLines": "Masquer les lignes guides",
+    "revealFaded": "Afficher les éléments estompés",
+    "revealHidden": "Afficher les éléments masqués",
+    "shareDiagram": "Partager le diagramme",
+    "showHelperLines": "Afficher les lignes guides",
+    "toggleFullScreen": "Basculer en mode plein écran",
+    "toggleSnapToGrid": "Basculer le mode alignement sur la grille",
+    "unpinAll": "Détacher tous les éléments",
+    "zoomIn": "Agrandir",
+    "zoomOut": "Réduire"
   },
-  "palette": {
+  "exportImageButton": {
+    "exportDiagram": "Exporter le diagramme en image"
+  },
+  "groupPalette": {
     "alignBottom": "Aligner en bas",
     "alignCenter": "Aligner au centre",
     "alignLeft": "Aligner à gauche",
@@ -24,20 +42,39 @@
     "makeSameSize": "Uniformiser la taille",
     "pinElements": "Épingler les éléments"
   },
-  "panel": {
-    "exitFullScreen": "Quitter le mode plein écran",
-    "exitSnapToGrid": "Quitter le mode alignement sur la grille",
-    "exportDiagram": "Exporter le diagramme en image",
-    "fitToScreen": "Ajuster à l’écran",
-    "hideHelperLines": "Masquer les lignes guides",
-    "revealFaded": "Afficher les éléments estompés",
-    "revealHidden": "Afficher les éléments masqués",
-    "shareDiagram": "Partager le diagramme",
-    "showHelperLines": "Afficher les lignes guides",
-    "toggleFullScreen": "Basculer en mode plein écran",
-    "toggleSnapToGrid": "Basculer le mode alignement sur la grille",
-    "unpinAll": "Détacher tous les éléments",
-    "zoomIn": "Agrandir",
-    "zoomOut": "Réduire"
+  "useDrop": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "useDropNodeMutation": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "useFadeDiagramElements": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "useHideDiagramElements": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "usePinDiagramElements": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "useReconnectEdge": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  },
+  "useSynchronizeLayoutData": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
   }
 }

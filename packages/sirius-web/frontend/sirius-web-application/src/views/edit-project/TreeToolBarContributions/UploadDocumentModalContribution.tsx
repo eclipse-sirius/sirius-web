@@ -25,7 +25,7 @@ export const UploadDocumentModalContribution = ({
   disabled,
   editingContextId,
 }: TreeToolBarContributionComponentProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.edit' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadDocumentModalContribution' });
 
   const [modal, setModal] = useState<Modal | null>(null);
 

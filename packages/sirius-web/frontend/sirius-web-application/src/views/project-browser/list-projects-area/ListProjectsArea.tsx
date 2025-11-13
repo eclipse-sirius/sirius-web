@@ -48,7 +48,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
     name: { contains: state.globalFilter },
   });
 
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'listProjectsArea' });
 
   const onPreviousPage = () => {
     setState((prevState) => ({

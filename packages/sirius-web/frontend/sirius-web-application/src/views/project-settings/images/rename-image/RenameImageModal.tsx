@@ -47,7 +47,7 @@ const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayl
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
   const { addErrorMessage } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.rename' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'renameImageModal' });
   const [state, setState] = useState<RenameImageModalState>({
     name: initialImageName,
   });

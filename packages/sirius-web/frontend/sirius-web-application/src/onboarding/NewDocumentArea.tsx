@@ -57,7 +57,7 @@ const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typena
 
 export const NewDocumentArea = ({ editingContextId, editingContextActions, readOnly }: NewDocumentAreaProps) => {
   const { classes } = useNewDocumentAreaStyles();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newDocumentArea' });
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });
@@ -100,9 +100,9 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
     <>
       <Card data-testid="actions">
         <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{t('project.edit.createModel')}</Typography>
+          <Typography variant="h6">{t('createModel')}</Typography>
           <Typography color="textSecondary">
-            {readOnly ? t('project.edit.noAccessToCreateModel') : t('project.edit.selectModelToCreate')}
+            {readOnly ? t('noAccessToCreateModel') : t('selectModelToCreate')}
           </Typography>
           <List dense={true}>
             {readOnly

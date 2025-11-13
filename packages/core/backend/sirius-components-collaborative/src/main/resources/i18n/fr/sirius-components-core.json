@@ -1,8 +1,8 @@
 {
-  "filter": {
+  "filterBar": {
     "typeToFilter": "Tapez pour filtrer"
   },
-  "share": {
+  "shareRepresentationModal": {
     "copied": "(copié dans le presse-papier)",
     "link": "Lien partageable"
   }

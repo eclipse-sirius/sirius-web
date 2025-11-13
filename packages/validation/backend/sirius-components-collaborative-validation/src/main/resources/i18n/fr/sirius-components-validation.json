@@ -1,6 +1,7 @@
 {
-  "diagnosticCount_one": "{{count}} diagnostic",
-  "diagnosticCount_many": "{{count}} diagnostics",
-  "diagnosticCount_other": "{{count}} diagnostics",
-  "noDiagnostic": "Aucun diagnostic disponible"
+  "validationView": {
+    "diagnosticCount_one": "{{count}} diagnostic",
+    "diagnosticCount_other": "{{count}} diagnostics",
+    "noDiagnostic": "Aucun diagnostic disponible"
+  }
 }

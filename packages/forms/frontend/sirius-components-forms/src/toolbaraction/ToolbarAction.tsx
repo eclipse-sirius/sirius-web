@@ -99,7 +99,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
     iconOnly: widget.buttonLabel ? false : true,
   };
   const { classes } = useStyle(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'toolbarAction' });
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 

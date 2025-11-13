@@ -110,7 +110,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
     iconOnly: widget.buttonLabel ? false : true,
   };
   const { classes } = useStyle(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'buttonPropertySection' });
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 

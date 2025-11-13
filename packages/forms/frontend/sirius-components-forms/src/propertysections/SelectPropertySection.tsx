@@ -123,7 +123,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'selectPropertySection' });
 
   const [editSelect, { loading, error, data }] = useMutation<GQLEditSelectMutationData>(editSelectMutation);
   const onChange = (event) => {

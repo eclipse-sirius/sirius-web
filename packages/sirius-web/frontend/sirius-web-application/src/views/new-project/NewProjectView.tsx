@@ -76,7 +76,7 @@ const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().le
 export const NewProjectView = () => {
   const { classes } = useNewProjectViewStyles();
   const navigate = useNavigate();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.create' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newProjectView' });
 
   const [state, setState] = useState<NewProjectViewState>({
     name: '',

@@ -122,7 +122,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
     isSuggestedRootObjectChecked: true,
   });
 
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'object.newRoot' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newRootObjectModal' });
 
   // Fetch the corresponding object creation description whenever the user selects a new domain or toggles the checkbox
   const [

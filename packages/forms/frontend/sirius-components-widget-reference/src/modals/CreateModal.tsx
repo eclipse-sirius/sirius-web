@@ -151,7 +151,7 @@ const isCreateElementSuccessPayload = (
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const { classes } = useStyle();
-  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'create' });
+  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'createModal' });
   const { addErrorMessage, addMessages } = useMultiToast();
 
   const [state, setState] = useState<CreateModalState>({

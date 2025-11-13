@@ -1,8 +1,8 @@
 {
-  "filter": {
+  "filterBar": {
     "typeToFilter": "Type to filter"
   },
-  "share": {
+  "shareRepresentationModal": {
     "copied": "(copied into the clipboard)",
     "link": "Shareable link"
   }

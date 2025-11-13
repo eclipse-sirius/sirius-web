@@ -44,7 +44,7 @@ const useFileUploadViewStyles = makeStyles()((theme) => ({
 
 export const FileUpload = ({ onFileSelected, 'data-testid': dataTestId }: FileUploadProps) => {
   const { classes: styles } = useFileUploadViewStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'core' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'fileUpload' });
   const fileInput = React.createRef<HTMLInputElement>();
 
   const [state, setState] = useState<FileUploadState>({

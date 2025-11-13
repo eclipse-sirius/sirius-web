@@ -38,7 +38,7 @@ export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonPr
     contextMenuAnchorElement: null,
   });
 
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectActionButton' });
 
   const onClick: React.MouseEventHandler<HTMLButtonElement> = (event) =>
     setState((prevState) => ({ ...prevState, contextMenuAnchorElement: event.currentTarget }));

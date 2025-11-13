@@ -53,7 +53,7 @@ const isSuccessPayload = (payload: GQLFadeDiagramElementPayload): payload is GQL
   payload.__typename === 'SuccessPayload';
 
 export const useFadeDiagramElements = (): UseFadeDiagramElements => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useFadeDiagramElements' });
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 

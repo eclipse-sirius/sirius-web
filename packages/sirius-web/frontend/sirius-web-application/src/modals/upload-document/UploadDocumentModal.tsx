@@ -57,7 +57,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
     readOnly: false,
   });
   const { classes: styles } = useFormStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'model.upload' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadDocumentModal' });
 
   const { uploadDocument, loading, uploadedDocument } = useUploadDocument();
 

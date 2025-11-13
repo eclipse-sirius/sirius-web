@@ -40,7 +40,7 @@ const ImagePreviewTooltip = withStyles(Tooltip, () => ({
 
 export const ImageRow = ({ image, onImageUpdated }: ImageRowProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'imageRow' });
   const [state, setState] = useState<ImageRowState>({
     modal: null,
     showEditIcon: false,

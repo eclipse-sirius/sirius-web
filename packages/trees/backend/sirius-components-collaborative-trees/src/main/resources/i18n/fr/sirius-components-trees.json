@@ -1,9 +1,17 @@
 {
-  "delete": "Supprimer",
-  "enterNewValue": "Entrez la nouvelle valeur",
-  "errors": {
-    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  "deleteMenuItem": {
+    "delete": "Supprimer"
   },
-  "filters": "Filtres",
-  "rename": "Renommer"
+  "renameMenuItem": {
+    "rename": "Renommer"
+  },
+  "treeFiltersMenu": {
+    "filters": "Filtres"
+  },
+  "treeItemDirectEditInput": {
+    "enterNewValue": "Entrez la nouvelle valeur",
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    }
+  }
 }

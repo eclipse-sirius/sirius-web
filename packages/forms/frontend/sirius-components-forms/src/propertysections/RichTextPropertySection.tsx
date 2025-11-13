@@ -75,7 +75,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   readOnly,
 }: PropertySectionComponentProps<GQLRichText>) => {
   const { classes } = useRichTextSectionStyles();
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'richTextPropertySection' });
 
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);

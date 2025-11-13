@@ -96,7 +96,7 @@ const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'li
 const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length > 1;
 
 export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }: GroupPaletteProps) => {
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'palette' });
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'groupPalette' });
   const { hideDiagramElements } = useHideDiagramElements();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();

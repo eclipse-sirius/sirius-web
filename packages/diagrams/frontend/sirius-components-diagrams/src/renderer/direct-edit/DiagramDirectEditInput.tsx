@@ -76,7 +76,7 @@ const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSucce
   payload.__typename === 'EditLabelSuccessPayload';
 
 export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: DiagramDirectEditInputProps) => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramDirectEditInput' });
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
@@ -200,7 +200,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
         name="name"
         size="small"
         inputRef={textInput}
-        placeholder={t('edit.enterNewValue')}
+        placeholder={t('enterNewValue')}
         value={state.newLabel}
         multiline={true}
         onChange={handleChange}

@@ -47,7 +47,7 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
   );
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const { t } = useTranslation('sirius-components-trees');
+  const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'deleteMenuItem' });
 
   const handleDelete = () => {
     const input: GQLDeleteTreeItemInput = {

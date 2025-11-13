@@ -1,152 +1,195 @@
 {
-  "core": {
+  "createProjectArea": {
+    "createNewProject": "Créer un nouveau projet"
+  },
+  "deleteImageModal": {
+    "content": "Cette action supprimera l’image et pourrait altérer les projets qui l’utilisent. Cette opération est irréversible.",
+    "submit": "Supprimer",
+    "title": "Supprimer l’image"
+  },
+  "deleteProjectModal": {
+    "content": "Cette action supprimera tout le contenu du projet. Toutes les données et représentations seront perdues. Cette opération est irréversible.",
+    "submit": "Supprimer",
+    "title": "Supprimer le projet « {{name}} »"
+  },
+  "diagramFilter": {
+    "filter": "Filtrer les éléments"
+  },
+  "downloadDocumentTreeItemContextMenuContribution": {
+    "download": "Télécharger"
+  },
+  "duplicateObjectTreeItemContextMenuContribution": {
+    "duplicate": "Dupliquer l’objet"
+  },
+  "fileUpload": {
     "clickToSelectFile": "Cliquez ici pour sélectionner un fichier"
   },
-  "diagrams": {
-    "panel": {
-      "filter": "Filtrer les éléments"
+  "imageRow": {
+    "copyId": "Copier l’identifiant dans le presse-papiers"
+  },
+  "imageTable": {
+    "id": "Identifiant",
+    "label": "Libellé",
+    "delete": "Supprimer"
+  },
+  "listProjectsArea": {
+    "existingProjects": "Projets existants"
+  },
+  "newDocumentArea": {
+    "createModel": "Créer un nouveau modèle",
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    },
+    "noAccessToCreateModel": "Vous devez disposer des droits de modification pour créer des modèles",
+    "selectModelToCreate": "Sélectionner le modèle à créer"
+  },
+  "newDocumentModal": {
+    "modelType": {
+      "label": "Type de modèle"
+    },
+    "name": {
+      "helperText": "Le nom ne peut pas être vide",
+      "label": "Nom",
+      "placeholder": "Saisir le nom du modèle"
+    },
+    "submit": "Créer",
+    "title": "Créer un nouveau modèle"
+  },
+  "newDocumentModalContribution": {
+    "newModel": "Nouveau modèle"
+  },
+  "newObjectModal": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+    },
+    "submit": "Créer",
+    "title": "Créer un nouvel objet",
+    "type": {
+      "label": "Type d’objet"
     }
   },
-  "errors": {
-    "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
+  "newObjectTreeItemContextMenuContribution": {
+    "newObject": "Nouvel objet"
   },
-  "image": {
-    "delete": {
-      "content": "Cette action supprimera l’image et pourrait altérer les projets qui l’utilisent. Cette opération est irréversible.",
-      "submit": "Supprimer",
-      "title": "Supprimer l’image"
+  "newProjectView": {
+    "description": "Commencez en créant un nouveau projet",
+    "submit": "Créer",
+    "title": "Créer un nouveau projet"
+  },
+  "newRepresentationArea": {
+    "createRepresentation": "Créer une nouvelle représentation",
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     },
-    "list": {
-      "copyId": "Copier l’identifiant dans le presse-papiers",
-      "delete": "Supprimer",
-      "empty": "Aucune image de projet disponible, commencez par en téléverser une",
-      "id": "Identifiant",
+    "noAccessToCreateRepresentation": "Vous devez disposer des droits de modification pour créer des représentations",
+    "noRepresentations": "Aucune représentation disponible pour la sélection actuelle",
+    "selectRepresentationToCreate": "Sélectionner la représentation à créer"
+  },
+  "newRepresentationModal": {
+    "name": {
+      "helperText": "Le nom ne peut pas être vide",
+      "label": "Nom",
+      "placeholder": "Saisir le nom de la représentation"
+    },
+    "submit": "Créer",
+    "title": "Créer une nouvelle représentation",
+    "type": {
+      "label": "Type de représentation"
+    }
+  },
+  "newRepresentationTreeItemContextMenuContribution": {
+    "newRepresentation": "Nouvelle représentation"
+  },
+  "newRootObjectModal": {
+    "domain": {
+      "label": "Domaine"
+    },
+    "submit": "Créer",
+    "suggestedType": {
+      "label": "Afficher uniquement le type racine suggéré"
+    },
+    "title": "Créer un nouvel objet racine",
+    "type": {
+      "label": "Type d’objet"
+    }
+  },
+  "newRootObjectTreeItemContextMenuContribution": {
+    "newObject": "Nouvel objet"
+  },
+  "projectActionButton": {
+    "more": "Plus"
+  },
+  "projectImagesSettings": {
+    "empty": "Aucune image de projet disponible, commencez par en téléverser une",
+    "title": "Images du projet",
+    "upload": "Téléverser"
+  },
+  "projectTemplatesModal": {
+    "messages": {
+      "loading": "Chargement..."
+    },
+    "selectProjectTemplate": "Sélectionner un modèle de projet"
+  },
+  "renameImageModal": {
+    "name": {
+      "helperText": "Le nom doit contenir au moins 3 caractères",
+      "label": "Nom",
+      "placeholder": "Saisir le nouveau nom de l’image"
+    },
+    "submit": "Renommer",
+    "title": "Renommer l’image"
+  },
+  "renameProjectModal": {
+    "name": {
+      "helperText": "Le nom est obligatoire et doit contenir moins de 1024 caractères",
+      "label": "Nom",
+      "placeholder": "Saisir un nouveau nom de projet"
+    },
+    "submit": "Renommer",
+    "title": "Renommer le projet"
+  },
+  "representationsArea": {
+    "openRepresentation": "Ouvrir une représentation existante",
+    "selectRepresentationToOpen": "Sélectionner la représentation à ouvrir"
+  },
+  "uploadDocumentModal": {
+    "cancel": "Fermer",
+    "title": "Téléverser un nouveau modèle"
+  },
+  "uploadDocumentModalContribution": {
+    "uploadModel": "Téléverser un modèle"
+  },
+  "uploadImageModal": {
+    "label": {
       "label": "Libellé",
-      "title": "Images du projet",
-      "upload": "Téléverser"
+      "placeholder": "Libellé de l’image"
     },
-    "rename": {
-      "name": {
-        "helperText": "Le nom doit contenir au moins 3 caractères",
-        "label": "Nom",
-        "placeholder": "Saisir le nouveau nom de l’image"
-      },
-      "submit": "Renommer",
-      "title": "Renommer l’image"
-    },
-    "upload": {
-      "label": {
-        "label": "Libellé",
-        "placeholder": "Libellé de l’image"
-      },
-      "submit": "Téléverser",
-      "title": "Téléverser une nouvelle image"
+    "submit": "Téléverser",
+    "title": "Téléverser une nouvelle image"
+  },
+  "uploadProjectView": {
+    "description": "Démarrez à partir d’un projet existant",
+    "submit": "Téléverser",
+    "title": "Téléverser un projet"
+  },
+  "useCreateDocument": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   },
-  "messages": {
-    "loading": "Chargement..."
-  },
-  "model": {
-    "create": {
-      "modelType": {
-        "label": "Type de modèle"
-      },
-      "name": {
-        "helperText": "Le nom ne peut pas être vide",
-        "label": "Nom",
-        "placeholder": "Saisir le nom du modèle"
-      },
-      "submit": "Créer",
-      "title": "Créer un nouveau modèle"
-    },
-    "upload": {
-      "cancel": "Fermer",
-      "title": "Téléverser un nouveau modèle"
+  "useCreateProjectFromTemplate": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   },
-  "object": {
-    "create": {
-      "submit": "Créer",
-      "title": "Créer un nouvel objet",
-      "type": {
-        "label": "Type d’objet"
-      }
-    },
-    "newRoot": {
-      "domain": {
-        "label": "Domaine"
-      },
-      "submit": "Créer",
-      "suggestedType": {
-        "label": "Afficher uniquement le type racine suggéré"
-      },
-      "title": "Créer un nouvel objet racine",
-      "type": {
-        "label": "Type d’objet"
-      }
+  "useDeleteProject": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   },
-  "project": {
-    "create": {
-      "description": "Commencez en créant un nouveau projet",
-      "submit": "Créer",
-      "title": "Créer un nouveau projet"
-    },
-    "delete": {
-      "content": "Cette action supprimera tout le contenu du projet. Toutes les données et représentations seront perdues. Cette opération est irréversible.",
-      "submit": "Supprimer",
-      "title": "Supprimer le projet « {{name}} »"
-    },
-    "edit": {
-      "createModel": "Créer un nouveau modèle",
-      "createRepresentation": "Créer une nouvelle représentation",
-      "download": "Télécharger",
-      "duplicate": "Dupliquer l’objet",
-      "newModel": "Nouveau modèle",
-      "newObject": "Nouvel objet",
-      "newRepresentation": "Nouvelle représentation",
-      "noAccessToCreateModel": "Vous devez disposer des droits de modification pour créer des modèles",
-      "noAccessToCreateRepresentation": "Vous devez disposer des droits de modification pour créer des représentations",
-      "noRepresentations": "Aucune représentation disponible pour la sélection actuelle",
-      "openRepresentation": "Ouvrir une représentation existante",
-      "selectModelToCreate": "Sélectionner le modèle à créer",
-      "selectRepresentationToCreate": "Sélectionner la représentation à créer",
-      "selectRepresentationToOpen": "Sélectionner la représentation à ouvrir",
-      "uploadModel": "Téléverser un modèle"
-    },
-    "list": {
-      "createNewProject": "Créer un nouveau projet",
-      "existingProjects": "Projets existants",
-      "more": "Plus",
-      "selectProjectTemplate": "Sélectionner un modèle de projet"
-    },
-    "rename": {
-      "name": {
-        "helperText": "Le nom est obligatoire et doit contenir moins de 1024 caractères",
-        "label": "Nom",
-        "placeholder": "Saisir un nouveau nom de projet"
-      },
-      "submit": "Renommer",
-      "title": "Renommer le projet"
-    },
-    "upload": {
-      "description": "Démarrez à partir d’un projet existant",
-      "submit": "Téléverser",
-      "title": "Téléverser un projet"
-    }
-  },
-  "representation": {
-    "create": {
-      "name": {
-        "helperText": "Le nom ne peut pas être vide",
-        "label": "Nom",
-        "placeholder": "Saisir le nom de la représentation"
-      },
-      "submit": "Créer",
-      "title": "Créer une nouvelle représentation",
-      "type": {
-        "label": "Type de représentation"
-      }
+  "useRenameProject": {
+    "errors": {
+      "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   }
 }

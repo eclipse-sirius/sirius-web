@@ -58,7 +58,7 @@ export const useCreateProjectFromTemplate = (): UseCreateProjectFromTemplateValu
   >(createProjectFromTemplateMutation);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useCreateProjectFromTemplate' });
 
   useEffect(() => {
     if (error) {

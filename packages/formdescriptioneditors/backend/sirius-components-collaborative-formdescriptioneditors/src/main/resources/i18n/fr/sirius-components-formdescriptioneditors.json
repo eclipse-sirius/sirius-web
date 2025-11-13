@@ -1,3 +1,5 @@
 {
-  "none": "Aucun"
+  "selectWidget": {
+    "none": "Aucun"
+  }
 }

@@ -22,7 +22,7 @@ import { RepresentationPathContextValue } from '../../contexts/RepresentationPat
 import { ShareRepresentationModalProps } from './ShareRepresentationModal.types';
 
 export const ShareRepresentationModal = ({ representationId, onClose }: ShareRepresentationModalProps) => {
-  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'share' });
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'shareRepresentationModal' });
 
   const refCallback = (node: HTMLElement) => {
     if (node !== null) {

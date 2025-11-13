@@ -44,7 +44,7 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
   >(deleteProjectMutation);
 
   const { addErrorMessage } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useDeleteProject' });
   useEffect(() => {
     if (error) {
       addErrorMessage(t('errors.unexpected'));

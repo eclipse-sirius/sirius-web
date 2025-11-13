@@ -65,7 +65,7 @@ export const TreeItemDirectEditInput = ({
   onClose,
 }: TreeItemDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
-  const { t } = useTranslation('sirius-components-trees');
+  const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treeItemDirectEditInput' });
   const [state, setState] = useState<TreeItemDirectEditInputState>({
     newLabel: initialLabel,
   });

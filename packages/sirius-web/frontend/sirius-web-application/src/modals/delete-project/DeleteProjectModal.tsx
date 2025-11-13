@@ -22,7 +22,7 @@ import { DeleteProjectModalProps } from './DeleteProjectModal.types';
 import { useDeleteProject } from './useDeleteProject';
 
 export const DeleteProjectModal = ({ project, onCancel, onSuccess }: DeleteProjectModalProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'project.delete' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'deleteProjectModal' });
 
   const { deleteProject, loading, projectDeleted } = useDeleteProject();
 

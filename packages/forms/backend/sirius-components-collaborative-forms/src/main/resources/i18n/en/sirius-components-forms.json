@@ -1,6 +1,62 @@
 {
-  "errors": {
-    "unexpected": "An unexpected error has occurred, please refresh the page"
+  "buttonPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
   },
-  "none": "None"
+  "checkboxPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "listPropertySection": {
+    "none": "None",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "multiSelectPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "radioPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "richTextPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "selectPropertySection": {
+    "none": "None",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "sliderPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "splitButtonPropertySection": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "treeItem": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  },
+  "treePropertySection": {
+    "none": "None"
+  },
+  "toolbarAction": {
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  }
 }

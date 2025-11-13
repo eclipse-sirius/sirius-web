@@ -109,7 +109,7 @@ export const ValuedReferenceAutocomplete = ({
   };
   const { classes } = useStyles(props);
   const theme = useTheme();
-  const { t } = useTranslation('sirius-components-widget-reference');
+  const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'valuedReferenceAutocomplete' });
 
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<ValuedReferenceAutocompleteState>({ open: false, options: null });
@@ -202,9 +202,9 @@ export const ValuedReferenceAutocomplete = ({
 
   let placeholder: string;
   if (widget.reference.manyValued) {
-    placeholder = t('view.values');
+    placeholder = t('values');
   } else {
-    placeholder = widget.referenceValues.length > 0 ? '' : t('view.value');
+    placeholder = widget.referenceValues.length > 0 ? '' : t('value');
   }
   return (
     <Autocomplete
@@ -245,8 +245,8 @@ export const ValuedReferenceAutocomplete = ({
         </li>
       )}
       disableClearable
-      openText={t('view.open')}
-      closeText={t('view.close')}
+      openText={t('open')}
+      closeText={t('close')}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => {
           const { key, onDelete, ...tagProps } = getTagProps({ index });
@@ -287,7 +287,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="edit"
                     size="small"
-                    title={t('view.edit')}
+                    title={t('edit')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-more`}
                     onClick={onMoreClick}>
@@ -296,7 +296,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="add"
                     size="small"
-                    title={t('view.createObject')}
+                    title={t('createObject')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-add`}
                     onClick={onCreateClick}>
@@ -305,7 +305,7 @@ export const ValuedReferenceAutocomplete = ({
                   <IconButton
                     aria-label="clear"
                     size="small"
-                    title={t('view.clear')}
+                    title={t('clear')}
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-clear`}
                     onClick={clearReference}>

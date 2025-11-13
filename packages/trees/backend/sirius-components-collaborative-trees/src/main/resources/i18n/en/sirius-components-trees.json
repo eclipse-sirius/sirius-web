@@ -1,9 +1,17 @@
 {
-  "delete": "Delete",
-  "enterNewValue": "Enter the new value",
-  "errors": {
-    "unexpected": "An unexpected error has occurred, please refresh the page"
+  "deleteMenuItem": {
+    "delete": "Delete"
   },
-  "filters": "Filters",
-  "rename": "Rename"
+  "renameMenuItem": {
+    "rename": "Rename"
+  },
+  "treeFiltersMenu": {
+    "filters": "Filters"
+  },
+  "treeItemDirectEditInput": {
+    "enterNewValue": "Enter the new value",
+    "errors": {
+      "unexpected": "An unexpected error has occurred, please refresh the page"
+    }
+  }
 }

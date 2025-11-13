@@ -23,7 +23,7 @@ import { ImageRow } from './ImageRow';
 import { ImageTableProps } from './ImageTable.types';
 
 export const ImageTable = ({ images, onImageUpdated }: ImageTableProps) => {
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'image.list' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'imageTable' });
   return (
     <Paper>
       <TableContainer>

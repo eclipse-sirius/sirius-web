@@ -145,7 +145,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   };
   const { classes } = useListPropertySectionStyles(props);
   const theme = useTheme();
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'listPropertySection' });
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 

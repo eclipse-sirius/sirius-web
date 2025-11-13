@@ -39,7 +39,7 @@ const useNewDocumentModalStyles = makeStyles()((theme) => ({
 
 export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModalProps) => {
   const { classes } = useNewDocumentModalStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'model.create' });
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newDocumentModal' });
   const [state, setState] = useState<NewDocumentModalState>({
     name: '',
     nameIsInvalid: true,

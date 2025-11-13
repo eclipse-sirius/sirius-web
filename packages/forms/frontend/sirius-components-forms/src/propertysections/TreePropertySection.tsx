@@ -104,7 +104,7 @@ export const editTreeCheckboxMutation = gql`
 
 const TreeItem = ({ treeItemId, node, nodes, readOnly, editingContextId, formId, widgetId }: TreeItemProps) => {
   const { classes } = useTreeItemWidgetStyles();
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'treeItem' });
   const { setSelection } = useSelection();
 
   const [editTreeCheckbox, { loading, error, data }] =
@@ -206,7 +206,7 @@ export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   readOnly,
 }: PropertySectionComponentProps<GQLTree>) => {
   let { nodes, expandedNodesIds } = widget;
-  const { t } = useTranslation('sirius-components-forms');
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'treePropertySection' });
 
   if (widget.nodes.length === 0) {
     expandedNodesIds = [];

@@ -57,7 +57,7 @@ const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropO
   payload.__typename === 'DropOnDiagramSuccessPayload';
 
 export const useDrop = (): UseDropValue => {
-  const { t } = useTranslation('sirius-components-diagrams');
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useDrop' });
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const [dropMutation, { data: droponDiagramElementData, error: droponDiagramError }] = useMutation<

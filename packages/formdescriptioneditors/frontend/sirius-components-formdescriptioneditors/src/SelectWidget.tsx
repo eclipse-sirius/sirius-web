@@ -81,7 +81,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyles(props);
-  const { t } = useTranslation('sirius-components-formdescriptioneditors');
+  const { t } = useTranslation('sirius-components-formdescriptioneditors', { keyPrefix: 'selectWidget' });
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();

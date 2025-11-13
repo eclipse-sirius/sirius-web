@@ -44,7 +44,7 @@ export const useRenameProject = (): UseRenameProjectValue => {
   >(renameProjectMutation);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useRenameProject' });
 
   useEffect(() => {
     if (error) {

@@ -61,7 +61,7 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
   ({ id, editingContextId }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const { classes } = useValidationViewStyle();
     const { payload, complete } = useValidationViewSubscription(editingContextId);
-    const { t } = useTranslation('sirius-components-validation');
+    const { t } = useTranslation('sirius-components-validation', { keyPrefix: 'validationView' });
 
     const [state, setState] = useState<ValidationRepresentationState>({
       validationPayload: null,

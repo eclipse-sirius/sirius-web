@@ -101,7 +101,7 @@ const isCreateChildSuccessPayload = (payload: GQLCreateChildPayload): payload is
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const { classes } = useNewObjectModalStyles();
-  const { t } = useTranslation('sirius-web-application');
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newObjectModal' });
   const { addErrorMessage, addMessages } = useMultiToast();
   const [state, setState] = useState<NewObjectModalStates>({
     childCreationDescriptions: [],
@@ -179,10 +179,10 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         maxWidth="xs"
         fullWidth
         data-testid={'new-object-modal'}>
-        <DialogTitle id="dialog-title">{t('object.create.title')}</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="newObjectModalChildCreationDescriptionLabel">{t('object.create.type.label')}</InputLabel>
+            <InputLabel id="newObjectModalChildCreationDescriptionLabel">{t('type.label')}</InputLabel>
             <Select
               variant="standard"
               classes={{ select: classes.select }}
@@ -212,7 +212,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             color="primary"
             onClick={onCreateObject}
             disabled={!state.selectedChildCreationDescriptionId}>
-            {t('object.create.submit')}
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>
