@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
@@ -27,8 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
-
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
  * Manages the lifecycle of project indices.
@@ -44,7 +43,7 @@ public class ProjectIndexLifecycleManager {
 
     private final IEditingContextSearchService editingContextSearchService;
 
-    private final IEditingContextIndexingService editingContextIndexer;
+    private final IEditingContextIndexingService editingContextIndexingService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectIndexLifecycleManager.class);
 
@@ -52,7 +51,7 @@ public class ProjectIndexLifecycleManager {
             IEditingContextIndexingService editingContextIndexer) {
         this.optionalElasticSearchClient = Objects.requireNonNull(optionalElasticSearchClient);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.editingContextIndexer = Objects.requireNonNull(editingContextIndexer);
+        this.editingContextIndexingService = Objects.requireNonNull(editingContextIndexer);
     }
 
     @Async
@@ -89,9 +88,11 @@ public class ProjectIndexLifecycleManager {
     @Async
     @TransactionalEventListener
     public void onSemanticDataUpdatedEvent(SemanticDataUpdatedEvent semanticDataUpdatedEvent) {
-        Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(semanticDataUpdatedEvent.semanticData().getId().toString());
-        if (optionalEditingContext.isPresent()) {
-            this.editingContextIndexer.index(optionalEditingContext.get());
+        if (this.optionalElasticSearchClient.isPresent()) {
+            Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(semanticDataUpdatedEvent.semanticData().getId().toString());
+            if (optionalEditingContext.isPresent()) {
+                this.editingContextIndexingService.index(optionalEditingContext.get());
+            }
         }
     }
 
