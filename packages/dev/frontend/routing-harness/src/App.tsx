@@ -59,6 +59,15 @@ export default function App() {
     const url = new URL(window.location.href);
     return findEdgeRoutingAlgorithm(url.searchParams.get("algorithm"));
   }, []);
+  const edgeAlgorithmCompareOverride = useMemo<
+    EdgeRoutingAlgorithm | undefined
+  >(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+    const url = new URL(window.location.href);
+    return findEdgeRoutingAlgorithm(url.searchParams.get("algorithm-compare"));
+  }, []);
   const exportRange = useMemo<{ start: number; count: number | null }>(() => {
     if (typeof window === "undefined") {
       return { start: 0, count: null };
@@ -284,6 +293,11 @@ export default function App() {
             Edge routing override: {edgeAlgorithmOverride}
           </span>
         ) : null}
+        {edgeAlgorithmCompareOverride ? (
+          <span className="app__range-summary">
+            Comparison override: {edgeAlgorithmCompareOverride}
+          </span>
+        ) : null}
         {exportFeedback ? (
           <span
             className={`app__export-feedback app__export-feedback--${exportFeedback.type}`}
@@ -325,14 +339,40 @@ export default function App() {
                 <p className="fixture__description">{description}</p>
               ) : null}
             </header>
-            <div className="fixture__viewer">
-              <DiagramViewer
-                ref={(handle) => registerViewerHandle(key, handle)}
-                fixture={fixture}
-                onMetricsChange={handleMetricsChange}
-                showDebug={showDebug}
-                edgeAlgorithmOverride={edgeAlgorithmOverride}
-              />
+            <div
+              className={`fixture__viewer${
+                edgeAlgorithmCompareOverride ? " fixture__viewer--split" : ""
+              }`}
+            >
+              <div className="fixture__viewer-panels">
+                <div className="fixture__viewer-panel">
+                  {edgeAlgorithmOverride || edgeAlgorithmCompareOverride ? (
+                    <div className="fixture__viewer-label">
+                      algorithm: {edgeAlgorithmOverride ?? "fixture default"}
+                    </div>
+                  ) : null}
+                  <DiagramViewer
+                    ref={(handle) => registerViewerHandle(key, handle)}
+                    fixture={fixture}
+                    onMetricsChange={handleMetricsChange}
+                    showDebug={showDebug}
+                    edgeAlgorithmOverride={edgeAlgorithmOverride}
+                  />
+                </div>
+                {edgeAlgorithmCompareOverride ? (
+                  <div className="fixture__viewer-panel fixture__viewer-panel--compare">
+                    <div className="fixture__viewer-label">
+                      algorithm-compare: {edgeAlgorithmCompareOverride}
+                    </div>
+                    <DiagramViewer
+                      fixture={fixture}
+                      onMetricsChange={handleMetricsChange}
+                      showDebug={showDebug}
+                      edgeAlgorithmOverride={edgeAlgorithmCompareOverride}
+                    />
+                  </div>
+                ) : null}
+              </div>
             </div>
           </section>
         );

@@ -116,6 +116,33 @@
   flex-direction: column;
 }
 
+.fixture__viewer--split {
+  height: 560px;
+}
+
+.fixture__viewer-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.fixture__viewer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.fixture__viewer-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #3c4a6b;
+  letter-spacing: 0.4px;
+}
+
 .harness-diagram-wrapper {
   position: relative;
   flex: 1;
