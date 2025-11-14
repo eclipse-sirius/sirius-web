@@ -185,6 +185,44 @@ const isRectilinear = (polyline: XYPosition[]): boolean =>
   });
 
 describe('buildDetouredPolyline', () => {
+  it('returns baseline polylines when detours are disabled', () => {
+    const fixture = loadFixture('stacked-with-detour.json');
+    const nodes = toHarnessNodes(fixture);
+    const edges = toHarnessEdges(fixture);
+    const edge = edges.find((candidate) => candidate.id === 'edge-vertical');
+    expect(edge).toBeTruthy();
+    if (!edge) {
+      return;
+    }
+    const sourceNode = nodes.find((node) => node.id === edge.source);
+    const targetNode = nodes.find((node) => node.id === edge.target);
+    expect(sourceNode).toBeTruthy();
+    expect(targetNode).toBeTruthy();
+    if (!sourceNode || !targetNode) {
+      return;
+    }
+
+    const sourcePoint = handlePoint(sourceNode, edge.sourcePosition ?? Position.Right);
+    const targetPoint = handlePoint(targetNode, edge.targetPosition ?? Position.Left);
+    const initialAxis = determineInitialAxis(edge.sourcePosition ?? Position.Right);
+    const baselineBendingPoints = ensureRectilinearPath([], sourcePoint, targetPoint, initialAxis);
+    const simplifiedBaseline = simplifyRectilinearBends(baselineBendingPoints, sourcePoint, targetPoint);
+    const baselinePolyline: XYPosition[] = [
+      sourcePoint,
+      ...simplifiedBaseline.map((point) => ({ x: point.x, y: point.y })),
+      targetPoint,
+    ];
+
+    const result = buildDetouredPolyline(edge, baselinePolyline, edges, nodes, {
+      collectAll: true,
+      detoursEnabled: false,
+    });
+
+    expect(result.current).toEqual(baselinePolyline);
+    expect(result.polylines.get(edge.id)).toEqual(baselinePolyline);
+    expect(result.polylines.size).toBe(edges.length);
+  });
+
   it('detours stacked-with-detour vertical edge around the obstacle', () => {
     const fixture = loadFixture('stacked-with-detour.json');
     const finalPolyline = buildFinalPolyline(fixture, 'edge-vertical');

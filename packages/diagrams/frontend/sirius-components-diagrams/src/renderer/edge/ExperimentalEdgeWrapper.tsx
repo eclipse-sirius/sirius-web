@@ -53,12 +53,19 @@ function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
 
+/** Default bend preference applied when an edge does not specify how the first turn should behave. */
 const DEFAULT_TURN_PREFERENCE: RectilinearTurnPreference = 'target';
+/** Minimum number of pixels an edge travels outward before the first bend is allowed. */
 const DEFAULT_MIN_OUTWARD_LENGTH = 10;
+/** Enables fan-in spacing (multiple edges arriving on the same side) unless explicitly disabled. */
 const DEFAULT_FAN_IN_ENABLED = true;
+/** Enables fan-out spacing (multiple edges leaving the same side) unless explicitly disabled. */
 const DEFAULT_FAN_OUT_ENABLED = true;
+/** Spacing (in pixels) used when spreading parallel edges on a node side. */
 const FAN_SPACING = 12;
+/** Upper bound (in pixels) applied while distributing fan offsets so runs stay visually compact. */
 const FAN_MAX_SPREAD = 50;
+/** Minimal detour span we consider meaningful before pruning zig-zag noise. */
 const MIN_DETOUR_SPAN = 6;
 // Collapses staircase-like zig-zags when the perpendicular excursion stays within this many pixels.
 // We keep the threshold relatively small so meaningful doglegs survive while smooth-step noise vanishes.
@@ -69,9 +76,17 @@ const DEFAULT_PARALLEL_SPACING_ENABLED = true;
 const DEFAULT_STRAIGHTEN_ENABLED = true;
 // Maximum deviation (in pixels) we tolerate before declaring that a zig-zag is meaningful.
 const DEFAULT_STRAIGHTEN_THRESHOLD = 20;
+/** Toggles the obstacle-avoidance detour logic for edges that do not declare a preference. */
+const DEFAULT_OBSTACLE_DETOURS_ENABLED = true;
+/** Minimum distance (pixels) from a node before self-loop arcs start bending outward. */
 const SELF_LOOP_MIN_OFFSET = 24;
+/** Maximum outward reach allowed for self-loop arcs so they stay within reasonable bounds. */
 const SELF_LOOP_MAX_OFFSET = 80;
+/** Proportion of the available corridor reserved for offsetting self-loop anchors. */
 const SELF_LOOP_OFFSET_RATIO = 0.25;
+// Toggle used while tuning the post-detour simplification pass; keeping it as a constant
+// makes it trivial to switch off when running experiments or diagnosing regressions.
+const DETOUR_SIMPLIFICATION_ENABLED = true;
 
 type PositionAwareEdge = Edge<MultiLabelEdgeData> & {
   targetPosition?: Position;
@@ -1036,6 +1051,7 @@ type PreferenceEvaluationContext = {
   nodesForDetour: Node<NodeData, DiagramNodeType>[];
   currentEdge: Edge<MultiLabelEdgeData>;
   straightenEnabled: boolean;
+  detoursEnabled: boolean;
 };
 
 const evaluateTurnPreferenceScenario = (
@@ -1063,6 +1079,7 @@ const evaluateTurnPreferenceScenario = (
     nodesForDetour,
     currentEdge,
     straightenEnabled,
+    detoursEnabled,
   } = context;
   let sourceX = baseSource.x;
   let sourceY = baseSource.y;
@@ -1151,9 +1168,16 @@ const evaluateTurnPreferenceScenario = (
     { x: targetX, y: targetY },
   ];
 
-  const canDetour = edgesForDetour.length > 0 && nodesForDetour.length > 0;
+  const canDetour = detoursEnabled && edgesForDetour.length > 0 && nodesForDetour.length > 0;
   const detouredPolyline = canDetour
-    ? buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesForDetour)
+    ? DETOUR_SIMPLIFICATION_ENABLED
+      ? buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesForDetour, {
+          detoursEnabled,
+        })
+      : buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesForDetour, {
+          simplify: false as const,
+          detoursEnabled,
+        })
     : undefined;
   const candidatePolyline = detouredPolyline ?? baselinePolyline;
 
@@ -1533,6 +1557,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   let selfLoopRouted = false;
   const fanInEnabled = data?.rectilinearFanInEnabled ?? DEFAULT_FAN_IN_ENABLED;
   const fanOutEnabled = data?.rectilinearFanOutEnabled ?? DEFAULT_FAN_OUT_ENABLED;
+  const detoursRequested = data?.rectilinearObstacleDetoursEnabled ?? DEFAULT_OBSTACLE_DETOURS_ENABLED;
   // Fetch the complete edge list only once; we need it for fan calculations, detours, and spacing.
   const edgesFromStore = (getEdges?.() ?? []) as Edge<MultiLabelEdgeData>[];
   const nodesFromStore = (getNodes?.() ?? []) as Node<NodeData, DiagramNodeType>[];
@@ -1662,6 +1687,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
 
         const evaluationStraightenEnabled =
           (data?.rectilinearStraightenEnabled ?? DEFAULT_STRAIGHTEN_ENABLED) && !customEdge;
+        const evaluationDetoursEnabled = detoursRequested && !customEdge && !selfLoopRouted;
         const canEvaluateTurn =
           !customEdge && !selfLoopRouted && edgesFromStore.length > 0 && nodesFromStore.length > 0;
 
@@ -1681,6 +1707,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
             nodesForDetour: nodesFromStore,
             currentEdge,
             straightenEnabled: evaluationStraightenEnabled,
+            detoursEnabled: evaluationDetoursEnabled,
           };
           const preferenceCandidates: RectilinearTurnPreference[] = ['source', 'middle', 'target'];
           const evaluations = preferenceCandidates
@@ -1768,6 +1795,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   }
 
   const hasFixedGeometry = customEdge || selfLoopRouted;
+  const obstacleDetoursEnabled = detoursRequested && !hasFixedGeometry;
 
   if (!hasFixedGeometry && traceRoutingDecision) {
     traceRoutingDecision(
@@ -1883,7 +1911,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
   let detourPolylines: Map<string, XYPosition[]> | undefined;
 
   // Reuse the shared edge cache when building detours so we do not poll the store repeatedly.
-  if (!hasFixedGeometry && edgesFromStore.length > 0) {
+  if (!hasFixedGeometry && edgesFromStore.length > 0 && (obstacleDetoursEnabled || shouldCollectParallelPolylines)) {
     const edgesForDetour = edgesFromStore;
     // TOCHECK: Materialising the full node list per edge render churns large arrays and repeated Node conversions; we might only need the nodes touched by this edge.
     const nodesForDetour = nodesFromStore;
@@ -1898,11 +1926,20 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
       if (shouldCollectParallelPolylines) {
         const detourResult = buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes, {
           collectAll: true,
+          simplify: DETOUR_SIMPLIFICATION_ENABLED,
+          detoursEnabled: obstacleDetoursEnabled,
         });
         detouredPolyline = detourResult.current;
         detourPolylines = detourResult.polylines;
-      } else {
-        detouredPolyline = buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes);
+      } else if (obstacleDetoursEnabled) {
+        detouredPolyline = DETOUR_SIMPLIFICATION_ENABLED
+          ? buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes, {
+              detoursEnabled: obstacleDetoursEnabled,
+            })
+          : buildDetouredPolyline(currentEdge, baselinePolyline, edgesForDetour, nodesAsNodes, {
+              simplify: false as const,
+              detoursEnabled: obstacleDetoursEnabled,
+            });
       }
 
       if (detouredPolyline && !polylinesEqual(detouredPolyline, baselinePolyline)) {
@@ -2045,6 +2082,7 @@ export const ExperimentalStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabe
         customEdge,
         simplifyEnabled,
         parallelSpacingEnabled: shouldCollectParallelPolylines,
+        obstacleDetoursEnabled,
         adjustments: traceAdjustments ? { ...traceAdjustments } : undefined,
       }
     );

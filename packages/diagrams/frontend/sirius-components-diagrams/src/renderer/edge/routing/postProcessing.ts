@@ -813,6 +813,13 @@ export function buildDetouredPolyline(
   edges: Edge<EdgeData>[],
   nodes: Node<NodeData, DiagramNodeType>[]
 ): EdgePolyline;
+export function buildDetouredPolyline(
+  currentEdge: Edge<EdgeData>,
+  currentPolyline: EdgePolyline,
+  edges: Edge<EdgeData>[],
+  nodes: Node<NodeData, DiagramNodeType>[],
+  options: { collectAll?: false; simplify?: boolean; detoursEnabled?: boolean }
+): EdgePolyline;
 /**
  * Re-route the provided edge polyline so it avoids overlapping node rectangles.
  * Overloads let callers either obtain just the updated polyline or the entire
@@ -823,19 +830,21 @@ export function buildDetouredPolyline(
   currentPolyline: EdgePolyline,
   edges: Edge<EdgeData>[],
   nodes: Node<NodeData, DiagramNodeType>[],
-  options: { collectAll: true }
+  options: { collectAll: true; simplify?: boolean; detoursEnabled?: boolean }
 ): DetouredPolylineCollection;
 export function buildDetouredPolyline(
   currentEdge: Edge<EdgeData>,
   currentPolyline: EdgePolyline,
   edges: Edge<EdgeData>[],
   nodes: Node<NodeData, DiagramNodeType>[],
-  options?: { collectAll?: boolean }
+  options?: { collectAll?: boolean; simplify?: boolean; detoursEnabled?: boolean }
 ): EdgePolyline | DetouredPolylineCollection {
   // Entry point used by the edge renderer. It takes the current edge polyline
   // plus the surrounding graph context and returns a new polyline that avoids
   // rectangular obstacles.
   const collectAll = options?.collectAll ?? false;
+  const detoursEnabled = options?.detoursEnabled ?? true;
+  const shouldSimplifyDetours = detoursEnabled && (options?.simplify ?? true);
 
   if (currentPolyline.length < 2 || edges.length === 0 || nodes.length === 0) {
     // Without enough geometry or graph data we cannot improve the path, so we
@@ -854,12 +863,17 @@ export function buildDetouredPolyline(
   const excludedObstacleIds = computeExcludedObstacleIds(currentEdge, nodeLookup);
   const rects = computeAbsoluteNodeRects(nodes, { excludedNodeIds: excludedObstacleIds });
   if (rects.size === 0) {
-    return currentPolyline;
+    return collectAll
+      ? {
+          current: currentPolyline,
+          polylines: new Map<string, EdgePolyline>([[currentEdge.id, currentPolyline]]),
+        }
+      : currentPolyline;
   }
   // Cache the padded rectangles in the format expected by the simplifier. This
   // builds upon the same geometry already used for detours, so there is no
   // additional coordinate work later on.
-  const simplificationObstacles = buildSimplificationObstacles(rects);
+  const simplificationObstacles = shouldSimplifyDetours ? buildSimplificationObstacles(rects) : undefined;
 
   // Initialise the polyline map with either the provided geometry or fresh
   // straight polylines for the other edges. We need the entire edge set so that
@@ -876,6 +890,16 @@ export function buildDetouredPolyline(
     polylines.set(currentEdge.id, currentPolyline);
   }
 
+  if (!detoursEnabled) {
+    const current = polylines.get(currentEdge.id) ?? currentPolyline;
+    return collectAll
+      ? {
+          current,
+          polylines: new Map(polylines),
+        }
+      : current;
+  }
+
   const edgesWithPolylines = edges.filter((edge) => polylines.has(edge.id));
 
   for (let pass = 0; pass < MAX_PASSES; pass++) {
@@ -889,7 +913,10 @@ export function buildDetouredPolyline(
   }
 
   const storedPolyline = polylines.get(currentEdge.id) ?? currentPolyline;
-  const simplifiedCurrent = simplifyDetouredPolyline(storedPolyline, simplificationObstacles);
+  const simplifiedCurrent =
+    shouldSimplifyDetours && simplificationObstacles
+      ? simplifyDetouredPolyline(storedPolyline, simplificationObstacles)
+      : storedPolyline;
   polylines.set(currentEdge.id, simplifiedCurrent);
 
   // Return the adjusted polyline for the current edge. Fallback to the input

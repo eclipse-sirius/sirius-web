@@ -57,6 +57,11 @@ export interface MultiLabelEdgeData extends EdgeData {
    */
   rectilinearStraightenEnabled?: boolean;
   /**
+   * Enables the obstacle-avoidance detour pass that routes polylines around intersecting nodes.
+   * Defaults to true.
+   */
+  rectilinearObstacleDetoursEnabled?: boolean;
+  /**
    * Enables the final simplification pass that removes redundant bends once the polyline is fully processed.
    * Defaults to true. When set to false, the polyline keeps all bends emitted by earlier stages.
    */

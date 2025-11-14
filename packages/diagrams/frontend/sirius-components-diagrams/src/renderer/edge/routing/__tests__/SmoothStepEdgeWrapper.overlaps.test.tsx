@@ -388,6 +388,35 @@ vi.mock('../../rectilinear-edge/MultiLabelRectilinearEditableEdge', () => ({
   },
 }));
 
+describe('ExperimentalStepEdgeWrapper obstacle detours', () => {
+  beforeEach(() => {
+    capturedPolylines.clear();
+    mockInternalNodes.clear();
+  });
+
+  it('skips the detour when rectilinearObstacleDetoursEnabled is false', () => {
+    const fixture = loadFixture('stacked-with-detour.json');
+    const { polylines: enabledPolylines } = renderHarnessFixture(fixture);
+    const enabledDetour = enabledPolylines.get('edge-vertical');
+    expect(enabledDetour, 'expected fixture to produce the edge-vertical polyline with detours enabled').toBeDefined();
+    expect((enabledDetour ?? []).length).toBeGreaterThan(2);
+
+    capturedPolylines.clear();
+    mockInternalNodes.clear();
+
+    const overrides: EdgeOverridesLookup = {
+      'edge-vertical': { rectilinearObstacleDetoursEnabled: false },
+    };
+    const { polylines: disabledPolylines } = renderHarnessFixture(fixture, overrides);
+    const disabledDetour = disabledPolylines.get('edge-vertical');
+    expect(disabledDetour, 'expected fixture to produce the edge-vertical polyline with detours disabled').toBeDefined();
+    expect((disabledDetour ?? []).length).toBeLessThanOrEqual(3);
+    expect((disabledDetour ?? []).length).toBeLessThan((enabledDetour ?? []).length);
+    const baselineX = disabledDetour?.[0]?.x ?? 0;
+    disabledDetour?.forEach((point) => expect(point.x).toBeCloseTo(baselineX, 5));
+  });
+});
+
 describe('ExperimentalStepEdgeWrapper parallel spacing post-processing', () => {
   beforeEach(() => {
     capturedPolylines.clear();
