@@ -10,17 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.infrastructure.elasticsearch.services.api;
+package org.eclipse.sirius.web.application.index.services.api;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+
 /**
- * Produces documents to index.
+ * Delegates that provides index entries in specific contexts.
  *
  * @author gdaniel
  */
-public interface IIndexDocumentCreationService {
+public interface IIndexEntryProviderDelegate {
 
-    Optional<byte[]> createDocument(Object object);
+    boolean canHandle(IEditingContext editingContext, Object object);
 
+    Optional<IIndexEntry> getIndexEntry(IEditingContext editingContext, Object object);
 }

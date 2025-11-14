@@ -179,6 +179,10 @@ This can be used to retrieve a `ViewDiagramConversionData` that contains the map
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
+- https://github.com/eclipse-sirius/sirius-web/issues/5806[#5806] [sirius-web] Add a command in the projects omnibox to perform cross-project queries.
+The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
+You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
+The command is only visible if Elasticsearch is up and running.
 
 
 === Improvements
