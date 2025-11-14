@@ -13,9 +13,12 @@
 package org.eclipse.sirius.web.application.controllers.omnibox;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Mockito.when;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchO
 import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -39,16 +43,24 @@ import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQuery
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxSearchQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.index.services.api.IIndexQueryService;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IEditingContextIndexingService;
 import org.eclipse.sirius.web.papaya.omnibox.PapayaCreateSampleProjectCommandProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxCommandsQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxSearchQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
  * Integration tests of the omnibox commands query.
@@ -61,6 +73,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private WorkbenchOmniboxCommandsQueryRunner workbenchOmniboxCommandsQueryRunner;
 
     @Autowired
@@ -70,10 +85,30 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     private ProjectsOmniboxCommandsQueryRunner projectsOmniboxCommandsQueryRunner;
 
     @Autowired
+    private ProjectsOmniboxSearchQueryRunner projectsOmniboxSearchQueryRunner;
+
+    @Autowired
     private ExecuteWorkbenchOmniboxCommandMutationRunner executeWorkbenchOmniboxCommandMutationRunner;
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IEditingContextIndexingService editingContextIndexingService;
+
+    @Autowired
+    private Optional<ElasticsearchClient> optionalElasticSearchClient;
+
+    @MockitoSpyBean
+    private IIndexQueryService indexQueryService;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer
@@ -95,7 +130,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
         var secondQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(secondQueryVariables);
         List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
-        assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Search"));
+        assertThat(seaFilteredCommandsLabels).hasSize(1).contains("Search");
 
         Map<String, Object> thirdQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
@@ -109,8 +144,8 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a query, when the text-based objects are queried in the workbench omnibox, then the objects are returned")
-    public void givenQueryWhenTextBasedObjectsAreQueriedThenObjectsAreReturned() {
+    @DisplayName("Given a query, when the objects are searched in the workbench omnibox, then the objects are returned")
+    public void givenQueryWhenObjectsAreSearchedInWorkbenchOmniboxThenObjectsAreReturned() {
         Map<String, Object> emptyQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "selectedObjectIds", List.of(),
@@ -165,14 +200,14 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
         var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
         List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
-        assertThat(allCommandLabels).hasSize(1).contains("Blank project");
+        assertThat(allCommandLabels).hasSize(2).contains("Blank project", "Search across projects");
 
         Map<String, Object> secondQueryVariables = Map.of(
                 "query", "Blank"
         );
         var secondQueryResult = this.projectsOmniboxCommandsQueryRunner.run(secondQueryVariables);
-        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
-        assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Blank project"));
+        List<String> blankFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        assertThat(blankFilteredCommandsLabels).hasSize(1).contains("Blank project");
 
         Map<String, Object> thirdQueryVariables = Map.of(
                 "query", "yello"
@@ -180,6 +215,61 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         var thirdQueryResult = this.projectsOmniboxCommandsQueryRunner.run(thirdQueryVariables);
         List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
         assertThat(yelloFilteredCommandsLabels).isEmpty();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a query and an unavailable index query service, when a query is performed in the projects omnibox, then the search command is not returned")
+    public void givenQueryAndUnavailableIndexQueryServiceWhenAQueryIsPerformedInProjectOmniboxThenSearchCommandIsNotReturned() {
+        when(this.indexQueryService.isAvailable()).thenReturn(false);
+        Map<String, Object> firstQueryVariables = Map.of(
+                "query", ""
+        );
+        var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        assertThat(allCommandLabels).doesNotContain("Search across projects");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a query, when the objects are searched in the projects omnibox, then the objects are returned")
+    public void givenQueryWhenObjectsAreSearchedInProjectsOmniboxThenObjectsAreReturned() {
+        assertThat(this.optionalElasticSearchClient.isPresent());
+        this.editingContextSearchService.findById(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()).ifPresent(this.editingContextIndexingService::index);
+        // Wait for Elasticsearch's refresh to ensure the indexed documents can be queried.
+        this.optionalElasticSearchClient.ifPresent(elasticSearchClient -> {
+            try {
+                elasticSearchClient.indices().refresh();
+            } catch (IOException exception) {
+                fail(exception);
+            }
+        });
+
+        Map<String, Object> emptyQueryVariables = Map.of(
+                "query", ""
+        );
+
+        var emptyQueryResult = this.projectsOmniboxSearchQueryRunner.run(emptyQueryVariables);
+        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(emptyQueryObjectLabels).isEmpty();
+
+        Map<String, Object> filterQueryVariables = Map.of(
+                "query", "foo*"
+        );
+
+        var filterQueryResult = this.projectsOmniboxSearchQueryRunner.run(filterQueryVariables);
+        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(filterQueryObjectLabels).contains("fooOperation(fooParameter) (project: Papaya Sample)", "fooParameter (project: Papaya Sample)");
+
+        Map<String, Object> complexQueryVariables = Map.of(
+                "query", "@type:(papaya\\:Package OR papaya\\:Cla*)"
+        );
+
+        var complexQueryResult = this.projectsOmniboxSearchQueryRunner.run(complexQueryVariables);
+        List<String> complexQueryObjectLabels = JsonPath.read(complexQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(complexQueryObjectLabels).isNotEmpty()
+            .anyMatch(label -> label.contains("org.eclipse.sirius.web.tests.data"))
+            .anyMatch(label -> label.contains("Success"));
     }
 
 }
