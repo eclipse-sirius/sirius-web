@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLOmniboxCommand, OmniboxMode, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProjectBrowserOmniboxProps, ProjectBrowserOmniboxState } from './ProjectBrowserOmnibox.types';
 import { useProjectsOmniboxCommands } from './useProjectsOmniboxCommands';
 import { GQLGetProjectsOmniboxCommandsQueryVariables } from './useProjectsOmniboxCommands.types';
+import { useProjectsOmniboxSearch } from './useProjectsOmniboxSearch';
+import { GQLGetProjectsOmniboxSearchResultsQueryVariables } from './useProjectsOmniboxSearch.types';
 
 export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) => {
   const [state, setState] = useState<ProjectBrowserOmniboxState>({
@@ -28,14 +31,22 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
   const onClose = () => setState((prevState) => ({ ...prevState, open: false }));
 
   const { getProjectsOmniboxCommands, loading: commandsLoading, data: commandsData } = useProjectsOmniboxCommands();
+  const { getProjectsOmniboxSearchResults, loading: searchLoading, data: searchData } = useProjectsOmniboxSearch();
 
   const navigate = useNavigate();
 
-  const handleQuery = (query: string, _: OmniboxMode) => {
-    const variables: GQLGetProjectsOmniboxCommandsQueryVariables = {
-      query,
-    };
-    getProjectsOmniboxCommands({ variables });
+  const handleQuery = (query: string, mode: OmniboxMode) => {
+    if (mode === 'Search') {
+      const variables: GQLGetProjectsOmniboxSearchResultsQueryVariables = {
+        query,
+      };
+      getProjectsOmniboxSearchResults({ variables });
+    } else if (mode === 'Command') {
+      const variables: GQLGetProjectsOmniboxCommandsQueryVariables = {
+        query,
+      };
+      getProjectsOmniboxCommands({ variables });
+    }
   };
 
   useEffect(() => {
@@ -47,9 +58,37 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
     }
   }, [commandsLoading, commandsData]);
 
-  const handleCommandClick = (command: GQLOmniboxCommand, _: OmniboxMode) => {
-    if (command.id === 'newProject') {
-      navigate('/new/project');
+  useEffect(() => {
+    if (!searchLoading && searchData) {
+      setState((prevState) => ({
+        ...prevState,
+        commands: searchData.viewer.projectsOmniboxSearch.edges.map((edge) => edge.node),
+      }));
+    }
+  }, [searchLoading, searchData]);
+
+  const { addErrorMessage } = useMultiToast();
+
+  const handleCommandClick = (command: GQLOmniboxCommand, mode: OmniboxMode) => {
+    if (mode === 'Command') {
+      if (command.id === 'newProject') {
+        navigate('/new/project');
+        onClose();
+      } else if (command.id === 'search') {
+        setState((prevState) => ({
+          ...prevState,
+          commands: null,
+        }));
+      }
+    } else if (mode === 'Search') {
+      const splitCommandId = command.id.split('#');
+      if (splitCommandId.length == 2) {
+        const rawProjectId = splitCommandId[0];
+        const objectId = splitCommandId[1];
+        navigate(`/projects/${rawProjectId}/edit?selection=${objectId}`);
+      } else {
+        addErrorMessage('Unsupported search result id ' + command.id);
+      }
       onClose();
     }
   };

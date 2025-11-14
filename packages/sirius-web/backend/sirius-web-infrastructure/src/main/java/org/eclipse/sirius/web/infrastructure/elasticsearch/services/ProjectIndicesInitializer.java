@@ -79,18 +79,16 @@ public class ProjectIndicesInitializer implements CommandLineRunner {
 
                 for (Project project : projects) {
                     if (!existingIndices.remove(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + project.getId())) {
-                        elasticSearchClient.indices().create(createIndexRequest -> createIndexRequest
-                                .index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + project.getId())
-                                .settings(settingsBuilder -> settingsBuilder.mode("lookup"))
-                        );
+                        elasticSearchClient.indices()
+                                .create(createIndexRequest -> createIndexRequest.index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + project.getId())
+                                .settings(settingsBuilder -> settingsBuilder.mode("lookup")));
                         this.indexAllEditingContexts(project);
                     }
                 }
 
                 // Delete the remaining indices, they are not associated to a project.
                 if (!existingIndices.isEmpty()) {
-                    elasticSearchClient.indices().delete(deleteIndexRequest -> deleteIndexRequest.index(existingIndices)
-                    );
+                    elasticSearchClient.indices().delete(deleteIndexRequest -> deleteIndexRequest.index(existingIndices));
                 }
             } catch (IOException exception) {
                 this.logger.warn("An error occurred while initializing indices", exception);
