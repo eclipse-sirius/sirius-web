@@ -168,6 +168,7 @@ const determineInitialAxis = (position: Position): Axis =>
 
 const harnessFixturesDir = path.join(process.cwd(), 'packages/dev/frontend/routing-harness/src/fixtures');
 //TOCHECK: Tests depend on fixtures living in the dev harness workspace; mirroring them locally would make the suite less brittle.
+const DEBUG_SEGMENT_COUNTS = process.env.DEBUG_SEGMENTS === 'true';
 
 const loadFixture = (filename: string): DiagramFixture => {
   const content = readFileSync(path.join(harnessFixturesDir, filename), 'utf-8');
@@ -233,7 +234,7 @@ describe('buildDetouredPolyline', () => {
 
     expect(finalPolyline.length).toBeGreaterThanOrEqual(2);
     const segmentCount = finalPolyline.length - 1;
-    expect(segmentCount).toBe(9);
+    expect(segmentCount).toBe(5);
 
     const nodeA = fixture.nodes.find((node) => node.id === 'A');
     const nodeB = fixture.nodes.find((node) => node.id === 'B');
@@ -269,19 +270,19 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-east-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-east-b-south.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-east-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-east-b-west.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-a-north-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-north-b-east.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-north-b-north',
@@ -293,13 +294,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-north-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-north-b-south.json',
-      expectedSegments: 9,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-a-north-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-north-b-west.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-south-b-east',
@@ -329,7 +330,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-west-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-west-b-east.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-a-west-b-north',
@@ -341,7 +342,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-a-west-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-a-west-b-south.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-a-west-b-west',
@@ -359,7 +360,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-east-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-east-b-north.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-east-b-south',
@@ -371,7 +372,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-east-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-east-b-west.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-b-above-a-north-b-east',
@@ -401,13 +402,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-south-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-south-b-east.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-south-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-south-b-north.json',
-      expectedSegments: 9,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-b-above-a-south-b-south',
@@ -419,19 +420,19 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-vertical-b-above-a-south-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-south-b-west.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-west-b-east',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-west-b-east.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-vertical-b-above-a-west-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-vertical-b-above-a-west-b-north.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-vertical-b-above-a-west-b-south',
@@ -455,19 +456,19 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-east-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-east-b-north.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-east-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-east-b-south.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-east-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-east-b-west.json',
-      expectedSegments: 9,
+      expectedSegments: 5,
     },
     {
       id: 'directional-horizontal-b-left-a-north-b-east',
@@ -485,13 +486,13 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-north-b-south',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-north-b-south.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-horizontal-b-left-a-north-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-north-b-west.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-south-b-east',
@@ -503,7 +504,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-south-b-north',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-south-b-north.json',
-      expectedSegments: 4,
+      expectedSegments: 5,
     },
     {
       id: 'directional-horizontal-b-left-a-south-b-south',
@@ -515,7 +516,7 @@ describe('buildDetouredPolyline', () => {
       id: 'directional-horizontal-b-left-a-south-b-west',
       edgeId: 'edge-a-b',
       filename: 'directional-horizontal-b-left-a-south-b-west.json',
-      expectedSegments: 8,
+      expectedSegments: 4,
     },
     {
       id: 'directional-horizontal-b-left-a-west-b-east',
@@ -550,6 +551,10 @@ describe('buildDetouredPolyline', () => {
       const finalPolyline = buildFinalPolyline(fixture, edgeId);
 
       const segmentCount = finalPolyline.length - 1;
+      if (DEBUG_SEGMENT_COUNTS) {
+        // Useful when re-tuning routing passes: observe the current shape budget per harness fixture.
+        console.log(`${id}: ${segmentCount}`);
+      }
       const rectilinear = isRectilinear(finalPolyline);
       expect(
         finalPolyline.length,
@@ -560,6 +565,49 @@ describe('buildDetouredPolyline', () => {
         `${id} expected ${expectedSegments} rectilinear segments after detour + simplification to keep the path readable`
       ).toBe(expectedSegments);
       expect(rectilinear, `${id} must remain manhattan so arrowheads stay aligned to node faces`).toBe(true);
+    }
+  );
+
+  const detourSimplificationFixtures = [
+    {
+      id: 'decision-rel-west-source-east-target-west',
+      filename: 'decision-rel-west-source-east-target-west.json',
+      edgeId: 'edge-a-b',
+      expectedSegments: 5,
+    },
+    {
+      id: 'decision-rel-south-source-north-target-south',
+      filename: 'decision-rel-south-source-north-target-south.json',
+      edgeId: 'edge-a-b',
+      expectedSegments: 5,
+    },
+    {
+      id: 'component-diag-edge-b768bc42',
+      filename: 'component-diag.json',
+      edgeId: 'b768bc42-90fc-3572-b1b5-e333086beb2f',
+      expectedSegments: 5,
+    },
+  ] as const;
+
+  it.each(detourSimplificationFixtures)(
+    'simplifies redundant detour loops for %s',
+    ({ filename, edgeId, id, expectedSegments }) => {
+      const fixture = loadFixture(filename);
+      const edges = filename === 'component-diag.json' ? toHarnessEdges(fixture) : undefined;
+      const finalPolyline = buildFinalPolyline(fixture, edgeId, edges);
+
+      if (DEBUG_SEGMENT_COUNTS) {
+        console.log(`${id}: ${finalPolyline.length - 1}`);
+      }
+      expect(
+        finalPolyline.length,
+        `${id} should stay valid even if simplification removes several intermediate bends`
+      ).toBeGreaterThanOrEqual(2);
+      expect(
+        finalPolyline.length - 1,
+        `${id} expected ${expectedSegments} segments after removing redundant turns`
+      ).toBe(expectedSegments);
+      expect(isRectilinear(finalPolyline), `${id} must remain rectilinear after simplification`).toBe(true);
     }
   );
 

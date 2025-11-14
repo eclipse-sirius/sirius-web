@@ -24,7 +24,6 @@ import { computeAbsoluteNodeRects, Rect } from './geometry';
 // orthogonal. Every helper below plays a role in that pipeline: locating
 // contact points, prioritising collisions, and building replacement polylines.
 
-
 // Our edges are simple ordered lists of XY points; the renderer joins
 // consecutive points with straight segments.
 type EdgePolyline = XYPosition[];
@@ -333,10 +332,7 @@ const gatherCollisions = (
     const minXThreshold = rectEntry.paddedBounds.left - EPSILON;
     const maxXThreshold = rectEntry.paddedBounds.right + EPSILON;
 
-    while (
-      candidateIndex < edgeCandidates.length &&
-      edgeCandidates[candidateIndex]!.bounds.minX <= maxXThreshold
-    ) {
+    while (candidateIndex < edgeCandidates.length && edgeCandidates[candidateIndex]!.bounds.minX <= maxXThreshold) {
       activeEdges.push(edgeCandidates[candidateIndex]!);
       candidateIndex++;
     }
@@ -353,10 +349,7 @@ const gatherCollisions = (
     for (let edgeIndex = 0; edgeIndex < activeEdges.length; edgeIndex++) {
       const candidate = activeEdges[edgeIndex]!;
       const { bounds, edge, polyline } = candidate;
-      if (
-        bounds.maxY < rectEntry.paddedBounds.top - EPSILON ||
-        bounds.minY > rectEntry.paddedBounds.bottom + EPSILON
-      ) {
+      if (bounds.maxY < rectEntry.paddedBounds.top - EPSILON || bounds.minY > rectEntry.paddedBounds.bottom + EPSILON) {
         continue;
       }
 
@@ -622,6 +615,198 @@ const computeExcludedObstacleIds = (
   return excluded;
 };
 
+/**
+ * Lightweight descriptor used by the simplification pass to reason about
+ * padded obstacle rectangles. Each entry stores the rectangle itself and the
+ * precomputed bounds so the inner loop can perform a quick AABB test before
+ * running the expensive segment/rectangle collision checks.
+ */
+type SimplificationObstacle = {
+  nodeId: string;
+  rect: Rect;
+  bounds: { left: number; right: number; top: number; bottom: number };
+};
+
+/**
+ * Reuse the expanded rectangles computed for detours and convert them into the
+ * `SimplificationObstacle` shape consumed by the simplifier.
+ */
+const buildSimplificationObstacles = (rects: Map<string, Rect>): SimplificationObstacle[] =>
+  Array.from(rects.entries()).map(([nodeId, rect]) => {
+    const detectionRect = expandRect(rect, DETECTION_PADDING);
+    return {
+      nodeId,
+      rect: detectionRect,
+      bounds: rectToBounds(detectionRect),
+    };
+  });
+
+/**
+ * Fast axis-aligned bounding-box overlap predicate used to reject most
+ * candidate paths before we fall back to the precise collision detection.
+ */
+const boundsOverlap = (
+  pathBounds: { minX: number; maxX: number; minY: number; maxY: number },
+  obstacleBounds: { left: number; right: number; top: number; bottom: number }
+): boolean =>
+  pathBounds.maxX >= obstacleBounds.left - EPSILON &&
+  pathBounds.minX <= obstacleBounds.right + EPSILON &&
+  pathBounds.maxY >= obstacleBounds.top - EPSILON &&
+  pathBounds.minY <= obstacleBounds.bottom + EPSILON;
+const simplifyDetouredPolyline = (polyline: EdgePolyline, obstacles: SimplificationObstacle[]): EdgePolyline => {
+  /**
+   * Remove redundant turns that may remain after the detour pass.
+   *
+   * Strategy:
+   * 1. Slide a four-point window (three segments / two turns) along the path.
+   * 2. Propose alternative subpaths (straight segment, vertical-then-horizontal L, horizontal-then-vertical L).
+   * 3. Keep the first candidate that shortens the path, stays away from the portals (first/last segments),
+   *    and avoids every obstacle rectangle.
+   * 4. Continue until a full sweep yields no changes.
+   */
+  if (polyline.length < 5) {
+    return polyline;
+  }
+
+  // Operate on a copy so callers receive the same reference when nothing changes.
+  let working = polyline.slice();
+  let mutated = false;
+
+  const collidesWithObstacle = (candidatePath: XYPosition[]): boolean => {
+    if (candidatePath.length < 2) {
+      return false;
+    }
+
+    // Quick bounding-box computation lets us reject most rectangles cheaply.
+    let minX = candidatePath[0]!.x;
+    let maxX = minX;
+    let minY = candidatePath[0]!.y;
+    let maxY = minY;
+    for (let index = 1; index < candidatePath.length; index++) {
+      const point = candidatePath[index];
+      if (!point) {
+        continue;
+      }
+      if (point.x < minX) {
+        minX = point.x;
+      } else if (point.x > maxX) {
+        maxX = point.x;
+      }
+      if (point.y < minY) {
+        minY = point.y;
+      } else if (point.y > maxY) {
+        maxY = point.y;
+      }
+    }
+
+    for (let index = 0; index < obstacles.length; index++) {
+      const obstacle = obstacles[index]!;
+      if (!boundsOverlap({ minX, maxX, minY, maxY }, obstacle.bounds)) {
+        continue;
+      }
+      if (collectPolylineRectCollisions(candidatePath, obstacle.rect).length > 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const trySimplifyWindow = (entryIndex: number): boolean => {
+    const exitIndex = entryIndex + 3;
+    if (exitIndex >= working.length) {
+      return false;
+    }
+
+    const removalFirst = entryIndex + 1;
+    const removalSecond = entryIndex + 2;
+    const lastInteriorIndex = working.length - 2;
+    // Guard rail: never strip the first/last interior bend so the polyline still
+    // leaves and re-enters its nodes orthogonally.
+    if (removalFirst <= 1 || removalSecond <= 1) {
+      return false;
+    }
+    if (removalFirst >= lastInteriorIndex || removalSecond >= lastInteriorIndex) {
+      return false;
+    }
+
+    const entry = working[entryIndex];
+    const exit = working[exitIndex];
+    if (!entry || !exit) {
+      return false;
+    }
+
+    const subPathLength = exitIndex - entryIndex + 1;
+    if (subPathLength < 4) {
+      return false;
+    }
+
+    const candidates: XYPosition[][] = [];
+
+    // Candidate 1: entry and exit already align along an axis, so we can merge
+    // the window into a single straight segment.
+    if (entry.x === exit.x || entry.y === exit.y) {
+      candidates.push([entry, exit]);
+    }
+
+    // Candidate 2: move vertically first (align X), then horizontally.
+    const verticalThenHorizontal = { x: entry.x, y: exit.y };
+    if (
+      (verticalThenHorizontal.x !== entry.x || verticalThenHorizontal.y !== entry.y) &&
+      (verticalThenHorizontal.x !== exit.x || verticalThenHorizontal.y !== exit.y)
+    ) {
+      candidates.push([entry, verticalThenHorizontal, exit]);
+    }
+
+    // Candidate 3: mirror of the previous one (horizontal leg first, vertical leg second).
+    const horizontalThenVertical = { x: exit.x, y: entry.y };
+    const duplicatePivot =
+      horizontalThenVertical.x === verticalThenHorizontal.x && horizontalThenVertical.y === verticalThenHorizontal.y;
+    if (
+      !duplicatePivot &&
+      (horizontalThenVertical.x !== entry.x || horizontalThenVertical.y !== entry.y) &&
+      (horizontalThenVertical.x !== exit.x || horizontalThenVertical.y !== exit.y)
+    ) {
+      candidates.push([entry, horizontalThenVertical, exit]);
+    }
+
+    for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+      const candidatePath = candidates[candidateIndex]!;
+      if (candidatePath.length >= subPathLength) {
+        continue;
+      }
+      if (collidesWithObstacle(candidatePath)) {
+        continue;
+      }
+      // Stitch the accepted candidate back into the polyline by replacing the window interior.
+      working = [
+        ...working.slice(0, entryIndex + 1),
+        ...candidatePath.slice(1, candidatePath.length - 1),
+        ...working.slice(exitIndex),
+      ];
+      return true;
+    }
+
+    return false;
+  };
+
+  // Keep iterating until no window yields a simplification.
+  while (working.length >= 5) {
+    let simplified = false;
+    for (let entryIndex = 0; entryIndex <= working.length - 4; entryIndex++) {
+      if (trySimplifyWindow(entryIndex)) {
+        simplified = true;
+        mutated = true;
+        break;
+      }
+    }
+    if (!simplified) {
+      break;
+    }
+  }
+
+  return mutated ? working : polyline;
+};
+
 export function buildDetouredPolyline(
   currentEdge: Edge<EdgeData>,
   currentPolyline: EdgePolyline,
@@ -671,6 +856,10 @@ export function buildDetouredPolyline(
   if (rects.size === 0) {
     return currentPolyline;
   }
+  // Cache the padded rectangles in the format expected by the simplifier. This
+  // builds upon the same geometry already used for detours, so there is no
+  // additional coordinate work later on.
+  const simplificationObstacles = buildSimplificationObstacles(rects);
 
   // Initialise the polyline map with either the provided geometry or fresh
   // straight polylines for the other edges. We need the entire edge set so that
@@ -699,6 +888,10 @@ export function buildDetouredPolyline(
     }
   }
 
+  const storedPolyline = polylines.get(currentEdge.id) ?? currentPolyline;
+  const simplifiedCurrent = simplifyDetouredPolyline(storedPolyline, simplificationObstacles);
+  polylines.set(currentEdge.id, simplifiedCurrent);
+
   // Return the adjusted polyline for the current edge. Fallback to the input
   // polyline if something unexpected prevented us from storing a result.
   const current = polylines.get(currentEdge.id) ?? currentPolyline;
@@ -710,7 +903,6 @@ export function buildDetouredPolyline(
   }
   return current;
 }
-
 
 // -----------------------------------------------------------------------------
 // Collision helpers
@@ -771,10 +963,7 @@ const measurePolylineBounds = (polyline: EdgePolyline): PolylineBounds | undefin
   return bounds;
 };
 
-const insertIntersectionSorted = (
-  intersections: SegmentIntersection[],
-  candidate: SegmentIntersection
-): void => {
+const insertIntersectionSorted = (intersections: SegmentIntersection[], candidate: SegmentIntersection): void => {
   let index = 0;
   while (index < intersections.length && intersections[index]!.t < candidate.t - EPSILON) {
     index++;
@@ -1054,10 +1243,7 @@ const getEntryExitForSegment = (
  * @param rect - Rectangle to test against.
  * @returns List of collision spans including entry/exit points and segment indices.
  */
-export const collectPolylineRectCollisions = (
-  points: XYPosition[],
-  rect: Rect
-): PolylineRectCollision[] => {
+export const collectPolylineRectCollisions = (points: XYPosition[], rect: Rect): PolylineRectCollision[] => {
   const collisions: PolylineRectCollision[] = [];
   if (points.length < 2) {
     return collisions;
@@ -1095,14 +1281,7 @@ export const collectPolylineRectCollisions = (
       continue;
     }
 
-    const { entryPoint, exitPoint } = getEntryExitForSegment(
-      start,
-      end,
-      bounds,
-      insideStart,
-      insideEnd,
-      intersections
-    );
+    const { entryPoint, exitPoint } = getEntryExitForSegment(start, end, bounds, insideStart, insideEnd, intersections);
 
     if (!inside) {
       // Record the entry point so we can emit a single collision for contiguous segments.
@@ -1190,7 +1369,6 @@ export const expandRect = (rect: Rect, padding: number): Rect => ({
   width: rect.width + padding * 2,
   height: rect.height + padding * 2,
 });
-
 
 // -----------------------------------------------------------------------------
 // Detour helpers
@@ -1410,8 +1588,7 @@ const selectShortestPerimeter = (
   const counterClockwise = buildPerimeterTrace(rect, entryPoint, exitPoint, entryEdge, exitEdge, -1);
 
   // Pick whichever direction yields the shorter travel distance.
-  const choice =
-    pathLength(clockwise.points) <= pathLength(counterClockwise.points) ? clockwise : counterClockwise;
+  const choice = pathLength(clockwise.points) <= pathLength(counterClockwise.points) ? clockwise : counterClockwise;
 
   return { points: choice.points, sideSequence: choice.sides.slice(0, Math.max(choice.points.length - 1, 0)) };
 };
@@ -1542,7 +1719,7 @@ const ensureOrthogonalSegments = (points: XYPosition[]): XYPosition[] => {
       }
 
       const latest = rectified[rectified.length - 1];
-      if (latest && (latest.x !== target.x && latest.y !== target.y)) {
+      if (latest && latest.x !== target.x && latest.y !== target.y) {
         const secondary: XYPosition = { x: target.x, y: latest.y };
         if (secondary.x !== latest.x || secondary.y !== latest.y) {
           rectified.push(secondary);
@@ -1686,12 +1863,7 @@ export const buildDetourAroundRectangle = (
     exitIndex = exit.index;
   }
 
-  if (
-    !entryPoint ||
-    !exitPoint ||
-    typeof entryIndex !== 'number' ||
-    typeof exitIndex !== 'number'
-  ) {
+  if (!entryPoint || !exitPoint || typeof entryIndex !== 'number' || typeof exitIndex !== 'number') {
     return null;
   }
 
@@ -1714,7 +1886,6 @@ export const buildDetourAroundRectangle = (
   const detourWithAnchors = [entryPoint, ...detourPoints, exitPoint];
   return mergePolyline(polyline, entryIndex, exitIndex, detourWithAnchors);
 };
-
 
 // -----------------------------------------------------------------------------
 // Parallel spacing
@@ -2125,7 +2296,7 @@ const buildSpacedPolylineMap = (
     return polylines;
   }
 
-const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
+  const adjusted = applyAssignments(polylines, segmentIndex, assignments, mergedOptions);
   return adjusted;
 };
 
@@ -2154,7 +2325,6 @@ export const buildSpacedPolyline = (
   }
   return spaced.get(currentEdgeId) ?? [];
 };
-
 
 // -----------------------------------------------------------------------------
 // Straightening
