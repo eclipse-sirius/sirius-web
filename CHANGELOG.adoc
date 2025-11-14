@@ -25,7 +25,6 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 `IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 
 
-
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.8[Spring Boot 3.5.8]
@@ -42,6 +41,10 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5806[#5806] [sirius-web] Add a command in the projects omnibox to perform cross-project queries.
+The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
+You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
+The command is only visible if Elasticsearch is up and running.
 
 
 === Improvements
@@ -216,6 +219,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5842[#5842] [diagram] Prevent edge handles from being lost after revealing an edge
 - https://github.com/eclipse-sirius/sirius-web/issues/5900[#5900] [sirius-web] Wait for all i18n namespaces to be loaded before displaying the front
 - https://github.com/eclipse-sirius/sirius-web/issues/5902[#5902] [diagram] Prevent loss of drop position on the node
+
 
 
 === New Features

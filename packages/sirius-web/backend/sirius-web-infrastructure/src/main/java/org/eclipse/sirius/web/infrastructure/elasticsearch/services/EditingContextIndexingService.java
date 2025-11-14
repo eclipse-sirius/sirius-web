@@ -22,19 +22,17 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.index.services.api.IIndexEntry;
+import org.eclipse.sirius.web.application.index.services.api.IIndexEntryProvider;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IEditingContextIndexingService;
-import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexDocumentCreationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._helpers.bulk.BulkIngester;
-import co.elastic.clients.util.BinaryData;
-import co.elastic.clients.util.ContentType;
 
 /**
  * Indexes the content of an editing context.
@@ -46,19 +44,16 @@ public class EditingContextIndexingService implements IEditingContextIndexingSer
 
     private final IProjectEditingContextService projectEditingContextService;
 
-    private final IIdentityService identityService;
-
-    private final IIndexDocumentCreationService indexDocumentCreationService;
+    private final IIndexEntryProvider indexEntryProvider;
 
     private final Optional<ElasticsearchClient> optionalElasticSearchClient;
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextIndexingService.class);
 
-    public EditingContextIndexingService(IProjectEditingContextService projectEditingContextService, IIdentityService identityService, IIndexDocumentCreationService indexDocumentCreationService,
+    public EditingContextIndexingService(IProjectEditingContextService projectEditingContextService, IIndexEntryProvider indexEntryProvider,
             Optional<ElasticsearchClient> optionalElasticSearchClient) {
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
-        this.identityService = Objects.requireNonNull(identityService);
-        this.indexDocumentCreationService = Objects.requireNonNull(indexDocumentCreationService);
+        this.indexEntryProvider = Objects.requireNonNull(indexEntryProvider);
         this.optionalElasticSearchClient = Objects.requireNonNull(optionalElasticSearchClient);
     }
 
@@ -76,15 +71,14 @@ public class EditingContextIndexingService implements IEditingContextIndexingSer
                     for (Resource resourceToIndex : emfEditingContext.getDomain().getResourceSet().getResources()) {
                         StreamSupport.stream(Spliterators.spliteratorUnknownSize(resourceToIndex.getAllContents(), Spliterator.ORDERED), false)
                             .forEach(eObject -> {
-                                String objectId = this.identityService.getId(eObject);
-                                Optional<byte[]> optionalIndexDocument = this.indexDocumentCreationService.createDocument(eObject);
-                                if (optionalIndexDocument.isPresent()) {
-                                    BinaryData binaryData = BinaryData.of(optionalIndexDocument.get(), ContentType.APPLICATION_JSON);
+                                Optional<IIndexEntry> optionalIndexEntry = this.indexEntryProvider.getIndexEntry(editingContext, eObject);
+                                if (optionalIndexEntry.isPresent()) {
+                                    IIndexEntry indexEntry = optionalIndexEntry.get();
                                     bulkIngester.add(bulkOperation -> bulkOperation
                                             .index(indexOperation -> indexOperation
                                                     .index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + optionalProjectId.get())
-                                                    .id(objectId)
-                                                    .document(binaryData)
+                                                    .id(indexEntry.id())
+                                                    .document(indexEntry)
                                             )
                                     );
                                 }
@@ -101,10 +95,25 @@ public class EditingContextIndexingService implements IEditingContextIndexingSer
     private void clearIndex(String projectId) {
         this.optionalElasticSearchClient.ifPresent(elasticSearchClient -> {
             try {
-                elasticSearchClient.indices().delete(deleteIndexRequest -> deleteIndexRequest.index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + projectId));
+                elasticSearchClient.indices().delete(deleteIndexRequest -> deleteIndexRequest
+                        .index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + projectId)
+                        // The index may not exist yet. This can be the case if ProjectIndicesInitializer is still
+                        // running and hasn't processed the project yet.
+                        .ignoreUnavailable(true));
                 elasticSearchClient.indices().create(createIndexRequest -> createIndexRequest
                         .index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + projectId)
                         .settings(settingsBuilder -> settingsBuilder.mode("lookup"))
+                        .mappings(mappingsBuilder -> mappingsBuilder
+                              // Do not index iconURLs, editingContextId, or entryType, this is technical information we don't want to search for.
+                              .properties(IIndexEntry.ICON_URLS_FIELD, propertyBuilder -> propertyBuilder
+                                      .text(textPropertyBuilder -> textPropertyBuilder
+                                              .index(false)))
+                              .properties(IIndexEntry.EDITING_CONTEXT_ID_FIELD, propertyBuilder -> propertyBuilder
+                                      .text(textPropertyBuilder -> textPropertyBuilder
+                                              .index(false)))
+                              .properties(IIndexEntry.INDEX_ENTRY_TYPE_FIELD, propertyBuilder -> propertyBuilder
+                                      .text(textPropertyBuilder -> textPropertyBuilder
+                                              .index(false))))
                 );
             } catch (IOException exception) {
                 this.logger.warn("An error occurred while clearing the index", exception);

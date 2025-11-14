@@ -1,3 +1,4 @@
 extend type Viewer {
   projectsOmniboxCommands(query: String!): ViewerOmniboxCommandsConnection!
+  projectsOmniboxSearch(query: String!): ViewerOmniboxCommandsConnection!
 }
