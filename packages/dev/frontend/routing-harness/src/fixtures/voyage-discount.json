@@ -1,0 +1,141 @@
+{
+  "id": "voyage-discount",
+  "name": "Voyage Discount avec conteneur, FMA, TODO",
+  "description": "With or without merge of edges",
+  "categories": ["decision-table", "routing"],
+  "nodes": [
+    {
+      "id": "V1",
+      "label": "Vente de Séjours depuis un navigateur web",
+      "position": {
+        "x": 10,
+        "y": 200
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "V2",
+      "label": "Vente de Séjours depuis un téléphone",
+      "position": {
+        "x": 10,
+        "y": 360
+      },
+      "size": {
+        "width": 160,
+        "height": 90
+      }
+    },
+    {
+      "id": "Conteneur1",
+      "label": "Commercial B2B",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "size": {
+        "width": 160,
+        "height": 180
+      }
+    },
+    {
+      "id": "VD1",
+      "label": "Vendre des voyages aux entreprises",
+      "parentId": "Conteneur1",
+      "position": {
+        "x": 410,
+        "y": 50
+      },
+      "size": {
+        "width": 140,
+        "height": 90
+      }
+    },
+    {
+      "id": "Conteneur2",
+      "label": "Commercial en agence",
+      "position": {
+        "x": 400,
+        "y": 200
+      },
+      "size": {
+        "width": 160,
+        "height": 180
+      }
+    },
+    {
+      "id": "VD2",
+      "label": "Vendre des voyages aux particuliers",
+      "parentId": "Conteneur2",
+      "position": {
+        "x": 410,
+        "y": 250
+      },
+      "size": {
+        "width": 140,
+        "height": 90
+      }
+    },
+    {
+      "id": "Conteneur3",
+      "label": "Responsable e-business",
+      "position": {
+        "x": 400,
+        "y": 400
+      },
+      "size": {
+        "width": 160,
+        "height": 180
+      }
+    },
+    {
+      "id": "VD3",
+      "label": "Gérer les ventes en ligne",
+      "parentId": "Conteneur3",
+      "position": {
+        "x": 410,
+        "y": 450
+      },
+      "size": {
+        "width": 140,
+        "height": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-a-b",
+      "source": "V1",
+      "target": "VD1",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-a-vd2",
+      "source": "V1",
+      "target": "VD2",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-a-vd3",
+      "source": "V1",
+      "target": "VD3",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    },
+    {
+      "id": "edge-b-vd3",
+      "source": "V2",
+      "target": "VD3",
+      "type": "manhattan",
+      "sourcePosition": "right",
+      "targetPosition": "left"
+    }
+  ]
+}
