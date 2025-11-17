@@ -21,9 +21,21 @@ export type MultiLabelEdgeProps<T extends Edge<Record<string, unknown>, string |
 
 export type RectilinearTurnPreference = 'target' | 'source' | 'middle';
 
+export interface EdgeCrossingGap {
+  /**
+   * Normalized start coordinate (0..1) along the rendered SVG path where the fade should begin.
+   */
+  startRatio: number;
+  /**
+   * Normalized end coordinate (0..1) along the rendered SVG path where the fade should end.
+   */
+  endRatio: number;
+}
+
 export interface MultiLabelEdgeData extends EdgeData {
   beginLabel?: EdgeLabel;
   endLabel?: EdgeLabel;
+  crossingGaps?: EdgeCrossingGap[];
   /**
    * Controls where the first rectilinear turn should occur when no custom bending points were provided.
    * - target: turn closer to the target handle (default).

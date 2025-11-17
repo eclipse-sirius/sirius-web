@@ -37,6 +37,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5608[#5608] [diagram] Hide empty sections on the palette 
+- https://github.com/eclipse-sirius/sirius-web/issues/5811[#5811] [diagram] Introduce CrossFade Tunnels to automatically create blank underpasses when edges cross and defer crossing detection while nodes are being dragged to keep interactions smooth.
 
 
 
