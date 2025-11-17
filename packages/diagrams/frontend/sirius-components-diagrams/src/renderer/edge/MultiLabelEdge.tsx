@@ -18,6 +18,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { useStore } from '../../representation/useStore';
 import { DraggableEdgeLabels } from './DraggableEdgeLabels';
 import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
+import { buildCrossingDashArray } from './crossings/buildCrossingDashArray';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -59,7 +60,27 @@ export const MultiLabelEdge = memo(
     const { faded } = data || {};
     const theme = useTheme();
     const { setEdges } = useStore();
-    const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
+    const baseEdgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
+    const crossingDashArray = useMemo(() => {
+      if (!data?.crossingGaps || data.crossingGaps.length === 0) {
+        return null;
+      }
+      if (style?.strokeDasharray) {
+        return null;
+      }
+      return buildCrossingDashArray(svgPathString, data.crossingGaps);
+    }, [data?.crossingGaps, svgPathString, style?.strokeDasharray]);
+
+    const edgeStyle = useMemo(() => {
+      if (!crossingDashArray) {
+        return baseEdgeStyle;
+      }
+      return {
+        ...baseEdgeStyle,
+        strokeDasharray: crossingDashArray,
+        strokeLinecap: 'round' as React.CSSProperties['strokeLinecap'],
+      };
+    }, [baseEdgeStyle, crossingDashArray]);
 
     useEffect(() => {
       setEdges((prevEdges) =>

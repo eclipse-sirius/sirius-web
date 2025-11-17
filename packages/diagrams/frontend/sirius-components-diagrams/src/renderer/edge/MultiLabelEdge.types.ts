@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,4 +22,16 @@ export type MultiLabelEdgeProps<T extends Edge<Record<string, unknown>, string |
 export interface MultiLabelEdgeData extends EdgeData {
   beginLabel?: EdgeLabel;
   endLabel?: EdgeLabel;
+  crossingGaps?: EdgeCrossingGap[];
+}
+
+export interface EdgeCrossingGap {
+  /**
+   * Normalized start coordinate (0..1) along the rendered SVG path where the fade should begin.
+   */
+  startRatio: number;
+  /**
+   * Normalized end coordinate (0..1) along the rendered SVG path where the fade should end.
+   */
+  endRatio: number;
 }
