@@ -38,6 +38,7 @@ React components `FormRepresentation`, `DiagramFilterForm`, `DetailsView`, `Rela
 All tests based on form subscriptions will now receive both `FormRefreshedEventPayload` and `FormCapabilitiesRefreshedEventPayload`.
 Those tests will have to be updated to take this new payload into account.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] `isLastNodeSelected` should be set when converting custom nodes.
 
 
 === Dependency update
@@ -69,6 +70,7 @@ You can check the https://www.elastic.co/docs/reference/query-languages/query-ds
 The command is only visible if Elasticsearch is up and running.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
 
 === Improvements
 
