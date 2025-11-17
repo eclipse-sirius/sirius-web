@@ -60,6 +60,7 @@ export interface NodeData extends Record<string, unknown> {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  isLastNodeSelected: boolean;
   connectionLinePositionOnNode: ConnectionLinePositionOnNode;
   nodeAppearanceData: NodeAppearanceData;
   minComputedWidth: number | null;

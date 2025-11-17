@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightNode {
   readonly page: Page;
@@ -124,5 +124,43 @@ export class PlaywrightNode {
     // Playwright performs checks before making actions, so Playwright waits for the animation to finish before performing the next action.
     // see https://playwright.dev/docs/actionability
     await this.nodeLocator.click();
+  }
+
+  async isLastOneSelected() {
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+  }
+
+  async isNotLastOneSelected() {
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
   }
 }

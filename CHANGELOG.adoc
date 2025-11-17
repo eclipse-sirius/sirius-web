@@ -109,6 +109,7 @@ Downstream projects relying on this should switch to a better initialization or 
 - https://github.com/eclipse-sirius/sirius-web/issues/5765[#5765] [diagram] The method `INodeStyleProvider#createNodeStyle` has now access to both the AQL interpreter and the variable manager to compute expressions.
 The optional editing context id argument has been removed since it can be computed from the variable manager.
 - https://github.com/eclipse-sirius/sirius-web/issues/4860[#4860] [core] The `workbenchViewContributionExtensionPoint` frontend extension point has slightly changed since the `side` attribute has been removed and it is now managed directly by the workbench configuration.
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] `isLastNodeSelected` should be set when converting custom nodes.
 
 
 === Dependency update
@@ -170,6 +171,7 @@ If none of the provided implementation of `IWorkbenchConfigurationProviderDelega
 With this architecture, downstream projects can customize this behavior by providing an implementation of `IWorkbenchConfigurationProviderDelegate` to provide new workbench configuration for their needs, or replace the default implementation of `IDefaultWorkbenchConfigurationProvider` to change the default workbench configuration.
 With the workbench configuration, downstream projects can give the representation to open when the user open a project and in which side panel views will be available.
 In conjonction of the `workbenchViewContributionExtensionPoint` frontend extension point, downstream projects can add custom views with their workbench configuration.
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
 
 
 === Improvements

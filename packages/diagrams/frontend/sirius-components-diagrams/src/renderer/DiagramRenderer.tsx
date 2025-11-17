@@ -60,8 +60,8 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
 import { HelperLines } from './helper-lines/HelperLines';
-import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types';
 import { HelperLinesContext } from './helper-lines/HelperLinesContext';
+import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types';
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
@@ -80,9 +80,10 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
+import { useLastElementSelectedChange } from './selection/useLastElementSelectedChange';
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
-import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
+import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 
 const GRID_STEP: number = 10;
 
@@ -196,6 +197,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
         ...node,
         selected: shouldSelectNode(node),
+        data: {
+          ...node.data,
+          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
+        },
       }));
       convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
         ...edge,
@@ -290,6 +295,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       const newNodes = getNodes().map((node) => ({
         ...node,
         selected: shouldSelectNode(node),
+        data: {
+          ...node.data,
+          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
+        },
       }));
       const newEdges = getEdges().map((edge) => ({
         ...edge,
@@ -306,18 +315,22 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
+  const { applyLastElementSelected } = useLastElementSelectedChange();
   const { transformResizeListNodeChanges } = useResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const { horizontalHelperLine, verticalHelperLine, applyHelperLines, resetHelperLines } = useHelperLines();
+  const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
 
   const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
     (changes: NodeChange<Node<NodeData>>[]) => {
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
       const isResetChange = changes.find((change) => change.type === 'replace');
-      const isSelectChange = changes.find((change) => change.type === 'select');
+      const isSelectChange = changes.find(
+        (change) => change.type === 'select' && !change.id.startsWith('edgeAnchorNodeCreationHandles')
+      );
 
       if (
         isResetChange ||
@@ -326,7 +339,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           noReadOnlyChanges[0]?.type === 'dimensions' &&
           typeof noReadOnlyChanges[0].resizing !== 'boolean')
       ) {
-        setNodes((oldNodes) => applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, oldNodes));
+        setNodes((previousNodes) => {
+          const newNodes = applyLastElementSelected(changes, previousNodes, selectedElementsIds);
+          return applyNodeChanges<Node<NodeData>>(noReadOnlyChanges, newNodes);
+        });
       } else {
         resetHelperLines(changes);
         let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
@@ -345,7 +361,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         setNodes(newNodes);
       }
     },
-    [layoutOnBoundsChange, getNodes, getEdges]
+    [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
@@ -377,7 +393,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   const { isOpened } = useDiagramPalette();
-  const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
+
   const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
     useOnRightClickElement(selectedElementsIds);
 
@@ -417,6 +433,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgeMouseEnter: onEdgeMouseEnter,
     onEdgeMouseLeave: onEdgeMouseLeave,
     onSelectionChange: onSelectionChange,
+
     maxZoom: 40,
     minZoom: 0.1,
     snapToGrid: isSnapToGridEnabled,

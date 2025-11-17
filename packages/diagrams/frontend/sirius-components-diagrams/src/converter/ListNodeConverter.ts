@@ -117,6 +117,7 @@ const toListNode = (
     },
     minComputedWidth: gqlNodeLayoutData?.minComputedSize?.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
+    isLastNodeSelected: false,
   };
 
   data.insideLabel = convertInsideLabel(
