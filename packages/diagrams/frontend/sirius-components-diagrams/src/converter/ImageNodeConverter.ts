@@ -100,6 +100,7 @@ const toImageNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    isLastNodeSelected: false,
   };
 
   data.insideLabel = convertInsideLabel(

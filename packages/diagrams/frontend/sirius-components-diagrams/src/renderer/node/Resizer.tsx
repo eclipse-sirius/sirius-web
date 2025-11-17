@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
-import { NodeResizeControl, NodeResizer } from '@xyflow/react';
+import { NodeResizeControl, NodeResizer, useNodeId, useUpdateNodeInternals } from '@xyflow/react';
 import { ResizeControlVariant } from '@xyflow/system';
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';
@@ -26,21 +26,32 @@ const resizeControlLineStyle = (theme: Theme): React.CSSProperties => {
   return { borderColor: 'transparent', borderWidth: theme.spacing(0.25) };
 };
 
-const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+const resizeHandleStyle = (theme: Theme, isLastNodeSelected: boolean): React.CSSProperties => {
+  console.log(isLastNodeSelected ? theme.palette.primary.light : '#FFFFFF');
   return {
     width: theme.spacing(1),
     height: theme.spacing(1),
     borderRadius: '100%',
+    backgroundColor: isLastNodeSelected ? theme.palette.primary.light : '#FFFFFF',
+    border: '1px solid black',
   };
 };
 
 export const Resizer = memo(({ data, selected }: ResizerProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
-
+  console.log(data);
   if (data.nodeDescription?.userResizable === 'NONE' || readOnly || data.isBorderNode) {
     return null;
   }
+
+  const nodeId = useNodeId();
+  const updateNodeInternals = useUpdateNodeInternals();
+  useEffect(() => {
+    if (nodeId) {
+      updateNodeInternals([nodeId]);
+    }
+  }, [data.isLastNodeSelected]);
 
   let nodeResizeControl: JSX.Element | null = null;
   if (data.isListChild) {
@@ -55,9 +66,8 @@ export const Resizer = memo(({ data, selected }: ResizerProps) => {
   } else if (data.nodeDescription?.userResizable === 'BOTH') {
     nodeResizeControl = (
       <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
+        handleStyle={{ ...resizeHandleStyle(theme, data.isLastNodeSelected) }}
         lineStyle={{ ...resizeLineStyle(theme) }}
-        color={theme.palette.selected}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}

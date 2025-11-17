@@ -12,24 +12,28 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, OnSelectionChangeFunc } from '@xyflow/react';
+import { Edge, Node, OnSelectionChangeFunc, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseDiagramSelectionValue } from './useDiagramSelection.types';
+
 /**
  * Configures React Flow so that when the selection changes on the diagram, the global selection is updated.
  */
 export const useDiagramSelection = (): UseDiagramSelectionValue => {
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { setNodes } = useStore();
   const { setSelection } = useSelection();
   const [selectedElementsIds, setSelectedElementsIds] = useState<string[]>([]);
   const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const setSelectedElementsIdsInTheCorrectOrder = (
+  const getSelectedElementsIdsInTheCorrectOrder = (
     previousSelectedElementsIds: string[],
     newSelectedElementId: string[]
-  ) => {
+  ): string[] => {
     if (newSelectedElementId.length === 0) {
       return [];
     } else {
@@ -38,6 +42,40 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
         .concat(newSelectedElementId.filter((id) => !previousSelectedElementsIds.includes(id)));
     }
   };
+
+  const setLastSelectedElementId = useCallback((selectedElementIds: string[]) => {
+    const nodeSelectedElementIds = selectedElementIds.flatMap((id) => {
+      const node = store.getState().nodeLookup.get(id);
+      if (node) {
+        return [node.id];
+      }
+      return [];
+    });
+
+    const lastNodeSelectedId = nodeSelectedElementIds.at(nodeSelectedElementIds.length - 1);
+    setNodes((previousNodes) =>
+      previousNodes.map((previousNode) => {
+        if (previousNode.id === lastNodeSelectedId) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              isLastNodeSelected: true,
+            },
+          };
+        } else if (previousNode.data.isLastNodeSelected) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              isLastNodeSelected: false,
+            },
+          };
+        }
+        return previousNode;
+      })
+    );
+  }, []);
 
   //The dependency array must stay empty, otherwise XYFlow will call this function if one dependency changes.
   const onSelectionChange: OnSelectionChangeFunc<Node<NodeData>, Edge<EdgeData>> = useCallback(({ nodes, edges }) => {
@@ -63,9 +101,15 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
       ];
     }
 
-    setSelectedElementsIds((previousSelectedElementsIds) =>
-      setSelectedElementsIdsInTheCorrectOrder(previousSelectedElementsIds, newSelectedElementsIds)
-    );
+    let selectedElementsInOrder: string[] = [];
+    setSelectedElementsIds((previousSelectedElementsIds) => {
+      selectedElementsInOrder = getSelectedElementsIdsInTheCorrectOrder(
+        previousSelectedElementsIds,
+        newSelectedElementsIds
+      );
+      return selectedElementsInOrder;
+    });
+    setLastSelectedElementId(selectedElementsInOrder);
     setSelection({ entries });
   }, []);
 

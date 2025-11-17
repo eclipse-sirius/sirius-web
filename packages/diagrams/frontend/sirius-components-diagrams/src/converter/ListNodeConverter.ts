@@ -113,6 +113,7 @@ const toListNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    isLastNodeSelected: false,
   };
 
   data.insideLabel = convertInsideLabel(

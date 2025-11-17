@@ -109,6 +109,7 @@ const toEllipseNode = (
       customizedStyleProperties,
     },
     connectionLinePositionOnNode: 'none',
+    isLastNodeSelected: false,
   };
 
   data.insideLabel = convertInsideLabel(

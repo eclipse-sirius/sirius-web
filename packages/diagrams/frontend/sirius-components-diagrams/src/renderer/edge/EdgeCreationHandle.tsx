@@ -65,6 +65,7 @@ const createEdgeAnchorNodeCreationHandles = (
       connectionLinePositionOnNode: 'none',
       isHovered: false,
       edgeId: edgeId,
+      isLastNodeSelected: false,
     },
   };
 };
