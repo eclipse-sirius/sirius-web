@@ -67,6 +67,7 @@ const createEdgeAnchorNodeCreationHandles = (
       edgeId: edgeId,
       minComputedWidth: null,
       minComputedHeight: null,
+      isLastNodeSelected: false,
     },
   };
 };

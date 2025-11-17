@@ -21,6 +21,7 @@
 Tools are no longer converted with the diagram.
 You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 `IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] `isLastNodeSelected` should be set when converting custom nodes.
 
 
 
@@ -42,6 +43,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 - https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a a layout group tool.
 
 
 

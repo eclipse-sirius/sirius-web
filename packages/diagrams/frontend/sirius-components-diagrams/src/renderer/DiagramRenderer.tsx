@@ -178,6 +178,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
         ...node,
         selected: shouldSelectNode(node),
+        data: {
+          ...node.data,
+          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
+        },
       }));
       convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
         ...edge,
@@ -272,6 +276,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       const newNodes = getNodes().map((node) => ({
         ...node,
         selected: shouldSelectNode(node),
+        data: {
+          ...node.data,
+          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
+        },
       }));
       const newEdges = getEdges().map((edge) => ({
         ...edge,
@@ -410,6 +418,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgeMouseEnter: onEdgeMouseEnter,
     onEdgeMouseLeave: onEdgeMouseLeave,
     onSelectionChange: onSelectionChange,
+
     maxZoom: 40,
     minZoom: 0.1,
     snapToGrid: snapToGrid,

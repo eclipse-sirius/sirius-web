@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, OnSelectionChangeFunc } from '@xyflow/react';
+import { Edge, Node, OnSelectionChangeFunc, useReactFlow, useStoreApi } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseDiagramSelectionValue } from './useDiagramSelection.types';
@@ -35,8 +35,45 @@ const mergeNewSelectedElementIds = (previousSelectedElementsIds: string[], newSe
  * Configures React Flow so that when the selection changes on the diagram, the diagram-local & global selections are updated.
  */
 export const useDiagramSelection = (): UseDiagramSelectionValue => {
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { setSelection } = useSelection();
   const [selectedElementsIds, setSelectedElementsIds] = useState<string[]>([]);
+
+  const setLastSelectedElementId = useCallback((selectedElementIds: string[]) => {
+    const nodeSelectedElementIds = selectedElementIds.flatMap((id) => {
+      const node = store.getState().nodeLookup.get(id);
+      if (node) {
+        return [node.id];
+      }
+      return [];
+    });
+
+    const lastNodeSelectedId = nodeSelectedElementIds.at(nodeSelectedElementIds.length - 1);
+
+    setNodes((previousNodes) =>
+      previousNodes.map((previousNode) => {
+        if (previousNode.id === lastNodeSelectedId) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              isLastNodeSelected: true,
+            },
+          };
+        } else if (previousNode.data.isLastNodeSelected) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              isLastNodeSelected: false,
+            },
+          };
+        }
+        return previousNode;
+      })
+    );
+  }, []);
 
   /**
    * The callback invoked by XYFlow when the graphical selection of nodes & edges on a diagram changes.
@@ -57,10 +94,13 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
       newSelectedElementsIds.push(edge.id);
     });
 
+    let selectedElementsInOrder: string[] = [];
+    setSelectedElementsIds((previousSelectedElementsIds) => {
+      selectedElementsInOrder = mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds);
+      return selectedElementsInOrder;
+    });
     // Update diagram-local selection
-    setSelectedElementsIds((previousSelectedElementsIds) =>
-      mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds)
-    );
+    setLastSelectedElementId(selectedElementsInOrder);
 
     // Publish semantic selection globally (if any)
     if (entries.length > 0) {

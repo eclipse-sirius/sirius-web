@@ -25,10 +25,10 @@ import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
-import { convertBorderNodePosition } from './convertBorderNodes';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -108,6 +108,7 @@ const toRectangularNode = (
     },
     minComputedWidth: gqlNodeLayoutData?.minComputedSize?.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
+    isLastNodeSelected: false,
   };
 
   data.insideLabel = convertInsideLabel(

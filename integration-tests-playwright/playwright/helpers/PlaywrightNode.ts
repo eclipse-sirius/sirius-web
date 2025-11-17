@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightNode {
   readonly page: Page;
@@ -118,5 +118,43 @@ export class PlaywrightNode {
 
   async closePalette() {
     await this.page.getByTestId('Close-palette').click();
+  }
+
+  async isLastOneSelected() {
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(203, 71, 147)'
+    );
+  }
+
+  async isNotLastOneSelected() {
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
+    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)'
+    );
   }
 }
