@@ -95,6 +95,7 @@ And the props of `PaletteAppearanceSectionContributionComponentProps` has been r
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
 The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+Upstream, based on origin/master
 - https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] Tree based representations have always enjoyed some hardcoded entries in the context menu.
 Those menu entries are not hardcoded in the frontend anymore and, just like in diagrams, will be retrieved from the backend.
 As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
@@ -104,6 +105,7 @@ This mechanisms was previously used to provide the menu entry to update/remove a
 - https://github.com/eclipse-sirius/sirius-web/issues/5628[#5628] [diagram] During layout of custom nodes, all the newly created nodes are now used and not only the first one.
 The `INodeLayoutHandler` interface changes from `newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined` to `newlyAddedNode: Node<NodeData, DiagramNodeType>[]`.
 An example of usage is available in `EllipseNodeLayoutHandler.ts`.
+- _OmniboxCommandOverrideContribution_ and _OmniboxCommandComponentProps_ now use _OmniboxCommand_ instead of _GQLOmniboxCommand_ type.
 
 
 === Dependency update
@@ -172,7 +174,7 @@ Do not hesitate to read the ADR-214 for further understanding.
 This can be used to retrieve a `ViewDiagramConversionData` that contains the mapping between view `IDiagramElementDescription` and programmatic `IDiagramElementDescription`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2809[#2809] [browser] Add support for overriding the tree description to use for a specific model browser.
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 
 === Improvements
 
@@ -383,7 +385,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 
