@@ -220,6 +220,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5704[#5704] [table] Display row resizer only on hover
 - https://github.com/eclipse-sirius/sirius-web/issues/5763[#5763] [diagram] Improve center label positioning on edges
 - https://github.com/eclipse-sirius/sirius-web/issues/5831[#5831] Add French translation into the backend to align with the frontend.
+- https://github.com/eclipse-sirius/sirius-web/issues/5811[#5811] [diagram] Introduce CrossFade Tunnels to automatically create blank underpasses when edges cross and defer crossing detection while nodes are being dragged to keep interactions smooth.
 
 
 == 2025.10.0

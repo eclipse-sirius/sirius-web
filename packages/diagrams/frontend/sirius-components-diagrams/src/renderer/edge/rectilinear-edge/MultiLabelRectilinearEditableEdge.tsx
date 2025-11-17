@@ -25,6 +25,7 @@ import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge
 import { determineSegmentAxis, getMiddlePoint } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
+import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -148,6 +149,35 @@ export const MultiLabelRectilinearEditableEdge = memo(
       return edgePath;
     }, [localBendingPoints.map((point) => point.x + point.y).join(), source.x, source.y, target.x, target.y]);
 
+    const hasDashOverride = useMemo(() => {
+      return Boolean(style?.strokeDasharray || connectionFeedbackStyle?.strokeDasharray);
+    }, [style?.strokeDasharray, connectionFeedbackStyle?.strokeDasharray]);
+
+    const crossingDashArray = useMemo(() => {
+      if (!data?.crossingGaps || data.crossingGaps.length === 0) {
+        return null;
+      }
+      if (hasDashOverride) {
+        return null;
+      }
+      return buildCrossingDashArray(edgePath, data.crossingGaps);
+    }, [data?.crossingGaps, edgePath, hasDashOverride]);
+
+    const strokeStyle = useMemo(() => {
+      const mergedStyle = {
+        ...edgeStyle,
+        ...connectionFeedbackStyle,
+      };
+      if (!crossingDashArray) {
+        return mergedStyle;
+      }
+      return {
+        ...mergedStyle,
+        strokeDasharray: crossingDashArray,
+        strokeLinecap: 'round' as React.CSSProperties['strokeLinecap'],
+      };
+    }, [connectionFeedbackStyle, crossingDashArray, edgeStyle]);
+
     useEffect(() => {
       setEdges((prevEdges) =>
         prevEdges.map((prevEdge) => {
@@ -170,10 +200,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
         <BaseEdge
           id={id}
           path={edgePath}
-          style={{
-            ...edgeStyle,
-            ...connectionFeedbackStyle,
-          }}
+          style={strokeStyle}
           className={`target_handle_${targetPosition} source_handle_${sourcePosition}`}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
