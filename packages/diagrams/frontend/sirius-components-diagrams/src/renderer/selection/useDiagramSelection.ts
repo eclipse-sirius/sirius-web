@@ -57,10 +57,11 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
       newSelectedElementsIds.push(edge.id);
     });
 
-    // Update diagram-local selection
-    setSelectedElementsIds((previousSelectedElementsIds) =>
-      mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds)
-    );
+    let selectedElementsInOrder: string[] = [];
+    setSelectedElementsIds((previousSelectedElementsIds) => {
+      selectedElementsInOrder = mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds);
+      return selectedElementsInOrder;
+    });
 
     // Publish semantic selection globally (if any)
     if (entries.length > 0) {
