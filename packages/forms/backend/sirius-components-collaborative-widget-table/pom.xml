@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.4</version>
+		<version>2025.10.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-widget-table</artifactId>
-	<version>2025.10.4</version>
+	<version>2025.10.5</version>
 	<name>sirius-components-collaborative-widget-table</name>
 	<description>Sirius Components Collaborative Forms :: Table Widget</description>
 
@@ -40,23 +40,23 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

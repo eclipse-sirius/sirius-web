@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.10.4</version>
+		<version>2025.10.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-papaya-edit</artifactId>
-	<version>2025.10.4</version>
+	<version>2025.10.5</version>
 	<name>sirius-components-papaya-edit</name>
 	<description>Sirius Components Papaya Definition DSL - Edit Support</description>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-papaya</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 		</dependency>
 	</dependencies>
 
