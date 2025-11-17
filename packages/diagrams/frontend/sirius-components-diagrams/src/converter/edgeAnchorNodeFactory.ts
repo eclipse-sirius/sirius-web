@@ -68,6 +68,7 @@ export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: 
       connectionLinePositionOnNode: 'none',
       minComputedWidth: null,
       minComputedHeight: null,
+      isLastNodeSelected: false,
     },
   };
 };
