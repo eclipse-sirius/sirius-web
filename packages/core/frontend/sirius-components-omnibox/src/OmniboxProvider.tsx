@@ -11,11 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import { Omnibox } from './Omnibox';
+import { OmniboxCommand } from './Omnibox.types';
 import { OmniboxContext } from './OmniboxContext';
 import { OmniboxContextValue } from './OmniboxContext.types';
 import { OmniboxProviderProps } from './OmniboxProvider.types';
+import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+
+export const toOmniboxCommand = (backendCommand: GQLOmniboxCommand): OmniboxCommand => {
+  return {
+    id: backendCommand.id,
+    label: backendCommand.label,
+    description: backendCommand.description,
+    iconComponent: <IconOverlay iconURLs={backendCommand.iconURLs} alt={backendCommand.label} />,
+    __typename: 'GQLOmniboxCommand',
+  };
+};
 
 export const OmniboxProvider = ({
   open,

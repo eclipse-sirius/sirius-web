@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { OmniboxMode } from './Omnibox.types';
-import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+import { RefObject } from 'react';
+import { OmniboxCommand, OmniboxMode } from './Omnibox.types';
 
 export interface OmniboxProviderProps {
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
   loading: boolean;
-  commands: GQLOmniboxCommand[] | null;
+  commands: OmniboxCommand[] | null;
   onQuery: (query: string, mode: OmniboxMode) => void;
-  onCommandClick(command: GQLOmniboxCommand, mode: OmniboxMode);
+  onCommandClick(command: OmniboxCommand, mode: OmniboxMode, input: RefObject<HTMLInputElement>);
   children: React.ReactNode;
 }

@@ -55,6 +55,7 @@ On the frontend, the `ProjectTemplateCard` component has been removed; the `NewP
 - Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
 The `WorkbenchEntry` object has also been transformed into a record
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] The interfaces `ISingleClickOnMultipleDiagramElementHandler` `ISingleClickOnOneDiagramElementHandler` `IPaletteToolsProvider` have been modified to take the `DiagramContext` instead of the `Diagram` as parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] `OmniboxCommandOverrideContribution` and `OmniboxCommandComponentProps` now use `OmniboxCommand` instead of `GQLOmniboxCommand` type.
 
 
 === Dependency update
@@ -124,6 +125,7 @@ Downstream projects can provide their own `IFormCapabilitiesService` primary ser
 - https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 
 
 
@@ -222,6 +224,7 @@ And the props of `PaletteAppearanceSectionContributionComponentProps` has been r
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
 The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+Upstream, based on origin/master
 - https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] Tree based representations have always enjoyed some hardcoded entries in the context menu.
 Those menu entries are not hardcoded in the frontend anymore and, just like in diagrams, will be retrieved from the backend.
 As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
@@ -547,7 +550,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 

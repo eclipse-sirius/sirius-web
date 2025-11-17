@@ -11,12 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  ComponentExtension,
-  DataExtension,
-  ExtensionRegistry,
-  IconOverlay,
-} from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   ActionProps,
   DiagramNodeActionOverrideContribution,
@@ -29,7 +24,7 @@ import {
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  GQLOmniboxCommand,
+  OmniboxCommand,
   OmniboxCommandComponentProps,
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
@@ -131,9 +126,7 @@ const ShowDocumentationCommand = ({ command, onKeyDown, onClose }: OmniboxComman
 
   return (
     <ListItemButton key={command.id} data-testid={command.label} onClick={handleClick} onKeyDown={onKeyDown}>
-      <ListItemIcon>
-        <IconOverlay iconURLs={command.iconURLs} alt={command.label} />
-      </ListItemIcon>
+      <ListItemIcon>{command.iconComponent}</ListItemIcon>
       <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
     </ListItemButton>
   );
@@ -141,7 +134,7 @@ const ShowDocumentationCommand = ({ command, onKeyDown, onClose }: OmniboxComman
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {
-    canHandle: (command: GQLOmniboxCommand) => {
+    canHandle: (command: OmniboxCommand) => {
       return command.id === 'showDocumentation';
     },
     component: ShowDocumentationCommand,
