@@ -1,0 +1,29 @@
+= Add confirmation popup enabling/disabling to project settings
+
+== Problem
+
+Confirmation popups can be disabled by and for a client, but they cannot be re-enabled afterward.
+Moreover, disabling them currently applies to the entire application and is not scoped to a specific project.
+
+== Key Result
+
+Sirius Web should provide a way to re-enable popups.
+
+This mechanism should be scoped to a project.
+
+=== Acceptance Criteria
+
+Existing Cypress tests should now leverage the new functionality.
+
+== Solution
+
+We propose adding a new boolean setting in the project settings page.
+This setting, named "Enable confirmation popups", is displayed inside a new contributed settings tab named "General."
+
+=== Cutting backs
+
+Popup disabling is now shared between all clients.
+
+== Rabbit holes
+
+== No-gos
