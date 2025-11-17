@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
-import { GQLOmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
+import { OmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
 
 export interface WorkbenchOmniboxProps {
   editingContextId: string;
@@ -21,5 +21,5 @@ export interface WorkbenchOmniboxProps {
 
 export interface WorkbenchOmniboxState {
   open: boolean;
-  commands: GQLOmniboxCommand[] | null;
+  commands: OmniboxCommand[] | null;
 }

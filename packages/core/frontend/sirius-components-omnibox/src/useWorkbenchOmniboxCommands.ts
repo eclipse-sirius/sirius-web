@@ -34,7 +34,6 @@ const getWorkbenchOmniboxCommandsQuery = gql`
             label
             iconURLs
             description
-            __typename
           }
         }
         pageInfo {

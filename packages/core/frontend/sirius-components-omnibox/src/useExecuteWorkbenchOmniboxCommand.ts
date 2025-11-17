@@ -31,7 +31,6 @@ const executeOmniboxCommandMutation = gql`
         newSelection {
           entries {
             id
-            kind
           }
         }
         messages {

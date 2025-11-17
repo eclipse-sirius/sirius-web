@@ -17,6 +17,38 @@ import { Diagram } from '../../workbench/Diagram';
 import { Explorer } from '../../workbench/Explorer';
 import { Omnibox } from '../../workbench/Omnibox';
 
+const makeValidSearch = (search: string, expectedHistory: number) => {
+  const explorer = new Explorer();
+  const omnibox = new Omnibox();
+
+  omnibox.display();
+  if (expectedHistory == 0) {
+    omnibox.activateSearch();
+    cy.get('[role="button"][data-testid*="search"]').should('not.exist');
+  } else {
+    omnibox.activateSearch().get('[role="button"][data-testid*="Search"]').should('have.length', expectedHistory);
+  }
+
+  omnibox.sendQuery(search);
+  cy.getByTestId('omnibox').should('exist').findByTestId(search).click();
+  omnibox.shouldBeClosed();
+  explorer.revealGlobalSelectionInExplorer();
+  explorer.getSelectedTreeItems().contains(search).should('exist');
+};
+
+const makeInvalidSearch = (search: string, expectedHistory: number) => {
+  const omnibox = new Omnibox();
+  omnibox.display();
+  if (expectedHistory == 0) {
+    omnibox.activateSearch();
+    cy.get('[role="button"][data-testid*="search"]').should('not.exist');
+  } else {
+    omnibox.activateSearch().get('[role="button"][data-testid*="Search"]').should('have.length', expectedHistory);
+  }
+  omnibox.sendQuery(search, false);
+  cy.get('body').type('{esc}');
+};
+
 const projectName = 'Cypress - Omnibox';
 describe('Project - Omnibox', () => {
   context('Given a Robot flow project', () => {
@@ -60,6 +92,42 @@ describe('Project - Omnibox', () => {
       omnibox.shouldBeClosed();
 
       explorer.getSelectedTreeItems().contains('DSP').should('exist');
+    });
+
+    it('Then the search command of omnibox remembers the user previous searches', () => {
+      // Make 1 search
+      makeValidSearch('Central_Unit', 0);
+
+      // Check there is one previous search in history
+      makeValidSearch('Wifi', 1);
+
+      // Re-run previous search on 'Central_Unit' using history
+      const omnibox = new Omnibox();
+      const box = omnibox.display();
+      omnibox.activateSearch();
+      cy.get('[role="button"][data-testid*="Search"]').should('have.length', 2);
+      box.findByTestId("Search 'Central_Unit'").click();
+      cy.getByTestId('omnibox').findByTestId('Central_Unit').click();
+      omnibox.shouldBeClosed();
+
+      const explorer = new Explorer();
+      explorer.revealGlobalSelectionInExplorer();
+      explorer.getSelectedTreeItems().contains('Central_Unit').should('exist');
+
+      // Making the same search do not keep twice the result in history
+      makeValidSearch('Central_Unit', 2);
+
+      // Makes 9 more searches to check that we only keep 10 result
+      makeValidSearch('System', 2);
+      makeValidSearch('Motion_Engine', 3);
+      makeInvalidSearch('invalidSearch', 4);
+      makeInvalidSearch('invalidSearch2', 5);
+      makeValidSearch('Radar_Capture', 6);
+      makeValidSearch('Back_Camera', 7);
+      makeValidSearch('Radar', 8);
+      makeValidSearch('Engine', 9);
+      makeValidSearch('GPU', 10);
+      makeValidSearch('DSP', 10);
     });
   });
 });

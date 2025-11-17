@@ -49,7 +49,6 @@ export interface GQLOmniboxCommand {
   label: string;
   iconURLs: string[];
   description: string;
-  __typename: string;
 }
 
 export interface GQLPageInfo {

@@ -61,6 +61,7 @@ Their existence allowed us to clean some part of the database "for free" thanks 
 They have been replaced by proper transactional event listeners and new events such as `ProjectSemanticDataDeletedEvent` and `SemanticDataDeletedEvent`.
 Those events did not exist in the past and it was impossible for someone to listen for the removal of some `ProjectSemanticData` or some `SemanticData`.
 Downstream projects which made some hypothesis on the impact of the deletion of a project will now be able to remove those hypothesis and listen to regular events.
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] `OmniboxCommandOverrideContribution` and `OmniboxCommandComponentProps` now use `OmniboxCommand` instead of `GQLOmniboxCommand` type.
 
 
 === Dependency update
@@ -130,6 +131,7 @@ Downstream projects can provide their own `IFormCapabilitiesService` primary ser
 - https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 
 
 
@@ -227,7 +229,7 @@ The extension point signature has also changed to take edges into account: `canH
 And the props of `PaletteAppearanceSectionContributionComponentProps` has been renamed from `elementId` to `diagramElementId`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
-The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`
 - https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] Tree based representations have always enjoyed some hardcoded entries in the context menu.
 Those menu entries are not hardcoded in the frontend anymore and, just like in diagrams, will be retrieved from the backend.
 As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
@@ -553,7 +555,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 

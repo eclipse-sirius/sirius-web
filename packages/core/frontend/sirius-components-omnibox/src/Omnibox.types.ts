@@ -11,14 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
-
 export interface OmniboxProps {
   open: boolean;
   loading: boolean;
-  commands: GQLOmniboxCommand[] | null;
+  commands: OmniboxCommand[] | null;
   onQuery: (query: string, mode: OmniboxMode) => void;
-  onCommandClick: (command: GQLOmniboxCommand, mode: OmniboxMode) => void;
+  onCommandClick: (mode: OmniboxMode, command: OmniboxCommand) => void;
   onClose: () => void;
 }
 
@@ -27,4 +25,15 @@ export interface OmniboxState {
   mode: OmniboxMode;
 }
 
+export interface OmniboxCommand {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  description: string;
+}
+
 export type OmniboxMode = 'Command' | 'Search';
+
+export interface OmniboxHandle {
+  updateInputValue: (newValue: string) => void;
+}

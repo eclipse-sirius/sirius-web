@@ -19,12 +19,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import { useEffect, useRef, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
-import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
-import { OmniboxCommandList } from './OmniboxCommandList';
-import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { makeStyles } from 'tss-react/mui';
+import { OmniboxCommand, OmniboxHandle, OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
+import { OmniboxCommandList } from './OmniboxCommandList';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -61,124 +60,141 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onClose }: OmniboxProps) => {
-  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'omnibox' });
-  const [state, setState] = useState<OmniboxState>({
-    queryHasChanged: true,
-    mode: 'Command',
-  });
-
-  useEffect(() => {
-    onQuery('', 'Command');
-  }, []);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
-
-  const onChange = () => {
-    if (!state.queryHasChanged) {
-      setState((prevState) => ({ ...prevState, queryHasChanged: true }));
-    }
-  };
-
-  const sendQuery = (query: string) => {
-    setState((prevState) => ({ ...prevState, queryHasChanged: false }));
-    onQuery(query, state.mode);
-  };
-
-  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
-    if (event.key === 'Enter' && state.queryHasChanged) {
-      sendQuery(event.currentTarget.value);
-    } else if (event.key === 'ArrowDown' && listRef.current) {
-      const firstListItem = listRef.current.childNodes[0];
-      if (firstListItem instanceof HTMLElement) {
-        firstListItem.focus();
-      }
-    }
-  };
-
-  const onSubmitQuery = () => {
-    if (state.queryHasChanged) {
-      sendQuery(inputRef?.current?.value ?? '');
-      if (inputRef?.current) {
-        inputRef.current.focus();
-      }
-    }
-  };
-
-  const onModeChanged = (mode: OmniboxMode) => {
-    setState((prevState) => ({
-      ...prevState,
-      mode,
+export const Omnibox = forwardRef<OmniboxHandle, OmniboxProps>(
+  ({ open, loading, commands, onQuery, onCommandClick, onClose }: OmniboxProps, ref: ForwardedRef<OmniboxHandle>) => {
+    const { t } = useTranslation('sirius-components-core', { keyPrefix: 'omnibox' });
+    const [state, setState] = useState<OmniboxState>({
       queryHasChanged: true,
-    }));
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-    inputRef.current?.focus();
-  };
+      mode: 'Command',
+    });
 
-  const handleCommandClick = (command: GQLOmniboxCommand) => {
-    onCommandClick(command, state.mode);
-  };
+    useEffect(() => {
+      onQuery('', 'Command');
+    }, []);
 
-  const { classes } = useOmniboxStyles();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const listRef = useRef<HTMLUListElement>(null);
 
-  const dialogContent = (
-    <>
-      <DialogTitle component="div" className={classes.omniboxInputArea}>
-        <ChevronRightIcon className={classes.omniboxIcon} />
-        <FormControl variant="standard" className={classes.omniboxFormControl}>
-          <Input
-            inputRef={inputRef}
-            onChange={() => onChange()}
-            onKeyDown={handleKeyDown}
-            placeholder={state.mode === 'Search' ? t('searchElement') : t('searchCommand')}
-            disableUnderline
-            autoFocus
-            fullWidth
-            slotProps={{
-              input: {
-                style: {
-                  fontSize: '1.5rem',
+    useImperativeHandle(
+      ref,
+      () => ({
+        updateInputValue: (newValue: string) => {
+          if (inputRef.current) {
+            inputRef.current.value = newValue;
+            inputRef.current.focus();
+          }
+        },
+      }),
+      [inputRef]
+    );
+
+    const onChange = () => {
+      if (!state.queryHasChanged) {
+        setState((prevState) => ({ ...prevState, queryHasChanged: true }));
+      }
+    };
+
+    const sendQuery = (query: string) => {
+      setState((prevState) => ({ ...prevState, queryHasChanged: false }));
+      onQuery(query, state.mode);
+    };
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+      if (event.key === 'Enter' && state.queryHasChanged) {
+        sendQuery(event.currentTarget.value);
+      } else if (event.key === 'ArrowDown' && listRef.current) {
+        const firstListItem = listRef.current.childNodes[0];
+        if (firstListItem instanceof HTMLElement) {
+          firstListItem.focus();
+        }
+      }
+    };
+
+    const onSubmitQuery = () => {
+      if (state.queryHasChanged) {
+        sendQuery(inputRef?.current?.value ?? '');
+        if (inputRef?.current) {
+          inputRef.current.focus();
+        }
+      }
+    };
+
+    const onModeChanged = (mode: OmniboxMode) => {
+      if (mode !== state.mode) {
+        setState((prevState) => ({
+          ...prevState,
+          mode,
+          queryHasChanged: true,
+        }));
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      }
+      inputRef.current?.focus();
+    };
+
+    const handleCommandClick = (command: OmniboxCommand) => {
+      onCommandClick(state.mode, command);
+    };
+
+    const { classes } = useOmniboxStyles();
+
+    const dialogContent = (
+      <>
+        <DialogTitle component="div" className={classes.omniboxInputArea}>
+          <ChevronRightIcon className={classes.omniboxIcon} />
+          <FormControl variant="standard" className={classes.omniboxFormControl}>
+            <Input
+              inputRef={inputRef}
+              onChange={() => onChange()}
+              onKeyDown={handleKeyDown}
+              placeholder={state.mode === 'Search' ? t('searchElement') : t('searchCommand')}
+              disableUnderline
+              autoFocus
+              fullWidth
+              slotProps={{
+                input: {
+                  style: {
+                    fontSize: '1.5rem',
+                  },
                 },
-              },
-            }}
+              }}
+            />
+          </FormControl>
+          <IconButton
+            onClick={onSubmitQuery}
+            data-testid="submit-query-button"
+            color="primary"
+            disabled={!state.queryHasChanged}>
+            {loading ? <CircularProgress size="24px" color="inherit" /> : <SubdirectoryArrowLeftIcon color="inherit" />}
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers={commands != null && commands?.length > 0} className={classes.omniboxResultArea}>
+          <OmniboxCommandList
+            loading={loading}
+            commands={commands}
+            onClose={onClose}
+            onModeChanged={onModeChanged}
+            onCommandClick={handleCommandClick}
+            ref={listRef}
           />
-        </FormControl>
-        <IconButton
-          onClick={onSubmitQuery}
-          data-testid="submit-query-button"
-          color="primary"
-          disabled={!state.queryHasChanged}>
-          {loading ? <CircularProgress size="24px" color="inherit" /> : <SubdirectoryArrowLeftIcon color="inherit" />}
-        </IconButton>
-      </DialogTitle>
-      <DialogContent dividers={state.mode === 'Command' && commands !== null} className={classes.omniboxResultArea}>
-        <OmniboxCommandList
-          loading={loading}
-          commands={commands}
-          onClose={onClose}
-          onModeChanged={onModeChanged}
-          onCommandClick={handleCommandClick}
-          ref={listRef}
-        />
-      </DialogContent>
-    </>
-  );
+        </DialogContent>
+      </>
+    );
 
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      PaperProps={{
-        className: classes.omniboxPaper,
-      }}
-      className={classes.omnibox}
-      scroll="paper"
-      data-testid="omnibox">
-      {dialogContent}
-    </Dialog>
-  );
-};
+    return (
+      <Dialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        PaperProps={{
+          className: classes.omniboxPaper,
+        }}
+        className={classes.omnibox}
+        scroll="paper"
+        data-testid="omnibox">
+        {dialogContent}
+      </Dialog>
+    );
+  }
+);
