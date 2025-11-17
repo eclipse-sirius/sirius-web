@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
+import { OmniboxCommand } from '@eclipse-sirius/sirius-components-omnibox';
 
 export interface ProjectBrowserOmniboxProps {
   children: React.ReactNode;
@@ -18,5 +18,5 @@ export interface ProjectBrowserOmniboxProps {
 
 export interface ProjectBrowserOmniboxState {
   open: boolean;
-  commands: GQLOmniboxCommand[] | null;
+  commands: OmniboxCommand[] | null;
 }

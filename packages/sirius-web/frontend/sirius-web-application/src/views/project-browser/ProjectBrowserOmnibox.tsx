@@ -12,7 +12,12 @@
  *******************************************************************************/
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLOmniboxCommand, OmniboxMode, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  OmniboxCommand,
+  OmniboxMode,
+  OmniboxProvider,
+  toOmniboxCommand,
+} from '@eclipse-sirius/sirius-components-omnibox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProjectBrowserOmniboxProps, ProjectBrowserOmniboxState } from './ProjectBrowserOmnibox.types';
@@ -53,7 +58,7 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
     if (!commandsLoading && commandsData) {
       setState((prevState) => ({
         ...prevState,
-        commands: commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => edge.node),
+        commands: commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => toOmniboxCommand(edge.node)),
       }));
     }
   }, [commandsLoading, commandsData]);
@@ -62,14 +67,14 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
     if (!searchLoading && searchData) {
       setState((prevState) => ({
         ...prevState,
-        commands: searchData.viewer.projectsOmniboxSearch.edges.map((edge) => edge.node),
+        commands: searchData.viewer.projectsOmniboxSearch.edges.map((edge) => toOmniboxCommand(edge.node)),
       }));
     }
   }, [searchLoading, searchData]);
 
   const { addErrorMessage } = useMultiToast();
 
-  const handleCommandClick = (command: GQLOmniboxCommand, mode: OmniboxMode) => {
+  const handleCommandClick = (command: OmniboxCommand, mode: OmniboxMode) => {
     if (mode === 'Command') {
       if (command.id === 'newProject') {
         navigate('/new/project');
@@ -89,7 +94,6 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
       } else {
         addErrorMessage('Unsupported search result id ' + command.id);
       }
-      onClose();
     }
   };
 

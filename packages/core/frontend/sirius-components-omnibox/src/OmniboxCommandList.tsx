@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, useData } from '@eclipse-sirius/sirius-components-core';
+import { useData } from '@eclipse-sirius/sirius-components-core';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { OmniboxCommand } from './Omnibox.types';
 import { OmniboxCommandListProps } from './OmniboxCommandList.types';
 import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
 import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
-import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
-import { useTranslation } from 'react-i18next';
 
 export const OmniboxCommandList = forwardRef(
   (
@@ -43,7 +43,7 @@ export const OmniboxCommandList = forwardRef(
       }
     };
 
-    const handleOnActionClick = (command: GQLOmniboxCommand) => {
+    const handleOnActionClick = (command: OmniboxCommand) => {
       if (command.id === 'search') {
         onModeChanged('Search');
       }
@@ -82,9 +82,7 @@ export const OmniboxCommandList = forwardRef(
                 data-testid={command.label}
                 onClick={() => handleOnActionClick(command)}
                 onKeyDown={handleListItemKeyDown}>
-                <ListItemIcon>
-                  <IconOverlay iconURLs={command.iconURLs} alt={command.label} />
-                </ListItemIcon>
+                <ListItemIcon>{command.iconComponent}</ListItemIcon>
                 <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
               </ListItemButton>
             );
