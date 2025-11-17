@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLOmniboxCommand, OmniboxMode, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { OmniboxCommand, OmniboxMode, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProjectBrowserOmniboxProps, ProjectBrowserOmniboxState } from './ProjectBrowserOmnibox.types';
@@ -51,25 +51,37 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
 
   useEffect(() => {
     if (!commandsLoading && commandsData) {
+      const commands: OmniboxCommand[] = commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => ({
+        id: edge.node.id,
+        label: edge.node.label,
+        description: edge.node.description,
+        icon: <IconOverlay iconURLs={edge.node.iconURLs} alt={edge.node.label} />,
+      }));
       setState((prevState) => ({
         ...prevState,
-        commands: commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => edge.node),
+        commands,
       }));
     }
   }, [commandsLoading, commandsData]);
 
   useEffect(() => {
     if (!searchLoading && searchData) {
+      const commands: OmniboxCommand[] = searchData.viewer.projectsOmniboxSearch.edges.map((edge) => ({
+        id: edge.node.id,
+        label: edge.node.label,
+        description: edge.node.description,
+        icon: <IconOverlay iconURLs={edge.node.iconURLs} alt={edge.node.label} />,
+      }));
       setState((prevState) => ({
         ...prevState,
-        commands: searchData.viewer.projectsOmniboxSearch.edges.map((edge) => edge.node),
+        commands,
       }));
     }
   }, [searchLoading, searchData]);
 
   const { addErrorMessage } = useMultiToast();
 
-  const handleCommandClick = (command: GQLOmniboxCommand, mode: OmniboxMode) => {
+  const handleCommandClick = (mode: OmniboxMode, command: OmniboxCommand) => {
     if (mode === 'Command') {
       if (command.id === 'newProject') {
         navigate('/new/project');
@@ -89,7 +101,6 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
       } else {
         addErrorMessage('Unsupported search result id ' + command.id);
       }
-      onClose();
     }
   };
 

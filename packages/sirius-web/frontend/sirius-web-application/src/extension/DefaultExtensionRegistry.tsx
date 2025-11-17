@@ -43,8 +43,8 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import {
-  GQLOmniboxCommand,
   OmniboxButton,
+  OmniboxCommand,
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
@@ -517,13 +517,13 @@ defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {
-    canHandle: (action: GQLOmniboxCommand) => {
+    canHandle: (action: OmniboxCommand) => {
       return action.id === 'publishStudio';
     },
     component: PublishStudioLibraryCommand,
   },
   {
-    canHandle: (action: GQLOmniboxCommand) => {
+    canHandle: (action: OmniboxCommand) => {
       return action.id === 'importLibrary';
     },
     component: ImportLibraryCommand,
