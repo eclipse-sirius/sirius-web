@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  */
 @Configuration
 public class CollaborativePortalMessageServiceConfiguration {
-    private static final String PATH = "messages/sirius-web-spring-collaborative-portals";
+    private static final String PATH = "messages/sirius-components-collaborative-portals";
 
     @Bean
     public MessageSourceAccessor collaborativePortalMessageSourceAccessor() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.addBasenames(PATH);
+        messageSource.setDefaultEncoding(null);
         return new MessageSourceAccessor(messageSource);
     }
 }
