@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLOmniboxCommand, OmniboxMode, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  OmniboxCommand,
+  OmniboxMode,
+  OmniboxProvider,
+  toOmniboxCommand,
+} from '@eclipse-sirius/sirius-components-omnibox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProjectBrowserOmniboxProps, ProjectBrowserOmniboxState } from './ProjectBrowserOmnibox.types';
@@ -42,12 +47,12 @@ export const ProjectBrowserOmnibox = ({ children }: ProjectBrowserOmniboxProps) 
     if (!commandsLoading && commandsData) {
       setState((prevState) => ({
         ...prevState,
-        commands: commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => edge.node),
+        commands: commandsData.viewer.projectsOmniboxCommands.edges.map((edge) => toOmniboxCommand(edge.node)),
       }));
     }
   }, [commandsLoading, commandsData]);
 
-  const handleCommandClick = (command: GQLOmniboxCommand, _: OmniboxMode) => {
+  const handleCommandClick = (command: OmniboxCommand, _: OmniboxMode) => {
     if (command.id === 'newProject') {
       navigate('/new/project');
       onClose();
