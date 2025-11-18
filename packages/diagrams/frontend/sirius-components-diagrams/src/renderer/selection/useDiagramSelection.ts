@@ -13,33 +13,35 @@
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, OnSelectionChangeFunc } from '@xyflow/react';
-import { useCallback, useContext, useState } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseDiagramSelectionValue } from './useDiagramSelection.types';
+
 /**
- * Configures React Flow so that when the selection changes on the diagram, the global selection is updated.
+ * Compute the list of new selected diagram elements while keeping the order of any
+ * elements which was already selected before. This ensure we keep the selection order stable.
+ */
+const mergeNewSelectedElementIds = (previousSelectedElementsIds: string[], newSelectedElementId: string[]) => {
+  if (newSelectedElementId.length === 0) {
+    return [];
+  } else {
+    return previousSelectedElementsIds
+      .filter((id) => newSelectedElementId.includes(id))
+      .concat(newSelectedElementId.filter((id) => !previousSelectedElementsIds.includes(id)));
+  }
+};
+
+/**
+ * Configures React Flow so that when the selection changes on the diagram, the diagram-local & global selections are updated.
  */
 export const useDiagramSelection = (): UseDiagramSelectionValue => {
   const { setSelection } = useSelection();
   const [selectedElementsIds, setSelectedElementsIds] = useState<string[]>([]);
-  const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const setSelectedElementsIdsInTheCorrectOrder = (
-    previousSelectedElementsIds: string[],
-    newSelectedElementId: string[]
-  ) => {
-    if (newSelectedElementId.length === 0) {
-      return [];
-    } else {
-      return previousSelectedElementsIds
-        .filter((id) => newSelectedElementId.includes(id))
-        .concat(newSelectedElementId.filter((id) => !previousSelectedElementsIds.includes(id)));
-    }
-  };
-
-  //The dependency array must stay empty, otherwise XYFlow will call this function if one dependency changes.
+  /**
+   * The callback invoked by XYFlow when the graphical selection of nodes & edges on a diagram changes.
+   * We receive in `nodes` and `edges` the complete list of elements selected after the change.
+   */
   const onSelectionChange: OnSelectionChangeFunc<Node<NodeData>, Edge<EdgeData>> = useCallback(({ nodes, edges }) => {
     const newSelectedElementsIds: string[] = [];
     let entries: SelectionEntry[] = [];
@@ -55,19 +57,16 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
       newSelectedElementsIds.push(edge.id);
     });
 
-    if (entries.length === 0) {
-      entries = [
-        {
-          id: diagramId,
-        },
-      ];
-    }
-
+    // Update diagram-local selection
     setSelectedElementsIds((previousSelectedElementsIds) =>
-      setSelectedElementsIdsInTheCorrectOrder(previousSelectedElementsIds, newSelectedElementsIds)
+      mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds)
     );
-    setSelection({ entries });
-  }, []);
+
+    // Publish semantic selection globally (if any)
+    if (entries.length > 0) {
+      setSelection({ entries });
+    }
+  }, []); // The dependency array must stay empty, otherwise XYFlow will call this function if one dependency changes.
 
   return {
     onSelectionChange,

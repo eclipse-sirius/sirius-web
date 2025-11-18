@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useData } from '@eclipse-sirius/sirius-components-core';
+import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   Background,
   BackgroundVariant,
@@ -362,6 +362,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   const { isOpened } = useDiagramPalette();
+  const { setSelection } = useSelection();
   const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
   const {
     onEdgeContextMenu,
@@ -391,6 +392,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
+    onPaneClick: () => {
+      // Select the diagram itself when the user left-clicks on the background
+      setSelection({ entries: [{ id: diagramRefreshedEventPayload.diagram.id }] });
+    },
     onPaneContextMenu: onPaneContextMenu,
     onEdgeContextMenu: onEdgeContextMenu,
     onNodeContextMenu: onNodeContextMenu,
