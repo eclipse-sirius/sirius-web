@@ -141,7 +141,7 @@ Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(
 The command has also been renamed _Blank project_ to reflect what it currently does (template and blank project creation haven't been unified yet).
 - https://github.com/eclipse-sirius/sirius-web/issues/5699[#5699] [table] Preserve column order and visibility during CSV export
 - https://github.com/eclipse-sirius/sirius-web/issues/5386[#5661] [diagram] Fix an issue with manually placed handle position
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5791[#5791] [diagram] Fix a bug where opening a diagram could steal the selection performed in the workbench
 
 === New Features
 
