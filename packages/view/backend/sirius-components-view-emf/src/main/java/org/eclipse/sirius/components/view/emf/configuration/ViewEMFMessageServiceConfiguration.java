@@ -26,12 +26,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 public class ViewEMFMessageServiceConfiguration {
 
-    private static final String PATH = "messages/sirius-web-view-emf";
+    private static final String PATH = "messages/sirius-components-view-emf";
 
     @Bean
     public MessageSourceAccessor viewEMFMessageSourceAccessor() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.addBasenames(PATH);
+        messageSource.setDefaultEncoding(null);
         return new MessageSourceAccessor(messageSource);
     }
 }
