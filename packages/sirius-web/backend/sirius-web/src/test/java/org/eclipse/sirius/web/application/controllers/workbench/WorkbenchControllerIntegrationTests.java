@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.controllers.workbench;
 import java.time.Duration;
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -64,8 +66,11 @@ public class WorkbenchControllerIntegrationTests extends AbstractIntegrationTest
         StepVerifier.create(flux)
                 .expectNextMatches(TreeRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(ValidationRefreshedEventPayload.class::isInstance)
+                .expectNextMatches(FormCapabilitiesRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(FormRefreshedEventPayload.class::isInstance)
+                .expectNextMatches(FormCapabilitiesRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(FormRefreshedEventPayload.class::isInstance)
+                .expectNextMatches(FormCapabilitiesRefreshedEventPayload.class::isInstance)
                 .expectNextMatches(FormRefreshedEventPayload.class::isInstance)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

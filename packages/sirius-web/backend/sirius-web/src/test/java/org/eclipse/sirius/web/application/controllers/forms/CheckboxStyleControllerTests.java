@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -64,7 +66,7 @@ public class CheckboxStyleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToCheckboxForm(String objectId) {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithStyledCheckboxDescriptionProvider.getRepresentationDescriptionId(),
                 objectId,
                 "FormWithStyledCheckbox"
@@ -76,7 +78,8 @@ public class CheckboxStyleControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a checkbox widget with a style, when it is displayed, then the style is properly apply")
     public void givenCheckboxWidgetWithStyleWhenItIsDisplayedThenStyleIsApplied() {
-        var flux = this.givenSubscriptionToCheckboxForm(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString());
+        var flux = this.givenSubscriptionToCheckboxForm(StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString())
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -103,7 +106,8 @@ public class CheckboxStyleControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a checkbox widget with a conditional style, when the condition is validated, then the conditional style is applied")
     public void givenCheckboxWidgetWithConditionalStyleWhenTheConditionIsValidatedThenConditionalStyleIsApplied() {
-        var flux = this.givenSubscriptionToCheckboxForm(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString());
+        var flux = this.givenSubscriptionToCheckboxForm(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString())
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");

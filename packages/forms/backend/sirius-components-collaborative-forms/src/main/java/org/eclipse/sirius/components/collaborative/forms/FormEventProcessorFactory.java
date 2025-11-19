@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -63,6 +64,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IFormPostProcessor formPostProcessor;
 
+    private final IFormCapabilitiesService formCapabilitiesService;
+
     public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors,
             FormEventProcessorFactoryConfiguration formConfiguration) {
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
@@ -74,6 +77,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.formCapabilitiesService = Objects.requireNonNull(formConfiguration.getFormCapabilitiesService());
     }
 
     @Override
@@ -106,7 +110,9 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                         this.representationSearchService,
                         this.representationDescriptionSearchService,
                         this.representationRefreshPolicyRegistry,
-                        this.formPostProcessor);
+                        this.formPostProcessor,
+                        this.formCapabilitiesService
+                );
 
                 return Optional.of(formEventProcessor);
             }

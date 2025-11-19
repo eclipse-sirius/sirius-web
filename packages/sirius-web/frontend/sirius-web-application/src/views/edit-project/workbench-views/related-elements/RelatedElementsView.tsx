@@ -34,7 +34,10 @@ import { SynchronizationButton } from '../SynchronizationButton';
 import { RelatedElementsViewState } from './RelatedElementsView.types';
 import { useRelatedElementsViewHandle } from './useRelatedElementsViewHandle';
 import { useRelatedElementsViewSubscription } from './useRelatedElementsViewSubscription';
-import { GQLRelatedElementsEventPayload } from './useRelatedElementsViewSubscription.types';
+import {
+  GQLFormCapabilitiesRefreshedEventPayload,
+  GQLRelatedElementsEventPayload,
+} from './useRelatedElementsViewSubscription.types';
 
 const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -68,12 +71,18 @@ const useRelatedElementsViewStyles = makeStyles()((theme) => ({
 
 const isFormRefreshedEventPayload = (
   payload: GQLRelatedElementsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
+): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
+
+const isFormCapabilitiesRefreshedEventPayload = (
+  payload: GQLRelatedElementsEventPayload
+): payload is GQLFormCapabilitiesRefreshedEventPayload =>
+  payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
 
 export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  ({ id, editingContextId }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const [state, setState] = useState<RelatedElementsViewState>({
       form: null,
+      canEdit: false,
       objectIds: [],
       pinned: false,
     });
@@ -101,8 +110,10 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     const skip = state.objectIds.length === 0;
     const { payload, complete, loading } = useRelatedElementsViewSubscription(editingContextId, state.objectIds, skip);
     useEffect(() => {
-      if (isFormRefreshedEventPayload(payload)) {
+      if (payload && isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
+      } else if (payload && isFormCapabilitiesRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
       }
     }, [payload]);
 
@@ -160,7 +171,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
                   editingContextId={editingContextId}
                   form={state.form}
                   initialSelectedPageId={null}
-                  readOnly={readOnly}
+                  readOnly={!state.canEdit}
                   postProcessor={extractFirstGroup}
                   ref={formBasedViewRef}
                 />

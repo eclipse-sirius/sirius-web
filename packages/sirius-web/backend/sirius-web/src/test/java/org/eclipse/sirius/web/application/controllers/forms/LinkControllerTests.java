@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Link;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -64,7 +66,7 @@ public class LinkControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToLinkForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithLinkDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithLink"
@@ -76,7 +78,8 @@ public class LinkControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a link widget, when it is displayed, then it is properly initialized")
     public void givenLinkWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToLinkForm();
+        var flux = this.givenSubscriptionToLinkForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");

@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTreeCheckboxInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PushButtonInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -221,9 +222,10 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
+        var diagramFilterRepresentationId = this.representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
         var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var diagramNavigator = new DiagramNavigator(diagramReference.get());
@@ -339,9 +341,10 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
+        var diagramFilterRepresentationId = this.representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
         var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         AtomicReference<String> formId = new AtomicReference<>();
         AtomicReference<String> treeId = new AtomicReference<>();

@@ -29,7 +29,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.collaborative.tables.TableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
@@ -78,6 +80,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IObjectService objectService;
 
+    private final IFormCapabilitiesService formCapabilitiesService;
+
     private final FormCreationParameters formCreationParameters;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
@@ -106,7 +110,9 @@ public class FormEventProcessor implements IFormEventProcessor {
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
+            IFormPostProcessor formPostProcessor,
+            IFormCapabilitiesService formCapabilitiesService) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
         this.objectService = Objects.requireNonNull(configuration.objectService());
@@ -118,6 +124,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
+        this.formCapabilitiesService = Objects.requireNonNull(formCapabilitiesService);
         this.tableEventHandlers = Objects.requireNonNull(configuration.tableEventHandlers());
 
         this.variableManager = this.initializeVariableManager();
@@ -273,8 +280,15 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
+        var formId = this.currentForm.get().getId();
+
+        var capabilities = this.formCapabilitiesService.getFormCapabilities(this.editingContext.getId(), formId);
+        var initialCapabilitiesRefresh = Mono.fromCallable(
+                () -> new FormCapabilitiesRefreshedEventPayload(input.id(), this.currentForm.get().getId(), capabilities)
+        );
         var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.id(), this.currentForm.get()));
-        var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
+
+        var refreshEventFlux = Flux.concat(initialCapabilitiesRefresh, initialRefresh, this.sink.asFlux());
 
         return Flux.merge(
                 refreshEventFlux,

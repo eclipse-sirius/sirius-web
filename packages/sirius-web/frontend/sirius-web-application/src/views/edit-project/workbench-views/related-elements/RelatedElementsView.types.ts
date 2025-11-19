@@ -15,6 +15,7 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface RelatedElementsViewState {
   form: GQLForm | null;
+  canEdit: boolean;
   objectIds: string[];
   pinned: boolean;
 }

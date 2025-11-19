@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -70,9 +71,10 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a semantic object, when we subscribe to its properties events, then the form is sent")
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
                 .filter(FormRefreshedEventPayload.class::isInstance)
@@ -88,9 +90,10 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a read only object, when we subscribe to its details view, then the widget of the form are read only")
     public void givenReadOnlyObjectWhenWeSubscribreToItsDetailsViewThenTheWidgetOfTheFormAreReadOnly() {
-        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA.toString()));
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var allWidgets = form.getPages().stream()

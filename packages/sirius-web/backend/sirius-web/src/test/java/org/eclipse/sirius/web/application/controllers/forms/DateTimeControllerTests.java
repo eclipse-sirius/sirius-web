@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditDateTimeInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.tests.graphql.EditDateTimeMutationRunner;
@@ -45,6 +46,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -96,7 +98,8 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a datetime widget, when it is displayed, then it is properly initialized")
     public void givenDateTimeWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToDateTimeForm();
+        var flux = this.givenSubscriptionToDateTimeForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -119,7 +122,8 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a dateTime widget, when it is edited, then its value is updated")
     public void givenDateTimeWidgetWhenItIsEditedThenTheValueIsUpdated() {
-        var flux = this.givenSubscriptionToDateTimeForm();
+        var flux = this.givenSubscriptionToDateTimeForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var dateTimeId = new AtomicReference<String>();
@@ -160,7 +164,8 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     public void givenDateTimeWidgetFromDefaultDetailsWhenItIsEditedThenTheValueIsUpdated() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var startDate = new AtomicReference<String>();

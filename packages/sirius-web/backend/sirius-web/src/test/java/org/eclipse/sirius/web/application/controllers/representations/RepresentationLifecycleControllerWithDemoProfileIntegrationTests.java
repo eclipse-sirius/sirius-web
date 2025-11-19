@@ -83,7 +83,8 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
     @DisplayName("Given an editing context with demo profile, when a mutation to create a representation is executed, then it returns an error payload")
     public void givenEditingContextWithDemoProfileWhenMutationToCreateRepresentationIsExecutedThenItReturnsErrorPayload() {
         var input = new CreateRepresentationInput(
-                UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
+                UUID.randomUUID(),
+                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
                 new TestRepresentationDescription().getId(),
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Test representation"
@@ -108,7 +109,10 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
         Consumer<Object> initialExplorerConsumer = object -> Optional.of(object)
                 .filter(ErrorPayload.class::isInstance)
                 .map(ErrorPayload.class::cast)
-                .ifPresentOrElse(errorPayload -> assertThat(errorPayload.message()).isEqualTo(this.messageService.unauthorized()), () -> fail("It should not be authorized to subscribe"));
+                .ifPresentOrElse(
+                        errorPayload -> assertThat(errorPayload.message()).isEqualTo(this.messageService.unauthorized()),
+                        () -> fail("It should not be authorized to subscribe")
+                );
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerConsumer)

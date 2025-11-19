@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.tests.graphql.EditCheckboxMutationRunner;
@@ -40,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -73,7 +75,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToCheckboxForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithCheckboxDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithCheckbox"
@@ -85,7 +87,8 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a checkbox widget, when it is displayed, then it is properly initialized")
     public void givenCheckboxWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToCheckboxForm();
+        var flux = this.givenSubscriptionToCheckboxForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -108,7 +111,8 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a checkbox widget, when it is edited, then its value is updated")
     public void givenCheckboxWidgetWhenItIsEditedThenItsValueIsUpdated() {
-        var flux = this.givenSubscriptionToCheckboxForm();
+        var flux = this.givenSubscriptionToCheckboxForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var checkboxId = new AtomicReference<String>();
@@ -123,7 +127,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable editCheckbox = () -> {
-            var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), checkboxId.get(), false);
+            var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), checkboxId.get(), false);
             var result = this.editCheckboxMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editCheckbox.__typename");

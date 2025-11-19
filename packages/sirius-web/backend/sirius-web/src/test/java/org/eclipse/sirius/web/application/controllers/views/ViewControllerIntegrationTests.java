@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -81,7 +83,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "textStylePalettes-TextStylePalette"
         );
@@ -104,7 +106,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputStyleDescription = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 paletteId.get(),
                 "styles-TextStyleDescription"
         );
@@ -117,8 +119,9 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=TextStyleDescription");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var firstPage = form.getPages().get(0);
@@ -150,7 +153,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "colorPalettes-ColorPalette"
         );
@@ -173,7 +176,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputFixedColor = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 paletteId.get(),
                 "colors-FixedColor"
         );
@@ -186,8 +189,9 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=FixedColor");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var firstPage = form.getPages().get(0);

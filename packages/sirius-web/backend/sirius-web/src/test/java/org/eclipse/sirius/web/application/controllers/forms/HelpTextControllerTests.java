@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.HelpTextQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -112,7 +114,8 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
@@ -128,7 +131,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
 
         Runnable requestHelpText = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", formId.get(),
                     "widgetId", textfieldId.get()
             );
@@ -159,7 +162,9 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
         String representationId = this.givenCreatedRepresentation.createRepresentation(createRepresentationInput);
 
         var formEventInput = new FormEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var flux = this.graphQLRequestor.subscribeToSpecification(HELP_TEXT_FORM_EVENT_SUBSCRIPTION, formEventInput);
+        var flux = this.graphQLRequestor.subscribeToSpecification(HELP_TEXT_FORM_EVENT_SUBSCRIPTION, formEventInput)
+                .filter(json -> json.contains("FormRefreshedEventPayload"));
+
 
         Consumer<String> initialFormContentConsumer = payload -> {
             boolean hasHelpText = JsonPath.read(payload, "$.data.formEvent.form.pages[0].groups[0].widgets[0].hasHelpText");

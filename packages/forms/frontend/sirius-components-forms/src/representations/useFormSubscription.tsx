@@ -15,7 +15,10 @@ import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
-import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
+import {
+  formCapabilitiesRefreshedEventPayloadFragment,
+  formRefreshedEventPayloadFragment,
+} from '../form/FormEventFragments';
 import {
   GQLFormEventInput,
   GQLFormEventPayload,
@@ -33,9 +36,13 @@ export const formEventSubscription = `
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
       }
+      ... on FormCapabilitiesRefreshedEventPayload {
+        ...formCapabilitiesRefreshedEventPayloadFragment
+      }
     }
   }
   ${formRefreshedEventPayloadFragment}
+  ${formCapabilitiesRefreshedEventPayloadFragment}
 `;
 
 const isFormRefreshedEventPayload = (payload: GQLFormEventPayload): payload is GQLFormRefreshedEventPayload =>

@@ -19,42 +19,17 @@ export interface GQLFormEventPayload {
   __typename: string;
 }
 
-export interface GQLPropertiesEventVariables {
-  input: GQLPropertiesEventInput;
-}
-
-export interface GQLPropertiesEventInput {
-  id: string;
-  editingContextId: string;
-  objectIds: string[];
-}
-
-export interface GQLPropertiesEventSubscription {
-  propertiesEvent: GQLPropertiesEventPayload;
-}
-
-export interface GQLRelatedElementsEventSubscription {
-  relatedElementsEvent: GQLPropertiesEventPayload;
-}
-
-export interface GQLPropertiesEventPayload {
-  __typename: string;
-}
-
-export interface GQLRepresentationsEventSubscription {
-  representationsEvent: GQLRepresentationsEventPayload;
-}
-
-export interface GQLRepresentationsEventPayload {
-  __typename: string;
-}
-
-export interface GQLFormRefreshedEventPayload
-  extends GQLFormEventPayload,
-    GQLPropertiesEventPayload,
-    GQLRepresentationsEventPayload {
+export interface GQLFormRefreshedEventPayload extends GQLFormEventPayload {
   id: string;
   form: GQLForm;
+}
+
+export interface GQLFormCapabilitiesRefreshedEventPayload extends GQLFormEventPayload {
+  capabilities: GQLFormCapabilities;
+}
+
+export interface GQLFormCapabilities {
+  canEdit: boolean;
 }
 
 export interface GQLRepresentationDescription {
