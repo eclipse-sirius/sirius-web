@@ -221,6 +221,12 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Rename the key of i18n keys to reflect the frontend modularity better
 - https://github.com/eclipse-sirius/sirius-web/issues/5704[#5704] [table] Display row resizer only on hover
+- https://github.com/eclipse-sirius/sirius-web/issues/5808[#5808] [sirius-web] Refactor index lifecycle to support multiple editing contexts.
+Downstream applications can now implement the following interfaces:
+* `IIndexCreationServiceDelegate` to customize how indexes are created
+* `IIndexDeletionServiceDelegate` to customize how indexes are deleted
+* `IIndexUpdateServiceDelegate` to customize how the content of the indices is updated
+Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 
 
 == 2025.10.0
