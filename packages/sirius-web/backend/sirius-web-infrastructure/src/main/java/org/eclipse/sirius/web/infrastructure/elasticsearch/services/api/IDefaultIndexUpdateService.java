@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.infrastructure.elasticsearch.services.api;
 
-import java.util.Optional;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Produces documents to index.
+ * The default implementation that indexes the content of an editing context.
  *
  * @author gdaniel
  */
-public interface IIndexDocumentCreationService {
+public interface IDefaultIndexUpdateService {
 
-    Optional<byte[]> createDocument(Object object);
-
+    void updateIndex(IEditingContext editingContext);
 }

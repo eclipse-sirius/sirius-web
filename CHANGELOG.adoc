@@ -179,6 +179,10 @@ This can be used to retrieve a `ViewDiagramConversionData` that contains the map
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
+- https://github.com/eclipse-sirius/sirius-web/issues/5806[#5806] [sirius-web] Add a command in the projects omnibox to perform cross-project queries.
+The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
+You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
+The command is only visible if Elasticsearch is up and running.
 
 
 === Improvements
@@ -217,6 +221,12 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
 - https://github.com/eclipse-sirius/sirius-web/issues/5823[#5823] Rename the key of i18n keys to reflect the frontend modularity better
 - https://github.com/eclipse-sirius/sirius-web/issues/5704[#5704] [table] Display row resizer only on hover
+- https://github.com/eclipse-sirius/sirius-web/issues/5808[#5808] [sirius-web] Refactor index lifecycle to support multiple editing contexts.
+Downstream applications can now implement the following interfaces:
+* `IIndexCreationServiceDelegate` to customize how indexes are created
+* `IIndexDeletionServiceDelegate` to customize how indexes are deleted
+* `IIndexUpdateServiceDelegate` to customize how the content of the indices is updated
+Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 
 
 == 2025.10.0
