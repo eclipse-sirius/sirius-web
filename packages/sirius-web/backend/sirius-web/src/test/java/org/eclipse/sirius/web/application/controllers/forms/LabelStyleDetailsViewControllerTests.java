@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
@@ -36,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -67,9 +69,10 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given an InsideLabelStyleDescription, when we subscribe to its properties events, then the form is sent")
     public void givenInsideLabelStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("InsideLabelStyle").group("Core Properties");

@@ -472,3 +472,13 @@ export const formRefreshedEventPayloadFragment = `
     }
   }
 `;
+
+export const formCapabilitiesRefreshedEventPayloadFragment = `
+  fragment formCapabilitiesRefreshedEventPayloadFragment on FormCapabilitiesRefreshedEventPayload {
+    id
+    formId
+    capabilities {
+      canEdit
+    }
+  }
+`;

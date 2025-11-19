@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -76,7 +78,8 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a date time widget with a style, when it is displayed, then the style is properly apply")
     public void givenDateTimeWidgetWithStyleWhenItIsDisplayedThenStyleIsApplied() {
-        var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString());
+        var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString())
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -106,7 +109,8 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a date time widget with a conditional style, when the condition is validated, then the conditional style is applied")
     public void givenDateTimeWidgetWithConditionalStyleWhenTheConditionIsValidatedThenConditionalStyleIsApplied() {
-        var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.SECOND_ITERATION_OBJECT.toString());
+        var flux = this.givenSubscriptionToDateTimeForm(PapayaIdentifiers.SECOND_ITERATION_OBJECT.toString())
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");

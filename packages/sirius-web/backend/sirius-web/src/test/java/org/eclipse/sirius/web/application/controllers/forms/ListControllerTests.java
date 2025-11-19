@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.tests.graphql.DeleteListItemMutationRunner;
@@ -40,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -73,7 +75,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToListForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithListDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithList"
@@ -85,7 +87,8 @@ public class ListControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a list widget, when one of its item is deleted, then the list items are updated")
     public void givenListWidgetWhenOneOfItsItemIsDeletedThenTheListAreUpdated() {
-        var flux = this.givenSubscriptionToListForm();
+        var flux = this.givenSubscriptionToListForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var listId = new AtomicReference<String>();
@@ -106,7 +109,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable deleteListItem = () -> {
-            var input = new DeleteListItemInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), listId.get(), listItemId.get());
+            var input = new DeleteListItemInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), listId.get(), listItemId.get());
             var result = this.deleteListItemMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.deleteListItem.__typename");

@@ -27,7 +27,11 @@ import { SynchronizationButton } from '../SynchronizationButton';
 import { DetailsViewConfiguration, DetailsViewState } from './DetailsView.types';
 import { useDetailsViewHandle } from './useDetailsViewHandle';
 import { useDetailsViewSubscription } from './useDetailsViewSubscription';
-import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetailsViewSubscription.types';
+import {
+  GQLDetailsEventPayload,
+  GQLFormCapabilitiesRefreshedEventPayload,
+  GQLFormRefreshedEventPayload,
+} from './useDetailsViewSubscription.types';
 
 const useDetailsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -60,16 +64,22 @@ const useDetailsViewStyles = makeStyles()((theme) => ({
 }));
 
 const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload && payload.__typename === 'FormRefreshedEventPayload';
+  payload?.__typename === 'FormRefreshedEventPayload';
+
+const isFormCapabilitiesRefreshedEventPayload = (
+  payload: GQLDetailsEventPayload
+): payload is GQLFormCapabilitiesRefreshedEventPayload =>
+  payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
 
 export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   (
-    { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
+    { id, editingContextId, initialConfiguration }: WorkbenchViewComponentProps,
     ref: ForwardedRef<WorkbenchViewHandle>
   ) => {
     const { t } = useTranslation('sirius-web-application', { keyPrefix: 'detailsView' });
     const [state, setState] = useState<DetailsViewState>({
       form: null,
+      canEdit: false,
       objectIds: [],
       pinned: false,
     });
@@ -95,8 +105,10 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     const skip = state.objectIds.length === 0;
     const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, state.objectIds, skip);
     useEffect(() => {
-      if (isFormRefreshedEventPayload(payload)) {
+      if (payload && isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
+      } else if (payload && isFormCapabilitiesRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
       }
     }, [payload]);
 
@@ -144,7 +156,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
                   editingContextId={editingContextId}
                   form={state.form}
                   initialSelectedPageId={initialSelectedPageId}
-                  readOnly={readOnly}
+                  readOnly={!state.canEdit}
                   ref={formBasedViewRef}
                 />
               </FormContext.Provider>

@@ -33,6 +33,11 @@ In a similar manner, `InvokeSingleClickOnDiagramElementToolInput` will now ask f
 The `ExplorerRepresentationMetadataProvider` has been updated to provide only the metadata for the default Sirius-Web explorer.
 Each custom explorer definition will now be in control of its metadata.
 For that, custom explorers must provide their own implementation of `IRepresentationMetadataProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] All form based GraphQL subscription using the type `FormRefreshedEventPayload` may need to also add `FormCapabilitiesRefreshedEventPayload` to their union.
+React components `FormRepresentation`, `DiagramFilterForm`, `DetailsView`, `RelatedElementsView`, and `RepresentationsView` stopped relying on `readOnly` props in favor of the `FormCapabilities#canEdit` capabilities.
+All tests based on form subscriptions will now receive both `FormRefreshedEventPayload` and `FormCapabilitiesRefreshedEventPayload`.
+Those tests will have to be updated to take this new payload into account.
+
 
 
 === Dependency update
@@ -82,6 +87,9 @@ Sirius Web provides a default implementation for all these services, which creat
 - https://github.com/eclipse-sirius/sirius-web/issues/5942[#5942] [sirius-web] The method `canHandle` of the various representation event handlers can now leverage the `IEditingContext` to compute a result
 - https://github.com/eclipse-sirius/sirius-web/issues/5923[#5923] [sirius-web] Reduce header, tab, and separator size to increase UI density
 - https://github.com/eclipse-sirius/sirius-web/issues/5272[#5272] Allow to contribute tree filters based on the tree description.
+- https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] Add the support for form `canEdit` capabilities.
+The `canEdit` capabilities delegates to `ProjectCapabilities#canEdit` by default.
+Downstream projects can provide their own `IFormCapabilitiesService` primary service to override the default behavior.
 
 
 
@@ -199,6 +207,7 @@ As such, the variables `droppedNode` and `droppedElement` which are exposed in t
 _Drop Node Tool_ definitions need to be adapted to handle these new variables.
 - https://github.com/eclipse-sirius/sirius-web/issues/5795[#5795] [diagram] `DraggableOutsideLabel` has been renamed to `DraggableResizableOutsideLabel` and its props changed.
 `highlighted` has been decomposed into `selected` and  `hovered`.
+
 
 === Dependency update
 

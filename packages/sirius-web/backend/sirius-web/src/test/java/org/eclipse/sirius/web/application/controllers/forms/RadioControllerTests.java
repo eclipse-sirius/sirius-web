@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RadioOption;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -74,7 +76,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToRadioForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithRadioDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithCheckbox"
@@ -86,7 +88,8 @@ public class RadioControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a radio widget, when it is displayed, then it is properly initialized")
     public void givenRadioWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToRadioForm();
+        var flux = this.givenSubscriptionToRadioForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -109,7 +112,8 @@ public class RadioControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a radio widget, when it is edited, then its value is updated")
     public void givenRadioWidgetWhenItIsEditedThenItsValueIsUpdated() {
-        var flux = this.givenSubscriptionToRadioForm();
+        var flux = this.givenSubscriptionToRadioForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var radioId = new AtomicReference<String>();
@@ -143,7 +147,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable editCheckbox = () -> {
-            var input = new EditRadioInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
+            var input = new EditRadioInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), radioId.get(), optionId.get());
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");

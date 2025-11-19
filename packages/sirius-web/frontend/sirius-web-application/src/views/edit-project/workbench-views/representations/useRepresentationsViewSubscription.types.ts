@@ -47,3 +47,12 @@ export interface GQLFormRefreshedEventPayload extends GQLRepresentationsEventPay
   __typename: 'FormRefreshedEventPayload';
   form: GQLForm;
 }
+
+export interface GQLFormCapabilitiesRefreshedEventPayload extends GQLRepresentationsEventPayload {
+  __typename: 'FormCapabilitiesRefreshedEventPayload';
+  capabilities: GQLFormCapabilities;
+}
+
+export interface GQLFormCapabilities {
+  canEdit: boolean;
+}

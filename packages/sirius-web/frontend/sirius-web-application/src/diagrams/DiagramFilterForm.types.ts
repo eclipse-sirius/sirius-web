@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,9 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 export interface DiagramFilterFormProps {
   editingContextId: string;
   diagramId: string;
-  readOnly: boolean;
 }
 
 export interface DiagramFilterViewState {
   form: GQLForm | null;
+  canEdit: boolean;
 }

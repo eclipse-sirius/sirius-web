@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.LabelWidget;
@@ -68,7 +69,7 @@ public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToFlexboxContainerForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithFlexboxContainerDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithFlexboxContainer"
@@ -80,7 +81,8 @@ public class FlexboxContainerControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a flexbox container, when it is displayed, then it is properly initialized")
     public void givenFlexboxContainerWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToFlexboxContainerForm();
+        var flux = this.givenSubscriptionToFlexboxContainerForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");

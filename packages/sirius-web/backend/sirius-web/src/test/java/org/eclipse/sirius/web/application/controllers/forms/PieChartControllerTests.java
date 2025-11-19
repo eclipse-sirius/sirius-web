@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.charts.piechart.PieChart;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.ChartWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -66,7 +67,7 @@ public class PieChartControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToPieChartForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithPieChartDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithPieChart"
@@ -78,7 +79,8 @@ public class PieChartControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a pie chart widget, when it is displayed, then it is properly initialized")
     public void givenPieChartWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToPieChartForm();
+        var flux = this.givenSubscriptionToPieChartForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");

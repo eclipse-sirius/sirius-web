@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -43,6 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -79,7 +81,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTextfieldForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
@@ -91,7 +93,8 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a textfield widget, when it is displayed, then it is properly initialized")
     public void givenTextfieldWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToTextfieldForm();
+        var flux = this.givenSubscriptionToTextfieldForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -117,7 +120,8 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a textfield widget, when it is edited, then its value is updated")
     public void givenTextfieldWidgetWhenItIsEditedThenItsValueIsUpdated() {
-        var flux = this.givenSubscriptionToTextfieldForm();
+        var flux = this.givenSubscriptionToTextfieldForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
@@ -132,7 +136,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "A new and very long value");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "A new and very long value");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
@@ -151,7 +155,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable tryEditReadOnlyTextField = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "buck");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
@@ -170,7 +174,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToReadOnlyTextfieldForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithReadOnlyTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithReadOnlyTextfield"
@@ -182,7 +186,8 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a readonly textfield widget, when it is edited, then an error is returned")
     public void givenReadOnlyTextfieldWidgetWhenItIsEditedThenAnErrorIsReturned() {
-        var flux = this.givenSubscriptionToReadOnlyTextfieldForm();
+        var flux = this.givenSubscriptionToReadOnlyTextfieldForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
@@ -199,7 +204,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "buck");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

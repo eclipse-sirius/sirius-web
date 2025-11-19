@@ -49,7 +49,7 @@ export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActio
         </span>
       </Tooltip>
       <Menu anchorEl={anchorRef.current} open={isOpen} onClose={() => setIsOpen(false)}>
-        <DiagramFilterForm editingContextId={editingContextId} diagramId={diagramId} readOnly={false} />
+        <DiagramFilterForm editingContextId={editingContextId} diagramId={diagramId} />
       </Menu>
     </>
   );

@@ -25,7 +25,7 @@ import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { FormRepresentationState } from './FormRepresentation.types';
 import { useFormSubscription } from './useFormSubscription';
-import { GQLFormRefreshedEventPayload } from './useFormSubscription.types';
+import { GQLFormCapabilitiesRefreshedEventPayload, GQLFormRefreshedEventPayload } from './useFormSubscription.types';
 
 const useFormRepresentationStyles = makeStyles()((theme) => ({
   page: {
@@ -58,15 +58,20 @@ const useFormRepresentationStyles = makeStyles()((theme) => ({
 }));
 
 const isFormRefreshedEventPayload = (payload: GQLFormEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload && payload.__typename === 'FormRefreshedEventPayload';
+  payload.__typename === 'FormRefreshedEventPayload';
+const isFormCapabilitiesRefreshedEventPayload = (
+  payload: GQLFormEventPayload
+): payload is GQLFormCapabilitiesRefreshedEventPayload =>
+  payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
 
 export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
   (
-    { editingContextId, representationId, readOnly }: RepresentationComponentProps,
+    { editingContextId, representationId }: RepresentationComponentProps,
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const [state, setState] = useState<FormRepresentationState>({
       form: null,
+      canEdit: false,
     });
 
     useImperativeHandle(
@@ -84,6 +89,8 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
     useEffect(() => {
       if (payload && isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
+      } else if (payload && isFormCapabilitiesRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
       }
     }, [payload]);
 
@@ -98,7 +105,7 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
             editingContextId={editingContextId}
             form={state.form}
             initialSelectedPageId={null}
-            readOnly={readOnly}
+            readOnly={!state.canEdit}
           />
         );
       } else if (state.form.pages.length === 1) {
@@ -114,7 +121,7 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
                     <ToolbarAction
                       editingContextId={editingContextId}
                       formId={id}
-                      readOnly={readOnly}
+                      readOnly={!state.canEdit}
                       widget={toolbarAction}
                     />
                   </div>
@@ -125,7 +132,7 @@ export const FormRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
           content = (
             <div data-testid="page" className={classes.page}>
               {selectedPageToolbar}
-              <Page editingContextId={editingContextId} formId={id} page={page} readOnly={readOnly} />
+              <Page editingContextId={editingContextId} formId={id} page={page} readOnly={!state.canEdit} />
             </div>
           );
         }

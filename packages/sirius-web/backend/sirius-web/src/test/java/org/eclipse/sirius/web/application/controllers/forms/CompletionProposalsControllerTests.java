@@ -24,6 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.tests.graphql.CompletionProposalsQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -39,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -70,8 +72,9 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     @DisplayName("Given a textfield for a domain type, when we ask for its completion proposals, then the proposals are returned")
     public void givenTextfieldForDomainTypeWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()) + "]";
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();
@@ -86,7 +89,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "formId", formId.get(),
                     "widgetId", textareaId.get(),
                     "currentText", "",
@@ -115,8 +118,9 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     @DisplayName("Given a textfield for an expression, when we ask for its completion proposals, then the proposals are returned")
     public void givenTextfieldForAnExpressionWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()) + "]";
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();
@@ -131,7 +135,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "formId", formId.get(),
                     "widgetId", textareaId.get(),
                     "currentText", "aql:self.humans",

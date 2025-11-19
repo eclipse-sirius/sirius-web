@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -82,7 +84,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "descriptions-DiagramDescription"
         );
@@ -105,7 +107,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var nodeDescription = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 diagramDescriptionId.get(),
                 "nodeDescriptions-NodeDescription"
         );
@@ -119,7 +121,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var conditionalStyle = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 objectId,
                 "conditionalStyles-ConditionalNodeStyle"
         );
@@ -132,8 +134,9 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=diagram&entity=ConditionalNodeStyle");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var firstPage = form.getPages().get(0);

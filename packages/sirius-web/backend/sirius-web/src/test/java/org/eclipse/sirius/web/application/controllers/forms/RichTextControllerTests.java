@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRichTextInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.tests.graphql.EditRichTextMutationRunner;
@@ -40,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -85,7 +87,8 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a rich text widget, when it is displayed, then it is properly initialized")
     public void givenRichTextWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToRichTextForm();
+        var flux = this.givenSubscriptionToRichTextForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -108,7 +111,8 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a rich text widget, when it is edited, then its value is updated")
     public void givenRichTextWidgetWhenItIsEditedThenItsValueIsUpdated() {
-        var flux = this.givenSubscriptionToRichTextForm();
+        var flux = this.givenSubscriptionToRichTextForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var richTextId = new AtomicReference<String>();

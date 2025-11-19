@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.PushButtonInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.LabelWidget;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -74,7 +76,7 @@ public class SplitButtonControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToSplitButtonForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithSplitButtonDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithCheckbox"
@@ -86,7 +88,8 @@ public class SplitButtonControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a split button widget, when it is displayed, then it is properly initialized")
     public void givenSplitButtonWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
-        var flux = this.givenSubscriptionToSplitButtonForm();
+        var flux = this.givenSubscriptionToSplitButtonForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -113,7 +116,8 @@ public class SplitButtonControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a split button widget, when it is edited, then its value is updated")
     public void givenSplitButtonWidgetWhenItIsEditedThenItsValueIsUpdated() {
-        var flux = this.givenSubscriptionToSplitButtonForm();
+        var flux = this.givenSubscriptionToSplitButtonForm()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var buttonId = new AtomicReference<String>();
@@ -133,7 +137,7 @@ public class SplitButtonControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable pushButton = () -> {
-            var input = new PushButtonInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), buttonId.get());
+            var input = new PushButtonInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), buttonId.get());
             var result = this.pushButtonMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.pushButton.__typename");

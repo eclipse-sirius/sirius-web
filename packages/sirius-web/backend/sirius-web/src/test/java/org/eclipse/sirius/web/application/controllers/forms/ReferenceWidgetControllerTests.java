@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -92,7 +93,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -125,7 +127,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
@@ -172,7 +175,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
@@ -222,7 +226,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();

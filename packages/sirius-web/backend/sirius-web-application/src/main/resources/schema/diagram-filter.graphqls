@@ -8,4 +8,4 @@ input DiagramFilterEventInput {
   representationId: String!
 }
 
-union DiagramFilterEventPayload = ErrorPayload | FormRefreshedEventPayload
+union DiagramFilterEventPayload = ErrorPayload | FormRefreshedEventPayload | FormCapabilitiesRefreshedEventPayload

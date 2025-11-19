@@ -23,7 +23,6 @@ import {
   FormHandle,
   GQLForm,
   GQLList,
-  GQLRepresentationsEventPayload,
   GQLTree,
   GQLWidget,
   ListPropertySection,
@@ -32,13 +31,17 @@ import {
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { SynchronizationButton } from '../SynchronizationButton';
 import { RepresentationsViewState } from './RepresentationsView.types';
 import { useRepresentationsViewHandle } from './useRepresentationsViewHandle';
 import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
-import { GQLFormRefreshedEventPayload } from './useRepresentationsViewSubscription.types';
-import { useTranslation } from 'react-i18next';
+import {
+  GQLFormCapabilitiesRefreshedEventPayload,
+  GQLFormRefreshedEventPayload,
+  GQLRepresentationsEventPayload,
+} from './useRepresentationsViewSubscription.types';
 
 const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -74,13 +77,19 @@ const isList = (widget: GQLWidget | undefined): widget is GQLList => widget && w
 const isTree = (widget: GQLWidget | undefined): widget is GQLTree => widget && widget.__typename === 'TreeWidget';
 const isFormRefreshedEventPayload = (
   payload: GQLRepresentationsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
+): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
+
+const isFormCapabilitiesRefreshedEventPayload = (
+  payload: GQLRepresentationsEventPayload
+): payload is GQLFormCapabilitiesRefreshedEventPayload =>
+  payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
 
 export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  ({ id, editingContextId }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const { t } = useTranslation('sirius-web-application', { keyPrefix: 'representationsView' });
     const [state, setState] = useState<RepresentationsViewState>({
       form: null,
+      canEdit: false,
       objectIds: [],
       pinned: false,
     });
@@ -106,8 +115,10 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     const skip = state.objectIds.length === 0;
     const { payload, complete, loading } = useRepresentationsViewSubscription(editingContextId, state.objectIds, skip);
     useEffect(() => {
-      if (isFormRefreshedEventPayload(payload)) {
+      if (payload && isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));
+      } else if (payload && isFormCapabilitiesRefreshedEventPayload(payload)) {
+        setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
       }
     }, [payload]);
 
@@ -181,7 +192,7 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
                   editingContextId={editingContextId}
                   form={state.form}
                   initialSelectedPageId={null}
-                  readOnly={readOnly}
+                  readOnly={!state.canEdit}
                   postProcessor={extractPlainList}
                   ref={formBasedViewRef}
                 />
