@@ -143,6 +143,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5386[#5661] [diagram] Fix an issue with manually placed handle position
 - https://github.com/eclipse-sirius/sirius-web/issues/5791[#5791] [diagram] Fix a bug where opening a diagram could steal the selection performed in the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/5799[#5799] [forms] Fix a warning on the frontend when rendering a Rich Text widget
+- https://github.com/eclipse-sirius/sirius-web/issues/5836[#5836] [core] Ensure that the behavior of the omnibox search is consistent with the rest of the application
 
 
 === New Features
@@ -176,6 +177,7 @@ This can be used to retrieve a `ViewDiagramConversionData` that contains the map
 In particular, this can be used to customize the tree used for the model browser of a particular reference widget by discriminating on the `descriptionId` parameter of the `modelBrowser://` id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
+
 
 === Improvements
 
@@ -211,6 +213,8 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5635[#5635] [diagram] Improve the position of border nodes when they are used as edge handles
 - https://github.com/eclipse-sirius/sirius-web/issues/5821[#5821] [sirius-web] Provide a way to customize the tree displayed in the object duplication modal.
 - https://github.com/eclipse-sirius/sirius-web/issues/5726[#5726] [sirius-web] Virtualize the display of search results to improve performance on large result sets
+
+
 
 == 2025.10.0
 

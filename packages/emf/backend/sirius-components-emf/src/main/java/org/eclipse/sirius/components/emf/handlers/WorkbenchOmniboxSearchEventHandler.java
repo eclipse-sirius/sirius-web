@@ -18,8 +18,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -39,9 +40,6 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -114,8 +112,8 @@ public class WorkbenchOmniboxSearchEventHandler implements IEditingContextEventH
             var iterator = editingDomain.getResourceSet().getAllContents();
             while (iterator.hasNext()) {
                 Notifier notifier = iterator.next();
-                var adapter = editingDomain.getAdapterFactory().adapt(notifier, IItemLabelProvider.class);
-                if (adapter instanceof IItemLabelProvider itemLabelProvider && itemLabelProvider.getText(notifier).toLowerCase().contains(query.toLowerCase())) {
+                var label = this.labelService.getStyledLabel(notifier);
+                if (label.toString().toLowerCase().contains(query.toLowerCase())) {
                     results.add(notifier);
                 }
             }
