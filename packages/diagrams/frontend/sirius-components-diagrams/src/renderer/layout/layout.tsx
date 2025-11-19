@@ -274,6 +274,10 @@ const layoutDiagram = (
   if (referencePosition) {
     newlyAddedNodes = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
+      .filter((node) => {
+        const referencedNode = allVisibleNodes.find((n) => n.id === referencePosition?.parentId);
+        return (!referencedNode && !node.parentId) || referencedNode?.parentId === node.parentId;
+      })
       .map((node, index, array) => {
         const nodeBorderNodeFootprint = getNodeBorderNodeFootprint(node, allVisibleNodes);
         const previousSiblingNewNode = array.find((n, nIndex) => nIndex < index && n.parentId === node.parentId);
@@ -319,32 +323,32 @@ const layoutDiagram = (
           referencePosition.parentId &&
           referencePosition.parentId !== ''
         ) {
-          const linkedNode = allVisibleNodes.find((n) => n.id === referencePosition?.parentId);
-          if (linkedNode) {
+          const referencedNode = allVisibleNodes.find((n) => n.id === referencePosition?.parentId);
+          if (referencedNode) {
             switch (layoutDirection) {
               case 'DOWN':
                 newPosition = {
-                  x: linkedNode.position.x,
-                  y: linkedNode.position.y + (linkedNode.height ?? 0) + gap,
+                  x: referencedNode.position.x,
+                  y: referencedNode.position.y + (referencedNode.height ?? 0) + gap,
                 };
                 break;
               case 'UP':
                 newPosition = {
-                  x: linkedNode.position.x,
-                  y: linkedNode.position.y - (node.height ?? 0) - gap,
+                  x: referencedNode.position.x,
+                  y: referencedNode.position.y - (node.height ?? 0) - gap,
                 };
                 break;
               case 'LEFT':
                 newPosition = {
-                  x: linkedNode.position.x - (node.width ?? 0) - gap,
-                  y: linkedNode.position.y,
+                  x: referencedNode.position.x - (node.width ?? 0) - gap,
+                  y: referencedNode.position.y,
                 };
                 break;
               case 'UNDEFINED':
               case 'RIGHT':
                 newPosition = {
-                  x: linkedNode.position.x + (linkedNode.width ?? 0) + gap,
-                  y: linkedNode.position.y,
+                  x: referencedNode.position.x + (referencedNode.width ?? 0) + gap,
+                  y: referencedNode.position.y,
                 };
                 break;
             }

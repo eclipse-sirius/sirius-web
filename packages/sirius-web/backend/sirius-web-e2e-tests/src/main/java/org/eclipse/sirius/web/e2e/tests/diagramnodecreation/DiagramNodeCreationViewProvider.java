@@ -77,8 +77,8 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription gegtDiagramDescription(IColorProvider colorProvider) {
-        var nodeDescription1 = this.getNodeDescription(colorProvider, "Entity1");
-        var nodeDescription2 = this.getNodeDescription(colorProvider, "Entity2");
+        var nodeDescription1 = this.getNode4Description(colorProvider, "Entity1");
+        var nodeDescription2 = this.getNode4Description(colorProvider, "Entity2");
         var edgeDescription = this.getEdgeDescription(colorProvider, nodeDescription1, nodeDescription2);
 
 
@@ -122,7 +122,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .titleExpression(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
-                .nodeDescriptions(nodeDescription1, nodeDescription2)
+                .nodeDescriptions(nodeDescription1, nodeDescription2, this.getNode3Description(colorProvider))
                 .edgeDescriptions(edgeDescription)
                 .palette(new DiagramBuilders().newDiagramPalette()
                         .nodeTools(new DiagramBuilders().newNodeTool()
@@ -140,8 +140,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .build();
     }
 
-
-    private NodeDescription getNodeDescription(IColorProvider colorProvider, String entityName) {
+    private NodeDescription getNode4Description(IColorProvider colorProvider, String entityName) {
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name(entityName)
@@ -177,6 +176,122 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                                                 .withHeader(false)
                                                 .build()
                                 )
+                                .build()
+                )
+                .build();
+    }
+
+    private NodeDescription getNode3Description(IColorProvider colorProvider) {
+        return new DiagramBuilders()
+                .newNodeDescription()
+                .name("entity3")
+                .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::" + "Entity3")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .collapsible(true)
+                .userResizable(UserResizableDirection.BOTH)
+                .keepAspectRatio(false)
+                .style(
+                        new DiagramBuilders()
+                                .newRectangularNodeStyleDescription()
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_BLUE))
+                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.BORDER_BLUE))
+                                .borderRadius(3)
+                                .borderSize(1)
+                                .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
+                                .build()
+                )
+                .insideLabel(
+                        new DiagramBuilders()
+                                .newInsideLabelDescription()
+                                .labelExpression("Parent")
+                                .textAlign(LabelTextAlign.LEFT)
+                                .position(InsideLabelPosition.TOP_CENTER)
+                                .style(
+                                        new DiagramBuilders()
+                                                .newInsideLabelStyle()
+                                                .fontSize(14)
+                                                .borderSize(0)
+                                                .labelColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                .withHeader(true)
+                                                .build()
+                                )
+                                .build()
+                )
+                .childrenDescriptions(
+                        new DiagramBuilders()
+                                .newNodeDescription()
+                                .name("entity3Compartment")
+                                .semanticCandidatesExpression("aql:self")
+                                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                                .collapsible(true)
+                                .userResizable(UserResizableDirection.BOTH)
+                                .keepAspectRatio(false)
+                                .style(
+                                        new DiagramBuilders()
+                                                .newRectangularNodeStyleDescription()
+                                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_PINK))
+                                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.BORDER_GREEN))
+                                                .borderRadius(3)
+                                                .borderSize(1)
+                                                .borderLineStyle(LineStyle.SOLID)
+                                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
+                                                .build()
+                                )
+                                .insideLabel(
+                                        new DiagramBuilders()
+                                                .newInsideLabelDescription()
+                                                .labelExpression("Compartment")
+                                                .textAlign(LabelTextAlign.LEFT)
+                                                .position(InsideLabelPosition.TOP_CENTER)
+                                                .style(
+                                                        new DiagramBuilders()
+                                                                .newInsideLabelStyle()
+                                                                .fontSize(14)
+                                                                .borderSize(0)
+                                                                .labelColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                                .withHeader(true)
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .childrenDescriptions(this.getNode4Description(colorProvider))
+                                .build()
+                )
+                .palette(new DiagramBuilders().newNodePalette()
+                        .nodeTools(new DiagramBuilders().newNodeTool()
+                                .name("createEntity4")
+                                .body(new ViewBuilders().newCreateInstance()
+                                        .typeName(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::Entity4")
+                                        .referenceName("entity4s")
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    private NodeDescription getNode4Description(IColorProvider colorProvider) {
+        return new DiagramBuilders()
+                .newNodeDescription()
+                .name("entity4")
+                .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::" + "Entity4")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .collapsible(true)
+                .userResizable(UserResizableDirection.BOTH)
+                .keepAspectRatio(false)
+                .defaultHeightExpression("45")
+                .defaultWidthExpression("45")
+                .style(
+                        new DiagramBuilders()
+                                .newRectangularNodeStyleDescription()
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                .borderRadius(3)
+                                .borderSize(1)
+                                .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .build();

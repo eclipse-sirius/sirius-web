@@ -78,10 +78,38 @@ public class DiagramNodeCreationDomainProvider implements IDomainProvider {
         entity1LinkToEntity2.setTargetType(entity2);
         entity1.getRelations().add(entity1LinkToEntity2);
 
+        this.addGrandchildDomain(domain, root);
+
         this.addAttribute(entity1, "name", DataType.STRING);
         this.addAttribute(entity2, "name", DataType.STRING);
 
         return List.of(domain);
+    }
+
+    private void addGrandchildDomain(Domain domain, Entity root) {
+        Entity entity3 = DomainFactory.eINSTANCE.createEntity();
+        entity3.setName("Entity3");
+        domain.getTypes().add(entity3);
+
+        Relation entity3s = DomainFactory.eINSTANCE.createRelation();
+        entity3s.setName("entity3s");
+        entity3s.setContainment(true);
+        entity3s.setOptional(true);
+        entity3s.setMany(true);
+        entity3s.setTargetType(entity3);
+        root.getRelations().add(entity3s);
+
+        Entity entity4 = DomainFactory.eINSTANCE.createEntity();
+        entity4.setName("Entity4");
+        domain.getTypes().add(entity4);
+
+        Relation entity4s = DomainFactory.eINSTANCE.createRelation();
+        entity4s.setName("entity4s");
+        entity4s.setContainment(true);
+        entity4s.setOptional(true);
+        entity4s.setMany(true);
+        entity4s.setTargetType(entity4);
+        entity3.getRelations().add(entity4s);
     }
 
     private void addAttribute(Entity entity, String name, DataType type) {
