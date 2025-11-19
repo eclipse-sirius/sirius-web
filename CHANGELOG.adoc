@@ -53,6 +53,12 @@ The command is only visible if Elasticsearch is up and running.
 - https://github.com/eclipse-sirius/sirius-web/issues/5887[#5887] Perform additional checks on pull requests and their linked issues.
 This contribution will leverage the Github GraphQL API to retrieve additional metadata to check such as the linked issue labels, and milestone.
 - https://github.com/eclipse-sirius/sirius-web/issues/5851[#5851] Add `rect-packing` algorithm option in arrange all possibility
+- https://github.com/eclipse-sirius/sirius-web/issues/5808[#5808] [sirius-web] Refactor index lifecycle to support multiple editing contexts.
+Downstream applications can now implement the following interfaces:
+* `IIndexCreationServiceDelegate` to customize how indexes are created
+* `IIndexDeletionServiceDelegate` to customize how indexes are deleted
+* `IIndexUpdateServiceDelegate` to customize how the content of the indices is updated
+Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 
 
 
