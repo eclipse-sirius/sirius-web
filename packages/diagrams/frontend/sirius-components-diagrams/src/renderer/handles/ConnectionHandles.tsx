@@ -137,6 +137,11 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
                   position={connectionHandle.position}
                   key={connectionHandle.id}
                   isConnectable={true}
+                  data-testid={
+                    !connectionHandle.isVirtualHandle && !connectionHandle.isHidden
+                      ? `connectionHandle-${connectionHandle.edgeId}-${connectionHandle.type}`
+                      : ''
+                  }
                 />
               );
             })}
