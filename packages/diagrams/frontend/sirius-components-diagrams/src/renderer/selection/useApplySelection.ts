@@ -17,7 +17,7 @@ import { UseApplySelectionValue } from './useApplySelection.types';
 import { useRevealNodes } from './useRevealNodes';
 
 export const useApplySelection = (): UseApplySelectionValue => {
-  const { getNodes, setNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
   const { revealNodes } = useRevealNodes();
@@ -82,8 +82,10 @@ export const useApplySelection = (): UseApplySelectionValue => {
       }
     });
 
-    setEdges(newEdges);
-    setNodes(newNodes);
+    const edgeIds = newEdges.filter((edge) => edge.selected).map((edge) => edge.id);
+    store.getState().addSelectedEdges(edgeIds);
+    const nodeIds = newNodes.filter((node) => node.selected).map((node) => node.id);
+    store.getState().addSelectedNodes(nodeIds);
 
     if (fitSelection && nodesToReveal.size > 0) {
       revealNodes(getNodes().filter((node) => nodesToReveal.has(node.id)));
