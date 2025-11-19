@@ -14,12 +14,12 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.springframework.stereotype.Service;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -34,12 +34,17 @@ public class DetailsEventSubscriptionRunner implements ISubscriptionRunner<Detai
             subscription detailsEvent($input: DetailsEventInput!) {
               detailsEvent(input: $input) {
                 __typename
-               ... on ErrorPayload {
-                    message
-                    messages {
-                      level
-                      body
-                    }
+                ... on ErrorPayload {
+                  message
+                  messages {
+                    level
+                    body
+                  }
+                }
+                ... on FormCapabilitiesRefreshedEventPayload {
+                  capabilities {
+                    canEdit
+                  }
                 }
               }
             }

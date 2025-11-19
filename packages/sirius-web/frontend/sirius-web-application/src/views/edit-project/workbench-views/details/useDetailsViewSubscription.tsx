@@ -13,7 +13,10 @@
 
 import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
+import {
+  formCapabilitiesRefreshedEventPayloadFragment,
+  formRefreshedEventPayloadFragment,
+} from '@eclipse-sirius/sirius-components-forms';
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
@@ -31,9 +34,13 @@ export const getDetailsViewEventSubscription = `
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
       }
+      ... on FormCapabilitiesRefreshedEventPayload {
+        ...formCapabilitiesRefreshedEventPayloadFragment
+      }
     }
   }
   ${formRefreshedEventPayloadFragment}
+  ${formCapabilitiesRefreshedEventPayloadFragment}
   `;
 
 export const useDetailsViewSubscription = (

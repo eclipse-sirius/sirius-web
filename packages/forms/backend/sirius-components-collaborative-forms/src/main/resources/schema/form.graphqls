@@ -8,7 +8,7 @@ input FormEventInput {
   formId: ID!
 }
 
-union FormEventPayload = ErrorPayload | FormRefreshedEventPayload
+union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | FormCapabilitiesRefreshedEventPayload
 
 type FormRefreshedEventPayload {
   id: ID!
@@ -443,6 +443,16 @@ type TableWidget implements Widget {
   hasHelpText: Boolean!
   readOnly: Boolean!
   table: Table
+}
+
+type FormCapabilitiesRefreshedEventPayload {
+  id: ID!
+  formId: ID!
+  capabilities: FormCapabilities!
+}
+
+type FormCapabilities {
+  canEdit: Boolean!
 }
 
 type FormDescription implements RepresentationDescription {

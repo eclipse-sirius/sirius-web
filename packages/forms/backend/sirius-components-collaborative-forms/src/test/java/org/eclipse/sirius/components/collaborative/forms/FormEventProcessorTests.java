@@ -22,8 +22,10 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchServ
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.representations.RepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -57,6 +59,15 @@ public class FormEventProcessorTests {
                 .build();
     }
 
+    private Predicate<IPayload> getRefreshFormCapabilitiesEventPayloadPredicate() {
+        return representationEventPayload -> {
+            if (representationEventPayload instanceof FormCapabilitiesRefreshedEventPayload payload) {
+                return payload.capabilities() != null;
+            }
+            return false;
+        };
+    }
+
     private Predicate<IPayload> getRefreshFormEventPayloadPredicate() {
         return representationEventPayload -> {
             if (representationEventPayload instanceof FormRefreshedEventPayload payload) {
@@ -72,6 +83,7 @@ public class FormEventProcessorTests {
         FormEventProcessor formEventProcessor = this.createFormEventProcessor();
 
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
+                .expectNextMatches(this.getRefreshFormCapabilitiesEventPayloadPredicate())
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .thenCancel()
                 .verify();
@@ -85,6 +97,7 @@ public class FormEventProcessorTests {
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
 
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
+                .expectNextMatches(this.getRefreshFormCapabilitiesEventPayloadPredicate())
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .then(performRefresh)
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
@@ -100,6 +113,7 @@ public class FormEventProcessorTests {
         Runnable disposeFormEventProcessor = formEventProcessor::dispose;
 
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
+                .expectNextMatches(this.getRefreshFormCapabilitiesEventPayloadPredicate())
                 .expectNextMatches(this.getRefreshFormEventPayloadPredicate())
                 .then(disposeFormEventProcessor)
                 .expectComplete()
@@ -121,7 +135,8 @@ public class FormEventProcessorTests {
                 new IRepresentationSearchService.NoOp(),
                 new IRepresentationDescriptionSearchService.NoOp(),
                 new RepresentationRefreshPolicyRegistry(List.of()),
-                new IFormPostProcessor.NoOp());
+                new IFormPostProcessor.NoOp(),
+                new IFormCapabilitiesService.NoOp());
         return formEventProcessor;
     }
 }
