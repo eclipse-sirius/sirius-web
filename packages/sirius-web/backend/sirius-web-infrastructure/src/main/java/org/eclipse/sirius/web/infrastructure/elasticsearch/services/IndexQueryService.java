@@ -58,7 +58,7 @@ public class IndexQueryService implements IIndexQueryService {
             ElasticsearchClient elasticSearchClient = this.optionalElasticSearchClient.get();
             try {
                 SearchResponse<IIndexEntry> response = elasticSearchClient.search(searchRequest -> searchRequest
-                        .index(ProjectIndexLifecycleManager.PROJECT_INDEX_NAME_PREFIX + "*")
+                        .index("*")
                         // Maximum size supported by Elasticsearch
                         .size(10000)
                         .query(queryBuilder -> queryBuilder

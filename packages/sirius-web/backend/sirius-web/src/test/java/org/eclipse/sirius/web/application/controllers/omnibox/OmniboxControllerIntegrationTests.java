@@ -46,7 +46,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.index.services.api.IIndexQueryService;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IEditingContextIndexingService;
+import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
 import org.eclipse.sirius.web.papaya.omnibox.PapayaCreateSampleProjectCommandProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxCommandsQueryRunner;
@@ -97,7 +97,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
-    private IEditingContextIndexingService editingContextIndexingService;
+    private IIndexUpdateService indexUpdateService;
 
     @Autowired
     private Optional<ElasticsearchClient> optionalElasticSearchClient;
@@ -235,7 +235,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given a query, when the objects are searched in the projects omnibox, then the objects are returned")
     public void givenQueryWhenObjectsAreSearchedInProjectsOmniboxThenObjectsAreReturned() {
         assertThat(this.optionalElasticSearchClient.isPresent());
-        this.editingContextSearchService.findById(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()).ifPresent(this.editingContextIndexingService::index);
+        this.editingContextSearchService.findById(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()).ifPresent(this.indexUpdateService::updateIndex);
         // Wait for Elasticsearch's refresh to ensure the indexed documents can be queried.
         this.optionalElasticSearchClient.ifPresent(elasticSearchClient -> {
             try {
