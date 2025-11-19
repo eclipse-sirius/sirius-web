@@ -15,12 +15,11 @@ package org.eclipse.sirius.web.infrastructure.elasticsearch.services.api;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Indexes the content of an editing context.
+ * The default implementation that indexes the content of an editing context.
  *
  * @author gdaniel
  */
-public interface IEditingContextIndexingService {
+public interface IDefaultIndexUpdateService {
 
-    void index(IEditingContext editingContext);
-
+    void updateIndex(IEditingContext editingContext);
 }
