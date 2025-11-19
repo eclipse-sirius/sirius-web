@@ -44,8 +44,41 @@ test.describe('diagram - node creation', () => {
     const reactFlowXYPositionEntity2 = await entity2Node.getReactFlowXYPosition();
 
     const entityNode1Width = 150;
-    const nodeGap = 50;
+    const nodeGap = 25;
     expect(reactFlowXYPositionEntity2.y).toBe(reactFlowXYPositionEntity1.y);
     expect(reactFlowXYPositionEntity2.x).toBe(reactFlowXYPositionEntity1.x + entityNode1Width + nodeGap);
+  });
+
+  test('when trigger a node creation tool on a compartment, then all the nodes are properly placed', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('tool-createEntity4').click();
+    const entity4FirstNode = new PlaywrightNode(page, 'Entity4');
+
+    const reactFlowXYPositionEntity4First = await entity4FirstNode.getReactFlowXYPosition();
+    const reactFlowSizeEntity4First = await entity4FirstNode.getReactFlowSize();
+
+    const nodePadding = 8;
+    const headerHeight = 24;
+    expect(reactFlowXYPositionEntity4First.y).toBeGreaterThanOrEqual(nodePadding + headerHeight);
+    expect(reactFlowXYPositionEntity4First.y).toBeLessThanOrEqual(nodePadding + headerHeight + 1);
+    expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding);
+
+    // When creating a second one, it should place next to the first one
+    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('tool-createEntity4').first().click();
+    const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
+    const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition();
+    const nodeGap = 25;
+    expect(reactFlowXYPositionEntity4Second.y).toBe(reactFlowXYPositionEntity4First.y);
+    expect(reactFlowXYPositionEntity4Second.x).toBe(
+      reactFlowXYPositionEntity4First.x + reactFlowSizeEntity4First.width + nodeGap
+    );
   });
 });
