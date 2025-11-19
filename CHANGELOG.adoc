@@ -48,6 +48,7 @@ In a similar manner, `InvokeSingleClickOnDiagramElementToolInput` will now ask f
 Errors happening during the execution of the impact analysis are now displayed as additional messages in the impact analysis dialog.
 Note that the impact analysis dialog may contain error messages _and_ partial impacts on the model, if the underlying operation failed after having performed some changes on the model.
 - https://github.com/eclipse-sirius/sirius-web/issues/5918[#5918] [tree] Fix tree representations flickering when expanding/collapsing an item
+- https://github.com/eclipse-sirius/sirius-web/issues/5834[#5834] [diagram] Fix hidden edge handles when selected from the global selection
 
 
 === New Features
