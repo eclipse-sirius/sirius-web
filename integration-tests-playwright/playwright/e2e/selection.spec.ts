@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { expect, test } from '@playwright/test';
+import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
@@ -19,7 +20,9 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('selection', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
+      PlaywrightProject.FLOW_NATURE,
+    ]);
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
@@ -79,7 +82,7 @@ test.describe('selection', () => {
     await expect(node.nodeLocator).not.toContainClass('selected');
   });
 
-  test('the diagram can update its local selection with an explicit button click', async ({ page }) => {
+  test('the diagram can select a node from the global selection with an explicit button click', async ({ page }) => {
     const explorer = new PlaywrightExplorer(page);
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
@@ -92,6 +95,22 @@ test.describe('selection', () => {
 
     node = await new PlaywrightNode(page, 'CompositeProcessor1');
     await expect(node.nodeLocator).toContainClass('selected');
+  });
+
+  test('the diagram can select an edge from the global selection with an explicit button click', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    await explorer.expand('DataSource1');
+    await explorer.select('standard');
+    await page.getByTestId('diagram-reveal-selection').click();
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.isSelected();
+    await expect(page.locator('[data-testid^="connectionHandle"]')).toHaveCount(2);
+    await expect(page.locator('[data-testid^="connectionHandle"]').first()).toHaveCSS(
+      'background-color',
+      'rgb(0, 0, 0)'
+    );
   });
 
   test('the explorer can push its local selection to the diagram', async ({ page }) => {
@@ -116,7 +135,7 @@ test.describe('selection', () => {
     await explorer.expand('NewSystem');
     await explorer.select('CompositeProcessor1');
 
-    // The Details view is initialy opened, we should be able to "Show in Details"
+    // The Details view is initially opened, we should be able to "Show in Details"
     await explorer.explorerLocator.getByTestId(`CompositeProcessor1-more`).click();
     await expect(page.getByTestId(`push-selection-to-Details`)).toBeVisible();
     await page.getByTestId(`push-selection-to-Details`).click();
