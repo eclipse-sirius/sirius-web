@@ -128,7 +128,7 @@ export const DuplicateObjectModal = ({
           <ModelBrowserTreeView
             editingContextId={editingContextId}
             referenceKind={objectToDuplicateKind}
-            ownerId=""
+            ownerId={objectToDuplicateId}
             descriptionId="duplicate-target-browser"
             isContainment={false}
             markedItemIds={[]}
