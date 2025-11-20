@@ -23,6 +23,7 @@
 - [ADR-215] Add support for displaying data trees
 - [ADR-216] Lower the coupling between Palette and DiagramDescription
 - [ADR-217] Add support for drag'n'drop of multiple elements at once on diagrams
+- [ADR-218] Improve palette extension points
 
 
 === Deprecation warning
