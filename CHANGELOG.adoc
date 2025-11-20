@@ -234,6 +234,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - [ADR-206] Add support for importing documents with read-only permissions
 - [ADR-207] Make React contexts extensible
 - [ADR-208] Support edge type in edge style
+- [ADR-209] Add a way to customize the tree displayed to select the candidates in a Reference Widget
 
 
 === Deprecation warning
