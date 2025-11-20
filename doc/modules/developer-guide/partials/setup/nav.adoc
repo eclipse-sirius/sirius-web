@@ -1,0 +1,3 @@
+// Note: Cannot include an open block here.
+* xref:developer-guide:setup/requirements.adoc[]
+* xref:developer-guide:setup/instructions.adoc[]

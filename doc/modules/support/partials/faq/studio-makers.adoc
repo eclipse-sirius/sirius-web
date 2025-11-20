@@ -1,0 +1,47 @@
+= For Studio Makers
+
+== General
+
+.I want to allow end users to edit a node by editing its label in-line.
+[%collapsible]
+====
+Find the `Node Description` corresponding to the type of node. In its `Node Palette`, add an `Edit Label` tool. Fill in the appropriate `Expression`.
+====
+
+.In a xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representation], I would like to specify several labels for a `Node Description`
+[%collapsible]
+====
+{sw} only supports 1 label per `Node Description`.
+====
+
+
+== Integration
+
+.Can I integrate {sw} inside https://code.visualstudio.com/[Visual Studio Code]?
+[%collapsible]
+====
+Yes.
+====
+
+.Can I integrate {sw} inside https://theia-ide.org/[Eclipse Theia]?
+[%collapsible]
+====
+Yes.
+====
+
+== Migration
+
+.Can I migrate my Sirius Desktop modeler to {sw}?
+[%collapsible]
+====
+For the moment there is no automated means to migrate an existing Sirius Desktop modeler (_.odesign_ file specification) to {sw}.
+The main reason why is that {sw} does not yet have feature parity with Sirius Desktop. Moreover, custom code from your existing modeler may rely on Eclipse-specific facilities (UI through SWT/JFace, other Eclipse extensions, etc.).
+The underlying EMF metamodel however, may be used as the Data model for your {sw} modeler.
+====
+
+.Can I migrate my Graphiti-based modeler to {sw}?
+[%collapsible]
+====
+There is no automated means to migrate an existing modeler based on https://eclipse.dev/graphiti/[Eclipse Graphiti] to {sw}.
+The underlying EMF metamodel however, may be used as the Data model for your {sw} modeler.
+====
