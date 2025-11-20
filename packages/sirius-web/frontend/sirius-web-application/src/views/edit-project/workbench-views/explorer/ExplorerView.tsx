@@ -21,6 +21,7 @@ import {
 import {
   FilterBar,
   GQLGetTreePathVariables,
+  GQLTree,
   GQLTreeItem,
   TreeFilter,
   TreeToolBar,
@@ -80,6 +81,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       tree: null,
       selectedTreeItemIds: [],
       singleTreeItemSelected: null,
+      selectionPivotTreeItemId: null,
     });
 
     // If we are requested to reveal the global selection, we need to compute the tree path to expand
@@ -289,8 +291,77 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       );
     }
 
+    const computeSelectedElementsInRange = (
+      subtree: GQLTree | GQLTreeItem,
+      firstSelectionItemId: string,
+      secondSelectionItemId: string,
+      isSelecting: boolean = false,
+      accumulator: string[] = []
+    ): string[] => {
+      for (const element of subtree.children) {
+        const isRangeEndpoint = element.id === firstSelectionItemId || element.id === secondSelectionItemId;
+
+        // Toggle selection state when we hit a range endpoint
+        if (isRangeEndpoint) {
+          isSelecting = !isSelecting;
+        }
+
+        // Add current element if we're in selection mode
+        if (isSelecting || isRangeEndpoint) {
+          accumulator.push(element.id);
+        }
+
+        // Early return if we've completed the range
+        if (isRangeEndpoint && !isSelecting) {
+          return accumulator;
+        }
+
+        // Recurse into expanded children (DFS)
+        if (element.hasChildren && element.expanded) {
+          computeSelectedElementsInRange(
+            element,
+            firstSelectionItemId,
+            secondSelectionItemId,
+            isSelecting,
+            accumulator
+          );
+          // Early return if range was completed in children
+          if (
+            accumulator.length > 0 &&
+            (accumulator[accumulator.length - 1] === firstSelectionItemId ||
+              accumulator[accumulator.length - 1] === secondSelectionItemId)
+          ) {
+            return accumulator;
+          }
+        }
+      }
+
+      return accumulator;
+    };
+
     const onTreeItemClick = (event, item: GQLTreeItem) => {
-      if (event.ctrlKey || event.metaKey) {
+      if (event.shiftKey && state.selectionPivotTreeItemId !== null) {
+        // Shift or Shift+Ctrl: Range selection
+        event.stopPropagation();
+        if (state.selectionPivotTreeItemId && state.tree) {
+          const rangeSelection = computeSelectedElementsInRange(state.tree, state.selectionPivotTreeItemId, item.id);
+
+          // Shift+Ctrl: Add to existing selection | Shift: Replace selection
+          const shouldMerge = event.ctrlKey || event.metaKey;
+          const finalSelection = shouldMerge
+            ? [...state.selectedTreeItemIds, ...rangeSelection.filter((id) => !state.selectedTreeItemIds.includes(id))]
+            : rangeSelection;
+
+          // Update global and local selection
+          setSelection({ entries: finalSelection.map<SelectionEntry>((id) => ({ id })) });
+          setState((prevState) => ({
+            ...prevState,
+            selectedTreeItemIds: finalSelection,
+            singleTreeItemSelected: null,
+          }));
+        }
+      } else if (event.ctrlKey || event.metaKey) {
+        // Ctrl: Toggle single item selection
         event.stopPropagation();
         // Update the global selection
         const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
@@ -311,12 +382,23 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         } else {
           const { id } = item;
           const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
-          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+          setState((prevState) => ({
+            ...prevState,
+            selectedTreeItemIds: newSelectedTreeItemIds,
+            selectionPivotTreeItemId: id,
+          }));
         }
         setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
       } else {
+        // Normal click: Select single item
         const { id } = item;
-        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [id], singleTreeItemSelected: item }));
+        setState((prevState) => ({
+          ...prevState,
+          selectedTreeItemIds: [id],
+          singleTreeItemSelected: item,
+          // Ctrl also change the pivot point
+          selectionPivotTreeItemId: id,
+        }));
         setSelection({ entries: [{ id }] });
       }
     };
