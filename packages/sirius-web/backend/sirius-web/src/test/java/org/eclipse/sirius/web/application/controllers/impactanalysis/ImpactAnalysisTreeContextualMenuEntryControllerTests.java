@@ -33,6 +33,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.TreeImpactAnalysisReportQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -73,6 +74,9 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IMessageService messageService;
 
     @BeforeEach
     public void beforeEach() {
@@ -140,4 +144,52 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
             .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain explorer representation with a tool that fails, when an impact analysis report for the tool tool is queried, then the report contains an error message")
+    public void givenADomainExplorerRepresentationWithAToolThatFailsWhenAnImpactAnalysisReportForTheToolIsQueriedThenTheReportContainsTheErrorMessage() {
+        List<String> expandedIds = List.of(
+                StudioIdentifiers.DOMAIN_DOCUMENT.toString(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString());
+        var representationId = this.representationIdBuilder.buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), expandedIds, List.of());
+        var input = new ExplorerEventInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                representationId
+        );
+
+        var flux = this.treeEventSubscriptionRunner.run(input);
+
+        Runnable invokeImpactAnalysisReport = () -> {
+            Map<String, Object> invokeImpactAnalysisReportVariables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    "representationId", representationId,
+                    "treeItemId", StudioIdentifiers.ROOT_ENTITY_OBJECT,
+                    "menuEntryId", "failingNodeToolId"
+            );
+            String result = this.treeImpactAnalysisReportQueryRunner.run(invokeImpactAnalysisReportVariables);
+
+            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
+            assertThat(nbElementDeleted).isEqualTo(0);
+            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
+            assertThat(nbElementCreated).isEqualTo(0);
+            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
+            assertThat(nbElementModified).isEqualTo(0);
+            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
+            assertThat(additionalReports).hasSize(1);
+            assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
+
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+
+            assertThat(dataTree.id()).isEqualTo("impact_tree");
+            assertThat(dataTree.nodes()).isEmpty();
+        };
+
+        StepVerifier.create(flux)
+                .expectNextMatches(TreeRefreshedEventPayload.class::isInstance)
+                .then(invokeImpactAnalysisReport)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

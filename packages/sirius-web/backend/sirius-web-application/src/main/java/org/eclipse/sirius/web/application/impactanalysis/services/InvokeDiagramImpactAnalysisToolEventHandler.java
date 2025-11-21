@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.impactanalysis.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,13 +30,12 @@ import org.eclipse.sirius.components.collaborative.dto.InvokeImpactAnalysisSucce
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.datatree.DataTree;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.application.impactanalysis.services.api.IDiagramImpactAnalysisReportProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,8 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
     private final Counter counter;
 
-    public InvokeDiagramImpactAnalysisToolEventHandler(IResourceLoader resourceLoader, IResourceToDocumentService resourceToDocumentService, IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService, ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
+    public InvokeDiagramImpactAnalysisToolEventHandler(IEditingContextSnapshotService editingContextSnapshotService, IMessageService messageService,
+            ISingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler, IDiagramImpactAnalysisReportProvider diagramImpactAnalysisReportProvider, MeterRegistry meterRegistry) {
         this.editingContextSnapshotService = Objects.requireNonNull(editingContextSnapshotService);
         this.messageService = Objects.requireNonNull(messageService);
         this.singleClickOnOneDiagramElementHandler = Objects.requireNonNull(singleClickOnOneDiagramElementHandler);
@@ -100,25 +101,25 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
                 var diff = siriusEditingContext.getChangeRecorder().summarize();
                 siriusEditingContext.getChangeRecorder().endRecording();
 
-                if (toolExecutionResult instanceof Success success) {
-                    Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.diagramImpactAnalysisReportProvider.getReport(editingContext, diff, success);
-                    if (optionalImpactAnalysisReport.isPresent()) {
-                        payload = new InvokeImpactAnalysisSuccessPayload(diagramInput.id(), optionalImpactAnalysisReport.get(), success.getMessages());
-                        changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
-                    } else {
-                        payload = new ErrorPayload(diagramInput.id(), this.messageService.unexpectedError());
+                Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.diagramImpactAnalysisReportProvider.getReport(editingContext, diff, toolExecutionResult);
+                if (optionalImpactAnalysisReport.isPresent()) {
+                    List<Message> messages = List.of();
+                    if (toolExecutionResult instanceof Success success) {
+                        messages = success.getMessages();
                     }
-                } else if (toolExecutionResult instanceof Failure failure) {
-                    payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
+                    payload = new InvokeImpactAnalysisSuccessPayload(diagramInput.id(), optionalImpactAnalysisReport.get(), messages);
+                } else {
+                    payload = new InvokeImpactAnalysisSuccessPayload(diagramInput.id(),
+                            new ImpactAnalysisReport(0, 0, 0, List.of(this.messageService.unexpectedError()), new DataTree("impact_tree", List.of())), List.of());
                 }
                 this.editingContextSnapshotService.restoreSnapshot(siriusEditingContext, editingContextSnapshot.get());
             } else {
-                payload = new ErrorPayload(diagramInput.id(), this.messageService.unexpectedError());
+                payload = new InvokeImpactAnalysisSuccessPayload(diagramInput.id(),
+                        new ImpactAnalysisReport(0, 0, 0, List.of(this.messageService.unexpectedError()), new DataTree("impact_tree", List.of())), List.of());
             }
         }
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
-
 }
