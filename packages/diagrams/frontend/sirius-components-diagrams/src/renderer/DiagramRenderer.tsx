@@ -29,6 +29,7 @@ import {
   applyNodeChanges,
   useReactFlow,
   useStoreApi,
+  useUpdateNodeInternals,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
@@ -103,12 +104,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
   const { setSelection } = useSelection();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
-  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNode, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
@@ -121,8 +123,16 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       diagramDescription,
       store.getState()
     );
+
+    const revealedNodes: Node<NodeData>[] = [];
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
       const currentNode = getNode(convertedNode.id);
+      if (
+        (currentNode && convertedNode.hidden !== currentNode.hidden && convertedNode.hidden === false) ||
+        revealedNodes.some((revealNode) => revealNode.id === convertedNode.parentId) // we're looking for grandchild too
+      ) {
+        revealedNodes.push(convertedNode);
+      }
       if (
         currentNode &&
         (convertedNode.position.x !== currentNode.position.x ||
@@ -137,6 +147,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         return currentNode;
       } else {
         return convertedNode;
+      }
+    });
+    const revealedEdges: Edge<EdgeData>[] = [];
+    convertedDiagram.edges.forEach((convertedEdge) => {
+      const currentEdge = getEdge(convertedEdge.id);
+      if (currentEdge && convertedEdge.hidden !== currentEdge.hidden && convertedEdge.hidden === false) {
+        revealedEdges.push(convertedEdge);
       }
     });
 
@@ -220,7 +237,17 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
           setEdges(laidOutDiagram.edges);
           setNodes(laidOutDiagram.nodes);
-
+          const sourceIdsToUpdateFromNode = revealedNodes.reduce((acc: string[], revealedNode: Node<NodeData>) => {
+            const linkedSources = laidOutDiagram.edges
+              .filter((edge) => edge.target === revealedNode.id || edge.source === revealedNode.id)
+              .flatMap((edge) => [edge.source, edge.target]);
+            return [...acc, ...linkedSources];
+          }, []);
+          const sourceIdsToUpdateFromEdge = revealedEdges.flatMap((revealedEdge) => [
+            revealedEdge.source,
+            revealedEdge.target,
+          ]);
+          updateNodeInternals([...sourceIdsToUpdateFromNode, ...sourceIdsToUpdateFromEdge]);
           if (!readOnly) {
             synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
           }
