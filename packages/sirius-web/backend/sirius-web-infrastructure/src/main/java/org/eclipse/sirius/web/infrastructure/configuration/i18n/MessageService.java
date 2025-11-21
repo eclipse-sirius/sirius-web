@@ -152,7 +152,7 @@ public class MessageService implements IMessageService {
     public String relatedElementsViewCurrentTitle() {
         return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_CURRENT_TITLE");
     }
-    
+
 
     @Override
     public String relatedElementsViewCurrentCategoryParent() {
@@ -251,5 +251,10 @@ public class MessageService implements IMessageService {
     @Override
     public String coreProperties() {
         return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
+    }
+
+    @Override
+    public String operationExecutionFailed(String failureMessage) {
+        return this.messageSourceAccessor.getMessage("OPERATION_EXECUTION_FAILED", new Object[] {failureMessage});
     }
 }

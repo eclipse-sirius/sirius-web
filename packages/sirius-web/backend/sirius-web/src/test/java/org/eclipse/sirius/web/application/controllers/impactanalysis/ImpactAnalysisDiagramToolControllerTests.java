@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.datatree.DataTreeNode;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -114,6 +115,9 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IMessageService messageService;
 
     @BeforeEach
     public void beforeEach() {
@@ -210,6 +214,55 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
                     .get()
                     .returns("c", dataTreeNode -> dataTreeNode.label().toString());
             });
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(invokeImpactAnalysisReport)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with a tool that fails, when asking for impact analysis on the tool, then the report contains an error message")
+    public void givenDiagramWithToolThatFailsWhenAskingForImpactAnalysisOnToolThenReportContainsErrorMessage() {
+        var flux = this.givenSubscriptionToModelOperationDiagram();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+        });
+
+        Runnable invokeImpactAnalysisReport = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", diagramId.get(),
+                    "toolId", "failingNodeToolId",
+                    "diagramElementId", diagramId.get(),
+                    "variables", List.of());
+            var result = this.graphQLRequestor.execute(GET_IMPACT_ANALYSIS_REPORT, variables);
+
+            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
+            assertThat(nbElementDeleted).isEqualTo(0);
+
+            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
+            assertThat(nbElementCreated).isEqualTo(0);
+
+            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
+            assertThat(nbElementModified).isEqualTo(0);
+
+            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.additionalReports[*]");
+            assertThat(additionalReports).hasSize(1);
+            assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
+
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
+
+            assertThat(dataTree.id()).isEqualTo("impact_tree");
+            assertThat(dataTree.nodes()).isEmpty();
+
         };
 
         StepVerifier.create(flux)
