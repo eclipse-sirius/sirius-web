@@ -67,6 +67,8 @@ public final class Edge implements IDiagramElement {
 
     private boolean centerLabelEditable;
 
+    private boolean deletable;
+
     private Set<String> customizedStyleProperties;
 
     private Edge() {
@@ -145,6 +147,10 @@ public final class Edge implements IDiagramElement {
         return this.centerLabelEditable;
     }
 
+    public boolean isDeletable() {
+        return this.deletable;
+    }
+
     public Set<String> getCustomizedStyleProperties() {
         return this.customizedStyleProperties;
     }
@@ -194,6 +200,8 @@ public final class Edge implements IDiagramElement {
 
         private boolean centerLabelEditable;
 
+        private boolean deletable;
+
         private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
@@ -216,6 +224,7 @@ public final class Edge implements IDiagramElement {
             this.state = edge.getState();
             this.style = edge.getStyle();
             this.centerLabelEditable = edge.isCenterLabelEditable();
+            this.deletable = edge.isDeletable();
             this.customizedStyleProperties = edge.getCustomizedStyleProperties();
         }
 
@@ -289,6 +298,11 @@ public final class Edge implements IDiagramElement {
             return this;
         }
 
+        public Builder deletable(boolean deletable) {
+            this.deletable = deletable;
+            return this;
+        }
+
         public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
             this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
             return this;
@@ -311,6 +325,7 @@ public final class Edge implements IDiagramElement {
             edge.state = Objects.requireNonNull(this.state);
             edge.style = Objects.requireNonNull(this.style);
             edge.centerLabelEditable = this.centerLabelEditable;
+            edge.deletable = this.deletable;
             edge.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return edge;
         }

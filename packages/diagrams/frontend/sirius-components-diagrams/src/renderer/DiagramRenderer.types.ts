@@ -49,6 +49,7 @@ export interface NodeData extends Record<string, unknown> {
   isBorderNode: boolean;
   borderNodePosition: BorderNodePosition | null;
   labelEditable: boolean;
+  deletable: boolean;
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
@@ -92,6 +93,7 @@ export interface EdgeData extends Record<string, unknown> {
   label: EdgeLabel | null;
   faded: boolean;
   centerLabelEditable: boolean;
+  deletable: boolean;
   bendingPoints: XYPosition[] | null;
   edgePath?: string;
   isHovered: boolean;

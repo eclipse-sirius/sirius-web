@@ -161,6 +161,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .state(edgeElementProps.getState())
                     .modifiers(edgeElementProps.getModifiers())
                     .centerLabelEditable(edgeElementProps.isCenterLabelEditable())
+                    .deletable(edgeElementProps.isDeletable())
                     .customizedStyleProperties(edgeElementProps.getCustomizedStyleProperties())
                     .build();
         }

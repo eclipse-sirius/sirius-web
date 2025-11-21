@@ -34,8 +34,7 @@
 
 === Improvements
 
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
 
 == 2025.12.0 (work in progress)
 

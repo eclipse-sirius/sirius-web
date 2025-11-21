@@ -40,6 +40,7 @@ fragment edgeFragment on Edge {
     edgeType
   }
   centerLabelEditable
+  deletable
   customizedStyleProperties
 }
 `;
