@@ -29,14 +29,14 @@ export const OmniboxProvider = ({
 }: OmniboxProviderProps) => {
   useEffect(() => {
     const keyDownEventListener = (event: KeyboardEvent) => {
-      if (event.key === 'k' && (event.ctrlKey || event.metaKey)) {
+      if (event.code === 'KeyK' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
         if (open) {
           onClose();
         } else {
           onOpen();
         }
-      } else if (event.key === 'Esc') {
+      } else if (event.code === 'Escape') {
         event.preventDefault();
         onClose();
       }

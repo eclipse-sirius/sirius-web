@@ -28,12 +28,12 @@ export const OmniboxCommandList = forwardRef(
     ref: React.ForwardedRef<HTMLUListElement>
   ) => {
     const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-      if (event.key === 'ArrowDown') {
+      if (event.code === 'ArrowDown') {
         const nextListItemButton = event.currentTarget.nextSibling;
         if (nextListItemButton instanceof HTMLElement) {
           nextListItemButton.focus();
         }
-      } else if (event.key === 'ArrowUp') {
+      } else if (event.code === 'ArrowUp') {
         const previousListItemButton = event.currentTarget.previousSibling;
         if (previousListItemButton instanceof HTMLElement) {
           previousListItemButton.focus();

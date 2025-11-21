@@ -195,7 +195,7 @@ const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
     };
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-      if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
+      if (event.code === 'Enter' && (event.ctrlKey || event.metaKey) && !disabled) {
         onEvaluateExpression(expression);
       }
     };
