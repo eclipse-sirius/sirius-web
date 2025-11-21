@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreeFilterProvider
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
@@ -47,7 +48,7 @@ public class StudioExplorerTreeFilterProvider implements ITreeFilterProvider {
     }
 
     @Override
-    public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId) {
+    public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription) {
         var isStudio = new UUIDParser().parse(editingContextId)
                 .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
                 .map(ProjectSemanticData::getProject)
@@ -59,7 +60,7 @@ public class StudioExplorerTreeFilterProvider implements ITreeFilterProvider {
                 .orElse(false);
 
         var filters = new ArrayList<TreeFilter>();
-        if (isStudio) {
+        if (isStudio && ExplorerDescriptionProvider.DESCRIPTION_ID.equals(treeDescription.getId())) {
             filters.add(new TreeFilter(HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID, "Hide In-Memory Studio Color Palettes", true));
         }
 

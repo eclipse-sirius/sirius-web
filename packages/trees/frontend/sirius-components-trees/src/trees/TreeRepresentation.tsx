@@ -89,7 +89,6 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
           <TreeView
             editingContextId={editingContextId}
             readOnly={readOnly}
-            treeId={representationId}
             tree={state.tree}
             textToFilter={''}
             textToHighlight={''}
@@ -105,6 +104,7 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
             }
             expanded={state.expanded}
             maxDepth={state.maxDepth}
+            data-testid={representationId}
           />
         </div>
       );

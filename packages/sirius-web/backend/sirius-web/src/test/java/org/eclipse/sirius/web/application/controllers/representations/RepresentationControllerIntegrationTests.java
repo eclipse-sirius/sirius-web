@@ -127,7 +127,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a transient representation id, when a query is performed, then the representation metadata are returned")
     public void givenTransientRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
-        String initialExplorerId = "explorer://?expandedIds=[]&activeFilterIds=[]";
+        String initialExplorerId = "explorer://?treeDescriptionId=" + ExplorerDescriptionProvider.DESCRIPTION_ID + "&expandedIds=[]&activeFilterIds=[]";
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
                 "representationId", initialExplorerId
@@ -189,9 +189,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given an editing context, when the representation metadata for the Explorer view is requested, then it is returned")
     public void givenEditingContextWhenTheExplorerRepresentationMetadataIsRequestedThenItIsReturned() {
+        String initialExplorerId = "explorer://?treeDescriptionId=" + ExplorerDescriptionProvider.DESCRIPTION_ID + "&expandedIds=[]&activeFilterIds=[]";
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
-                "representationIds", List.of(ExplorerDescriptionProvider.PREFIX)
+                "representationIds", List.of(initialExplorerId)
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
 
@@ -211,7 +212,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(count).isEqualTo(1);
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
-        assertThat(representationIds).containsExactly(ExplorerDescriptionProvider.PREFIX);
+        assertThat(representationIds).containsExactly(initialExplorerId);
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.label");
         assertThat(label).isEqualTo(ExplorerDescriptionProvider.REPRESENTATION_NAME);

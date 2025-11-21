@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.application.views.explorer.ExplorerEventProcessorFactory;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerLabelService;
@@ -44,8 +45,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExplorerDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
-
-    public static final String TREE_DESCRIPTION_ID_PARAMETER = "treeDescriptionId";
 
     public static final String DESCRIPTION_ID = "explorer_tree_description";
 
@@ -130,7 +129,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return PREFIX + "?" + TREE_DESCRIPTION_ID_PARAMETER + "=" + URLEncoder.encode(DESCRIPTION_ID, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return PREFIX + "?" + ExplorerEventProcessorFactory.TREE_DESCRIPTION_ID_PARAMETER + "=" + URLEncoder.encode(DESCRIPTION_ID, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
     }
 
     private String getTreeItemId(VariableManager variableManager) {

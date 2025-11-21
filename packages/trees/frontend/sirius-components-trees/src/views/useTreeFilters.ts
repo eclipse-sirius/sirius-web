@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,22 +17,22 @@ import { useEffect } from 'react';
 import {
   GQLGetAllTreeFiltersData,
   GQLGetAllTreeFiltersVariables,
+  GQLRepresentationDescription,
+  GQLTreeDescription,
   GQLTreeFilter,
   UseTreeFilterValue,
 } from './useTreeFilters.types';
 
 const getAllTreeFiltersQuery = gql`
-  query getAllTreeFilters($editingContextId: ID!, $treeId: ID!) {
+  query getAllTreeFilters($editingContextId: ID!, $representationDescriptionId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $treeId) {
-          description {
-            ... on TreeDescription {
-              filters {
-                id
-                label
-                defaultState
-              }
+        representationDescription(representationDescriptionId: $representationDescriptionId) {
+          ... on TreeDescription {
+            filters {
+              id
+              label
+              defaultState
             }
           }
         }
@@ -41,14 +41,24 @@ const getAllTreeFiltersQuery = gql`
   }
 `;
 
-export const useTreeFilters = (editingContextId: string, treeId: string): UseTreeFilterValue => {
+const isTreeDescription = (
+  representationDescription: GQLRepresentationDescription | null | undefined
+): representationDescription is GQLTreeDescription => {
+  return representationDescription?.__typename === 'TreeDescription';
+};
+
+export const useTreeFilters = (
+  editingContextId: string,
+  representationDescriptionId: string | null
+): UseTreeFilterValue => {
   const { loading, data, error } = useQuery<GQLGetAllTreeFiltersData, GQLGetAllTreeFiltersVariables>(
     getAllTreeFiltersQuery,
     {
       variables: {
         editingContextId,
-        treeId,
+        representationDescriptionId,
       },
+      skip: representationDescriptionId === null,
     }
   );
 
@@ -61,7 +71,11 @@ export const useTreeFilters = (editingContextId: string, treeId: string): UseTre
     }
   }, [error]);
 
-  const treeFilters: GQLTreeFilter[] = data?.viewer.editingContext.representation.description.filters || [];
+  const representationDescription: GQLRepresentationDescription | null | undefined =
+    data?.viewer.editingContext.representationDescription;
+  const treeFilters: GQLTreeFilter[] = isTreeDescription(representationDescription)
+    ? representationDescription.filters
+    : [];
 
   return {
     treeFilters,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,13 +45,11 @@ public class TreeDescriptionFiltersDataFetcher implements IDataFetcherWithFieldC
     public List<TreeFilter> get(DataFetchingEnvironment environment) throws Exception {
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
-        String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
-
         TreeDescription treeDescription = environment.getSource();
 
-        if (editingContextId != null && representationId != null) {
+        if (editingContextId != null) {
             return this.treeFiltersProviders.stream()
-                    .map(treeFilterProvider -> treeFilterProvider.get(editingContextId, treeDescription, representationId))
+                    .map(treeFilterProvider -> treeFilterProvider.get(editingContextId, treeDescription))
                     .flatMap(Collection::stream)
                     .toList();
         }

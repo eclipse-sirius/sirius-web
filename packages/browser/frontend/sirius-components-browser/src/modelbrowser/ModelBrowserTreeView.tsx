@@ -128,7 +128,6 @@ export const ModelBrowserTreeView = ({
             <TreeView
               editingContextId={editingContextId}
               readOnly={true}
-              treeId={treeId}
               tree={tree}
               textToFilter={state.filterBarText}
               textToHighlight={state.filterBarText}
@@ -140,6 +139,7 @@ export const ModelBrowserTreeView = ({
               onTreeItemClick={onTreeItemClick}
               selectTreeItems={() => {}}
               selectedTreeItemIds={selectedTreeItemIds}
+              data-testid={treeId}
             />
           ) : null}
         </div>

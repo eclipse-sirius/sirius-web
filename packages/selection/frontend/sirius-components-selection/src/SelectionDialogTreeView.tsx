@@ -68,7 +68,6 @@ export const SelectionDialogTreeView = ({
         <TreeView
           editingContextId={editingContextId}
           readOnly={true}
-          treeId={treeId}
           tree={tree}
           textToFilter={''}
           textToHighlight={''}
@@ -79,6 +78,7 @@ export const SelectionDialogTreeView = ({
           onTreeItemClick={onTreeItemClick}
           selectTreeItems={() => {}}
           selectedTreeItemIds={selectedTreeItemIds}
+          data-testid={treeId}
         />
       ) : null}
     </div>
