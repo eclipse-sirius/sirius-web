@@ -90,7 +90,7 @@ public class FormVariableViewPreEditingContextProcessor implements IEditingConte
     private FormDescription createFormDescription() {
         TreeDescription treeDescription = new TreeDescriptionBuilder()
                 .name("Tree")
-                .childrenExpression("aql:self.eContents()}")
+                .childrenExpression("aql:self.eContents()")
                 .labelExpression("Tree")
                 .treeItemLabelExpression("aql:self.name")
                 .isCheckableExpression("aql:true")
