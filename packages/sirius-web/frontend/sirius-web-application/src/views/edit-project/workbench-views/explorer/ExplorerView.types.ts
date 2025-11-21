@@ -23,6 +23,7 @@ export interface ExplorerViewState {
   maxDepth: { [key: string]: number };
   tree: GQLTree | null;
   selectedTreeItemIds: string[];
+  selectionPivotTreeItemId: string | null;
   singleTreeItemSelected: GQLTreeItem | null;
 }
 
