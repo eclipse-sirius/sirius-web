@@ -136,6 +136,35 @@ test.describe('edge', () => {
       { timeout: 2000 }
     );
   });
+
+  test('when a target node is revealed, then edge path is preserved', async ({ page }) => {
+    const compositeProcessor = new PlaywrightNode(page, 'CompositeProcessor1');
+    const dataSource = new PlaywrightNode(page, 'DataSource1');
+    const edge = new PlaywrightEdge(page);
+    await compositeProcessor.click();
+    await compositeProcessor.move({ x: 150, y: 50 });
+
+    await expect(edge.edgeLocator).toBeAttached();
+
+    await compositeProcessor.openPalette();
+    await page.getByTestId('toolSection-Show/Hide').click();
+    await page.getByTestId('tool-Hide').click();
+
+    await expect(edge.edgeLocator).not.toBeAttached();
+    await dataSource.click();
+    await dataSource.move({ x: 10, y: 20 });
+
+    await page.getByTestId('reveal-hidden-elements').click();
+    await expect(edge.edgeLocator).toBeAttached();
+
+    const edgePathDBefore = await edge.getEdgePath();
+
+    await dataSource.move({ x: 10, y: 20 });
+
+    const edgePathAfter = await edge.getEdgePath();
+
+    expect(edgePathDBefore).not.toBe(edgePathAfter);
+  });
 });
 
 test.describe('edge', () => {
