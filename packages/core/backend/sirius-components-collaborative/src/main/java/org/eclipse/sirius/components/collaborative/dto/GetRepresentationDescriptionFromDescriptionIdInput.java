@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.api;
+package org.eclipse.sirius.components.collaborative.dto;
 
-import java.util.List;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Interface allowing to provide new tree filters.
+ * Used to retrieve a representation description with its description id.
  *
- * @author arichard
+ * @author frouene
  */
-public interface ITreeFilterProvider {
+public record GetRepresentationDescriptionFromDescriptionIdInput(UUID id, String editingContextId, String representationDescriptionId) implements IInput {
 
-    List<TreeFilter> get(String editingContextId, TreeDescription treeDescription);
 }

@@ -17,7 +17,6 @@ import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
 export interface TreeViewProps {
   editingContextId: string;
   readOnly: boolean;
-  treeId: string;
   tree: GQLTree;
   textToHighlight: string | null;
   textToFilter: string | null;
@@ -29,6 +28,7 @@ export interface TreeViewProps {
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
   selectTreeItems: (selectedTreeItemIds: string[]) => void;
   selectedTreeItemIds: string[];
+  'data-testid'?: string;
 }
 
 export interface TreeConverter {

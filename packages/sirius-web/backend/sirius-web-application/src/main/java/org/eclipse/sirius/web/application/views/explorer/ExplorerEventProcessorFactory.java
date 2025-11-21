@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 @Service
 public class ExplorerEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
+    public static final String TREE_DESCRIPTION_ID_PARAMETER = "treeDescriptionId";
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final ITreeService treeService;
@@ -71,7 +73,7 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
         Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
-        var treeDescriptionId = parameters.get("treeDescriptionId").get(0);
+        var treeDescriptionId = parameters.get(TREE_DESCRIPTION_ID_PARAMETER).get(0);
         Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
                 .findById(editingContext, treeDescriptionId)
                 .filter(TreeDescription.class::isInstance)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,17 +28,15 @@ import org.springframework.stereotype.Service;
 public class TreeFiltersQueryRunner implements IQueryRunner {
 
     private static final String TREE_FILTERS_QUERY = """
-            query getFilters($editingContextId: ID!, $representationId: ID!) {
+            query getAllTreeFilters($editingContextId: ID!, $representationDescriptionId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $representationId) {
-                    description {
-                      ... on TreeDescription {
-                        filters {
-                          id
-                          label
-                          defaultState
-                        }
+                  representationDescription(representationDescriptionId: $representationDescriptionId) {
+                    ... on TreeDescription {
+                      filters {
+                        id
+                        label
+                        defaultState
                       }
                     }
                   }

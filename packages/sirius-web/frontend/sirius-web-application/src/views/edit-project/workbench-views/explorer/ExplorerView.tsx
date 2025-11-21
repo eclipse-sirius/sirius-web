@@ -143,7 +143,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       }
     }, [explorerDescriptions]);
 
-    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+    const { loading, treeFilters } = useTreeFilters(editingContextId, state.activeTreeDescriptionId || null);
 
     useEffect(() => {
       if (!loading) {
@@ -369,26 +369,24 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           }>
           {filterBar}
           <div className={styles.treeContent}>
-            {state.tree !== null ? (
-              <TreeView
-                editingContextId={editingContextId}
-                readOnly={readOnly}
-                treeId={'explorer://'}
-                tree={state.tree}
-                textToHighlight={state.filterBarText}
-                textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-                onExpandedElementChange={onExpandedElementChange}
-                expanded={state.expanded[state.activeTreeDescriptionId]}
-                maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
-                onTreeItemClick={onTreeItemClick}
-                selectTreeItems={(selectedTreeItemIds: string[]) =>
-                  setState((prevState) => {
-                    return { ...prevState, selectedTreeItemIds };
-                  })
-                }
-                selectedTreeItemIds={state.selectedTreeItemIds}
-              />
-            ) : null}
+            <TreeView
+              editingContextId={editingContextId}
+              readOnly={readOnly}
+              tree={state.tree}
+              textToHighlight={state.filterBarText}
+              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+              onExpandedElementChange={onExpandedElementChange}
+              expanded={state.expanded[state.activeTreeDescriptionId]}
+              maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
+              onTreeItemClick={onTreeItemClick}
+              selectTreeItems={(selectedTreeItemIds: string[]) =>
+                setState((prevState) => {
+                  return { ...prevState, selectedTreeItemIds };
+                })
+              }
+              selectedTreeItemIds={state.selectedTreeItemIds}
+              data-testid="explorer://"
+            />
           </div>
         </DuplicateObjectKeyboardShortcut>
       </div>

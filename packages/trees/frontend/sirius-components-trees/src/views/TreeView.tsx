@@ -19,7 +19,6 @@ export const TreeView = ({
   editingContextId,
   readOnly,
   tree,
-  treeId,
   textToHighlight,
   textToFilter,
   markedItemIds = [],
@@ -30,6 +29,7 @@ export const TreeView = ({
   onTreeItemClick,
   selectTreeItems,
   selectedTreeItemIds,
+  'data-testid': dataTestId,
 }: TreeViewProps) => {
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
 
@@ -39,7 +39,7 @@ export const TreeView = ({
   });
 
   return (
-    <div data-testid={treeId}>
+    <div data-testid={dataTestId}>
       <Tree
         editingContextId={editingContextId}
         tree={convertedTree}

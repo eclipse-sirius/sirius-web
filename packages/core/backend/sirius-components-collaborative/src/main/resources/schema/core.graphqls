@@ -17,6 +17,7 @@ type EditingContext {
   domains(rootDomainsOnly: Boolean!): [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
+  representationDescription(representationDescriptionId: ID!): RepresentationDescription
   rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
   childCreationDescriptions(containerId: ID!, referenceKind: String): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
