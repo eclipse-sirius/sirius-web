@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, XYPosition, InternalNode } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -20,6 +20,7 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
@@ -28,6 +29,7 @@ import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertBorderNodePosition } from './convertBorderNodes';
 import { isListLayoutStrategy } from './convertDiagram';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
+import { NodeLookup } from '@xyflow/system';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -36,7 +38,9 @@ const toIconLabelNode = (
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+
+  previousNode: InternalNode<Node<NodeData>> | undefined
 ): Node<IconLabelNodeData> => {
   const {
     targetObjectId,
@@ -130,10 +134,18 @@ const toIconLabelNode = (
     node.width = data.defaultWidth ?? defaultWidth;
   }
   if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
-    node.measured = {
-      height: gqlNodeLayoutData.size.height,
-      width: gqlNodeLayoutData.size.width,
-    };
+    if (
+      !previousNode ||
+      previousNode.position.x !== node.position.x ||
+      previousNode.position.y !== node.position.y ||
+      previousNode.width !== node.width ||
+      previousNode.height !== node.height
+    ) {
+      node.measured = {
+        height: gqlNodeLayoutData.size.height,
+        width: gqlNodeLayoutData.size.width,
+      };
+    }
   }
   return node;
 };
@@ -152,11 +164,14 @@ export class IconLabelNodeConverter implements INodeConverter {
     isBorderNode: boolean,
     nodes: Node[],
     _diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+      nodes.push(
+        toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, nodeLookup.get(gqlNode.id))
+      );
     }
   }
 }

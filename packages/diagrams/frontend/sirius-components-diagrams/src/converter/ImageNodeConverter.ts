@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, XYPosition, InternalNode } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -24,6 +24,8 @@ import { convertBorderNodePosition } from './convertBorderNodes';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
+import { NodeLookup } from '@xyflow/system';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -33,7 +35,9 @@ const toImageNode = (
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
-  gqlEdges: GQLEdge[]
+  gqlEdges: GQLEdge[],
+  _previousNode: InternalNode<Node<NodeData>> | undefined,
+  dirty: boolean
 ): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
@@ -142,10 +146,12 @@ const toImageNode = (
     node.width = data.defaultWidth ?? defaultWidth;
   }
   if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
-    node.measured = {
-      height: gqlNodeLayoutData.size.height,
-      width: gqlNodeLayoutData.size.width,
-    };
+    if (!dirty) {
+      node.measured = {
+        height: gqlNodeLayoutData.size.height,
+        width: gqlNodeLayoutData.size.width,
+      };
+    }
   }
   return node;
 };
@@ -164,11 +170,24 @@ export class ImageNodeConverter implements INodeConverter {
     isBorderNode: boolean,
     nodes: Node[],
     diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+    dirty: boolean
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(
+        toImageNode(
+          gqlDiagram,
+          gqlNode,
+          parentNode,
+          nodeDescription,
+          isBorderNode,
+          gqlEdges,
+          nodeLookup.get(gqlNode.id),
+          dirty
+        )
+      );
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -186,7 +205,9 @@ export class ImageNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      borderNodeDescriptions
+      borderNodeDescriptions,
+      nodeLookup,
+      dirty
     );
     convertEngine.convertNodes(
       gqlDiagram,
@@ -194,7 +215,9 @@ export class ImageNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      childNodeDescriptions
+      childNodeDescriptions,
+      nodeLookup,
+      dirty
     );
   }
 }

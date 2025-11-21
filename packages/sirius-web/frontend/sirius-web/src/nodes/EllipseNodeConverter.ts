@@ -23,6 +23,7 @@ import {
   GQLViewModifier,
   IConvertEngine,
   INodeConverter,
+  NodeData,
   convertBorderNodePosition,
   convertHandles,
   convertInsideLabel,
@@ -32,7 +33,8 @@ import {
   defaultWidth,
   isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, XYPosition, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -43,7 +45,8 @@ const toEllipseNode = (
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
-  gqlEdges: GQLEdge[]
+  gqlEdges: GQLEdge[],
+  previousNode: InternalNode<Node<NodeData>> | undefined
 ): Node<EllipseNodeData> => {
   const {
     targetObjectId,
@@ -150,10 +153,18 @@ const toEllipseNode = (
     node.width = data.defaultWidth ?? defaultWidth;
   }
   if (nodeLayoutData?.size.height && nodeLayoutData?.size.width) {
-    node.measured = {
-      height: nodeLayoutData.size.height,
-      width: nodeLayoutData.size.width,
-    };
+    if (
+      !previousNode ||
+      previousNode.position.x !== node.position.x ||
+      previousNode.position.y !== node.position.y ||
+      previousNode.width !== node.width ||
+      previousNode.height !== node.height
+    ) {
+      node.measured = {
+        height: nodeLayoutData.size.height,
+        width: nodeLayoutData.size.width,
+      };
+    }
   }
   return node;
 };
@@ -172,11 +183,23 @@ export class EllipseNodeConverter implements INodeConverter {
     isBorderNode: boolean,
     nodes: Node[],
     diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+    dirty: boolean
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(
+        toEllipseNode(
+          gqlDiagram,
+          gqlNode,
+          parentNode,
+          nodeDescription,
+          isBorderNode,
+          gqlEdges,
+          nodeLookup.get(gqlNode.id)
+        )
+      );
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -194,7 +217,9 @@ export class EllipseNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      borderNodeDescriptions
+      borderNodeDescriptions,
+      nodeLookup,
+      dirty
     );
     convertEngine.convertNodes(
       gqlDiagram,
@@ -202,7 +227,9 @@ export class EllipseNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      childNodeDescriptions
+      childNodeDescriptions,
+      nodeLookup,
+      dirty
     );
   }
 }

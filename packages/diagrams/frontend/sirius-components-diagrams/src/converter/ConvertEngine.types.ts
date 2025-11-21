@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from '@xyflow/react';
+import { Node, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 
 export interface IConvertEngine {
@@ -24,7 +26,9 @@ export interface IConvertEngine {
     parentNode: GQLNode<GQLNodeStyle> | null,
     nodes: Node[],
     diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+    dirty: boolean
   ): void;
 }
 
@@ -40,6 +44,8 @@ export interface INodeConverter {
     isBorderNode: boolean,
     nodes: Node[],
     diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+    dirty: boolean
   ): void;
 }
