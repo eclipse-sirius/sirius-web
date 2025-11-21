@@ -127,6 +127,8 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
                 } else {
                     result = new Failure(List.of(new Message("Cannot update Library " + newLibrary.getName() + ": the library is not a direct dependency", MessageLevel.ERROR)));
                 }
+            } else {
+                result = new Failure(List.of(new Message("Cannot find the library " + libraryId.toString(), MessageLevel.ERROR)));
             }
         }
         return result;

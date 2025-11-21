@@ -107,6 +107,8 @@ public interface IMessageService {
 
     String coreProperties();
 
+    String operationExecutionFailed(String failureMessage);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -331,6 +333,11 @@ public interface IMessageService {
 
         @Override
         public String coreProperties() {
+            return "";
+        }
+
+        @Override
+        public String operationExecutionFailed(String failureMessage) {
             return "";
         }
     }
