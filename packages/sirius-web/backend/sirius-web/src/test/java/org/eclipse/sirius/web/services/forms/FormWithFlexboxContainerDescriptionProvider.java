@@ -96,7 +96,7 @@ public class FormWithFlexboxContainerDescriptionProvider implements IEditingCont
         var childCountDescription = new FormBuilders().newLabelDescription()
                 .name("Child count")
                 .labelExpression("Child count")
-                .valueExpression("aql:self.eAllContents()->size")
+                .valueExpression("aql:self.eAllContents()->size()")
                 .build();
 
         var conditionalStyle = new FormBuilders().newConditionalContainerBorderStyle()

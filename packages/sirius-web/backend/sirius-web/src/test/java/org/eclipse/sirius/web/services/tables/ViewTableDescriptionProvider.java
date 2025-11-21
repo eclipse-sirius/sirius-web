@@ -112,8 +112,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)
-                .depthLevelExpression(
-                        "aql:if self.oclIsKindOf(papaya::Type) then 0 else if self.oclIsKindOf(papaya::Operation) then 1 else if self.oclIsKindOf(papaya::Parameter) then 2 else endif endif endif")
+                .depthLevelExpression("aql:if self.oclIsKindOf(papaya::Type) then 0 else if self.oclIsKindOf(papaya::Operation) then 1 else if self.oclIsKindOf(papaya::Parameter) then 2 else 0 endif endif endif")
                 .build();
 
         var setNameOperation = new ViewBuilders().newSetValue()
