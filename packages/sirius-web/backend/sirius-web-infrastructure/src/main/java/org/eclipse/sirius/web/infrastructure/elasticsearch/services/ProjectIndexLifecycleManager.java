@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.web.application.index.services.api.IIndexEntry;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
  * Manages the lifecycle of project indices.
@@ -64,6 +66,17 @@ public class ProjectIndexLifecycleManager {
                     elasticSearchClient.indices().create(createIndexRequest -> createIndexRequest
                             .index(PROJECT_INDEX_NAME_PREFIX + createdProjectId)
                             .settings(settingsBuilder -> settingsBuilder.mode("lookup"))
+                            .mappings(mappingsBuilder -> mappingsBuilder
+                                    // Do not index iconURLs, editingContextId, or entryType, this is technical information we don't want to search for.
+                                    .properties(IIndexEntry.ICON_URLS_FIELD, propertyBuilder -> propertyBuilder
+                                            .text(textPropertyBuilder -> textPropertyBuilder
+                                                    .index(false)))
+                                    .properties(IIndexEntry.EDITING_CONTEXT_ID_FIELD, propertyBuilder -> propertyBuilder
+                                            .text(textPropertyBuilder -> textPropertyBuilder
+                                                    .index(false)))
+                                    .properties(IIndexEntry.INDEX_ENTRY_TYPE_FIELD, propertyBuilder -> propertyBuilder
+                                            .text(textPropertyBuilder -> textPropertyBuilder
+                                                    .index(false))))
                     );
                 }
             } catch (IOException exception) {
