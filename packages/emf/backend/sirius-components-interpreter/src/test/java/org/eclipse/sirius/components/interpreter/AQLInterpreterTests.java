@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -122,6 +125,42 @@ public class AQLInterpreterTests {
         Result result = interpreter.evaluateExpression(Map.of(SELF, EcorePackage.eINSTANCE), "aql:self.getCreationMessage()");
         assertThat(result).isNotNull();
         assertThat(result.asString()).contains("instance");
+    }
+
+    @Test
+    public void testEvaluateInvalidExpression() {
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
+        Result result = interpreter.evaluateExpression(Map.of(SELF, EcorePackage.eINSTANCE), "aql:self.(");
+        assertThat(result).isNotNull();
+        assertThat(result.asBoolean()).isEmpty();
+        assertThat(result.asInt()).isEmpty();
+        assertThat(result.asObject()).isEmpty();
+        assertThat(result.asObjects()).isEmpty();
+        assertThat(result.asString()).isEmpty();
+        assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+    }
+
+    @Test
+    public void testEInverseService() {
+        // Work on a copy of EcorePackage to avoid polluting the global instance with an unexpected ECrossReferenceAdapter.
+        EPackage ecoreCopy = EcoreUtil.copyAll(List.of(EcorePackage.eINSTANCE)).iterator().next();
+        ecoreCopy.eAdapters().add(new ECrossReferenceAdapter());
+
+        var eClassCopy = ecoreCopy.getEClassifier("EClass");
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(ecoreCopy));
+        Result result = interpreter.evaluateExpression(Map.of(SELF, eClassCopy), "aql:self.eInverse()");
+
+        assertThat(result).isNotNull();
+        assertThat(result.asBoolean()).contains(Boolean.TRUE);
+        assertThat(result.asObjects()).isNotEmpty();
+
+        // All objects returned should have a reference to 'self', either through a normal cross-reference or through containment.
+        assertThat(result.asObjects().get()).allMatch(o -> {
+            return o instanceof EObject eObject &&
+                    (eObject.eCrossReferences().contains(eClassCopy) ||
+                     eClassCopy.eContents().contains(eObject) ||
+                     eObject.eContents().contains(eClassCopy));
+        });
     }
 
 }

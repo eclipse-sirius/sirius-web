@@ -139,7 +139,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         var insideLabel = new InsideLabelDescriptionBuilder()
-                .labelExpression("aql:self.name)")
+                .labelExpression("aql:self.name")
                 .style(
                         new InsideLabelStyleBuilder()
                                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS)
