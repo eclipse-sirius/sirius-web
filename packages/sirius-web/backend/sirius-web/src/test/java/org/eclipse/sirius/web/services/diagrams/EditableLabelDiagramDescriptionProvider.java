@@ -107,7 +107,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .body(
                         new SetValueBuilder()
                                 .featureName("name")
-                                .valueExpression("aql:newLabel)")
+                                .valueExpression("aql:newLabel")
                                 .build()
                 )
                 .build();
@@ -143,7 +143,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                                 .children(
                                         new SetValueBuilder()
                                                 .featureName("name")
-                                                .valueExpression("aql:newLabel)")
+                                                .valueExpression("aql:newLabel")
                                                 .build()
                                 )
                                 .build()

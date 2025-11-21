@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,6 +106,23 @@ public class ResultTests {
         assertThat(result.asBoolean()).hasValue(true);
         assertThat(result.asObject()).isPresent();
         assertThat(result.asObject().get()).isEqualTo(listValue);
+
+        assertThat(result.asObjects()).isPresent();
+        assertThat(result.asObjects().get()).hasSize(1);
+        assertThat(result.asObjects().get().get(0)).isEqualTo(object);
+    }
+
+    @Test
+    public void testArrayResult() {
+        Object object = new Object();
+        Object[] arrayValue = new Object[] { object };
+        Result result = new Result(Optional.of(arrayValue), Status.OK);
+
+        assertThat(result.asString()).isPresent();
+        assertThat(result.asInt()).isNotPresent();
+        assertThat(result.asBoolean()).hasValue(true);
+        assertThat(result.asObject()).isPresent();
+        assertThat(result.asObject().get()).isEqualTo(arrayValue);
 
         assertThat(result.asObjects()).isPresent();
         assertThat(result.asObjects().get()).hasSize(1);
