@@ -190,7 +190,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
     private SelectionDialogDescription createSelectionDialog() {
         this.selectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
                 .elementsExpression("aql:self.eResource()")
-                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif  ")
+                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif")
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()
@@ -203,7 +203,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
     private SelectionDialogDescription createEdgeSelectionDialog() {
         var edgeSelectionDialogTreeDescription = new SelectionDialogTreeDescriptionBuilder()
                 .elementsExpression("aql:self.eResource()")
-                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif  ")
+                .childrenExpression("aql:if self.oclIsKindOf(papaya::NamedElement) then self.eContents() else self.getContents() endif")
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()

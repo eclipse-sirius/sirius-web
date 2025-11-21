@@ -66,10 +66,10 @@ public class Result {
             List<Object> list = new ArrayList<>();
             if (value instanceof Collection<?>) {
                 list = List.copyOf((Collection<?>) value);
+            } else if (value.getClass().isArray()) {
+                list = Arrays.asList((Object[]) value);
             } else if (value instanceof Object) {
                 list = List.of(value);
-            } else if (value != null && value.getClass().isArray()) {
-                list = Arrays.asList((Object[]) value);
             }
             return list;
         });
@@ -117,9 +117,7 @@ public class Result {
     public Optional<Boolean> asBoolean() {
         return this.rawValue.map(value -> {
             final boolean result;
-            if (value == null) {
-                result = false;
-            } else if (value instanceof Boolean) {
+            if (value instanceof Boolean) {
                 result = ((Boolean) value).booleanValue();
             } else {
                 String toString = value.toString();
