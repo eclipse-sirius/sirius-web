@@ -1,0 +1,99 @@
+= ADR-218 - Ensure Elasticsearch query results contain enough information
+
+== Context
+
+Sirius Web can populate Elasticsearch indices with information from project's semantic data.
+
+The main goal of these indices is to provide an API to retrieve information from semantic data without loading the corresponding editing context, for example, one can query Elasticsearch to retrieve all the elements matching a given string, regardless of where they are actually stored.
+
+The minimal information to display an object in Sirius Web is usually composed of a label and an icon.
+This information is computed by `ILabelService` on a semantic object, and can be extended by downstream applications.
+Since we don't want to load editing contexts, and we can't make any assumption about how labels and icons are computed, we need to ensure the Elasticsearch query API returns enough information to display query results.
+
+We should also ensure that client code can load and manipulate the corresponding semantic object if needed (e.g. to display additional information not stored in the index).
+
+== Decision
+
+At the moment, indexed documents contain only the raw data of their source objects.
+As explained above, this information is not sufficient to compute relevant label/icons without loading the source object.
+We will add `label` and `iconURLs` fields to indexed documents to ensure they can be presented to the end user in contexts where the actual semantic object is not accessible.
+
+We will also add an `editingContextId` field to indexed documents to ensure the semantic object can be loaded if needed.
+
+This information will be set during the indexing process (where the semantic object is accessible) using `ILabelService` (for `label` and `iconURL`) and `IEditingContext` (for `editingContextId`).
+
+We will define the following interface, which defines the base information Sirius Web needs to index.
+This interface will be used to populate the indices and reify results when performing queries on them.
+[source, java]
+----
+public interface IIndexEntry {
+  
+  String editingContextId();
+
+  String id();
+
+  String type();
+  
+  String label();
+  
+  List<String> iconURLs();
+
+}
+----
+
+Note that the interface does not contain the `projectId`.
+It can be found from the `editingContextId` via `ProjectSemanticDataSearchService` without loading the editing context.
+
+We will add a service to let downstream application define the content of the index.
+This interface will be implemented with the typical delegate mechanism we have in Sirius Web.
+[source, java]
+----
+public interface IIndexEntryProvider {
+  Optional<IndexEntry> getIndexEntry(IEditingContext editingContext, Object object);
+}
+----
+
+For example, we could define an `IIndexEntry` implementation for Papaya types as follows:
+[source, java]
+----
+public record PapayaTypeIndexEntry (
+  String editingContextId,
+  String id,
+  String label,
+  String type,
+  List<String> iconURLs,
+  String qualifiedName,
+  List<PapayaTag> tags
+) implements IIndexEntry {}
+
+public record PapayaTag (String key, String value) {}
+----
+
+We will add an `IIndexQueryService` interface (and its default implementation) to query indices and get `IIndexEntry` instances.
+[source, java]
+----
+public interface IIndexQueryService {
+
+    List<IIndexEntry> search(String query);
+
+}
+----
+
+== Consequences
+
+As for other fields in indexed document, we recognize this information can become outdated if the index is not properly synchronized with the semantic data.
+The synchronization between semantic data and indexed documents is out of the scope of this ADR.
+
+[NOTE]
+====
+In any case, the actual model objects can always be loaded using the `editingContextId` and the `id` fields of the indexed document.
+This would have a significant impact on performances, since it may require to load several editing contexts, but it would ensure that the information is accurate and up-to-date.
+This solution should be avoided as much as possible by indexing enough information to work with index entries directly, or by defining better indexing policies to keep indices up-to-date.
+====
+
+Adding new fields to the index will increase its size, and may require to handle field exclusions as part of query definition.
+For example, we may not want to consider the `iconURLs` and `editingContextId` fields when searching for a given term in the index.
+
+== Status
+
+Proposed.
