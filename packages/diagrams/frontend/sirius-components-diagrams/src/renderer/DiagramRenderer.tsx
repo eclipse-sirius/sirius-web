@@ -121,6 +121,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       diagramDescription,
       store.getState()
     );
+
+    const shouldForceRefreshInternalNodeDimension = convertedDiagram.nodes.some((node) => {
+      const prevNode = getNode(node.id);
+      return prevNode?.hidden !== node.hidden;
+    });
+
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
       const currentNode = getNode(convertedNode.id);
       if (
@@ -132,7 +138,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           convertedNode.hidden !== currentNode.hidden ||
           (currentNode && JSON.stringify(convertedNode.data) !== JSON.stringify(currentNode.data)))
       ) {
-        return convertedNode;
+        if (shouldForceRefreshInternalNodeDimension) {
+          return { ...convertedNode, measured: undefined };
+        } else {
+          return convertedNode;
+        }
       } else if (currentNode) {
         return currentNode;
       } else {

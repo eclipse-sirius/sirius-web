@@ -160,6 +160,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5756[#5756] [diagram] Fix handle not always visible when the edge is selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5866[#5866] [diagram] Fix an issue where the direct edit was not enabled when  special character (such as = or $) was hit.
 - [sirius-web] Fix an issue preventing the creation of a representation with some specific characters
+- https://github.com/eclipse-sirius/sirius-web/issues/5842[#5842] [diagram] Prevent edge handles from being lost after revealing an edge
 
 
 === New Features
