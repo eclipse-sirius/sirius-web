@@ -13,4 +13,5 @@
 
 export interface UseArrangeAllValue {
   arrangeAll: () => Promise<void>;
+  arrangeAllWithRectPacking: () => Promise<void>;
 }

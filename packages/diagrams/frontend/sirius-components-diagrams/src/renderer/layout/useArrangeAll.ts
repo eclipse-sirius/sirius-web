@@ -45,17 +45,23 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
   return subNodes;
 };
 
-const elkOptions = (direction: string) => {
-  return {
-    'elk.algorithm': 'layered',
-    'elk.layered.spacing.nodeNodeBetweenLayers': '80',
-    'layering.strategy': 'NETWORK_SIMPLEX',
-    'elk.spacing.componentComponent': '60',
-    'elk.spacing.nodeNode': '80',
-    'elk.direction': `${direction}`,
-    'elk.layered.spacing.edgeNodeBetweenLayers': '80',
-    'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-  };
+const elkLayeredOptions = (direction: string): LayoutOptions => ({
+  'elk.algorithm': 'layered',
+  'elk.layered.spacing.nodeNodeBetweenLayers': '80',
+  'layering.strategy': 'NETWORK_SIMPLEX',
+  'elk.spacing.componentComponent': '60',
+  'elk.spacing.nodeNode': '80',
+  'elk.direction': `${direction}`,
+  'elk.layered.spacing.edgeNodeBetweenLayers': '80',
+  'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+});
+
+const elkRectPackingOptions: LayoutOptions = {
+  'elk.algorithm': 'rectpacking',
+  'elk.spacing.nodeNode': '50',
+  'elk.rectpacking.trybox': 'true',
+  'widthApproximation.targetWidth': '1',
+  'elk.contentAlignment': 'V_TOP H_CENTER',
 };
 
 const computeHeaderVerticalFootprint = (
@@ -171,7 +177,8 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
 
   const applyElkOnSubNodes = async (
     subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[]
+    allNodes: Node<NodeData, string>[],
+    layoutOptions: LayoutOptions
   ): Promise<Node<NodeData, string>[]> => {
     let layoutedAllNodes: Node<NodeData, string>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
@@ -204,38 +211,34 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         .map((node) => {
           return parentNodeWithNewSize.find((layoutNode) => layoutNode.id === node.id) ?? node;
         });
-      await getELKLayout(
-        subGroupNodes,
-        subGroupEdges,
-        elkOptions(diagramDescription.arrangeLayoutDirection),
-        parentNodeId,
-        headerVerticalFootprint
-      ).then(({ nodes: layoutedSubNodes, layoutReturn }) => {
-        const parentNode = allNodes.find((node) => node.id === parentNodeId);
-        if (layoutReturn) {
-          if (parentNode) {
-            parentNode.width = layoutReturn.width;
-            parentNode.height = layoutReturn.height + headerVerticalFootprint;
-            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-            parentNodeWithNewSize.push(parentNode);
+      await getELKLayout(subGroupNodes, subGroupEdges, layoutOptions, parentNodeId, headerVerticalFootprint).then(
+        ({ nodes: layoutedSubNodes, layoutReturn }) => {
+          const parentNode = allNodes.find((node) => node.id === parentNodeId);
+          if (layoutReturn) {
+            if (parentNode) {
+              parentNode.width = layoutReturn.width;
+              parentNode.height = layoutReturn.height + headerVerticalFootprint;
+              parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+              parentNodeWithNewSize.push(parentNode);
+            }
+            layoutedAllNodes = [
+              ...layoutedAllNodes,
+              ...layoutedSubNodes,
+              ...nodes.filter((node) => node.data.isBorderNode),
+            ];
+          } else {
+            layoutedAllNodes = nodes;
           }
-          layoutedAllNodes = [
-            ...layoutedAllNodes,
-            ...layoutedSubNodes,
-            ...nodes.filter((node) => node.data.isBorderNode),
-          ];
-        } else {
-          layoutedAllNodes = nodes;
         }
-      });
+      );
     }
     return layoutedAllNodes;
   };
 
-  const arrangeAll = async (): Promise<void> => {
+  const arrangeAllWithOptions = async (layoutOptions: LayoutOptions): Promise<void> => {
     const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    await applyElkOnSubNodes(subNodes, nodes).then(async (nodes: Node<NodeData, string>[]) => {
+    await applyElkOnSubNodes(subNodes, nodes, layoutOptions).then(async (nodes: Node<NodeData, string>[]) => {
       const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
       laidOutNodesWithElk.filter((laidOutNode) => {
         const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
@@ -296,7 +299,17 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     });
   };
 
+  const arrangeAll = async (): Promise<void> => {
+    const arrangeOptions = elkLayeredOptions(diagramDescription.arrangeLayoutDirection);
+    await arrangeAllWithOptions(arrangeOptions);
+  };
+
+  const arrangeAllWithRectPacking = async (): Promise<void> => {
+    await arrangeAllWithOptions(elkRectPackingOptions);
+  };
+
   return {
     arrangeAll,
+    arrangeAllWithRectPacking,
   };
 };
