@@ -38,12 +38,11 @@ test.describe('diagram - palette', () => {
     await playwrightNode.click();
     await playwrightNode2.controlClick();
     await playwrightNode2.openPalette();
-    await expect(page.getByTestId('GroupPalette')).toBeAttached();
-    await expect(page.getByTestId('GroupPalette').getByTestId('Align left')).toBeAttached();
-    await expect(page.getByTestId('GroupPalette').getByTestId('Align bottom')).not.toBeAttached();
-    await page.getByTestId('GroupPalette').getByTestId('expand').click();
-    await expect(page.getByTestId('GroupPalette').getByTestId('Align bottom')).toBeAttached();
-    await page.getByTestId('GroupPalette').getByTestId('Align bottom').click();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('toolSection-Layout').click();
+    await page.getByTestId('Palette').getByTestId('tool-Align bottom').click();
+    //Check the last tool used is the one proposed as quick tool (disabled until the layout section is using the reworked palette extension point)
+    //await page.getByTestId('Palette').getByTestId('Align bottom').click();
     const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('undefined', false);
     const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
     const playwrightNodeSize = await playwrightNode.getReactFlowSize('undefined', false);
@@ -51,11 +50,6 @@ test.describe('diagram - palette', () => {
     expect(playwrightNodeXYPosition.y + playwrightNodeSize.height).toBe(
       playwrightNode2XYPosition.y + playwrightNode2Size.height
     );
-    //Check the last tool used is the one proposed as quick tool
-    await playwrightNode2.openPalette();
-    await expect(page.getByTestId('GroupPalette')).toBeAttached();
-    await expect(page.getByTestId('GroupPalette').getByTestId('Align left')).not.toBeAttached();
-    await expect(page.getByTestId('GroupPalette').getByTestId('Align bottom')).toBeAttached();
   });
 
   test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({
@@ -67,11 +61,27 @@ test.describe('diagram - palette', () => {
     await playwrightNode.click();
     await playwrightEdge.controlClick();
     await playwrightEdge.openPalette();
-    await expect(page.getByTestId('GroupPalette')).toBeAttached();
-    await page.getByTestId('GroupPalette').getByTestId('Fade elements').click();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('Palette').getByTestId('Fade-element').click();
     const edgeStyle = await playwrightEdge.getEdgeStyle();
     await expect(edgeStyle).toHaveCSS('opacity', '0.4');
     await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
+  });
+
+  test('when several elements are selected with the rectangular selection, we can open the group palette and hide both elements', async ({
+    page,
+  }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    const playwrightNode2 = new PlaywrightNode(page, 'CompositeProcessor1');
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightNode.click();
+    await playwrightNode2.controlClick();
+    await playwrightNode2.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('Palette').getByTestId('Hide-element').click();
+    await expect(playwrightNode.nodeLocator).not.toBeAttached();
+    await expect(playwrightNode2.nodeLocator).not.toBeAttached();
+    await expect(playwrightEdge.edgeLocator).not.toBeAttached();
   });
 });
 
