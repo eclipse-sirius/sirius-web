@@ -16,6 +16,7 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5272[#5272] The parameters of `ITreeFilterProvider#get` have been updated to `IEditingContext`, `TreeDescription`, `Tree`.
 
 
 === Dependency update
@@ -33,7 +34,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5272[#5272] Allow to contribute tree filters based on the tree description
 
 
 == 2025.12.0 (work in progress)
