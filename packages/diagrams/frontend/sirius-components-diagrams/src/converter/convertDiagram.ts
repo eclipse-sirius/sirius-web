@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, HandleType, Node, ReactFlowState } from '@xyflow/react';
+import { Edge, HandleType, Node, ReactFlowState, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLReferencePosition } from '../graphql/subscription/diagramEventSubscription.types';
 import { GQLDiagram, GQLLabelLayoutData } from '../graphql/subscription/diagramFragment.types';
@@ -144,7 +145,8 @@ export const convertDiagram = (
       parentNode: GQLNode<GQLNodeStyle> | null,
       nodes: Node[],
       diagramDescription: GQLDiagramDescription,
-      nodeDescriptions: GQLNodeDescription[]
+      nodeDescriptions: GQLNodeDescription[],
+      nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
     ) {
       gqlNodesToConvert.forEach((node) => {
         const nodeConverter: INodeConverter | undefined = [
@@ -163,7 +165,8 @@ export const convertDiagram = (
             isBorderNode,
             nodes,
             diagramDescription,
-            nodeDescriptions
+            nodeDescriptions,
+            nodeLookup
           );
         }
       });
@@ -176,7 +179,8 @@ export const convertDiagram = (
     null,
     nodes,
     diagramDescription,
-    diagramDescription.nodeDescriptions
+    diagramDescription.nodeDescriptions,
+    state.nodeLookup
   );
 
   const nodeId2node = new Map<string, Node<NodeData>>();
