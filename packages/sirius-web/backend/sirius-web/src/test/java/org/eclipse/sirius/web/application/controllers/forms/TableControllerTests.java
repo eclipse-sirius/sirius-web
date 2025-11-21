@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
@@ -103,7 +104,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 FormWithTableDescriptionProvider.TASK_FORM_ID,
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
                 "FormWithTable");
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
     }
 
     @Test
@@ -225,7 +227,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "FormWithViewTable");
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
@@ -258,7 +261,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "FormWithViewTable");
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+            .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var tableId = new AtomicReference<String>();

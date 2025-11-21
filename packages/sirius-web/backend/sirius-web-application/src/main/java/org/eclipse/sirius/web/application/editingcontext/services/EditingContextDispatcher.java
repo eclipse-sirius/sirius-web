@@ -15,7 +15,11 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesDTO;
+import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
@@ -25,6 +29,7 @@ import org.eclipse.sirius.web.application.library.services.api.ILibraryEditingCo
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -38,6 +43,10 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
+    private final IEditingContextSearchService editingContextSearchService;
+
+    private final IFormCapabilitiesService formCapabilitiesService;
+
     private final IProjectEditingContextService projectEditingContextService;
 
     private final ILibraryEditingContextService libraryEditingContextService;
@@ -46,9 +55,12 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     private final IMessageService messageService;
 
-    public EditingContextDispatcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService,
+    public EditingContextDispatcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IEditingContextSearchService editingContextSearchService,
+            IFormCapabilitiesService formCapabilitiesService, IProjectEditingContextService projectEditingContextService,
                                     ILibraryEditingContextService libraryEditingContextService, ICapabilityEvaluator capabilityEvaluator, IMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
+        this.formCapabilitiesService = Objects.requireNonNull(formCapabilitiesService);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.libraryEditingContextService = Objects.requireNonNull(libraryEditingContextService);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
@@ -78,16 +90,25 @@ public class EditingContextDispatcher implements IEditingContextDispatcher {
 
     @Override
     public Mono<IPayload> dispatchMutation(String editingContextId, IInput input) {
-        var canView = false;
-        var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
-        if (optionalProjectId.isPresent()) {
-            canView = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.EDIT);
+        var canEdit = false;
+
+        if (input instanceof IFormInput formInput) {
+            canEdit = this.editingContextSearchService.findById(editingContextId)
+                    .map(editingContext -> this.formCapabilitiesService.getFormCapabilities(formInput.representationId(), editingContext))
+                    .map(FormCapabilitiesDTO::canEdit)
+                    .orElse(false);
         } else {
-            var optionalLibraryId = this.libraryEditingContextService.getLibraryIdentifier(editingContextId);
-            canView = optionalLibraryId.isEmpty();
+            var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
+            if (optionalProjectId.isPresent()) {
+                canEdit = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, optionalProjectId.get(), SiriusWebCapabilities.Project.EDIT);
+            } else {
+                var optionalLibraryId = this.libraryEditingContextService.getLibraryIdentifier(editingContextId);
+                canEdit = optionalLibraryId.isEmpty();
+            }
         }
 
-        if (!canView) {
+
+        if (!canEdit) {
             return Mono.just(new ErrorPayload(input.id(), this.messageService.unauthorized()));
         }
 

@@ -15,6 +15,7 @@ import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface RepresentationsViewState {
   form: GQLForm | null;
+  canEdit: boolean;
   objectIds: string[];
   pinned: boolean;
 }

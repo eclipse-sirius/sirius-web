@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
@@ -36,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -65,9 +67,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given an entity, when we subscribe to its related elements events, then the form is sent")
     public void givenAnEntityWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
-        var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
-        var flux = this.relatedElementsEventSubscriptionRunner.run(input);
+        var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, relatedElementRepresentationId);
+        var flux = this.relatedElementsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Human").group("Related Elements");
@@ -98,9 +101,10 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given a node description, when we subscribe to its related elements events, then the form is sent")
     public void givenNodeDescriptionWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
-        var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
-        var flux = this.relatedElementsEventSubscriptionRunner.run(input);
+        var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, relatedElementRepresentationId);
+        var flux = this.relatedElementsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Human Node").group("Related Elements");

@@ -8,4 +8,4 @@ input RelatedElementsEventInput {
   representationId: String!
 }
 
-union RelatedElementsEventPayload = ErrorPayload | FormRefreshedEventPayload
+union RelatedElementsEventPayload = ErrorPayload | FormRefreshedEventPayload | FormCapabilitiesRefreshedEventPayload

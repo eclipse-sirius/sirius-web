@@ -14,12 +14,12 @@ package org.eclipse.sirius.components.forms.tests.graphql;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -37,6 +37,11 @@ public class FormEventSubscriptionRunner implements ISubscriptionRunner<FormEven
                 ... on FormRefreshedEventPayload {
                   form {
                     id
+                  }
+                }
+                ... on FormCapabilitiesRefreshedEventPayload {
+                  capabilities {
+                    canEdit
                   }
                 }
               }

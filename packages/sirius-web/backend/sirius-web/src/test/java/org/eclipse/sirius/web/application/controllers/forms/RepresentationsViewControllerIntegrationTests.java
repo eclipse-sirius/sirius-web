@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -36,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -65,9 +67,10 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given a semantic object associated with representations, when we subscribe to its representations events, then the form sent contains the list widget listing the associated representations")
     public void givenSemanticObjectAssociatedWithRepresentationsWhenWeSubscribeToItsRepresentationsEventsThenTheFormSentContainsTheListWidgetListingTheAssociatedRepresentations() {
-        var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.representationsEventSubscriptionRunner.run(input);
+        var representationId = this.representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
+        var flux = this.representationsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {
             var formNavigator = new FormNavigator(form);
@@ -87,9 +90,10 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @GivenSiriusWebServer
     @DisplayName("Given a portal containing another portal, when we subscribe to its representations events, then the form sent contains the tree widget containing at least the portal and the other portal as a child")
     public void givenPortalContainingAnotherPortalWhenWeSubscribeToItsRepresentationsEventsThenTheFormSentContainsTheTreeWidgetContainingAtLeastThePortalAndTheOtherPortalAsAChild() {
-        var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.representationsEventSubscriptionRunner.run(input);
+        var representationId = this.representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
+        var flux = this.representationsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {
             var formNavigator = new FormNavigator(form);

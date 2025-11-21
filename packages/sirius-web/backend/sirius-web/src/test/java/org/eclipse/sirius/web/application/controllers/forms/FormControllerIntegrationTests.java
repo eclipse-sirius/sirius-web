@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -30,6 +31,8 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.RichText;
@@ -55,6 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -85,6 +89,15 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     @Autowired
     private IRepresentationMetadataRepository representationMetadataRepository;
 
+    private Predicate<Object> getRefreshFormCapabilitiesEventPayloadPredicate() {
+        return representationEventPayload -> {
+            if (representationEventPayload instanceof FormCapabilitiesRefreshedEventPayload payload) {
+                return payload.capabilities() != null;
+            }
+            return false;
+        };
+    }
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -95,8 +108,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a master / details based form representation, when we edit the master part, then the details part is updated")
     public void givenMasterDetailsBasedFormRepresentationWhenWeEditTheMasterPartThenTheDetailsPartIsUpdated() {
         var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(),
+                UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
                 MasterDetailsFormDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Master Details Form"
@@ -120,7 +132,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
         Runnable changeMasterValue = () -> {
             // ... updating the value with the select ...
-            var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), formId.get(), selectId.get(), "second");
+            var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), selectId.get(), "second");
 
             var editSelectResult = this.editSelectMutationRunner.run(editSelectInput);
             String editSelectResultTypename = JsonPath.read(editSelectResult, "$.data.editSelect.__typename");
@@ -139,6 +151,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         });
 
         StepVerifier.create(flux)
+                .expectNextMatches(this.getRefreshFormCapabilitiesEventPayloadPredicate())
                 .consumeNextWith(initialFormContentConsumer)
                 .then(changeMasterValue)
                 .consumeNextWith(updatedFormContentConsumer)
@@ -151,13 +164,13 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a view based form description, when form variables are initialized, then widgets can read their value")
     public void givenViewBasedFormDescriptionWhenFormVariablesAreInitializedThenWidgetsCanReadTheirValue() {
         var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -179,13 +192,13 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a form, when a reload is triggered, then the form is refreshed")
     public void givenViewBasedFormWhenReloadTriggeredThenFormIsRefreshed() {
         var input = new CreateRepresentationInput(
-                UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId =  new AtomicReference<String>();
         var representationMetadata = new AtomicReference<RepresentationMetadata>();
@@ -220,7 +233,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

@@ -22,7 +22,10 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DiagramFilterFormProps, DiagramFilterViewState } from './DiagramFilterForm.types';
 import { useDiagramFilterSubscription } from './useDiagramFilterSubscription';
-import { GQLDiagramFilterEventPayload } from './useDiagramFilterSubscription.types';
+import {
+  GQLDiagramFilterEventPayload,
+  GQLFormCapabilitiesRefreshedEventPayload,
+} from './useDiagramFilterSubscription.types';
 
 const useDiagramFilterViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -34,17 +37,25 @@ const useDiagramFilterViewStyles = makeStyles()((theme) => ({
 }));
 
 const isFormRefreshedEventPayload = (payload: GQLDiagramFilterEventPayload): payload is GQLFormRefreshedEventPayload =>
-  payload && payload.__typename === 'FormRefreshedEventPayload';
+  payload?.__typename === 'FormRefreshedEventPayload';
 
-export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: DiagramFilterFormProps) => {
+const isFormCapabilitiesRefreshedEventPayload = (
+  payload: GQLDiagramFilterEventPayload
+): payload is GQLFormCapabilitiesRefreshedEventPayload =>
+  payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
+
+export const DiagramFilterForm = ({ editingContextId, diagramId }: DiagramFilterFormProps) => {
   const [state, setState] = useState<DiagramFilterViewState>({
     form: null,
+    canEdit: false,
   });
 
   const { payload, complete } = useDiagramFilterSubscription(editingContextId, [diagramId]);
   useEffect(() => {
-    if (isFormRefreshedEventPayload(payload)) {
+    if (payload && isFormRefreshedEventPayload(payload)) {
       setState((prevState) => ({ ...prevState, form: payload.form }));
+    } else if (payload && isFormCapabilitiesRefreshedEventPayload(payload)) {
+      setState((prevState) => ({ ...prevState, canEdit: payload.capabilities.canEdit }));
     }
   }, [payload]);
 
@@ -76,7 +87,7 @@ export const DiagramFilterForm = ({ editingContextId, diagramId, readOnly }: Dia
           editingContextId={editingContextId}
           form={state.form}
           initialSelectedPageId={null}
-          readOnly={readOnly}
+          readOnly={!state.canEdit}
           postProcessor={extractFirstGroup}
         />
       </FormContext.Provider>

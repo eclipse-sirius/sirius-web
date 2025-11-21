@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultD
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.services.api.IFormCapabilitiesService;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -70,6 +71,8 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
+    private final IFormCapabilitiesService formCapabilitiesService;
+
     private final IFormPostProcessor formPostProcessor;
 
     private final IURLParser urlParser;
@@ -90,6 +93,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.formCapabilitiesService = Objects.requireNonNull(formConfiguration.getFormCapabilitiesService());
         this.urlParser = Objects.requireNonNull(urlParser);
     }
 
@@ -130,7 +134,8 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                     this.representationSearchService,
                     this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
-                    this.formPostProcessor);
+                    this.formPostProcessor,
+                    this.formCapabilitiesService);
 
             return Optional.of(formEventProcessor);
         }
