@@ -13,6 +13,7 @@
 
 import { GQLCreateProjectFromTemplateSuccessPayload } from './useCreateProjectFromTemplate.types';
 
+This file should not exists anymore. We will not be able to redirect to a representation since it wil be created after the project creation (with a transactional event listener)
 export const redirectUrlFromTemplate = (projectCreatedFromTemplate: GQLCreateProjectFromTemplateSuccessPayload) => {
   const { project, representationToOpen } = projectCreatedFromTemplate;
   if (representationToOpen) {

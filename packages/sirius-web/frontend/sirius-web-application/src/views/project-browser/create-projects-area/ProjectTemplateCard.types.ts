@@ -17,5 +17,7 @@ export interface ProjectTemplateCardProps {
   template: GQLProjectTemplate;
   running: boolean;
   disabled: boolean;
+
+  Should be renamed
   onCreateProject: () => void;
 }

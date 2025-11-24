@@ -13,21 +13,15 @@
 package org.eclipse.sirius.web.application.project.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.eclipse.sirius.components.core.api.ErrorPayload;
-import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
@@ -131,29 +125,5 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
             result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
         }
         return  result;
-    }
-
-    @Override
-    public IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input) {
-        IPayload payload = null;
-
-        var optionalProjectTemplate = this.projectTemplateProviders.stream()
-                .map(IProjectTemplateProvider::getProjectTemplates)
-                .flatMap(Collection::stream)
-                .filter(projectTemplate -> projectTemplate.id().equals(input.templateId()))
-                .findFirst();
-        if (optionalProjectTemplate.isPresent()) {
-            var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), input.name(), input.natures(), List.of()));
-            if (projectCreationPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
-                var projectId = createProjectSuccessPayload.project().id();
-                payload = this.templateBasedProjectInitializer.initializeProjectFromTemplate(input, projectId, input.templateId());
-            } else {
-                payload = projectCreationPayload;
-            }
-        } else {
-            payload = new ErrorPayload(input.id(), this.messageService.notFound());
-        }
-
-        return payload;
     }
 }

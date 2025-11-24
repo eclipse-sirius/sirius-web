@@ -15,8 +15,9 @@ import { useComponents } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { useCreateProject } from '../../new-project/useCreateProject';
 import { CreateProjectAreaProps, CreateProjectAreaState } from './CreateProjectArea.types';
 import { createProjectAreaCardExtensionPoint } from './CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from './NewProjectCard';
@@ -24,7 +25,6 @@ import { ProjectTemplateCard } from './ProjectTemplateCard';
 import { redirectUrlFromTemplate } from './redirectUrlFromTemplate';
 import { ShowAllProjectTemplatesCard } from './ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from './UploadProjectCard';
-import { useCreateProjectFromTemplate } from './useCreateProjectFromTemplate';
 import { useProjectTemplates } from './useProjectTemplates';
 import { GQLProjectTemplate, ProjectTemplateContext } from './useProjectTemplates.types';
 
@@ -63,18 +63,17 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
   const { data } = useProjectTemplates(state.page, state.limit, ProjectTemplateContext.PROJECT_BROWSER);
   const projectTemplates: GQLProjectTemplate[] = data?.viewer.projectTemplates.edges.map((edge) => edge.node) ?? [];
 
-  const { createProjectFromTemplate, loading, projectCreatedFromTemplate } = useCreateProjectFromTemplate();
+  const { createProject, loading, newProjectId } = useCreateProject();
 
   const onCreateProject = (template: GQLProjectTemplate) => {
+    should navigate to "/new/project?templateId=xxx" using useNavigate() hook.
     if (!state.runningTemplate) {
-      createProjectFromTemplate(template.label, template.id, template.natures);
+      createProject(template.label, template.id, template.natures);
       setState((prevState) => ({ ...prevState, runningTemplate: template }));
     }
   };
 
-  const redirectUrl: string | null = projectCreatedFromTemplate
-    ? redirectUrlFromTemplate(projectCreatedFromTemplate)
-    : null;
+  const redirectUrl: string | null = newProjectId ? redirectUrlFromTemplate(newProjectId) : null;
   if (redirectUrl) {
     return <Navigate to={redirectUrl} replace />;
   }
