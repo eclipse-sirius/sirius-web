@@ -155,7 +155,7 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  * Used to register all the views available in the left and right of the workbench
  *
  *******************************************************************************/
-
+// TODO remove the side field from WorkbenchViewContribution
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
     id: 'explorer',
