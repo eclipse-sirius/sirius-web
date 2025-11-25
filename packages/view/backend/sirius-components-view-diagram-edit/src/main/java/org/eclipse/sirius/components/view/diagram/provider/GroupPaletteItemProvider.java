@@ -77,6 +77,7 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
     }
@@ -138,6 +139,7 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(GroupPalette.class)) {
             case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -148,7 +150,7 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -157,6 +159,8 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__QUICK_ACCESS_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
     }
 
     /**

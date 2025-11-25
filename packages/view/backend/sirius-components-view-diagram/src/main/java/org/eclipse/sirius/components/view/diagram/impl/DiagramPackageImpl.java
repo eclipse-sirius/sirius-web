@@ -632,16 +632,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getDiagramDescription_NodeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getDiagramDescription_EdgeDescriptions() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -651,8 +641,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getDiagramDescription_EdgeDescriptions() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
-        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -662,7 +662,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getDiagramDescription_GroupPalette() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1791,6 +1791,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getGroupPalette_ToolSections() {
+        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getNodePalette() {
         return this.nodePaletteEClass;
     }
@@ -2670,10 +2680,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
-        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -2811,6 +2821,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.groupPaletteEClass = this.createEClass(GROUP_PALETTE);
         this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__NODE_TOOLS);
         this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__TOOL_SECTIONS);
 
         this.nodePaletteEClass = this.createEClass(NODE_PALETTE);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DELETE_TOOL);
@@ -2992,6 +3003,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_Palette(), this.getDiagramPalette(), null, "palette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getDiagramDescription_NodeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
@@ -3000,8 +3013,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.getDiagramDescription_EdgeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
         this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
@@ -3234,6 +3245,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getGroupPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getGroupPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+        this.initEReference(this.getGroupPalette_ToolSections(), this.getToolSection(), null, "toolSections", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
 
         this.initEClass(this.nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,

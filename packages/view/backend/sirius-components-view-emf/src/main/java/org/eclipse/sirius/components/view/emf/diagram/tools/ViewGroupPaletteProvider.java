@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariables;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
@@ -101,6 +103,8 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         variableManager.put(VariableManager.SELF, targetElements);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variableManager.put(DiagramVariables.SELECTED_EDGES.name(), diagramElements.stream().filter(Edge.class::isInstance).toList());
+        variableManager.put(DiagramVariables.SELECTED_NODES.name(), diagramElements.stream().filter(Node.class::isInstance).toList());
 
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
         if (optionalDiagramDescription.isPresent()) {
@@ -172,6 +176,12 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
                     .map(nodeTool -> this.createNodeTool(nodeTool, variableManager, interpreter))
                     .forEach(quickAccessTools::add);
+
+            viewDiagramDescription.getGroupPalette().getToolSections().stream()
+                    .filter(NodeToolSection.class::isInstance)
+                    .map(NodeToolSection.class::cast)
+                    .map(nodeToolSection -> this.createToolSection(nodeToolSection, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
         }
         return new Palette(paletteId, quickAccessTools, paletteEntries);
     }
@@ -212,5 +222,20 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
             iconURL = new MultiValueProvider<>(interpreter, iconURLsExpression, String.class).apply(variableManager);
         }
         return iconURL;
+    }
+
+    private org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+        String toolSelectionId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(toolSection).toString().getBytes()).toString();
+
+        var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
+                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                .toList());
+
+        return org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection.newToolSection(toolSelectionId)
+                .label(toolSection.getName())
+                .iconURL(List.of())
+                .tools(tools)
+                .build();
     }
 }

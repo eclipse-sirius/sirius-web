@@ -309,6 +309,8 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quickAccessTools" upperBound="-1"
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
+        eType="#//ToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"

@@ -141,6 +141,7 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Add `IGroupPaletteToolsProvider` in order to provide extra tools to a group palette
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys in project semantic data with proper events
 - https://github.com/eclipse-sirius/sirius-web/issues/5752[#5752] [table] Add the functionality to expand all row in one action
+- https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
 
 
 === Improvements
