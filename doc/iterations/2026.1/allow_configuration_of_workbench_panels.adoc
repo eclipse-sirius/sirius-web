@@ -1,0 +1,42 @@
+= Allow configuration of workbench panels
+
+== Problem
+
+The available and active views in the panels of a Sirius Web project are hardcoded.
+It is not possible to hide views from these panels, and it is not possible to choose which view is active by default.
+
+== Key Result
+
+- It should be possible to programmatically define which views are available in the left/right panels of Sirius Web projects.
+- It should be possible to programmatically define which views are active by default in each panel.
+- It should be possible to provide specific parameters for the available views (e.g. active filters in the explorer).
+- This configuration should be available per editing context (e.g. some views can be visible in a given editing context but not in others).
+
+=== Acceptance Criteria
+
+- A Cypress test should leverage the new functionality and validate the whole user experience.
+- Backend integration tests should also be available to ensure that the core parts of the behavior are working as expected.
+
+== Solution
+
+The solution should reuse https://github.com/eclipse-sirius/sirius-web/issues/4886[the work done for the _share_ action], which already defines how to serialize the state of the workbench.
+The same data schema can be reused to define a GraphQL query allowing the frontend to retrieve the configuration from the frontend.
+The solution should ensure the two approaches (URL sharing and backend configuration) work correctly together, and do not allow to display views that shouldn't be visible.
+
+=== Scenario
+
+=== Open a project with specific views in left/right panels
+
+- The user opens a project that has specific views configured for the left and right panels
+- The configured views are available in the left/right panels, and the configured active views are active.
+- The other views are not visible in the left/right panels.
+
+=== Cutting backs
+
+- (Nice to have) Allow to configure the available/default tabs in the details view. 
+
+== Rabbit holes
+
+
+== No-gos
+

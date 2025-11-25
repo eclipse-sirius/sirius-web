@@ -4,6 +4,7 @@
 
 === Shapes
 
+- Allow configuration of workbench panels
 
 
 === Architectural decision records
