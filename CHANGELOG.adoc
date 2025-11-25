@@ -28,6 +28,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 `IViewNodeDeleteHandler`, which only existed to provide a non-null handler able to tell if there was a semantic deletion tool, has been removed.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] The input `GetPaletteInput` will now require a list of diagram element ids instead of a single one to retrieve a palette for multiple elements selected at once.
 In a similar manner, `InvokeSingleClickOnDiagramElementToolInput` will now ask for a list of diagram element ids to execute a tool on multiple elements are once
+- https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] `selectedNode` and `selectedEdge` AQL variables are deprecated, you can use `selectedNodes` and `selectedEdges`.
 
 
 === Dependency update
@@ -59,6 +60,7 @@ You can check the https://www.elastic.co/docs/reference/query-languages/query-ds
 The command is only visible if Elasticsearch is up and running.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
+- https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `precondition` expression to `toolSection` and `toolSections` to groupPalette in the view dsl.
 
 
 === Improvements

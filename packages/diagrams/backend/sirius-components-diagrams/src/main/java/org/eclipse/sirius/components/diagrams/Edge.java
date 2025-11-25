@@ -27,7 +27,15 @@ import org.eclipse.sirius.components.annotations.Immutable;
 @Immutable
 public final class Edge implements IDiagramElement {
 
+    /**
+     * You should use SELECTED_NODES.
+     *
+     * @deprecated </a>
+     */
+    @Deprecated(forRemoval = true)
     public static final String SELECTED_EDGE = "selectedEdge";
+
+    public static final String SELECTED_EDGES = "selectedEdges";
 
     public static final String PRE_SOURCE = "preSource";
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,9 +39,9 @@ import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
  */
 public class DefaultToolsFactory {
 
-    private static final String HAS_CHILDREN_EXPRESSION = "aql:selectedNode.getChildNodes()->notEmpty() or selectedNode.getBorderNodes()->notEmpty()";
+    private static final String HAS_CHILDREN_EXPRESSION = "aql:selectedNodes.getChildNodes()->notEmpty() or selectedNodes.getBorderNodes()->notEmpty()";
 
-    private static final String HAS_HIDDEN_CHILDREN_EXPRESSION = "aql:selectedNode.getChildNodes()->union(selectedNode.getBorderNodes())->select(n | n.isHidden())->notEmpty()";
+    private static final String HAS_HIDDEN_CHILDREN_EXPRESSION = "aql:selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes())->select(n | n.isHidden())->notEmpty()";
 
     public DiagramPalette createDefaultDiagramPalette() {
         DiagramPalette palette = DiagramFactory.eINSTANCE.createDiagramPalette();
@@ -163,7 +163,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Hide");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.hide(Sequence{selectedNode})");
+        body.setExpression("aql:diagramServices.hide(selectedNodes)");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
         return newNodeTool;
@@ -173,7 +173,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Hide all content");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.hide(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes()))");
+        body.setExpression("aql:diagramServices.hide(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes()))");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
         newNodeTool.setPreconditionExpression(HAS_CHILDREN_EXPRESSION);
@@ -184,7 +184,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Show all content");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.reveal(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes()))");
+        body.setExpression("aql:diagramServices.reveal(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes()))");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/ShowTool.svg'");
         newNodeTool.setPreconditionExpression(HAS_HIDDEN_CHILDREN_EXPRESSION);
@@ -195,7 +195,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Reset content");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.resetViewModifiers(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes()))");
+        body.setExpression("aql:diagramServices.resetViewModifiers(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes()))");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/ShowTool.svg'");
         newNodeTool.setPreconditionExpression(HAS_CHILDREN_EXPRESSION);
@@ -206,7 +206,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Show valued content");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.reveal(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes())->select(n | n.getChildNodes()->notEmpty() or n.getBorderNodes()->notEmpty()))");
+        body.setExpression("aql:diagramServices.reveal(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes())->select(n | n.getChildNodes()->notEmpty() or n.getBorderNodes()->notEmpty()))");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/ShowTool.svg'");
         newNodeTool.setPreconditionExpression(HAS_HIDDEN_CHILDREN_EXPRESSION);
@@ -224,7 +224,7 @@ public class DefaultToolsFactory {
         NodeTool newNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         newNodeTool.setName("Hide");
         ChangeContext body = ViewFactory.eINSTANCE.createChangeContext();
-        body.setExpression("aql:diagramServices.hide(Sequence{selectedEdge})");
+        body.setExpression("aql:diagramServices.hide(selectedEdges)");
         newNodeTool.getBody().add(body);
         newNodeTool.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
         return newNodeTool;

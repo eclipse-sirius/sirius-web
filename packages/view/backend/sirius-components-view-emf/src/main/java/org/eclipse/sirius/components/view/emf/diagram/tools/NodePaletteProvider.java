@@ -98,12 +98,14 @@ public class NodePaletteProvider implements INodePaletteProvider {
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, false, variableManager))
                         .forEach(paletteEntries::add);
+
                 toolFinder.findEdgeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(viewEdgeTools -> this.edgeToolFactory.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, nodeDescription, variableManager))
                         .forEach(paletteEntries::add);
 
                 toolFinder.findToolSections(viewNodeDescription).stream()
+                        .filter(toolSection -> this.checkPrecondition(toolSection, variableManager, interpreter))
                         .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
@@ -127,6 +129,15 @@ public class NodePaletteProvider implements INodePaletteProvider {
 
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {
         String precondition = tool.getPreconditionExpression();
+        if (precondition != null && !precondition.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
+            return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);
+        }
+        return true;
+    }
+
+    private boolean checkPrecondition(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+        String precondition = toolSection.getPreconditionExpression();
         if (precondition != null && !precondition.isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
             return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);

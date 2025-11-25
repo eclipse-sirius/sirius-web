@@ -30,7 +30,15 @@ import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 @Immutable
 public final class Node implements IDiagramElement {
 
+    /**
+     * You should use SELECTED_NODES.
+     *
+     * @deprecated </a>
+     */
+    @Deprecated(forRemoval = true)
     public static final String SELECTED_NODE = "selectedNode";
+
+    public static final String SELECTED_NODES = "selectedNodes";
 
     private String id;
 
