@@ -63,4 +63,10 @@ public class ViewToolFinder implements IViewToolFinder {
         return this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescriptionId)
                         .flatMap(viewDiagramDescription -> new ToolFinder().getGroupNodeToolByIdFromDiagramDescription(viewDiagramDescription, toolId));
     }
+
+    @Override
+    public Optional<NodeTool> findReusedGroupNodeTool(IEditingContext editingContext, String diagramDescriptionId, String toolId) {
+        return this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescriptionId)
+                .flatMap(viewDiagramDescription -> new ToolFinder().getReusedGroupNodeToolByIdFromDiagramDescription(viewDiagramDescription, toolId));
+    }
 }

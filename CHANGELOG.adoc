@@ -19,7 +19,14 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `IToolService`, `org.eclipse.sirius.components.diagrams.tools` and `ToolConverter` have been removed.
 Tools are no longer converted with the diagram.
 You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
-`IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
+`IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`+
+- https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] `selectedNode` and `selectedEdge` AQL variables are deprecated, you can use `selectedNodes` and `selectedEdges`.
+
+`IPaletteToolsProvider` methods signature have been changed to support group palettes : 
+
+* `List<ToolSection> createExtraToolSections(List<Object> diagramElementDescriptions, List<Object> diagramElements);`
+* `List<ITool> createQuickAccessTools(List<Object> diagramElementDescriptions, List<Object> diagramElements);`
+
 
 
 
@@ -35,8 +42,13 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
-https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the concept of GroupPalette in the view dsl and the API `ISingleClickOnMultipleDiagramElementHandler` to execute a group tool.
-
+https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the concept of `GroupPalette` in the view dsl and the API `ISingleClickOnMultipleDiagramElementHandler` to execute a group tool.
+When executing a group tool, self is list of the selected element.
+- https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `precondition` expression to `toolSection`.
+Add `toolSections` and `reusedToolSections` to groupPalette in the view dsl.
+When executing a tool from a `reusedToolSection`, it will be executed for each `diagramElementId` used to execute the tool, each time self will be one of the diagram element, the order is preserved.
+We're introducing the `selectedNodes` and `selectedEdges` variable that will contain the selected diagram element.
+These variable are also available on non group tools.
 
 === Improvements
 

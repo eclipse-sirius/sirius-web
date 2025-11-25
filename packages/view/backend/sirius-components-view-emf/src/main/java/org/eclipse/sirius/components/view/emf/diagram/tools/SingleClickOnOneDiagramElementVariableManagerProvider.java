@@ -73,22 +73,21 @@ public class SingleClickOnOneDiagramElementVariableManagerProvider implements IS
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
+            if (nodes.size() == 1) {
+                variableManager.put(Node.SELECTED_NODE, nodes.get(0));
+                variableManager.put(Node.SELECTED_NODES, nodes);
+            } else {
+                variableManager.put(Node.SELECTED_NODES, nodes);
+            }
+            if (edges.size() == 1) {
+                variableManager.put(Edge.SELECTED_EDGE, edges.get(0));
+            } else {
+                variableManager.put(Edge.SELECTED_EDGES, edges);
+            }
             if (self.size() == 1) {
                 variableManager.put(VariableManager.SELF, self.get(0));
-                if (nodes.size() == 1) {
-                    variableManager.put(Node.SELECTED_NODE, nodes.get(0));
-                } else {
-                    variableManager.put(Node.SELECTED_NODE, null);
-                }
-                if (edges.size() == 1) {
-                    variableManager.put(Edge.SELECTED_EDGE, edges.get(0));
-                } else {
-                    variableManager.put(Edge.SELECTED_EDGE, null);
-                }
             } else {
                 variableManager.put(VariableManager.SELF, self);
-                variableManager.put(Node.SELECTED_NODE, nodes);
-                variableManager.put(Edge.SELECTED_EDGE, edges);
             }
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));

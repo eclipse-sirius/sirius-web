@@ -309,6 +309,10 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="quickAccessTools" upperBound="-1"
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
+        eType="#//ToolSection" containment="true" eKeys="#//ToolSection/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reusedToolSection" upperBound="-1"
+        eType="#//ToolSection" eKeys="#//ToolSection/name"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -407,6 +411,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ToolSection" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
         defaultValueLiteral="Tool Section"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"

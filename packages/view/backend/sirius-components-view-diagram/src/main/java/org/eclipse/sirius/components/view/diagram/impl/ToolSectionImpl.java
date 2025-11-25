@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.view.diagram.ToolSection;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,6 +53,26 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
      * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -100,10 +122,35 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
      * @generated
      */
     @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.TOOL_SECTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.TOOL_SECTION__NAME:
                 return this.getName();
+            case DiagramPackage.TOOL_SECTION__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,6 +165,9 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
         switch (featureID) {
             case DiagramPackage.TOOL_SECTION__NAME:
                 this.setName((String) newValue);
+                return;
+            case DiagramPackage.TOOL_SECTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -134,6 +184,9 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
             case DiagramPackage.TOOL_SECTION__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
+            case DiagramPackage.TOOL_SECTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -148,6 +201,8 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
         switch (featureID) {
             case DiagramPackage.TOOL_SECTION__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case DiagramPackage.TOOL_SECTION__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -165,6 +220,8 @@ public abstract class ToolSectionImpl extends MinimalEObjectImpl.Container imple
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

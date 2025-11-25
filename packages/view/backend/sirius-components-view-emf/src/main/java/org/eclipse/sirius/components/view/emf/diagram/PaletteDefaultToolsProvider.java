@@ -37,12 +37,12 @@ import org.springframework.stereotype.Service;
 public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
     @Override
-    public List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
+    public List<ToolSection> createExtraToolSections(List<Object> diagramElementDescriptions, List<Object> diagramElements) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
-        if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
+        if (diagramElementDescriptions.size() == 1 && diagramElements.size() == 1 && diagramElementDescriptions.get(0) instanceof NodeDescription || diagramElementDescriptions.get(0) instanceof EdgeDescription) {
 
-            List<ITool> extraTools = this.createExtraTools(diagramElementDescription, diagramElement);
+            List<ITool> extraTools = this.createExtraTools(diagramElementDescriptions.get(0), diagramElements.get(0));
             var editToolSection = ToolSection.newToolSection("edit-section")
                     .label("Edit")
                     .iconURL(List.of())
@@ -55,8 +55,11 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     }
 
     @Override
-    public List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement) {
-        return this.createExtraTools(diagramElementDescription, diagramElement);
+    public List<ITool> createQuickAccessTools(List<Object> diagramElementDescriptions, List<Object> diagramElements) {
+        if (diagramElementDescriptions.size() == 1 && diagramElements.size() == 1) {
+            return this.createExtraTools(diagramElementDescriptions.get(0), diagramElements.get(0));
+        }
+        return List.of();
     }
 
     private List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public interface IPaletteToolsProvider {
 
-    List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement);
+    List<ToolSection> createExtraToolSections(List<Object> diagramElementDescriptions, List<Object> diagramElements);
 
-    List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement);
+    List<ITool> createQuickAccessTools(List<Object> diagramElementDescriptions, List<Object> diagramElements);
 }

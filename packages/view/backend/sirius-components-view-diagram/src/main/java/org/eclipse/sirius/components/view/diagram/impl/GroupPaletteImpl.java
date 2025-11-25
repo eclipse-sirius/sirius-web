@@ -20,10 +20,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.ToolSection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Group Palette</b></em>'. <!-- end-user-doc -->
@@ -34,6 +36,10 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getQuickAccessTools <em>Quick Access
  * Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getToolSections <em>Tool
+ * Sections</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getReusedToolSection <em>Reused Tool
+ * Section</em>}</li>
  * </ul>
  *
  * @generated
@@ -58,6 +64,26 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
      * @ordered
      */
     protected EList<NodeTool> quickAccessTools;
+
+    /**
+     * The cached value of the '{@link #getToolSections() <em>Tool Sections</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getToolSections()
+     * @generated
+     * @ordered
+     */
+    protected EList<ToolSection> toolSections;
+
+    /**
+     * The cached value of the '{@link #getReusedToolSection() <em>Reused Tool Section</em>}' reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReusedToolSection()
+     * @generated
+     * @ordered
+     */
+    protected EList<ToolSection> reusedToolSection;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -110,12 +136,40 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
      * @generated
      */
     @Override
+    public EList<ToolSection> getToolSections() {
+        if (this.toolSections == null) {
+            this.toolSections = new EObjectContainmentEList<>(ToolSection.class, this, DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS);
+        }
+        return this.toolSections;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<ToolSection> getReusedToolSection() {
+        if (this.reusedToolSection == null) {
+            this.reusedToolSection = new EObjectResolvingEList<>(ToolSection.class, this, DiagramPackage.GROUP_PALETTE__REUSED_TOOL_SECTION);
+        }
+        return this.reusedToolSection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
                 return ((InternalEList<?>) this.getQuickAccessTools()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -132,6 +186,10 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
                 return this.getNodeTools();
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
                 return this.getQuickAccessTools();
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+                return this.getToolSections();
+            case DiagramPackage.GROUP_PALETTE__REUSED_TOOL_SECTION:
+                return this.getReusedToolSection();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -153,6 +211,14 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
                 this.getQuickAccessTools().clear();
                 this.getQuickAccessTools().addAll((Collection<? extends NodeTool>) newValue);
                 return;
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                this.getToolSections().addAll((Collection<? extends ToolSection>) newValue);
+                return;
+            case DiagramPackage.GROUP_PALETTE__REUSED_TOOL_SECTION:
+                this.getReusedToolSection().clear();
+                this.getReusedToolSection().addAll((Collection<? extends ToolSection>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -171,6 +237,12 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
                 this.getQuickAccessTools().clear();
                 return;
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                return;
+            case DiagramPackage.GROUP_PALETTE__REUSED_TOOL_SECTION:
+                this.getReusedToolSection().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -187,6 +259,10 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
                 return this.quickAccessTools != null && !this.quickAccessTools.isEmpty();
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+                return this.toolSections != null && !this.toolSections.isEmpty();
+            case DiagramPackage.GROUP_PALETTE__REUSED_TOOL_SECTION:
+                return this.reusedToolSection != null && !this.reusedToolSection.isEmpty();
         }
         return super.eIsSet(featureID);
     }

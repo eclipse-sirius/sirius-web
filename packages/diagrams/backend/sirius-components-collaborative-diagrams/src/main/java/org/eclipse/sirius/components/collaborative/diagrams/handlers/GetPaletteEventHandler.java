@@ -103,6 +103,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
+
             if (optionalDiagramDescription.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 var optionalPaletteProvider = this.paletteProviders.stream().filter(paletteProvider -> paletteProvider.canHandle(diagramDescription, diagramElementIds)).findFirst();

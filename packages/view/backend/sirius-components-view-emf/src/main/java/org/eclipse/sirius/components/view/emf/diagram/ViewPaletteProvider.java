@@ -100,29 +100,28 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     @Override
     public boolean canHandle(DiagramDescription diagramDescription, List<String> diagramElementIds) {
-        return diagramElementIds.size() == 1 && this.viewRepresentationDescriptionPredicate.test(diagramDescription);
+        return this.viewRepresentationDescriptionPredicate.test(diagramDescription);
     }
 
     @Override
     public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElementDescriptions, List<Object> diagramElements, List<Object> targetElements) {
         Palette palette = null;
-        if (diagramElementDescriptions.size() != 1 || diagramElements.size() != 1) {
-            return palette;
-        }
         var diagramElementDescription = diagramElementDescriptions.get(0);
         var diagramElement = diagramElements.get(0);
-        Object targetElement = null;
+        VariableManager variableManager = new VariableManager();
         if (targetElements.size() == 1) {
-            targetElement = targetElements.get(0);
+            variableManager.put(VariableManager.SELF, targetElements.get(0));
+        } else {
+            variableManager.put(VariableManager.SELF, targetElements);
         }
 
-        VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetElement);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        variableManager.put(Edge.SELECTED_EDGES, diagramElements.stream().filter(Edge.class::isInstance).toList());
+        variableManager.put(Node.SELECTED_NODES, diagramElements.stream().filter(Node.class::isInstance).toList());
 
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
-        if (optionalDiagramDescription.isPresent()) {
+        if (optionalDiagramDescription.isPresent() && diagramElementDescriptions.size() == 1 && diagramElements.size() == 1) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
             var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
             if (diagramElement instanceof Diagram) {
@@ -134,6 +133,9 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 variableManager.put(Edge.SELECTED_EDGE, diagramElement);
                 palette = this.getEdgePalette(editingContext, diagramDescription, edgeDescription, diagramElement, variableManager, interpreter);
             }
+        } else if (optionalDiagramDescription.isPresent() && diagramElementDescriptions.size() > 1 && diagramElements.size() > 1) {
+            var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) optionalDiagramDescription.get().eContainer());
+            palette = getGroupDiagramPalette(optionalDiagramDescription.get(), variableManager, interpreter, diagramElementDescriptions, diagramElements, targetElements);
         }
         return palette;
     }
@@ -152,6 +154,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                     .forEach(paletteEntries::add);
 
             toolFinder.findToolSections(viewDiagramDescription).stream()
+                    .filter(toolSection -> this.checkPrecondition(toolSection, variableManager, interpreter))
                     .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
                     .forEach(paletteEntries::add);
 
@@ -208,6 +211,73 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
+    private Palette getGroupDiagramPalette(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter, List<Object> diagramElementDescriptions, List<Object> diagramElements, List<Object> targetElements) {
+        String paletteId = "siriusComponents://diagramGroupPalette";
+        var paletteEntries = new ArrayList<IPaletteEntry>();
+        List<ITool> quickAccessTools = new ArrayList<>();
+        List<ToolSection> extraToolSections = new ArrayList<>();
+        if (viewDiagramDescription.getGroupPalette() != null) {
+            this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramElementDescriptions, diagramElements)).flatMap(List::stream)
+                    .forEach(extraToolSections::add);
+
+            this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramElementDescriptions, diagramElements)).flatMap(List::stream)
+                    .forEach(quickAccessTools::add);
+
+            viewDiagramDescription.getGroupPalette().getNodeTools().stream()
+                    .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
+                    .map(nodeTool -> this.createNodeTool(nodeTool, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
+            viewDiagramDescription.getGroupPalette().getToolSections().stream()
+                    .filter(toolSection -> this.checkPrecondition(toolSection, variableManager, interpreter))
+                    .filter(org.eclipse.sirius.components.view.diagram.NodeToolSection.class::isInstance)
+                    .map(org.eclipse.sirius.components.view.diagram.NodeToolSection.class::cast)
+                    .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
+
+            viewDiagramDescription.getGroupPalette().getReusedToolSection().stream()
+                    .filter(toolSection -> {
+                        for (Object targetElement : targetElements) {
+                            var childVariableManager = variableManager.createChild();
+                            childVariableManager.put(VariableManager.SELF, targetElement);
+                            var isCandidate = this.checkPrecondition(toolSection, childVariableManager, interpreter);
+                            if (!isCandidate) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    })
+                    .filter(org.eclipse.sirius.components.view.diagram.NodeToolSection.class::isInstance)
+                    .map(org.eclipse.sirius.components.view.diagram.NodeToolSection.class::cast)
+                    .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
+
+            paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
+            paletteEntries.addAll(extraToolSections);
+            
+            viewDiagramDescription.getGroupPalette().getQuickAccessTools().stream()
+                    .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
+                    .map(nodeTool -> this.createNodeTool(nodeTool, variableManager, interpreter))
+                    .forEach(quickAccessTools::add);
+        }
+        return new Palette(paletteId, quickAccessTools, paletteEntries);
+    }
+    private ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+        String toolSelectionId = this.idProvider.apply(toolSection).toString();
+
+        var tools = new ArrayList<>(toolSection.getNodeTools().stream()
+                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                .toList());
+
+        return ToolSection.newToolSection(toolSelectionId)
+                .label(toolSection.getName())
+                .iconURL(List.of())
+                .tools(tools)
+                .build();
+    }
+
+
     private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, Object diagramElement, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
         Palette nodePalette = null;
@@ -217,11 +287,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
             if (optionalNodeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(List.of(nodeDescription), List.of(diagramElement))).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(List.of(nodeDescription), List.of(diagramElement))).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
 
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
@@ -242,6 +312,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .forEach(paletteEntries::add);
 
                 toolFinder.findToolSections(viewNodeDescription).stream()
+                        .filter(nodeToolSection -> this.checkPrecondition(nodeToolSection, variableManager, interpreter))
                         .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
@@ -312,11 +383,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
             var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(List.of(edgeDescription), List.of(diagramElement))).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(List.of(edgeDescription), List.of(diagramElement))).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
 
@@ -372,6 +443,15 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {
         String precondition = tool.getPreconditionExpression();
+        if (precondition != null && !precondition.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
+            return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);
+        }
+        return true;
+    }
+
+    private boolean checkPrecondition(org.eclipse.sirius.components.view.diagram.ToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+        String precondition = toolSection.getPreconditionExpression();
         if (precondition != null && !precondition.isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
             return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);

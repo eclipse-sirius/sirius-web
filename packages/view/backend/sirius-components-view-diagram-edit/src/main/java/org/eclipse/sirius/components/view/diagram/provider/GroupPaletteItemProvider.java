@@ -19,6 +19,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IChildCreationExtender;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -59,8 +60,22 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addReusedToolSectionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Reused Tool Section feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addReusedToolSectionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_GroupPalette_reusedToolSection_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GroupPalette_reusedToolSection_feature", "_UI_GroupPalette_type"), DiagramPackage.Literals.GROUP_PALETTE__REUSED_TOOL_SECTION,
+                true, false, true, null, null, null));
     }
 
     /**
@@ -77,6 +92,7 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
     }
@@ -138,6 +154,7 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(GroupPalette.class)) {
             case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
             case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -157,6 +174,12 @@ public class GroupPaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__QUICK_ACCESS_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createDiagramToolSection()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.GROUP_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createEdgeToolSection()));
     }
 
     /**
