@@ -61,31 +61,46 @@ public class SingleClickOnMultipleDiagramElementHandler implements ISingleClickO
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    public SingleClickOnMultipleDiagramElementHandler(ISingleClickOnOneDiagramElementVariableManagerProvider singleClickOnOneDiagramElementVariableManagerProvider, IToolExecutor toolExecutor, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewAQLInterpreterFactory viewAQLInterpreterFactory, IViewToolFinder viewToolFinder, IDiagramIdProvider diagramIdProvider) {
+    private final SingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler;
+
+    public SingleClickOnMultipleDiagramElementHandler(ISingleClickOnOneDiagramElementVariableManagerProvider singleClickOnOneDiagramElementVariableManagerProvider, IToolExecutor toolExecutor, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewAQLInterpreterFactory viewAQLInterpreterFactory, IViewToolFinder viewToolFinder, IDiagramIdProvider diagramIdProvider, SingleClickOnOneDiagramElementHandler singleClickOnOneDiagramElementHandler) {
         this.singleClickOnOneDiagramElementVariableManagerProvider = Objects.requireNonNull(singleClickOnOneDiagramElementVariableManagerProvider);
         this.toolExecutor = Objects.requireNonNull(toolExecutor);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.viewAQLInterpreterFactory = Objects.requireNonNull(viewAQLInterpreterFactory);
         this.viewToolFinder = Objects.requireNonNull(viewToolFinder);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.singleClickOnOneDiagramElementHandler = Objects.requireNonNull(singleClickOnOneDiagramElementHandler);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds) {
-        return this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId).isPresent();
+        return this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId).isPresent() ||
+                this.viewToolFinder.findReusedGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId).isPresent();
     }
 
     @Override
     public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
         DiagramContext diagramContext = new DiagramContext(diagram);
-
+        IStatus result = new Failure("");
         var optionalNodeTool = this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId);
         if (optionalNodeTool.isPresent()) {
             var nodeTool = optionalNodeTool.get();
             return this.executeTool(editingContext, diagramContext, diagram.getDescriptionId(), diagramElementIds, nodeTool, variables, toolId);
+        } else {
+            var optionalReusedNodeTool = this.viewToolFinder.findReusedGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId);
+            if (optionalReusedNodeTool.isPresent()) {
+                var nodeTool = optionalReusedNodeTool.get();
+
+                for (String diagramElementId : diagramElementIds) {
+                    result = singleClickOnOneDiagramElementHandler.executeTool(editingContext, diagramContext, diagram.getDescriptionId(), diagramElementId, nodeTool, variables, toolId);
+                }
+            } else {
+                result = new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
+            }
         }
 
-        return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
+        return result;
     }
 
     private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramDescriptionId, List<String> diagramElementId, NodeTool nodeTool, List<ToolVariable> variables, String toolId) {

@@ -66,6 +66,30 @@ public class GroupPaletteBuilder {
         return this;
     }
 
+    /**
+     * Setter for ToolSections.
+     *
+     * @generated
+     */
+    public GroupPaletteBuilder toolSections(org.eclipse.sirius.components.view.diagram.ToolSection ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ToolSection value : values) {
+            this.getGroupPalette().getToolSections().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for ReusedToolSection.
+     *
+     * @generated
+     */
+    public GroupPaletteBuilder reusedToolSection(org.eclipse.sirius.components.view.diagram.ToolSection ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ToolSection value : values) {
+            this.getGroupPalette().getReusedToolSection().add(value);
+        }
+        return this;
+    }
+
 
 }
 

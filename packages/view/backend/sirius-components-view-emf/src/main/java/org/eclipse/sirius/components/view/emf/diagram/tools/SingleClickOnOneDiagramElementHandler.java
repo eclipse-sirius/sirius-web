@@ -108,7 +108,7 @@ public class SingleClickOnOneDiagramElementHandler implements ISingleClickOnOneD
         return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
     }
 
-    private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramDescriptionId, String diagramElementId, NodeTool nodeTool, List<ToolVariable> variables, String toolId) {
+    public IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramDescriptionId, String diagramElementId, NodeTool nodeTool, List<ToolVariable> variables, String toolId) {
         IStatus result = new Failure("");
         var optionalViewDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescriptionId);
         if (optionalViewDiagramDescription.isPresent() && optionalViewDiagramDescription.get().eContainer() instanceof View view) {

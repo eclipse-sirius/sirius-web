@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.ToolSection#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getToolSection()
@@ -52,5 +54,28 @@ public interface ToolSection extends EObject {
      * @generated
      */
     void setName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getToolSection_PreconditionExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getPreconditionExpression
+     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
+     * @see #getPreconditionExpression()
+     * @generated
+     */
+    void setPreconditionExpression(String value);
 
 } // ToolSection

@@ -152,6 +152,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                     .forEach(paletteEntries::add);
 
             toolFinder.findToolSections(viewDiagramDescription).stream()
+                    .filter(toolSection -> this.checkPrecondition(toolSection, variableManager, interpreter))
                     .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
                     .forEach(paletteEntries::add);
 
@@ -242,6 +243,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .forEach(paletteEntries::add);
 
                 toolFinder.findToolSections(viewNodeDescription).stream()
+                        .filter(nodeToolSection -> this.checkPrecondition(nodeToolSection, variableManager, interpreter))
                         .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
@@ -372,6 +374,15 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {
         String precondition = tool.getPreconditionExpression();
+        if (precondition != null && !precondition.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
+            return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);
+        }
+        return true;
+    }
+
+    private boolean checkPrecondition(org.eclipse.sirius.components.view.diagram.ToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+        String precondition = toolSection.getPreconditionExpression();
         if (precondition != null && !precondition.isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), precondition);
             return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);
