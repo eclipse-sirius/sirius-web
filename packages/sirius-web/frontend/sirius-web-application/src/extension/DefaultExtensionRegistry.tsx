@@ -160,53 +160,45 @@ defaultExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, {
  * Used to register all the views available in the left and right of the workbench
  *
  *******************************************************************************/
-
 const workbenchViewContributions: WorkbenchViewContribution[] = [
   {
     id: 'explorer',
-    side: 'left',
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
   },
   {
     id: 'validation',
-    side: 'left',
     title: 'Validation',
     icon: <WarningIcon />,
     component: ValidationView,
   },
   {
     id: 'search',
-    side: 'left',
     title: 'Search',
     icon: <SearchIcon />,
     component: SearchView,
   },
   {
     id: 'details',
-    side: 'right',
     title: 'Details',
     icon: <MenuIcon />,
     component: DetailsView,
   },
   {
     id: 'query',
-    side: 'right',
     title: 'Query',
     icon: <PlayArrowIcon />,
     component: QueryView,
   },
   {
     id: 'representations',
-    side: 'right',
     title: 'Representations',
     icon: <Filter />,
     component: RepresentationsView,
   },
   {
     id: 'related-elements',
-    side: 'right',
     title: 'Related Elements',
     icon: <LinkIcon />,
     component: RelatedElementsView,

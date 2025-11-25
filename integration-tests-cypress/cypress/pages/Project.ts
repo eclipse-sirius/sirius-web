@@ -81,6 +81,7 @@ export class Project {
     cy.get('@consoleDebug').should('be.calledWith', 'query getRepresentationMetadata: response received');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllTreeFilters: response received');
     cy.get('@consoleDebug').should('be.calledWith', 'query getAllExplorerDescriptions: response received');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getWorkbenchConfiguration: response received');
   }
 }
 

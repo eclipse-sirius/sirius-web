@@ -100,11 +100,11 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
 
     const leftInitialState: PanelState = {
       selectedContributionIds: leftInitialActiveConfigurationIds,
-      isOpen: leftPanelConfiguration?.isOpen ?? true,
+      isOpen: leftPanelConfiguration?.isOpen ?? false,
     };
     const rightInitialState: PanelState = {
       selectedContributionIds: rightInitialActiveConfigurationIds,
-      isOpen: rightPanelConfiguration?.isOpen ?? true,
+      isOpen: rightPanelConfiguration?.isOpen ?? false,
     };
 
     const { classes } = usePanelStyles();
@@ -249,7 +249,6 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     };
 
     const collapsedSize: number = 0;
-
     return (
       <div style={{ display: 'flex' }}>
         <Sidebar

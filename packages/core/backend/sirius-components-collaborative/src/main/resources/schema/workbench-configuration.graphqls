@@ -1,0 +1,34 @@
+extend type EditingContext {
+    workbenchConfiguration: WorkbenchConfiguration!
+}
+
+type WorkbenchConfiguration {
+    mainPanel : WorkbenchMainPanelConfiguration!
+    workbenchPanels: [WorkbenchSidePanelConfiguration!]!
+}
+
+type WorkbenchMainPanelConfiguration {
+    id: String!
+    representationEditors: [WorkbenchRepresentationEditorConfiguration!]!
+}
+
+type WorkbenchRepresentationEditorConfiguration {
+    representationId: String!
+    isActive: Boolean!
+}
+
+type WorkbenchSidePanelConfiguration {
+    id: String!
+    isOpen: Boolean!
+    views: [ViewConfiguration!]!
+}
+
+interface ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+}
+
+type DefaultViewConfiguration implements ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+}

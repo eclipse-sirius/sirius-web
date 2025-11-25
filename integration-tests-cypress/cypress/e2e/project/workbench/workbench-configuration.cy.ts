@@ -19,6 +19,7 @@ import { Workbench } from '../../../workbench/Workbench';
 import {
   workbenchConfigurationWithClosedPanels,
   workbenchConfigurationWithExpandedPanels,
+  workbenchConfigurationWithPapayaView,
   workbenchConfigurationWithQueryView,
 } from './workbench-configuration.data';
 
@@ -77,6 +78,29 @@ describe('Workbench Configuration Resolution', () => {
         workbench.checkRepresentationEditorTabs([]);
       });
     });
+
+    context(
+      'When opening the project with a configuration including a view that should not be opened with this project',
+      () => {
+        let workbench: Workbench;
+        beforeEach(() => {
+          new Project().visit(projectId, undefined, {
+            qs: {
+              workbenchConfiguration: JSON.stringify(workbenchConfigurationWithPapayaView),
+            },
+          });
+          workbench = new Workbench();
+        });
+
+        it('Then, the view should not be displayed at all', () => {
+          workbench.checkPanelContent('right', ['Details']);
+          workbench.isIconHighlighted('right', 'Query', false);
+          workbench.isIconHighlighted('right', 'Representations', false);
+          workbench.isIconHighlighted('right', 'Related Elements', false);
+          cy.getByTestId(`sidebar-right`).findByTestId(`viewselector-Papaya view`).should('not.exist');
+        });
+      }
+    );
 
     context('When opening the project with a workbench configuration where the side panels are collapsed', () => {
       let workbench: Workbench;

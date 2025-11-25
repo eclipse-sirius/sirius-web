@@ -246,18 +246,6 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       }
     }, [onRepresentationSelected, initialRepresentationSelected, state.displayedRepresentationMetadata]);
 
-    const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
-    const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
-
-    const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
-    for (const workbenchViewContribution of workbenchViewContributions) {
-      if (workbenchViewContribution.side === 'left') {
-        workbenchViewLeftSideContributions.push(workbenchViewContribution);
-      } else if (workbenchViewContribution.side === 'right') {
-        workbenchViewRightSideContributions.push(workbenchViewContribution);
-      }
-    }
-
     const leftPanelConfiguration: WorkbenchSidePanelConfiguration | null =
       (initialWorkbenchConfiguration?.workbenchPanels ?? []).find(
         (configuration) => configuration && configuration.id === 'left'
@@ -266,6 +254,19 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
       (initialWorkbenchConfiguration?.workbenchPanels ?? []).find(
         (configuration) => configuration && configuration.id === 'right'
       ) ?? null;
+
+    const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
+    const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
+
+    const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
+    for (const workbenchViewContribution of workbenchViewContributions) {
+      if (leftPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
+        workbenchViewLeftSideContributions.push(workbenchViewContribution);
+      }
+      if (rightPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
+        workbenchViewRightSideContributions.push(workbenchViewContribution);
+      }
+    }
 
     const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
     let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
@@ -315,7 +316,6 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
         return refPanelsHandle.current?.getWorkbenchPanelHandles() ?? [];
       },
     };
-
     return (
       <WorkbenchContext.Provider value={workbenchContextValue}>
         <Panels
