@@ -20,8 +20,9 @@
 Tools are no longer converted with the diagram.
 You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 `IToolDiagramExecutor` has been rename to `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] Nodes and edges have a new `deletable` attribute in the GraphQL Schema that custom nodes must consider in their converter.
+On the backend, the node and edge's `deleteHandler` can now be `null` if no semantic deletion tool is defined for this element.
+`IViewNodeDeleteHandler`, which only existed to provide a non-null handler able to tell if there was a semantic deletion tool, has been removed.
 
 === Dependency update
 
@@ -40,8 +41,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
 
 == 2025.12.0 (work in progress)
 

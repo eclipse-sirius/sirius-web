@@ -47,6 +47,7 @@ const toImageNode = (
     pinned,
     style,
     labelEditable,
+    deletable,
     customizedStyleProperties,
   } = gqlNode;
 
@@ -85,6 +86,7 @@ const toImageNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     labelEditable,
+    deletable,
     positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
     isNew,

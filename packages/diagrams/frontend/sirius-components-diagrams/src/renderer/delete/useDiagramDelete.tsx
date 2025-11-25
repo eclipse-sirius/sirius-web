@@ -38,14 +38,16 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
 
       if (key === 'Delete' && editingContextId && diagramId && !readOnly) {
         const nodeToDeleteIds: string[] = getNodes()
-          .filter((node) => node.selected)
+          .filter((node) => node.selected && node.data.deletable)
           .map((node) => node.id);
         const edgeToDeleteIds: string[] = getEdges()
-          .filter((edge) => edge.selected)
+          .filter((edge) => edge.selected && edge.data?.deletable)
           .map((edge) => edge.id);
-        showDeletionConfirmation(() => {
-          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, edgeToDeleteIds);
-        });
+        if (nodeToDeleteIds.length + edgeToDeleteIds.length > 0) {
+          showDeletionConfirmation(() => {
+            deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, edgeToDeleteIds);
+          });
+        }
       }
     },
     [deleteDiagramElements]

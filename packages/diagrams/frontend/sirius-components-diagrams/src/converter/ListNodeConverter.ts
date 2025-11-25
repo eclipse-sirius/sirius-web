@@ -53,6 +53,7 @@ const toListNode = (
     pinned,
     style,
     labelEditable,
+    deletable,
     customizedStyleProperties,
   } = gqlNode;
 
@@ -88,6 +89,7 @@ const toListNode = (
     faded: state === GQLViewModifier.Faded,
     pinned,
     labelEditable,
+    deletable,
     nodeDescription,
     connectionHandles,
     defaultWidth: gqlNode.defaultWidth,
