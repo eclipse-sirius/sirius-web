@@ -20,4 +20,8 @@ package org.eclipse.sirius.web.data;
 public class FlowIdentifier {
 
     public static final String PROJECT_ID = "d419bbee-9cba-4b85-972c-660d875ad705";
+
+    public static final String FLOW_EDITING_CONTEXT_ID = "6dfe736e-c582-4148-8dcf-9b1baa6e3a12";
+
+    public static final String FLOW_ROOT_SYSTEM_OBJECT = "5b75dcbe-10af-452a-af98-4461ee13ea40";
 }

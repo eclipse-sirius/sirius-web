@@ -24,13 +24,13 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto Layout</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getNodeDescriptions <em>Node
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getEdgeDescriptions <em>Edge
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()

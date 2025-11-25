@@ -40,14 +40,14 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto
  * Layout</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
+ * Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getNodeDescriptions <em>Node
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getEdgeDescriptions <em>Edge
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getArrangeLayoutDirection
  * <em>Arrange Layout Direction</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
- * Palette</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,6 +83,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected DiagramPalette palette;
+
+    /**
+     * The cached value of the '{@link #getGroupPalette() <em>Group Palette</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGroupPalette()
+     * @generated
+     * @ordered
+     */
+    protected GroupPalette groupPalette;
 
     /**
      * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
@@ -123,16 +133,6 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected ArrangeLayoutDirection arrangeLayoutDirection = ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getGroupPalette() <em>Group Palette</em>}' containment reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getGroupPalette()
-     * @generated
-     * @ordered
-     */
-    protected GroupPalette groupPalette;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -331,12 +331,12 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.basicSetGroupPalette(null, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getEdgeDescriptions()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
-                return this.basicSetGroupPalette(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -353,14 +353,14 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.isAutoLayout();
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.getPalette();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.getGroupPalette();
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.getNodeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return this.getEdgeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.getArrangeLayoutDirection();
-            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
-                return this.getGroupPalette();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -380,6 +380,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) newValue);
+                return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
                 this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
@@ -390,9 +393,6 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection((ArrangeLayoutDirection) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
-                this.setGroupPalette((GroupPalette) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -412,6 +412,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) null);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) null);
+                return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
                 return;
@@ -420,9 +423,6 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection(ARRANGE_LAYOUT_DIRECTION_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
-                this.setGroupPalette((GroupPalette) null);
                 return;
         }
         super.eUnset(featureID);
@@ -440,14 +440,14 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.palette != null;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.groupPalette != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.arrangeLayoutDirection != ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
-            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
-                return this.groupPalette != null;
         }
         return super.eIsSet(featureID);
     }

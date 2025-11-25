@@ -47,6 +47,14 @@ INSERT INTO document (
              }
            },
            {
+             "id": "f52b7dbd-d895-4c95-8912-91a1642508cb",
+             "eClass": "flow:CompositeProcessor",
+             "data": {
+               "name": "CompositeProcessor2",
+               "elements": []
+             }
+           },
+           {
              "id": "6582c159-49d5-4cf6-b4e4-b0655a6206f8",
              "eClass": "flow:DataSource",
              "data": {
