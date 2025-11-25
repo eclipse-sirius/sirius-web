@@ -39,6 +39,7 @@ import { UploadDocumentModalContribution } from './TreeToolBarContributions/Uplo
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
+import { useWorkbenchConfiguration } from './useWorkbenchConfiguration';
 import { WorkbenchOmnibox } from './WorkbenchOmnibox';
 
 const PROJECT_ID_SEPARATOR = '@';
@@ -62,15 +63,24 @@ export const EditProjectView = () => {
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
   const name: string | null =
     separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
-  const workbenchConfiguration: WorkbenchConfiguration | null = urlSearchParams.has('workbenchConfiguration')
-    ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
-    : null;
 
   const [state, setState] = useState<EditProjectViewState>({
     project: null,
     representation: null,
-    workbenchConfiguration,
   });
+
+  let workbenchConfiguration: WorkbenchConfiguration | null = null;
+  const { workbenchConfiguration: gqlWorkbenchConfiguration, loading: workbenchLoading } = useWorkbenchConfiguration(
+    state.project ? state.project.currentEditingContext.id : null
+  );
+  if (gqlWorkbenchConfiguration) {
+    // TODO merge the URL configuration into the GQL one and make sure users can't add views to the URL they shouldn't have access to.
+    workbenchConfiguration = gqlWorkbenchConfiguration;
+  } else {
+    workbenchConfiguration = urlSearchParams.has('workbenchConfiguration')
+      ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
+      : null;
+  }
 
   useEffect(() => {
     if (urlSearchParams.has('workbenchConfiguration')) {
@@ -79,7 +89,11 @@ export const EditProjectView = () => {
     }
   }, [urlSearchParams]);
 
-  const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
+  const { data, loading: projectAndRepresentationLoading } = useProjectAndRepresentationMetadata(
+    projectId,
+    name,
+    representationId
+  );
   useEffect(() => {
     if (data) {
       const { project } = data.viewer;
@@ -125,13 +139,14 @@ export const EditProjectView = () => {
     return `/projects/${rawProjectId}/edit/${representationId}`;
   };
 
-  const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
+  const isMissing =
+    !projectAndRepresentationLoading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
   if (isMissing) {
     return <Navigate to="/errors/404" replace />;
   }
 
   let content: React.ReactNode = null;
-  if (state.project && state.project.currentEditingContext) {
+  if (!workbenchLoading && state.project && state.project.currentEditingContext) {
     const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
     const entries: SelectionEntry[] =
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
@@ -154,7 +169,7 @@ export const EditProjectView = () => {
                         initialRepresentationSelected={state.representation}
                         onRepresentationSelected={onRepresentationSelected}
                         readOnly={!state.project.capabilities.canEdit}
-                        initialWorkbenchConfiguration={state.workbenchConfiguration}
+                        initialWorkbenchConfiguration={workbenchConfiguration}
                         ref={refWorkbenchHandle}
                       />
                     </ImpactAnalysisDialogContextProvider>
