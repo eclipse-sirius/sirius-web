@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto;
 
-import { WorkbenchViewConfiguration } from '@eclipse-sirius/sirius-components-core';
-import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
-
-export interface DetailsViewState {
-  form: GQLForm | null;
-  canEdit: boolean;
-  objectIds: string[];
-  pinned: boolean;
-}
-
-export interface DetailsViewConfiguration extends WorkbenchViewConfiguration {
-  selectedPageId: string;
+/**
+ * The configuration of a view.
+ *
+ * @author gdaniel
+ */
+public record DefaultViewConfiguration(String id, boolean isActive) implements IViewConfiguration {
 }
