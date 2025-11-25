@@ -85,7 +85,6 @@ export interface RepresentationNavigationHandle {
 
 export interface WorkbenchViewContribution {
   id: string;
-  side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
   component: ForwardRefExoticComponent<

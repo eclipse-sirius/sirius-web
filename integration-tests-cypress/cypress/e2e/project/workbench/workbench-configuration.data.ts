@@ -73,3 +73,16 @@ export const workbenchConfigurationWithQueryView: WorkbenchConfiguration = {
     },
   ],
 };
+
+const papayaViewConfiguration = { id: 'papaya-view', isActive: true };
+
+export const workbenchConfigurationWithPapayaView: WorkbenchConfiguration = {
+  mainPanel: null,
+  workbenchPanels: [
+    {
+      id: 'right',
+      isOpen: true,
+      views: [papayaViewConfiguration],
+    },
+  ],
+};

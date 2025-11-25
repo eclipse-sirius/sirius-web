@@ -49,14 +49,12 @@ export const WorkbenchTestEnvironment = ({ initialSelection, children }: Workben
       {
         id: 'explorer-view',
         title: 'Explorer View',
-        side: 'left',
         icon: <ChevronLeftIcon />,
         component: ExplorerView,
       },
       {
         id: 'details-view',
         title: 'Details View',
-        side: 'right',
         icon: <ChevronRightIcon />,
         component: DetailsView,
       },
