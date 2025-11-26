@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, XYPosition, InternalNode } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -23,6 +24,7 @@ import {
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
@@ -38,7 +40,8 @@ const toRectangularNode = (
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
-  gqlEdges: GQLEdge[]
+  gqlEdges: GQLEdge[],
+  previousNode: InternalNode<Node<NodeData>> | undefined
 ): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
@@ -148,10 +151,18 @@ const toRectangularNode = (
     node.width = data.defaultWidth ?? defaultWidth;
   }
   if (gqlNodeLayoutData?.size.height && gqlNodeLayoutData?.size.width) {
-    node.measured = {
-      height: gqlNodeLayoutData.size.height,
-      width: gqlNodeLayoutData.size.width,
-    };
+    if (
+      !previousNode ||
+      previousNode.position.x !== node.position.x ||
+      previousNode.position.y !== node.position.y ||
+      previousNode.width !== node.width ||
+      previousNode.height !== node.height
+    ) {
+      node.measured = {
+        height: gqlNodeLayoutData.size.height,
+        width: gqlNodeLayoutData.size.width,
+      };
+    }
   }
   return node;
 };
@@ -170,11 +181,22 @@ export class RectangleNodeConverter implements INodeConverter {
     isBorderNode: boolean,
     nodes: Node[],
     diagramDescription: GQLDiagramDescription,
-    nodeDescriptions: GQLNodeDescription[]
+    nodeDescriptions: GQLNodeDescription[],
+    nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(
+        toRectangularNode(
+          gqlDiagram,
+          gqlNode,
+          parentNode,
+          nodeDescription,
+          isBorderNode,
+          gqlEdges,
+          nodeLookup.get(gqlNode.id)
+        )
+      );
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -192,7 +214,8 @@ export class RectangleNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      borderNodeDescriptions
+      borderNodeDescriptions,
+      nodeLookup
     );
     convertEngine.convertNodes(
       gqlDiagram,
@@ -200,7 +223,8 @@ export class RectangleNodeConverter implements INodeConverter {
       gqlNode,
       nodes,
       diagramDescription,
-      childNodeDescriptions
+      childNodeDescriptions,
+      nodeLookup
     );
   }
 }

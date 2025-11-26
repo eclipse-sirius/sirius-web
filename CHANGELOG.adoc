@@ -112,6 +112,8 @@ If you want to use this limit on your custom nodes, you must either use the `Sir
 - https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes.
 As such, the variables `droppedNode` and `droppedElement` which are exposed in the body of such tools and which only supported a single node should stop being used and replaced with `droppedNodes` and `droppedElements` representing all the nodes (and corresponding semantic elements) dropped at once.
 _Drop Node Tool_ definitions need to be adapted to handle these new variables.
+- https://github.com/eclipse-sirius/sirius-web/issues/5842[#5842] [diagram] `IConvertEngine` interface has been changed, `convertNodes` now uses `nodeLookup`.
+The node custom converters must be updated, an example with these changes is available with `EllipseNodeConverter`.
 
 
 === Dependency update
@@ -157,6 +159,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5762[#5762] [diagram] Fix an issue where the selection requested by a diagram tool was no longer applied globaly to the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/5756[#5756] [diagram] Fix handle not always visible when the edge is selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5866[#5866] [diagram] Fix an issue where the direct edit was not enabled when  special character (such as = or $) was hit.
+- https://github.com/eclipse-sirius/sirius-web/issues/5842[#5842] [diagram] Prevent edge handles from being lost after revealing an edge
 
 
 === New Features
