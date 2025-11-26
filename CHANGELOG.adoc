@@ -157,6 +157,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5762[#5762] [diagram] Fix an issue where the selection requested by a diagram tool was no longer applied globaly to the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/5756[#5756] [diagram] Fix handle not always visible when the edge is selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5866[#5866] [diagram] Fix an issue where the direct edit was not enabled when  special character (such as = or $) was hit.
+- [sirius-web] Fix an issue preventing the creation of a representation with some specific characters
 
 
 === New Features
