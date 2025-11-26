@@ -16,6 +16,7 @@ import { ForwardedRef, useImperativeHandle } from 'react';
 
 export const useExplorerViewHandle = (
   id: string,
+  treeId: string | null,
   treeFilters: TreeFilter[],
   activeTreeDescriptionId: string | null,
   applySelection: (selection: Selection) => void,
@@ -33,5 +34,5 @@ export const useExplorerViewHandle = (
       applySelection,
     };
   };
-  useImperativeHandle(ref, workbenchViewHandleProvider, [id, treeFilters, activeTreeDescriptionId]);
+  useImperativeHandle(ref, workbenchViewHandleProvider, [id, treeId, treeFilters, activeTreeDescriptionId]);
 };

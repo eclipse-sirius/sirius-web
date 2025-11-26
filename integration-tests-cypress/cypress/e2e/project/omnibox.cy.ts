@@ -42,13 +42,24 @@ describe('Project - Omnibox', () => {
       omnibox.sendQuery('').findByTestId('DSP').click();
       omnibox.shouldBeClosed();
 
-      explorer.revealGlobalSelectionInExplorer();
       explorer.getSelectedTreeItems().contains('DSP').should('exist');
 
       const diagram = new Diagram();
       diagram.getSelectedNodes('Topography', 'DSP').should('be.visible');
 
       cy.getByTestId('page-tab-DSP').should('be.visible');
+    });
+
+    it('Then selecting an element from the omnibox right after project opening reveals it in the Explorer', () => {
+      const explorer = new Explorer();
+
+      const omnibox = new Omnibox();
+      omnibox.display();
+      omnibox.sendQuery('').findByTestId('Search').click();
+      omnibox.sendQuery('').findByTestId('DSP').click();
+      omnibox.shouldBeClosed();
+
+      explorer.getSelectedTreeItems().contains('DSP').should('exist');
     });
   });
 });
