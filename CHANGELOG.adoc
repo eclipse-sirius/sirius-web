@@ -34,6 +34,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5855[#5855] [diagram] Prevent hidden edges from being considered for CrossFade Tunnel detection
+- https://github.com/eclipse-sirius/sirius-web/issues/5832[#5832] [sirius-web] Fix an error when duplicating a project while a representation is opened in the original project.
 
 === New Features
 
