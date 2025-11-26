@@ -50,6 +50,36 @@ test.describe('diagram - direct edit', () => {
     await expect(editedNode.nodeLocator).toBeAttached();
   });
 
+  test('when a new node is created, then we can start direct edit by typing specials characters', async ({ page }) => {
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 250, y: 250 } });
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('toolSection-Creation Tools').click();
+    await page.getByTestId('tool-Composite Processor').click();
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor2');
+    await expect(playwrightNode.nodeLocator).toBeAttached();
+
+    await playwrightNode.click();
+    await page.keyboard.type('=');
+    await page.keyboard.press('Enter');
+    await expect(playwrightNode.nodeLocator).not.toBeAttached();
+    const editedNode = new PlaywrightNode(page, '=');
+    await expect(editedNode.nodeLocator).toBeAttached();
+
+    await editedNode.click();
+    await page.keyboard.type('$');
+    await page.keyboard.press('Enter');
+    await expect(editedNode.nodeLocator).not.toBeAttached();
+    const dollarNode = new PlaywrightNode(page, '$');
+    await expect(dollarNode.nodeLocator).toBeAttached();
+
+    await dollarNode.click();
+    await page.keyboard.type('~');
+    await page.keyboard.press('Enter');
+    await expect(dollarNode.nodeLocator).not.toBeAttached();
+    const tildeNode = new PlaywrightNode(page, '~');
+    await expect(tildeNode.nodeLocator).toBeAttached();
+  });
+
   test('when opening the palette on a node, then we can use direct edit with the quicktool', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'DataSource1');
     await playwrightNode.openPalette();

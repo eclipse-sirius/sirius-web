@@ -19,7 +19,7 @@ import { DiagramDirectEditContext } from './DiagramDirectEditContext';
 import { DiagramDirectEditContextValue } from './DiagramDirectEditContext.types';
 import { UseDiagramDirectEditValue } from './useDiagramDirectEdit.types';
 
-const directEditActivationValidCharacters = /[\p{L}\p{N}\p{P}]/u;
+const directEditActivationValidCharacters = /[\p{L}\p{N}\p{P}\p{S}\p{M}]/u;
 
 export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
