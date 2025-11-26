@@ -22,10 +22,12 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { useFullscreen } from '../hooks/useFullScreen';
 import { PortalToolbarProps, PortalToolbarState } from './PortalToolbar.types';
+import { useTranslation } from 'react-i18next';
 
 export const PortalToolbar = ({ representationId, fullscreenNode, portalMode, setPortalMode }: PortalToolbarProps) => {
   const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
   const [state, setState] = useState<PortalToolbarState>({ modal: null });
+  const { t } = useTranslation('sirius-components-portals', { keyPrefix: 'portalToolbar' });
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
@@ -39,28 +41,28 @@ export const PortalToolbar = ({ representationId, fullscreenNode, portalMode, se
     <>
       <Paper data-testid="portal-toolbar">
         {fullscreen ? (
-          <Tooltip title="Exit full screen mode">
-            <IconButton size="small" aria-label="exit full screen mode" onClick={() => setFullscreen(false)}>
+          <Tooltip title={t('exitFullscreen')}>
+            <IconButton size="small" aria-label={t('exitFullscreen')} onClick={() => setFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Toggle full screen mode">
-            <IconButton size="small" aria-label="toggle full screen mode" onClick={() => setFullscreen(true)}>
+          <Tooltip title={t('toggleFullscreen')}>
+            <IconButton size="small" aria-label={t('toggleFullscreen')} onClick={() => setFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip title="Share portal">
-          <IconButton size="small" aria-label="share portal" onClick={onShare} data-testid="share">
+        <Tooltip title={t('sharePortal')}>
+          <IconButton size="small" aria-label={t('sharePortal')} onClick={onShare} data-testid="share">
             <ShareIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit portal configuration">
+        <Tooltip title={t('editPortalConfiguration')}>
           <span>
             <IconButton
               size="small"
-              aria-label="edit portal configuration"
+              aria-label={t('editPortalConfiguration')}
               disabled={portalMode === 'edit' || portalMode === 'read-only'}
               onClick={() => setPortalMode('edit')}
               data-testid="portal-edit-portal-mode">
@@ -68,11 +70,11 @@ export const PortalToolbar = ({ representationId, fullscreenNode, portalMode, se
             </IconButton>
           </span>
         </Tooltip>
-        <Tooltip title="Edit representations">
+        <Tooltip title={t('editRepresentations')}>
           <span>
             <IconButton
               size="small"
-              aria-label="edit representations"
+              aria-label={t('editRepresentations')}
               disabled={portalMode === 'direct' || portalMode === 'read-only'}
               onClick={() => setPortalMode('direct')}
               data-testid="portal-edit-representations-mode">

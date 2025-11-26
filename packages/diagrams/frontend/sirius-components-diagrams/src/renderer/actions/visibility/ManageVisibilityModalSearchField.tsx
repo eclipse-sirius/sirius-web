@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteSearchFieldProps, PaletteSearchFieldState } from './ManageVisibilityModalSearchField.types';
 
@@ -36,7 +37,7 @@ const usePaletteSearchFieldStyle = makeStyles()((theme) => ({
 export const ManageVisibilityModalSearchField = ({ onValueChanged }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
   const ref = useRef<HTMLDivElement | null>(null);
-
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'manageVisibilityModalSearchField' });
   const { classes } = usePaletteSearchFieldStyle();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +59,7 @@ export const ManageVisibilityModalSearchField = ({ onValueChanged }: PaletteSear
       autoFocus
       value={state.value}
       size="small"
-      placeholder="Filter nodes"
+      placeholder={t('filterNodes')}
       className={classes.paletteSearchField}
       ref={ref}
       data-testid="manage_visibility_textfield"

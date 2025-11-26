@@ -38,6 +38,7 @@ import { RepresentationsViewState } from './RepresentationsView.types';
 import { useRepresentationsViewHandle } from './useRepresentationsViewHandle';
 import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
 import { GQLFormRefreshedEventPayload } from './useRepresentationsViewSubscription.types';
+import { useTranslation } from 'react-i18next';
 
 const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -77,6 +78,7 @@ const isFormRefreshedEventPayload = (
 
 export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   ({ id, editingContextId, readOnly }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'representationsView' });
     const [state, setState] = useState<RepresentationsViewState>({
       form: null,
       objectIds: [],
@@ -152,7 +154,7 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     if (complete || skip) {
       contents = (
         <div className={classes.idle}>
-          <Typography variant="subtitle2">No object selected</Typography>
+          <Typography variant="subtitle2">{t('noObjectSelected')}</Typography>
         </div>
       );
     } else {

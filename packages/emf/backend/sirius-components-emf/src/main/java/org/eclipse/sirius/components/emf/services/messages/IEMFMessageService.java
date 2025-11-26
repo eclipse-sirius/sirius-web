@@ -27,6 +27,8 @@ public interface IEMFMessageService {
 
     String upperBoundaryReached(String newInstanceClass, String feature);
 
+    String coreProperties();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -51,6 +53,11 @@ public interface IEMFMessageService {
 
         @Override
         public String upperBoundaryReached(String newInstanceClass, String feature) {
+            return "";
+        }
+
+        @Override
+        public String coreProperties() {
             return "";
         }
     }

@@ -5,5 +5,26 @@
   "shareRepresentationModal": {
     "copied": "(copié dans le presse-papier)",
     "link": "Lien partageable"
+  },
+  "omniboxButton": {
+    "runCommands": "Exécuter des commandes..."
+  },
+  "omnibox": {
+    "searchElement": "Tapez 'Entrée' pour rechercher un élément...",
+    "searchCommand": "Tapez 'Entrée' pour rechercher une commande..."
+  },
+  "omniboxCommandList": {
+    "fetchingResult": "Récupération des résultats...",
+    "noResult": "Aucun résultat"
+  },
+  "impactAnalysisDialog": {
+    "execute": "Exécuter"
+  },
+  "reportViewer": {
+    "theToolWillHaveEffects": "L'outil {{label}} aura les effets suivants sur votre modèle:",
+    "elementsAdded": "Éléments ajoutés: {{nbElementCreated}}",
+    "elementsDeleted": "Éléments supprimés: {{nbElementDeleted}}",
+    "elementsModified": "Éléments modifiés: {{nbElementModified}}",
+    "areYouSureYouWantToProceed": "Êtes-vous sûr de vouloir procéder ?"
   }
 }

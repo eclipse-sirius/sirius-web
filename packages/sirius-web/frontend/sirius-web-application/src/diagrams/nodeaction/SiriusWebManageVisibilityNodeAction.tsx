@@ -19,6 +19,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import IconButton from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 const useToolStyle = makeStyles()((theme: Theme) => ({
@@ -32,13 +33,14 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 export const SiriusWebManageVisibilityNodeAction = ({ diagramElementId }: ActionProps) => {
   const { openDialog } = useContext<ManageVisibilityContextValue>(ManageVisibilityContext);
   const { classes } = useToolStyle();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'siriusWebManageVisibilityNodeAction' });
   return (
     <IconButton
       className={classes.actionIcon}
       size="small"
       color="inherit"
-      aria-label="Manage visibility"
-      title="Manage visibility"
+      aria-label={t('manageVisibility')}
+      title={t('manageVisibility')}
       onClick={(event) => openDialog(event, diagramElementId)}
       data-testid="manage-visibility">
       <VisibilityIcon sx={{ fontSize: 16 }} />

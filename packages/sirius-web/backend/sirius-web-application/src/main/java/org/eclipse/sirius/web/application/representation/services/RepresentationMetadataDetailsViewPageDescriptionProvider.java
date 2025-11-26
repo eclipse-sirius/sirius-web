@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -64,12 +65,15 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IMessageService messageService;
+
     public RepresentationMetadataDetailsViewPageDescriptionProvider(IIdentityService identityService, ILabelService labelService,
-            IRepresentationMetadataUpdateService representationMetadataUpdateService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+            IRepresentationMetadataUpdateService representationMetadataUpdateService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataUpdateService = Objects.requireNonNull(representationMetadataUpdateService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -102,7 +106,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
 
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> this.messageService.coreProperties())
                 .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();

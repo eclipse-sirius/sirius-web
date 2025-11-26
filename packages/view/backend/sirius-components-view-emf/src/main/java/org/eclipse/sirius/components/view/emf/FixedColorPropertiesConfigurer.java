@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -61,11 +62,14 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
     private final List<IValidationService> validationServices;
 
-    public FixedColorPropertiesConfigurer(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, List<IValidationService> validationServices) {
+    private final IViewEMFMessageService messageService;
+
+    public FixedColorPropertiesConfigurer(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, List<IValidationService> validationServices, IViewEMFMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.labelService = Objects.requireNonNull(labelService);
         this.validationServices = Objects.requireNonNull(validationServices);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -126,7 +130,7 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> this.messageService.coreProperties())
                 .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();

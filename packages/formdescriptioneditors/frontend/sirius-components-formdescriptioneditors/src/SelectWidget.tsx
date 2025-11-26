@@ -153,7 +153,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
                   }
                 : {}
             }>
-            Value 1
+            {t('value1Label')}
           </MenuItem>
           <MenuItem
             value="value2"
@@ -164,7 +164,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
                   }
                 : {}
             }>
-            Value 2
+            {t('value2Label')}
           </MenuItem>
           <MenuItem
             value="value3"
@@ -175,7 +175,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
                   }
                 : {}
             }>
-            Value 3
+            {t('value3Label')}
           </MenuItem>
         </Select>
       </div>

@@ -14,6 +14,7 @@
 import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { memo, useCallback, useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -37,6 +38,7 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { getNode, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
   const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramElementId;
   const { palette }: UsePaletteContentValue = usePaletteContents(elementId);
@@ -100,7 +102,7 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
       sectionComponents.push(
         <PaletteExtensionSection
           component={PaletteAppearanceSection}
-          title="Appearance"
+          title={t('appearance')}
           id="appearance"
           onClose={hideDiagramPalette}
           key={'appearance'}
@@ -109,7 +111,7 @@ export const DiagramPalette = memo(({ diagramElementId, diagramTargetObjectId }:
       sectionComponents.push(
         <PaletteExtensionSection
           component={ShowInSection}
-          title="Show in"
+          title={t('showIn')}
           id="show_in"
           key={'show_in'}
           onClose={hideDiagramPalette}

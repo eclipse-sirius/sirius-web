@@ -17,6 +17,7 @@ import {
   PaletteAppearanceSectionContributionComponentProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, useNodesData } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { EllipseNodePart } from './EllipseNodePart';
 import { GQLEllipseNodeStyle } from './EllipseNodePart.types';
 
@@ -28,6 +29,7 @@ export const EllipseNodeAppearanceSection = ({
   if (!nodeData) {
     return null;
   }
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'ellipseNodeAppearanceSection' });
   return (
     <>
       <EllipseNodePart
@@ -39,7 +41,7 @@ export const EllipseNodeAppearanceSection = ({
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={nodeData.data.insideLabel.id}
-          position="Inside Label"
+          position={t('insideLabel')}
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}
           customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
         />

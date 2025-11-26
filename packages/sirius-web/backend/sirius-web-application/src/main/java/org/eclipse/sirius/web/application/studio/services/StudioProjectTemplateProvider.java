@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
 import org.eclipse.sirius.web.application.studio.OnStudioEnabled;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +38,18 @@ public class StudioProjectTemplateProvider implements IProjectTemplateProvider {
 
     public static final String BLANK_STUDIO_TEMPLATE_ID = "blank-studio-template";
 
+    private final IMessageService messageService;
+
+    public StudioProjectTemplateProvider(IMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         var studioImageURL = "/project-templates/Studio-Template.png";
         var studioNatures = List.of(new ProjectTemplateNature(STUDIO_NATURE));
-
-        var studioTemplate = new ProjectTemplate(STUDIO_TEMPLATE_ID, "Studio", studioImageURL, studioNatures);
-        var blankStudioTemplate = new ProjectTemplate(BLANK_STUDIO_TEMPLATE_ID, "Blank Studio", studioImageURL, studioNatures);
+        var studioTemplate = new ProjectTemplate(STUDIO_TEMPLATE_ID, this.messageService.studioTemplateName(), studioImageURL, studioNatures);
+        var blankStudioTemplate = new ProjectTemplate(BLANK_STUDIO_TEMPLATE_ID, this.messageService.blankStudioTemplateName(), studioImageURL, studioNatures);
 
         return List.of(studioTemplate, blankStudioTemplate);
     }

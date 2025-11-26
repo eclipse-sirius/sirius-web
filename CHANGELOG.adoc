@@ -239,7 +239,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5811[#5811] [diagram] Introduce CrossFade Tunnels to automatically create blank underpasses when edges cross and defer crossing detection while nodes are being dragged to keep interactions smooth.
 - https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Limit node resizing with minimum node size constraints
 - https://github.com/eclipse-sirius/sirius-web/issues/5846[#5846] [sirius-web] Provide the ownerId field in the "duplicate-target-browser" tree id.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5812[#5812] Replace most of the hardcoded String by internationalized keys.
 
 
 == 2025.10.0

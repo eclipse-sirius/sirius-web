@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@mui/material/IconButton';
 import NearMeDisabledIcon from '@mui/icons-material/NearMeDisabled';
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useResetMovedByUser } from '../../move/useResetMovedByUser';
 import { ResetMovedByUserToolProps } from './ResetMovedByUserTool.types';
@@ -29,12 +30,13 @@ const useStyle = makeStyles()((theme) => ({
 export const ResetMovedByUserTool = ({ diagramElementId }: ResetMovedByUserToolProps) => {
   const { classes } = useStyle();
   const { resetMovedByUser } = useResetMovedByUser();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'resetMovedByUserTool' });
   return (
-    <Tooltip title="Reset move" key={'tooltip_reset_move_by_user_tool'}>
+    <Tooltip title={t('resetMove')} key={'tooltip_reset_move_by_user_tool'}>
       <IconButton
         className={classes.toolIcon}
         size="small"
-        aria-label="Reset move"
+        aria-label={t('resetMove')}
         onClick={() => resetMovedByUser(diagramElementId)}
         data-testid="reset-move">
         <NearMeDisabledIcon sx={{ fontSize: 16 }} />

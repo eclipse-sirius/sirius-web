@@ -16,6 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import { EditProjectViewParams } from '../../EditProjectView.types';
 import { selectionToSearchParamsValue } from '../../SelectionSynchronizer';
@@ -64,10 +65,11 @@ export const ShareProjectModal = ({ workbenchConfiguration, onClose }: ShareProj
       searchParams.toString();
   }
 
-  let title = 'Shareable link';
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'shareProjectModal' });
+  let title = t('title');
   if (navigator.clipboard && document.hasFocus()) {
     navigator.clipboard.writeText(path);
-    title += ' (copied into the clipboard)';
+    title += ' ' + t('copiedIntoClipboard');
   }
 
   return (

@@ -51,6 +51,7 @@ import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFi
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterHelper;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -88,12 +89,15 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private final IDiagramFilterHelper diagramFilterHelper;
 
-    public DiagramFilterDescriptionProvider(IObjectService objectService, ILabelService labelService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper) {
+    private final IMessageService messageService;
+
+    public DiagramFilterDescriptionProvider(IObjectService objectService, ILabelService labelService, @Lazy IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, List<IDiagramFilterActionContributionProvider> diagramFilterActionContributionProviders, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.diagramFilterActionContributionProviders = Objects.requireNonNull(diagramFilterActionContributionProviders);
         this.diagramFilterHelper = Objects.requireNonNull(diagramFilterHelper);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -176,7 +180,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
         return GroupDescription.newGroupDescription(GROUP_DESCRIPTION_ID)
                 .idProvider(variableManager -> FORM_TITLE)
-                .labelProvider(variableManager -> "Filter elements")
+                .labelProvider(variableManager -> this.messageService.diagramFilterFormTitle())
                 .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
                 .controlDescriptions(controlDescriptions)
                 .build();
@@ -187,7 +191,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> "")
-                .valueProvider(variableManager -> "Elements on diagram")
+                .valueProvider(variableManager -> this.messageService.diagramFilterElementsOnDiagram())
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -201,11 +205,10 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .idProvider(variableManager -> "TreeCheckBox")
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
-                    String element = "element";
-                    if (selectedElementCount > 1) {
-                        element += "s";
+                    if (selectedElementCount == 0) {
+                        return this.messageService.diagramFilterElementsSelected(selectedElementCount);
                     }
-                    return selectedElementCount + " " + element + " selected";
+                    return this.messageService.diagramFilterElementsSelectedPlural(selectedElementCount);
                 })
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
@@ -255,12 +258,10 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
-                    String element = "element";
-                    if (selectedElementCount > 1) {
-                        element += "s";
+                    if (selectedElementCount <= 1) {
+                        return this.messageService.diagramFilterApplyTo(selectedElementCount);
                     }
-
-                    return "Apply to " + selectedElementCount + " selected " + element +  ": ";
+                    return this.messageService.diagramFilterApplyToPlural(selectedElementCount);
                 })
                 .diagnosticsProvider(variableManager -> List.of())
                 .iconURLProvider(variableManager -> List.of())
@@ -268,8 +269,8 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
                 .actions(this.diagramFilterActionContributionProviders.stream()
-                            .map(IDiagramFilterActionContributionProvider::getButtonDescription)
-                            .toList()
+                        .map(IDiagramFilterActionContributionProvider::getButtonDescription)
+                        .toList()
                 )
                 .build();
 
@@ -350,6 +351,6 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private void fillCheckMap(Node node, Map<String, Boolean> checkMap) {
         checkMap.put(node.getId(), false);
         Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream())
-            .forEach(n -> this.fillCheckMap(n, checkMap));
+                .forEach(n -> this.fillCheckMap(n, checkMap));
     }
 }

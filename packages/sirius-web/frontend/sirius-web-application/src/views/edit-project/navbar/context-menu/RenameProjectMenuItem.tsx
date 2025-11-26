@@ -16,6 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RenameProjectModal } from '../../../../modals/rename-project/RenameProjectModal';
 import { RenameProjectMenuItemProps, RenameProjectMenuItemState } from './RenameProjectMenuItem.types';
 
@@ -23,7 +24,7 @@ export const RenameProjectMenuItem = ({ project, onCancel, onSuccess }: RenamePr
   const [state, setState] = useState<RenameProjectMenuItemState>({
     showModal: false,
   });
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'renameProjectMenuItem' });
   const handleCancel = () => {
     setState((prevState) => ({ ...prevState, showModal: false }));
     onCancel();
@@ -40,7 +41,7 @@ export const RenameProjectMenuItem = ({ project, onCancel, onSuccess }: RenamePr
         <ListItemIcon>
           <EditIcon />
         </ListItemIcon>
-        <ListItemText primary="Rename" />
+        <ListItemText primary={t('rename')} />
       </MenuItem>
       {state.showModal ? (
         <RenameProjectModal project={project} onCancel={handleCancel} onSuccess={handleSuccess} />

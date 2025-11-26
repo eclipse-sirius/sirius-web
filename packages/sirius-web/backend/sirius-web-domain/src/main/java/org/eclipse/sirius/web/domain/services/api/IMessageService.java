@@ -57,6 +57,56 @@ public interface IMessageService {
 
     String unauthorized();
 
+    String studioTemplateName();
+
+    String blankStudioTemplateName();
+
+    String representationsViewTitle();
+
+    String relatedElementsViewIncomingTitle();
+
+    String relatedElementsViewCurrentTitle();
+
+    String relatedElementsViewCurrentCategoryParent();
+
+    String relatedElementsViewCurrentCategoryChildren();
+
+    String relatedElementsViewOutgoingTitle();
+
+    String diagramFilterFormTitle();
+
+    String diagramFilterElementsOnDiagram();
+
+    String diagramFilterElementsSelected(int count);
+
+    String diagramFilterElementsSelectedPlural(int count);
+
+    String diagramFilterApplyTo(int count);
+
+    String diagramFilterApplyToPlural(int count);
+
+    String diagramFilterCollapseElements();
+
+    String diagramFilterExpandElements();
+
+    String diagramFilterFadeElements();
+
+    String diagramFilterHideElements();
+
+    String diagramFilterPinElements();
+
+    String diagramFilterRevealFadedElements();
+
+    String diagramFilterShowElements();
+
+    String diagramFilterUnpinElements();
+
+    String blankProjectName();
+
+    String blankProjectDescription();
+
+    String coreProperties();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -156,6 +206,131 @@ public interface IMessageService {
 
         @Override
         public String unauthorized() {
+            return "";
+        }
+
+        @Override
+        public String studioTemplateName() {
+            return "";
+        }
+
+        @Override
+        public String blankStudioTemplateName() {
+            return "";
+        }
+
+        @Override
+        public String representationsViewTitle() {
+            return "";
+        }
+
+        @Override
+        public String relatedElementsViewIncomingTitle() {
+            return "";
+        }
+
+        @Override
+        public String relatedElementsViewCurrentTitle() {
+            return "";
+        }
+
+        @Override
+        public String relatedElementsViewCurrentCategoryParent() {
+            return "";
+        }
+
+        @Override
+        public String relatedElementsViewCurrentCategoryChildren() {
+            return "";
+        }
+
+        @Override
+        public String relatedElementsViewOutgoingTitle() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterFormTitle() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterElementsOnDiagram() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterElementsSelected(int count) {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterElementsSelectedPlural(int count) {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterApplyTo(int count) {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterApplyToPlural(int count) {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterCollapseElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterExpandElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterFadeElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterHideElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterPinElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterRevealFadedElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterShowElements() {
+            return "";
+        }
+
+        @Override
+        public String diagramFilterUnpinElements() {
+            return "";
+        }
+
+        @Override
+        public String blankProjectName() {
+            return "";
+        }
+
+        @Override
+        public String blankProjectDescription() {
+            return "";
+        }
+
+        @Override
+        public String coreProperties() {
             return "";
         }
     }

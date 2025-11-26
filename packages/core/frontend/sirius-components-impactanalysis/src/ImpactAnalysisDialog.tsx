@@ -28,7 +28,7 @@ import { SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import { ImpactAnalysisDialogProps, ReportViewerProps } from './ImpactAnalysisDialog.types';
-
+import { useTranslation } from 'react-i18next';
 const useImpactAnalysisDialogStyles = makeStyles()((theme: Theme) => ({
   title: {
     display: 'flex',
@@ -59,7 +59,7 @@ export const ImpactAnalysisDialog = ({
   onCancel,
 }: ImpactAnalysisDialogProps) => {
   const { classes } = useImpactAnalysisDialogStyles();
-
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'impactAnalysisDialog' });
   return (
     <Dialog
       open={open}
@@ -94,7 +94,7 @@ export const ImpactAnalysisDialog = ({
           disabled={loading}
           variant="contained"
           autoFocus>
-          Execute
+          {t('execute')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -133,9 +133,10 @@ const ReportViewer = ({
   const iconStyle: SxProps<Theme> = (theme) => ({
     fontSize: theme.spacing(0.8),
   });
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'reportViewer' });
   return (
     <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(0.5) })}>
-      <Typography>{`The ${label} tool will have the following effects on your model:`}</Typography>
+      <Typography>{t('theToolWillHaveEffects', { label })}</Typography>
       <List dense sx={listStyle}>
         {nbElementCreated > 0 && (
           <ListItem key={'report.nbElementCreated'} sx={listItemStyle}>
@@ -143,7 +144,7 @@ const ReportViewer = ({
               <FiberManualRecordIcon sx={iconStyle} />
             </ListItemIcon>
             <ListItemText
-              primary={`Elements added: ${nbElementCreated}`}
+              primary={t('elementsAdded', { nbElementCreated })}
               data-testid="impact-analysis-report-nbElementCreated"
             />
           </ListItem>
@@ -154,7 +155,7 @@ const ReportViewer = ({
               <FiberManualRecordIcon sx={iconStyle} />
             </ListItemIcon>
             <ListItemText
-              primary={`Elements deleted: ${nbElementDeleted}`}
+              primary={t('elementsDeleted', { nbElementDeleted })}
               data-testid="impact-analysis-report-nbElementDeleted"
             />
           </ListItem>
@@ -165,7 +166,7 @@ const ReportViewer = ({
               <FiberManualRecordIcon sx={iconStyle} />
             </ListItemIcon>
             <ListItemText
-              primary={`Elements modified: ${nbElementModified}`}
+              primary={t('elementsModified', { nbElementModified })}
               data-testid="impact-analysis-report-nbElementModified"
             />
           </ListItem>
@@ -187,7 +188,7 @@ const ReportViewer = ({
           <DataTree dataTree={impactTree} />
         </div>
       ) : null}
-      <Typography>Are you sure you want to proceed?</Typography>
+      <Typography>{t('areYouSureYouWantToProceed')}</Typography>
     </Box>
   );
 };

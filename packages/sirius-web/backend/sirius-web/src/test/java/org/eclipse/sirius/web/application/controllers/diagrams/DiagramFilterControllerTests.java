@@ -69,6 +69,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -371,7 +372,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
             var splitButton = new FormNavigator(form)
                     .page("ExpandCollapseDiagram")
                     .group("Filter elements")
-                    .findWidget("Apply to 1 selected element: ", SplitButton.class);
+                    .findWidget("Apply to 1 selected element:", SplitButton.class);
             splitButton.getActions().stream()
                     .filter(buttonToClickPredicate)
                     .map(Button::getId)

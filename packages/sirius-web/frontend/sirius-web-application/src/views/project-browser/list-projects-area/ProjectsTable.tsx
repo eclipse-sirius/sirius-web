@@ -11,7 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
 import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
+import { useTranslation } from 'react-i18next';
 import { CursorBasedPagination } from '../../../table/CursorBasedPagination';
 import { ProjectActionButton } from './ProjectActionButton';
 import { ProjectsTableProps } from './ProjectsTable.types';
@@ -33,6 +35,8 @@ export const ProjectsTable = ({
   onGlobalFilterChange,
 }: ProjectsTableProps) => {
   const { columns } = useProjectsTableColumns();
+  const localization = useTableTranslation();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectsTable' });
   const tableOptions: MRT_TableOptions<GQLProject> = {
     columns,
     data: projects,
@@ -57,7 +61,7 @@ export const ProjectsTable = ({
     positionActionsColumn: 'last',
     displayColumnDefOptions: {
       'mrt-row-actions': {
-        header: 'Actions',
+        header: t('actions'),
         size: 10,
         grow: false,
       },
@@ -75,6 +79,8 @@ export const ProjectsTable = ({
         onPageSizeChange={onPageSizeChange}
       />
     ),
+
+    localization: localization,
   };
   const table = useMaterialReactTable<GQLProject>(tableOptions);
 

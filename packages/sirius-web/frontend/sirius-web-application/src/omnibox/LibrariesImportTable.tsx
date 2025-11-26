@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
 import Typography from '@mui/material/Typography';
 import {
   MaterialReactTable,
@@ -19,11 +20,14 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLibraries } from '../views/library-browser/useLibraries';
 import { GQLLibrary } from '../views/library-browser/useLibraries.types';
 import { LibrariesImportTableProps, LibrariesImportTableState } from './LibrariesImportTable.types';
 
 export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImportTableProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'librariesImportTable' });
+  const localization = useTableTranslation();
   const [state, setState] = useState<LibrariesImportTableState>({
     data: null,
   });
@@ -52,25 +56,25 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
     () => [
       {
         accessorFn: (row) => row.name,
-        header: 'Name',
+        header: t('name'),
         size: 200,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => row.version,
-        header: 'Version',
+        header: t('version'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => new Date(row.createdOn).toISOString().split('T')[0],
-        header: 'Created On',
+        header: t('createdOn'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => row.namespace,
-        header: 'Namespace',
+        header: t('namespace'),
         size: 150,
         Cell: ({ renderedCellValue }) => (
           <Typography noWrap sx={{ opacity: '0.6' }}>
@@ -80,7 +84,7 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
       },
       {
         accessorFn: (row) => row.description,
-        header: 'Description',
+        header: t('description'),
         size: 200,
         grow: true,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
@@ -112,6 +116,8 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
     manualPagination: true,
     onPaginationChange: setPagination,
     rowCount: count,
+
+    localization: localization,
 
     state: { pagination, rowSelection },
   });

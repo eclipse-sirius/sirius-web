@@ -13,5 +13,14 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
+  },
+  "revealSelectionButton": {
+    "tooltip": "Révéler les éléments sélectionnés",
+    "tooltipLoading": "Révéler les éléments sélectionnés (chargement des détails...)",
+    "tooltipWithMoreLabels": "Sélectionner {{labels}} (et {{count}} de plus)",
+    "tooltipWithLabels": "Sélectionner {{labels}}"
+  },
+  "treeItemContextMenu": {
+    "showInTarget": "Afficher dans {{target}}"
   }
 }

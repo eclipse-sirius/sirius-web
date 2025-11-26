@@ -19,6 +19,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { SiriusIcon } from '../core/SiriusIcon';
 import { NavigationBarIconProps } from './NavigationBar.types';
+import { useTranslation } from 'react-i18next';
 
 export const useNavigationBarIconStyles = makeStyles()((theme: Theme) => ({
   link: {
@@ -35,9 +36,10 @@ export const useNavigationBarIconStyles = makeStyles()((theme: Theme) => ({
 
 export const NavigationBarIcon = ({}: NavigationBarIconProps) => {
   const { classes } = useNavigationBarIconStyles();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'navigationBarIcon' });
 
   return (
-    <Tooltip title="Back to the homepage">
+    <Tooltip title={t('backToHomepage')}>
       <Link component={RouterLink} to="/" className={classes.link} color="inherit">
         <IconButton className={classes.onDarkBackground} color="inherit">
           <SiriusIcon fontSize="large" />

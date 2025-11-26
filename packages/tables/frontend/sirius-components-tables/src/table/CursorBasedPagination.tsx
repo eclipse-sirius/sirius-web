@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { CursorBasedPaginationProps } from './CursorBasedPagination.types';
 
 export const CursorBasedPagination = ({
@@ -28,16 +29,18 @@ export const CursorBasedPagination = ({
   onPageSizeChange,
   pageSizeOptions,
 }: CursorBasedPaginationProps) => {
+  const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'cursorBasedPagination' });
+
   return (
     <Box display="flex" justifyContent="flex-end" alignItems="center" width="100%">
       <Box display="flex" alignItems="center">
         <Typography variant="body1" mr={1}>
-          Rows per page:
+          {t('rowsPerPage')}
         </Typography>
         <Select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          inputProps={{ 'aria-label': 'Rows per page' }}
+          inputProps={{ 'aria-label': t('rowsPerPage') }}
           data-testid="cursor-based-pagination-size">
           {pageSizeOptions.map((option) => (
             <MenuItem key={option} value={option}>

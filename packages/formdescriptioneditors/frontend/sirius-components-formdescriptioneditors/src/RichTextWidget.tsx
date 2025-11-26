@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import Typography from '@mui/material/Typography';
 import { makeStyles, withStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
 import { RichTextWidgetProps } from './WidgetEntry.types';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles()((theme) => ({
   selected: {
@@ -83,6 +84,7 @@ export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
   const { classes } = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
+  const { t } = useTranslation('sirius-components-formdescriptioneditors', { keyPrefix: 'richTextWidget' });
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -159,7 +161,7 @@ export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
           </StyledToggleButtonGroup>
         </Paper>
         <div className={classes.editorContainer}>
-          <Typography variant="h4">Rich text document</Typography>
+          <Typography variant="h4">{t('richTextDocument')}</Typography>
           <Typography variant="body1" gutterBottom>
             Your <b>rich text</b>.
           </Typography>

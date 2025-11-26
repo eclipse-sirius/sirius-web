@@ -20,6 +20,7 @@ import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslation } from 'react-i18next';
 import { Fragment, forwardRef, useEffect } from 'react';
 
 export const ExpandAllTreeItemContextMenuContribution = forwardRef(
@@ -28,7 +29,7 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
-
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'expandAllTreeItemContextMenuContribution' });
     useEffect(() => {
       if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
@@ -67,7 +68,7 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <UnfoldMore fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Expand all" />
+          <ListItemText primary={t('expandAll')} />
         </MenuItem>
       </Fragment>
     );

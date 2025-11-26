@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
+import { useTranslation } from 'react-i18next';
 
 const useFrameStyles = makeStyles()((theme) => ({
   representationFrame: {
@@ -63,7 +64,7 @@ export const RepresentationFrame = ({
     .map((representationFactory) => representationFactory(representation))
     .find((component) => component != null);
   const { classes } = useFrameStyles();
-
+  const { t } = useTranslation('sirius-components-portals', { keyPrefix: 'representationFrame' });
   if (RepresentationComponent) {
     const props: RepresentationComponentProps = {
       editingContextId,
@@ -94,6 +95,6 @@ export const RepresentationFrame = ({
       </div>
     );
   } else {
-    return <div>Unknown representation kind</div>;
+    return <div>{t('unknownRepresentationKind')}</div>;
   }
 };

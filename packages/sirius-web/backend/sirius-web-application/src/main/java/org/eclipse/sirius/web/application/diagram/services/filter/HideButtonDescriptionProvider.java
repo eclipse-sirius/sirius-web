@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,10 +54,10 @@ public class HideButtonDescriptionProvider implements IDiagramFilterActionContri
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/hide")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .labelProvider(variableManager -> "Hide")
+                .labelProvider(variableManager -> this.messageService.diagramFilterHideElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
-                .buttonLabelProvider(variableManager -> "Hide")
+                .buttonLabelProvider(variableManager -> this.messageService.diagramFilterHideElements())
                 .imageURLProvider(variableManager -> "/icons/full/obj16/HideTool.svg")
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();

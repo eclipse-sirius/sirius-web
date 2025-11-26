@@ -16,6 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DeleteProjectModal } from '../../../../modals/delete-project/DeleteProjectModal';
 import { DeleteProjectMenuItemProps, DeleteProjectMenuItemState } from './DeleteProjectMenuItem.types';
 
@@ -23,7 +24,7 @@ export const DeleteProjectMenuItem = ({ project, onCancel, onSuccess }: DeletePr
   const [state, setState] = useState<DeleteProjectMenuItemState>({
     showModal: false,
   });
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'deleteProjectMenuItem' });
   const handleCancel = () => {
     setState((prevState) => ({ ...prevState, showModal: false }));
     onCancel();
@@ -40,7 +41,7 @@ export const DeleteProjectMenuItem = ({ project, onCancel, onSuccess }: DeletePr
         <ListItemIcon>
           <DeleteIcon />
         </ListItemIcon>
-        <ListItemText primary="Delete" />
+        <ListItemText primary={t('delete')} />
       </MenuItem>
       {state.showModal ? (
         <DeleteProjectModal project={project} onCancel={handleCancel} onSuccess={handleSuccess} />

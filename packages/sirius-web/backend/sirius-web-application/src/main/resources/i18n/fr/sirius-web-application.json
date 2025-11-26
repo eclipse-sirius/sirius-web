@@ -74,7 +74,12 @@
   "newProjectView": {
     "description": "Commencez en créant un nouveau projet",
     "submit": "Créer",
-    "title": "Créer un nouveau projet"
+    "title": "Créer un nouveau projet",
+    "name": "Nom",
+    "nameTextfieldPlaceholder": "Saisir le nom du projet",
+    "nameTextfieldHelperText": "Le nom doit contenir entre 3 et 1024 caractères",
+    "libraries": "Bibliothèques",
+    "optional": "Optionnel"
   },
   "newRepresentationArea": {
     "createRepresentation": "Créer une nouvelle représentation",
@@ -82,7 +87,7 @@
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     },
     "noAccessToCreateRepresentation": "Vous devez disposer des droits de modification pour créer des représentations",
-    "noRepresentations": "Aucune représentation disponible pour la sélection actuelle",
+    "noRepresentations": "Aucune représentation disponible pour la sélection courante",
     "selectRepresentationToCreate": "Sélectionner la représentation à créer"
   },
   "newRepresentationModal": {
@@ -191,5 +196,180 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
+  },
+  "navigationBarMenu": {
+    "libraries": "Bibliothèques",
+    "projects": "Projets",
+    "help": "Aide"
+  },
+  "uploadProjectCard": {
+    "title": "+ Téléverser un projet",
+    "description": "Commencez avec un projet existant"
+  },
+  "newProjectCard": {
+    "title": "+ Projet vide",
+    "description": "Créez un nouveau projet vide"
+  },
+  "showAllProjectTemplatesCard": {
+    "title": "Afficher tous les modèles",
+    "description": "Afficher tous les modèles de projet"
+  },
+  "duplicateProjectMenuItem": {
+    "duplicate": "Dupliquer"
+  },
+  "downloadProjectMenuItem": {
+    "download": "Télécharger"
+  },
+  "deleteProjectMenuItem": {
+    "delete": "Supprimer"
+  },
+  "renameProjectMenuItem": {
+    "rename": "Renommer"
+  },
+  "shareProjectMenuItem": {
+    "share": "Partager"
+  },
+  "projectSettingsMenuItem": {
+    "settings": "Paramètres"
+  },
+  "shareProjectModal": {
+    "title": "Partager le projet",
+    "copiedIntoClipboard": "(copié dans le presse-papiers)"
+  },
+  "projectsTable": {
+    "actions": "Actions"
+  },
+  "useProjectsTableColumns": {
+    "name": "Nom"
+  },
+  "cursorBasedPagination": {
+    "rowsPerPage": "Lignes par page :"
+  },
+  "librariesImportTable": {
+    "name": "Nom",
+    "version": "Version",
+    "createdOn": "Créé le",
+    "namespace": "Espace de nom",
+    "description": "Description"
+  },
+  "updateLibraryTable": {
+    "name": "Nom",
+    "version": "Version",
+    "createdOn": "Créé le",
+    "namespace": "Espace de nom",
+    "description": "Description"
+  },
+  "libraryBrowserView": {
+    "libraries": "Bibliothèques"
+  },
+  "librariesTable": {
+    "name": "Nom",
+    "version": "Version",
+    "createdOn": "Créé le",
+    "namespace": "Espace de nom",
+    "description": "Description"
+  },
+  "detailsView": {
+    "noObjectSelected": "Aucun objet sélectionné"
+  },
+  "synchronizationButton": {
+    "tooltipPinned": "Attaché. Cliquer pour suivre la sélection globale.",
+    "tooltipUnpinned": "Détaché. Cliquer pour attacher la vue à la sélection courante."
+  },
+  "searchQueryInput": {
+    "searchInAttributes": "Rechercher dans les attributs",
+    "search": "Rechercher",
+    "clearAll": "Tout effacer",
+    "matchCase": "Respecter la casse",
+    "matchWholeWord": "Mot entier",
+    "useRegularExpression": "Utiliser une expression régulière",
+    "clearText": "Effacer le texte"
+  },
+  "searchResults": {
+    "searchInProgress": "Recherche en cours...",
+    "noSearchLaunchedYet": "Aucune recherche lancée.",
+    "resultsFor_one": "{{count}} résultat pour '{{query}}'",
+    "resultsFor_other": "{{count}} résultats pour '{{query}}'"
+  },
+  "matchRow": {
+    "iconOverlayAlt": "Icône de l'objet"
+  },
+  "ageIndicator": {
+    "lessThanAMinute": "moins d'une minute",
+    "minutes": "{{minutes}}m",
+    "hours": "{{hours}}h",
+    "days": "{{days}}j",
+    "performedAgo": "Effectué il y a {{age}}"
+  },
+  "expressionArea": {
+    "expression": "Expression",
+    "executeExpression": "Exécuter l'expression",
+    "executeExpressionTooltip": "Cliquez sur ce bouton ou {{key}} + Entrée lorsque le champ de texte ci-dessous a le focus pour exécuter l'expression",
+    "texfieldPlaceholder": "Saisir une expression pour commencer"
+  },
+  "objectExpressionResultViewer": {
+    "oneObjectReturned": "Un objet a été retourné",
+    "iconOverlayAlt": "Icône de l'objet"
+  },
+  "objectRow": {
+    "iconOverlayAlt": "Icône de l'objet"
+  },
+  "objectsExpressionResultViewer": {
+    "objectsReturned_one": "Une collection de {{count}} objet a été retournée",
+    "objectsReturned_other": "Une collection de {{count}} objets a été retournée"
+  },
+  "booleanExpressionResultViewer": {
+    "oneBooleanReturned": "Un booléen a été retourné"
+  },
+  "stringsExpressionResultViewer": {
+    "stringsReturned_one": "Une collection de {{count}} chaîne de caractères a été retournée",
+    "stringsReturned_other": "Une collection de {{count}} chaînes de caractères a été retournée"
+  },
+  "stringExpressionResultViewer": {
+    "stringReturned": "Une chaîne de caractères a été retournée"
+  },
+  "intExpressionResultViewer": {
+    "intReturned": "Un entier a été retourné"
+  },
+  "voidExpressionResultViewer": {
+    "voidReturned": "Aucune valeur n'a été retournée par l'évaluation de cette expression"
+  },
+  "resultArea": {
+    "unsupportedResult": "Le résultat de l'expression n'est pas supporté",
+    "evaluationResult": "Résultat de l'évaluation"
+  },
+  "exportResultButton": {
+    "exportAsCsv": "Exporter en CSV"
+  },
+  "representationsView": {
+    "noObjectSelected": "Aucun objet sélectionné"
+  },
+  "expandAllTreeItemContextMenuContribution": {
+    "expandAll": "Tout développer"
+  },
+  "showInSection": {
+    "showInTarget": "Afficher dans {{target}}",
+    "showIn": "Afficher dans",
+    "noAvailableTargets": "Aucune cible disponible"
+  },
+  "messageProvider": {
+    "unexpectedError": "Une erreur inattendue est survenue, veuillez contacter l'administrateur du serveur pour plus d'informations",
+    "notFound": "Le contenu que vous recherchez n'a pas été trouvé"
+  },
+  "errorView": {
+    "title": "Erreur {{code}}",
+    "backToHomepage": "Retour à la page d'accueil"
+  },
+  "navigationBarIcon": {
+    "backToHomepage": "Retour à la page d'accueil"
+  },
+  "relatedElementsView": {
+    "noObjectSelected": "Aucun objet sélectionné"
+  },
+  "siriusWebFooter": {
+    "poweredBy": "Propulsé par"
+  },
+  "siriusWebManageVisibilityNodeAction": {
+    "manageVisibility": "Gérer la visibilité"
   }
 }

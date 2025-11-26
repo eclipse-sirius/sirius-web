@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { SxProps, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLGetAllRowContextMenuEntriesData,
   GQLGetAllRowContextMenuEntriesVariables,
@@ -85,6 +86,7 @@ export const RowContextMenuContent = ({
   );
 
   const { addErrorMessage } = useMultiToast();
+  const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'rowContextMenuContent' });
 
   useEffect(() => {
     if (error) {
@@ -141,7 +143,7 @@ export const RowContextMenuContent = ({
           </MenuItem>
         ))
       ) : (
-        <Typography sx={noEntryFoundStyle}>No entries found</Typography>
+        <Typography sx={noEntryFoundStyle}>{t('noEntriesFound')}</Typography>
       )}
     </Menu>
   );

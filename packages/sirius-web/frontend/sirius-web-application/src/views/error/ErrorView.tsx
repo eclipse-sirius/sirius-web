@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
@@ -59,6 +60,7 @@ const useErrorViewStyles = makeStyles()((theme) => ({
 }));
 
 const messageProvider = (code: string, errorMessageProviders: ErrorMessageProvider[]): string => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'messageProvider' });
   let message: string | null = null;
 
   let index: number = 0;
@@ -71,10 +73,10 @@ const messageProvider = (code: string, errorMessageProviders: ErrorMessageProvid
 
   // Fallback for the default messages
   if (message === null) {
-    message = 'An unexpected error has occurred, please contact the server administrator for additional information';
+    message = t('unexpectedError');
 
     if (code === '404') {
-      message = 'The content that you are looking for has not been found';
+      message = t('notFound');
     }
   }
 
@@ -84,6 +86,7 @@ const messageProvider = (code: string, errorMessageProviders: ErrorMessageProvid
 export const ErrorView = () => {
   const { code } = useParams<ErrorViewParams>();
   const { classes } = useErrorViewStyles();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'errorView' });
 
   const { data: errorMessageProviders } = useData(errorMessageProvidersExtensionPoint);
   const message: string = messageProvider(code, errorMessageProviders);
@@ -99,7 +102,7 @@ export const ErrorView = () => {
             <div className={classes.title}>
               <ErrorOutlineIcon sx={{ fontSize: 40 }} />
               <Typography variant="h2" align="center">
-                Error {code}
+                {t('title', { code })}
               </Typography>
             </div>
             <Typography variant="body1" sx={{ fontSize: '1rem', textAlign: 'justify' }}>
@@ -107,7 +110,7 @@ export const ErrorView = () => {
             </Typography>
           </Paper>
           <Link variant="body1" component={RouterLink} to="/">
-            Back to the homepage
+            {t('backToHomepage')}
           </Link>
         </div>
       </Container>

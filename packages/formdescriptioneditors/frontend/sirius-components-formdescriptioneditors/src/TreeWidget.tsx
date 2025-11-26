@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TreeWidgetProps } from './WidgetEntry.types';
 
@@ -35,6 +36,7 @@ const useStyles = makeStyles()((theme) => ({
 
 export const TreeWidget = ({ widget }: TreeWidgetProps) => {
   const { classes } = useStyles();
+  const { t } = useTranslation('sirius-components-formdescriptioneditors', { keyPrefix: 'treeWidget' });
 
   const [selected, setSelected] = useState<Boolean>(false);
   const { selection } = useSelection();
@@ -63,15 +65,15 @@ export const TreeWidget = ({ widget }: TreeWidgetProps) => {
       </div>
       <div>
         <SimpleTreeView
-          aria-label="Model browser"
+          aria-label={t('modelBrowser')}
           slots={{ collapseIcon: ExpandMoreIcon, expandIcon: ChevronRightIcon }}
           expandedItems={['5']}>
-          <TreeItem itemId="1" label="Item1">
-            <TreeItem itemId="2" label="Item1.1" />
+          <TreeItem itemId="1" label={t('item1')}>
+            <TreeItem itemId="2" label={t('item1.1')} />
           </TreeItem>
-          <TreeItem itemId="5" label="Item2">
-            <TreeItem itemId="10" label="Item2.1" />
-            <TreeItem itemId="6" label="Item2.2"></TreeItem>
+          <TreeItem itemId="5" label={t('item2')}>
+            <TreeItem itemId="10" label={t('item2.1')} />
+            <TreeItem itemId="6" label={t('item2.2')}></TreeItem>
           </TreeItem>
         </SimpleTreeView>
       </div>

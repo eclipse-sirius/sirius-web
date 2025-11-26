@@ -68,6 +68,7 @@ import {
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
+import { useTranslation } from 'react-i18next';
 
 const useQueryViewStyles = makeStyles()((theme) => ({
   view: {
@@ -199,18 +200,15 @@ const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
         onEvaluateExpression(expression);
       }
     };
-
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'expressionArea' });
     var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
     return (
       <div data-role="expression">
         <Box sx={expressionAreaToolbarStyle}>
-          <Typography variant="subtitle2">Expression</Typography>
+          <Typography variant="subtitle2">{t('expression')}</Typography>
 
-          <Tooltip
-            title={`Press this button or ${
-              isApple ? '⌘ ' : 'Ctrl '
-            } + Enter when the textfield below is focused to execute the expression`}>
+          <Tooltip title={`${t('executeExpression')} ${isApple ? '⌘' : 'Ctrl'} + Enter`}>
             <IconButton
               onClick={() => onEvaluateExpression(expression)}
               color={expression.trim().length > 0 ? 'primary' : undefined}
@@ -221,7 +219,7 @@ const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
         </Box>
         <div>
           <TextField
-            placeholder="Enter an expression to get started"
+            placeholder={t('texfieldPlaceholder')}
             data-testid="query-textfield"
             value={expression}
             onChange={onExpressionChange}
@@ -243,6 +241,7 @@ const ExpressionArea = forwardRef<ExpressionAreaHandle, ExpressionAreaProps>(
 );
 
 const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'objectExpressionResultViewer' });
   if (result.__typename !== 'ObjectExpressionResult') {
     return null;
   }
@@ -258,13 +257,13 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   return (
     <Box sx={{ overflow: 'auto' }}>
       <Typography variant="body2" gutterBottom>
-        One object has been returned
+        {t('oneObjectReturned')}
       </Typography>
       <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1), overflow: 'auto' })}>
         <List dense>
           <ListItem sx={listItemStyle}>
             <ListItemIcon sx={listItemIconStyle}>
-              <IconOverlay iconURLs={objectValue.iconURLs} alt="Icon of the object" />
+              <IconOverlay iconURLs={objectValue.iconURLs} alt={t('iconOverlayAlt')} />
             </ListItemIcon>
             <ListItemText primary={objectValue.label} />
           </ListItem>
@@ -278,6 +277,7 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
 };
 
 const ObjectRow = ({ data, index, style }: RowComponentProps<{ data: GQLObject[] }>) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'objectRow' });
   const listItemStyle: SxProps<Theme> = (theme) => ({
     gap: theme.spacing(2),
   });
@@ -290,7 +290,7 @@ const ObjectRow = ({ data, index, style }: RowComponentProps<{ data: GQLObject[]
   return (
     <ListItem key={index} style={style} sx={listItemStyle}>
       <ListItemIcon sx={listItemIconStyle}>
-        <IconOverlay iconURLs={object.iconURLs} alt="Icon of the object" />
+        <IconOverlay iconURLs={object.iconURLs} alt={t('iconOverlayAlt')} />
       </ListItemIcon>
       <ListItemText primary={object.label} />
     </ListItem>
@@ -303,6 +303,7 @@ const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   }
 
   const { objectsValue } = result as GQLObjectsExpressionResult;
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'objectsExpressionResultViewer' });
 
   const listStyle: SxProps<Theme> = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
@@ -313,7 +314,7 @@ const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
       <Typography variant="body2" gutterBottom>
-        A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
+        {t('objectsReturned', { count: objectsValue.length })}
       </Typography>
       <Box
         sx={(theme) => ({
@@ -340,6 +341,7 @@ const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
 };
 
 const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'booleanExpressionResultViewer' });
   if (result.__typename !== 'BooleanExpressionResult') {
     return null;
   }
@@ -348,7 +350,7 @@ const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One boolean has been returned
+        {t('oneBooleanReturned')}
       </Typography>
       <List dense>
         <ListItem>
@@ -374,6 +376,7 @@ const StringRow = ({ data, index, style }: RowComponentProps<{ data: string[] }>
 };
 
 const StringsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'stringsExpressionResultViewer' });
   if (result.__typename !== 'StringsExpressionResult') {
     return null;
   }
@@ -387,7 +390,7 @@ const StringsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        A collection of {stringsValue.length} string{stringsValue.length > 1 ? 's' : ''} has been returned
+        {t('stringsReturned', { count: stringsValue.length })}
       </Typography>
       <List dense disablePadding sx={listStyle}>
         <FixedSizeList
@@ -402,6 +405,7 @@ const StringsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
 };
 
 const StringExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'stringExpressionResultViewer' });
   if (result.__typename !== 'StringExpressionResult') {
     return null;
   }
@@ -410,7 +414,7 @@ const StringExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One string has been returned
+        {t('stringReturned')}
       </Typography>
       <List dense>
         <ListItem>
@@ -422,6 +426,7 @@ const StringExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
 };
 
 const IntExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'intExpressionResultViewer' });
   if (result.__typename !== 'IntExpressionResult') {
     return null;
   }
@@ -430,7 +435,7 @@ const IntExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One integer has been returned
+        {t('intReturned')}
       </Typography>
       <List dense>
         <ListItem>
@@ -442,11 +447,12 @@ const IntExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
 };
 
 const VoidExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'voidExpressionResultViewer' });
   if (result.__typename !== 'VoidExpressionResult') {
     return null;
   }
 
-  return <Typography variant="body2">The evaluation of this expression has not returned any result</Typography>;
+  return <Typography variant="body2">{t('voidReturned')}</Typography>;
 };
 
 const resultType2viewer: Record<string, ComponentType<ExpressionResultViewerProps>> = {
@@ -491,6 +497,7 @@ const LoadingViewer = () => {
 };
 
 const ResultArea = ({ loading, payload }: ResultAreaProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'resultArea' });
   const resultAreaToolbarStyle: SxProps<Theme> = {
     display: 'flex',
     flexDirection: 'row',
@@ -511,7 +518,7 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
     if (Viewer) {
       content = <Viewer result={payload.result} />;
     } else {
-      content = <Typography variant="body2">The expression has returned a result that is not supported</Typography>;
+      content = <Typography variant="body2">{t('unsupportedResult')}</Typography>;
     }
   }
 
@@ -519,7 +526,7 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
     <div data-role="result" style={{ overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
       <Box sx={resultAreaToolbarStyle}>
         <Box sx={titleAreaStyle}>
-          <Typography variant="subtitle2">Evaluation result</Typography>
+          <Typography variant="subtitle2">{t('evaluationResult')}</Typography>
         </Box>
       </Box>
 
@@ -531,7 +538,7 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
 const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { project } = useCurrentProject();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'exportResultButton' });
   return (
     <Button
       data-testid="export-csv-button"
@@ -544,7 +551,7 @@ const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
         }/objects?contentType=text/csv&objectIds=${objectIds.join(',')}`
       )}
       type="application/octet-stream">
-      Export as CSV
+      {t('exportAsCsv')}
     </Button>
   );
 };

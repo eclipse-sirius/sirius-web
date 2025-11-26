@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,13 @@
 package org.eclipse.sirius.web.application.views.representations.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 /**
  * Provides the metadata for the "Representations" representation.
@@ -26,12 +28,18 @@ import org.eclipse.sirius.components.forms.Form;
  */
 public class RepresentationsMetadataProvider implements IRepresentationMetadataProvider {
 
+    private final IMessageService messageService;
+
+    public RepresentationsMetadataProvider(IMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (representationId.startsWith(RepresentationsFormDescriptionProvider.PREFIX)) {
             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Form.KIND)
-                    .label(RepresentationsFormDescriptionProvider.TITLE)
+                    .label(this.messageService.representationsViewTitle())
                     .descriptionId(RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID)
                     .iconURLs(List.of("representations/representations.svg"))
                     .build();

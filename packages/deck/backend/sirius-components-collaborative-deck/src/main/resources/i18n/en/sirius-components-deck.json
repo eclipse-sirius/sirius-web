@@ -1,0 +1,34 @@
+{
+  "deckToolbar": {
+    "exitFullscreen": "Exit full screen mode",
+    "toggleFullscreen": "Toggle full screen mode",
+    "fitToScreen": "Fit to screen",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "share": "Share"
+  },
+  "deck": {
+    "Add another lane": "+ Add another lane",
+    "Click to add card": "Click to add card",
+    "Delete lane": "Delete lane",
+    "Lane actions": "Lane actions",
+    "button": {
+      "Add lane": "Add lane",
+      "Add card": "Add card",
+      "Cancel": "Cancel"
+    },
+    "placeholder": {
+      "title": "title",
+      "description": "description",
+      "label": "label"
+    }
+  },
+  "deckRepresentation": {
+    "noDeck": "The Deck does not exist anymore"
+  },
+  "laneContextMenu": {
+    "visibleCards": "Visible cards",
+    "apply": "Apply"
+  }
+}

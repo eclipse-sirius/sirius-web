@@ -21,7 +21,8 @@
     "zoomOut": "Zoom out"
   },
   "exportImageButton": {
-    "exportDiagram": "Export the diagram as an image"
+    "exportDiagram": "Export the diagram as an image",
+    "experimentalFeature": "Experimental"
   },
   "groupPalette": {
     "alignBottom": "Align bottom",
@@ -76,5 +77,99 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
+  },
+  "arrangeAllButton": {
+    "arrangeAll": "Arrange all elements"
+  },
+  "revealSelectionInDiagramButton": {
+    "tooltip": "Reveal selected elements",
+    "tooltipLoading": "Reveal selected elements (loading details...)",
+    "tooltipWithMoreLabels": "Select {{labels}} (and {{count}} more)",
+    "tooltipWithLabels": "Select {{labels}}"
+  },
+  "diagramSubscriptionProvider": {
+    "representationNotAvailable": "The representation is not available anymore"
+  },
+  "palette": {
+    "close": "Close"
+  },
+  "diagramPalette": {
+    "appearance": "Appearance",
+    "showIn": "Show in"
+  },
+  "resetMovedByUserTool": {
+    "resetMove": "Reset move"
+  },
+  "resetManuallyLaidOutHandlesTool": {
+    "resetHandles": "Reset handles"
+  },
+  "resetLabelPositionTool": {
+    "resetLabelPosition": "Reset label position"
+  },
+  "fadeElementTool": {
+    "fadeElement": "Fade element",
+    "unfadeElement": "Unfade element"
+  },
+  "adjustSizeTool": {
+    "adjustSize": "Adjust size",
+    "adjustElement": "Adjust element"
+  },
+  "pinUnPinTool": {
+    "pinElement": "Pin element",
+    "unpinElement": "Unpin element"
+  },
+  "resetEditedEdgePathTool": {
+    "resetPath": "Reset path"
+  },
+  "manageVisibilityModalSearchField": {
+    "filterNodes": "Filter nodes"
+  },
+  "manageVisibilityModalHeader": {
+    "manageVisibility": "Manage visibility",
+    "close": "Close"
+  },
+  "labelAppearancePart": {
+    "hide": "Hide",
+    "fontSize": "Font Size",
+    "italic": "Italic",
+    "bold": "Bold",
+    "underline": "Underline",
+    "strikeThrough": "Strike Through",
+    "borderColor": "Border Color",
+    "borderRadius": "Border Radius",
+    "borderSize": "Border Size",
+    "borderLineStyle": "Border Line Style",
+    "labelColor": "Label Color",
+    "background": "Background",
+    "solid": "Solid",
+    "dash": "Dash",
+    "dot": "Dot",
+    "dashDot": "Dash Dot"
+  },
+  "rectangularNodeAppearanceSection": {
+    "insideLabel": "Inside Label",
+    "outsideMiddleLabel": "Outside Middle Label"
+  },
+  "imageNodeAppearanceSection": {
+    "insideLabel": "Inside Label",
+    "outsideMiddleLabel": "Outside Middle Label"
+  },
+  "ellipseNodeAppearanceSection": {
+    "insideLabel": "Inside Label"
+  },
+  "rectangularNodePart": {
+    "background": "Background",
+    "borderColor": "Border Color",
+    "borderRadius": "Border Radius",
+    "borderSize": "Border Size",
+    "borderLineStyle": "Border Line Style",
+    "solid": "Solid",
+    "dash": "Dash",
+    "dot": "Dot",
+    "dashDot": "Dash Dot"
+  },
+  "paletteAppearanceSection": {
+    "appearance": "Appearance",
+    "noAppearanceEditorAvailableForThisStyleOfElement": "No appearance editor available for this style of element"
   }
 }

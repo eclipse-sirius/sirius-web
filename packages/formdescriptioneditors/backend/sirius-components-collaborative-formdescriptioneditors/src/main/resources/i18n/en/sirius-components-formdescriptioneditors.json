@@ -1,5 +1,37 @@
 {
   "selectWidget": {
-    "none": "None"
+    "none": "None",
+    "value1Label": "Value 1",
+    "value2Label": "Value 2",
+    "value3Label": "Value 3"
+  },
+  "treeWidget": {
+    "modelBrowser": "Model browser",
+    "item1": "Item 1",
+    "item2": "Item 2",
+    "item1.1": "Item 1.1",
+    "item2.1": "Item 2.1",
+    "item2.2": "Item 2.2"
+  },
+  "richTextWidget": {
+    "richTextDocument": "Rich text document",
+    "yourRichText": "Your <b>rich text</b>."
+  },
+  "listWidget": {
+    "value1Label": "Value 1",
+    "value2Label": "Value 2",
+    "value3Label": "Value 3"
+  },
+  "formDescriptionEditorRepresentation": {
+    "pages": "Pages",
+    "page": "Page",
+    "groups": "Groups",
+    "group": "Group",
+    "controls": "Controls",
+    "for": "For",
+    "if": "If",
+    "widgets": "Widgets",
+    "descriptionDoesNotExist": "The form description editor does not exist",
+    "form": "Form"
   }
 }

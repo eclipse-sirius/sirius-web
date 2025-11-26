@@ -1,0 +1,35 @@
+{
+  "toolbar": {
+    "name": "Nom",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "progress": "Progression",
+    "exitFullscreen": "Quitter le mode plein écran",
+    "toggleFullscreen": "Basculer en mode plein écran",
+    "zoomLevel": "Niveau de zoom",
+    "hour": "Heure",
+    "quarterDay": "Quart de jour",
+    "halfDay": "Demi-journée",
+    "day": "Jour",
+    "twoDays": "Deux jours",
+    "week": "Semaine",
+    "month": "Mois",
+    "year": "Année",
+    "zoomIn": "Agrandir",
+    "zoomOut": "Réduire",
+    "fitToScreen": "Ajuster à la taille de l'écran",
+    "displayTaskListColumns": "Afficher les colonnes de la liste de tâches",
+    "displayColumns": "Afficher les colonnes",
+    "share": "Partager"
+  },
+  "ganttRepresentation": {
+    "noGantt": "Le Gantt n'existe plus"
+  },
+  "getTaskContextualPalette": {
+    "createTask": "Créer une tâche",
+    "deleteTask": "Supprimer la tâche"
+  },
+  "getTaskDependencyContextualPalette": {
+    "deleteTaskDependency": "Supprimer la dépendance de tâche"
+  }
+}

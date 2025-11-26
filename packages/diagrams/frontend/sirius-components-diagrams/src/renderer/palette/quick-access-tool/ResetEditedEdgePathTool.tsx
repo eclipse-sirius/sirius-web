@@ -14,10 +14,10 @@
 import DirectionsOffIcon from '@mui/icons-material/DirectionsOff';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useEditableEdgePath } from '../../edge/useEditableEdgePath';
 import { ResetEditedEdgePathToolProps } from './ResetEditedEdgePathTool.types';
-
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
     minWidth: theme.spacing(3),
@@ -30,12 +30,13 @@ const useStyle = makeStyles()((theme) => ({
 export const ResetEditedEdgePathTool = ({ diagramElementId }: ResetEditedEdgePathToolProps) => {
   const { classes } = useStyle();
   const { removeEdgeLayoutData } = useEditableEdgePath();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'resetEditedEdgePathTool' });
   return (
-    <Tooltip title="Reset path">
+    <Tooltip title={t('resetPath')}>
       <IconButton
         className={classes.toolIcon}
         size="small"
-        aria-label="Reset path"
+        aria-label={t('resetPath')}
         onClick={() => removeEdgeLayoutData(diagramElementId)}
         data-testid="Reset-path">
         <DirectionsOffIcon sx={{ fontSize: 16 }} />

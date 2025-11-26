@@ -57,6 +57,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -67,8 +68,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationsFormDescriptionProvider implements IRepresentationsDescriptionProvider {
-
-    public static final String TITLE = "Representations";
 
     public static final String PREFIX = "representations://";
 
@@ -90,13 +89,16 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders) {
+    private final IMessageService messageService;
+
+    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders, IMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
-                .orElse(TITLE);
+                .orElse(this.messageService.representationsViewTitle());
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
                 .label("Representations default form description")
@@ -141,7 +143,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
         ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
                 .idProvider(new WidgetIdProvider())
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.representationsViewTitle())
                 .itemsProvider(this::getItems)
                 .itemIdProvider(this::getItemId)
                 .itemLabelProvider(this::getItemLabel)

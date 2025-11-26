@@ -22,6 +22,7 @@ import WebIcon from '@mui/icons-material/Web';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { GQLFormDescriptionEditorRefreshedEventPayload } from './FormDescriptionEditorEventFragment.types';
 import {
@@ -140,7 +141,9 @@ export const FormDescriptionEditorRepresentation = forwardRef<
   ) => {
     const { classes } = useFormDescriptionEditorStyles();
     const noop = () => {};
-
+    const { t } = useTranslation('sirius-components-formdescriptioneditors', {
+      keyPrefix: 'formDescriptionEditorRepresentation',
+    });
     const [state, setState] = useState<FormDescriptionEditorRepresentationState>({
       formDescriptionEditor: null,
     });
@@ -205,7 +208,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
       content = (
         <div className={classes.main}>
           <div className={classes.widgets}>
-            <Typography gutterBottom>Pages</Typography>
+            <Typography gutterBottom>{t('pages')}</Typography>
             <div
               id="Page"
               data-testid="FormDescriptionEditor-Page"
@@ -214,10 +217,10 @@ export const FormDescriptionEditorRepresentation = forwardRef<
               onDragStart={readOnly ? noop : handleDragStartPage}>
               <WebIcon />
               <Typography variant="caption" gutterBottom>
-                Page
+                {t('page')}
               </Typography>
             </div>
-            <Typography gutterBottom>Groups</Typography>
+            <Typography gutterBottom>{t('groups')}</Typography>
             <div
               id="Group"
               data-testid="FormDescriptionEditor-Group"
@@ -226,10 +229,10 @@ export const FormDescriptionEditorRepresentation = forwardRef<
               onDragStart={readOnly ? noop : handleDragStartGroup}>
               <ViewAgendaIcon />
               <Typography variant="caption" gutterBottom>
-                Group
+                {t('group')}
               </Typography>
             </div>
-            <Typography gutterBottom>Controls</Typography>
+            <Typography gutterBottom>{t('controls')}</Typography>
             <div
               id="FormElementFor"
               data-testid="FormDescriptionEditor-FormElementFor"
@@ -238,7 +241,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
               onDragStart={readOnly ? noop : handleDragStartWidget}>
               <ForIcon />
               <Typography variant="caption" gutterBottom>
-                For
+                {t('for')}
               </Typography>
             </div>
             <div
@@ -249,10 +252,10 @@ export const FormDescriptionEditorRepresentation = forwardRef<
               onDragStart={readOnly ? noop : handleDragStartWidget}>
               <IfIcon />
               <Typography variant="caption" gutterBottom>
-                If
+                {t('if')}
               </Typography>
             </div>
-            <Typography gutterBottom>Widgets</Typography>
+            <Typography gutterBottom>{t('widgets')}</Typography>
 
             {allWidgets.map((widgetDescriptor) => {
               return (
@@ -284,7 +287,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
       content = (
         <div className={classes.main + ' ' + classes.noFormDescriptionEditor}>
           <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
-            The form description editor does not exist
+            {t('descriptionDoesNotExist')}
           </Typography>
         </div>
       );
@@ -307,7 +310,7 @@ export const FormDescriptionEditorRepresentation = forwardRef<
           formDescriptionEditor={state.formDescriptionEditor}>
           <div className={classes.formDescriptionEditor}>
             <div className={classes.header}>
-              <Typography>Form</Typography>
+              <Typography>{t('form')}</Typography>
             </div>
             {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
           </div>

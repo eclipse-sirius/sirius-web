@@ -26,6 +26,10 @@ public interface ICollaborativeMessageService {
 
     String notFound();
 
+    String searchCommandName();
+
+    String searchCommandDescription();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -53,5 +57,14 @@ public interface ICollaborativeMessageService {
             return "";
         }
 
+        @Override
+        public String searchCommandName() {
+            return "";
+        }
+
+        @Override
+        public String searchCommandDescription() {
+            return "";
+        }
     }
 }

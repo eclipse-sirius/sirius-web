@@ -24,6 +24,7 @@ import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { useFullscreen } from '../hooks/useFullScreen';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
+import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
@@ -50,6 +51,7 @@ export const DeckToolbar = ({
   const [state, setState] = useState<ToolbarState>({ modal: null });
   const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
 
+  const { t } = useTranslation('sirius-components-deck', { keyPrefix: 'deckToolbar' });
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
 
@@ -62,21 +64,21 @@ export const DeckToolbar = ({
     <>
       <div className={classes.toolbar}>
         {fullscreen ? (
-          <Tooltip title="Exit full screen mode">
+          <Tooltip title={t('exitFullscreen')}>
             <IconButton
               size="small"
               color="inherit"
-              aria-label="exit full screen mode"
+              aria-label={t('exitFullscreen')}
               onClick={() => setFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Toggle full screen mode">
+          <Tooltip title={t('toggleFullscreen')}>
             <IconButton
               size="small"
               color="inherit"
-              aria-label="toggle full screen mode"
+              aria-label={t('toggleFullscreen')}
               onClick={() => setFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
@@ -84,39 +86,39 @@ export const DeckToolbar = ({
         )}
         {!fullscreen ? (
           //We disable the Fit to Screen but in Full screen mode because of issues to compute the parent container size.
-          <Tooltip title="Fit to Screen">
+          <Tooltip title={t('fitToScreen')}>
             <IconButton
               size="small"
               color="inherit"
-              aria-label="fit to screen"
+              aria-label={t('fitToScreen')}
               onClick={onFitToScreen}
               data-testid="fit-to-screen">
               <AspectRatioIcon />
             </IconButton>
           </Tooltip>
         ) : null}
-        <Tooltip title="Zoom In">
-          <IconButton size="small" color="inherit" aria-label="zoom in" onClick={onZoomIn} data-testid="zoomIn">
+        <Tooltip title={t('zoomIn')}>
+          <IconButton size="small" color="inherit" aria-label={t('zoomIn')} onClick={onZoomIn} data-testid="zoomIn">
             <ZoomInIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Zoom Out">
-          <IconButton size="small" color="inherit" aria-label="zoom out" onClick={onZoomOut} data-testid="zoomOut">
+        <Tooltip title={t('zoomOut')}>
+          <IconButton size="small" color="inherit" aria-label={t('zoomOut')} onClick={onZoomOut} data-testid="zoomOut">
             <ZoomOutIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Reset zoom">
+        <Tooltip title={t('resetZoom')}>
           <IconButton
             size="small"
             color="inherit"
-            aria-label="reset zoom"
+            aria-label={t('resetZoom')}
             onClick={onResetZoom}
             data-testid="resetZoom">
             <SearchIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Share">
-          <IconButton size="small" color="inherit" aria-label="share" onClick={onShare} data-testid="share">
+        <Tooltip title={t('share')}>
+          <IconButton size="small" color="inherit" aria-label={t('share')} onClick={onShare} data-testid="share">
             <ShareIcon />
           </IconButton>
         </Tooltip>

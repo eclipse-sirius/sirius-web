@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,10 @@ public class FadeButtonDescriptionProvider implements IDiagramFilterActionContri
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/fade")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .labelProvider(variableManager -> "Fade")
+                .labelProvider(variableManager -> this.messageService.diagramFilterFadeElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
-                .buttonLabelProvider(variableManager -> "Fade")
+                .buttonLabelProvider(variableManager -> this.messageService.diagramFilterFadeElements())
                 .imageURLProvider(variableManager -> DiagramImageConstants.FADE_SVG)
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();

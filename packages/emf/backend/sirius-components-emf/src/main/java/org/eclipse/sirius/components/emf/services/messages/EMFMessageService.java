@@ -52,4 +52,9 @@ public class EMFMessageService implements IEMFMessageService {
         return this.messageSourceAccessor.getMessage("UPPER_BOUNDARY_REACHED", new Object[] { newInstanceClass, feature });
     }
 
+    @Override
+    public String coreProperties() {
+        return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
+    }
+
 }

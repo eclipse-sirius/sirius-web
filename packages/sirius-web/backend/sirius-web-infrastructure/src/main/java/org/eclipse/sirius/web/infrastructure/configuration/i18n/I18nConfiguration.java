@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.infrastructure.configuration.i18n;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -29,13 +32,14 @@ public class I18nConfiguration {
     public ResourceBundleMessageSource resourceBundleMessageSource() {
         var messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("i18n/messages");
+        messageSource.setDefaultLocale(Locale.ENGLISH);
         messageSource.setDefaultEncoding(null);
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
     }
 
     @Bean
-    public MessageSourceAccessor messageSourceAccessor(ResourceBundleMessageSource resourceBundleMessageSource) {
-        return new MessageSourceAccessor(resourceBundleMessageSource);
+    public MessageSourceAccessor messageSourceAccessor(ResourceBundleMessageSource resourceBundleMessageSource, @Value("${spring.mvc.locale:en_EN}") Locale locale) {
+        return new MessageSourceAccessor(resourceBundleMessageSource, locale);
     }
 }

@@ -21,7 +21,8 @@
     "zoomOut": "Réduire"
   },
   "exportImageButton": {
-    "exportDiagram": "Exporter le diagramme en image"
+    "exportDiagram": "Exporter le diagramme en image",
+    "experimentalFeature": "Expérimental"
   },
   "groupPalette": {
     "alignBottom": "Aligner en bas",
@@ -76,5 +77,99 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
+  },
+  "arrangeAllButton": {
+    "arrangeAll": "Arranger tous les éléments"
+  },
+  "revealSelectionInDiagramButton": {
+    "tooltip": "Afficher les éléments sélectionnés",
+    "tooltipLoading": "Afficher les éléments sélectionnés (chargement des détails...)",
+    "tooltipWithMoreLabels": "Sélectionner {{labels}} (et {{count}} de plus)",
+    "tooltipWithLabels": "Sélectionner {{labels}}"
+  },
+  "diagramSubscriptionProvider": {
+    "representationNotAvailable": "La représentation n'est plus disponible"
+  },
+  "palette": {
+    "close": "Fermer"
+  },
+  "diagramPalette": {
+    "appearance": "Apparence",
+    "showIn": "Afficher dans"
+  },
+  "resetMovedByUserTool": {
+    "resetMove": "Réinitialiser le déplacement"
+  },
+  "resetManuallyLaidOutHandlesTool": {
+    "resetHandles": "Réinitialiser les handles"
+  },
+  "resetLabelPositionTool": {
+    "resetLabelPosition": "Réinitialiser la position du label"
+  },
+  "fadeElementTool": {
+    "fadeElement": "Estomper l'élément",
+    "unfadeElement": "Déstomper l'élément"
+  },
+  "adjustSizeTool": {
+    "adjustSize": "Ajuster la taille",
+    "adjustElement": "Ajuster l'élément"
+  },
+  "pinUnPinTool": {
+    "pinElement": "Épingler l'élément",
+    "unpinElement": "Dépingler l'élément"
+  },
+  "resetEditedEdgePathTool": {
+    "resetPath": "Réinitialiser le chemin"
+  },
+  "manageVisibilityModalSearchField": {
+    "filterNodes": "Filtrer les nœuds"
+  },
+  "manageVisibilityModalHeader": {
+    "manageVisibility": "Gérer la visibilité",
+    "close": "Fermer"
+  },
+  "labelAppearancePart": {
+    "hide": "Masquer",
+    "fontSize": "Taille de la police",
+    "italic": "Italique",
+    "bold": "Gras",
+    "underline": "Souligné",
+    "strikeThrough": "Barré",
+    "borderColor": "Couleur de la bordure",
+    "borderRadius": "Rayon de la bordure",
+    "borderSize": "Taille de la bordure",
+    "borderLineStyle": "Style de la bordure",
+    "labelColor": "Couleur du label",
+    "background": "Arrière-plan",
+    "solid": "Solide",
+    "dash": "Discontinue",
+    "dot": "Pointillée",
+    "dashDot": "Pointillée-discontinue"
+  },
+  "rectangularNodeAppearanceSection": {
+    "insideLabel": "Label intérieur",
+    "outsideMiddleLabel": "Label extérieur centré"
+  },
+  "imageNodeAppearanceSection": {
+    "insideLabel": "Label intérieur",
+    "outsideMiddleLabel": "Label extérieur centré"
+  },
+  "ellipseNodeAppearanceSection": {
+    "insideLabel": "Label intérieur"
+  },
+  "rectangularNodePart": {
+    "background": "Arrière-plan",
+    "borderColor": "Couleur de la bordure",
+    "borderRadius": "Rayon de la bordure",
+    "borderSize": "Taille de la bordure",
+    "borderLineStyle": "Style de la bordure",
+    "solid": "Solide",
+    "dash": "Discontinue",
+    "dot": "Pointillée",
+    "dashDot": "Pointillée-discontinue"
+  },
+  "paletteAppearanceSection": {
+    "appearance": "Apparence",
+    "noAppearanceEditorAvailableForThisStyleOfElement": "Aucun éditeur d'apparence disponible pour ce style d'élément"
   }
 }

@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteSearchFieldProps, PaletteSearchFieldState } from './PaletteSearchField.types';
 
@@ -36,7 +37,7 @@ const usePaletteSearchFieldStyle = makeStyles()((theme) => ({
 export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
   const ref = useRef<HTMLDivElement | null>(null);
-
+  const { t } = useTranslation('sirius-components-palette', { keyPrefix: 'paletteSearchField' });
   const { classes } = usePaletteSearchFieldStyle();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +60,7 @@ export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) 
       value={state.value}
       size="small"
       onClick={(event) => event.stopPropagation()}
-      placeholder="Search Tool"
+      placeholder={t('placeholder')}
       className={classes.paletteSearchField}
       ref={ref}
       slotProps={{
@@ -72,7 +73,7 @@ export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) 
           ),
           endAdornment: state.value ? (
             <InputAdornment position="end">
-              <IconButton aria-label="clear" size="small" onClick={onTextClear}>
+              <IconButton aria-label={t('clear')} size="small" onClick={onTextClear}>
                 <ClearIcon fontSize="small" />
               </IconButton>
             </InputAdornment>

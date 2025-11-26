@@ -16,19 +16,24 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useApplySelection } from '../selection/useApplySelection';
 import { RevealSelectionInDiagramButtonProps } from './RevealSelectionInDiagramButton.types';
+import { useTranslation } from 'react-i18next';
 
 export const RevealSelectionInDiagramButton = ({ editingContextId }: RevealSelectionInDiagramButtonProps) => {
   const { fetchObjectLabels, loading, labels } = useObjectsLabels();
-  let tooltip = 'Reveal selected elements';
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'revealSelectionInDiagramButton' });
+  let tooltip = t('tooltip');
   if (loading) {
-    tooltip = 'Reveal selected elements (loading details...)';
+    tooltip = t('tooltipLoading');
   }
   if (labels) {
     const maxLabelsToShow = 5;
     if (labels.length > maxLabelsToShow) {
-      tooltip = `Select ${labels.slice(0, maxLabelsToShow).join(', ')} (and ${labels.length - maxLabelsToShow} more)`;
+      tooltip = t('tooltipWithMoreLabels', {
+        labels: labels.slice(0, maxLabelsToShow).join(', '),
+        count: labels.length - maxLabelsToShow,
+      });
     } else {
-      tooltip = `Select ${labels.join(', ')}`;
+      tooltip = t('tooltipWithLabels', { labels: labels.join(', ') });
     }
   }
 
@@ -48,7 +53,7 @@ export const RevealSelectionInDiagramButton = ({ editingContextId }: RevealSelec
       <span>
         <IconButton
           size="small"
-          aria-label="reveal selection elements"
+          aria-label={t('tooltip')}
           onClick={revealGlobalSelection}
           data-testid="diagram-reveal-selection">
           <LocationSearchingIcon />

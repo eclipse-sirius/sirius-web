@@ -12,10 +12,11 @@
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { PreviewWidgetProps } from '@eclipse-sirius/sirius-components-forms';
+import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 type TableElement = {
@@ -47,7 +48,7 @@ const useStyles = makeStyles()((theme) => ({
 
 export const TableWidgetPreview = ({ widget }: PreviewWidgetProps) => {
   const { classes } = useStyles();
-
+  const localization = useTableTranslation();
   const [selected, setSelected] = useState<Boolean>(false);
   const { selection } = useSelection();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -85,6 +86,7 @@ export const TableWidgetPreview = ({ widget }: PreviewWidgetProps) => {
     enableHiding: false,
     enableColumnFilters: false,
     enableGlobalFilter: false,
+    localization: localization,
   });
 
   return (

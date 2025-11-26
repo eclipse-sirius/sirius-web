@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { FooterProps } from './Footer.types';
 
@@ -30,9 +31,12 @@ const useFooterStyles = makeStyles()((theme) => ({
 
 export const SiriusWebFooter = ({}: FooterProps) => {
   const { classes } = useFooterStyles();
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'siriusWebFooter' });
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. Powered by</Typography>
+      <Typography variant="caption">
+        &copy; {new Date().getFullYear()} Obeo. {t('poweredBy')}
+      </Typography>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
       </Link>

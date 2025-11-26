@@ -21,6 +21,7 @@ import {
   HelpTooltipProps,
   HelpTooltipState,
 } from './HelpTooltip.types';
+import { useTranslation } from 'react-i18next';
 
 export const getHelpTextQuery = gql`
   query helpText($editingContextId: ID!, $formId: ID!, $widgetId: ID!) {
@@ -40,7 +41,7 @@ export const getHelpTextQuery = gql`
 
 export function HelpTooltip({ editingContextId, formId, widgetId, children }: HelpTooltipProps) {
   const [state, setState] = useState<HelpTooltipState>({ open: false, content: null });
-
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'helpTooltip' });
   const [fetchHelpText, { loading, data, error }] = useLazyQuery<GQLHelpTextQueryData, GQLHelpTextQueryVariables>(
     getHelpTextQuery
   );
@@ -49,13 +50,13 @@ export function HelpTooltip({ editingContextId, formId, widgetId, children }: He
       if (error) {
         setState((prevState) => ({
           ...prevState,
-          content: <div>`Error while loading the help text: ${error.message}`</div>,
+          content: <div>{t('errorWhileLoadingHelpText', { error: error.message })}</div>,
         }));
       }
       if (data) {
         const text = data.viewer.editingContext.representation.description.helpText;
         if (text === null || text.trim().length === 0) {
-          setState((prevState) => ({ ...prevState, content: <i>No help provided</i> }));
+          setState((prevState) => ({ ...prevState, content: <i>{t('noHelpProvided')}</i> }));
         } else {
           const lines = text.split('\n');
           const content = (

@@ -13,8 +13,9 @@
 export * from './actions/ToolsButtonExtensionPoints';
 export type { ToolsButtonMenuEntryProps } from './actions/ToolsButtonExtensionPoints.types';
 export type { CustomCellProps } from './cells/Cell.types';
-export type { TableCellContribution } from './cells/TableCellExtensionPoints.types';
 export * from './cells/TableCellExtensionPoints';
+export type { TableCellContribution } from './cells/TableCellExtensionPoints.types';
 export { TableRepresentation } from './representation/TableRepresentation';
 export { TableContent } from './table/TableContent';
 export * from './table/TableContent.types';
+export { useTableTranslation } from './table/useTableTranslation';

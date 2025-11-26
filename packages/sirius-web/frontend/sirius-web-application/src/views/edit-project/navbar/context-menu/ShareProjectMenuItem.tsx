@@ -16,6 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShareProjectMenuItemProps, ShareProjectMenuItemState } from './ShareProjectMenuItem.types';
 import { ShareProjectModal } from './ShareProjectModal';
 
@@ -23,14 +24,14 @@ export const ShareProjectMenuItem = ({ workbenchHandle }: ShareProjectMenuItemPr
   const [state, setState] = useState<ShareProjectMenuItemState>({
     isOpen: false,
   });
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'shareProjectMenuItem' });
   return (
     <>
       <MenuItem onClick={() => setState((prevState) => ({ ...prevState, isOpen: true }))} data-testid="share-project">
         <ListItemIcon>
           <ShareIcon />
         </ListItemIcon>
-        <ListItemText primary="Share" />
+        <ListItemText primary={t('share')} />
       </MenuItem>
       {state.isOpen ? (
         <ShareProjectModal

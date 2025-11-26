@@ -16,12 +16,14 @@ import ToolsIcon from '@mui/icons-material/Build';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ExportDataButton } from './ExportDataButton';
 import { ToolsButtonProps, ToolsButtonState } from './ToolsButton.types';
 import { toolsButtonMenuEntryExtensionPoint } from './ToolsButtonExtensionPoints';
 import { ToolsButtonMenuEntryProps } from './ToolsButtonExtensionPoints.types';
 
 export const ToolsButton = ({ editingContextId, representationId, table }: ToolsButtonProps) => {
+  const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'toolsButton' });
   const [state, setState] = useState<ToolsButtonState>({
     contextMenuAnchorElement: null,
   });
@@ -43,7 +45,7 @@ export const ToolsButton = ({ editingContextId, representationId, table }: Tools
         startIcon={<ToolsIcon />}
         color="inherit"
         onClick={handleClick}>
-        Tools
+        {t('tools')}
       </Button>
       <Menu
         id="basic-menu"

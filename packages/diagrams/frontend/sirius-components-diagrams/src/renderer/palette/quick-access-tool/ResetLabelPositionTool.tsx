@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useLabelResetPosition } from '../../move/useLabelResetPosition';
 import { ResetLabelPositionToolProps } from './ResetLabelPositionTool.types';
+import { useTranslation } from 'react-i18next';
 
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
@@ -33,6 +34,7 @@ export const ResetLabelPositionTool = ({ diagramElementId }: ResetLabelPositionT
   const { classes } = useStyle();
   const { removeEdgeLabelLayoutData, removeNodeLabelLayoutData } = useLabelResetPosition();
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'resetLabelPositionTool' });
 
   const handleRemoveLayoutData = (diagramElementId: string) => {
     const node = nodeLookup.get(diagramElementId);
@@ -47,11 +49,11 @@ export const ResetLabelPositionTool = ({ diagramElementId }: ResetLabelPositionT
   };
 
   return (
-    <Tooltip title="Reset label position">
+    <Tooltip title={t('resetLabelPosition')}>
       <IconButton
         className={classes.toolIcon}
         size="small"
-        aria-label="Reset label position"
+        aria-label={t('resetLabelPosition')}
         onClick={() => handleRemoveLayoutData(diagramElementId)}
         data-testid="reset-label-position">
         <LabelOffIcon sx={{ fontSize: 16 }} />
