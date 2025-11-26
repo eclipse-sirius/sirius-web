@@ -15,7 +15,7 @@ export interface GetCurrentEditingContextIdVariables {
   projectId: string;
 }
 
-export interface GetCurrentEditingContextIdtData {
+export interface GetCurrentEditingContextIdData {
   viewer: Viewer;
 }
 

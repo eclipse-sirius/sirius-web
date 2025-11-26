@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaCard } from './CreateProjectAreaCard';
+import { NewProjectCardProps } from './NewProjectCard.types';
 
 const useNewProjectCardStyles = makeStyles()((theme) => ({
   button: {
@@ -34,15 +37,33 @@ const useNewProjectCardStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const NewProjectCard = () => {
+/**
+ * Displays a card to trigger the project creation process for a specific project template
+ * (which may be the default 'blank' template).
+ */
+export const NewProjectCard = ({ template }: NewProjectCardProps) => {
   const { classes } = useNewProjectCardStyles();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newProjectCard' });
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
   return (
-    <Button to={`/new/project`} component={RouterLink} className={classes.button} data-testid="create">
-      <CreateProjectAreaCard title={t('title')} description={t('description')}>
-        <div className={classes.projectCardContent}>
-          <AddIcon className={classes.projectCardIcon} htmlColor="white" />
-        </div>
+    <Button
+      to={`/new/project?templateId=${template.id}`}
+      component={RouterLink}
+      className={classes.button}
+      data-testid={`create-project-from-template-${template.label}`}>
+      <CreateProjectAreaCard title={'+ ' + template.label} description={template.label}>
+        {template.id === 'blank-project' ? (
+          <div className={classes.projectCardContent}>
+            <AddIcon className={classes.projectCardIcon} htmlColor="white" />
+          </div>
+        ) : (
+          <Box
+            sx={{
+              backgroundImage: `url('${httpOrigin + template.imageURL}')`,
+              backgroundSize: 'cover',
+            }}
+          />
+        )}
       </CreateProjectAreaCard>
     </Button>
   );

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,26 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.events;
+package org.eclipse.sirius.components.flow.starter.services;
 
-import java.time.Instant;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Event fired when a nature is removed.
+ * Used to indicate that semantic data have been updated because of a flow template.
  *
  * @author sbegaudeau
  */
-public record ProjectNatureRemovedEvent(
+public record FlowTemplateInitialization(
         @NotNull UUID id,
-        @NotNull Instant createdOn,
-        @NotNull ICause causedBy,
-        @NotNull Project project,
-        @NotNull Nature nature) implements IProjectEvent {
+        @NotNull IEMFEditingContext editingContext,
+        @NotNull String templateId,
+        @NotNull ICause causedBy) implements ICause {
 }

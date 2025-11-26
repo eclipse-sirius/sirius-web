@@ -10,8 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { GQLProjectTemplate } from '../project-browser/create-projects-area/useProjectTemplates.types';
+
 export interface NewProjectViewState {
   name: string;
+  pristineName: boolean;
+  availableTemplates: GQLProjectTemplate[] | null;
+  templateSelectionOpen: boolean;
   librariesImportOpen: boolean;
+  selectedTemplateId: string | null;
   selectedLibraries: string[];
 }

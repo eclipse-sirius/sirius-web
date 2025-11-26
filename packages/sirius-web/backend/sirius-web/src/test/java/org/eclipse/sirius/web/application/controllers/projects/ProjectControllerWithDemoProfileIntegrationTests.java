@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -104,7 +105,7 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a mutation to create a project is performed, then it returns an error payload")
     public void givenTheDemoProfileWhenAMutationToCreateAProjectIsPerformedThenItReturnsAnErrorPayload() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         String typeName = JsonPath.read(result, "$.data.createProject.__typename");

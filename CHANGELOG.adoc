@@ -37,7 +37,21 @@ For that, custom explorers must provide their own implementation of `IRepresenta
 React components `FormRepresentation`, `DiagramFilterForm`, `DetailsView`, `RelatedElementsView`, and `RepresentationsView` stopped relying on `readOnly` props in favor of the `FormCapabilities#canEdit` capabilities.
 All tests based on form subscriptions will now receive both `FormRefreshedEventPayload` and `FormCapabilitiesRefreshedEventPayload`.
 Those tests will have to be updated to take this new payload into account.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5174[#5174] The `createProjectFromTemplate` mutation and all associated types (e.g. `CreateProjectFromTemplateInput` and `CreateProjectFromTemplateSuccessPayload`) and test helpers (`CreateProjectFromTemplateMutationRunner`) have been removed.
+The ability to specify a project template when creating a project is now integrated directly into the main `createProject` mutation, through the new `templateId` field in `CreateProjectInput`.
+As part of this change, creating a project from a template can no longer automatically open an initial representation, but this feature will be reintroduced through a different mechanism.
+The ability to specify the natures of the project to be created has been removed from the GraphQL schema along with the natures of a project template and the related DTOs since this concern is now handled internally thanks to the project template.
+The lifecycle of the initialization of the projects has been simplified compared to the previous version which was taking some shortcut with the proper lifecycle of the application.
+As a consequence, the interface `IProjectTemplateInitializer` has been renamed to `ISemanticDataInitializer` and it will only be in charge of the creation of the semantic data of a project.
+It previously was used to manipulate both the semantic data and the representation bounded contexts.
+Now each `ISemanticDataInitializer` will be in charge of calling the `IEditingContextPersistenceService` to save the semantic data updated thanks to the project template.
+This responsibility has been transfered to the semantic data initializer in order to offer the possibility to provide a custom cause for the persistence of the semantic data.
+Since the lifecycle now matches our best practices, the creation of some initial representation by a template will have to be performed in another service listening for the relevant event.
+By having the ability to specify a custom event, one can provide some custom data between the service creating the semantic data and the one creating the representations.
+An example is visible in `StudioSemanticDataInitializer` and `StudioRepresentationInitializer`.
+On top of that a new interface, `IRestDefaultProjectTemplateProvider`, is available for those who want to specify the default template to use when a project is created thanks to the rest API.
+This API will probably slightly evolve in the futur but it provides today the ability to change the project created from the default "Blank Project".
+On the frontend, the `ProjectTemplateCard` component has been removed; the `NewProjectCard` component handles all cases now, with a new `template` prop.
 
 
 === Dependency update
@@ -69,6 +83,7 @@ You can check the https://www.elastic.co/docs/reference/query-languages/query-ds
 The command is only visible if Elasticsearch is up and running.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
+- https://github.com/eclipse-sirius/sirius-web/issues/5714[#5714] [sirius-web] Unify the project creation to use the same UI and GraphQL APIs when creating with or without a project template
 
 === Improvements
 

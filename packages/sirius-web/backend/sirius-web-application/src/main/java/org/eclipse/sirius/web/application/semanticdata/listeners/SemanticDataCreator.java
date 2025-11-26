@@ -28,11 +28,11 @@ import org.springframework.transaction.event.TransactionalEventListener;
  * @author sbegaudeau
  */
 @Service
-public class SemanticDataInitializer {
+public class SemanticDataCreator {
 
     private final ISemanticDataCreationService semanticDataCreationService;
 
-    public SemanticDataInitializer(ISemanticDataCreationService semanticDataCreationService) {
+    public SemanticDataCreator(ISemanticDataCreationService semanticDataCreationService) {
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
     }
 

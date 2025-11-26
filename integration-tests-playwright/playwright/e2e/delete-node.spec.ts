@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
@@ -21,10 +22,15 @@ test.describe('diagram - delete node', () => {
       // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [PlaywrightProject.FLOW_NATURE]);
+    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
 
-    await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    const representationItem = await explorer.getTreeItemLabel('Topography');
+    representationItem.click();
 
     await page.evaluate(() => {
       window.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(true));

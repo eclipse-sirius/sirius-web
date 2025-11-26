@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.projecttemplates;
 
-import java.util.Optional;
+import java.util.Objects;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.application.project.services.api.ISemanticDataInitializer;
 import org.eclipse.sirius.web.papaya.factories.ApacheProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.FasterXMLProjectFactory;
@@ -39,7 +39,13 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class PapayaBenchmarkProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaBenchmarkSemanticDataInitializer implements ISemanticDataInitializer {
+
+    private final IEditingContextPersistenceService editingContextPersistenceService;
+
+    public PapayaBenchmarkSemanticDataInitializer(IEditingContextPersistenceService editingContextPersistenceService) {
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
+    }
 
     @Override
     public boolean canHandle(String projectTemplateId) {
@@ -47,7 +53,7 @@ public class PapayaBenchmarkProjectTemplateInitializer implements IProjectTempla
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
+    public void handle(ICause cause, IEditingContext editingContext, String projectTemplateId) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             new JavaProjectFactory().create(emfEditingContext);
             new ReactiveStreamsProjectFactory().create(emfEditingContext);
@@ -82,7 +88,8 @@ public class PapayaBenchmarkProjectTemplateInitializer implements IProjectTempla
 
             var eObjectInitializer = new EObjectInitializer(eObjectIndexer);
             eObjectInitializer.initialize(emfEditingContext.getDomain().getResourceSet());
+
+            this.editingContextPersistenceService.persist(cause, editingContext);
         }
-        return Optional.empty();
     }
 }

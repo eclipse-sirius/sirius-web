@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
-import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 
 test.describe('diagram - list', () => {
   let projectId;
@@ -22,7 +22,7 @@ test.describe('diagram - list', () => {
       // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
-    const project = await new PlaywrightProject(request).createProject('list-node');
+    const project = await new PlaywrightProject(request).createProject('list-node', 'blank-project');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

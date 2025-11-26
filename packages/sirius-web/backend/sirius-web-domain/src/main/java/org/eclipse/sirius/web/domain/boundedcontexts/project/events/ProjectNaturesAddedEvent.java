@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.events;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
@@ -26,10 +27,10 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author sbegaudeau
  */
-public record ProjectNatureAddedEvent(
+public record ProjectNaturesAddedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
         @NotNull ICause causedBy,
         @NotNull Project project,
-        @NotNull Nature nature) implements IProjectEvent {
+        @NotNull List<Nature> natures) implements IProjectEvent {
 }

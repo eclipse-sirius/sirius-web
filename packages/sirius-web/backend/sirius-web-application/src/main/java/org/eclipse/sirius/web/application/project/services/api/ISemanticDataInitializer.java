@@ -10,19 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.dto;
+package org.eclipse.sirius.web.application.project.services.api;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IInput;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
- * The input object of the create project from a template mutation.
+ * Initializes the semantic data of a newly created project.
  *
  * @author pcdavid
  */
-public record CreateProjectFromTemplateInput(@NotNull UUID id, @NotNull String name, @NotNull String templateId, @NotNull List<String> natures) implements IInput {
+public interface ISemanticDataInitializer {
+    boolean canHandle(String projectTemplateId);
+
+    void handle(ICause cause, IEditingContext editingContext, String projectTemplateId);
 }

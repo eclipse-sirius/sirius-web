@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
@@ -336,7 +337,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the project is created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenProjectIsCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -402,7 +403,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid project to create, when the mutation is performed, then the semantic data are created")
     public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
@@ -426,7 +427,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a project to create with libraries, when mutation is performed, then the libraries are present")
     public void givenProjectToCreateWithLibrariesWhenMutationIsPerformedThenTheLibrariesArePresent() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_ID.toString()));
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_ID.toString()));
         var result = this.createProjectMutationRunner.run(input);
 
         TestTransaction.flagForCommit();

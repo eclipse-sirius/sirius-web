@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -123,6 +124,6 @@ public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends Ab
         assertThat(count).isZero();
 
         List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
-        assertThat(projectTemplateIds).doesNotContain("create-project", "upload-project", "browse-all-project-templates");
+        assertThat(projectTemplateIds).doesNotContain(BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, "upload-project", "browse-all-project-templates");
     }
 }

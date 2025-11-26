@@ -13,7 +13,6 @@
 
 import { Project } from '../pages/Project';
 import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
 import { Explorer } from '../workbench/Explorer';
 import { Workbench } from '../workbench/Workbench';
 import { CreatedProjectData } from './Studio.types';
@@ -22,9 +21,9 @@ export class Studio {
   static readonly STUDIO_NATURE = 'siriusComponents://nature?kind=studio';
 
   public createStudioProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('Studio', 'studio-template', [Studio.STUDIO_NATURE]).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('Studio', 'studio-template').then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
@@ -35,9 +34,9 @@ export class Studio {
   }
 
   public createBlankStudioProjectWithView(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('Blank Studio', 'blank-studio-template', [Studio.STUDIO_NATURE]).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('Blank Studio', 'blank-studio-template').then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         new Project().visit(projectId);
         const view_id = 'view';
@@ -56,7 +55,7 @@ export class Studio {
   }
 
   public createProjectFromDomain(name: string, domain: string, entity: string): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject(name, []).then((res) => {
+    return cy.createProject(name, 'blank-project', []).then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;

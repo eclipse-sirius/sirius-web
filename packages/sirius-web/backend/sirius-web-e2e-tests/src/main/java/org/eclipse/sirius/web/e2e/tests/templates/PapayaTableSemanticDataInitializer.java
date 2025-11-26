@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.e2e.tests.templates;
 
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.application.project.services.api.ISemanticDataInitializer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,13 @@ import org.springframework.stereotype.Service;
  */
 @Profile("test")
 @Service
-public class TablePapayaProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaTableSemanticDataInitializer implements ISemanticDataInitializer {
+
+    private final IEditingContextPersistenceService editingContextPersistenceService;
+
+    public PapayaTableSemanticDataInitializer(IEditingContextPersistenceService editingContextPersistenceService) {
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
+    }
 
     @Override
     public boolean canHandle(String projectTemplateId) {
@@ -41,7 +47,7 @@ public class TablePapayaProjectTemplateInitializer implements IProjectTemplateIn
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
+    public void handle(ICause cause, IEditingContext editingContext, String projectTemplateId) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var documentId = UUID.randomUUID();
             var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
@@ -91,8 +97,8 @@ public class TablePapayaProjectTemplateInitializer implements IProjectTemplateIn
             firstPackage.getTypes().add(thirdRecord);
 
             resource.getContents().add(project);
-        }
 
-        return Optional.empty();
+            this.editingContextPersistenceService.persist(cause, editingContext);
+        }
     }
 }

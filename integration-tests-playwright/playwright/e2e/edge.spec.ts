@@ -24,12 +24,15 @@ test.describe('edge', () => {
       window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
     });
 
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
-      PlaywrightProject.FLOW_NATURE,
-    ]);
+    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
 
-    await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    const representationItem = await explorer.getTreeItemLabel('Topography');
+    representationItem.click();
   });
 
   test.afterEach(async ({ request }) => {
@@ -204,7 +207,7 @@ test.describe('edge', () => {
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge');
+    const project = await new PlaywrightProject(request).createProject('edge', 'blank-project');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -26,8 +27,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregate
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNatureAddedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNatureRemovedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNaturesAddedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNaturesRemovedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -79,25 +80,25 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
         return Collections.unmodifiableSet(this.natures);
     }
 
-    public void addNature(ICause cause, String natureName) {
-        var newNature = new Nature(natureName);
+    public void addNatures(ICause cause, List<String> natureNames) {
+        var newNatures = natureNames.stream()
+                .map(Nature::new)
+                .toList();
 
-        this.natures.add(newNature);
+        this.natures.addAll(newNatures);
         this.lastModifiedOn = Instant.now();
 
-        this.registerEvent(new ProjectNatureAddedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, newNature));
+        this.registerEvent(new ProjectNaturesAddedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, newNatures));
     }
 
-    public void removeNature(ICause cause, String natureName) {
-        this.natures.stream()
-                .filter(nature -> nature.name().equals(natureName))
-                .findFirst()
-                .ifPresent(nature -> {
-                    this.natures.remove(nature);
-                    this.lastModifiedOn = Instant.now();
+    public void removeNatures(ICause cause, List<String> natureNames) {
+        var naturesToRemove = this.natures.stream()
+                .filter(nature -> natureNames.contains(nature.name()))
+                .toList();
+        naturesToRemove.forEach(this.natures::remove);
+        this.lastModifiedOn = Instant.now();
 
-                    this.registerEvent(new ProjectNatureRemovedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, nature));
-                });
+        this.registerEvent(new ProjectNaturesRemovedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, naturesToRemove));
     }
 
     public Instant getCreatedOn() {

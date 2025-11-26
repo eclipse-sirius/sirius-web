@@ -18,7 +18,7 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('diagram - drag and drop', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('diagram-dnd');
+    const project = await new PlaywrightProject(request).createProject('diagram-dnd', 'blank-project');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

@@ -23,15 +23,16 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
 
     @Autowired
-    private CreateProjectFromTemplateMutationRunner createProjectFromTemplateMutationRunner;
+    private CreateProjectMutationRunner createProjectMutationRunner;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -121,7 +122,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         assertThat(count).isGreaterThan(6);
 
         List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
-        assertThat(projectTemplateIds.get(0)).isEqualTo("create-project");
+        assertThat(projectTemplateIds.get(0)).isEqualTo(BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID);
         assertThat(projectTemplateIds.get(1)).isEqualTo("upload-project");
         assertThat(projectTemplateIds.get(2)).isEqualTo("browse-all-project-templates");
     }
@@ -133,17 +134,14 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), "Studio", StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID, List.of(StudioProjectTemplateProvider.STUDIO_NATURE));
-        var result = this.createProjectFromTemplateMutationRunner.run(input);
+        var input = new CreateProjectInput(UUID.randomUUID(), "Studio", StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID, List.of());
+        var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
-        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
-
-        String representationId = JsonPath.read(result, "$.data.createProjectFromTemplate.representationToOpen.id");
-        assertThat(representationId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
                 .map(ProjectSemanticData::getSemanticData)
@@ -167,13 +165,13 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), "Papaya - Performance", PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID, List.of(PapayaProjectTemplateProvider.PAPAYA_NATURE));
-        var result = this.createProjectFromTemplateMutationRunner.run(input);
+        var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Performance", PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID, List.of());
+        var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
-        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

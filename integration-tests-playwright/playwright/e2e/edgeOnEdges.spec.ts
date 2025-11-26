@@ -19,7 +19,7 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('edgeOnEdge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge-on-edge');
+    const project = await new PlaywrightProject(request).createProject('edge-on-edge', 'blank-project');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

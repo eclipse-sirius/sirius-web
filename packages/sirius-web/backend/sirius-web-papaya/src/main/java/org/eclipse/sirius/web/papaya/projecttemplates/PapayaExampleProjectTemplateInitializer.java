@@ -13,18 +13,18 @@
 
 package org.eclipse.sirius.web.papaya.projecttemplates;
 
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.application.project.services.api.ISemanticDataInitializer;
 import org.eclipse.sirius.web.papaya.factories.services.EObjectIndexer;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +34,21 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class PapayaExampleProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaExampleProjectTemplateInitializer implements ISemanticDataInitializer {
+
+    private final IEditingContextPersistenceService editingContextPersistenceService;
+
+    public PapayaExampleProjectTemplateInitializer(IEditingContextPersistenceService editingContextPersistenceService) {
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
+    }
+
     @Override
     public boolean canHandle(String projectTemplateId) {
         return PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID.equals(projectTemplateId);
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
+    public void handle(ICause cause, IEditingContext editingContext, String projectTemplateId) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var documentId = UUID.randomUUID();
             var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
@@ -62,7 +69,7 @@ public class PapayaExampleProjectTemplateInitializer implements IProjectTemplate
 
             operationalAnalysisObjectFactory.link(eObjectIndexer);
 
+            this.editingContextPersistenceService.persist(cause, editingContext);
         }
-        return Optional.empty();
     }
 }

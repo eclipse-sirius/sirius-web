@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
+import java.util.List;
+
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +25,5 @@ import org.springframework.data.domain.Pageable;
  */
 public interface IProjectTemplateApplicationService {
     Page<ProjectTemplateDTO> findAll(Pageable pageable, String context);
-
-
-    IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input);
-
+    List<ProjectTemplateDTO> findAll();
 }

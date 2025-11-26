@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.events.ICause;
@@ -66,7 +67,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> addNature(ICause cause, String projectId, String natureName) {
+    public IResult<Void> addNatures(ICause cause, String projectId, List<String> natureNames) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -74,7 +75,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var project = optionalProject.get();
-            project.addNature(cause, natureName);
+            project.addNatures(cause, natureNames);
 
             this.projectRepository.save(project);
             result = new Success<>(null);
@@ -84,7 +85,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> removeNature(ICause cause, String projectId, String natureName) {
+    public IResult<Void> removeNatures(ICause cause, String projectId, List<String> natureNames) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -92,7 +93,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
             result = new Failure<>(this.messageService.notFound());
         } else {
             var project = optionalProject.get();
-            project.removeNature(cause, natureName);
+            project.removeNatures(cause, natureNames);
 
             this.projectRepository.save(project);
             result = new Success<>(null);

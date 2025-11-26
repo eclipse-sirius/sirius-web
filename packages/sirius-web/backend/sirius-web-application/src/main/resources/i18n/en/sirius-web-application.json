@@ -72,7 +72,7 @@
     "newObject": "New object"
   },
   "newProjectView": {
-    "description": "Get started by creating a new project",
+    "description": "Enter a name and optionally configure a template and libraries",
     "submit": "Create",
     "title": "Create a new project",
     "name": "Name",

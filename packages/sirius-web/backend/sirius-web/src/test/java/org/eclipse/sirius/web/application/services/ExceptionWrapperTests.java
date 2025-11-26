@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.starter.ExceptionWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ public class ExceptionWrapperTests {
     @Test
     @DisplayName("Given a basic exception wrapper, when supplier are wrapped, then the supplier is really executed")
     public void givenBasicExceptionWrapperWhenWrappedThenSupplierExecuted() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of(), List.of());
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
 
         var payload = this.exceptionWrapper.wrap(() -> new SuccessPayload(input.id()), input);
         assertThat(payload.id()).isEqualTo(input.id());

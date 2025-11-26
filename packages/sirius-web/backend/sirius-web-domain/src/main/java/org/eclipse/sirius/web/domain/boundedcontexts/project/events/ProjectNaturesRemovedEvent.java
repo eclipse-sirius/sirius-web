@@ -10,19 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.project.events;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.services.IResult;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Usd to create projects.
+ * Event fired when a nature is removed.
  *
  * @author sbegaudeau
  */
-public interface IProjectCreationService {
-    IResult<Project> createProject(ICause cause, String name, List<String> natures);
+public record ProjectNaturesRemovedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull Project project,
+        @NotNull List<Nature> natures) implements IProjectEvent {
 }

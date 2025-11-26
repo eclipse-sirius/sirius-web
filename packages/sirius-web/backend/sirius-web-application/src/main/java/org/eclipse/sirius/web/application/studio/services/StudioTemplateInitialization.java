@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.dto;
+package org.eclipse.sirius.web.application.studio.services;
 
-import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Input used to create a new project.
+ * Used to indicate that semantic data have been updated because of a studio template.
  *
  * @author sbegaudeau
  */
-public record CreateProjectInput(
+public record StudioTemplateInitialization(
         @NotNull UUID id,
-        @NotNull String name,
-        @NotNull String templateId,
-        @NotNull List<String> libraryIds) implements IInput {
+        @NotNull IEMFEditingContext editingContext,
+        @NotNull Resource domainResource,
+        @NotNull ICause causedBy) implements ICause {
 }

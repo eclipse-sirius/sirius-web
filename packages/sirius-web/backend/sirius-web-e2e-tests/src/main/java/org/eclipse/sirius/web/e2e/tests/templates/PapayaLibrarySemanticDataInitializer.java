@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.application.project.services.api.ISemanticDataInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -46,9 +46,15 @@ import org.springframework.stereotype.Service;
  */
 @Profile("test")
 @Service
-public class LibraryPapayaProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaLibrarySemanticDataInitializer implements ISemanticDataInitializer {
 
-    private final Logger logger = LoggerFactory.getLogger(LibraryPapayaProjectTemplateInitializer.class);
+    private final IEditingContextPersistenceService editingContextPersistenceService;
+
+    private final Logger logger = LoggerFactory.getLogger(PapayaLibrarySemanticDataInitializer.class);
+
+    public PapayaLibrarySemanticDataInitializer(IEditingContextPersistenceService editingContextPersistenceService) {
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
+    }
 
     @Override
     public boolean canHandle(String projectTemplateId) {
@@ -56,7 +62,7 @@ public class LibraryPapayaProjectTemplateInitializer implements IProjectTemplate
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
+    public void handle(ICause cause, IEditingContext editingContext, String projectTemplateId) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var documentId = UUID.randomUUID();
             var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
@@ -82,8 +88,9 @@ public class LibraryPapayaProjectTemplateInitializer implements IProjectTemplate
             papayaPackage.getTypes().add(papayaInterface);
 
             resource.getContents().add(project);
+
+            this.editingContextPersistenceService.persist(cause, editingContext);
         }
-        return Optional.empty();
     }
 
     private Optional<Interface> getJavaUtilMapInterface(ResourceSet resourceSet) {
