@@ -12,25 +12,6 @@
  *******************************************************************************/
 import { APIRequestContext, expect, type Page } from '@playwright/test';
 
-const createProjectFromTemplateQuery = `
-  mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
-    createProjectFromTemplate(input: $input) {
-      __typename
-      ... on CreateProjectFromTemplateSuccessPayload {
-        project {
-          id
-        }
-        representationToOpen {
-          id
-        }
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-  `;
-
 const createProjectQuery = `
  mutation createProject($input: CreateProjectInput!) {
    createProject(input: $input) {
@@ -65,40 +46,12 @@ export class PlaywrightProject {
     this.request = request;
   }
 
-  async createProjectFromTemplate(
-    name: string,
-    templateId: string,
-    natures: string[]
-  ): Promise<{ projectId: string; representationId: string }> {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        name,
-        templateId,
-        natures,
-      },
-    };
-    const response = await this.request.post('http://localhost:8080/api/graphql', {
-      data: {
-        query: createProjectFromTemplateQuery,
-        variables,
-      },
-    });
-
-    expect(response.ok()).toBeTruthy();
-    const jsonResponse = await response.json();
-
-    const payload = jsonResponse.data.createProjectFromTemplate;
-    const projectId = payload.project.id;
-    const representationToOpenId = payload.representationToOpen?.id;
-    return { projectId, representationId: representationToOpenId };
-  }
-
-  async createProject(projectName: string): Promise<{ projectId: string }> {
+  async createProject(projectName: string, templateId: string = 'create-project'): Promise<{ projectId: string }> {
     const variables = {
       input: {
         id: crypto.randomUUID(),
         name: projectName,
+        templateId,
         natures: [],
         libraryIds: [],
       },

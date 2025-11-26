@@ -24,7 +24,7 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 export const isCreateProjectSuccessPayload = (payload: CreateProjectPayload): payload is CreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
 
-Cypress.Commands.add('createProject', (name, natures) => {
+Cypress.Commands.add('createProject', (name, templateId) => {
   const query = `
    mutation createProject($input: CreateProjectInput!) {
      createProject(input: $input) {
@@ -41,7 +41,8 @@ Cypress.Commands.add('createProject', (name, natures) => {
     input: {
       id: crypto.randomUUID(),
       name,
-      natures: [...natures],
+      templateId,
+      natures: [],
       libraryIds: [],
     },
   };

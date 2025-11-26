@@ -48,7 +48,6 @@ export interface GQLProjectTemplate {
   id: string;
   label: string;
   imageURL: string;
-  natures: string[];
 }
 
 export interface GQLPageInfo {

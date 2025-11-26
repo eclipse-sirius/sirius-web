@@ -24,5 +24,17 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author sbegaudeau
  */
-public record CreateProjectInput(@NotNull UUID id, @NotNull String name, @NotNull List<String> natures, List<String> libraryIds) implements IInput {
+public record CreateProjectInput(
+        @NotNull UUID id,
+        @NotNull String name,
+        @NotNull String templateId,
+        @NotNull List<String> natures,
+        List<String> libraryIds) implements IInput {
+
+    public CreateProjectInput(@NotNull UUID id,
+            @NotNull String name,
+            @NotNull List<String> natures,
+            List<String> libraryIds) {
+        this(id, name, "blank", natures, libraryIds);
+    }
 }

@@ -17,7 +17,6 @@ import './explorerCommands';
 import './reactFlowCommands';
 import './server/createDocumentCommand';
 import './server/createProjectCommand';
-import './server/createProjectFromTemplateCommand';
 import './server/deleteProjectCommand';
 import './server/getCurrentEditingContextId';
 import './serverCommands';

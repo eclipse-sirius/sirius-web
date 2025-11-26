@@ -19,18 +19,21 @@ import Container from '@mui/material/Container';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { LibrariesImportTable } from '../../omnibox/LibrariesImportTable';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import { NewProjectViewState } from './NewProjectView.types';
+import { useAllProjectTemplates } from './useAllProjectTemplates';
 import { useCreateProject } from './useCreateProject';
 
 const useNewProjectViewStyles = makeStyles()((theme) => ({
@@ -52,6 +55,7 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
   titleContainer: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'start',
     paddingBottom: theme.spacing(2),
   },
   buttons: {
@@ -80,7 +84,11 @@ export const NewProjectView = () => {
 
   const [state, setState] = useState<NewProjectViewState>({
     name: '',
+    pristineName: true,
+    availableTemplates: null,
+    templateSelectionOpen: false,
     librariesImportOpen: false,
+    selectedTemplate: 'create-project',
     selectedLibraries: [],
   });
 
@@ -92,6 +100,24 @@ export const NewProjectView = () => {
     },
   } = useCurrentViewer();
 
+  const [urlSearchParams] = useSearchParams();
+  useEffect(() => {
+    if (urlSearchParams.has('templateId')) {
+      setState((prevState) => ({ ...prevState, selectedTemplate: urlSearchParams.get('templateId') }));
+    }
+  }, [urlSearchParams]);
+
+  const { data: allTemplates, loading } = useAllProjectTemplates();
+  useEffect(() => {
+    if (!loading) {
+      const availableTemplates = allTemplates.viewer.allProjectTemplates;
+      const newName = state.pristineName
+        ? availableTemplates.find((template) => template.id === state.selectedTemplate)?.label || 'New Project'
+        : state.name;
+      setState((prevState) => ({ ...prevState, name: newName, availableTemplates }));
+    }
+  }, [loading, allTemplates, state.pristineName, state.name]);
+
   const { createProject, newProjectId } = useCreateProject();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
@@ -100,12 +126,20 @@ export const NewProjectView = () => {
     setState((prevState) => ({
       ...prevState,
       name: value,
+      pristineName: false,
     }));
   };
 
   const onCreateNewProject: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    createProject(state.name.trim(), [], state.selectedLibraries);
+    createProject(state.name.trim(), state.selectedTemplate, state.selectedLibraries);
+  };
+
+  const toggleTemplateSelection: React.MouseEventHandler<HTMLDivElement> = () => {
+    setState((prevState) => ({
+      ...prevState,
+      templateSelectionOpen: !prevState.templateSelectionOpen,
+    }));
   };
 
   const toggleLibrariesImport: React.MouseEventHandler<HTMLDivElement> = () => {
@@ -153,7 +187,7 @@ export const NewProjectView = () => {
               <Paper>
                 <form onSubmit={onCreateNewProject} className={classes.form}>
                   <TextField
-                    variant="standard"
+                    variant="outlined"
                     error={isError}
                     helperText={t('nameTextfieldHelperText')}
                     label={t('name')}
@@ -168,6 +202,64 @@ export const NewProjectView = () => {
                     autoFocus={true}
                     onChange={onNameChange}
                   />
+                  <List dense>
+                    <ListItemButton onClick={toggleTemplateSelection} disableGutters>
+                      <ListItemText
+                        sx={(theme) => ({
+                          display: 'flex',
+                          flexDirection: 'row',
+                          columnGap: theme.spacing(0.5),
+                          alignItems: 'center',
+                        })}
+                        slots={{
+                          primary: Typography,
+                        }}
+                        slotProps={{
+                          primary: { variant: 'h6' },
+                        }}
+                        primary="Project Template"
+                        secondary="(Optional)"
+                      />
+                      {state.templateSelectionOpen ? (
+                        <ExpandLess
+                          sx={(theme) => ({
+                            color: theme.palette.text.secondary,
+                          })}
+                        />
+                      ) : (
+                        <ExpandMore
+                          sx={(theme) => ({
+                            color: theme.palette.text.secondary,
+                          })}
+                        />
+                      )}
+                    </ListItemButton>
+                    <Collapse in={state.templateSelectionOpen} timeout="auto">
+                      <Select
+                        variant="outlined"
+                        value={state.selectedTemplate}
+                        onChange={(event) => {
+                          const { value } = event.target;
+                          const newName = state.pristineName
+                            ? state.availableTemplates.find((template) => template.id === value)?.label || 'New Project'
+                            : state.name;
+                          setState((prevState) => ({
+                            ...prevState,
+                            name: newName,
+                            selectedTemplate: value,
+                          }));
+                          navigate(`/new/project?templateId=${value}`);
+                        }}
+                        fullWidth
+                        data-testid="template">
+                        {(state.availableTemplates || []).map((template) => (
+                          <MenuItem value={template.id} key={template.id}>
+                            <ListItemText primary={template.label}></ListItemText>
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </Collapse>
+                  </List>
                   <List dense>
                     <ListItemButton onClick={toggleLibrariesImport} disableGutters>
                       <ListItemText

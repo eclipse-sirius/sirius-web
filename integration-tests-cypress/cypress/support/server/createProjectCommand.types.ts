@@ -18,6 +18,7 @@ export interface CreateProjectVariables {
 export interface CreateProjectInput {
   id: string;
   name: string;
+  templateId: string;
   natures: string[];
   libraryIds: string[];
 }

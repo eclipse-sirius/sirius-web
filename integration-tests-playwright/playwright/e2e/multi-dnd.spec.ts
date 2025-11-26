@@ -41,9 +41,7 @@ const includes = (parent: Bounds, child: Bounds) => {
 test.describe('diagram - drag and drop of multiple elements', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Studio', 'blank-studio-template', [
-      'siriusComponents://nature?kind=studio',
-    ]);
+    const project = await new PlaywrightProject(request).createProject('Studio', 'blank-studio-template');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

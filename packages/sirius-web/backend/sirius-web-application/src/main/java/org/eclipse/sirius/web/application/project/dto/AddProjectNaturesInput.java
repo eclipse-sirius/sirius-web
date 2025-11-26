@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IInput;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The payload of the create project from template mutation.
+ * Input used to add natures to an existing project.
  *
  * @author pcdavid
  */
-public record CreateProjectFromTemplateSuccessPayload(@NotNull UUID id, @NotNull ProjectDTO project, RepresentationMetadata representationToOpen) implements IPayload {
+public record AddProjectNaturesInput(
+        @NotNull UUID id,
+        @NotNull String projectId,
+        @NotNull List<@NotNull String> natures) implements IInput {
 }
