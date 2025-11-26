@@ -13,6 +13,8 @@
 
 import { Project } from '../../pages/Project';
 import { Flow } from '../../usecases/Flow';
+import { Diagram } from '../../workbench/Diagram';
+import { Explorer } from '../../workbench/Explorer';
 
 const projectName = 'Cypress - Project Contextual Menu Actions';
 
@@ -49,6 +51,38 @@ describe('Project - Contextual Menu Actions', () => {
               .should('include.text', url)
               .should('include.text', '?workbenchConfiguration=');
           });
+        });
+      });
+    });
+
+    context('Duplicate Action', () => {
+      context('When we try to duplicate a project', () => {
+        it('Then we are redirected to a copy', () => {
+          cy.url().should('include', `/projects/${projectId}/edit`);
+          const duplicateButton = new Project().getProjectNavigationBar().getDuplicateButton();
+          duplicateButton.click();
+          cy.url().should('not.include', `/projects/${projectId}/edit`);
+          cy.getByTestId('navbar-title').should('have.text', `${projectName} - Copy`);
+        });
+      });
+
+      context('When we try to duplicate a project with a diagram opened', () => {
+        it('Then we are redirected to a copy with no representation opened', () => {
+          const explorer = new Explorer();
+          explorer.expandWithDoubleClick('robot');
+          explorer.getTreeItemByLabel('System').click();
+          explorer.createRepresentation('System', 'Topography', 'Topography');
+
+          new Diagram().getNodes('Topography', 'Central_Unit').should('be.visible');
+          cy.getByTestId('representation-tab-Topography').should('be.visible');
+
+          const duplicateButton = new Project().getProjectNavigationBar().getDuplicateButton();
+          duplicateButton.click();
+
+          cy.url().should('not.include', `/projects/${projectId}/edit`);
+          cy.getByTestId('navbar-title').should('have.text', `${projectName} - Copy`);
+
+          cy.getByTestId('representation-tab-Topography').should('not.exist');
         });
       });
     });
