@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.LabelWidget;
 import org.eclipse.sirius.components.forms.Textarea;
@@ -281,7 +282,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     public void givenPortalRepresentationWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("EPackage Portal").group("Core Properties");
@@ -313,7 +315,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
 
@@ -349,7 +352,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     public void givenPortalRepresentationWhenWeEditItsDocumentationInTheDetailsViewThenTheDocumentationIsChanged() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
 

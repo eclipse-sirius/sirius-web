@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -75,9 +77,10 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given an EllipseNodeStyleDescription, when we subscribe to its properties events, then the form is sent")
     public void givenEllipseNodeStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
-        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("EllipseNodeStyleDescription").group("Core Properties");
@@ -96,9 +99,10 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given an EllipseNodeStyleDescription, when border size is edited, then its value is updated")
     public void givenEllipseNodeStyleDescriptionWhenBorderSizeIsEditedThenItsValueIsUpdated() {
-        var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textfieldId = new AtomicReference<String>();
@@ -113,7 +117,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         });
 
         Runnable editTextfield = () -> {
-            var editTextfieldInput = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "3");
+            var editTextfieldInput = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "3");
             var result = this.editTextfieldMutationRunner.run(editTextfieldInput);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

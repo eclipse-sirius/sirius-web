@@ -112,6 +112,9 @@ If you want to use this limit on your custom nodes, you must either use the `Sir
 - https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes.
 As such, the variables `droppedNode` and `droppedElement` which are exposed in the body of such tools and which only supported a single node should stop being used and replaced with `droppedNodes` and `droppedElements` representing all the nodes (and corresponding semantic elements) dropped at once.
 _Drop Node Tool_ definitions need to be adapted to handle these new variables.
+- https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] All GraphQL schema using the type `FormRefreshedEventPayload` may need to also add `FormCapabilitiesRefreshedEventPayload` to their union.
+React components `FormRepresentation`, `DiagramFilterForm`, `DetailsView`, `RelatedElementsView`, and `RepresentationsView` stopped relying on `readOnly` props in favor of the `FormCapabilities#canEdit` capabilities.
+
 
 
 === Dependency update
@@ -192,6 +195,9 @@ In particular, this can be used to customize the tree used for the model browser
 - https://github.com/eclipse-sirius/sirius-web/issues/5200[#5200] [sirius-web] Add support for uploading projects with models referencing each other
 Note that when some of the documents in the uploaded archive contain invalid references, only the subset of self-contained documents without invalid external references is imported.
 - https://github.com/eclipse-sirius/sirius-web/issues/2884[#2884] [diagram] Tools for drag'n'dropping nodes on diagrams now support dropping multiple nodes at once.
+- https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] Add the support for form `canEdit` capabilities.
+The `canEdit` capabilities delegates to `ProjectCapabilities#canEdit` by default.
+Downstream projects can provide their own `IFormCapabilitiesService` primary service to override the default behavior.
 
 
 === Improvements

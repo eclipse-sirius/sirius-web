@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -60,9 +62,13 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
     @GivenSiriusWebServer
     @DisplayName("Given a form representation, when we customize its output events, then additional payloads are received")
     public void givenFormRepresentationWhenWeCustomizeItsOuputEventsThenAdditionalPayloadsAreReceived() {
-        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
+
+        Predicate<Object> formCapabilitiesMatcher = object -> Optional.of(object)
+                .filter(FormCapabilitiesRefreshedEventPayload.class::isInstance)
+                .isPresent();
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
                 .filter(FormRefreshedEventPayload.class::isInstance)
@@ -73,6 +79,7 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
                 .isPresent();
 
         StepVerifier.create(flux)
+                .expectNextMatches(formCapabilitiesMatcher)
                 .expectNextMatches(formContentMatcher)
                 .expectNextMatches(testPayloadMatcher)
                 .thenCancel()

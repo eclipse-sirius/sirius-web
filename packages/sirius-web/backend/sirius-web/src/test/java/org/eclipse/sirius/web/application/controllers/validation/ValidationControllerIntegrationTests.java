@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -47,6 +48,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -84,7 +86,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given an editing context, when we subscribe to its validation events, then the validation data are sent")
     public void givenAnEditingContextWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSent() {
-        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationIdBuilder.buildValidationRepresentationId());
+        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var flux = this.validationEventSubscriptionRunner.run(input);
 
         Consumer<Object> validationContentConsumer = payload -> Optional.of(payload)
@@ -105,12 +107,13 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given a validation representation, when we edit the details of an object, then its validation status is updated")
     public void givenValidationRepresentationWhenWeEditTheDetailsOfAnObjectThenItsValidationStatusIsUpdated() {
-        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationIdBuilder.buildValidationRepresentationId());
+        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput);
 
-        var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
-        var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var textareaId = new AtomicReference<String>();
@@ -135,7 +138,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
                 }, () -> fail("Missing validation"));
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textareaId.get(), "");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textareaId.get(), "");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
