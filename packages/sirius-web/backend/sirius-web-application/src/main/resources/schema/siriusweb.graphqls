@@ -2,6 +2,7 @@ extend type Viewer {
   project(projectId: ID!): Project
   projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilter): ViewerProjectsConnection!
   projectTemplates(page: Int!, limit: Int!, context: ProjectTemplateContext!): ViewerProjectTemplatesConnection!
+  allProjectTemplates: [ProjectTemplate!]!
 }
 
 input ProjectFilter {
@@ -51,7 +52,6 @@ type ProjectTemplate {
   id: ID!
   label: String!
   imageURL: String!
-  natures: [String!]!
 }
 
 extend type EditingContext {
@@ -70,7 +70,6 @@ type EditingContextRepresentationsEdge {
 
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
-  createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
   renameRepresentation(input: RenameRepresentationInput!): RenameRepresentationPayload!
@@ -82,7 +81,7 @@ extend type Mutation {
 input CreateProjectInput {
   id: ID!
   name: String!
-  natures: [String!]!
+  templateId: ID!
   libraryIds: [String!]!
 }
 
@@ -91,21 +90,6 @@ union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
 type CreateProjectSuccessPayload {
   id: ID!
   project: Project!
-}
-
-input CreateProjectFromTemplateInput {
-  id: ID!
-  name: String!
-  templateId: ID!
-  natures: [String!]!
-}
-
-union CreateProjectFromTemplatePayload = ErrorPayload | CreateProjectFromTemplateSuccessPayload
-
-type CreateProjectFromTemplateSuccessPayload {
-  id: ID!
-  project: Project!
-  representationToOpen: RepresentationMetadata
 }
 
 input RenameProjectInput {

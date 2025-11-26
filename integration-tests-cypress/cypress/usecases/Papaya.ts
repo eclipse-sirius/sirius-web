@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
 import { CreatedProjectData } from './Papaya.types';
 
 export class Papaya {
   static readonly PAPAYA_NATURE = 'siriusComponents://nature?kind=papaya';
 
   public createPapayaBlankProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('Papaya - Blank', 'papaya-empty', [Papaya.PAPAYA_NATURE]).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('Papaya - Blank', 'papaya-empty', []).then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
@@ -30,9 +30,9 @@ export class Papaya {
   }
 
   public createPapayaTableExempleProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('PapayaTable', 'papaya-table-template', [Papaya.PAPAYA_NATURE]).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('PapayaTable', 'papaya-table-template', []).then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
@@ -43,17 +43,19 @@ export class Papaya {
   }
 
   public createPapayaLibraryExampleProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy
-      .createProjectFromTemplate('PapayaLibrary', 'papaya-library-template', [Papaya.PAPAYA_NATURE])
-      .then((res) => {
-        const payload = res.body.data.createProjectFromTemplate;
-        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
-          const projectId = payload.project.id;
-          const data: CreatedProjectData = { projectId };
-          return cy.wrap(data);
-        } else {
-          throw new Error(`The project papaya library example has not been created`);
-        }
-      });
+    return cy.getLibraryId('papaya', 'java', '0.0.3').then((res) => {
+      return cy
+        .createProject('PapayaLibrary', 'papaya-library-template', [res.body.data.viewer.library.id])
+        .then((res) => {
+          const payload = res.body.data.createProject;
+          if (isCreateProjectSuccessPayload(payload)) {
+            const projectId = payload.project.id;
+            const data: CreatedProjectData = { projectId };
+            return cy.wrap(data);
+          } else {
+            throw new Error(`The project papaya library example has not been created`);
+          }
+        });
+    });
   }
 }

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 
@@ -23,7 +25,7 @@ import org.eclipse.sirius.web.domain.services.IResult;
 public interface IProjectUpdateService {
     IResult<Void> renameProject(ICause cause, String projectId, String newName);
 
-    IResult<Void> addNature(ICause cause, String projectId, String natureName);
+    IResult<Void> addNatures(ICause cause, String projectId, List<String> natureNames);
 
-    IResult<Void> removeNature(ICause cause, String projectId, String natureName);
+    IResult<Void> removeNatures(ICause cause, String projectId, List<String> natureName);
 }

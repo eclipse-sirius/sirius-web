@@ -19,7 +19,7 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('edge-handle', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge-handle');
+    const project = await new PlaywrightProject(request).createProject('edge-handle', 'blank-project');
     projectId = project.projectId;
     await page.goto(`/projects/${projectId}/edit`);
     const playwrightExplorer = new PlaywrightExplorer(page);

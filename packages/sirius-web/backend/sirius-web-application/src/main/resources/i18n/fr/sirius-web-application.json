@@ -72,7 +72,7 @@
     "newObject": "Nouvel objet"
   },
   "newProjectView": {
-    "description": "Commencez en créant un nouveau projet",
+    "description": "Entrez un nom et configurez éventuellement un modèle et des bibliothèques",
     "submit": "Créer",
     "title": "Créer un nouveau projet",
     "name": "Nom",

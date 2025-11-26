@@ -51,7 +51,6 @@ public class ProjectTemplateCapabilitiesControllerTests extends AbstractIntegrat
         var result = this.projectTemplatesQueryRunner.run(variables);
 
         List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[*].node.id");
-        assertThat(projectTemplateIds).contains("create-project");
         assertThat(projectTemplateIds).doesNotContain("browse-all-project-templates");
     }
 

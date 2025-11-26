@@ -119,6 +119,16 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
 
     localization: localization,
 
+    muiTableBodyProps: () =>
+      ({
+        'data-testid': 'libraries-import-table',
+      } as any),
+
+    muiTableBodyRowProps: ({ row }) =>
+      ({
+        'data-testid': `library-${row.original.namespace}:${row.original.name}:${row.original.version}`,
+      } as any),
+
     state: { pagination, rowSelection },
   });
 

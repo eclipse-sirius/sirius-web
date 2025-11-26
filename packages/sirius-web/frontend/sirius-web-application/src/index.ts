@@ -131,7 +131,6 @@ export type { CreateProjectAreaProps } from './views/project-browser/create-proj
 export { CreateProjectAreaCard } from './views/project-browser/create-projects-area/CreateProjectAreaCard';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { NewProjectCard } from './views/project-browser/create-projects-area/NewProjectCard';
-export { ProjectTemplateCard } from './views/project-browser/create-projects-area/ProjectTemplateCard';
 export { ShowAllProjectTemplatesCard } from './views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 export { UploadProjectCard } from './views/project-browser/create-projects-area/UploadProjectCard';
 export { ListProjectsArea } from './views/project-browser/list-projects-area/ListProjectsArea';

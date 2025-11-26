@@ -19,12 +19,9 @@ import Typography from '@mui/material/Typography';
 import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { ProjectTemplateCard } from './ProjectTemplateCard';
+import { NewProjectCard } from './NewProjectCard';
 import { ProjectTemplatesModalProps, ProjectTemplatesModalState } from './ProjectTemplatesModal.types';
-import { redirectUrlFromTemplate } from './redirectUrlFromTemplate';
-import { useCreateProjectFromTemplate } from './useCreateProjectFromTemplate';
 import { useProjectTemplates } from './useProjectTemplates';
 import { GQLProjectTemplate, ProjectTemplateContext } from './useProjectTemplates.types';
 
@@ -98,31 +95,10 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     }
   }, [data]);
 
-  const {
-    createProjectFromTemplate,
-    loading: createProjectLoading,
-    projectCreatedFromTemplate,
-  } = useCreateProjectFromTemplate();
-
-  const redirectUrl: string | null = projectCreatedFromTemplate
-    ? redirectUrlFromTemplate(projectCreatedFromTemplate)
-    : null;
-  if (redirectUrl) {
-    return <Navigate to={redirectUrl} replace />;
-  }
-
   const cards: JSX.Element[] = [];
   if (state.projectTemplates) {
     state.projectTemplates
-      .map((template) => (
-        <ProjectTemplateCard
-          template={template}
-          disabled={createProjectLoading}
-          running={template === state.runningTemplate}
-          onCreateProject={() => createProjectFromTemplate(template.label, template.id, template.natures)}
-          key={template.id}
-        />
-      ))
+      .map((template) => <NewProjectCard key={template.id} template={template} />)
       .forEach((card: JSX.Element) => cards.push(card));
   }
 

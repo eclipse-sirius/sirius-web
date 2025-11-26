@@ -12,16 +12,14 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
+import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightWorkbench } from '../helpers/PlaywrightWorkbench';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
 
 test.describe('diagram - arrange all', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
-      PlaywrightProject.FLOW_NATURE,
-    ]);
+    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit/`);

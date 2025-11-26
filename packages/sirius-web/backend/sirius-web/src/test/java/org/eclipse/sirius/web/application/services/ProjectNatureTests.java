@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
@@ -64,7 +66,7 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
                 .satisfies(project -> assertThat(project.getNatures()).hasSize(1));
 
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
-        this.projectUpdateService.addNature(null, projectId, "new nature");
+        this.projectUpdateService.addNatures(null, projectId, List.of("new nature"));
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -90,7 +92,7 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
         var existingNature = optionalProject.flatMap(project -> project.getNatures().stream().map(Nature::name).findFirst())
                 .orElseThrow(IllegalStateException::new);
-        this.projectUpdateService.removeNature(null, projectId, existingNature);
+        this.projectUpdateService.removeNatures(null, projectId, List.of(existingNature));
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

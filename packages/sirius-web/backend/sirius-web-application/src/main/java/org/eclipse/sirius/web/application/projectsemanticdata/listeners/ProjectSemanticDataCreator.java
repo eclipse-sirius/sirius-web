@@ -24,16 +24,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Service used to initialize the project semantic data.
+ * Service used to create the project semantic data.
  *
  * @author mcharfadi
  */
 @Service
-public class ProjectSemanticDataInitializer {
+public class ProjectSemanticDataCreator {
 
     private final IProjectSemanticDataCreationService projectSemanticDataCreationService;
 
-    public ProjectSemanticDataInitializer(IProjectSemanticDataCreationService projectSemanticDataCreationService) {
+    public ProjectSemanticDataCreator(IProjectSemanticDataCreationService projectSemanticDataCreationService) {
         this.projectSemanticDataCreationService = Objects.requireNonNull(projectSemanticDataCreationService);
     }
 

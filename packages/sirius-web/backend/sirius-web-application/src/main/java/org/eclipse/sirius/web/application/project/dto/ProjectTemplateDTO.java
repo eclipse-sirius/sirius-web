@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -24,6 +22,5 @@ import jakarta.validation.constraints.NotNull;
 public record ProjectTemplateDTO(
         @NotNull String id,
         @NotNull String label,
-        @NotNull String imageURL,
-        @NotNull List<String> natures) {
+        @NotNull String imageURL) {
 }

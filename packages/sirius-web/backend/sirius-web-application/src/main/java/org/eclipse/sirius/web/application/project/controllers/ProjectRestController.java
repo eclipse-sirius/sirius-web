@@ -30,7 +30,9 @@ import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IRestDefaultProjectTemplateProvider;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 import org.springframework.http.HttpHeaders;
@@ -71,8 +73,11 @@ public class ProjectRestController {
 
     private final IProjectApplicationService projectApplicationService;
 
-    public ProjectRestController(IProjectApplicationService projectApplicationService) {
+    private final Optional<IRestDefaultProjectTemplateProvider> defaultProjectTemplateProvider;
+
+    public ProjectRestController(IProjectApplicationService projectApplicationService, Optional<IRestDefaultProjectTemplateProvider> defaultProjectTemplateProvider) {
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.defaultProjectTemplateProvider = Objects.requireNonNull(defaultProjectTemplateProvider);
     }
 
     @Operation(description = "Get all projects.")
@@ -129,7 +134,11 @@ public class ProjectRestController {
     })
     @PostMapping
     public ResponseEntity<RestProject> createProject(@RequestParam String name, @RequestParam Optional<String> description) {
-        var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, List.of(), List.of());
+        String projectTemplateId = BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID;
+        if (this.defaultProjectTemplateProvider.isPresent()) {
+            projectTemplateId = this.defaultProjectTemplateProvider.get().getDefaultProjectTemplateId();
+        }
+        var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, projectTemplateId, List.of());
         var newProjectPayload = this.projectApplicationService.createProject(createProjectInput);
 
         if (newProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {

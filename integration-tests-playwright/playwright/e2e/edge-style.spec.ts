@@ -21,7 +21,7 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('diagram - edgeStyle', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge-style');
+    const project = await new PlaywrightProject(request).createProject('edge-style', 'blank-project');
     projectId = project.projectId;
 
     await page.goto(`/projects/${projectId}/edit`);

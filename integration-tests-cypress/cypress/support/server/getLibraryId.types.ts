@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.services.api;
+export interface GetLibraryIdVariables {
+  namespace: string;
+  name: string;
+  version: string;
+}
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
+export interface GetLibraryIdData {
+  viewer: Viewer;
+}
 
-/**
- * Used to initialize project from templates.
- *
- * @author sbegaudeau
- */
-public interface ITemplateBasedProjectInitializer {
-    IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId);
+export interface Viewer {
+  library: Library;
+}
+
+export interface Library {
+  id: string;
 }

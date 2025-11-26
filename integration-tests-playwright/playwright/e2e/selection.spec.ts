@@ -20,12 +20,17 @@ import { PlaywrightProject } from '../helpers/PlaywrightProject';
 test.describe('selection', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProjectFromTemplate('Flow', 'flow-template', [
-      PlaywrightProject.FLOW_NATURE,
-    ]);
+    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
 
-    await page.goto(`/projects/${projectId}/edit/${project.representationId}`);
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    const representationItem = await explorer.getTreeItemLabel('Topography');
+    await representationItem.click();
+    await explorer.expand('NewSystem');
+    await explorer.expand('Flow');
   });
 
   test.afterEach(async ({ request }) => {

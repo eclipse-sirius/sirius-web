@@ -12,14 +12,13 @@
  *******************************************************************************/
 
 import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
 import { CreatedProjectData } from './Flow.types';
 
 export class Flow {
   static readonly FLOW_NATURE = 'siriusWeb://nature?kind=flow';
 
   public createRobotProject(name: string): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject(name, [Flow.FLOW_NATURE]).then((res) => {
+    return cy.createProject(name, 'flow-template').then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
@@ -38,9 +37,9 @@ export class Flow {
   }
 
   public createFlowProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('Flow', 'flow-template', [Flow.FLOW_NATURE]).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('Flow', 'flow-template').then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
