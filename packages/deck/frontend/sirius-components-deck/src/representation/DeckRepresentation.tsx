@@ -45,6 +45,7 @@ import {
 } from './deckSubscription.types';
 
 import { flushSync } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { useDeckMutations } from './useDeckMutations';
 
 const useDeckRepresentationStyles = makeStyles()(() => ({
@@ -69,6 +70,7 @@ export const DeckRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
     const { classes } = useDeckRepresentationStyles();
     const { selection, setSelection }: UseSelectionValue = useSelection();
     const { addErrorMessage, addMessages } = useMultiToast();
+    const { t } = useTranslation('sirius-components-deck', { keyPrefix: 'deckRepresentation' });
     const [{ id, deck, complete }, setState] = useState<DeckRepresentationState>({
       id: crypto.randomUUID(),
       deck: undefined,
@@ -209,7 +211,7 @@ export const DeckRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
       content = (
         <div className={classes.complete}>
           <Typography variant="h5" align="center">
-            The Deck does not exist anymore
+            {t('noDeck')}
           </Typography>
         </div>
       );

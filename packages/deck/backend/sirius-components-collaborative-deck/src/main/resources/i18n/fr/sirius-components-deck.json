@@ -1,0 +1,34 @@
+{
+  "deckToolbar": {
+    "exitFullscreen": "Quitter le mode plein écran",
+    "toggleFullscreen": "Basculer en mode plein écran",
+    "fitToScreen": "Ajuster à la taille de l'écran",
+    "zoomIn": "Agrandir",
+    "zoomOut": "Réduire",
+    "resetZoom": "Réinitialiser le zoom",
+    "share": "Partager"
+  },
+  "deck": {
+    "Add another lane": "+ Ajouter une autre colonne",
+    "Click to add card": "Cliquer pour ajouter une carte",
+    "Delete lane": "Supprimer la colonne",
+    "Lane actions": "Actions de la colonne",
+    "button": {
+      "Add lane": "Ajouter une colonne",
+      "Add card": "Ajouter une carte",
+      "Cancel": "Annuler"
+    },
+    "placeholder": {
+      "title": "titre",
+      "description": "description",
+      "label": "étiquette"
+    }
+  },
+  "deckRepresentation": {
+    "noDeck": "Le Deck n'existe plus"
+  },
+  "laneContextMenu": {
+    "visibleCards": "Cartes visibles",
+    "apply": "Appliquer"
+  }
+}

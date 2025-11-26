@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLImage } from '../form/FormEventFragments.types';
@@ -36,7 +37,7 @@ export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
 }: PropertySectionComponentProps<GQLImage>) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [validImage, setValidImage] = useState<boolean>(true);
-
+  const { t } = useTranslation('sirius-components-forms', { keyPrefix: 'imagePropertySection' });
   const onErrorLoadingImage = () => {
     setValidImage(false);
   };
@@ -62,7 +63,7 @@ export const ImagePropertySection: PropertySectionComponent<GQLImage> = ({
         {validImage ? (
           <img id={widget.id} src={imageURL} width="100%" onError={onErrorLoadingImage} />
         ) : (
-          <Typography variant="caption">No image</Typography>
+          <Typography variant="caption">{t('noImage')}</Typography>
         )}
       </div>
     </div>

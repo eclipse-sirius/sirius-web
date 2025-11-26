@@ -20,6 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { useCurrentViewer } from '../viewer/useCurrentViewer';
 import { NavigationBarMenuItemProps, NavigationBarMenuProps, NavigationBarMenuState } from './NavigationBarMenu.types';
@@ -32,6 +33,7 @@ import {
 } from './NavigationBarMenuExtensionPoints';
 
 export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'navigationBarMenu' });
   const [state, setState] = useState<NavigationBarMenuState>({
     menuAnchor: null,
   });
@@ -72,7 +74,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
             <ListItemIcon>
               <FileCopyIcon />
             </ListItemIcon>
-            <ListItemText primary="Libraries" />
+            <ListItemText primary={t('libraries')} />
           </MenuItem>
         ) : null}
         {canListProject ? (
@@ -80,7 +82,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
             <ListItemIcon>
               <FolderIcon />
             </ListItemIcon>
-            <ListItemText primary="Projects" />
+            <ListItemText primary={t('projects')} />
           </MenuItem>
         ) : null}
         {menuItemComponentExtensions.map(({ Component: NavigationBarMenuItem }, index) => (
@@ -90,7 +92,7 @@ export const NavigationBarMenu = ({}: NavigationBarMenuProps) => {
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>
-          <ListItemText primary="Help" />
+          <ListItemText primary={t('help')} />
         </MenuItem>
       </Menu>
     </NavigationBarMenuContainer>

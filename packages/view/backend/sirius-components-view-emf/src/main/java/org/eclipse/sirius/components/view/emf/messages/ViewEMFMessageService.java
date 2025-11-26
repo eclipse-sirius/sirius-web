@@ -47,4 +47,9 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     public String invokeActionError(String actionName) {
         return this.messageSourceAccessor.getMessage("INVOKE_ACTION_ERROR", new Object[] { actionName });
     }
+
+    @Override
+    public String coreProperties() {
+        return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
+    }
 }

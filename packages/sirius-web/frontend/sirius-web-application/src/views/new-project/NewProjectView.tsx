@@ -155,11 +155,11 @@ export const NewProjectView = () => {
                   <TextField
                     variant="standard"
                     error={isError}
-                    helperText="The name must contain between 3 and 1024 characters"
-                    label="Name"
+                    helperText={t('nameTextfieldHelperText')}
+                    label={t('name')}
                     name="name"
                     value={state.name}
-                    placeholder="Enter the project name"
+                    placeholder={t('nameTextfieldPlaceholder')}
                     slotProps={{
                       htmlInput: () => ({
                         'data-testid': 'name',
@@ -183,8 +183,8 @@ export const NewProjectView = () => {
                         slotProps={{
                           primary: { variant: 'h6' },
                         }}
-                        primary="Libraries"
-                        secondary="(Optional)"
+                        primary={t('libraries')}
+                        secondary={'(' + t('optional') + ')'}
                       />
                       {state.librariesImportOpen ? (
                         <ExpandLess

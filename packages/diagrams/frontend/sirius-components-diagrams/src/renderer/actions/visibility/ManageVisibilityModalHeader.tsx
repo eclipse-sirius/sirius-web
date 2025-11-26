@@ -17,21 +17,22 @@ import IconButton from '@mui/material/IconButton';
 import { Theme, useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { ManageVisibilityHeaderProps } from './ManageVisibilityModalHeader.types';
 
 export const ManageVisibilityModalHeader = ({ closeDialog }: ManageVisibilityHeaderProps) => {
   const theme: Theme = useTheme();
-
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'manageVisibilityModalHeader' });
   return (
     <Box sx={{ backgroundColor: `${theme.palette.secondary.main}08`, display: 'grid', gridTemplateColumns: '3fr 1fr' }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Typography variant="body1">Manage Visibility</Typography>
+        <Typography variant="body1">{t('manageVisibility')}</Typography>
       </Box>
 
-      <Tooltip title="Close">
+      <Tooltip title={t('close')}>
         <IconButton
           size="small"
-          aria-label="close"
+          aria-label={t('close')}
           color="inherit"
           data-testid="manage_visibility_close"
           onClick={closeDialog}>

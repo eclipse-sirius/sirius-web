@@ -24,6 +24,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
+import { useTranslation } from 'react-i18next';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import {
@@ -63,7 +64,7 @@ export const Palette = ({
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const theme: Theme = useTheme();
-
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'palette' });
   const [state, setState] = useState<PaletteState>({
     searchToolValue: '',
     controlledPosition: { x: paletteX, y: paletteY },
@@ -166,7 +167,7 @@ export const Palette = ({
               }}>
               <DragIndicatorIcon />
 
-              <Tooltip title="Close">
+              <Tooltip title={t('close')}>
                 <IconButton
                   size="small"
                   aria-label="close"

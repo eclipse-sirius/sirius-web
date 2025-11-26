@@ -13,5 +13,14 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
+  },
+  "revealSelectionButton": {
+    "tooltip": "Reveal selected elements",
+    "tooltipLoading": "Reveal selected elements (loading details...)",
+    "tooltipWithMoreLabels": "Select {{labels}} (and {{count}} more)",
+    "tooltipWithLabels": "Select {{labels}}"
+  },
+  "treeItemContextMenu": {
+    "showInTarget": "Show in {{target}}"
   }
 }

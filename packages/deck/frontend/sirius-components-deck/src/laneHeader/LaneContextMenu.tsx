@@ -22,6 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { LaneContextMenuProps } from './LaneContextMenu.types';
 import { useCardVisibility } from './useCardVisibility';
@@ -44,6 +45,7 @@ const useStyle = makeStyles()((theme) => ({
 
 export const LaneContextMenu = ({ menuAnchor, onClose, onChangesApplied, cards }: LaneContextMenuProps) => {
   const { handleVisibilityChanged, selectedCardsIds } = useCardVisibility(cards);
+  const { t } = useTranslation('sirius-components-deck', { keyPrefix: 'laneContextMenu' });
   const onApplyClicked = () => {
     onChangesApplied(selectedCardsIds);
   };
@@ -69,7 +71,7 @@ export const LaneContextMenu = ({ menuAnchor, onClose, onChangesApplied, cards }
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader className={classes.listItemText} inset={false}>
-              <Typography variant="subtitle2">Visible Cards</Typography>
+              <Typography variant="subtitle2">{t('visibleCards')}</Typography>
             </ListSubheader>
           }>
           <Divider />
@@ -98,7 +100,7 @@ export const LaneContextMenu = ({ menuAnchor, onClose, onChangesApplied, cards }
             color="primary"
             onClick={onApplyClicked}
             variant="contained">
-            Apply
+            {t('apply')}
           </Button>
         </Box>
       </Menu>

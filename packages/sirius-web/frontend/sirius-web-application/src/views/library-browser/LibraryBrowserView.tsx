@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
+import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, MRT_PaginationState, useMaterialReactTable } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
@@ -48,6 +50,7 @@ const useLibraryBrowserViewStyle = makeStyles()((theme) => ({
 }));
 
 export const LibraryBrowserView = () => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'libraryBrowserView' });
   const { classes } = useLibraryBrowserViewStyle();
   const { Component: Footer } = useComponent(footerExtensionPoint);
   const {
@@ -70,7 +73,7 @@ export const LibraryBrowserView = () => {
           <Grid size={{ xs: 8 }}>
             <main className={classes.main}>
               <div className={classes.header}>
-                <Typography variant="h4">Libraries</Typography>
+                <Typography variant="h4">{t('libraries')}</Typography>
               </div>
               <LibrariesTable />
             </main>
@@ -83,6 +86,8 @@ export const LibraryBrowserView = () => {
 };
 
 const LibrariesTable = ({}: LibrariesTableProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'librariesTable' });
+  const localization = useTableTranslation();
   const [state, setState] = useState<LibrariesTableState>({
     data: null,
   });
@@ -105,7 +110,7 @@ const LibrariesTable = ({}: LibrariesTableProps) => {
     () => [
       {
         accessorFn: (row) => row.name,
-        header: 'Name',
+        header: t('name'),
         size: 200,
         Cell: ({ renderedCellValue, row }) => (
           <Typography noWrap>
@@ -120,19 +125,19 @@ const LibrariesTable = ({}: LibrariesTableProps) => {
       },
       {
         accessorFn: (row) => row.version,
-        header: 'Version',
+        header: t('version'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => new Date(row.createdOn).toISOString().split('T')[0],
-        header: 'Created On',
+        header: t('createdOn'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => row.namespace,
-        header: 'Namespace',
+        header: t('namespace'),
         size: 150,
         Cell: ({ renderedCellValue }) => (
           <Typography noWrap sx={{ opacity: '0.6' }}>
@@ -142,7 +147,7 @@ const LibrariesTable = ({}: LibrariesTableProps) => {
       },
       {
         accessorFn: (row) => row.description,
-        header: 'Description',
+        header: t('description'),
         size: 200,
         grow: true,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
@@ -170,6 +175,7 @@ const LibrariesTable = ({}: LibrariesTableProps) => {
     state: { pagination },
     rowCount: count,
     autoResetPageIndex: false,
+    localization: localization,
   });
 
   return <MaterialReactTable table={table} />;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,10 +54,10 @@ public class ShowButtonDescriptionProvider implements IDiagramFilterActionContri
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/show")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .labelProvider(variableManager -> "Show")
+                .labelProvider(variableManager -> this.messageService.diagramFilterShowElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
-                .buttonLabelProvider(variableManager -> "Show")
+                .buttonLabelProvider(variableManager -> this.messageService.diagramFilterShowElements())
                 .imageURLProvider(variableManager -> "/icons/full/obj16/ShowTool.svg")
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();

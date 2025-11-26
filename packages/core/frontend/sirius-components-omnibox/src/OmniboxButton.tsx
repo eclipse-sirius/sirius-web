@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Button from '@mui/material/Button';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxButtonProps } from './OmniboxButton.types';
 import { OmniboxContext } from './OmniboxContext';
@@ -48,13 +49,14 @@ export const OmniboxButton = ({ size = 'small' }: OmniboxButtonProps) => {
   const { classes } = useOmniboxButtonStyles();
 
   const { openOmnibox } = useContext<OmniboxContextValue>(OmniboxContext);
+  const { t } = useTranslation('sirius-components-core');
 
   const handleClick = () => openOmnibox();
 
   var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
   return (
     <Button startIcon={<ChevronRightIcon />} onClick={handleClick} className={classes.omniboxButton} size={size}>
-      <div className={classes.placeholder}>Run commands...</div>
+      <div className={classes.placeholder}>{t('omniboxButton.runCommands')}</div>
       <div className={classes.omniboxField}>{isApple ? '⌘ ' : 'Ctrl '}+ K</div>
     </Button>
   );

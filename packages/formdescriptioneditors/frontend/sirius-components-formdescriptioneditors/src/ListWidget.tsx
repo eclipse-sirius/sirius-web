@@ -23,6 +23,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { ListWidgetProps } from './WidgetEntry.types';
 
@@ -61,6 +62,7 @@ export const ListWidget = ({ widget }: ListWidgetProps) => {
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const { classes } = useStyles(props);
+  const { t } = useTranslation('sirius-components-formdescriptioneditors', { keyPrefix: 'listWidget' });
 
   const [selected, setSelected] = useState<Boolean>(false);
   const { selection } = useSelection();
@@ -90,7 +92,7 @@ export const ListWidget = ({ widget }: ListWidgetProps) => {
               {' '}
               <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
-                Value 1
+                {t('value1Label')}
               </Typography>
             </TableCell>
             <TableCell align="right">
@@ -104,7 +106,7 @@ export const ListWidget = ({ widget }: ListWidgetProps) => {
               {' '}
               <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
-                Value 2
+                {t('value2Label')}
               </Typography>
             </TableCell>
             <TableCell align="right">
@@ -118,7 +120,7 @@ export const ListWidget = ({ widget }: ListWidgetProps) => {
               {' '}
               <Typography color="textPrimary" className={classes.style}>
                 <ImageIcon className={classes.icon} />
-                Value 3
+                {t('value3Label')}
               </Typography>
             </TableCell>
             <TableCell align="right">

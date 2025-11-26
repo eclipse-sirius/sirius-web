@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -58,11 +59,14 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
-    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
+    private final IEMFMessageService messageService;
+
+    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders, IEMFMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -175,7 +179,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
         return GroupDescription.newGroupDescription("groupId")
                 .idProvider(variableManager -> "Core Properties")
-                .labelProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> this.messageService.coreProperties())
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();

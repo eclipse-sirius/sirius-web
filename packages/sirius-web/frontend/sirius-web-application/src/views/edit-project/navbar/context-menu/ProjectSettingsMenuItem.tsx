@@ -16,9 +16,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ProjectSettingsMenuItemProps } from './ProjectSettingsMenuItem.types';
 
 export const ProjectSettingsMenuItem = ({ project, onClick }: ProjectSettingsMenuItemProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'projectSettingsMenuItem' });
   return (
     <MenuItem
       component={RouterLink}
@@ -28,7 +30,7 @@ export const ProjectSettingsMenuItem = ({ project, onClick }: ProjectSettingsMen
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="Settings" />
+      <ListItemText primary={t('settings')} />
     </MenuItem>
   );
 };

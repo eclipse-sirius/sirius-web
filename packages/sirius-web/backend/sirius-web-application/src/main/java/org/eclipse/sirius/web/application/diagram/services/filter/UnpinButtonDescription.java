@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,10 @@ public class UnpinButtonDescription implements IDiagramFilterActionContributionP
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/unpin")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .labelProvider(variableManager -> "Unpin")
+                .labelProvider(variableManager -> this.messageService.diagramFilterUnpinElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
-                .buttonLabelProvider(variableManager -> "Unpin")
+                .buttonLabelProvider(variableManager -> this.messageService.diagramFilterUnpinElements())
                 .imageURLProvider(variableManager -> DiagramImageConstants.UNPIN_SVG)
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();

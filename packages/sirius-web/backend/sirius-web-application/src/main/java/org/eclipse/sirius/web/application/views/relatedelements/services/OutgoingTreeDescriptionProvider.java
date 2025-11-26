@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.IOutgoingTreeDescriptionProvider;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,8 +56,6 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private static final String WIDGET_ID = "related/outgoing";
 
-    private static final String TITLE = "Outgoing";
-
     private static final String WIDGET_ICON_URL = "/related-elements/east_black_24dp.svg";
 
     private static final String OUTGOING_REFERENCE_ICON_URL = "/related-elements/east_black_24dp.svg";
@@ -69,10 +68,13 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private final ComposedAdapterFactory adapterFactory;
 
-    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory) {
+    private final IMessageService messageService;
+
+    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -83,7 +85,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.relatedElementsViewOutgoingTitle())
                 .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)

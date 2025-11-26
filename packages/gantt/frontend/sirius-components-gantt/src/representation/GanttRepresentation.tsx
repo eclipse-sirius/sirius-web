@@ -22,6 +22,7 @@ import {
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useGanttMutations } from '../graphql/mutation/useGanttMutations';
 import {
@@ -36,6 +37,7 @@ import { ganttEventSubscription } from '../graphql/subscription/ganttSubscriptio
 import { formatDate, getTaskFromGQLTask, updateTask } from '../helper/helper';
 import { Gantt } from './Gantt';
 import { GanttRepresentationState } from './GanttRepresentation.types';
+
 const useGanttRepresentationStyles = makeStyles()((theme) => ({
   page: {
     paddingLeft: theme.spacing(1),
@@ -77,7 +79,7 @@ export const GanttRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
     const { classes } = useGanttRepresentationStyles();
     const { addErrorMessage, addMessages } = useMultiToast();
     const { setSelection } = useSelection();
-
+    const { t } = useTranslation('sirius-components-gantt', { keyPrefix: 'ganttRepresentation' });
     useImperativeHandle(
       ref,
       () => {
@@ -168,7 +170,7 @@ export const GanttRepresentation = forwardRef<WorkbenchMainRepresentationHandle,
       content = (
         <div className={classes.complete}>
           <Typography variant="h5" align="center">
-            The Gantt does not exist anymore
+            {t('noGantt')}
           </Typography>
         </div>
       );

@@ -75,7 +75,7 @@ public class CustomizableEStringIfDescriptionProvider {
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
-            var optionalEAttribute = variableManager.get(StudioDetailsViewDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             var optionalSelf = variableManager.get("self", EObject.class);
             return optionalEAttribute.filter(eAttribute -> {
                 EClassifier eType = eAttribute.getEType();
@@ -103,13 +103,13 @@ public class CustomizableEStringIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(StudioDetailsViewDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, String> getValueProvider() {
         return variableManager -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(StudioDetailsViewDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
 
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
@@ -128,7 +128,7 @@ public class CustomizableEStringIfDescriptionProvider {
     private BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return (variableManager, newValue) -> {
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEAttribute = variableManager.get(StudioDetailsViewDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
+            var optionalEAttribute = variableManager.get(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
             if (optionalEObject.isPresent() && optionalEAttribute.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EAttribute eAttribute = optionalEAttribute.get();

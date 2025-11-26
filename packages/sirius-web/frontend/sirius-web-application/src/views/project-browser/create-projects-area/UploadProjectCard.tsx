@@ -13,6 +13,7 @@
 
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaCard } from './CreateProjectAreaCard';
@@ -35,10 +36,10 @@ const useUploadProjectCardStyles = makeStyles()((theme) => ({
 
 export const UploadProjectCard = () => {
   const { classes } = useUploadProjectCardStyles();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadProjectCard' });
   return (
     <Button to={`/upload/project`} component={RouterLink} className={classes.button} data-testid="upload">
-      <CreateProjectAreaCard title="+ Upload project" description="Upload project">
+      <CreateProjectAreaCard title={t('title')} description={t('description')}>
         <div className={classes.projectCardContent}>
           <CloudUploadOutlinedIcon className={classes.projectCardIcon} htmlColor="white" />
         </div>

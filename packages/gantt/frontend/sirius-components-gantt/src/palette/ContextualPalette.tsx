@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import {
   TaskContextualPaletteProps as GanttTaskContextualPaletteProps,
   TaskDependencyContextualPaletteProps as GanttTaskDependencyContextualPaletteProps,
   Task,
 } from '@ObeoNetwork/gantt-task-react';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from 'tss-react/mui';
 import { TaskIcon } from '../icons/TaskIcon';
 import { TaskContextualPaletteProps, TaskDependencyContextualPaletteProps } from './ContextualPalette.types';
 
@@ -50,6 +51,7 @@ const useContextualPaletteStyle = makeStyles()((theme) => ({
 export const getTaskContextualPalette = ({ onCreateTask, onDeleteTask }: TaskContextualPaletteProps) => {
   const TaskContextualPalette: React.FC<GanttTaskContextualPaletteProps> = ({ selectedTask, onClosePalette }) => {
     const { classes } = useContextualPaletteStyle();
+    const { t } = useTranslation('sirius-components-gantt', { keyPrefix: 'getTaskContextualPalette' });
 
     const handleCreateTask = (task: Task) => {
       onClosePalette();
@@ -65,8 +67,8 @@ export const getTaskContextualPalette = ({ onCreateTask, onDeleteTask }: TaskCon
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="create task"
-          title="Create task"
+          aria-label={t('createTask')}
+          title={t('createTask')}
           onClick={() => handleCreateTask(selectedTask)}
           data-testid="create-task">
           <TaskIcon fontSize="small" />
@@ -74,8 +76,8 @@ export const getTaskContextualPalette = ({ onCreateTask, onDeleteTask }: TaskCon
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Delete task"
-          title="Delete task"
+          aria-label={t('deleteTask')}
+          title={t('deleteTask')}
           onClick={() => handleDeleteTask(selectedTask)}
           data-testid="delete-task">
           <Delete fontSize="small" />
@@ -102,12 +104,13 @@ export const getTaskDependencyContextualPalette = ({
     taskTo,
     onClosePalette,
   }) => {
+    const { t } = useTranslation('sirius-components-gantt', { keyPrefix: 'getTaskDependencyContextualPalette' });
     return (
       <div className={classes.taskDependencyButtonEntries}>
         <IconButton
           size="small"
-          aria-label="Delete task dependency"
-          title="Delete task dependency"
+          aria-label={t('deleteTaskDependency')}
+          title={t('deleteTaskDependency')}
           onClick={() => handleTaskDependencyDelete(taskFrom, taskTo, onClosePalette)}
           data-testid="delete-task-dependency">
           <Delete fontSize="small" />

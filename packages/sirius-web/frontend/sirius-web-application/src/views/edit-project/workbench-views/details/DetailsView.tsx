@@ -21,6 +21,7 @@ import { FormBasedView, FormContext, FormHandle } from '@eclipse-sirius/sirius-c
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { SynchronizationButton } from '../SynchronizationButton';
 import { DetailsViewConfiguration, DetailsViewState } from './DetailsView.types';
@@ -66,6 +67,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     { id, editingContextId, initialConfiguration, readOnly }: WorkbenchViewComponentProps,
     ref: ForwardedRef<WorkbenchViewHandle>
   ) => {
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'detailsView' });
     const [state, setState] = useState<DetailsViewState>({
       form: null,
       objectIds: [],
@@ -115,7 +117,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     if (complete || skip) {
       contents = (
         <div className={classes.idle}>
-          <Typography variant="subtitle2">No object selected</Typography>
+          <Typography variant="subtitle2">{t('noObjectSelected')}</Typography>
         </div>
       );
     } else {

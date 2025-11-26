@@ -14,15 +14,17 @@ import { useData } from '@eclipse-sirius/sirius-components-core';
 import Link from '@mui/material/Link';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { GQLProject } from './useProjects.types';
 import { UseProjectsTableColumnsValue } from './useProjectsTableColumns.types';
 import { projectsTableColumnCustomizersExtensionPoint } from './useProjectsTableColumnsExtensionPoints';
 
 export const useProjectsTableColumns = (): UseProjectsTableColumnsValue => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useProjectsTableColumns' });
   let columnDefinitions: MRT_ColumnDef<GQLProject>[] = [
     {
-      header: 'Name',
+      header: t('name'),
       size: 200,
       grow: true,
       Cell: ({ row }) => (

@@ -13,6 +13,7 @@
 
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { CreateProjectAreaCard } from './CreateProjectAreaCard';
@@ -35,10 +36,10 @@ const useNewProjectCardStyles = makeStyles()((theme) => ({
 
 export const NewProjectCard = () => {
   const { classes } = useNewProjectCardStyles();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newProjectCard' });
   return (
     <Button to={`/new/project`} component={RouterLink} className={classes.button} data-testid="create">
-      <CreateProjectAreaCard title="+ Blank project" description="Blank project">
+      <CreateProjectAreaCard title={t('title')} description={t('description')}>
         <div className={classes.projectCardContent}>
           <AddIcon className={classes.projectCardIcon} htmlColor="white" />
         </div>

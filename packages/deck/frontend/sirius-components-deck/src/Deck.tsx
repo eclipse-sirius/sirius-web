@@ -13,6 +13,7 @@
 import Board from '@ObeoNetwork/react-trello';
 import { Theme, useTheme } from '@mui/material/styles';
 import { CSSProperties, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
@@ -53,7 +54,7 @@ export const Deck = ({
   const representationContainerRef = useRef<HTMLDivElement | null>(null);
   const boardRef = useRef<HTMLDivElement | null>(null);
   const { zoom, zoomIn, zoomOut, fitToScreen, resetZoom }: UseZoomValue = useZoom(boardRef, representationContainerRef);
-
+  const { t } = useTranslation('sirius-components-deck', { keyPrefix: 'deck' });
   const { classes: deckClasses } = useDeckStyle();
 
   useEffect(() => {
@@ -111,6 +112,7 @@ export const Deck = ({
             getGhostParent={getGhostParent}
             style={boardStyle}
             data-testid={`deck-representation`}
+            t={t}
           />
         </div>
       </div>

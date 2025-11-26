@@ -24,6 +24,7 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SearchQueryInputProps, SearchQueryInputState } from './SearchQueryInput.types';
 
 const initialState: SearchQueryInputState = {
@@ -37,7 +38,7 @@ const initialState: SearchQueryInputState = {
 export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
   const [state, setState] = useState<SearchQueryInputState>(initialState);
   const theme: Theme = useTheme();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchQueryInput' });
   const onToggleMatchCase = () => {
     setState((prevState) => ({ ...prevState, matchCase: !prevState.matchCase }));
   };
@@ -94,7 +95,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
               sx: { paddingRight: theme.spacing(1) },
               endAdornment: (
                 <InputAdornment position="end">
-                  <Tooltip title="Match Case">
+                  <Tooltip title={t('matchCase')}>
                     <IconButton
                       size="small"
                       onClick={onToggleMatchCase}
@@ -102,7 +103,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
                       <TextFieldsIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Match Whole Word">
+                  <Tooltip title={t('matchWholeWord')}>
                     <IconButton
                       size="small"
                       onClick={onToggleMatchWholeWord}
@@ -110,7 +111,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
                       <TextFormatIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Use Regular Expression">
+                  <Tooltip title={t('useRegularExpression')}>
                     <IconButton
                       size="small"
                       onClick={onToggleUseRegularExpression}
@@ -118,7 +119,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
                       <Typography>.*</Typography>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Clear text">
+                  <Tooltip title={t('clearText')}>
                     <IconButton size="small" edge="end" onClick={onClearText}>
                       <CancelIcon />
                     </IconButton>
@@ -138,7 +139,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Typography variant="body1">Search in attributes</Typography>
+        <Typography variant="body1">{t('searchInAttributes')}</Typography>
         <Switch color="secondary" checked={state.searchInAttributes} onClick={onToggleSearchInAttributes} />
       </Box>
       <Box
@@ -157,7 +158,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
           variant="contained"
           color="secondary"
           sx={{ flexGrow: 1 }}>
-          Search
+          {t('search')}
         </Button>
         <Button
           data-testid="clear-search"
@@ -165,7 +166,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
           variant="outlined"
           color="secondary"
           sx={{ flexGrow: 0 }}>
-          Clear All
+          {t('clearAll')}
         </Button>
       </Box>
     </Box>

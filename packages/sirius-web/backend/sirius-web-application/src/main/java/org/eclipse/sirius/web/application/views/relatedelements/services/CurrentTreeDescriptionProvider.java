@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.ICurrentTreeDescriptionProvider;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,12 +59,6 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
 
     private static final String WIDGET_ID = "related/current";
 
-    private static final String CATEGORY_PARENT = "Parent";
-
-    private static final String CATEGORY_CHILDREN = "Children";
-
-    private static final String TITLE = "Current";
-
     private static final String WIDGET_ICON_URL = "/related-elements/arrow_downward_black_24dp.svg";
 
     private static final String FOLDER_ICON_URL = "/related-elements/folder_black_24dp.svg";
@@ -79,11 +74,14 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
     private final ILabelService labelService;
 
     private final ComposedAdapterFactory adapterFactory;
+    
+    private final IMessageService messageService;
 
-    public CurrentTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory) {
+    public CurrentTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -94,7 +92,7 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.relatedElementsViewCurrentTitle())
                 .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)
@@ -202,12 +200,14 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
     }
 
     private List<?> getCurrentChildren(Object self, EObject root, List<?> ancestors) {
+        String categoryParent = this.messageService.relatedElementsViewCurrentCategoryParent();
+        String categoryChildren = this.messageService.relatedElementsViewCurrentCategoryChildren();
         List<?> result = List.of();
         if (ancestors.isEmpty()) {
-            result = List.of(CATEGORY_PARENT, CATEGORY_CHILDREN);
-        } else if (self.equals(CATEGORY_PARENT) && root.eContainer() != null) {
+            result = List.of(categoryParent, categoryChildren);
+        } else if (self.equals(categoryParent) && root.eContainer() != null) {
             result = List.of(root.eContainer());
-        } else if (self.equals(CATEGORY_CHILDREN)) {
+        } else if (self.equals(categoryChildren)) {
             result = this.getNonEmptyContainmentReferences(root);
         } else if (self instanceof EReference) {
             result = this.readReference(root, (EReference) self);

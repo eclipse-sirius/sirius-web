@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node, useNodesData } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { GQLImageNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionComponentProps } from './extensions/PaletteAppearanceSectionContribution.types';
@@ -25,6 +26,7 @@ export const ImageNodeAppearanceSection = ({
   if (!nodeData) {
     return null;
   }
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'imageNodeAppearanceSection' });
   return (
     <>
       <ImageNodePart
@@ -36,7 +38,7 @@ export const ImageNodeAppearanceSection = ({
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={nodeData.data.insideLabel.id}
-          position="Inside Label"
+          position={t('insideLabel')}
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}
           customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
         />
@@ -45,7 +47,7 @@ export const ImageNodeAppearanceSection = ({
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={nodeData.data.outsideLabels.BOTTOM_MIDDLE.id}
-          position="Outside Middle Label"
+          position={t('outsideMiddleLabel')}
           style={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
           customizedStyleProperties={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
         />

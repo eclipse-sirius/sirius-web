@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class InvokeRowContextMenuEntryEventHandler implements ITableEventHandler
     private final List<IRowContextMenuEntryExecutor> rowContextMenuEntryExecutors;
 
     public InvokeRowContextMenuEntryEventHandler(ICollaborativeTableMessageService messageService, ITableQueryService tableQueryService, MeterRegistry meterRegistry, List<IRowContextMenuEntryExecutor> rowContextMenuEntryExecutors) {
-        this.messageService = messageService;
+        this.messageService = Objects.requireNonNull(messageService);
         this.tableQueryService = Objects.requireNonNull(tableQueryService);
         this.rowContextMenuEntryExecutors = Objects.requireNonNull(rowContextMenuEntryExecutors);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)

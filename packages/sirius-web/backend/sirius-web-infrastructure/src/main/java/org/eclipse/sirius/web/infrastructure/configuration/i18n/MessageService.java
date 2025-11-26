@@ -127,4 +127,129 @@ public class MessageService implements IMessageService {
     public String unauthorized() {
         return this.messageSourceAccessor.getMessage("UNAUTHORIZED");
     }
+
+    @Override
+    public String studioTemplateName() {
+        return this.messageSourceAccessor.getMessage("STUDIO_TEMPLATE_NAME");
+    }
+
+    @Override
+    public String blankStudioTemplateName() {
+        return this.messageSourceAccessor.getMessage("BLANK_STUDIO_TEMPLATE_NAME");
+    }
+
+    @Override
+    public String representationsViewTitle() {
+        return this.messageSourceAccessor.getMessage("REPRESENTATIONS_VIEW_TITLE");
+    }
+
+    @Override
+    public String relatedElementsViewIncomingTitle() {
+        return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_INCOMING_TITLE");
+    }
+
+    @Override
+    public String relatedElementsViewCurrentTitle() {
+        return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_CURRENT_TITLE");
+    }
+    
+
+    @Override
+    public String relatedElementsViewCurrentCategoryParent() {
+        return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_CURRENT_CATEGORY_PARENT");
+    }
+
+    @Override
+    public String relatedElementsViewCurrentCategoryChildren() {
+        return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_CURRENT_CATEGORY_CHILDREN");
+    }
+    @Override
+    public String relatedElementsViewOutgoingTitle() {
+        return this.messageSourceAccessor.getMessage("RELATED_ELEMENTS_VIEW_OUTGOING_TITLE");
+    }
+
+    @Override
+    public String diagramFilterFormTitle() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_FORM_TITLE");
+    }
+
+    @Override
+    public String diagramFilterElementsOnDiagram() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_ELEMENTS_ON_DIAGRAM");
+    }
+
+    @Override
+    public String diagramFilterElementsSelected(int count) {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_ELEMENTS_SELECTED", new Object[]{count});
+    }
+
+    @Override
+    public String diagramFilterElementsSelectedPlural(int count) {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_ELEMENTS_SELECTED_PLURAL", new Object[]{count});
+    }
+
+    @Override
+    public String diagramFilterApplyTo(int count) {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_APPLY_TO", new Object[]{count});
+    }
+
+    @Override
+    public String diagramFilterApplyToPlural(int count) {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_APPLY_TO_PLURAL", new Object[]{count});
+    }
+
+    @Override
+    public String diagramFilterCollapseElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_COLLAPSE_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterExpandElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_EXPAND_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterFadeElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_FADE_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterHideElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_HIDE_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterPinElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_PIN_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterRevealFadedElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_REVEAL_FADED_ELEMENT");
+    }
+
+    @Override
+    public String diagramFilterShowElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_SHOW_ELEMENTS");
+    }
+
+    @Override
+    public String diagramFilterUnpinElements() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_FILTER_UNPIN_ELEMENTS");
+    }
+
+    @Override
+    public String blankProjectName() {
+        return this.messageSourceAccessor.getMessage("BLANK_PROJECT_NAME");
+    }
+
+    @Override
+    public String blankProjectDescription() {
+        return this.messageSourceAccessor.getMessage("BLANK_PROJECT_DESCRIPTION");
+    }
+
+    @Override
+    public String coreProperties() {
+        return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
+    }
 }

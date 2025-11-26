@@ -124,7 +124,7 @@ export const ExportImageButton = () => {
                 onCloseExportImageMenu();
               })
             }>
-            <ListItemText primary="SVG (Experimental)" />
+            <ListItemText primary={`SVG (${t('experimentalFeature')})`} />
           </MenuItem>
         </Menu>
       ) : null}

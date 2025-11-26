@@ -24,6 +24,7 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToolsButton } from '../actions/ToolsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
@@ -37,6 +38,7 @@ import { CursorBasedPagination } from './CursorBasedPagination';
 import { GQLLine, TableContentProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
+import { useTableTranslation } from './useTableTranslation';
 
 export const TableContent = memo(
   ({
@@ -66,6 +68,8 @@ export const TableContent = memo(
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
+    const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'tableContent' });
+    const localization = useTableTranslation();
 
     const handleRowHeightChange = (rowId: string, height: number) => {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
@@ -233,8 +237,8 @@ export const TableContent = memo(
       renderToolbarInternalActions: ({ table }) => (
         <Box>
           <IconButton
-            aria-label="Reset row heights"
-            title="Reset row heights"
+            aria-label={t('resetRowHeights')}
+            title={t('resetRowHeights')}
             data-testid="reset-row-heights"
             onClick={() => resetRowsHeight()}>
             <FormatLineSpacingIcon />
@@ -251,6 +255,7 @@ export const TableContent = memo(
           <MRT_ToggleFullScreenButton table={table} />
         </Box>
       ),
+      localization: localization,
     };
 
     if (table.stripeRow) {

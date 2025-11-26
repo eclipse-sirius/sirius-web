@@ -25,6 +25,7 @@ import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useStore } from '../../representation/useStore';
+import { useTranslation } from 'react-i18next';
 
 const useStyle = makeStyles()((theme) => ({
   toolListItemButton: {
@@ -61,7 +62,7 @@ export const ShowInSection = ({ onBackToMainList, onClose }: PaletteExtensionSec
   const { getEdges, getNodes } = useStore();
   const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { selectionTargets } = useSelectionTargets();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'showInSection' });
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
     onBackToMainList();
@@ -82,7 +83,10 @@ export const ShowInSection = ({ onBackToMainList, onClose }: PaletteExtensionSec
   const showInItems: JSX.Element[] = selectionTargets
     .filter((target) => target.id !== diagramId)
     .map((target) => (
-      <Tooltip title={'Show in ' + target.label} placement="right" key={`push-diagram-selection-to-${target.id}`}>
+      <Tooltip
+        title={t('showInTarget', { target: target.label })}
+        placement="right"
+        key={`push-diagram-selection-to-${target.id}`}>
         <ListItemButton
           className={classes.toolListItemButton}
           data-testid={`push-diagram-selection-to-${target.id}`}
@@ -98,21 +102,21 @@ export const ShowInSection = ({ onBackToMainList, onClose }: PaletteExtensionSec
 
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip title="Show in" key="tooltip_show_in" placement="right">
+      <Tooltip title={t('showIn')} key="tooltip_show_in" placement="right">
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
           data-testid={`back-show_in`}
           autoFocus={true}>
           <NavigateBeforeIcon />
-          <ListItemText className={classes.sectionTitleListItemText} primary="Show in" />
+          <ListItemText className={classes.sectionTitleListItemText} primary={t('showIn')} />
         </ListItemButton>
       </Tooltip>
       {showInItems.length > 0 ? (
         showInItems
       ) : (
         <ListItem>
-          <Typography>No available targets</Typography>
+          <Typography>{t('noAvailableTargets')}</Typography>
         </ListItem>
       )}
     </List>

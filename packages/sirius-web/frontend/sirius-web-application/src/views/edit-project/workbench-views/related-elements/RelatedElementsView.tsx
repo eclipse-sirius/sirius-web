@@ -28,6 +28,7 @@ import {
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { SynchronizationButton } from '../SynchronizationButton';
 import { RelatedElementsViewState } from './RelatedElementsView.types';
@@ -76,6 +77,8 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
       objectIds: [],
       pinned: false,
     });
+
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'relatedElementsView' });
 
     const applySelection = (selection: Selection) => {
       const newObjetIds = selection.entries.map((entry) => entry.id);
@@ -130,7 +133,7 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     if (complete || skip) {
       contents = (
         <div className={classes.idle}>
-          <Typography variant="subtitle2">No object selected</Typography>
+          <Typography variant="subtitle2">{t('noObjectSelected')}</Typography>
         </div>
       );
     } else {

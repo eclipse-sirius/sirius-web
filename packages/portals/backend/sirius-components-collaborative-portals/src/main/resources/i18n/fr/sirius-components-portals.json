@@ -1,0 +1,12 @@
+{
+  "portalToolbar": {
+    "exitFullscreen": "Quitter le mode plein écran",
+    "toggleFullscreen": "Basculer en mode plein écran",
+    "sharePortal": "Partager le portail",
+    "editPortalConfiguration": "Modifier la configuration du portail",
+    "editRepresentations": "Modifier les représentations"
+  },
+  "representationFrame": {
+    "unknownRepresentationKind": "Type de représentation inconnu"
+  }
+}

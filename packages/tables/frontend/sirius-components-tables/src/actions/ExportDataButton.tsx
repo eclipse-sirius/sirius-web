@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCell,
   GQLIconLabelCell,
@@ -80,12 +81,13 @@ const handleExportData = (table: GQLTable) => {
 };
 
 export const ExportDataButton = ({ table }: ExportDataButtonProps) => {
+  const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'exportDataButton' });
   return (
     <MenuItem onClick={() => handleExportData(table)}>
       <ListItemIcon>
         <FileDownloadIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText>Export page data as CSV</ListItemText>
+      <ListItemText>{t('exportToCsv')}</ListItemText>
     </MenuItem>
   );
 };

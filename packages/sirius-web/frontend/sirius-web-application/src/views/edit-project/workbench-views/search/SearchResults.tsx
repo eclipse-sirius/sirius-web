@@ -24,6 +24,7 @@ import { List as FixedSizeList, type RowComponentProps } from 'react-window';
 import { makeStyles } from 'tss-react/mui';
 import { SearchResultProps } from './SearchResult.types';
 import { GQLObject } from './useSearch.types';
+import { useTranslation } from 'react-i18next';
 
 const useSearchResultStyles = makeStyles()((theme) => ({
   results: {
@@ -71,25 +72,26 @@ const useSecondsSince = (startTime: number, refreshDelay: number = 1000): number
 };
 
 const AgeIndicator = ({ timestamp }: { timestamp: number }) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'ageIndicator' });
   const resultsAge = useSecondsSince(timestamp, 60_000);
   const resultsAgeText =
     resultsAge < 60
-      ? `less than a minute`
+      ? t('lessThanAMinute')
       : resultsAge < 3_600
-      ? `${Math.floor(resultsAge / 60)}m`
+      ? t('minutes', { minutes: Math.floor(resultsAge / 60) })
       : resultsAge < 86_400
-      ? `${Math.floor(resultsAge / 3_600)}h`
-      : `${Math.floor(resultsAge / 86_400)}d`;
+      ? t('hours', { hours: Math.floor(resultsAge / 3_600) })
+      : t('days', { days: Math.floor(resultsAge / 86_400) });
   return (
     <Typography variant="caption" color="secondary">
-      {`Performed ${resultsAgeText} ago`}
+      {t('performedAgo', { age: resultsAgeText })}
     </Typography>
   );
 };
 
 export const SearchResults = ({ loading, query, result, timestamp }: SearchResultProps) => {
   const { classes } = useSearchResultStyles();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchResults' });
   const matches = result?.matches || [];
 
   let status: JSX.Element;
@@ -98,14 +100,14 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
       <>
         <CircularProgress size="16px" data-testid="search-in-progress" color="secondary" />
         <Typography variant="subtitle2" color="secondary">
-          Search in progress...
+          {t('searchInProgress')}
         </Typography>
       </>
     );
   } else if (result === null) {
     status = (
       <Typography variant="subtitle2" color="secondary">
-        No search launched yet.
+        {t('noSearchLaunchedYet')}
       </Typography>
     );
   } else {
@@ -114,7 +116,7 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
         <YoutubeSearchedForIcon color="secondary" />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <Typography variant="subtitle2" color="secondary">
-            {`${matches.length} result${matches.length > 1 ? 's' : ''} for '${query.text}'`}
+            {t('resultsFor', { count: matches.length, query: query.text })}
           </Typography>
           <AgeIndicator timestamp={timestamp} />
         </div>
@@ -137,7 +139,7 @@ export const SearchResults = ({ loading, query, result, timestamp }: SearchResul
 const MatchRow = ({ matches, index, style }: RowComponentProps<{ matches: GQLObject[] }>) => {
   const { setSelection } = useSelection();
   const { selectionTargets } = useSelectionTargets();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'matchRow' });
   const onMatchSelected = (match: GQLObject) => {
     const newSelection = { entries: [{ id: match.id }] };
     setSelection(newSelection);
@@ -159,7 +161,7 @@ const MatchRow = ({ matches, index, style }: RowComponentProps<{ matches: GQLObj
   return (
     <ListItem key={index} style={style} sx={matchItemStyle} onClick={() => onMatchSelected(matchedObject)}>
       <ListItemIcon sx={{ minWidth: '24px' }}>
-        <IconOverlay iconURLs={matchedObject.iconURLs} alt="Icon of the object" />
+        <IconOverlay iconURLs={matchedObject.iconURLs} alt={t('iconOverlayAlt')} />
       </ListItemIcon>
       <ListItemText
         primary={matchedObject.label}

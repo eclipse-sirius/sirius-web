@@ -1,5 +1,37 @@
 {
   "selectWidget": {
-    "none": "Aucun"
+    "none": "Aucun",
+    "value1Label": "Valeur 1",
+    "value2Label": "Valeur 2",
+    "value3Label": "Valeur 3"
+  },
+  "treeWidget": {
+    "modelBrowser": "Explorateur de modèles",
+    "item1": "Objet 1",
+    "item2": "Objet 2",
+    "item1.1": "Objet 1.1",
+    "item2.1": "Objet 2.1",
+    "item2.2": "Objet 2.2"
+  },
+  "richTextWidget": {
+    "richTextDocument": "Document de texte enrichi",
+    "yourRichText": "Votre <b>texte enrichi</b>."
+  },
+  "listWidget": {
+    "value1Label": "Valeur 1",
+    "value2Label": "Valeur 2",
+    "value3Label": "Valeur 3"
+  },
+  "formDescriptionEditorRepresentation": {
+    "pages": "Pages",
+    "page": "Page",
+    "groups": "Groupes",
+    "group": "Groupe",
+    "controls": "Contrôles",
+    "for": "Pour",
+    "if": "Si",
+    "widgets": "Widgets",
+    "descriptionDoesNotExist": "Le formulaire de description n'existe pas",
+    "form": "Formulaire"
   }
 }

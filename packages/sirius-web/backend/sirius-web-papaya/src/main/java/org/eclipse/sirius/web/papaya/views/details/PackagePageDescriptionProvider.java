@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.web.papaya.messages.IPapayaMessageService;
 import org.eclipse.sirius.web.papaya.views.details.api.IPageDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +42,12 @@ public class PackagePageDescriptionProvider implements IPageDescriptionProvider 
 
     private final QualifiedNameWidgetProvider qualifiedNameWidgetProvider;
 
-    public PackagePageDescriptionProvider(NamedElementWidgetsProvider namedElementWidgetsProvider, QualifiedNameWidgetProvider qualifiedNameWidgetProvider) {
+    private final IPapayaMessageService messageService;
+
+    public PackagePageDescriptionProvider(NamedElementWidgetsProvider namedElementWidgetsProvider, QualifiedNameWidgetProvider qualifiedNameWidgetProvider, IPapayaMessageService messageService) {
         this.namedElementWidgetsProvider = Objects.requireNonNull(namedElementWidgetsProvider);
         this.qualifiedNameWidgetProvider = Objects.requireNonNull(qualifiedNameWidgetProvider);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class PackagePageDescriptionProvider implements IPageDescriptionProvider 
     private GroupDescription getCorePropertiesGroupDescription(IColorProvider colorProvider) {
         var corePropertiesGroupDescription = new FormBuilders().newGroupDescription()
                 .name("Core Properties")
-                .labelExpression("Core Properties")
+                .labelExpression(this.messageService.coreProperties())
                 .semanticCandidatesExpression("aql:self")
                 .displayMode(GroupDisplayMode.LIST)
                 .build();

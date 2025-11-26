@@ -74,7 +74,12 @@
   "newProjectView": {
     "description": "Get started by creating a new project",
     "submit": "Create",
-    "title": "Create a new project"
+    "title": "Create a new project",
+    "name": "Name",
+    "nameTextfieldPlaceholder": "Enter the project name",
+    "nameTextfieldHelperText": "The name must contain between 3 and 1024 characters",
+    "libraries": "Libraries",
+    "optional": "Optional"
   },
   "newRepresentationArea": {
     "createRepresentation": "Create a new Representation",
@@ -191,5 +196,180 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
+  },
+  "navigationBarMenu": {
+    "libraries": "Libraries",
+    "projects": "Projects",
+    "help": "Help"
+  },
+  "uploadProjectCard": {
+    "title": "+ Upload project",
+    "description": "Start with an existing project"
+  },
+  "newProjectCard": {
+    "title": "+ Blank project",
+    "description": "Create a new blank project"
+  },
+  "showAllProjectTemplatesCard": {
+    "title": "Show all templates",
+    "description": "Show all project templates"
+  },
+  "duplicateProjectMenuItem": {
+    "duplicate": "Duplicate"
+  },
+  "downloadProjectMenuItem": {
+    "download": "Download"
+  },
+  "deleteProjectMenuItem": {
+    "delete": "Delete"
+  },
+  "renameProjectMenuItem": {
+    "rename": "Rename"
+  },
+  "shareProjectMenuItem": {
+    "share": "Share"
+  },
+  "projectSettingsMenuItem": {
+    "settings": "Settings"
+  },
+  "shareProjectModal": {
+    "title": "Share project",
+    "copiedIntoClipboard": "(copied into the clipboard)"
+  },
+  "projectsTable": {
+    "actions": "Actions"
+  },
+  "useProjectsTableColumns": {
+    "name": "Name"
+  },
+  "cursorBasedPagination": {
+    "rowsPerPage": "Rows per page:"
+  },
+  "librariesImportTable": {
+    "name": "Name",
+    "version": "Version",
+    "createdOn": "Created On",
+    "namespace": "Namespace",
+    "description": "Description"
+  },
+  "updateLibraryTable": {
+    "name": "Name",
+    "version": "Version",
+    "createdOn": "Created On",
+    "namespace": "Namespace",
+    "description": "Description"
+  },
+  "libraryBrowserView": {
+    "libraries": "Libraries"
+  },
+  "librariesTable": {
+    "name": "Name",
+    "version": "Version",
+    "createdOn": "Created On",
+    "namespace": "Namespace",
+    "description": "Description"
+  },
+  "detailsView": {
+    "noObjectSelected": "No object selected"
+  },
+  "synchronizationButton": {
+    "tooltipPinned": "Pinned. Click to follow the global selection.",
+    "tooltipUnpinned": "Unpinned. Click to pin the view to the current selection."
+  },
+  "searchQueryInput": {
+    "searchInAttributes": "Search in attributes",
+    "search": "Search",
+    "clearAll": "Clear All",
+    "matchCase": "Match Case",
+    "matchWholeWord": "Match Whole Word",
+    "useRegularExpression": "Use Regular Expression",
+    "clearText": "Clear Text"
+  },
+  "searchResults": {
+    "searchInProgress": "Search in progress...",
+    "noSearchLaunchedYet": "No search launched yet.",
+    "resultsFor_one": "{{count}} result for '{{query}}'",
+    "resultsFor_other": "{{count}} results for '{{query}}'"
+  },
+  "matchRow": {
+    "iconOverlayAlt": "Icon of the object"
+  },
+  "ageIndicator": {
+    "lessThanAMinute": "less than a minute",
+    "minutes": "{{minutes}}m",
+    "hours": "{{hours}}h",
+    "days": "{{days}}d",
+    "performedAgo": "Performed {{age}} ago"
+  },
+  "expressionArea": {
+    "expression": "Expression",
+    "executeExpression": "Execute the expression",
+    "executeExpressionTooltip": "Click this button or {{key}} + Enter when the textfield below is focused to execute the expression",
+    "texfieldPlaceholder": "Enter an expression to get started"
+  },
+  "objectExpressionResultViewer": {
+    "oneObjectReturned": "One object has been returned",
+    "iconOverlayAlt": "Object icon"
+  },
+  "objectRow": {
+    "iconOverlayAlt": "Object icon"
+  },
+  "objectsExpressionResultViewer": {
+    "objectsReturned_one": "A collection of {{count}} object has been returned",
+    "objectsReturned_other": "A collection of {{count}} objects has been returned"
+  },
+  "booleanExpressionResultViewer": {
+    "oneBooleanReturned": "A boolean has been returned"
+  },
+  "stringsExpressionResultViewer": {
+    "stringsReturned_one": "A collection of {{count}} string has been returned",
+    "stringsReturned_other": "A collection of {{count}} strings has been returned"
+  },
+  "stringExpressionResultViewer": {
+    "stringReturned": "A string has been returned"
+  },
+  "intExpressionResultViewer": {
+    "intReturned": "An integer has been returned"
+  },
+  "voidExpressionResultViewer": {
+    "voidReturned": "No value has been returned by the evaluation of this expression"
+  },
+  "resultArea": {
+    "unsupportedResult": "The result of the expression is not supported",
+    "evaluationResult": "Evaluation result"
+  },
+  "exportResultButton": {
+    "exportAsCsv": "Export as CSV"
+  },
+  "representationsView": {
+    "noObjectSelected": "No object selected"
+  },
+  "expandAllTreeItemContextMenuContribution": {
+    "expandAll": "Expand all"
+  },
+  "showInSection": {
+    "showInTarget": "Show in {{target}}",
+    "showIn": "Show in",
+    "noAvailableTargets": "No available targets"
+  },
+  "messageProvider": {
+    "unexpectedError": "An unexpected error has occurred, please contact the server administrator for additional information",
+    "notFound": "The content that you are looking for has not been found"
+  },
+  "errorView": {
+    "title": "Error {{code}}",
+    "backToHomepage": "Back to the homepage"
+  },
+  "navigationBarIcon": {
+    "backToHomepage": "Back to the homepage"
+  },
+  "relatedElementsView": {
+    "noObjectSelected": "No object selected"
+  },
+  "siriusWebFooter": {
+    "poweredBy": "Powered by"
+  },
+  "siriusWebManageVisibilityNodeAction": {
+    "manageVisibility": "Manage visibility"
   }
 }

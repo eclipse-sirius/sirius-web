@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useHandlesLayout } from '../../handles/useHandlesLayout';
 import { ResetManuallyLaidOutHandlesToolProps } from './ResetManuallyLaidOutHandlesTool.types';
+import { useTranslation } from 'react-i18next';
 
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
@@ -33,6 +34,7 @@ export const ResetManuallyLaidOutHandlesTool = ({ diagramElementId }: ResetManua
   const { classes } = useStyle();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { removeNodeHandleLayoutData } = useHandlesLayout();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'resetManuallyLaidOutHandlesTool' });
   const edge = store.getState().edgeLookup.get(diagramElementId);
   const sourceNodeId = edge?.source;
   const tagetNodeId = edge?.target;
@@ -58,11 +60,11 @@ export const ResetManuallyLaidOutHandlesTool = ({ diagramElementId }: ResetManua
   }
 
   return (
-    <Tooltip title="Reset handles">
+    <Tooltip title={t('resetHandles')}>
       <IconButton
         className={classes.toolIcon}
         size="small"
-        aria-label="Reset handles"
+        aria-label={t('resetHandles')}
         onClick={handleToolClick}
         data-testid="Reset-handles">
         <SwipeRightAltIcon sx={{ fontSize: 16 }} />

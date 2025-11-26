@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.IIncomingTreeDescriptionProvider;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,8 +52,6 @@ import org.springframework.stereotype.Service;
 public class IncomingTreeDescriptionProvider implements IIncomingTreeDescriptionProvider {
 
     private static final String WIDGET_ID = "related/incoming";
-
-    private static final String TITLE = "Incoming";
 
     private static final String WIDGET_ICON_URL = "/related-elements/west_black_24dp.svg";
 
@@ -66,10 +65,13 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
 
     private final ComposedAdapterFactory adapterFactory;
 
-    public IncomingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory) {
+    private final IMessageService messageService;
+
+    public IncomingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
         this.adapterFactory = Objects.requireNonNull(adapterFactory);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
-                .labelProvider(variableManager -> TITLE)
+                .labelProvider(variableManager -> this.messageService.relatedElementsViewIncomingTitle())
                 .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)

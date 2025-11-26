@@ -13,16 +13,14 @@
 import SyncLockOutlinedIcon from '@mui/icons-material/SyncLockOutlined';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { SynchronizationButtonProps } from './SynchronizationButton.types';
 
 export const SynchronizationButton = ({ pinned, onClick }: SynchronizationButtonProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'synchronizationButton' });
   return (
     <Tooltip
-      title={
-        pinned
-          ? 'Pinned. Click to follow the global selection.'
-          : 'Unpinned. Click to pin the view to the current selection.'
-      }
+      title={pinned ? t('tooltipPinned') : t('tooltipUnpinned')}
       data-testid="details-toggle-pin"
       placement="left" // Needed to prevent a (temporary) overflow of the whole page
       onClick={onClick}>

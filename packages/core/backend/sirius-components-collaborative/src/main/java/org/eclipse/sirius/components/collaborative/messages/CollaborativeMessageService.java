@@ -52,4 +52,13 @@ public class CollaborativeMessageService implements ICollaborativeMessageService
         return this.messageSourceAccessor.getMessage("NOT_FOUND");
     }
 
+    @Override
+    public String searchCommandName() {
+        return this.messageSourceAccessor.getMessage("SEARCH_COMMAND_NAME");
+    }
+
+    @Override
+    public String searchCommandDescription() {
+        return this.messageSourceAccessor.getMessage("SEARCH_COMMAND_DESCRIPTION");
+    }
 }

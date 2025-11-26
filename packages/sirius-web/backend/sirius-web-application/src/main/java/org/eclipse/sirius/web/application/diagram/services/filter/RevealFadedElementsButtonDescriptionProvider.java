@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,10 @@ public class RevealFadedElementsButtonDescriptionProvider implements IDiagramFil
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/reveal-faded-elements")
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .labelProvider(variableManager -> "Reveal faded elements")
+                .labelProvider(variableManager -> this.messageService.diagramFilterRevealFadedElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
-                .buttonLabelProvider(variableManager -> "Reveal faded elements")
+                .buttonLabelProvider(variableManager -> this.messageService.diagramFilterRevealFadedElements())
                 .imageURLProvider(variableManager -> DiagramImageConstants.REVEAL_FADED_ELEMENTS_SVG)
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();

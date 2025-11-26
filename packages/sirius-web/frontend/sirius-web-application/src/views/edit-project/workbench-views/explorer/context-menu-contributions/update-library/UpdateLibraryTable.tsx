@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useTableTranslation } from '@eclipse-sirius/sirius-components-tables';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
@@ -21,11 +22,14 @@ import {
   useMaterialReactTable,
 } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UpdateLibraryTableProps } from './UpdateLibraryTable.types';
 import { useLibraryVersions } from './useLibraryVersions';
 import { GQLLibraryVersion } from './useLibraryVersions.types';
 
 export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected }: UpdateLibraryTableProps) => {
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'updateLibraryTable' });
+  const localization = useTableTranslation();
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 20,
@@ -46,7 +50,7 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
     () => [
       {
         accessorFn: (row) => row.name,
-        header: 'Name',
+        header: t('name'),
         size: 200,
         Cell: ({ renderedCellValue, row }) => {
           const currentVersion = row.original.version === version;
@@ -63,19 +67,19 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
       },
       {
         accessorFn: (row) => row.version,
-        header: 'Version',
+        header: t('version'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => new Date(row.createdOn).toISOString().split('T')[0],
-        header: 'Created On',
+        header: t('createdOn'),
         size: 50,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
       },
       {
         accessorFn: (row) => row.namespace,
-        header: 'Namespace',
+        header: t('namespace'),
         size: 150,
         Cell: ({ renderedCellValue }) => (
           <Typography noWrap sx={{ opacity: '0.6' }}>
@@ -85,7 +89,7 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
       },
       {
         accessorFn: (row) => row.description,
-        header: 'Description',
+        header: t('description'),
         size: 200,
         grow: true,
         Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
@@ -125,6 +129,8 @@ export const UpdateLibraryTable = ({ namespace, name, version, onLibrarySelected
     manualPagination: true,
     onPaginationChange: setPagination,
     rowCount: count,
+
+    localization: localization,
 
     state: { pagination, rowSelection },
   });

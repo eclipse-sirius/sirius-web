@@ -58,5 +58,15 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
+  },
+  "formRepresentation": {
+    "formDoesNotExist": "The form does not exist anymore"
+  },
+  "imagePropertySection": {
+    "noImage": "No image"
+  },
+  "helpTooltip": {
+    "errorWhileLoadingHelpText": "Error while loading the help text: {{error}}",
+    "noHelpProvided": "No help provided"
   }
 }

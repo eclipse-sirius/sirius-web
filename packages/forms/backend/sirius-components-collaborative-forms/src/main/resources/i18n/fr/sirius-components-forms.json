@@ -53,5 +53,15 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
+  },
+  "formRepresentation": {
+    "formDoesNotExist": "Le formulaire n'existe plus"
+  },
+  "imagePropertySection": {
+    "noImage": "Aucune image"
+  },
+  "helpTooltip": {
+    "errorWhileLoadingHelpText": "Erreur lors du chargement du texte d'aide: {{error}}",
+    "noHelpProvided": "Aucun texte d'aide fourni"
   }
 }

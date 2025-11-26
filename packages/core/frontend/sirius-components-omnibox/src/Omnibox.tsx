@@ -24,6 +24,7 @@ import { makeStyles } from 'tss-react/mui';
 import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
 import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+import { useTranslation } from 'react-i18next';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -61,6 +62,7 @@ const useOmniboxStyles = makeStyles()((theme) => ({
 }));
 
 export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onClose }: OmniboxProps) => {
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'omnibox' });
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
@@ -131,9 +133,7 @@ export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onCl
             inputRef={inputRef}
             onChange={() => onChange()}
             onKeyDown={handleKeyDown}
-            placeholder={
-              state.mode === 'Search' ? "Hit 'Enter' to search an element..." : "Hit 'Enter' to search a command..."
-            }
+            placeholder={state.mode === 'Search' ? t('searchElement') : t('searchCommand')}
             disableUnderline
             autoFocus
             fullWidth

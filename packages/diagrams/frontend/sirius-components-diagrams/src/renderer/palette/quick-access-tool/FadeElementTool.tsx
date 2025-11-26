@@ -14,6 +14,7 @@
 import TonalityIcon from '@mui/icons-material/Tonality';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useFadeDiagramElements } from '../../fade/useFadeDiagramElements';
 import { FadeElementToolProps } from './FadeElementTool.types';
@@ -29,14 +30,15 @@ const useStyle = makeStyles()((theme) => ({
 
 export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolProps) => {
   const { classes } = useStyle();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'fadeElementTool' });
   const { fadeDiagramElements } = useFadeDiagramElements();
   if (isFaded) {
     return (
-      <Tooltip title="Unfade element" key={'tooltip_unfade_element_tool'}>
+      <Tooltip title={t('unfadeElement')} key={'tooltip_unfade_element_tool'}>
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Unfade element"
+          aria-label={t('unfadeElement')}
           onClick={() => fadeDiagramElements([diagramElementId], false)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />
@@ -45,11 +47,11 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
     );
   } else {
     return (
-      <Tooltip title="Fade element" key={'tooltip_fade_element_tool'}>
+      <Tooltip title={t('fadeElement')} key={'tooltip_fade_element_tool'}>
         <IconButton
           className={classes.toolIcon}
           size="small"
-          aria-label="Fade element"
+          aria-label={t('fadeElement')}
           onClick={() => fadeDiagramElements([diagramElementId], true)}
           data-testid="Fade-element">
           <TonalityIcon sx={{ fontSize: 16 }} />

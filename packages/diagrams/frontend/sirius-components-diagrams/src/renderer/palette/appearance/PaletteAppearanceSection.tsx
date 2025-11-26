@@ -21,6 +21,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionProps } from './extensions/PaletteAppearanceSectionContribution.types';
@@ -60,6 +61,7 @@ export const PaletteAppearanceSection = ({
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const edge: Edge<EdgeData> | undefined = edgeLookup.get(diagramElementId);
   const node: InternalNode<Node<NodeData>> | undefined = edge ? undefined : nodeLookup.get(diagramElementId);
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'paletteAppearanceSection' });
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -82,21 +84,21 @@ export const PaletteAppearanceSection = ({
 
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip title="Appearance" key="tooltip_appearance" placement="right">
+      <Tooltip title={t('appearance')} key="tooltip_appearance" placement="right">
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
           data-testid={`back-Appearance`}
           autoFocus={true}>
           <NavigateBeforeIcon />
-          <ListItemText className={classes.sectionTitleListItemText} primary="Appearance" />
+          <ListItemText className={classes.sectionTitleListItemText} primary={t('appearance')} />
         </ListItemButton>
       </Tooltip>
       {paletteAppearanceSectionComponents.length > 0 ? (
         paletteAppearanceSectionComponents
       ) : (
         <ListItem>
-          <Typography>No appearance editor available for this style of element</Typography>
+          <Typography>{t('noAppearanceEditorAvailableForThisStyleOfElement')}</Typography>
         </ListItem>
       )}
     </List>

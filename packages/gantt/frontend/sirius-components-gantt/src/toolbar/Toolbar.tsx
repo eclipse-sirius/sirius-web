@@ -31,6 +31,7 @@ import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
+import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {
@@ -65,6 +66,7 @@ export const Toolbar = ({
   const [state, setState] = useState<ToolbarState>({ modal: null });
   const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
 
+  const { t } = useTranslation('sirius-components-gantt', { keyPrefix: 'toolbar' });
   const { classes } = useToolbarStyles();
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
@@ -166,21 +168,21 @@ export const Toolbar = ({
     <>
       <div className={classes.toolbar}>
         {fullscreen ? (
-          <Tooltip title="Exit full screen mode">
+          <Tooltip title={t('exitFullscreen')}>
             <IconButton
               size="small"
               color="inherit"
-              aria-label="exit full screen mode"
+              aria-label={t('exitFullscreen')}
               onClick={() => setFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Toggle full screen mode">
+          <Tooltip title={t('toggleFullscreen')}>
             <IconButton
               size="small"
               color="inherit"
-              aria-label="toggle full screen mode"
+              aria-label={t('toggleFullscreen')}
               onClick={() => setFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
@@ -192,25 +194,25 @@ export const Toolbar = ({
             onChange={updateZoomLevel}
             variant="standard"
             disableUnderline
-            title="Zoom level"
+            title={t('zoomLevel')}
             data-testid="zoom-level">
             <MenuItem value={ViewMode.Hour} data-testid="zoom-level-Hour">
-              Hour
+              {t('hour')}
             </MenuItem>
-            <MenuItem value={ViewMode.QuarterDay}>Quarter Day</MenuItem>
-            <MenuItem value={ViewMode.HalfDay}>Half Day</MenuItem>
-            <MenuItem value={ViewMode.Day}>Day</MenuItem>
-            <MenuItem value={ViewMode.TwoDays}>Two Days</MenuItem>
-            <MenuItem value={ViewMode.Week}>Week</MenuItem>
-            <MenuItem value={ViewMode.Month}>Month</MenuItem>
-            <MenuItem value={ViewMode.Year}>Year</MenuItem>
+            <MenuItem value={ViewMode.QuarterDay}>{t('quarterDay')}</MenuItem>
+            <MenuItem value={ViewMode.HalfDay}>{t('halfDay')}</MenuItem>
+            <MenuItem value={ViewMode.Day}>{t('day')}</MenuItem>
+            <MenuItem value={ViewMode.TwoDays}>{t('twoDays')}</MenuItem>
+            <MenuItem value={ViewMode.Week}>{t('week')}</MenuItem>
+            <MenuItem value={ViewMode.Month}>{t('month')}</MenuItem>
+            <MenuItem value={ViewMode.Year}>{t('year')}</MenuItem>
           </Select>
         </FormControl>
         <IconButton
           size="small"
           color="inherit"
-          aria-label="zoom in"
-          title="Zoom in"
+          aria-label={t('zoomIn')}
+          title={t('zoomIn')}
           onClick={onZoomIn}
           data-testid="zoom-in">
           <ZoomInIcon fontSize="small" />
@@ -218,8 +220,8 @@ export const Toolbar = ({
         <IconButton
           size="small"
           color="inherit"
-          aria-label="zoom out"
-          title="Zoom out"
+          aria-label={t('zoomOut')}
+          title={t('zoomOut')}
           onClick={onZoomOut}
           data-testid="zoom-out">
           <ZoomOutIcon fontSize="small" />
@@ -227,8 +229,8 @@ export const Toolbar = ({
         <IconButton
           size="small"
           color="inherit"
-          aria-label="fit to screen"
-          title="Fit to screen"
+          aria-label={t('fitToScreen')}
+          title={t('fitToScreen')}
           onClick={onFitToScreen}
           data-testid="fit-to-screen">
           <AspectRatioIcon fontSize="small" />
@@ -236,8 +238,8 @@ export const Toolbar = ({
         <IconButton
           size="small"
           color="inherit"
-          aria-label="display task list columns"
-          title="Display columns"
+          aria-label={t('displayTaskListColumns')}
+          title={t('displayTaskListColumns')}
           onClick={handleDisplayColumns}
           data-testid="display-task-list-columns">
           <ViewColumn fontSize="small" />
@@ -261,7 +263,13 @@ export const Toolbar = ({
             ))}
           </Select>
         </FormControl>
-        <IconButton size="small" color="inherit" aria-label="share" title="Share" onClick={onShare} data-testid="share">
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label={t('share')}
+          title={t('share')}
+          onClick={onShare}
+          data-testid="share">
           <ShareIcon fontSize="small" />
         </IconButton>
       </div>

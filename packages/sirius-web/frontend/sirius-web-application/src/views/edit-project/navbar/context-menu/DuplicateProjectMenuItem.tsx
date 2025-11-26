@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { DuplicateProjectMenuItemProps } from './DuplicateProjectMenuItem.types';
 import { useDuplicateProject } from './useDuplicateProject';
@@ -24,7 +25,7 @@ import { useDuplicateProject } from './useDuplicateProject';
 export const DuplicateProjectMenuItem = ({ projectId, onClick }: DuplicateProjectMenuItemProps) => {
   const { duplicateProject, loading, newProjectId } = useDuplicateProject();
   const navigate = useNavigate();
-
+  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'duplicateProjectMenuItem' });
   useEffect(() => {
     if (newProjectId) {
       navigate(`/projects/${newProjectId}/edit`);
@@ -39,7 +40,7 @@ export const DuplicateProjectMenuItem = ({ projectId, onClick }: DuplicateProjec
   return (
     <MenuItem onClick={handleOnClick} disabled={loading} data-testid="duplicate">
       <ListItemIcon>{loading ? <CircularProgress size={15} /> : <LibraryAddIcon />}</ListItemIcon>
-      <ListItemText primary="Duplicate" />
+      <ListItemText primary={t('duplicate')} />
     </MenuItem>
   );
 };

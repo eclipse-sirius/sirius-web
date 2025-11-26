@@ -14,6 +14,7 @@
 import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
@@ -36,7 +37,7 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
   });
 
   const { complete, payload } = useDiagramSubscription(editingContextId, diagramId);
-
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramSubscriptionProvider' });
   useEffect(() => {
     if (isDiagramRefreshedEventPayload(payload)) {
       setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: payload }));
@@ -46,7 +47,7 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
   if (complete) {
     return (
       <div>
-        <Typography variant="subtitle2">The representation is not available anymore</Typography>
+        <Typography variant="subtitle2">{t('representationNotAvailable')}</Typography>
       </div>
     );
   }

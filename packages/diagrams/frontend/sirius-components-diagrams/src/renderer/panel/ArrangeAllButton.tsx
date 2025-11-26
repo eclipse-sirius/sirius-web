@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
 import { useArrangeAll } from '../layout/useArrangeAll';
 import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
+import { useTranslation } from 'react-i18next';
 
 export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButtonProps) => {
   const [state, setState] = useState<ArrangeAllButtonState>({
@@ -25,7 +26,7 @@ export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButto
   });
 
   const { arrangeAll } = useArrangeAll(reactFlowWrapper);
-
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'arrangeAllButton' });
   const handleClick = () => {
     setState((prevState) => ({
       ...prevState,
@@ -52,11 +53,11 @@ export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButto
   }, []);
 
   return (
-    <Tooltip title="Arrange all elements">
+    <Tooltip title={t('arrangeAll')}>
       <span>
         <IconButton
           size="small"
-          aria-label="arrange all elements"
+          aria-label={t('arrangeAll')}
           onClick={handleClick}
           data-testid={'arrange-all'}
           disabled={disabled}>

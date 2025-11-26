@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -47,7 +48,7 @@ public class ChangeGlobalFilterValueEventHandler implements ITableEventHandler {
     private final Counter counter;
 
     public ChangeGlobalFilterValueEventHandler(ICollaborativeTableMessageService messageService, MeterRegistry meterRegistry) {
-        this.messageService = messageService;
+        this.messageService = Objects.requireNonNull(messageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);

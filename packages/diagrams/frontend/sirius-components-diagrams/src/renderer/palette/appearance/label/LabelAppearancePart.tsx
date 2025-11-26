@@ -22,7 +22,9 @@ import LineStyleIcon from '@mui/icons-material/LineStyle';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { TFunction } from 'i18next/typescript/t';
+import { useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
 import { CheckboxAppearanceProperty } from '../property-component/CheckboxAppearanceProperty';
@@ -34,11 +36,11 @@ import { useEditLabelAppearance } from './useEditLabelAppearance';
 import { GQLLabelAppearanceInput } from './useEditLabelAppearance.types';
 import { useResetLabelAppearance } from './useResetLabelAppearance';
 
-const LINE_STYLE_OPTIONS = [
-  { value: 'Solid', label: 'Solid' },
-  { value: 'Dash', label: 'Dash' },
-  { value: 'Dot', label: 'Dot' },
-  { value: 'Dash_Dot', label: 'Dash Dot' },
+const getLineStyleOptions = (t: TFunction) => [
+  { value: 'Solid', label: t('solid') },
+  { value: 'Dash', label: t('dash') },
+  { value: 'Dot', label: t('dot') },
+  { value: 'Dash_Dot', label: t('dashDot') },
 ];
 
 export const LabelAppearancePart = ({
@@ -52,6 +54,8 @@ export const LabelAppearancePart = ({
 
   const { updateLabelAppearance } = useEditLabelAppearance();
   const { resetLabelStyleProperties } = useResetLabelAppearance();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'labelAppearancePart' });
+  const lineStyleOptions = useMemo(() => getLineStyleOptions(t), [t]);
 
   const handleResetProperty = (customizedStyleProperty: string) =>
     resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, [customizedStyleProperty]);
@@ -68,7 +72,7 @@ export const LabelAppearancePart = ({
 
         <CheckboxAppearanceProperty
           icon={<DisabledVisibleIcon />}
-          label="Hide"
+          label={t('hide')}
           checked={style.visibility === 'hidden'}
           disabled={isDisabled('VISIBILITY')}
           onChange={(checked) => handleEditProperty({ visibility: checked ? 'hidden' : 'visible' })}
@@ -77,7 +81,7 @@ export const LabelAppearancePart = ({
 
         <AppearanceNumberTextfield
           icon={<FormatSizeIcon />}
-          label={'Font Size'}
+          label={t('fontSize')}
           initialValue={style.fontSize}
           disabled={isDisabled('FONT_SIZE')}
           onEdit={(newValue) => handleEditProperty({ fontSize: newValue })}
@@ -85,7 +89,7 @@ export const LabelAppearancePart = ({
 
         <CheckboxAppearanceProperty
           icon={<FormatItalicIcon />}
-          label="Italic"
+          label={t('italic')}
           checked={style.italic}
           disabled={isDisabled('ITALIC')}
           onChange={(checked) => handleEditProperty({ italic: checked })}
@@ -93,7 +97,7 @@ export const LabelAppearancePart = ({
         />
         <CheckboxAppearanceProperty
           icon={<FormatBoldIcon />}
-          label="Bold"
+          label={t('bold')}
           checked={style.bold}
           disabled={isDisabled('BOLD')}
           onChange={(checked) => handleEditProperty({ bold: checked })}
@@ -101,7 +105,7 @@ export const LabelAppearancePart = ({
         />
         <CheckboxAppearanceProperty
           icon={<FormatUnderlinedIcon />}
-          label="Underline"
+          label={t('underline')}
           checked={style.underline}
           disabled={isDisabled('UNDERLINE')}
           onChange={(checked) => handleEditProperty({ underline: checked })}
@@ -109,7 +113,7 @@ export const LabelAppearancePart = ({
         />
         <CheckboxAppearanceProperty
           icon={<FormatStrikethroughIcon />}
-          label="Strike Through"
+          label={t('strikeThrough')}
           checked={style.strikeThrough}
           disabled={isDisabled('STRIKE_THROUGH')}
           onChange={(checked) => handleEditProperty({ strikeThrough: checked })}
@@ -117,7 +121,7 @@ export const LabelAppearancePart = ({
         />
 
         <AppearanceColorPicker
-          label={'Border Color'}
+          label={t('borderColor')}
           initialValue={style.borderColor}
           disabled={isDisabled('BORDER_COLOR')}
           onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
@@ -125,7 +129,7 @@ export const LabelAppearancePart = ({
 
         <AppearanceNumberTextfield
           icon={<Crop32Icon />}
-          label={'Border Radius'}
+          label={t('borderRadius')}
           initialValue={style.borderRadius}
           disabled={isDisabled('BORDER_RADIUS')}
           onEdit={(newValue) => handleEditProperty({ borderRadius: newValue })}
@@ -133,7 +137,7 @@ export const LabelAppearancePart = ({
 
         <AppearanceNumberTextfield
           icon={<Crop32Icon />}
-          label={'Border Size'}
+          label={t('borderSize')}
           initialValue={style.borderSize}
           disabled={isDisabled('BORDER_SIZE')}
           onEdit={(newValue) => handleEditProperty({ borderSize: newValue })}
@@ -141,22 +145,22 @@ export const LabelAppearancePart = ({
 
         <AppearanceSelect
           icon={<LineStyleIcon />}
-          label={'Border Line Style'}
-          options={LINE_STYLE_OPTIONS}
+          label={t('borderLineStyle')}
+          options={lineStyleOptions}
           initialValue={style.borderStyle}
           disabled={isDisabled('BORDER_STYLE')}
           onEdit={(newValue) => handleEditProperty({ borderStyle: newValue })}
           onReset={() => handleResetProperty('BORDER_STYLE')}></AppearanceSelect>
 
         <AppearanceColorPicker
-          label={'Label Color'}
+          label={t('labelColor')}
           initialValue={style.color}
           disabled={isDisabled('COLOR')}
           onEdit={(newValue) => handleEditProperty({ color: newValue })}
           onReset={() => handleResetProperty('COLOR')}></AppearanceColorPicker>
 
         <AppearanceColorPicker
-          label={'Background'}
+          label={t('background')}
           initialValue={style.background}
           disabled={isDisabled('BACKGROUND')}
           onEdit={(newValue) => handleEditProperty({ background: newValue })}

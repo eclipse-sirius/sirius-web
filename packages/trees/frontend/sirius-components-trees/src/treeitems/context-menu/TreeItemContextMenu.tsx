@@ -24,6 +24,7 @@ import { DeleteMenuItem } from './DeleteMenuItem';
 import { RenameMenuItem } from './RenameMenuItem';
 
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslation } from 'react-i18next';
 import { TreeItemContextMenuProps } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
 import {
@@ -50,7 +51,7 @@ export const TreeItemContextMenu = ({
   const treeItemMenuContextComponents: ComponentExtension<TreeItemContextMenuComponentProps>[] = useComponents(
     treeItemContextMenuEntryExtensionPoint
   );
-
+  const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treeItemContextMenu' });
   const { data: treeItemContextMenuOverrideContributions } = useData<TreeItemContextMenuOverrideContribution[]>(
     treeItemContextMenuEntryOverrideExtensionPoint
   );
@@ -146,7 +147,7 @@ export const TreeItemContextMenu = ({
               onClose();
             }}>
             <ListItemIcon>{target.icon}</ListItemIcon>
-            <ListItemText primary={`Show in ${target.label}`} />
+            <ListItemText primary={t('showInTarget', { target: target.label })} />
           </MenuItem>
         ))}
       <RenameMenuItem item={item} readOnly={readOnly} onClick={enterEditingMode} />

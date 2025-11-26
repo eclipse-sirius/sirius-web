@@ -21,12 +21,14 @@ import { OmniboxCommandListProps } from './OmniboxCommandList.types';
 import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
 import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
+import { useTranslation } from 'react-i18next';
 
 export const OmniboxCommandList = forwardRef(
   (
     { loading, commands, onClose, onModeChanged, onCommandClick }: OmniboxCommandListProps,
     ref: React.ForwardedRef<HTMLUListElement>
   ) => {
+    const { t } = useTranslation('sirius-components-core', { keyPrefix: 'omniboxCommandList' });
     const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
       if (event.key === 'ArrowDown') {
         const nextListItemButton = event.currentTarget.nextSibling;
@@ -53,7 +55,7 @@ export const OmniboxCommandList = forwardRef(
       listItems = [
         <ListItem key={'loading-action-key'}>
           <ListItemText sx={{ color: (theme) => theme.palette.text.disabled }} data-testid="fetch-omnibox-result">
-            Fetching result...
+            {t('fetchingResult')}
           </ListItemText>
         </ListItem>,
       ];
@@ -91,7 +93,7 @@ export const OmniboxCommandList = forwardRef(
       } else {
         listItems = [
           <ListItem key={'no-result-key'}>
-            <ListItemText data-testid="omnibox-no-result">No result</ListItemText>
+            <ListItemText data-testid="omnibox-no-result">{t('noResult')}</ListItemText>
           </ListItem>,
         ];
       }

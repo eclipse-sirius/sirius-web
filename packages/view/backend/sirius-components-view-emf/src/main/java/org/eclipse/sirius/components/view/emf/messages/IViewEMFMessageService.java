@@ -26,6 +26,8 @@ public interface IViewEMFMessageService {
 
     String invokeActionError(String actionName);
 
+    String coreProperties();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -45,6 +47,11 @@ public interface IViewEMFMessageService {
 
         @Override
         public String invokeActionError(String actionName) {
+            return "";
+        }
+
+        @Override
+        public String coreProperties() {
             return "";
         }
     }
