@@ -102,7 +102,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       }
     };
 
-    useExplorerViewHandle(id, state.treeFilters, state.activeTreeDescriptionId, applySelection, ref);
+    useExplorerViewHandle(id, state.tree?.id, state.treeFilters, state.activeTreeDescriptionId, applySelection, ref);
 
     const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
       (contribution) => contribution.props.component
