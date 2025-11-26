@@ -89,6 +89,10 @@ class ProjectNavigationBar {
     return cy.getByTestId('delete');
   }
 
+  public getDuplicateButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('duplicate');
+  }
+
   public getSettingsButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('project-settings-link');
   }

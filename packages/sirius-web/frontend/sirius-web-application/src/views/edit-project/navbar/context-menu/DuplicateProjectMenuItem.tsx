@@ -17,18 +17,16 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { DuplicateProjectMenuItemProps } from './DuplicateProjectMenuItem.types';
 import { useDuplicateProject } from './useDuplicateProject';
 
-export const DuplicateProjectMenuItem = ({ projectId, onClick }: DuplicateProjectMenuItemProps) => {
+export const DuplicateProjectMenuItem = ({ projectId }: DuplicateProjectMenuItemProps) => {
   const { duplicateProject, loading, newProjectId } = useDuplicateProject();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (newProjectId) {
-      navigate(`/projects/${newProjectId}/edit`);
-      onClick();
+      const origin = window.location.origin;
+      window.location.assign(`${origin}/projects/${newProjectId}/edit`);
     }
   }, [newProjectId]);
 
