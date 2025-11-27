@@ -1,4 +1,7 @@
 {
+  "arrangeAllButton": {
+    "arrangeMenu": "Organiser les éléments"
+  },
   "diagramDirectEditInput": {
     "enterNewValue": "Saisir la nouvelle valeur",
     "errors": {
@@ -63,6 +66,10 @@
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   },
+  "useLayoutConfigurations": {
+    "arrangeAllLayered": "Disposition en flux",
+    "arrangeAllRectPacking": "Disposition compacte"
+  },
   "usePinDiagramElements": {
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
@@ -77,9 +84,6 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
-  },
-  "arrangeAllButton": {
-    "arrangeAll": "Arranger tous les éléments"
   },
   "revealSelectionInDiagramButton": {
     "tooltip": "Afficher les éléments sélectionnés",

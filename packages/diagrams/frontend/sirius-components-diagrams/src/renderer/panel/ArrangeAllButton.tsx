@@ -12,40 +12,63 @@
  *******************************************************************************/
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { useEffect, useState } from 'react';
-import { useArrangeAll } from '../layout/useArrangeAll';
-import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
+import { LayoutOptions } from 'elkjs/lib/elk-api';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useArrangeAll } from '../layout/arrange-all/useArrangeAll';
+import { useLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigurations';
+import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
+import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
 
 export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButtonProps) => {
   const [state, setState] = useState<ArrangeAllButtonState>({
     arrangeAllInProgress: false,
+    arrangeAllMenuOpen: false,
   });
+  const anchorArrangeMenuRef = useRef<HTMLButtonElement | null>(null);
 
   const { arrangeAll } = useArrangeAll(reactFlowWrapper);
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'arrangeAllButton' });
-  const handleClick = () => {
+  const { layoutConfigurations } = useLayoutConfigurations();
+
+  const handleArrangeAll = (layoutOptions: LayoutOptions) => {
     setState((prevState) => ({
       ...prevState,
+      arrangeAllMenuOpen: false,
       arrangeAllInProgress: true,
     }));
-    arrangeAll().then(() =>
+    arrangeAll(layoutOptions).then(() =>
       setState((prevState) => ({
         ...prevState,
-        arrangeAllDone: true,
         arrangeAllInProgress: false,
       }))
     );
   };
 
+  const handleMenuToggle = () =>
+    setState((prevState) => ({
+      ...prevState,
+      arrangeAllMenuOpen: !prevState.arrangeAllMenuOpen,
+    }));
+  const onCloseMenu = () =>
+    setState((prevState) => ({
+      ...prevState,
+      arrangeAllMenuOpen: false,
+    }));
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('arrangeAll') && urlParams.get('arrangeAll') === 'true') {
-        handleClick();
+      if (urlParams.has('arrangeAll') && urlParams.get('arrangeAll') === 'true' && layoutConfigurations[0]) {
+        handleArrangeAll(layoutConfigurations[0].layoutOptions);
       }
     }, 500);
 
@@ -53,21 +76,45 @@ export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButto
   }, []);
 
   return (
-    <Tooltip title={t('arrangeAll')}>
-      <span>
-        <IconButton
-          size="small"
-          aria-label={t('arrangeAll')}
-          onClick={handleClick}
-          data-testid={'arrange-all'}
-          disabled={disabled}>
-          {state.arrangeAllInProgress ? (
-            <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
-          ) : (
-            <AccountTreeIcon />
-          )}
-        </IconButton>
-      </span>
-    </Tooltip>
+    <>
+      <Tooltip title={t('arrangeMenu')}>
+        <span>
+          <IconButton
+            size="small"
+            aria-label={t('arrangeMenu')}
+            onClick={handleMenuToggle}
+            data-testid="arrange-all-menu"
+            ref={anchorArrangeMenuRef}
+            disabled={disabled || state.arrangeAllInProgress}>
+            {state.arrangeAllInProgress ? (
+              <CircularProgress size="24px" data-testid="arrange-all-circular-loading" />
+            ) : (
+              <AccountTreeIcon />
+            )}
+            <KeyboardArrowDownIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      {state.arrangeAllMenuOpen && !state.arrangeAllInProgress ? (
+        <Menu
+          open={state.arrangeAllMenuOpen}
+          anchorEl={anchorArrangeMenuRef.current}
+          onClose={onCloseMenu}
+          data-testid="arrange-all-actions">
+          {layoutConfigurations.map((layoutConfiguration: LayoutConfiguration) => {
+            return (
+              <MenuItem
+                key={layoutConfiguration.id}
+                disabled={disabled}
+                data-testid={`arrange-all-${layoutConfiguration.id}`}
+                onClick={() => handleArrangeAll(layoutConfiguration.layoutOptions)}>
+                <ListItemIcon>{layoutConfiguration.icon}</ListItemIcon>
+                <ListItemText primary={layoutConfiguration.label} />
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      ) : null}
+    </>
   );
 };

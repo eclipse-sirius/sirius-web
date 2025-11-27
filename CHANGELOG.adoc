@@ -48,6 +48,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
 - https://github.com/eclipse-sirius/sirius-web/issues/5887[#5887] Perform additional checks on pull requests and their linked issues.
 This contribution will leverage the Github GraphQL API to retrieve additional metadata to check such as the linked issue labels, and milestone.
+- https://github.com/eclipse-sirius/sirius-web/issues/5851[#5851] Add `rect-packing` algorithm option in arrange all possibility
 
 
 

@@ -1,4 +1,7 @@
 {
+  "arrangeAllButton": {
+    "arrangeMenu": "Arrange elements"
+  },
   "diagramDirectEditInput": {
     "enterNewValue": "Enter the new value",
     "errors": {
@@ -63,6 +66,10 @@
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
+  "useLayoutConfigurations": {
+    "arrangeAllLayered": "Flow Layout",
+    "arrangeAllRectPacking": "Compact Layout"
+  },
   "usePinDiagramElements": {
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
@@ -77,9 +84,6 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
-  },
-  "arrangeAllButton": {
-    "arrangeAll": "Arrange all elements"
   },
   "revealSelectionInDiagramButton": {
     "tooltip": "Reveal selected elements",
