@@ -46,7 +46,8 @@ test.describe('diagram - arrange all', () => {
 
     await expect(page.getByTestId('FreeForm - Wifi')).not.toBeInViewport();
 
-    await page.getByTestId('arrange-all').click();
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
 
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
   });
@@ -76,7 +77,8 @@ test.describe('diagram - arrange all', () => {
     await playwrightExplorer.select('diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
-    await page.getByTestId('arrange-all').click();
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
 
     const sourceNode = new PlaywrightNode(page, 'source');
     const targetNode = new PlaywrightNode(page, 'target');
@@ -95,7 +97,21 @@ test.describe('diagram - arrange all', () => {
     await playwrightExplorer.select('diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
-    await page.getByTestId('arrange-all').click();
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
+  });
+
+  test('when a rect packing arrange all is triggered, then the layout is applied without error', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('arrange-fail');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-rect-packing').click();
 
     await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
   });
