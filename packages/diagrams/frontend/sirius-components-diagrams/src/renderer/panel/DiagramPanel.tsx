@@ -13,6 +13,8 @@
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import GridOffIcon from '@mui/icons-material/GridOff';
@@ -37,194 +39,222 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFitView } from '../fit-to-screen/useFitView';
 import { useFullscreen } from '../fullscreen/useFullscreen';
+import { HelperLinesContextValue } from '../helper-lines/HelperLinesContext.types';
+import { HelperLinesContext } from '../helper-lines/HelperLinesContext';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { MiniMapContextValue } from '../mini-map/MiniMapContext.types';
+import { MiniMapContext } from '../mini-map/MiniMapContext';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
+import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
+import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { ArrangeAllButton } from './ArrangeAllButton';
 import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
-export const DiagramPanel = memo(
-  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
-    const [state, setState] = useState<DiagramPanelState>({
-      dialogOpen: null,
-      arrangeAllDone: false,
-      arrangeAllInProgress: false,
-    });
-    const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPanel' });
+export const DiagramPanel = memo(({ reactFlowWrapper }: DiagramPanelProps) => {
+  const [state, setState] = useState<DiagramPanelState>({
+    dialogOpen: null,
+    arrangeAllDone: false,
+    arrangeAllInProgress: false,
+  });
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPanel' });
 
-    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-    const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(
-      diagramPanelActionExtensionPoint
-    );
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { isMiniMapVisible, setMiniMapVisibility } = useContext<MiniMapContextValue>(MiniMapContext);
+  const { isHelperLineEnabled, setHelperLineEnabled } = useContext<HelperLinesContextValue>(HelperLinesContext);
+  const { isSnapToGridEnabled, setSnapToGridEnabled } = useContext<SnapToGridContextValue>(SnapToGridContext);
+  const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(
+    diagramPanelActionExtensionPoint
+  );
 
-    const { getNodes, getEdges, zoomIn, zoomOut } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-    const { fitView } = useFitView();
+  const { getNodes, getEdges, zoomIn, zoomOut } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { fitView } = useFitView();
 
-    const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
-    const getSelectedNodes = () => getNodes().filter((node) => node.selected);
+  const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
+  const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
-    const { fullscreen, onFullscreen } = useFullscreen();
-    const nodesInitialized = useNodesInitialized();
-    useEffect(() => {
-      if (nodesInitialized && state.arrangeAllDone) {
-        fitView({ duration: 400, nodes: getNodes() });
-        setState((prevState) => ({ ...prevState, arrangeAllDone: false }));
-      }
-    }, [nodesInitialized, state.arrangeAllDone]);
+  const { fullscreen, onFullscreen } = useFullscreen();
+  const nodesInitialized = useNodesInitialized();
+  useEffect(() => {
+    if (nodesInitialized && state.arrangeAllDone) {
+      fitView({ duration: 400, nodes: getNodes() });
+      setState((prevState) => ({ ...prevState, arrangeAllDone: false }));
+    }
+  }, [nodesInitialized, state.arrangeAllDone]);
 
-    const handleFitToScreen = () => {
-      if (getSelectedNodes().length) {
-        fitView({ duration: 200, nodes: getSelectedNodes() });
-      } else {
-        fitView({ duration: 200, nodes: getNodes() });
-      }
-    };
-    const handleZoomIn = () => zoomIn({ duration: 200 });
-    const handleZoomOut = () => zoomOut({ duration: 200 });
-    const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
-    const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
+  const handleFitToScreen = () => {
+    if (getSelectedNodes().length) {
+      fitView({ duration: 200, nodes: getSelectedNodes() });
+    } else {
+      fitView({ duration: 200, nodes: getNodes() });
+    }
+  };
+  const handleZoomIn = () => zoomIn({ duration: 200 });
+  const handleZoomOut = () => zoomOut({ duration: 200 });
+  const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
+  const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
 
-    const { fadeDiagramElements } = useFadeDiagramElements();
-    const { hideDiagramElements } = useHideDiagramElements();
-    const { pinDiagramElements } = usePinDiagramElements();
+  const { fadeDiagramElements } = useFadeDiagramElements();
+  const { hideDiagramElements } = useHideDiagramElements();
+  const { pinDiagramElements } = usePinDiagramElements();
 
-    const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
-    const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
-    const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
+  const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
+  const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
+  const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
 
-    const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-    return (
-      <>
-        <Panel position="top-left">
-          <Paper>
-            {fullscreen ? (
-              <Tooltip title={t('exitFullScreen')}>
-                <IconButton size="small" aria-label={t('exitFullScreen')} onClick={() => onFullscreen(false)}>
-                  <FullscreenExitIcon />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title={t('toggleFullScreen')}>
-                <IconButton size="small" aria-label={t('toggleFullScreen')} onClick={() => onFullscreen(true)}>
-                  <FullscreenIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <Tooltip title={t('fitToScreen')}>
+  return (
+    <>
+      <Panel position="top-left">
+        <Paper>
+          {fullscreen ? (
+            <Tooltip title={t('exitFullScreen')}>
+              <IconButton size="small" aria-label={t('exitFullScreen')} onClick={() => onFullscreen(false)}>
+                <FullscreenExitIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title={t('toggleFullScreen')}>
+              <IconButton size="small" aria-label={t('toggleFullScreen')} onClick={() => onFullscreen(true)}>
+                <FullscreenIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Tooltip title={t('fitToScreen')}>
+            <IconButton
+              size="small"
+              aria-label={t('fitToScreen')}
+              onClick={handleFitToScreen}
+              data-testid="fit-to-screen">
+              <AspectRatioIcon />
+            </IconButton>
+          </Tooltip>
+          {isMiniMapVisible ? (
+            <Tooltip title={t('hideMiniMap')}>
               <IconButton
                 size="small"
-                aria-label={t('fitToScreen')}
-                onClick={handleFitToScreen}
-                data-testid="fit-to-screen">
-                <AspectRatioIcon />
+                data-testid="hide-mini-map"
+                aria-label={t('hideMiniMap')}
+                onClick={() => setMiniMapVisibility(false)}>
+                <CreditCardOffIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('zoomIn')}>
-              <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn}>
-                <ZoomInIcon />
+          ) : (
+            <Tooltip title={t('showMiniMap')}>
+              <IconButton
+                size="small"
+                data-testid="show-mini-map"
+                aria-label={t('showMiniMap')}
+                onClick={() => setMiniMapVisibility(true)}>
+                <CreditCardIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('zoomOut')}>
-              <IconButton size="small" aria-label={t('zoomOut')} onClick={handleZoomOut} data-testid="zoom-out">
-                <ZoomOutIcon />
+          )}
+          <Tooltip title={t('zoomIn')}>
+            <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn}>
+              <ZoomInIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('zoomOut')}>
+            <IconButton size="small" aria-label={t('zoomOut')} onClick={handleZoomOut} data-testid="zoom-out">
+              <ZoomOutIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('shareDiagram')}>
+            <IconButton size="small" aria-label={t('shareDiagram')} onClick={handleShare} data-testid="share">
+              <ShareIcon />
+            </IconButton>
+          </Tooltip>
+          <ExportImageButton />
+          {isSnapToGridEnabled ? (
+            <Tooltip title={t('exitSnapToGrid')}>
+              <IconButton size="small" aria-label={t('exitSnapToGrid')} onClick={() => setSnapToGridEnabled(false)}>
+                <GridOffIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('shareDiagram')}>
-              <IconButton size="small" aria-label={t('shareDiagram')} onClick={handleShare} data-testid="share">
-                <ShareIcon />
+          ) : (
+            <Tooltip title={t('toggleSnapToGrid')}>
+              <IconButton size="small" aria-label={t('toggleSnapToGrid')} onClick={() => setSnapToGridEnabled(true)}>
+                <GridOnIcon />
               </IconButton>
             </Tooltip>
-            <ExportImageButton />
-            {snapToGrid ? (
-              <Tooltip title={t('exitSnapToGrid')}>
-                <IconButton size="small" aria-label={t('exitSnapToGrid')} onClick={() => onSnapToGrid(false)}>
-                  <GridOffIcon />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title={t('toggleSnapToGrid')}>
-                <IconButton size="small" aria-label={t('toggleSnapToGrid')} onClick={() => onSnapToGrid(true)}>
-                  <GridOnIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            {helperLines ? (
-              <Tooltip title={t('hideHelperLines')}>
-                <span>
-                  <IconButton
-                    size="small"
-                    aria-label={t('hideHelperLines')}
-                    onClick={() => onHelperLines(false)}
-                    data-testid="hide-helper-lines"
-                    disabled={readOnly}>
-                    <HelperLinesIconOff />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            ) : (
-              <Tooltip title={t('showHelperLines')}>
-                <span>
-                  <IconButton
-                    size="small"
-                    aria-label={t('showHelperLines')}
-                    onClick={() => onHelperLines(true)}
-                    data-testid="show-helper-lines"
-                    disabled={readOnly}>
-                    <HelperLinesIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
-            <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
-            <Tooltip title={t('revealHidden')}>
+          )}
+          {isHelperLineEnabled ? (
+            <Tooltip title={t('hideHelperLines')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label={t('revealHidden')}
-                  onClick={onUnhideAll}
-                  data-testid="reveal-hidden-elements"
+                  aria-label={t('hideHelperLines')}
+                  onClick={() => setHelperLineEnabled(false)}
+                  data-testid="hide-helper-lines"
                   disabled={readOnly}>
-                  <VisibilityOffIcon />
+                  <HelperLinesIconOff />
                 </IconButton>
               </span>
             </Tooltip>
-            <Tooltip title={t('revealFaded')}>
+          ) : (
+            <Tooltip title={t('showHelperLines')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label={t('revealFaded')}
-                  onClick={onUnfadeAll}
-                  data-testid="reveal-faded-elements"
+                  aria-label={t('showHelperLines')}
+                  onClick={() => setHelperLineEnabled(true)}
+                  data-testid="show-helper-lines"
                   disabled={readOnly}>
-                  <TonalityIcon />
+                  <HelperLinesIcon />
                 </IconButton>
               </span>
             </Tooltip>
-            <Tooltip title={t('unpinAll')}>
-              <span>
-                <IconButton
-                  size="small"
-                  aria-label={t('unpinAll')}
-                  onClick={onUnpinAll}
-                  data-testid="unpin-all-elements"
-                  disabled={readOnly}>
-                  <UnpinIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <RevealSelectionInDiagramButton editingContextId={editingContextId} />
-            {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
-              <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
-            ))}
-          </Paper>
-        </Panel>
-        {state.dialogOpen === 'Share' ? (
-          <ShareRepresentationModal representationId={diagramId} onClose={handleCloseDialog} />
-        ) : null}
-      </>
-    );
-  }
-);
+          )}
+          <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
+          <Tooltip title={t('revealHidden')}>
+            <span>
+              <IconButton
+                size="small"
+                aria-label={t('revealHidden')}
+                onClick={onUnhideAll}
+                data-testid="reveal-hidden-elements"
+                disabled={readOnly}>
+                <VisibilityOffIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title={t('revealFaded')}>
+            <span>
+              <IconButton
+                size="small"
+                aria-label={t('revealFaded')}
+                onClick={onUnfadeAll}
+                data-testid="reveal-faded-elements"
+                disabled={readOnly}>
+                <TonalityIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title={t('unpinAll')}>
+            <span>
+              <IconButton
+                size="small"
+                aria-label={t('unpinAll')}
+                onClick={onUnpinAll}
+                data-testid="unpin-all-elements"
+                disabled={readOnly}>
+                <UnpinIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <RevealSelectionInDiagramButton editingContextId={editingContextId} />
+          {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
+            <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+          ))}
+        </Paper>
+      </Panel>
+      {state.dialogOpen === 'Share' ? (
+        <ShareRepresentationModal representationId={diagramId} onClose={handleCloseDialog} />
+      ) : null}
+    </>
+  );
+});

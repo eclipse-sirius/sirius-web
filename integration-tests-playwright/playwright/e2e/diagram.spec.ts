@@ -63,4 +63,19 @@ test.describe('diagram', () => {
     expect(reactFlowSizeAfter.height).toBeGreaterThan(reactFlowSizeBefore.height);
     expect(reactFlowSizeAfter.width).toBeGreaterThan(reactFlowSizeBefore.width);
   });
+
+  test('when the mini map is shown or hidden, then mini map is available or not', async ({ page }) => {
+    // by default, the mini map is shown
+    await expect(page.getByTestId('hide-mini-map')).toBeAttached();
+    await expect(page.getByTestId('show-mini-map')).not.toBeAttached();
+    await expect(page.locator('.react-flow__minimap')).toBeAttached();
+
+    await page.getByTestId('hide-mini-map').click();
+    await expect(page.locator('.react-flow__minimap')).not.toBeAttached();
+    await expect(page.getByTestId('show-mini-map')).toBeAttached();
+    await expect(page.getByTestId('hide-mini-map')).not.toBeAttached();
+
+    await page.getByTestId('show-mini-map').click();
+    await expect(page.locator('.react-flow__minimap')).toBeAttached();
+  });
 });

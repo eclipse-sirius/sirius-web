@@ -60,6 +60,8 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
 import { HelperLines } from './helper-lines/HelperLines';
+import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types';
+import { HelperLinesContext } from './helper-lines/HelperLinesContext';
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
@@ -68,6 +70,8 @@ import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
+import { MiniMapContext } from './mini-map/MiniMapContext';
+import { MiniMapContextValue } from './mini-map/MiniMapContext.types';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
@@ -77,7 +81,8 @@ import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
-import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
+import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 
 const GRID_STEP: number = 10;
 
@@ -104,6 +109,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { setSelection } = useSelection();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const { isMiniMapVisible } = useContext<MiniMapContextValue>(MiniMapContext);
+  const { isHelperLineEnabled } = useContext<HelperLinesContextValue>(HelperLinesContext);
+  const { isSnapToGridEnabled } = useContext<SnapToGridContextValue>(SnapToGridContext);
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
@@ -303,14 +311,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { applyResizeHandleChange } = useHandleResizedChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
-  const {
-    helperLinesEnabled,
-    setHelperLinesEnabled,
-    horizontalHelperLine,
-    verticalHelperLine,
-    applyHelperLines,
-    resetHelperLines,
-  } = useHelperLines();
+  const { horizontalHelperLine, verticalHelperLine, applyHelperLines, resetHelperLines } = useHelperLines();
 
   const handleNodesChange: OnNodesChange<Node<NodeData>> = useCallback(
     (changes: NodeChange<Node<NodeData>>[]) => {
@@ -362,8 +363,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDirectEdit(event);
     onDelete(event);
   }, []);
-
-  const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
@@ -420,7 +419,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onSelectionChange: onSelectionChange,
     maxZoom: 40,
     minZoom: 0.1,
-    snapToGrid: snapToGrid,
+    snapToGrid: isSnapToGridEnabled,
     snapGrid: useMemo(() => [GRID_STEP, GRID_STEP], []),
     connectionMode: ConnectionMode.Loose,
     zoomOnDoubleClick: false,
@@ -429,7 +428,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     tabIndex: -1,
     children: (
       <>
-        {snapToGrid ? (
+        {isSnapToGridEnabled ? (
           <>
             <Background
               id="small-grid"
@@ -449,13 +448,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         ) : (
           <Background style={{ backgroundColor }} color={backgroundColor} />
         )}
-        <DiagramPanel
-          snapToGrid={snapToGrid}
-          onSnapToGrid={onSnapToGrid}
-          helperLines={helperLinesEnabled}
-          onHelperLines={setHelperLinesEnabled}
-          reactFlowWrapper={ref}
-        />
+        <DiagramPanel reactFlowWrapper={ref} />
 
         {isOpened ? (
           <DiagramPalette
@@ -465,8 +458,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         ) : null}
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
-        {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-        <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
+        {isHelperLineEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
+        {isMiniMapVisible && (
+          <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
+        )}
       </>
     ),
   };

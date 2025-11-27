@@ -14,8 +14,6 @@ import { Node, NodeChange } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseHelperLinesValue {
-  helperLinesEnabled: boolean;
-  setHelperLinesEnabled: (enable: boolean) => void;
   verticalHelperLine: number | null;
   horizontalHelperLine: number | null;
   applyHelperLines: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
