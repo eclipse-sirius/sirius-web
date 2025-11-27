@@ -88,10 +88,15 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
         var edgeDescription4 = this.getEdgeDescription(colorProvider, "E2ToEdge1A", nodeDescription2, edgeDescription1);
         var edgeDescription5 = this.getEdgeDescription(colorProvider, "E2ToEdge1B", nodeDescription2, edgeDescription1);
 
-        nodeDescription1.setPalette(new DiagramBuilders().newNodePalette().edgeTools(
-                this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"),
-                this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2")
-        ).build());
+        nodeDescription1.setPalette(new DiagramBuilders().newNodePalette()
+                .nodeTools(new DiagramBuilders().newNodeTool()
+                        .name("Hide")
+                        .body(new ViewBuilders().newChangeContext().expression("aql:diagramServices.hide(Sequence{selectedNode})").build())
+                        .build())
+                .edgeTools(
+                        this.createEgeCreationTool("E1toE2A", nodeDescription2, edgeDescription1.getDomainType(), "toEdge1"),
+                        this.createEgeCreationTool("E1toE2B", nodeDescription2, edgeDescription2.getDomainType(), "toEdge2")
+                ).build());
 
         edgeDescription1.setPalette(new DiagramBuilders().newEdgePalette().edgeTools(
                 this.createEgeCreationTool("EdgeToE2", nodeDescription2, edgeDescription3.getDomainType(), "toEdge3")
