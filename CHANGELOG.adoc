@@ -35,7 +35,8 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5873[#5873] [diagram] Add the ability to hide the mini map.
+This preference is saved in the browser local storage.
 
 === Improvements
 

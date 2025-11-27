@@ -16,6 +16,8 @@ export interface DiagramPanelProps {
   onSnapToGrid: (snapToGrid: boolean) => void;
   helperLines: boolean;
   onHelperLines: (helperLines: boolean) => void;
+  showMiniMap: boolean;
+  onShowMiniMap: (showMiniMap: boolean) => void;
   reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
 }
 
