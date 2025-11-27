@@ -16,9 +16,9 @@ export class PlaywrightEdge {
   readonly page: Page;
   readonly edgeLocator: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, index = 0) {
     this.page = page;
-    this.edgeLocator = page.locator('[data-testid^="rf__edge-"]').first();
+    this.edgeLocator = page.locator('[data-testid^="rf__edge-"]').nth(index);
   }
 
   async click() {

@@ -279,3 +279,56 @@ test.describe('edge', () => {
     expect(targetBorderPositionStep3.x).toBe(targetSizeStep3.width - borderNodeGap);
   });
 });
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeCrossFadeTunnel.zip');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when an edge is hide, then the cross fade tunnel is removed', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('CrossFadeTunnels');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagramEdges diagram');
+
+    // Helper function to check for cross fade tunnels count
+    const waitForCrossFadeTunnelCount = async (expectedCount: number) => {
+      await page.waitForFunction(
+        (count) => {
+          let edgeWithStrokeDasharray: number = 0;
+          const edgePaths = document.querySelectorAll('.react-flow__edge-path');
+          if (!parent) return false;
+          // Loop through edges to count the number of edges with a stroke-dasharray
+          edgePaths.forEach((edgePath) => {
+            const style = edgePath.getAttribute('style');
+            if (style && style.includes('stroke-dasharray')) {
+              edgeWithStrokeDasharray++;
+            }
+          });
+          return edgeWithStrokeDasharray === count;
+        },
+        expectedCount,
+        { timeout: 2000 }
+      );
+    };
+
+    await waitForCrossFadeTunnelCount(1);
+
+    const a2Node = new PlaywrightNode(page, 'A2');
+    await a2Node.openPalette();
+    await page.getByTestId('tool-Hide').click();
+    await expect(a2Node.nodeLocator).not.toBeVisible();
+
+    await waitForCrossFadeTunnelCount(0);
+
+    await page.getByTestId('reveal-hidden-elements').click();
+    await expect(a2Node.nodeLocator).toBeVisible();
+
+    await waitForCrossFadeTunnelCount(1);
+  });
+});

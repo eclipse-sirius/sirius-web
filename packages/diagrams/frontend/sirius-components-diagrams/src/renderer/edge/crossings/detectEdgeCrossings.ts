@@ -315,6 +315,7 @@ export const detectEdgeCrossings = (
   }
 
   const parsedEdges: ParsedEdge[] = edges
+    .filter((edge) => !edge.hidden)
     .map((edge) => {
       const { segments, totalLength } = parseSegments(edge.data?.edgePath ?? '');
       return { edge, segments, totalLength };
