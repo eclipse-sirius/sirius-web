@@ -17,5 +17,7 @@ export interface ArrangeAllButtonProps {
 }
 
 export interface ArrangeAllButtonState {
-  arrangeAllInProgress: boolean;
+  arrangeAllWithLayeredInProgress: boolean;
+  arrangeAllWithRectPackingInProgress: boolean;
+  arrangeAllMenuOpen: boolean;
 }
