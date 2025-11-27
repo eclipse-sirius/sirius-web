@@ -68,6 +68,7 @@ import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
+import { useMiniMapVisibility } from './mini-map/useMiniMapVisibility';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
@@ -102,6 +103,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
   const { setSelection } = useSelection();
+  const { isMiniMapVisible, setMiniMapVisibility } = useMiniMapVisibility();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
@@ -454,6 +456,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           onSnapToGrid={onSnapToGrid}
           helperLines={helperLinesEnabled}
           onHelperLines={setHelperLinesEnabled}
+          isMiniMapVisible={isMiniMapVisible}
+          setMiniMapVisibility={setMiniMapVisibility}
           reactFlowWrapper={ref}
         />
 
@@ -466,7 +470,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
-        <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
+        {isMiniMapVisible && (
+          <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />
+        )}
       </>
     ),
   };
