@@ -57,6 +57,8 @@ public interface IMessageService {
 
     String unauthorized();
 
+    String operationExecutionFailed(String failureMessage);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -156,6 +158,11 @@ public interface IMessageService {
 
         @Override
         public String unauthorized() {
+            return "";
+        }
+
+        @Override
+        public String operationExecutionFailed(String failureMessage) {
             return "";
         }
     }

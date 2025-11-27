@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,8 +27,9 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.datatree.DataTree;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextSnapshotService;
@@ -95,19 +97,21 @@ public class InvokeUpdateLibraryImpactAnalysisHandler implements IEditingContext
                 var diff = changeRecorder.summarize();
                 changeRecorder.endRecording();
 
-                if (updateLibraryResult instanceof Success success) {
-                    Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.treeImpactAnalysisReportProvider.getReport(editingContext, diff, success);
-                    if (optionalImpactAnalysisReport.isPresent()) {
-                        payload = new InvokeImpactAnalysisSuccessPayload(input.id(), optionalImpactAnalysisReport.get(), success.getMessages());
-                    } else {
-                        payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+                Optional<ImpactAnalysisReport> optionalImpactAnalysisReport = this.treeImpactAnalysisReportProvider.getReport(editingContext, diff, updateLibraryResult);
+                if (optionalImpactAnalysisReport.isPresent()) {
+                    List<Message> messages = List.of();
+                    if (updateLibraryResult instanceof Success success) {
+                        messages = success.getMessages();
                     }
-                } else if (updateLibraryResult instanceof Failure failure) {
-                    payload = new ErrorPayload(invokeUpdateLibraryImpactAnalysisInput.id(), failure.getMessages());
+                    payload = new InvokeImpactAnalysisSuccessPayload(input.id(), optionalImpactAnalysisReport.get(), messages);
+                } else {
+                    payload = new InvokeImpactAnalysisSuccessPayload(input.id(),
+                            new ImpactAnalysisReport(0, 0, 0, List.of(this.messageService.unexpectedError()), new DataTree("impact_tree", List.of())), List.of());
                 }
                 this.editingContextSnapshotService.restoreSnapshot(siriusWebEditingContext, editingContextSnapshot.get());
             } else {
-                payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+                payload = new InvokeImpactAnalysisSuccessPayload(input.id(),
+                        new ImpactAnalysisReport(0, 0, 0, List.of(this.messageService.unexpectedError()), new DataTree("impact_tree", List.of())), List.of());
             }
         }
         payloadSink.tryEmitValue(payload);

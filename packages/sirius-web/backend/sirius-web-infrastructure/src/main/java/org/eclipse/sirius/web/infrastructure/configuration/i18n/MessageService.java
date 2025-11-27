@@ -127,4 +127,9 @@ public class MessageService implements IMessageService {
     public String unauthorized() {
         return this.messageSourceAccessor.getMessage("UNAUTHORIZED");
     }
+
+    @Override
+    public String operationExecutionFailed(String failureMessage) {
+        return this.messageSourceAccessor.getMessage("OPERATION_EXECUTION_FAILED", new Object[] {failureMessage});
+    }
 }
