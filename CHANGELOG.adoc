@@ -85,12 +85,15 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
 You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
 The command is only visible if Elasticsearch is up and running.
-https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
-https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
+-https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
+-https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple
+elements are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5714[#5714] [sirius-web] Unify the project creation to use the same UI and GraphQL APIs when creating with or without a project template
 - https://github.com/eclipse-sirius/sirius-web/issues/5955[#5955][view] When using a _Let_ operation inside a tool definition, the corresponding binding is now made available in the tool's _Elements to Select Expression_.
 This can be used for example to capture semantic elements created (or simply retrieved) by arbitrary Java services (by wrapping a _Change Context_ operation invoking the service into a _Let_) to be then used in the _Elements to Select Expression_.
 If multiple _Let_ operations are executed inside the body of a tool with the same variable name, only the last executed one is available.
+- https://github.com/eclipse-sirius/sirius-web/issues/5873[#5873] [diagram] Add the ability to hide the mini map.
+This preference is saved in the browser local storage.
 
 
 === Improvements

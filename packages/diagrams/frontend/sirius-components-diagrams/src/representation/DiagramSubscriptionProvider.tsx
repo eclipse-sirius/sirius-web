@@ -20,9 +20,12 @@ import {
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
+import { HelperLinesContextProvider } from '../renderer/helper-lines/HelperLinesContext';
+import { SnapToGridContextProvider } from '../renderer/snap-to-grid/SnapToGridContext';
 import { DiagramSubscriptionProviderProps, DiagramSubscriptionState } from './DiagramSubscriptionProvider.types';
 import { StoreContextProvider } from './StoreContext';
 import { useDiagramSubscription } from './useDiagramSubscription';
+import { MiniMapContextProvider } from '../renderer/mini-map/MiniMapContext';
 
 const isDiagramRefreshedEventPayload = (
   payload: GQLDiagramEventPayload | null
@@ -58,15 +61,21 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
 
   return (
     <StoreContextProvider>
-      <div
-        style={{ display: 'inline-block', position: 'relative' }}
-        data-representation-kind="diagram"
-        data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-        <DiagramRenderer
-          key={state.diagramRefreshedEventPayload.diagram.id}
-          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-        />
-      </div>
+      <SnapToGridContextProvider>
+        <HelperLinesContextProvider>
+          <MiniMapContextProvider>
+            <div
+              style={{ display: 'inline-block', position: 'relative' }}
+              data-representation-kind="diagram"
+              data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
+              <DiagramRenderer
+                key={state.diagramRefreshedEventPayload.diagram.id}
+                diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+              />
+            </div>
+          </MiniMapContextProvider>
+        </HelperLinesContextProvider>
+      </SnapToGridContextProvider>
     </StoreContextProvider>
   );
 });

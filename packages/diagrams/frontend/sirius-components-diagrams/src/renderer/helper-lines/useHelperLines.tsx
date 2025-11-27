@@ -21,10 +21,12 @@ import {
   useStoreApi,
 } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
+import { HelperLinesContextValue } from './HelperLinesContext.types';
+import { HelperLinesContext } from './HelperLinesContext';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange<Node<NodeData>>, dragging: boolean): change is NodePositionChange =>
@@ -310,7 +312,7 @@ const getHelperLinesForResizeAndMove = (
 };
 
 export const useHelperLines = (): UseHelperLinesValue => {
-  const [enabled, setEnabled] = useState<boolean>(true);
+  const { isHelperLineEnabled } = useContext<HelperLinesContextValue>(HelperLinesContext);
   const [state, setState] = useState<UseHelperLinesState>({ vertical: null, horizontal: null });
   //Here we need the nodes in the ReactFlow store to get positionAbsolute
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -318,7 +320,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
   const applyHelperLines = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const nodeLookup = storeApi.getState().nodeLookup;
-      if (enabled && changes.every((change) => isMove(change, true))) {
+      if (isHelperLineEnabled && changes.every((change) => isMove(change, true))) {
         const nodePositionChanges = changes.map((change) => change as NodePositionChange);
         const movingNodes: InternalNode<Node<NodeData>>[] = nodePositionChanges
           .map((change) => nodeLookup.get(change.id))
@@ -359,7 +361,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
             }
           });
         }
-      } else if (enabled && changes.length === 1 && changes[0]) {
+      } else if (isHelperLineEnabled && changes.length === 1 && changes[0]) {
         const change = changes[0];
         if (isResize(change)) {
           const resizingNode = nodeLookup.get(change.id);
@@ -374,7 +376,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
             }
           }
         }
-      } else if (enabled && changes.length === 2 && changes[0] && changes[1]) {
+      } else if (isHelperLineEnabled && changes.length === 2 && changes[0] && changes[1]) {
         const movingChange = changes[0];
         const resizingChange = changes[1];
         if (isMove(movingChange, false) && isResize(resizingChange)) {
@@ -423,13 +425,13 @@ export const useHelperLines = (): UseHelperLinesValue => {
       }
       return changes;
     },
-    [enabled]
+    [isHelperLineEnabled]
   );
 
   const resetHelperLines = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): void => {
       if (
-        enabled &&
+        isHelperLineEnabled &&
         changes.every(
           (change) =>
             change &&
@@ -440,12 +442,10 @@ export const useHelperLines = (): UseHelperLinesValue => {
         setState({ vertical: null, horizontal: null });
       }
     },
-    [enabled]
+    [isHelperLineEnabled]
   );
 
   return {
-    helperLinesEnabled: enabled,
-    setHelperLinesEnabled: setEnabled,
     horizontalHelperLine: state.horizontal,
     verticalHelperLine: state.vertical,
     applyHelperLines,
