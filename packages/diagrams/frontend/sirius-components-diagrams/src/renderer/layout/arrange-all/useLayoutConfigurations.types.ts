@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { LayoutOptions } from 'elkjs/lib/elk-api';
+import React from 'react';
 
-export interface UseArrangeAllValue {
-  arrangeAll: () => Promise<void>;
+export interface UseLayoutConfigurationsValue {
+  layoutConfigurations: LayoutConfiguration[];
+}
+
+export interface LayoutConfiguration {
+  id: string;
+  label: string;
+  icon: React.JSX.Element;
+  layoutOptions: LayoutOptions;
 }
