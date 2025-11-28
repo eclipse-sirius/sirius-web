@@ -14,15 +14,15 @@
 import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
-  Selection,
   SelectionEntry,
   useSelection,
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { TreeView } from '../views/TreeView';
-import { GQLTreeItem } from '../views/TreeView.types';
+import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
+import { useTreeSelection } from './useTreeSelection';
 import { useTreeSubscription } from './useTreeSubscription';
 
 export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
@@ -37,6 +37,7 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
     const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
 
     const { selection, setSelection } = useSelection();
+    const { treeItemClick } = useTreeSelection();
 
     useImperativeHandle(
       ref,
@@ -57,23 +58,15 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
       }));
     };
 
-    const onTreeItemClick = (event, item: GQLTreeItem) => {
-      if (event.ctrlKey || event.metaKey) {
-        event.stopPropagation();
-        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-        if (isItemInSelection) {
-          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-          setSelection(newSelection);
-        } else {
-          const { id } = item;
-          const newEntry: SelectionEntry = { id };
-          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-          setSelection(newSelection);
-        }
-      } else {
-        const { id } = item;
-        setSelection({ entries: [{ id }] });
-      }
+    const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem, tree: GQLTree) => {
+      var newSelection = treeItemClick(
+        event,
+        item,
+        tree,
+        selection.entries.map((entry) => entry.id),
+        false
+      );
+      setSelection({ entries: newSelection.selectedTreeItemIds.map<SelectionEntry>((id) => ({ id })) });
     };
     if (!tree || loading) {
       return <RepresentationLoadingIndicator />;

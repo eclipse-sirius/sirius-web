@@ -30,6 +30,7 @@ import {
   TreeView,
   useTreeFilters,
   useTreePath,
+  useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
 import { ForwardedRef, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -197,6 +198,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     }, [treeElement]);
 
     const { selection, setSelection } = useSelection();
+    const { treeItemClick } = useTreeSelection();
 
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)
@@ -339,68 +341,81 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       return accumulator;
     };
 
-    const onTreeItemClick = (event, item: GQLTreeItem) => {
-      if (event.shiftKey && state.selectionPivotTreeItemId !== null) {
-        // Shift or Shift+Ctrl: Range selection
-        event.stopPropagation();
-        if (state.selectionPivotTreeItemId && state.tree) {
-          const rangeSelection = computeSelectedElementsInRange(state.tree, state.selectionPivotTreeItemId, item.id);
+    const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem, tree: GQLTree) => {
+      var localSelection = treeItemClick(event, item, tree, state.selectedTreeItemIds);
+      setState((prevState) => ({
+        ...prevState,
+        selectedTreeItemIds: localSelection.selectedTreeItemIds,
+        singleTreeItemSelected: localSelection.singleTreeItemSelected,
+      }));
+      var globalSelection = treeItemClick(
+        event,
+        item,
+        state.tree,
+        selection.entries.map((entry) => entry.id)
+      );
+      setSelection({ entries: globalSelection.selectedTreeItemIds.map<SelectionEntry>((id) => ({ id })) });
+      // if (event.shiftKey && state.selectionPivotTreeItemId !== null) {
+      //   // Shift or Shift+Ctrl: Range selection
+      //   event.stopPropagation();
+      //   if (state.selectionPivotTreeItemId && state.tree) {
+      //     const rangeSelection = computeSelectedElementsInRange(state.tree, state.selectionPivotTreeItemId, item.id);
 
-          // Shift+Ctrl: Add to existing selection | Shift: Replace selection
-          const shouldMerge = event.ctrlKey || event.metaKey;
-          const finalSelection = shouldMerge
-            ? [...state.selectedTreeItemIds, ...rangeSelection.filter((id) => !state.selectedTreeItemIds.includes(id))]
-            : rangeSelection;
+      //     // Shift+Ctrl: Add to existing selection | Shift: Replace selection
+      //     const shouldMerge = event.ctrlKey || event.metaKey;
+      //     const finalSelection = shouldMerge
+      //       ? [...state.selectedTreeItemIds, ...rangeSelection.filter((id) => !state.selectedTreeItemIds.includes(id))]
+      //       : rangeSelection;
 
-          // Update global and local selection
-          setSelection({ entries: finalSelection.map<SelectionEntry>((id) => ({ id })) });
-          setState((prevState) => ({
-            ...prevState,
-            selectedTreeItemIds: finalSelection,
-            singleTreeItemSelected: null,
-          }));
-        }
-      } else if (event.ctrlKey || event.metaKey) {
-        // Ctrl: Toggle single item selection
-        event.stopPropagation();
-        // Update the global selection
-        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-        if (isItemInSelection) {
-          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-          setSelection(newSelection);
-        } else {
-          const { id } = item;
-          const newEntry: SelectionEntry = { id };
-          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-          setSelection(newSelection);
-        }
-        // Update the local selection
-        const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
-        if (isItemInLocalSelection) {
-          const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
-          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
-        } else {
-          const { id } = item;
-          const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
-          setState((prevState) => ({
-            ...prevState,
-            selectedTreeItemIds: newSelectedTreeItemIds,
-            selectionPivotTreeItemId: id,
-          }));
-        }
-        setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
-      } else {
-        // Normal click: Select single item
-        const { id } = item;
-        setState((prevState) => ({
-          ...prevState,
-          selectedTreeItemIds: [id],
-          singleTreeItemSelected: item,
-          // Ctrl also change the pivot point
-          selectionPivotTreeItemId: id,
-        }));
-        setSelection({ entries: [{ id }] });
-      }
+      //     // Update global and local selection
+      //     setSelection({ entries: finalSelection.map<SelectionEntry>((id) => ({ id })) });
+      //     setState((prevState) => ({
+      //       ...prevState,
+      //       selectedTreeItemIds: finalSelection,
+      //       singleTreeItemSelected: null,
+      //     }));
+      //   }
+      // } else if (event.ctrlKey || event.metaKey) {
+      //   // Ctrl: Toggle single item selection
+      //   event.stopPropagation();
+      //   // Update the global selection
+      //   const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+      //   if (isItemInSelection) {
+      //     const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+      //     setSelection(newSelection);
+      //   } else {
+      //     const { id } = item;
+      //     const newEntry: SelectionEntry = { id };
+      //     const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+      //     setSelection(newSelection);
+      //   }
+      //   // Update the local selection
+      //   const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
+      //   if (isItemInLocalSelection) {
+      //     const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
+      //     setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+      //   } else {
+      //     const { id } = item;
+      //     const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
+      //     setState((prevState) => ({
+      //       ...prevState,
+      //       selectedTreeItemIds: newSelectedTreeItemIds,
+      //       selectionPivotTreeItemId: id,
+      //     }));
+      //   }
+      //   setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
+      // } else {
+      //   // Normal click: Select single item
+      //   const { id } = item;
+      //   setState((prevState) => ({
+      //     ...prevState,
+      //     selectedTreeItemIds: [id],
+      //     singleTreeItemSelected: item,
+      //     // Ctrl also change the pivot point
+      //     selectionPivotTreeItemId: id,
+      //   }));
+      //   setSelection({ entries: [{ id }] });
+      // }
     };
 
     const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (

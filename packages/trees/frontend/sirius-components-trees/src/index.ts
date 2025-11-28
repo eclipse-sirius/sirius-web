@@ -36,3 +36,5 @@ export * from './views/useExpandAllTreePath.types';
 export * from './views/useTreeFilters';
 export * from './views/useTreePath';
 export * from './views/useTreePath.types';
+export * from './trees/useTreeSelection';
+export * from './trees/useTreeSelection.types';
