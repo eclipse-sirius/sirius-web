@@ -53,6 +53,57 @@ jobs:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-milestone.js
 
+      - name: Retrieve PR metadata
+        uses: octokit/graphql-action@abaeca7ba4f0325d63b8de7ef943c2418d161b93
+        id: pr-metadata
+        with:
+          query: |
+            query getPullRequestMetadata($owner: String!, $repository: String!, $prNumber: Int!) {
+              repository(owner: $owner, name: $repository) {
+                pullRequest(number: $prNumber) {
+                  title
+                  milestone {
+                    title
+                  }
+                  projectsV2(first: 5) {
+                    nodes {
+                      title
+                    }
+                  }
+                  closingIssuesReferences(first: 10) {
+                    nodes {
+                      title
+                      number
+                      labels(first: 10) {
+                        nodes {
+                          name
+                        }
+                      }
+                      milestone {
+                        title
+                      }
+                      projectsV2(first: 5) {
+                        nodes {
+                          title
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          variables: |
+            owner: ${{ github.event.repository.owner.login }}
+            repository: ${{ github.event.repository.name }}
+            prNumber: ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check additional metadata of the pull request
+        env:
+          PAYLOAD: ${{ steps.pr-metadata.outputs.data }}
+        run: node scripts/check-pr.js
+
       - name: Check that the TypeScript files do not have an issue
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
