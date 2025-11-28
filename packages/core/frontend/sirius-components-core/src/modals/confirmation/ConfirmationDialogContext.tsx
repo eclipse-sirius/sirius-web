@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 import React, { useState } from 'react';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import {
+  ConfirmationDialogContextProviderProps,
   ConfirmationDialogContextProviderState,
   ConfirmationDialogContextValue,
 } from './ConfirmationDialogContext.types';
@@ -22,33 +23,18 @@ const defaultValue: ConfirmationDialogContextValue = {
   showConfirmation: () => {},
 };
 
-const isLocalStorageAvailable = (): boolean => {
-  const test: string = 'localStorageTest';
-  try {
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
-    return true;
-  } catch (_) {
-    return false;
-  }
-};
-
 export const ConfirmationDialogContext = React.createContext<ConfirmationDialogContextValue>(defaultValue);
 
-export const ConfirmationDialogContextProvider = ({ children }) => {
-  const localStorageKey: string = 'sirius-confirmation-dialog-disabled';
-  let allowConfirmationDisabled: boolean = false;
-  let storedPreference: string | null = null;
-  if (isLocalStorageAvailable()) {
-    allowConfirmationDisabled = true;
-    storedPreference = localStorage.getItem(localStorageKey);
-  }
-  const initialConfirmationDisabled: boolean = storedPreference ? JSON.parse(storedPreference) : false;
-
+export const ConfirmationDialogContextProvider = ({
+  children,
+  canBeDisabled,
+  isDisabled,
+  setIsDisabled,
+}: ConfirmationDialogContextProviderProps) => {
   const [state, setState] = useState<ConfirmationDialogContextProviderState>({
     open: false,
-    allowConfirmationDisabled,
-    confirmationDisabled: initialConfirmationDisabled,
+    allowConfirmationDisabled: canBeDisabled,
+    confirmationDisabled: isDisabled,
     title: '',
     message: '',
     buttonLabel: '',
@@ -56,17 +42,18 @@ export const ConfirmationDialogContextProvider = ({ children }) => {
   });
 
   const showConfirmation = (title: string, message: string, buttonLabel: string, onConfirm: () => void) => {
-    let allowConfirmationDisabled: boolean = false;
-    let storedPreference: string | null = null;
-    if (isLocalStorageAvailable()) {
-      allowConfirmationDisabled = true;
-      storedPreference = localStorage.getItem(localStorageKey);
-    }
-    const confirmationDisabled: boolean = storedPreference ? JSON.parse(storedPreference) : false;
-    if (confirmationDisabled) {
+    if (isDisabled) {
       onConfirm();
     } else {
-      setState({ open: true, allowConfirmationDisabled, confirmationDisabled, title, message, buttonLabel, onConfirm });
+      setState({
+        open: true,
+        allowConfirmationDisabled: canBeDisabled,
+        confirmationDisabled: isDisabled,
+        title,
+        message,
+        buttonLabel,
+        onConfirm,
+      });
     }
   };
 
@@ -76,8 +63,8 @@ export const ConfirmationDialogContextProvider = ({ children }) => {
 
   const handleConfirm = () => {
     state.onConfirm();
-    if (isLocalStorageAvailable()) {
-      localStorage.setItem(localStorageKey, JSON.stringify(state.confirmationDisabled));
+    if (canBeDisabled) {
+      setIsDisabled(state.confirmationDisabled);
     }
     handleClose();
   };

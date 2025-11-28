@@ -191,5 +191,10 @@
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
+  },
+  "projectGeneralSettingsView": {
+    "clientSettings": "Paramètres du client pour ce projet",
+    "enableConfirmationDialogs": "Activer les popups de confirmation",
+    "title": "Paramètres généraux"
   }
 }
