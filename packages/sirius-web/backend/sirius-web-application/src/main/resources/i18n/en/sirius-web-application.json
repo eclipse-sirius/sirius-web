@@ -191,5 +191,10 @@
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
+  },
+  "projectGeneralSettingsView": {
+    "clientSettings": "Client settings for this project",
+    "enableConfirmationDialogs": "Enable confirmation dialogs",
+    "title": "General Settings"
   }
 }

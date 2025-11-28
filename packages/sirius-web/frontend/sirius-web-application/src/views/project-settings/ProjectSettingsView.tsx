@@ -20,6 +20,7 @@ import { SyntheticEvent } from 'react';
 import { generatePath, Navigate, Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
+import { ConfirmationSettingsContextProvider } from '../../localSettings/ConfirmationSettingsContext';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   ProjectSettingsParams,
@@ -141,44 +142,46 @@ export const ProjectSettingsView = () => {
   const hasSettings = viewableTabContributions.length > 0 && settingContentContribution != null;
 
   return (
-    <div className={classes.projectSettingsView}>
-      <NavigationBar>
-        <div className={classes.center}>
-          <div className={classes.title}>
-            <Link
-              variant="h6"
-              component={RouterLink}
-              to={`/projects/${id}/edit`}
-              noWrap
-              className={classes.titleLabel}
-              data-testid={`navbar-title`}>
-              {name}
-            </Link>
-          </div>
-        </div>
-      </NavigationBar>
-      <main className={classes.main}>
-        <Container maxWidth="xl">
-          <div className={classes.header}>
-            <Typography variant="h4">Settings</Typography>
-          </div>
-          {hasSettings ? (
-            <div className={classes.tabs}>
-              <Tabs value={selectedTabId} onChange={handleTabChange} orientation="vertical">
-                {viewableTabContributions.map(({ id, title, icon }) => (
-                  <Tab className={classes.tab} label={title} icon={icon} iconPosition="start" key={id} value={id} />
-                ))}
-              </Tabs>
-              <SettingContent />
+    <ConfirmationSettingsContextProvider>
+      <div className={classes.projectSettingsView}>
+        <NavigationBar>
+          <div className={classes.center}>
+            <div className={classes.title}>
+              <Link
+                variant="h6"
+                component={RouterLink}
+                to={`/projects/${id}/edit`}
+                noWrap
+                className={classes.titleLabel}
+                data-testid={`navbar-title`}>
+                {name}
+              </Link>
             </div>
-          ) : (
-            <div className={classes.noSettingsFound}>
-              <Typography variant="h5">No setting pages found</Typography>
+          </div>
+        </NavigationBar>
+        <main className={classes.main}>
+          <Container maxWidth="xl">
+            <div className={classes.header}>
+              <Typography variant="h4">Settings</Typography>
             </div>
-          )}
-        </Container>
-      </main>
-      <Footer />
-    </div>
+            {hasSettings ? (
+              <div className={classes.tabs}>
+                <Tabs value={selectedTabId} onChange={handleTabChange} orientation="vertical">
+                  {viewableTabContributions.map(({ id, title, icon }) => (
+                    <Tab className={classes.tab} label={title} icon={icon} iconPosition="start" key={id} value={id} />
+                  ))}
+                </Tabs>
+                <SettingContent />
+              </div>
+            ) : (
+              <div className={classes.noSettingsFound}>
+                <Typography variant="h5">No setting pages found</Typography>
+              </div>
+            )}
+          </Container>
+        </main>
+        <Footer />
+      </div>
+    </ConfirmationSettingsContextProvider>
   );
 };
