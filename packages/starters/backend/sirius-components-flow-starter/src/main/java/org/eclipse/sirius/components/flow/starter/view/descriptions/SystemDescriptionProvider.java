@@ -127,6 +127,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Creation Tools")
+                .preconditionExpression("aql:self.oclIsTypeOf(flow::CompositeProcessor)")
                 .nodeTools(this.createNodeToolCreateFan(cache),
                         this.createNodeToolProcessor(cache),
                         this.createNodeToolCreateDataSource(cache))

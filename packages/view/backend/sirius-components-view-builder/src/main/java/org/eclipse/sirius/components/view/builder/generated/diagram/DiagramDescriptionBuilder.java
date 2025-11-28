@@ -139,5 +139,15 @@ public class DiagramDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for GroupPalette.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder groupPalette(org.eclipse.sirius.components.view.diagram.GroupPalette value) {
+        this.getDiagramDescription().setGroupPalette(value);
+        return this;
+    }
+
 }
 

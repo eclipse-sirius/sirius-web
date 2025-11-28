@@ -41,13 +41,13 @@ export const getPaletteQuery = gql`
       withImpactAnalysis
     }
   }
-  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementIds: [ID!]) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              palette(diagramElementId: $diagramElementId) {
+              palette(diagramElementIds: $diagramElementIds) {
                 id
                 quickAccessTools {
                   ...ToolFields
@@ -76,7 +76,7 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementId: string): UsePaletteContentValue => {
+export const usePaletteContents = (diagramElementIds: string[], skip: boolean): UsePaletteContentValue => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
@@ -88,8 +88,9 @@ export const usePaletteContents = (diagramElementId: string): UsePaletteContentV
     variables: {
       editingContextId,
       diagramId,
-      diagramElementId,
+      diagramElementIds,
     },
+    skip,
   });
 
   const description: GQLRepresentationDescription | undefined =

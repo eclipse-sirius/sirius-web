@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
 
@@ -39,6 +40,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto
  * Layout</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getPalette <em>Palette</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
+ * Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getNodeDescriptions <em>Node
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getEdgeDescriptions <em>Edge
@@ -80,6 +83,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected DiagramPalette palette;
+
+    /**
+     * The cached value of the '{@link #getGroupPalette() <em>Group Palette</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGroupPalette()
+     * @generated
+     * @ordered
+     */
+    protected GroupPalette groupPalette;
 
     /**
      * The cached value of the '{@link #getNodeDescriptions() <em>Node Descriptions</em>}' containment reference list.
@@ -266,10 +279,60 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public GroupPalette getGroupPalette() {
+        return this.groupPalette;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetGroupPalette(GroupPalette newGroupPalette, NotificationChain msgs) {
+        GroupPalette oldGroupPalette = this.groupPalette;
+        this.groupPalette = newGroupPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, oldGroupPalette, newGroupPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGroupPalette(GroupPalette newGroupPalette) {
+        if (newGroupPalette != this.groupPalette) {
+            NotificationChain msgs = null;
+            if (this.groupPalette != null)
+                msgs = ((InternalEObject) this.groupPalette).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, null, msgs);
+            if (newGroupPalette != null)
+                msgs = ((InternalEObject) newGroupPalette).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, null, msgs);
+            msgs = this.basicSetGroupPalette(newGroupPalette, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE, newGroupPalette, newGroupPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.basicSetGroupPalette(null, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getNodeDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
@@ -290,6 +353,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.isAutoLayout();
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.getPalette();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.getGroupPalette();
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.getNodeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
@@ -314,6 +379,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) newValue);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
@@ -344,6 +412,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) null);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                this.setGroupPalette((GroupPalette) null);
+                return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 this.getNodeDescriptions().clear();
                 return;
@@ -369,6 +440,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.palette != null;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
+                return this.groupPalette != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
                 return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:

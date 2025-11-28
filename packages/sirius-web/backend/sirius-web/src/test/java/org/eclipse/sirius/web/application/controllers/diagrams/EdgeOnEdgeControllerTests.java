@@ -99,7 +99,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
-            assertThat(nodeCount).isEqualTo(9);
+            assertThat(nodeCount).isEqualTo(11);
 
             var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
             assertThat(edgeCount).isEqualTo(3);
@@ -296,7 +296,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
-            assertThat(nodeCount).isEqualTo(9);
+            assertThat(nodeCount).isEqualTo(11);
 
             var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
             assertThat(edgeCount).isEqualTo(3);

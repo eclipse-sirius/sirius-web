@@ -28,4 +28,8 @@ public interface IViewToolFinder {
     Optional<NodeTool> findNodeTool(IEditingContext editingContext, String diagramDescriptionId, String diagramElementDescriptionId, String toolId);
 
     Optional<EdgeTool> findEdgeTool(IEditingContext editingContext, String diagramDescriptionId, String diagramElementDescriptionId, String toolId);
+
+    Optional<NodeTool> findGroupNodeTool(IEditingContext editingContext, String diagramDescriptionId, String toolId);
+
+    Optional<NodeTool> findReusedGroupNodeTool(IEditingContext editingContext, String diagramDescriptionId, String toolId);
 }

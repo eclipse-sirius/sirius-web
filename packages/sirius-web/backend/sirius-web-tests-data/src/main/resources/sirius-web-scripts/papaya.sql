@@ -268,7 +268,8 @@ INSERT INTO document (
                   "eClass": "papaya:Command",
                   "data": { "name": "Command2" }
                 }
-              ]
+              ],
+              "domains": ["7312a28b-9710-48aa-98f9-30d4839f9527"]
             }
           },
           {
@@ -280,6 +281,20 @@ INSERT INTO document (
             "id": "988e3b7e-8361-43d6-bf31-2564e4b2351f",
             "eClass": "papaya:Channel",
             "data": { "name": "HTTPS" }
+          },
+          {
+            "id": "7312a28b-9710-48aa-98f9-30d4839f9527",
+            "eClass": "papaya:Domain",
+            "data": {
+              "name": "Project Semantic Data",
+              "events": [
+                {
+                  "id": "eb27d8a7-1244-49a4-9c72-4adb498c336f",
+                  "eClass": "papaya:Event",
+                  "data": { "name": "ProjectSemanticDataCreatedEvent" }
+                }
+              ]
+            }
           }
         ]
       }

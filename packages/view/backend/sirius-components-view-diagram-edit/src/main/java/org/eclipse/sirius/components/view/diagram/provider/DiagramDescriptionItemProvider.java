@@ -102,6 +102,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
         }
@@ -169,6 +170,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -189,6 +191,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");

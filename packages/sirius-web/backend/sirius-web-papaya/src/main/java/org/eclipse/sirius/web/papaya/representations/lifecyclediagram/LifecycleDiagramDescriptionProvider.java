@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescri
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainServiceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationConcernNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.LifecycleGroupPaletteProvider;
 
 /**
  * Used to provide the view model used to create lifecycle diagrams.
@@ -57,6 +58,7 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
         lifecycleDiagramDescription.setAutoLayout(false);
         lifecycleDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         lifecycleDiagramDescription.setIconExpression("aql:'/papaya-representations/lifecycle-diagram.svg'");
+        lifecycleDiagramDescription.setGroupPalette(new LifecycleGroupPaletteProvider().getGroupPalette());
 
         var cache = new DefaultViewDiagramElementFinder();
 

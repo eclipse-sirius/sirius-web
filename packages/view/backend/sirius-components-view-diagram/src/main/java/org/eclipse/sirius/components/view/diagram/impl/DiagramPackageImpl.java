@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -270,6 +271,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass diagramPaletteEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass groupPaletteEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -624,16 +632,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getDiagramDescription_NodeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getDiagramDescription_EdgeDescriptions() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -643,8 +641,28 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getDiagramDescription_EdgeDescriptions() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
-        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramDescription_GroupPalette() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1743,6 +1761,56 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getGroupPalette() {
+        return this.groupPaletteEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupPalette_NodeTools() {
+        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupPalette_QuickAccessTools() {
+        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupPalette_ToolSections() {
+        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupPalette_ReusedToolSection() {
+        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getNodePalette() {
         return this.nodePaletteEClass;
     }
@@ -2273,6 +2341,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getToolSection_PreconditionExpression() {
+        return (EAttribute) this.toolSectionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getDiagramToolSection() {
         return this.diagramToolSectionEClass;
     }
@@ -2622,6 +2700,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
@@ -2759,6 +2838,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
         this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__TOOL_SECTIONS);
 
+        this.groupPaletteEClass = this.createEClass(GROUP_PALETTE);
+        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__NODE_TOOLS);
+        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__TOOL_SECTIONS);
+        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__REUSED_TOOL_SECTION);
+
         this.nodePaletteEClass = this.createEClass(NODE_PALETTE);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DELETE_TOOL);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__LABEL_EDIT_TOOL);
@@ -2826,6 +2911,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
+        this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__PRECONDITION_EXPRESSION);
 
         this.diagramToolSectionEClass = this.createEClass(DIAGRAM_TOOL_SECTION);
         this.createEReference(this.diagramToolSectionEClass, DIAGRAM_TOOL_SECTION__NODE_TOOLS);
@@ -2938,6 +3024,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getDiagramDescription_AutoLayout(), this.ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_Palette(), this.getDiagramPalette(), null, "palette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3172,6 +3260,20 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getDiagramPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
 
+        this.initEClass(this.groupPaletteEClass, GroupPalette.class, "GroupPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getGroupPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupPalette_NodeTools().getEKeys().add(this.getTool_Name());
+        this.initEReference(this.getGroupPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+        this.initEReference(this.getGroupPalette_ToolSections(), this.getToolSection(), null, "toolSections", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
+        this.initEReference(this.getGroupPalette_ReusedToolSection(), this.getToolSection(), null, "reusedToolSection", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getGroupPalette_ReusedToolSection().getEKeys().add(this.getToolSection_Name());
+
         this.initEClass(this.nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3285,6 +3387,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getToolSection_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, ToolSection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramToolSectionEClass, DiagramToolSection.class, "DiagramToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getDiagramToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

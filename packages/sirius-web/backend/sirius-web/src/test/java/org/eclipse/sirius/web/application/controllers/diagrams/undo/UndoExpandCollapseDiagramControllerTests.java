@@ -113,7 +113,7 @@ public class UndoExpandCollapseDiagramControllerTests extends AbstractIntegratio
             var result = this.invokeSingleClickOnDiagramElementToolExecutor.execute(
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    expandedNodeId.get(),
+                    List.of(expandedNodeId.get()),
                     this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId(),
                     0,
                     0,

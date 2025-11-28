@@ -26,5 +26,5 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public interface ISingleClickOnOneDiagramElementVariableManagerProvider {
-    Optional<VariableManager> getVariableManager(IEditingContext editingContext, DiagramContext diagramContext, String diagramElementId, List<ToolVariable> variables);
+    Optional<VariableManager> getVariableManager(IEditingContext editingContext, DiagramContext diagramContext, List<String> diagramElementId, List<ToolVariable> variables);
 }
