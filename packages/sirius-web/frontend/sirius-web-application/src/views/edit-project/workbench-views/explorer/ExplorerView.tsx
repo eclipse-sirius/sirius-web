@@ -143,7 +143,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       }
     }, [explorerDescriptions]);
 
-    const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+    const { loading, treeFilters } = useTreeFilters(editingContextId, state.tree?.id || null);
 
     useEffect(() => {
       if (!loading) {
