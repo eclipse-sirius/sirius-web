@@ -1,0 +1,5 @@
+= Form Description
+
+A `Form Description` defines how the _{usr-studio-runtime}_ creates xref:user-manual:studio-runtime/representation-editors/form.adoc[Form Representations].
+
+#TODO: Detail the contents of this description.#

@@ -1,0 +1,11 @@
+= Requirements
+
+== {sw} Requirements
+
+* #TODO: list requirements. Not sure there will be many. Maybe needs some rights?#
+
+== Know-how 
+
+* #TODO: maybe query language?#
+* Notions of https://en.wikipedia.org/wiki/Object-oriented_programming[Object-Oriented Programming].
+* Nice-to-have: knowledge of https://eclipse.dev/sirius/[Sirius Desktop].
