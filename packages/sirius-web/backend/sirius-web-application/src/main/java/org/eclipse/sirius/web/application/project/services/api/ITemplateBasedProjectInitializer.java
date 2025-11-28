@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.project.services.api;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 
 /**
  * Used to initialize project from templates.
@@ -21,5 +21,5 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateI
  * @author sbegaudeau
  */
 public interface ITemplateBasedProjectInitializer {
-    IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId);
+    IPayload initializeProjectFromTemplate(CreateProjectInput input, String projectId);
 }
