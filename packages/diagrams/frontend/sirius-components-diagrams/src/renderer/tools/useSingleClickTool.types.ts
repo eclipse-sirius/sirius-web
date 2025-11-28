@@ -18,7 +18,7 @@ export interface UseSingleClickToolValue {
     editingContextId: string,
     diagramId: string,
     tool: GQLTool,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     x: number,
     y: number
@@ -81,7 +81,7 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  diagramElementId: string;
+  diagramElementIds: string[];
   toolId: string;
   startingPositionX: number;
   startingPositionY: number;

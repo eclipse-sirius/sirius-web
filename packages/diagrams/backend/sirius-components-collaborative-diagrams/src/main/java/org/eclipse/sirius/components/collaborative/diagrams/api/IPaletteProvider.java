@@ -17,6 +17,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 
+import java.util.List;
+
 
 /**
  * Provide the tool palette for a given diagram element.
@@ -25,7 +27,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
  */
 public interface IPaletteProvider {
 
-    boolean canHandle(DiagramDescription diagramDescription);
+    boolean canHandle(DiagramDescription diagramDescription, List<String> diagramElementIds);
 
-    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object diagramElementDescription, Object diagramElement, Object targetElement);
+    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElementDescriptions, List<Object> diagramElements, List<Object> targetElements);
 }

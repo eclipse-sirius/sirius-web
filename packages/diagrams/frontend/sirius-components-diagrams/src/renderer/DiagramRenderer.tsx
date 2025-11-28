@@ -71,7 +71,6 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
-import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
@@ -372,16 +371,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { isOpened } = useDiagramPalette();
   const { onSelectionChange, selectedElementsIds } = useDiagramSelection();
-  const {
-    onEdgeContextMenu,
-    onNodeContextMenu,
-    onPaneContextMenu,
-    onSelectionContextMenu,
-    groupPalettePosition,
-    groupPaletteRefElementId,
-    hideGroupPalette,
-    isGroupPaletteOpened,
-  } = useOnRightClickElement(selectedElementsIds);
+  const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
+    useOnRightClickElement(selectedElementsIds);
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
@@ -457,16 +448,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           onHelperLines={setHelperLinesEnabled}
           reactFlowWrapper={ref}
         />
-        <GroupPalette
-          x={groupPalettePosition?.x}
-          y={groupPalettePosition?.y}
-          isOpened={isGroupPaletteOpened}
-          refElementId={groupPaletteRefElementId}
-          hidePalette={hideGroupPalette}
-        />
+
         {isOpened ? (
           <DiagramPalette
-            diagramElementId={diagramRefreshedEventPayload.diagram.id}
+            diagramId={diagramRefreshedEventPayload.diagram.id}
             diagramTargetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
           />
         ) : null}

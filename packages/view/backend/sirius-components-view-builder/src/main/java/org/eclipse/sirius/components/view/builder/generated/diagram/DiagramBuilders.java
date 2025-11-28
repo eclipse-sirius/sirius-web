@@ -200,6 +200,16 @@ public class DiagramBuilders {
     }
 
     /**
+     * Instantiate a GroupPaletteBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public GroupPaletteBuilder newGroupPalette() {
+        return new GroupPaletteBuilder();
+    }
+
+    /**
      * Instantiate a NodePaletteBuilder .
      *
      * @author BuilderGenerator

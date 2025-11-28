@@ -18,7 +18,7 @@ export interface UseInvokePaletteToolValue {
   invokeTool: (
     x: number,
     y: number,
-    diagramElementId: string,
+    diagramElementIds: string[],
     targetObjectId: string,
     onDirectEditClick: () => void,
     tool: GQLTool

@@ -182,6 +182,14 @@ public interface DiagramFactory extends EFactory {
     DiagramPalette createDiagramPalette();
 
     /**
+     * Returns a new object of class '<em>Group Palette</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Group Palette</em>'.
+     * @generated
+     */
+    GroupPalette createGroupPalette();
+
+    /**
      * Returns a new object of class '<em>Node Palette</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Node Palette</em>'.
