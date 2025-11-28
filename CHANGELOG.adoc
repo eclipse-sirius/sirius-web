@@ -93,6 +93,7 @@ public AdapterFactory papayaAdapterFactory() {
 ```
 - The method `VariableManager.hasVariable()` has been renamed into `hasLocalVariable()` to make its semantics clearer.
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
+- https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] The `ReactFlow.css` has been updated to reduce the size of edge handles.
 
 
 === Dependency update
@@ -171,6 +172,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5977[#5977] [sirius-web] Leverage `SemanticDataDeletedEvent` to delete Elasticsearch indices.
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] Add `hasChildrenExpression` on `RowDescription` to block the expand action on rows that have no children
 - https://github.com/eclipse-sirius/sirius-web/issues/5939[#5939] [diagram] When moving a node on a diagram, we now _highlight_ compatible drop targets/locations instead of fading all the incompatible ones
+- https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] Facilitate the moving of a border node even when an edge is selected
 
 
 
