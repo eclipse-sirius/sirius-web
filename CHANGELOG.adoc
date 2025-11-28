@@ -36,7 +36,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5509[#5509] [diagram] Adopt Palette for rendering connector tools
 
 === Improvements
 

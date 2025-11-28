@@ -24,7 +24,7 @@ import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { DialogContextProvider } from '../dialog/DialogContext';
 import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
-import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
+import { ConnectorPaletteContextProvider } from '../renderer/connector/contexts/ConnectorPaletteContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
@@ -172,7 +172,7 @@ export const DiagramRepresentation = memo(
         <ReactFlowProvider>
           <DiagramDirectEditContextProvider>
             <DiagramPaletteContextProvider>
-              <ConnectorContextProvider>
+              <ConnectorPaletteContextProvider>
                 <DropNodeContextProvider>
                   <NodeContextProvider>
                     <MarkerDefinitions />
@@ -205,7 +205,7 @@ export const DiagramRepresentation = memo(
                     </FullscreenContextProvider>
                   </NodeContextProvider>
                 </DropNodeContextProvider>
-              </ConnectorContextProvider>
+              </ConnectorPaletteContextProvider>
             </DiagramPaletteContextProvider>
           </DiagramDirectEditContextProvider>
         </ReactFlowProvider>
