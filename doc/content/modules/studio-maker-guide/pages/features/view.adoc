@@ -1,0 +1,31 @@
+= View editor
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+Use this feature to configure diagrams, tables, or other representations with the browser-based View editor.
+
+[TIP]
+====
+Every representation defined here uses the same xref:studio-maker-guide:features/aql.adoc#_built_in_variables[AQL variable set], so you can rely on those variables regardless of the widget or mapping you configure.
+====
+
+== Introduction
+
+The View editor consumes the domain you modeled earlier and lets you describe one or more representations.
+View models live inside *Studio projects*, just like domains, and they can be edited live without restarting the application.
+Each view is an EMF model under the hood, so advanced users can still version it, compare it, or extend it programmatically, but studio makers only interact with the graphical editor.
+
+== Live deployment model
+
+* Studio makers author, test, and validate their views in the same running instance as end users—no code generation or packaging loop is required during design time.
+* Once satisfied, export the studio project or package it into your {product} based application; the same view definition is loaded at runtime.
+* Because views are stored as models, they can be processed by EMF tooling (compare, merge, document generation) if your team needs deeper governance.
+
+== Best practices
+
+* Keep representations focused: one view per persona or task prevents cluttered palettes.
+* Document the intent of each mapping or tool using descriptions in the editor; those notes help future maintainers.
+* Reuse color/text palettes across representations to ensure consistent branding.
+* Combine the Query View or any scratch project to validate complex expressions before you wire them into styles or mappings.
+
+For a step-by-step walkthrough, see xref:studio-maker-guide:hands-on/tutorials/view.adoc[].

@@ -1,0 +1,30 @@
+= Create your first domain definition
+
+This how-to walks you through the minimum steps required to define a domain before creating Views.
+
+The Domain editor lets you define business concepts (entities, attributes, relations) directly inside {product}.
+Everything happens inside the browser—there is no code generation step, no external Eclipse install, and the resulting domain is immediately usable by the View editor and by end users who create instances.
+The editor targets tree-structured models (each element has at most one container), which map naturally to explorer trees, forms, and diagrams.
+
+== Steps
+
+. **Create a studio project**
+.. Open the *Studios* area from the home page and create a new project dedicated to your DSL.
+.. Give it a meaningful identifier (`com.acme.database`, `org.example.requirements`, etc.).
+. **Add a Domain model**
+.. Create a new Domain package inside the studio project.
+.. Populate the package with the main entities of your DSL (for example `Database`, `Table`, `Column`).
+.. Use the Explorer or the optional diagram view to add attributes and relations.
+. **Configure attributes**
+.. Choose the base type (string, integer, boolean, enumeration).
+.. Set cardinalities: `[1..1]` for mandatory fields, `[0..*]` for optional lists, and so on.
+.. Provide default values when the semantics require them (e.g., new `Column` defaults to `VARCHAR(255)`).
+. **Configure relations**
+.. Decide whether the relation is containment (the element becomes a child in the project tree) or a plain reference.
+.. Set the opposite relation when you need bidirectional navigation (e.g., `Table.columns` opposite `Column.table`).
+.. Guard against cycles by keeping containment trees balanced.
+. **Iterate quickly**
+.. After each change, close any open instance projects and reopen them; {product} reloads the latest domain automatically.
+.. Create sample instances inside a test project to ensure the domain constrains data exactly as expected.
+
+For a detailed presentation of the Domain editor capabilities, see xref:studio-maker-guide:features/domain.adoc[].

@@ -1,0 +1,66 @@
+= Capability voters
+
+Many frontend features are gated through the capability system.
+Backends contribute implementations of `ICapabilityVoter` to enable or disable actions per resource type.
+This page documents the inputs seen by a voter and the capabilities currently queried by the UI.
+
+== How voting works
+
+`ICapabilityVoter#vote(type, identifier, capability)` receives:
+
+* `type` — identifies the resource category (for example `Project` or `ProjectSettings#images`).
+* `identifier` — optional resource identifier; when the capability applies to a specific instance it contains the project/library id, otherwise it is `null`.
+* `capability` — the action being tested (for example `canCreate`).
+
+Return `CapabilityResult.granted()` to enable the feature, or `CapabilityResult.denied("reason")` to disable it.
+
+== Supported capabilities
+
+=== Projects collection
+
+* `type`: `Project`
+* `identifier`: `null`
+* `capability`:
+** `canList` — display the projects browser.
+** `canCreate` — show the “New project” command.
+** `canUpload` — allow ZIP uploads.
+
+=== Individual project
+
+* `type`: `Project`
+* `identifier`: project UUID
+* `capability`:
+** `canDownload`
+** `canRename`
+** `canDelete`
+** `canEdit` — toggles read-only mode.
+** `canView`
+
+=== Libraries collection
+
+* `type`: `Library`
+* `identifier`: `null`
+* `capability`: `canList`
+
+=== Individual library
+
+* `type`: `Library`
+* `identifier`: `\{namespace\}:\{name\}:\{version\}`
+* `capability`: `canView`
+
+=== Project settings view
+
+* `type`: `ProjectSettings`
+* `identifier`: project UUID
+* `capability`: `canView` — whether the settings entry is visible.
+
+=== Project settings tabs
+
+Each tab contributed through `projectSettingsTabExtensionPoint` has its own `type`.
+For example, the image settings tab uses `ProjectSettings#images`.
+
+* `type`: `ProjectSettings#images`
+* `identifier`: project UUID
+* `capability`: `canView`
+
+Add your own type strings for custom tabs so voters can distinguish them.

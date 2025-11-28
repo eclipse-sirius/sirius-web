@@ -1,0 +1,46 @@
+= Domain
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page describes the Domain editor available to studio makers in {product}.
+Use it to understand the concepts behind the editor before following the step-by-step tutorial.
+
+== Introduction
+
+The Domain editor lets you define business concepts (entities, attributes, relations) directly inside {product}.
+Everything happens inside the browser—there is no code generation step, no external Eclipse install, and the resulting domain is immediately usable by the View editor and by end users who create instances.
+The editor targets tree-structured models (each element has at most one container), which map naturally to explorer trees, forms, and diagrams.
+
+== Core concepts
+
+* *Domain package* – top-level container that groups entities belonging to the same DSL.
+* *Entity* – equivalent to a class in UML; it can declare attributes and relations.
+* *Attribute* – scalar value (string, integer, boolean, enum).
+* *Relation* – reference toward another entity; can be containment or cross-reference.
+* *Cardinality* – each attribute or relation can be mandatory/optional and single/multi-valued.
+
+Every definition you provide is stored as structured data (serializable to JSON) so you can version it in Git, review it, or reuse it across workspaces.
+
+== Authoring workflow
+
+At a high level the domain definition follows these steps:
+
+. Create or open a studio project dedicated to your DSL.
+. Add a domain package and populate it with your main entities.
+. Configure attributes and relations on each entity.
+. Iterate quickly by reopening your test projects so that {product} reloads the latest domain definition.
+
+For a detailed, click-by-click tutorial see xref:studio-maker-guide:hands-on/tutorials/domain.adoc[].
+
+== Testing and deployment
+
+* The domain is *live* inside your running environment—no build step is required.
+* When ready, package the studio project (domain + views) and deploy it along with the application, or export/import it into another workspace.
+* Because the domain is a model, you can analyze it with EMF Compare, enrich it with M2Doc documentation, or store it in source control like any `.odesign` replacement.
+
+== Practical guidelines
+
+* Name entities using business vocabulary so end users immediately recognize them.
+* Keep inheritance shallow; use composition (relations) whenever possible to avoid brittle hierarchies.
+* Model enumerations for any attribute with a limited set of values—this enables select widgets automatically in later views.
+* Before handing the domain to colleagues, build a “sample” project that showcases valid instances; it doubles as regression data when the domain evolves.

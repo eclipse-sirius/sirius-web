@@ -1,0 +1,34 @@
+= Navigate with AQL
+
+Use this tutorial to practice the Acceleo Query Language (AQL) that powers labels, styles, filters, and tooling in {product}.
+
+== Prerequisites
+
+* A studio project with at least one domain and view defined.
+* A sandbox project where you can open the representations and observe the effect of expressions.
+* Familiarity with basic AQL syntax (attribute access, `self`, simple filters).
+
+== Steps
+
+. **Review the evaluation context**
+.. Open the xref:user-manual:features/query-view.adoc[Query view] and select an element in your representation.
+.. Evaluate simple expressions such as `self.name`, `self.eClass().name`, and `[self.eContents()->size()]` to ensure you understand the current context.
+.. Note that `self` changes when you run expressions inside mappings, styles, or tools, so always confirm it before writing complex logic.
+. **Add expressions to styles**
+.. Pick a mapping and edit its label expression to use AQL (for example `aql:self.name.concat(' (', self.status, ')')`).
+.. Configure conditional styles that switch colors or icons based on properties (`aql:self.isCritical`).
+.. Refresh the representation to observe the result and iterate until the behavior matches your expectations.
+. **Use AQL in other widgets**
+.. Add expressions to table columns or form widgets to display computed values (counts, derived booleans, formatted strings).
+.. When needed, combine filters (`select(e | e.status = 'Open')`) or aggregations (`size()`).
+. **Validate complex queries**
+.. Whenever you are unsure of the evaluation context, switch back to the Query view and paste the expression there first.
+.. Fix errors such as “unresolved feature” or type incompatibilities before applying the expression to the representation.
+. **Document your expressions**
+.. Add inline comments or descriptions in the view model so future maintainers understand the intent of each AQL snippet.
+
+== Tips
+
+* Keep expressions small and composable; if they become unwieldy, refactor them into Java services.
+* Use string helpers such as `toUpper`, `toLower`, `substring`, and `concat` to format labels consistently.
+* Store frequently used expressions (status, priority, ownership) in shared mappings so you can reuse them across representations.

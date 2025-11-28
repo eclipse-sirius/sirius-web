@@ -1,0 +1,34 @@
+= Create your first studio in 5 minutes
+
+Use this end-to-end tutorial when you want to bootstrap a brand-new studio: create the domain, define the view, and validate everything in a test project.
+
+== Prerequisites
+
+* You can access the *Studios* area of {product}.
+* You have a sample semantic project (or are willing to create one) for testing.
+
+== Steps
+
+. **Create the studio wrapper**
+.. Open the *Studios* page and select *New Studio Project*.
+.. Give it an identifier that follows your organization’s conventions (for example `com.acme.radar`).
+.. Add a short description so teammates know the purpose of the studio.
+. **Model the domain**
+.. Inside the studio project, create a domain package.
+.. Declare the main entities, attributes, and relations for your DSL.
+.. Keep the structure simple at first—two or three entities are enough to validate the workflow.
+.. Need a refresher? Follow xref:studio-maker-guide:hands-on/tutorials/domain.adoc[].
+. **Define the view**
+.. Still inside the studio project, add a view model.
+.. Create at least one representation description (diagram, table, or form) and tie it to your domain entities.
+.. Wire the minimal mappings and styles needed to display your semantic objects.
+.. Refer to xref:studio-maker-guide:hands-on/tutorials/view.adoc[] if you need more guidance.
+. **Test the studio**
+.. Switch to your semantic project (or create a new one) and open a representation of the new type.
+.. Exercise the palette tools, verify labels, and make sure the navigation matches your expectations.
+.. Tweak the domain or view, save, and simply reopen the representation—the runtime hot-reloads the changes.
+. **Iterate and share**
+.. Once the studio behaves correctly, export it or package it inside your {product} distribution.
+.. Share the project with colleagues so they can import it and continue refining the DSL collaboratively.
+
+TIPS: When experimenting with complex AQL, validate expressions in the Query view before placing them in the view model.

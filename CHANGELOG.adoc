@@ -176,7 +176,7 @@ This will use a transactional event listener to add the dependency to the librar
 - https://github.com/eclipse-sirius/sirius-web/issues/5653[#5653] Add support for indexing models in Elasticsearch.
 Models are asynchronously indexed in Elasticsearch, which will allow advanced and cross-project search in the future.
 This feature is opt-in: Sirius Web won't try to index models if it is not configured to do so.
-You can check `doc/how-to/debug-elasticsearch-related-issues.adoc` to configure Sirius Web with Elasticsearch
+You can check xref:developer-guide:hands-on/how-tos/debug-elasticsearch.adoc[] to configure Sirius Web with Elasticsearch
 - https://github.com/eclipse-sirius/sirius-web/issues/5743[#5743] [datatree] Add support for data trees.
 A new module `sirius-components-datatree` has been created to:
 * Define data trees in the backend
@@ -2730,7 +2730,7 @@ The behavior is controlled by the new _Drop Node_ tools defined on the target el
 - https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Make the node label non required
 - https://github.com/eclipse-sirius/sirius-web/issues/2482[#2482] [diagram] Add the support for TOP_CENTER inside label location. Other inside label locations will be supported later.
 - https://github.com/eclipse-sirius/sirius-web/issues/2256[#2256] [diagram] Add the possibility to contribute custom shape.
-See the `EllipseNode` example and link:doc/how-to/contribute-custom-node.adoc[the documentation] for more details.
+See the `EllipseNode` example and xref:developer-guide:hands-on/how-tos/custom-diagram-node.adoc[the documentation] for more details.
 Note that the custom shape replaces the parametric SVG, which is deprecated and will be removed in a future version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2512[#2512] [diagram] Add the support for multi-line label in reactflow.
 That includes the support during the direct edit.
@@ -3164,7 +3164,7 @@ The filter button inside the filter bar allows to filter (hide) all visible tree
 +
 image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%]
 - https://github.com/eclipse-sirius/sirius-components/issues/1914[#1914] [form] It is now possible for applications to provide their own custom widgets without forking Sirius Components.
-See link:doc/how-to/contribute-custom-widget.adoc[the documentation] for more details.
+See xref:developer-guide:custom-widget.adoc[the documentation] for more details.
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name.
 The new algorithm does the minimum possible to place node without overlap.

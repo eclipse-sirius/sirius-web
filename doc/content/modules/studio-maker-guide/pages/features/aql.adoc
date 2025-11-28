@@ -1,0 +1,121 @@
+= AQL expressions
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+{product} uses the Acceleo Query Language (AQL) for labels, styles, filters, tools, and custom widgets.
+This page summarizes the language features that studio makers leverage inside the view editor.
+
+== Where AQL is used
+
+You will encounter AQL in every representation type:
+
+* Labels, tooltips, and conditional styles for diagrams, tables, decks, and forms.
+* Semantic candidate expressions (`semanticCandidatesExpression`) on mappings.
+* Palette tools and operations, where expressions compute targets, values, or selections.
+* Table columns, form widgets, or card descriptions that display derived values.
+* Filters such as hide/show mappings or query-based form sections.
+
+== Evaluation context
+
+* `self` always refers to the current semantic element (the mapping target).
+* You can access attributes directly (`self.name`, `self.status`) and navigate references (`self.owner`, `self.children`).
+* When an expression is evaluated inside a table column, card widget, or form field, `self` is the semantic element bound to that column or widget.
+* Palette tools run in tool-specific contexts (for example, `self` is the selected element), so double-check the context before writing complex logic.
+
+Use the xref:user-manual:features/query-view.adoc[Query view] to inspect the current context and test expressions interactively.
+
+== Built-in variables
+
+{product} injects a handful of variables depending on the representation or tool that is currently executing your expression.
+You can reference them directly in AQL, there is no extra wiring to do.
+The following guide groups them by representation so you can immediately spot which names are available:
+
+*All representations / tools*
+
+* `self`: the semantic element bound to the current mapping, widget, or tool.
+* `selection`: (Query view, Evaluate Expression action) the list of elements currently selected in the Explorer or the active representation.
+* `editingContext`: a handle to the current project; use it with helper services such as `allContents()` or `getObjectById`.
+
+*Diagrams*
+
+* `diagram`: the in-memory diagram model; available to reconnection and direct-edit expressions.
+* `view`: the graphical element (node or edge) being edited.
+* `semanticReconnectionSource` / `reconnectionSourceView`: semantic element and view currently owning the edge source.
+* `semanticReconnectionTarget` / `reconnectionTargetView`: semantic element and view currently owning the edge target.
+* `edgeSemanticElement`, `edgeView`: the semantic element represented by the edge being reconnected and its view.
+* `otherEnd`, `semanticOtherEnd`: the opposite edge extremity (view + semantic element) used to keep relationships consistent while reconnecting.
+* `semanticEdgeSource`, `semanticEdgeTarget`: semantic source/target when editing edge labels directly.
+* Rendering expressions (semantic candidates, labels, width/height) additionally receive:
+** `collapsingState`: whether a node is currently collapsed or expanded.
+** `semanticElementIds`: identifiers of all semantic elements matched by the description.
+** `diagramEvent`: the event that triggered the refresh (for example a mutation or auto-refresh).
+** `previousDiagram`: the previously rendered diagram instance.
+** `label`: the representation label being computed.
+** `ownerId`: identifier of the diagram element being rendered.
+** `environment`: contextual information about the running application (branding, edition, etc.).
+** `cache`: internal cache used during edge refreshes.
+** `graphicalEdgeSource`, `graphicalEdgeTarget`: virtual diagram elements representing the edge source/target.
+
+*Tables*
+
+* `row`, `column`, `cell`, `newValue`: available inside inline editors or custom edit handlers, letting you inspect the element being edited and the proposed value.
+* `descriptionId`, `representationId`: passed to row filter expressions so one definition can differentiate between table descriptions or instances.
+* `candidate`: set when rendering select/multi-select/radio widgets and table combo cells; represents the option currently being evaluated.
+
+*Forms, reference widgets, and decks*
+
+* `candidate`: shared with the table combo cells above; appears in select/multi-select/radio widgets inside forms or decks.
+* `item`, `newValue`, `fromIndex`, `toIndex`: injected by reference widgets when you add/remove/move values so handlers can inspect both the semantic element and its original/target indexes.
+
+*Trees*
+
+* `root`: the initial semantic element used as the tree root.
+* `ancestors`: the chain of semantic elements leading to the current node (useful for breadcrumbs or conditional icons).
+* `nodes`: the already-built tree nodes, mainly used to compute the expanded-node list.
+
+Whenever in doubt, open the Query view or your browser console while executing the relevant tool—the additional variables appear in the evaluation context exactly as listed above.
+
+== Common syntax examples
+
+[cols="2,4",options="header"]
+|Pattern
+|Example
+
+|Attribute access
+| `aql:self.name` returns a string attribute.
+
+|Navigation
+| `aql:self.owner.name` follows references.
+
+|Filtering
+| `aql:self.children->select(c | c.status = 'Open')`
+
+|Aggregation
+| `aql:self.children->size()`
+
+|String helpers
+| `aql:self.name.toUpper()` or `aql:self.name.concat(' (', self.status, ')')`
+
+|Conditional
+| `aql:self.priority = 'High' ? 'red' : 'green'`
+
+|Collections
+| `aql:self.components->exists(c | c.isCritical)` or `aql:self.components->forAll(c | c.weight > 0)`
+
+|Numeric
+| `aql:self.weight + self.payload`
+
+|Boolean
+| `aql:self.isActive and not self.isArchived`
+
+== Debugging tips
+
+* Evaluate new expressions in the Query view before using them in the editor.
+* Watch for type errors such as “unresolved feature” or “invalid type: Expecting String, found Boolean”.
+  They usually mean `self` was not what you expected or you forgot to call `toString`.
+* Break down long expressions into simpler ones; reuse helper expressions in mappings or move them into Java services when needed.
+
+== Learning resources
+
+* Practice with the xref:studio-maker-guide:hands-on/tutorials/aql.adoc[Navigate with AQL] tutorial.
+* Review the official https://eclipse.dev/acceleo/documentation/[AQL documentation] for advanced operators.
