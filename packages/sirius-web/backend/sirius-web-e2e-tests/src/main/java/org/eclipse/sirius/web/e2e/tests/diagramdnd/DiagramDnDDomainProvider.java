@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
  *
  * @author frouene
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @Profile("test")
 @Service
 public class DiagramDnDDomainProvider implements IDomainProvider {
@@ -53,6 +54,10 @@ public class DiagramDnDDomainProvider implements IDomainProvider {
         Entity entity2 = DomainFactory.eINSTANCE.createEntity();
         entity2.setName("Entity2");
         domain.getTypes().add(entity2);
+
+        Entity entity3 = DomainFactory.eINSTANCE.createEntity();
+        entity3.setName("Entity3");
+        domain.getTypes().add(entity3);
 
         Relation entity1s = DomainFactory.eINSTANCE.createRelation();
         entity1s.setName("entity1s");
@@ -79,8 +84,26 @@ public class DiagramDnDDomainProvider implements IDomainProvider {
         entity2sOnRoot.setTargetType(entity2);
         root.getRelations().add(entity2sOnRoot);
 
+        Relation entity3sOnEntity1 = DomainFactory.eINSTANCE.createRelation();
+        entity3sOnEntity1.setName("entity3sOnEntity1");
+        entity3sOnEntity1.setContainment(true);
+        entity3sOnEntity1.setOptional(true);
+        entity3sOnEntity1.setMany(true);
+        entity3sOnEntity1.setTargetType(entity3);
+        entity1.getRelations().add(entity3sOnEntity1);
+
+
+        Relation entity3sOnRoot = DomainFactory.eINSTANCE.createRelation();
+        entity3sOnRoot.setName("entity3sOnRoot");
+        entity3sOnRoot.setContainment(true);
+        entity3sOnRoot.setOptional(true);
+        entity3sOnRoot.setMany(true);
+        entity3sOnRoot.setTargetType(entity3);
+        root.getRelations().add(entity3sOnRoot);
+
         this.addAttribute(entity1, "name", DataType.STRING);
         this.addAttribute(entity2, "name", DataType.STRING);
+        this.addAttribute(entity3, "name", DataType.STRING);
 
         return List.of(domain);
     }

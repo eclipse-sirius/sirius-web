@@ -332,7 +332,11 @@ const layoutDiagram = (
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
       .filter((node) => {
         const referencedNode = allVisibleNodes.find((n) => n.id === referencePosition?.parentId);
-        return (!referencedNode && !node.parentId) || referencedNode?.parentId === node.parentId;
+        return (
+          (!referencedNode && !node.parentId) ||
+          referencedNode?.parentId === node.parentId ||
+          referencedNode?.id === node.parentId
+        );
       })
       .map((node, index, array) => {
         const nodeBorderNodeFootprint = getNodeBorderNodeFootprint(node, allVisibleNodes);

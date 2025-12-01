@@ -162,6 +162,8 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - [sirius-web] Fix an issue preventing the creation of a representation with some specific characters
 - https://github.com/eclipse-sirius/sirius-web/issues/5842[#5842] [diagram] Prevent edge handles from being lost after revealing an edge
 - https://github.com/eclipse-sirius/sirius-web/issues/5900[#5900] [sirius-web] Wait for all i18n namespaces to be loaded before displaying the front
+- https://github.com/eclipse-sirius/sirius-web/issues/5902[#5902] [diagram] Prevent loss of drop position on the node
+
 
 === New Features
 
