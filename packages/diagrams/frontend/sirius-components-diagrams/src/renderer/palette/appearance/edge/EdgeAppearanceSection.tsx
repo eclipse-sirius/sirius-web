@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ReactFlowState, useStore } from '@xyflow/react';
+import { useTranslation } from 'react-i18next';
 import { MultiLabelEdgeData } from '../../../edge/MultiLabelEdge.types';
 import { PaletteAppearanceSectionContributionComponentProps } from '../extensions/PaletteAppearanceSectionContribution.types';
 import { LabelAppearancePart } from '../label/LabelAppearancePart';
@@ -21,6 +22,7 @@ const edgeDataSelector = (state: ReactFlowState, edgeId: string) =>
 
 export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSectionContributionComponentProps) => {
   const edgeData = useStore((state) => edgeDataSelector(state, diagramElementId));
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'edgeAppearanceSection' });
 
   if (!edgeData) {
     return null;
@@ -37,7 +39,7 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={edgeData.beginLabel.id}
-          position="Begin Label"
+          position={t('beginLabel')}
           style={edgeData.beginLabel.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.beginLabel.appearanceData.customizedStyleProperties}
         />
@@ -46,7 +48,7 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={edgeData.label.id}
-          position="Center Label"
+          position={t('centerLabel')}
           style={edgeData.label.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.label.appearanceData.customizedStyleProperties}
         />
@@ -55,7 +57,7 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
         <LabelAppearancePart
           diagramElementId={diagramElementId}
           labelId={edgeData.endLabel.id}
-          position="End Label"
+          position={t('endLabel')}
           style={edgeData.endLabel.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.endLabel.appearanceData.customizedStyleProperties}
         />
