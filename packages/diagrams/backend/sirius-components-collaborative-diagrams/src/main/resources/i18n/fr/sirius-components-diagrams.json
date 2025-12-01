@@ -175,5 +175,41 @@
   "paletteAppearanceSection": {
     "appearance": "Apparence",
     "noAppearanceEditorAvailableForThisStyleOfElement": "Aucun éditeur d'apparence disponible pour ce style d'élément"
+  },
+  "edgeAppearancePart": {
+    "solid": "Solide",
+    "dash": "Discontinue",
+    "dot": "Pointillée",
+    "dashDot": "Pointillée-discontinue",
+    "diamond": "Diamant",
+    "fillDiamond": "Diamant plein",
+    "inputArrow": "Flèche d'entrée",
+    "inputArrowWithDiamond": "Flèche d'entrée avec diamant",
+    "inputArrowWithFillDiamond": "Flèche d'entrée avec diamant plein",
+    "inputClosedArrow": "Flèche d'entrée fermée",
+    "inputFillClosedArrow": "Flèche d'entrée fermée avec diamant plein",
+    "none": "Aucune",
+    "outputArrow": "Flèche de sortie",
+    "outputClosedArrow": "Flèche de sortie fermée",
+    "outputFillClosedArrow": "Flèche de sortie fermée avec diamant plein",
+    "circle": "Cercle",
+    "fillCircle": "Cercle plein",
+    "crossedCircle": "Cercle croisé",
+    "closedArrowWithVerticalBar": "Flèche de sortie avec barre verticale",
+    "closedArrowWithDots": "Flèche de sortie avec points",
+    "manhattan": "Manhattan",
+    "smartManhattan": "Manhattan intelligent",
+    "oblique": "Oblique",
+    "color": "Couleur",
+    "size": "Taille",
+    "lineStyle": "Style de la ligne",
+    "sourceArrow": "Flèche source",
+    "targetArrow": "Flèche cible",
+    "edgeType": "Type d'arête"
+  },
+  "edgeAppearanceSection": {
+    "beginLabel": "Label au début",
+    "centerLabel": "Label au centre",
+    "endLabel": "Label à la fin"
   }
 }

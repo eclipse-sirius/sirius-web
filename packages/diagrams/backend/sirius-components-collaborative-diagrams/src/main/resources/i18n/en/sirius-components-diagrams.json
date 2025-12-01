@@ -175,5 +175,41 @@
   "paletteAppearanceSection": {
     "appearance": "Appearance",
     "noAppearanceEditorAvailableForThisStyleOfElement": "No appearance editor available for this style of element"
+  },
+  "edgeAppearancePart": {
+    "solid": "Solid",
+    "dash": "Dash",
+    "dot": "Dot",
+    "dashDot": "Dash Dot",
+    "diamond": "Diamond",
+    "fillDiamond": "Fill Diamond",
+    "inputArrow": "Input Arrow",
+    "inputArrowWithDiamond": "Input Arrow with Diamond",
+    "inputArrowWithFillDiamond": "Input Arrow with Fill Diamond",
+    "inputClosedArrow": "Input Closed Arrow",
+    "inputFillClosedArrow": "Input Fill Closed Arrow",
+    "none": "None",
+    "outputArrow": "Output Arrow",
+    "outputClosedArrow": "Output Closed Arrow",
+    "outputFillClosedArrow": "Output Fill Closed Arrow",
+    "circle": "Circle",
+    "fillCircle": "Fill Circle",
+    "crossedCircle": "Crossed Circle",
+    "closedArrowWithVerticalBar": "Closed Arrow with Vertical Bar",
+    "closedArrowWithDots": "Closed Arrow with Dots",
+    "manhattan": "Manhattan",
+    "smartManhattan": "Smart Manhattan",
+    "oblique": "Oblique",
+    "color": "Color",
+    "size": "Size",
+    "lineStyle": "Line Style",
+    "sourceArrow": "Source arrow",
+    "targetArrow": "Target arrow",
+    "edgeType": "Edge Type"
+  },
+  "edgeAppearanceSection": {
+    "beginLabel": "Begin Label",
+    "centerLabel": "Center Label",
+    "endLabel": "End Label"
   }
 }

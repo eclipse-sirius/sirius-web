@@ -19,7 +19,7 @@ import TurnSharpRightIcon from '@mui/icons-material/TurnSharpRight';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
 import { useDiagramPalette } from '../../useDiagramPalette';
@@ -30,37 +30,39 @@ import { EdgeAppearancePartProps } from './EdgeAppearancePart.types';
 import { useEditEdgeAppearance } from './useEditEdgeAppearance';
 import { GQLEdgeAppearanceInput } from './useEditEdgeAppearance.types';
 import { useResetEdgeAppearance } from './useResetEdgeAppearance';
+import { TFunction } from 'i18next/typescript/t';
+import { useTranslation } from 'react-i18next';
 
-const LINE_STYLE_OPTIONS = [
-  { value: 'Solid', label: 'Solid' },
-  { value: 'Dash', label: 'Dash' },
-  { value: 'Dot', label: 'Dot' },
-  { value: 'Dash_Dot', label: 'Dash Dot' },
+const getLineStyleOptions = (t: TFunction) => [
+  { value: 'Solid', label: t('solid') },
+  { value: 'Dash', label: t('dash') },
+  { value: 'Dot', label: t('dot') },
+  { value: 'Dash_Dot', label: t('dashDot') },
 ];
 
-const ARROW_OPTIONS = [
-  { value: 'Diamond', label: 'Diamond' },
-  { value: 'FillDiamond', label: 'Fill Diamond' },
-  { value: 'InputArrow', label: 'Input Arrow' },
-  { value: 'InputArrowWithDiamond', label: 'Input Arrow Diamond' },
-  { value: 'InputArrowWithFillDiamond', label: 'Input Arrow Fill Diamond' },
-  { value: 'InputClosedArrow', label: 'Input Closed Arrow' },
-  { value: 'InputFillClosedArrow', label: 'Input Fill Closed Arrow' },
-  { value: 'None', label: 'None' },
-  { value: 'OutputArrow', label: 'Output Arrow' },
-  { value: 'OutputClosedArrow', label: 'Output Closed Arrow' },
-  { value: 'OutputFillClosedArrow', label: 'Output Fill Closed Arrow' },
-  { value: 'Circle', label: 'Circle' },
-  { value: 'FillCircle', label: 'Fill Circle' },
-  { value: 'CrossedCircle', label: 'Crossed Circle' },
-  { value: 'ClosedArrowWithVerticalBar', label: 'Closed Arrow Vertical Bar' },
-  { value: 'ClosedArrowWithDots', label: 'Closed Arrow Dots' },
+const getArrowOption = (t: TFunction) => [
+  { value: 'Diamond', label: t('diamond') },
+  { value: 'FillDiamond', label: t('fillDiamond') },
+  { value: 'InputArrow', label: t('inputArrow') },
+  { value: 'InputArrowWithDiamond', label: t('inputArrowWithDiamond') },
+  { value: 'InputArrowWithFillDiamond', label: t('inputArrowWithFillDiamond') },
+  { value: 'InputClosedArrow', label: t('inputClosedArrow') },
+  { value: 'InputFillClosedArrow', label: t('inputFillClosedArrow') },
+  { value: 'None', label: t('none') },
+  { value: 'OutputArrow', label: t('outputArrow') },
+  { value: 'OutputClosedArrow', label: t('outputClosedArrow') },
+  { value: 'OutputFillClosedArrow', label: t('outputFillClosedArrow') },
+  { value: 'Circle', label: t('circle') },
+  { value: 'FillCircle', label: t('fillCircle') },
+  { value: 'CrossedCircle', label: t('crossedCircle') },
+  { value: 'ClosedArrowWithVerticalBar', label: t('closedArrowWithVerticalBar') },
+  { value: 'ClosedArrowWithDots', label: t('closedArrowWithDots') },
 ];
 
-const EDGE_TYPE_OPTIONS = [
-  { value: 'Manhattan', label: 'Manhattan' },
-  { value: 'SmartManhattan', label: 'SmartManhattan' },
-  { value: 'Oblique', label: 'Oblique' },
+const getEdgeTypeOptions = (t: TFunction) => [
+  { value: 'Manhattan', label: t('manhattan') },
+  { value: 'SmartManhattan', label: t('smartManhattan') },
+  { value: 'Oblique', label: t('oblique') },
 ];
 
 export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }: EdgeAppearancePartProps) => {
@@ -69,6 +71,10 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
   const { updateEdgeAppearance } = useEditEdgeAppearance();
   const { resetEdgeStyleProperties } = useResetEdgeAppearance();
   const { hideDiagramPalette } = useDiagramPalette();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'edgeAppearancePart' });
+  const lineStyleOptions = useMemo(() => getLineStyleOptions(t), [t]);
+  const arrowOptions = useMemo(() => getArrowOption(t), [t]);
+  const edgeTypeOptions = useMemo(() => getEdgeTypeOptions(t), [t]);
 
   const handleResetProperty = (customizedStyleProperty: string) => {
     resetEdgeStyleProperties(editingContextId, diagramId, edgeId, [customizedStyleProperty]);
@@ -86,7 +92,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
         <Typography variant="subtitle2">{'Style'}</Typography>
 
         <AppearanceColorPicker
-          label={'Color'}
+          label={t('color')}
           initialValue={style.color}
           disabled={isDisabled('COLOR')}
           onEdit={(newValue) => handleEditProperty({ color: newValue })}
@@ -94,7 +100,7 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
         <AppearanceNumberTextfield
           icon={<LineWeightIcon />}
-          label={'Size'}
+          label={t('size')}
           initialValue={style.size}
           disabled={isDisabled('SIZE')}
           onEdit={(newValue) => handleEditProperty({ size: newValue })}
@@ -102,8 +108,8 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
         <AppearanceSelect
           icon={<LineStyleIcon />}
-          label={'Line Style'}
-          options={LINE_STYLE_OPTIONS}
+          label={t('lineStyle')}
+          options={lineStyleOptions}
           initialValue={style.lineStyle}
           disabled={isDisabled('LINESTYLE')}
           onEdit={(newValue) => handleEditProperty({ lineStyle: newValue })}
@@ -111,8 +117,8 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
         <AppearanceSelect
           icon={<ArrowBackIcon />}
-          options={ARROW_OPTIONS}
-          label={'Source arrow'}
+          options={arrowOptions}
+          label={t('sourceArrow')}
           initialValue={style.sourceArrow}
           disabled={isDisabled('SOURCE_ARROW')}
           onEdit={(newValue) => handleEditProperty({ sourceArrowStyle: newValue })}
@@ -120,8 +126,8 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
         <AppearanceSelect
           icon={<ArrowForwardIcon />}
-          options={ARROW_OPTIONS}
-          label={'Target arrow'}
+          options={arrowOptions}
+          label={t('targetArrow')}
           initialValue={style.targetArrow}
           disabled={isDisabled('TARGET_ARROW')}
           onEdit={(newValue) => handleEditProperty({ targetArrowStyle: newValue })}
@@ -129,8 +135,8 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
 
         <AppearanceSelect
           icon={<TurnSharpRightIcon />}
-          options={EDGE_TYPE_OPTIONS}
-          label={'Edge Type'}
+          options={edgeTypeOptions}
+          label={t('edgeType')}
           initialValue={style.edgeType}
           disabled={isDisabled('EDGE_TYPE')}
           onEdit={(newValue) => {
