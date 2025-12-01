@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <diagramdnd:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramdnd="domain://diagramDnD">
-  <entity1s name="Entity1">
-    <entity2sOnEntity1 name="Entity2-inside"/>
-  </entity1s>
-  <entity2sOnRoot name="Entity2-outside"/>
+	<entity1s name="Entity1">
+		<entity2sOnEntity1 name="Entity2-inside" />
+	</entity1s>
+	<entity2sOnRoot name="Entity2-outside" />
+	<entity3sOnRoot name="Entity3" />
 </diagramdnd:Root>

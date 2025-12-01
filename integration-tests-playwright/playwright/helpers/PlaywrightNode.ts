@@ -119,4 +119,10 @@ export class PlaywrightNode {
   async closePalette() {
     await this.page.getByTestId('Close-palette').click();
   }
+
+  async waitForAnimationToFinish() {
+    // Playwright performs checks before making actions, so Playwright waits for the animation to finish before performing the next action.
+    // see https://playwright.dev/docs/actionability
+    await this.nodeLocator.click();
+  }
 }

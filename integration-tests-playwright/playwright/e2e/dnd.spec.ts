@@ -32,7 +32,7 @@ test.describe('diagram - drag and drop', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when dropping a node in a compatible target, then a drop is triggered and the move is accept', async ({
+  test('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accept', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -124,5 +124,43 @@ test.describe('diagram - drag and drop', () => {
       },
       { timeout: 2000 }
     );
+  });
+
+  test('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accept', async ({
+    page,
+  }) => {
+    let requestTriggered = false;
+    page.on('request', (request) => {
+      if (
+        request.url().includes('api/graphql') &&
+        request.method() === 'POST' &&
+        JSON.parse(request.postData()).operationName === 'dropNodes'
+      ) {
+        requestTriggered = true;
+      }
+    });
+
+    const playwrightNode = new PlaywrightNode(page, 'Entity3');
+    const targetNodeLocator = new PlaywrightNode(page, 'Entity1');
+
+    await targetNodeLocator.waitForAnimationToFinish();
+    const xyTargetPosition = await targetNodeLocator.getDOMXYPosition();
+    await playwrightNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await playwrightNode.page.mouse.down();
+    await playwrightNode.page.mouse.move(xyTargetPosition.x + 100, xyTargetPosition.y + 50, { steps: 5 });
+    await playwrightNode.page.mouse.up();
+
+    await page.waitForFunction(
+      () => {
+        return !!document.querySelector(`[data-testid="FreeForm - dropped"]`);
+      },
+      { timeout: 2000 }
+    );
+    expect(requestTriggered).toBe(true);
+
+    const playwrightNodeAfterDrop = new PlaywrightNode(page, 'dropped');
+    const reactFlowXYPositionAfter = await playwrightNodeAfterDrop.getReactFlowXYPosition();
+    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(15);
+    expect(reactFlowXYPositionAfter.x).toBeGreaterThan(50);
   });
 });
