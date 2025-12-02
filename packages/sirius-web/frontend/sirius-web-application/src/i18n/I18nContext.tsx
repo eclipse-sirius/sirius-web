@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { i18n } from 'i18next';
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { useCreateI18nInstance } from './useCreateI18nInstance';
@@ -23,9 +22,9 @@ export interface I18NContextProviderProps {
 
 export const I18nContextProvider = ({ children, httpOrigin }: I18NContextProviderProps) => {
   const { language, namespaces } = useLocale();
-  const i18nInstance: i18n | null = useCreateI18nInstance(language, namespaces, httpOrigin);
+  const { data: i18nInstance, loading } = useCreateI18nInstance(language, namespaces, httpOrigin);
 
-  if (!i18nInstance) {
+  if (!i18nInstance || loading) {
     return null;
   }
 
