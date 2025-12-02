@@ -57,7 +57,7 @@ public class FormDescriptionReferenceValueOptionsDataFetcher implements IDataFet
         String referenceWidgetId = environment.getArgument(REFERENCE_WIDGET_ID);
         ReferenceValueOptionsQueryInput input = new ReferenceValueOptionsQueryInput(UUID.randomUUID(), editingContextId, representationId, referenceWidgetId);
 
-        return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input), input)
+        return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input), input)
                 .filter(ReferenceValueOptionsQueryPayload.class::isInstance)
                 .map(ReferenceValueOptionsQueryPayload.class::cast)
                 .map(ReferenceValueOptionsQueryPayload::options)
