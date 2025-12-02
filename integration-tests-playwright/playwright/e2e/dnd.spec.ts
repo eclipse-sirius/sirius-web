@@ -32,7 +32,7 @@ test.describe('diagram - drag and drop', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accept', async ({
+  test('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -65,7 +65,7 @@ test.describe('diagram - drag and drop', () => {
     expect(reactFlowXYPositionAfter.y).not.toBe(reactFlowXYPositionBefore.y);
   });
 
-  test('when dropping a node inside is current parent, then no drop is triggered and the move is accept', async ({
+  test('when dropping a node inside is current parent, then no drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -92,14 +92,15 @@ test.describe('diagram - drag and drop', () => {
     expect(requestTriggered).toBe(false);
   });
 
-  test('when dragging a node, then not compatible node style changed', async ({ page }) => {
+  test('when dragging a node, then non-compatible node style is not changed', async ({ page }) => {
     const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
 
-    const opacityBefore = await entity1Locator.evaluate((node) => {
-      return window.getComputedStyle(node).getPropertyValue('opacity');
+    const boxShadowBefore = await entity1Locator.evaluate((node) => {
+      return window.getComputedStyle(node).getPropertyValue('box-shadow');
     });
-    expect(opacityBefore).toBe('1');
+    expect(boxShadowBefore).toBe('none');
 
+    // Move Entity2 elsewhere on the diagram background
     const entity2PlaywrightNode = new PlaywrightNode(page, 'Entity2-outside');
     const xyPosition = await entity2PlaywrightNode.getDOMXYPosition();
 
@@ -107,26 +108,56 @@ test.describe('diagram - drag and drop', () => {
     await page.mouse.down();
     await page.mouse.move(xyPosition.x + 25, xyPosition.y + 25, { steps: 10 });
 
+    // Entity one is NOT a compatible drop target, its border/shadow should not change
     await page.waitForFunction(
       () => {
         const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
-        return node && window.getComputedStyle(node).getPropertyValue('opacity') === '0.4';
+        return node && window.getComputedStyle(node).getPropertyValue('box-shadow') === 'none';
+      },
+      { timeout: 2000 }
+    );
+
+    await page.mouse.up();
+  });
+
+  test('when dragging a node, then compatible nodes style indicates it', async ({ page }) => {
+    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
+
+    const boxShadowBefore = await entity1Locator.evaluate((node) => {
+      return window.getComputedStyle(node).getPropertyValue('box-shadow');
+    });
+    expect(boxShadowBefore).toBe('none');
+
+    // Move Entity3 elsewhere on the diagram background
+    const entity3PlaywrightNode = new PlaywrightNode(page, 'Entity3');
+    const xyPosition = await entity3PlaywrightNode.getDOMXYPosition();
+
+    await entity3PlaywrightNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition.x + 25, xyPosition.y + 25, { steps: 10 });
+
+    // Entity1 IS a compatible drop target, its border/shadow should change to indicate t
+    await page.waitForFunction(
+      () => {
+        const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
+        // We need to check for the normalized box-shadow value, which is different from what we set in the code, but equivalent
+        return (
+          node && window.getComputedStyle(node).getPropertyValue('box-shadow') === 'rgb(67, 160, 71) 0px 0px 2px 2px'
+        );
       },
       { timeout: 2000 }
     );
 
     await page.mouse.up();
 
-    await page.waitForFunction(
-      () => {
-        const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
-        return node && window.getComputedStyle(node).getPropertyValue('opacity') === '1';
-      },
-      { timeout: 2000 }
-    );
+    // After the mode, the target's border/shadow should be back to its original state
+    const boxShadowAfter = await entity1Locator.evaluate((node) => {
+      return window.getComputedStyle(node).getPropertyValue('box-shadow');
+    });
+    expect(boxShadowAfter).toBe('none');
   });
 
-  test('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accept', async ({
+  test('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;

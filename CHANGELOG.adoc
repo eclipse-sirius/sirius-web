@@ -168,6 +168,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5813[#5813] Add new project setting to enable/disable confirmation modals.
 - https://github.com/eclipse-sirius/sirius-web/issues/5977[#5977] [sirius-web] Leverage `SemanticDataDeletedEvent` to delete Elasticsearch indices.
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] Add `hasChildrenExpression` on `RowDescription` to block the expand action on rows that have no children
+- https://github.com/eclipse-sirius/sirius-web/issues/5939[#5939] [diagram] When moving a node on a diagram, we now _highlight_ compatible drop targets/locations instead of fading all the incompatible ones
 
 
 
