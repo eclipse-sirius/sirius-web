@@ -31,8 +31,9 @@ export const useDropNodeStyle = (
   const style: React.CSSProperties = {};
 
   if (dragging && !readOnly) {
-    if (!isDragging && !isDropNodeCandidate) {
-      style.opacity = '0.4';
+    if (!isDragging && isDropNodeCandidate) {
+      style.boxShadow = `0px 0px 2px 2px ${theme.palette.success.main}`;
+      style.transition = `box-shadow 0.3s ease-in-out`;
     }
     if (isDropNodeTarget) {
       style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
