@@ -15,8 +15,6 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DropNodeContext } from './DropNodeContext';
-import { DropNodeContextValue } from './DropNodeContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
 
 export const useDropNodeStyle = (
@@ -25,21 +23,21 @@ export const useDropNodeStyle = (
   isDragging: boolean
 ): useDropNodeStyleValue => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { dragging } = useContext<DropNodeContextValue>(DropNodeContext);
 
   const theme = useTheme();
   const style: React.CSSProperties = {};
 
-  if (dragging && !readOnly) {
-    if (!isDragging && !isDropNodeCandidate) {
-      style.opacity = '0.4';
+  if (!readOnly) {
+    if (!isDragging && isDropNodeCandidate) {
+      style.boxShadow = `0px 0px 2px 2px ${theme.palette.success.main}`;
+      style.transition = `box-shadow 0.3s ease-in-out`;
     }
     if (isDropNodeTarget) {
       style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
     }
   }
 
-  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging, dragging]);
+  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging]);
 
   return { style: memoizedStyle };
 };
