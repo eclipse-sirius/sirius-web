@@ -112,7 +112,8 @@ Sirius Web provides a default implementation for all these services, which creat
 - https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] Add the support for form `canEdit` capabilities.
 The `canEdit` capabilities delegates to `ProjectCapabilities#canEdit` by default.
 Downstream projects can provide their own `IFormCapabilitiesService` primary service to override the default behavior.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
+Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 
 
 == 2025.12.0
