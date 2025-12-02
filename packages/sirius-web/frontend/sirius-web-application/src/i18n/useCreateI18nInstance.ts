@@ -13,14 +13,17 @@
 
 import i18next, { i18n, InitOptions } from 'i18next';
 import HttpBackend, { HttpBackendOptions } from 'i18next-http-backend';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { initReactI18next } from 'react-i18next';
+import { UseCreateI18nInstanceValue } from './useCreateI18nInstance.types';
 
 export const useCreateI18nInstance = (
   language: string | null,
   namespaces: string[],
   httpOrigin: string
-): i18n | null => {
+): UseCreateI18nInstanceValue => {
+  const [loading, setLoading] = useState<boolean>(true);
+
   const i18nextOptions: InitOptions<HttpBackendOptions> = {
     lng: language,
     ns: namespaces,
@@ -43,9 +46,12 @@ export const useCreateI18nInstance = (
       return null;
     }
     const instance = i18next.createInstance();
-    instance.use(HttpBackend).use(initReactI18next).init(i18nextOptions);
+    instance
+      .use(HttpBackend)
+      .use(initReactI18next)
+      .init(i18nextOptions, () => setLoading(false));
     return instance;
   }, [httpOrigin, language, namespaces.join(',')]);
 
-  return i18nInstance;
+  return { data: i18nInstance, loading };
 };
