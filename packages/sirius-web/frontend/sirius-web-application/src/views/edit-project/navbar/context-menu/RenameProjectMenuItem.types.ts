@@ -12,7 +12,8 @@
  *******************************************************************************/
 
 export interface RenameProjectMenuItemProps {
-  project: Project;
+  projectId: string;
+  projectName: string;
   onSuccess: () => void;
   onCancel: () => void;
 }

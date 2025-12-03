@@ -119,6 +119,7 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
       {state.anchorEl ? (
         <EditProjectNavbarContextMenu
           anchorEl={state.anchorEl}
+          projectName={state.projectName}
           onClose={onCloseContextMenu}
           workbenchHandle={workbenchHandle}
         />

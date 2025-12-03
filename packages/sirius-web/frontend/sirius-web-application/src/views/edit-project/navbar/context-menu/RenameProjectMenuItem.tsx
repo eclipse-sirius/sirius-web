@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { RenameProjectModal } from '../../../../modals/rename-project/RenameProjectModal';
 import { RenameProjectMenuItemProps, RenameProjectMenuItemState } from './RenameProjectMenuItem.types';
 
-export const RenameProjectMenuItem = ({ project, onCancel, onSuccess }: RenameProjectMenuItemProps) => {
+export const RenameProjectMenuItem = ({ projectId, projectName, onCancel, onSuccess }: RenameProjectMenuItemProps) => {
   const [state, setState] = useState<RenameProjectMenuItemState>({
     showModal: false,
   });
@@ -44,7 +44,12 @@ export const RenameProjectMenuItem = ({ project, onCancel, onSuccess }: RenamePr
         <ListItemText primary={t('rename')} />
       </MenuItem>
       {state.showModal ? (
-        <RenameProjectModal project={project} onCancel={handleCancel} onSuccess={handleSuccess} />
+        <RenameProjectModal
+          projectId={projectId}
+          projectName={projectName}
+          onCancel={handleCancel}
+          onSuccess={handleSuccess}
+        />
       ) : null}
     </>
   );
