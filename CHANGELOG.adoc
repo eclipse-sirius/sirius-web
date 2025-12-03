@@ -11,6 +11,7 @@
 
 - [ADR-218] Ensure Elasticsearch query results contain enough information
 - [ADR-219] Add a way to customize the tree displayed to select the candidates in a Reference Widget
+- [ADR-219] Add a way to customize the "reveal hidden elements" behavior to keep hidden some elements
 
 
 === Deprecation warning
