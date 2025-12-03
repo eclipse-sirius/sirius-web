@@ -83,6 +83,8 @@ export const getUpdatedHandleForNode = (
         edgeId,
         XYPosition,
         position,
+        isHidden: false,
+        isVirtualHandle: false,
       };
     }
     return handle;
