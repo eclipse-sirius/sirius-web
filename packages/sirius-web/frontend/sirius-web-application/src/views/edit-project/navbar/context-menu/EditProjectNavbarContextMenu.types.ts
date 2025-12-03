@@ -15,6 +15,7 @@ import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
 
 export interface EditProjectNavbarContextMenuProps {
   anchorEl: HTMLElement;
+  projectName: string;
   onClose: () => void;
   workbenchHandle: WorkbenchHandle;
 }
