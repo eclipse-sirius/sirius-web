@@ -41,7 +41,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 - https://github.com/eclipse-sirius/sirius-web/issues/5720[#5720] [explorer] Fixed an issue where the initial search for an element with the Omnibox would not reveal the selected element in the _Explorer_
 - https://github.com/eclipse-sirius/sirius-web/issues/5896[#5896] Add missing translations for edge appearance menu
 - https://github.com/eclipse-sirius/sirius-web/issues/5912[#5912] [diagram] Fix an issue where edge handles could be rendered in the wrong position
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3205[#3205] [sirius-web] Fix an issue where the project rename dialog displayed an outdated name is the current value
 
 === New Features
 
