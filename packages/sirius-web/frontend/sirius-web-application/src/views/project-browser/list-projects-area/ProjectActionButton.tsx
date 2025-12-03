@@ -86,7 +86,12 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
         open={true}
         onClose={onClose}>
         {project.capabilities.canRename ? (
-          <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onChange} />
+          <RenameProjectMenuItem
+            projectId={project.id}
+            projectName={project.name}
+            onCancel={onClose}
+            onSuccess={onChange}
+          />
         ) : null}
         {project.capabilities.canDuplicate ? (
           <DuplicateProjectMenuItem projectId={project.id} onClick={onClose} />

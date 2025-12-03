@@ -34,6 +34,7 @@ import { ShareProjectMenuItem } from './ShareProjectMenuItem';
 
 export const EditProjectNavbarContextMenu = ({
   anchorEl,
+  projectName,
   onClose,
   workbenchHandle,
 }: EditProjectNavbarContextMenuProps) => {
@@ -58,7 +59,12 @@ export const EditProjectNavbarContextMenu = ({
     <ContextMenuContainer>
       <Menu open anchorEl={anchorEl} data-testid="navbar-contextmenu" onClose={onClose}>
         {project.capabilities.canRename ? (
-          <RenameProjectMenuItem project={project} onCancel={onClose} onSuccess={onClose} />
+          <RenameProjectMenuItem
+            projectId={project.id}
+            projectName={projectName}
+            onCancel={onClose}
+            onSuccess={onClose}
+          />
         ) : null}
         <ShareProjectMenuItem workbenchHandle={workbenchHandle} />
         {project.capabilities.canDuplicate ? (

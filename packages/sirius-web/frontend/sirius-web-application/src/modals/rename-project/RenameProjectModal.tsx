@@ -21,11 +21,11 @@ import { useTranslation } from 'react-i18next';
 import { RenameProjectModalProps, RenameProjectModalState } from './RenameProjectModal.types';
 import { useRenameProject } from './useRenameProject';
 
-export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProjectModalProps) => {
+export const RenameProjectModal = ({ projectId, projectName, onCancel, onSuccess }: RenameProjectModalProps) => {
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'renameProjectModal' });
 
   const [state, setState] = useState<RenameProjectModalState>({
-    newName: project.name,
+    newName: projectName,
     pristine: true,
   });
 
@@ -38,7 +38,7 @@ export const RenameProjectModal = ({ project, onCancel, onSuccess }: RenameProje
 
   const onRenameProject = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    renameProject(project.id, state.newName);
+    renameProject(projectId, state.newName);
   };
 
   useEffect(() => {
