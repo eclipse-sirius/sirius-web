@@ -16,7 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { isSingleClickOnDiagramElementTool } from '../Palette';
+import { isTool } from '../Palette';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
 
@@ -70,7 +70,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>
       </Tooltip>
-      {toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+      {toolSection.tools.filter(isTool).map((tool) => (
         <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />
       ))}
     </List>

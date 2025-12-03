@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,27 +25,23 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class ConnectorToolsQueryRunner implements IQueryRunner {
+public class ConnectorToolsCandidatesQueryRunner implements IQueryRunner {
 
     private static final String CONNECTOR_TOOLS_QUERY = """
             query getConnectorTools(
               $editingContextId: ID!
               $representationId: ID!
               $sourceDiagramElementId: ID!
-              $targetDiagramElementId: ID!
             ) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
                   representation(representationId: $representationId) {
                     description {
                       ... on DiagramDescription {
-                        connectorTools(
+                        connectorToolsCandidates(
                           sourceDiagramElementId: $sourceDiagramElementId
-                          targetDiagramElementId: $targetDiagramElementId
                         ) {
-                          id
-                          label
-                          iconURL
+                          candidateDescriptionIds
                         }
                       }
                     }
@@ -57,7 +53,7 @@ public class ConnectorToolsQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ConnectorToolsQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public ConnectorToolsCandidatesQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 

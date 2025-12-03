@@ -11,22 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
+import { useSingleClickOnTwoDiagramElementTool } from '../connector/useSingleClickOnTwoDiagramElementTool';
+import { GQLTool } from '../palette/Palette.types';
 import {
   DiagramToolExecutorContextProviderProps,
   DiagramToolExecutorContextValue,
 } from './DiagramToolExecutorContext.types';
 import { useInvokePaletteTool } from './useInvokePaletteTool';
-import { GQLTool } from '../palette/Palette.types';
 
 const defaultValue: DiagramToolExecutorContextValue = {
   executeTool: () => {},
+  invokeConnectorTool: () => {},
 };
 
 export const DiagramToolExecutorContext = React.createContext<DiagramToolExecutorContextValue>(defaultValue);
 
 export const DiagramToolExecutorContextProvider = ({ children }: DiagramToolExecutorContextProviderProps) => {
   const { invokeTool } = useInvokePaletteTool();
-
+  const { invokeConnectorTool } = useSingleClickOnTwoDiagramElementTool();
   const executeTool = (
     x: number,
     y: number,
@@ -38,5 +40,9 @@ export const DiagramToolExecutorContextProvider = ({ children }: DiagramToolExec
     invokeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
   };
 
-  return <DiagramToolExecutorContext.Provider value={{ executeTool }}>{children}</DiagramToolExecutorContext.Provider>;
+  return (
+    <DiagramToolExecutorContext.Provider value={{ executeTool, invokeConnectorTool }}>
+      {children}
+    </DiagramToolExecutorContext.Provider>
+  );
 };

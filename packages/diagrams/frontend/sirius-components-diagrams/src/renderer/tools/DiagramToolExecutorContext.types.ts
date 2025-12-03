@@ -21,6 +21,7 @@ export interface DiagramToolExecutorContextValue {
     onDirectEditClick: () => void,
     tool: GQLTool
   ) => void;
+  invokeConnectorTool: (tool: GQLTool) => void;
 }
 
 export interface DiagramToolExecutorContextProviderProps {

@@ -11,11 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPaletteDivider, GQLPaletteEntry, GQLTool, GQLToolSection } from './Palette.types';
-
-export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
-
-export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSection =>
-  entry.__typename === 'PaletteDivider';
-
-export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
+export interface UseTemporaryEdgeValue {
+  addTempConnectionLine: (sourceDiagramElementId: string, targetDiagramElementId: string) => void;
+  removeTempConnectionLine: () => void;
+}

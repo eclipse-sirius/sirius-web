@@ -22,15 +22,12 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PaletteDivider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -39,7 +36,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -47,7 +43,6 @@ import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -84,8 +79,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
-    private final IDiagramDescriptionService diagramDescriptionService;
-
     private final IDiagramIdProvider diagramIdProvider;
 
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
@@ -95,12 +88,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private final List<IPaletteToolsProvider> paletteToolsProviders;
 
     public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
-            IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider,
+            IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider,
             IViewAQLInterpreterFactory aqlInterpreterFactory, List<IPaletteToolsProvider> paletteToolsProviders) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
-        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
@@ -127,10 +119,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 palette = this.getDiagramPalette(diagramDescription, viewDiagramDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
                 variableManager.put(Node.SELECTED_NODE, diagramElement);
-                palette = this.getNodePalette(editingContext, diagramDescription, diagramElement, nodeDescription, variableManager, interpreter);
+                palette = this.getNodePalette(editingContext, diagramElement, nodeDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
                 variableManager.put(Edge.SELECTED_EDGE, diagramElement);
-                palette = this.getEdgePalette(editingContext, diagramDescription, edgeDescription, diagramElement, variableManager, interpreter);
+                palette = this.getEdgePalette(editingContext, edgeDescription, diagramElement, variableManager, interpreter);
             }
         }
         return palette;
@@ -206,7 +198,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, Object diagramElement, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getNodePalette(IEditingContext editingContext, Object diagramElement, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
         Palette nodePalette = null;
         var toolFinder = new ToolFinder();
@@ -234,13 +226,9 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .forEach(paletteEntries::add);
-                toolFinder.findEdgeTools(viewNodeDescription).stream()
-                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
-                        .forEach(paletteEntries::add);
 
                 toolFinder.findToolSections(viewNodeDescription).stream()
-                        .map(nodeToolSection -> this.createToolSection(nodeToolSection, diagramDescription, nodeDescription, variableManager, interpreter))
+                        .map(nodeToolSection -> this.createToolSection(nodeToolSection, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
                 paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
@@ -256,17 +244,12 @@ public class ViewPaletteProvider implements IPaletteProvider {
         return nodePalette;
     }
 
-    private ToolSection createToolSection(NodeToolSection toolSection, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolSelectionId = this.idProvider.apply(toolSection).toString();
 
-        var tools = new ArrayList<ITool>();
-        tools.addAll(toolSection.getNodeTools().stream()
+        var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                 .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
-                .toList());
-        tools.addAll(toolSection.getEdgeTools().stream()
-                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
                 .toList());
 
         return ToolSection.newToolSection(toolSelectionId)
@@ -276,31 +259,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        String toolId = this.idProvider.apply(viewEdgeTool).toString();
-        List<String> iconURLProvider = this.edgeToolIconURLProvider(viewEdgeTool, interpreter, variableManager);
-        String dialogDescriptionId = "";
-        if (viewEdgeTool.getDialogDescription() != null) {
-            dialogDescriptionId = this.diagramIdProvider.getId(viewEdgeTool.getDialogDescription());
-        }
-
-        List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                .sources(List.of(diagramElementDescription))
-                .targets(viewEdgeTool.getTargetElementDescriptions().stream()
-                        .map(viewDiagramElementDescription -> this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
-                        .flatMap(Optional::stream)
-                        .toList())
-                .build());
-
-        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
-                .label(viewEdgeTool.getName())
-                .iconURL(iconURLProvider)
-                .candidates(candidates)
-                .dialogDescriptionId(dialogDescriptionId)
-                .build();
-    }
-
-    private Palette getEdgePalette(IEditingContext editingContext, DiagramDescription diagramDescription, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
@@ -328,10 +287,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .forEach(paletteEntries::add);
-                toolFinder.findEdgeTools(viewEdgeDescription).stream()
-                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, edgeDescription, variableManager, interpreter))
-                        .forEach(paletteEntries::add);
+
                 toolFinder.findToolSections(viewEdgeDescription).stream()
                         .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
                         .forEach(paletteEntries::add);
@@ -382,17 +338,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
         String iconURLsExpression = nodeTool.getIconURLsExpression();
         if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
             iconURL = List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON);
-        } else {
-            iconURL = this.evaluateListString(interpreter, variableManager, iconURLsExpression);
-        }
-        return iconURL;
-    }
-
-    private List<String> edgeToolIconURLProvider(EdgeTool edgeTool, AQLInterpreter interpreter, VariableManager variableManager) {
-        List<String> iconURL = null;
-        String iconURLsExpression = edgeTool.getIconURLsExpression();
-        if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
-            iconURL = List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON);
         } else {
             iconURL = this.evaluateListString(interpreter, variableManager, iconURLsExpression);
         }
