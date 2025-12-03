@@ -90,7 +90,8 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
 
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
-        var borderNodeDescription = this.getChildrenBorderDescription(colorProvider);
+        var borderNodeNorthDescription = this.getChildrenBorderDescription(colorProvider, "north");
+        var borderNodeEastDescription = this.getChildrenBorderDescription(colorProvider, "east");
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -108,7 +109,10 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().onNorthAtCreationBorderNodes(borderNodeDescription).build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription()
+                                        .onNorthAtCreationBorderNodes(borderNodeNorthDescription)
+                                        .onEastAtCreationBorderNodes(borderNodeEastDescription)
+                                        .build())
                                 .build()
                 )
                 .insideLabel(
@@ -137,16 +141,16 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
-                .borderNodesDescriptions(borderNodeDescription)
+                .borderNodesDescriptions(borderNodeNorthDescription, borderNodeEastDescription)
                 .build();
     }
 
-    private NodeDescription getChildrenBorderDescription(IColorProvider colorProvider) {
+    private NodeDescription getChildrenBorderDescription(IColorProvider colorProvider, String side) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Border")
+                .name("Border" + side)
                 .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Border")
-                .semanticCandidatesExpression("aql:self.eContents()")
+                .semanticCandidatesExpression("aql:self.eContents()->select( b | b.name=='" + side + "')")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
                 .userResizable(UserResizableDirection.BOTH)
