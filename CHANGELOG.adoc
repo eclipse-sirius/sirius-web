@@ -37,6 +37,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5832[#5832] [sirius-web] Fix an error when duplicating a project while a representation is opened in the original project.
 - https://github.com/eclipse-sirius/sirius-web/issues/5720[#5720] [explorer] Fixed an issue where the initial search for an element with the Omnibox would not reveal the selected element in the _Explorer_
 - https://github.com/eclipse-sirius/sirius-web/issues/5896[#5896] Add missing translations for edge appearance menu
+- https://github.com/eclipse-sirius/sirius-web/issues/5912[#5912] [diagram] Fix an issue where edge handles could be rendered in the wrong position
 
 
 === New Features
