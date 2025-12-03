@@ -168,13 +168,14 @@ export const useResizeChange = (): UseResizeChangeValue => {
 
   const transformResizeListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
-      const newChanges: NodeChange<Node<NodeData>>[] = [];
+      const newResizeListContainChanges: NodeChange<Node<NodeData>>[] = [];
+      const newBorderNodeMoveChanges: NodeChange<Node<NodeData>>[] = [];
       const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((change) => {
         if (isResize(change)) {
           const resizedNode = getNodes().find((node) => change.id === node.id);
           if (resizedNode) {
-            newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
-            newChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
+            newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
+            newBorderNodeMoveChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
           }
         }
         if (isMove(change)) {
@@ -187,7 +188,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
         }
         return change;
       });
-      return [...updatedChanges, ...newChanges];
+      return [...newBorderNodeMoveChanges, ...updatedChanges, ...newResizeListContainChanges];
     },
     [getNodes]
   );
