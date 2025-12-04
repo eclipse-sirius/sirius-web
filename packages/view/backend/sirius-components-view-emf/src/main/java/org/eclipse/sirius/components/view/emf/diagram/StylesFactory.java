@@ -124,11 +124,14 @@ public final class StylesFactory {
         return type.orElse(NodeType.NODE_RECTANGLE);
     }
 
-    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, ILayoutStrategy childrenLayoutStrategy, VariableManager variableManager) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
-                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").childrenLayoutStrategy(childrenLayoutStrategy).build();
+                result = IconLabelNodeStyle.newIconLabelNodeStyle()
+                        .background("transparent")
+                        .childrenLayoutStrategy(childrenLayoutStrategy)
+                        .build();
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
@@ -142,7 +145,7 @@ public final class StylesFactory {
                 break;
             default:
                 for (INodeStyleProvider nodeStyleProvider : this.nodeStyleProviders) {
-                    Optional<INodeStyle> optionalNodeStyle = nodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId, childrenLayoutStrategy);
+                    Optional<INodeStyle> optionalNodeStyle = nodeStyleProvider.createNodeStyle(nodeStyle, childrenLayoutStrategy, this.interpreter, variableManager);
                     if (optionalNodeStyle.isPresent()) {
                         result = optionalNodeStyle.get();
                         break;

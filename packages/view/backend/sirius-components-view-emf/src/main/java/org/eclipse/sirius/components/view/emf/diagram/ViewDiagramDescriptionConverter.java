@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
@@ -270,8 +269,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
-            Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
-            ILayoutStrategy childrenLayoutStrategy = new FreeFormLayoutStrategy(); //FreeForm as default value
+            ILayoutStrategy childrenLayoutStrategy = new FreeFormLayoutStrategy(); // FreeForm as default value
 
             LayoutStrategyDescription childrenLayoutStrategyFromViewModel = effectiveStyle.getChildrenLayoutStrategy();
             if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription listLayoutStrategyDescription) {
@@ -279,7 +277,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
-            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy);
+            return stylesFactory.createNodeStyle(effectiveStyle, childrenLayoutStrategy, variableManager);
         };
 
         Map<String, BorderNodePosition> initialBorderNodePositions = this.getInitialBorderNodePositions(viewNodeDescription);

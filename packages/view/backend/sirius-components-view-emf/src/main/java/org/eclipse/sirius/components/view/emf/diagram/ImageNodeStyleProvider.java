@@ -19,6 +19,8 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -47,7 +49,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, ILayoutStrategy childrenLayoutStrategy, AQLInterpreter interpreter, VariableManager variableManager) {
         Optional<INodeStyle> optionalNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE)) && nodeStyle instanceof ImageNodeStyleDescription imageNodeStyleDescription) {

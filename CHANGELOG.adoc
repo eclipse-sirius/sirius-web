@@ -106,6 +106,8 @@ For tests with calls such as `this.givenCreatedDiagramSubscription.createAndSubs
 For tests where the result of a query or mutation is parsed using `JsonPath`, the main change should be switching from `JsonPath.read(result, "$.data.viewer...")` to `JsonPath.read(result.data(), "$.data.viewer...")`.
 - Remove `IGivenCommittedTransaction` since it has been replaced a long time ago by a proper initialization of our test state using `@GivenSiriusWebServer`.
 Downstream projects relying on this should switch to a better initialization or their test or use `TestTransaction` directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/5765[#5765] [diagram] The method `INodeStyleProvider#createNodeStyle` has now access to both the AQL interpreter and the variable manager to compute expressions.
+The optional editing context id argument has been removed since it can be computed from the variable manager.
 
 
 === Dependency update
@@ -156,6 +158,8 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
 - https://github.com/eclipse-sirius/sirius-web/issues/5893[#5893] [diagram] Add a new quick tool to reset label resizing
+- https://github.com/eclipse-sirius/sirius-web/issues/5765[#5765] [diagram] Add the possibility to interpret expressions in the style of a node.
+An example has been added in Sirius-Web with the new _opacity_ field in the custom _ellipse_ node.
 
 
 === Improvements
