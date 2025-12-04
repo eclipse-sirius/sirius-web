@@ -67,6 +67,49 @@ Most of our commit messages do not contain a long description since those detail
 Contributions which have a visual impact should try to provide screenshots showing the changes.
 These images referenced from the changelog should be added in `doc/images`, not in the top-level directory.
 
+## Release
+
+We are using a calendar versioning approach for our tags and releases.
+We are performing a new major release every two months following the given planning:
+
+- Week 1 to 4: development of new features and bug fixes
+- Week 5: First release candidate (RC1)
+- Week 6: Homologation of the first release candidate and development of bug fixes
+- Week 7: Second release candidate (RC2)
+- Week 8: General availability (GA)
+
+The GA version will always end with a `.0` such as `v2025.8.0` or `v2025.10.0`.
+Those versions have been extensively tested by the development team during the homologation phase.
+On top of this release, we will perform the release of various milestones with number like `v2025.8.1` (the first milestone after `v2025.8.0`), `v2025.8.2`, etc.
+Milestones are not maintenance versions of the previous GA but instead intermediate versions towards the next stable release.
+As such, they will include breaking changes that are documented in the file CHANGELOG.adoc at the root of the Git repository.
+The release candidate will use the same naming strategy as regular milestones.
+
+For each release, a Github release will be performed with the following strategy.
+
+In case we are publishing a new GA version such as `v2025.10.0`, a new Github release will be created with the name of the tag (i.e. `v2025.10.0`), this Github release will be identified as the latest stable release and use the previous GA version (i.e. `v2025.8.0`) as its previous release.
+This previous release is used to create the changelog of the Github release.
+
+If we are publishing a regular milestone, we will use the following pattern for the Github release `v2025.10.3 - Milestone 3 for v2025.12.0` and we will use either the last stable release (in case of a `.1` milestone) or the latest milestone as the previous version to create the Github release changelog.
+Those releases will be identified as "pre-release" in Github to distinguish them from the stable releases.
+If will help consumers understand that those milestones will not provide the same level of maturity as stable releases since the entire homologation process is not performed.
+
+Finally, if we are publishing a release candidate, we will instead rely on the pattern `v2025.10.5 - RC1 for v2025.12.0` and we will use the latest milestone as the previous version to create the changelog.
+
+In the end, our Github releases should contain releases such as these ones:
+
+[cols="1,2,1", options="header"]
+|====
+| Tag | Title | Previous version
+| `v2025.12.0` | `v2025.12.0` | `v2025.10.0`
+| `v2025.12.1` | `v2025.12.1 - Milestone 1 for v2026.1.0` | `v2025.12.0`
+| `v2025.12.2` | `v2025.12.2 - Milestone 2 for v2026.1.0` | `v2025.12.1`
+| `v2025.12.3` | `v2025.12.3 - Milestone 3 for v2026.1.0` | `v2025.12.2`
+| `v2025.12.4` | `v2025.12.4 - RC1 for v2026.1.0` | `v2025.12.3`
+| `v2025.12.5` | `v2025.12.5 - RC2 for v2026.1.0` | `v2025.12.4`
+| `v2026.1.0` | `v2026.1.0` | `v2025.12.0`
+|====
+
 ## Developer resources
 
 Information regarding source code management, builds, coding standards, and
