@@ -15,10 +15,13 @@ package org.eclipse.sirius.web.application.project.services;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.AddProjectNaturesInput;
+import org.eclipse.sirius.web.application.project.dto.AddProjectNaturesSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
@@ -28,11 +31,11 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.data.domain.KeysetScrollPosition;
@@ -101,6 +104,24 @@ public class ProjectApplicationService implements IProjectApplicationService {
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
             payload = new RenameProjectSuccessPayload(input.id());
+        }
+        return payload;
+    }
+
+    @Override
+    @Transactional
+    public IPayload addProjectNatures(AddProjectNaturesInput input) {
+        var results = input.natures().stream()
+                .map(nature -> this.projectUpdateService.addNature(input, input.projectId(), nature))
+                .toList();
+
+        IPayload payload = null;
+        var failures = results.stream().filter(Failure.class::isInstance).map(Failure.class::cast).toList();
+        if (!failures.isEmpty()) {
+            String messages = failures.stream().map(Failure::message).collect(Collectors.joining("\n"));
+            payload = new ErrorPayload(input.id(), messages);
+        } else {
+            payload = new AddProjectNaturesSuccessPayload(input.id());
         }
         return payload;
     }

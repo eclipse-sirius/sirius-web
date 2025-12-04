@@ -31,7 +31,6 @@ export const getProjectTemplatesQuery = gql`
             id
             label
             imageURL
-            natures
           }
         }
         pageInfo {

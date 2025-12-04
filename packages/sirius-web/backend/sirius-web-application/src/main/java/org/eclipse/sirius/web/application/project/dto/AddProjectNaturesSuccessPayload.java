@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
-import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * The input object of the create project from a template mutation.
+ * Used to indicate that the requested natures have been successfully added to a project.
  *
  * @author pcdavid
  */
-public record CreateProjectFromTemplateInput(@NotNull UUID id, @NotNull String name, @NotNull String templateId, @NotNull List<String> natures) implements IInput {
+public record AddProjectNaturesSuccessPayload(@NotNull UUID id) implements IPayload {
 }

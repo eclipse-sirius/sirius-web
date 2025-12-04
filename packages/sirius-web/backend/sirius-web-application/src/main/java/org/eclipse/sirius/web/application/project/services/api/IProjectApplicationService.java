@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.project.dto.AddProjectNaturesInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
@@ -36,6 +37,8 @@ public interface IProjectApplicationService {
     IPayload createProject(CreateProjectInput input);
 
     IPayload renameProject(RenameProjectInput input);
+
+    IPayload addProjectNatures(AddProjectNaturesInput input);
 
     IPayload deleteProject(DeleteProjectInput input);
 }
