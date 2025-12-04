@@ -77,17 +77,25 @@ public class ResetEdgeAppearanceEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof ResetEdgeAppearanceInput resetAppearanceInput) {
-            String edgeId = resetAppearanceInput.edgeId();
-            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
-            if (optionalEdge.isPresent()) {
-                List<IAppearanceChange> resetChanges = new ArrayList<>();
-                resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetEdgeAppearanceChange(edgeId, propertyToReset)));
-                diagramContext.diagramEvents().add(new EditAppearanceEvent(resetChanges));
+            List<String> edgeIds = resetAppearanceInput.edgeIds();
+            List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<String> elementNotFoundIds = new ArrayList<>();
+            for (String edgeId : edgeIds) {
+                Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
+                if (optionalEdge.isPresent()) {
+                    resetAppearanceInput.propertiesToReset()
+                            .forEach(propertyToReset -> appearanceChanges.add(new ResetEdgeAppearanceChange(edgeId, propertyToReset)));
+                } else {
+                    elementNotFoundIds.add(edgeId);
+                }
+            }
+            if (!elementNotFoundIds.isEmpty()) {
+                String nodeNotFoundMessage = this.messageService.nodeNotFound(String.join(" - ", elementNotFoundIds));
+                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
+            } else {
+                diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
-            } else {
-                String nodeNotFoundMessage = this.messageService.nodeNotFound(edgeId);
-                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             }
         }
 

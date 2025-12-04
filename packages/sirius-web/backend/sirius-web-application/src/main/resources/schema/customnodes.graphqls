@@ -19,7 +19,7 @@ input EditEllipseNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: EllipseNodeAppearanceInput!
 }
 

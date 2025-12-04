@@ -34,16 +34,16 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const ImageNodePart = ({ nodeId, style, customizedStyleProperties }: ImageNodePartProps) => {
+export const ImageNodePart = ({ nodeIds, style, customizedStyleProperties }: ImageNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateImageNodeAppearance } = useUpdateImageNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLImageNodeAppearanceInput>) =>
-    updateImageNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateImageNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

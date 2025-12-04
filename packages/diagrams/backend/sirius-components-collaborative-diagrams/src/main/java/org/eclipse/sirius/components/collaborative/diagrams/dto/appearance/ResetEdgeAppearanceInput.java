@@ -22,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author mcharfadi
  */
-public record ResetEdgeAppearanceInput(UUID id, String editingContextId, String representationId, String edgeId, List<String> propertiesToReset) implements IDiagramInput {
+public record ResetEdgeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> edgeIds, List<String> propertiesToReset) implements IDiagramInput {
 
 }

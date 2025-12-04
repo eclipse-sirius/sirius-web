@@ -119,7 +119,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 
@@ -143,7 +143,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     List.of("BORDER_COLOR", "BORDER_RADIUS", "BORDER_SIZE", "BORDER_STYLE")
             );
 
@@ -203,7 +203,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 
@@ -225,7 +225,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     List.of("BORDER_RADIUS")
             );
 

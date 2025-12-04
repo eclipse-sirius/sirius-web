@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -21,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author nvannier
  */
-public record EditRectangularNodeAppearanceInput(UUID id, String editingContextId, String representationId, String nodeId, RectangularNodeAppearanceInput appearance) implements IDiagramInput {
+public record EditRectangularNodeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, RectangularNodeAppearanceInput appearance) implements IDiagramInput {
 
 }

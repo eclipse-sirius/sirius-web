@@ -17,8 +17,8 @@ export interface UseResetLabelAppearanceValue {
   resetLabelStyleProperties: (
     editingContextId: string,
     representationId: string,
-    diagramElementId: string,
-    labelId: string,
+    diagramElementIds: string[],
+    labelIds: string[],
     propertiesToReset: string[]
   ) => void;
 }
@@ -33,8 +33,8 @@ export interface GQLResetLabelAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  diagramElementId: string;
-  labelId: string;
+  diagramElementIds: string[];
+  labelIds: string[];
   propertiesToReset: string[];
 }
 

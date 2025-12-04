@@ -12,7 +12,7 @@ input EditRectangularNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: RectangularNodeAppearanceInput!
 }
 
@@ -30,7 +30,7 @@ input EditImageNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: ImageNodeAppearanceInput!
 }
 
@@ -47,8 +47,8 @@ input EditLabelAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  diagramElementId: ID!
-  labelId: String!
+  diagramElementIds: [ID!]!
+  labelIds: [ID!]!
   appearance: LabelAppearanceInput!
 }
 
@@ -73,8 +73,8 @@ input ResetLabelAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  diagramElementId: ID!
-  labelId: ID!
+  diagramElementIds: [ID!]!
+  labelIds: [ID!]!
   propertiesToReset: [String!]!
 }
 
@@ -84,7 +84,7 @@ input ResetNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   propertiesToReset: [String!]!
 }
 
@@ -94,7 +94,7 @@ input EditEdgeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  edgeId: ID!
+  edgeIds: [ID!]!
   appearance: EdgeAppearanceInput!
 }
 
@@ -114,7 +114,7 @@ input ResetEdgeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  edgeId: ID!
+  edgeIds: [ID!]!
   propertiesToReset: [String!]!
 }
 

@@ -22,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author nvannier
  */
-public record ResetNodeAppearanceInput(UUID id, String editingContextId, String representationId, String nodeId, List<String> propertiesToReset) implements IDiagramInput {
+public record ResetNodeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, List<String> propertiesToReset) implements IDiagramInput {
 
 }

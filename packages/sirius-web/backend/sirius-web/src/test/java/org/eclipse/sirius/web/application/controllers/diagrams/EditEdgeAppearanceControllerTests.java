@@ -123,7 +123,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationEdgeId.get(),
+                    List.of(siriusWebApplicationEdgeId.get()),
                     appearanceInput
             );
 
@@ -149,7 +149,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationEdgeId.get(),
+                    List.of(siriusWebApplicationEdgeId.get()),
                     List.of("COLOR", "SIZE", "LINESTYLE", "SOURCE_ARROW", "TARGET_ARROW", "EDGE_TYPE")
             );
 
@@ -213,7 +213,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationEdgeId.get(),
+                    List.of(siriusWebApplicationEdgeId.get()),
                     appearanceInput
             );
 
@@ -235,7 +235,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationEdgeId.get(),
+                    List.of(siriusWebApplicationEdgeId.get()),
                     List.of("COLOR")
             );
 

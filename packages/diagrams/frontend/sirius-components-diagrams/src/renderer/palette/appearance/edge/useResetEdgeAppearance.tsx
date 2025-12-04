@@ -50,7 +50,7 @@ export const useResetEdgeAppearance = (): UseResetEdgeAppearanceValue => {
   const resetEdgeStyleProperties = (
     editingContextId: string,
     representationId: string,
-    edgeId: string,
+    edgeIds: string[],
     propertiesToReset: string[]
   ) =>
     resetEdgeAppearance({
@@ -59,7 +59,7 @@ export const useResetEdgeAppearance = (): UseResetEdgeAppearanceValue => {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          edgeId,
+          edgeIds,
           propertiesToReset,
         },
       },

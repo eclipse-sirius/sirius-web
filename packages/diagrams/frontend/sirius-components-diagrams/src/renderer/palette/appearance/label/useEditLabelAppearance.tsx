@@ -15,8 +15,8 @@ import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLEditLabelAppearanceData,
   GQLEditLabelAppearanceVariables,
-  UseEditLabelAppearanceValue,
   GQLLabelAppearanceInput,
+  UseEditLabelAppearanceValue,
 } from './useEditLabelAppearance.types';
 
 export const editLabelAppearanceMutation = gql`
@@ -50,8 +50,8 @@ export const useEditLabelAppearance = (): UseEditLabelAppearanceValue => {
   const updateLabelAppearance = (
     editingContextId: string,
     representationId: string,
-    diagramElementId: string,
-    labelId: string,
+    diagramElementIds: string[],
+    labelIds: string[],
     appearance: Partial<GQLLabelAppearanceInput>
   ) => {
     editLabelAppearance({
@@ -60,8 +60,8 @@ export const useEditLabelAppearance = (): UseEditLabelAppearanceValue => {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          diagramElementId,
-          labelId,
+          diagramElementIds,
+          labelIds,
           appearance,
         },
       },

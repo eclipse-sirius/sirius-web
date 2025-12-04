@@ -44,8 +44,8 @@ const getLineStyleOptions = (t: TFunction) => [
 ];
 
 export const LabelAppearancePart = ({
-  diagramElementId,
-  labelId,
+  diagramElementIds,
+  labelIds,
   position,
   style,
   customizedStyleProperties,
@@ -58,10 +58,10 @@ export const LabelAppearancePart = ({
   const lineStyleOptions = useMemo(() => getLineStyleOptions(t), [t]);
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetLabelStyleProperties(editingContextId, diagramId, diagramElementId, labelId, [customizedStyleProperty]);
+    resetLabelStyleProperties(editingContextId, diagramId, diagramElementIds, labelIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLLabelAppearanceInput>) =>
-    updateLabelAppearance(editingContextId, diagramId, diagramElementId, labelId, newValue);
+    updateLabelAppearance(editingContextId, diagramId, diagramElementIds, labelIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

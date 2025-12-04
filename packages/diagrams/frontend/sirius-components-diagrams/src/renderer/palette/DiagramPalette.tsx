@@ -100,7 +100,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
 
   const extensionSections = useMemo(() => {
     const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
-    if (diagramElementIds.length === 1) {
+    if (diagramElementIds.length >= 1) {
       sectionComponents.push(
         <PaletteExtensionSection
           component={PaletteAppearanceSection}
@@ -110,15 +110,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
           key={'appearance'}
         />
       );
-      sectionComponents.push(
-        <PaletteExtensionSection
-          component={ShowInSection}
-          title={t('showIn')}
-          id="show_in"
-          key={'show_in'}
-          onClose={hideDiagramPalette}
-        />
-      );
     }
     if (diagramElementIds.length > 1) {
       sectionComponents.push(
@@ -126,6 +117,17 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
           component={GroupPaletteLayoutSection}
           id={'layout_section'}
           title={'Layout'}
+          onClose={hideDiagramPalette}
+        />
+      );
+    }
+    if (diagramElementIds.length === 1) {
+      sectionComponents.push(
+        <PaletteExtensionSection
+          component={ShowInSection}
+          title={t('showIn')}
+          id="show_in"
+          key={'show_in'}
           onClose={hideDiagramPalette}
         />
       );
