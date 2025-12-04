@@ -39,6 +39,8 @@ import org.eclipse.emf.ecore.EObject;
  * Entries</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression <em>Depth Level
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getHasChildrenExpression <em>Has Children
+ * Expression</em>}</li>
  * </ul>
  *
  * @model
@@ -243,5 +245,28 @@ public interface RowDescription extends EObject {
      * @see #getDepthLevelExpression()
      */
     void setDepthLevelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Has Children Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Has Children Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setHasChildrenExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_HasChildrenExpression()
+     */
+    String getHasChildrenExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowDescription#getHasChildrenExpression
+     * <em>Has Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Has Children Expression</em>' attribute.
+     * @generated
+     * @see #getHasChildrenExpression()
+     */
+    void setHasChildrenExpression(String value);
 
 } // RowDescription

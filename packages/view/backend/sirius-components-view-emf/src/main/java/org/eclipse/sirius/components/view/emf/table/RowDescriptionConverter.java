@@ -52,6 +52,7 @@ public class RowDescriptionConverter {
                 .isResizablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getIsResizableExpression()).asBoolean().orElse(false))
                 .initialHeightProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getInitialHeightExpression()).asInt().orElse(-1))
                 .depthLevelProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getDepthLevelExpression()).asInt().orElse(0))
+                .hasChildrenProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getHasChildrenExpression()).asBoolean().orElse(false))
                 .build();
     }
 
