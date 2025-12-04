@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
@@ -27,5 +29,5 @@ public interface INodeStyleProvider {
 
     Optional<String> getNodeType(NodeStyleDescription nodeStyle);
 
-    Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy);
+    Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, ILayoutStrategy childrenLayoutStrategy, AQLInterpreter interpreter, VariableManager variableManager);
 }
