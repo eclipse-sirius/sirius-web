@@ -36,16 +36,16 @@ const getLineStyleOptions = (t: TFunction) => [
   { value: 'Dash_Dot', label: t('dashDot') },
 ];
 
-export const RectangularNodePart = ({ nodeId, style, customizedStyleProperties }: RectangularNodePartProps) => {
+export const RectangularNodePart = ({ nodeIds, style, customizedStyleProperties }: RectangularNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateRectangularNodeAppearance } = useUpdateRectangularNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'rectangularNodePart' });
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLRectangularNodeAppearanceInput>) =>
-    updateRectangularNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateRectangularNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

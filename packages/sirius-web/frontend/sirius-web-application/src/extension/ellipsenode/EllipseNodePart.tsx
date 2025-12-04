@@ -36,16 +36,16 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const EllipseNodePart = ({ nodeId, style, customizedStyleProperties }: EllipseNodePartProps) => {
+export const EllipseNodePart = ({ nodeIds, style, customizedStyleProperties }: EllipseNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateEllipseNodeAppearance } = useUpdateEllipseNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLEllipseNodeAppearanceInput>) =>
-    updateEllipseNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateEllipseNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

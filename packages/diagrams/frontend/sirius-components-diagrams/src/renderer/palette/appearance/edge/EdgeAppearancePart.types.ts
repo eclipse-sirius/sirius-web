@@ -13,7 +13,7 @@
 import { GQLEdgeStyle } from './../../../../graphql/subscription/edgeFragment.types';
 
 export interface EdgeAppearancePartProps {
-  edgeId: string;
+  edgeIds: string[];
   style: GQLEdgeStyle;
   customizedStyleProperties: string[];
 }

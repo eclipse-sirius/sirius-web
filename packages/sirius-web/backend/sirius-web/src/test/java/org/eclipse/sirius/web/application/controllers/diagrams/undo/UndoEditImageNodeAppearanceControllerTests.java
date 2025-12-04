@@ -130,7 +130,7 @@ public class UndoEditImageNodeAppearanceControllerTests extends AbstractIntegrat
                     mutationInputId,
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 
@@ -215,7 +215,7 @@ public class UndoEditImageNodeAppearanceControllerTests extends AbstractIntegrat
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 
