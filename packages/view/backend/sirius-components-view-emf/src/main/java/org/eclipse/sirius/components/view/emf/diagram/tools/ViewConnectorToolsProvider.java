@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsP
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -170,6 +171,10 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
 
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(edgeTool).toString().getBytes()).toString();
 
+        List<KeyBinding> keyBindings = edgeTool.getKeyBindings().stream()
+                .map(this::createKeyBinding)
+                .toList();
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
                 .iconURL(this.getToolIconURLs(interpreter, edgeTool.getIconURLsExpression()))
@@ -182,6 +187,16 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
                         )
                 )
                 .dialogDescriptionId(this.diagramIdProvider.getId(edgeTool.getDialogDescription()))
+                .keyBindings(keyBindings)
+                .build();
+    }
+
+    private KeyBinding createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding) {
+        return KeyBinding.newKeyBinding()
+                .isCtrl(viewKeyBinding.isCtrl())
+                .isMeta(viewKeyBinding.isMeta())
+                .isAlt(viewKeyBinding.isAlt())
+                .key(viewKeyBinding.getKey())
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,6 +103,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.TOOL__BODY);
+            this.childrenFeatures.add(DiagramPackage.Literals.TOOL__KEY_BINDINGS);
         }
         return this.childrenFeatures;
     }
@@ -158,6 +159,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.TOOL__BODY:
+            case DiagramPackage.TOOL__KEY_BINDINGS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -193,6 +195,8 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createIf()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.TOOL__BODY, ViewFactory.eINSTANCE.createFor()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.TOOL__KEY_BINDINGS, ViewFactory.eINSTANCE.createKeyBinding()));
     }
 
     /**
