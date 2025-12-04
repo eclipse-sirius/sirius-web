@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.diagram.dto;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,6 @@ import java.util.UUID;
  *
  * @author mcharfadi
  */
-public record EditEllipseNodeAppearanceInput(UUID id, String editingContextId, String representationId, String nodeId, EllipseNodeAppearanceInput appearance) implements IDiagramInput {
+public record EditEllipseNodeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, EllipseNodeAppearanceInput appearance) implements IDiagramInput {
 
 }

@@ -13,6 +13,7 @@
 
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -22,5 +23,5 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author sbegaudeau
  */
-public record EditLabelAppearanceInput(UUID id, String editingContextId, String representationId, String diagramElementId, String labelId, LabelAppearanceInput appearance) implements IDiagramInput {
+public record EditLabelAppearanceInput(UUID id, String editingContextId, String representationId, List<String> diagramElementIds, List<String> labelIds, LabelAppearanceInput appearance) implements IDiagramInput {
 }

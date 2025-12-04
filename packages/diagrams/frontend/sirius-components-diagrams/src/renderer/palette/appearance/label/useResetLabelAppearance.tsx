@@ -50,8 +50,8 @@ export const useResetLabelAppearance = (): UseResetLabelAppearanceValue => {
   const resetLabelStyleProperties = (
     editingContextId: string,
     representationId: string,
-    diagramElementId: string,
-    labelId: string,
+    diagramElementIds: string[],
+    labelIds: string[],
     propertiesToReset: string[]
   ) =>
     resetLabelApparence({
@@ -60,8 +60,8 @@ export const useResetLabelAppearance = (): UseResetLabelAppearanceValue => {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          diagramElementId,
-          labelId,
+          diagramElementIds,
+          labelIds,
           propertiesToReset,
         },
       },
