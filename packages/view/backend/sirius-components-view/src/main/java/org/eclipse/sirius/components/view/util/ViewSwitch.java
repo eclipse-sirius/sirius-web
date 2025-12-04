@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
@@ -226,6 +227,13 @@ public class ViewSwitch<T> extends Switch<T> {
             case ViewPackage.TEXT_STYLE_DESCRIPTION: {
                 TextStyleDescription textStyleDescription = (TextStyleDescription) theEObject;
                 T result = this.caseTextStyleDescription(textStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.KEY_BINDING: {
+                KeyBinding keyBinding = (KeyBinding) theEObject;
+                T result = this.caseKeyBinding(keyBinding);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -490,6 +498,20 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTextStyleDescription(TextStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Key Binding</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Key Binding</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseKeyBinding(KeyBinding object) {
         return null;
     }
 

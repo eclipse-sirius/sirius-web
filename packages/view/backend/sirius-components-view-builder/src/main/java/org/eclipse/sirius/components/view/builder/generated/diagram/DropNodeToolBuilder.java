@@ -73,6 +73,18 @@ public class DropNodeToolBuilder {
     }
 
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public DropNodeToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getDropNodeTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for AcceptedNodeTypes.
      *
      * @generated

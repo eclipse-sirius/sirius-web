@@ -149,5 +149,15 @@ public class ViewBuilders {
         return new TextStyleDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a KeyBindingBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public KeyBindingBuilder newKeyBinding() {
+        return new KeyBindingBuilder();
+    }
+
 
 }

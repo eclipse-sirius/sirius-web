@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.diagram;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.Operation;
 
 /**
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.view.Operation;
  * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getKeyBindings <em>Key Bindings</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getTool()
@@ -90,5 +92,16 @@ public interface Tool extends EObject {
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Key Bindings</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.KeyBinding}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Key Bindings</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getTool_KeyBindings()
+     * @model containment="true"
+     * @generated
+     */
+    EList<KeyBinding> getKeyBindings();
 
 } // Tool

@@ -134,6 +134,14 @@ public interface ViewFactory extends EFactory {
     TextStyleDescription createTextStyleDescription();
 
     /**
+     * Returns a new object of class '<em>Key Binding</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Key Binding</em>'.
+     * @generated
+     */
+    KeyBinding createKeyBinding();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
