@@ -11,14 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, Edge } from '@xyflow/react';
-import { NodeData, EdgeData } from '../../../DiagramRenderer.types';
-
 export interface PaletteAppearanceSectionContributionProps {
-  canHandle: (node: Node<NodeData> | undefined, edge: Edge<EdgeData> | undefined) => boolean;
+  canHandle: (diagramElementIds: string[]) => boolean;
   component: React.ComponentType<PaletteAppearanceSectionContributionComponentProps>;
 }
 
 export interface PaletteAppearanceSectionContributionComponentProps {
-  diagramElementId: string;
+  diagramElementIds: string[];
 }

@@ -50,7 +50,7 @@ export const useEditEdgeAppearance = (): UseEditEdgeAppearanceValue => {
   const updateEdgeAppearance = (
     editingContextId: string,
     representationId: string,
-    edgeId: string,
+    edgeIds: string[],
     appearance: Partial<GQLEdgeAppearanceInput>
   ) => {
     editEdgeAppearance({
@@ -59,7 +59,7 @@ export const useEditEdgeAppearance = (): UseEditEdgeAppearanceValue => {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          edgeId,
+          edgeIds,
           appearance,
         },
       },

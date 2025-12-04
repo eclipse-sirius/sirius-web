@@ -22,28 +22,29 @@ import { EllipseNodePart } from './EllipseNodePart';
 import { GQLEllipseNodeStyle } from './EllipseNodePart.types';
 
 export const EllipseNodeAppearanceSection = ({
-  diagramElementId,
+  diagramElementIds,
 }: PaletteAppearanceSectionContributionComponentProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
-
-  if (!nodeData) {
+  const nodeDatas = useNodesData<Node<NodeData>>(diagramElementIds).map((nodeData) => nodeData.data);
+  const data = nodeDatas.at(nodeDatas.length - 1);
+  if (!data) {
     return null;
   }
+  const insideLabelsIds = nodeDatas.flatMap((nodeData) => nodeData.insideLabel?.id || []);
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'ellipseNodeAppearanceSection' });
   return (
     <>
       <EllipseNodePart
-        nodeId={diagramElementId}
-        style={nodeData.data.nodeAppearanceData.gqlStyle as GQLEllipseNodeStyle}
-        customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
+        nodeIds={diagramElementIds}
+        style={data.nodeAppearanceData.gqlStyle as GQLEllipseNodeStyle}
+        customizedStyleProperties={data.nodeAppearanceData.customizedStyleProperties}
       />
-      {nodeData.data.insideLabel ? (
+      {data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={nodeData.data.insideLabel.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={insideLabelsIds}
           position={t('insideLabel')}
-          style={nodeData.data.insideLabel.appearanceData.gqlStyle}
-          customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
+          style={data.insideLabel.appearanceData.gqlStyle}
+          customizedStyleProperties={data.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
     </>

@@ -21,7 +21,7 @@ export interface GQLEllipseNodeStyle extends GQLNodeStyle {
 }
 
 export interface EllipseNodePartProps {
-  nodeId: string;
+  nodeIds: string[];
   style: GQLEllipseNodeStyle;
   customizedStyleProperties: string[];
 }

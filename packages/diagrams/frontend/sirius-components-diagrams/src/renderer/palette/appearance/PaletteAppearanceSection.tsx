@@ -19,11 +19,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { PaletteAppearanceSectionContributionProps } from './extensions/PaletteAppearanceSectionContribution.types';
 import { paletteAppearanceSectionExtensionPoint } from './extensions/PaletteAppearanceSectionExtensionPoints';
 
@@ -58,15 +56,7 @@ export const PaletteAppearanceSection = ({
   onBackToMainList,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
-  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'paletteAppearanceSection' });
-
-  if (diagramElementIds.length > 1) {
-    return null;
-  }
-
-  const edge: Edge<EdgeData> | undefined = edgeLookup.get(diagramElementIds[0] || '');
-  const node: InternalNode<Node<NodeData>> | undefined = edge ? undefined : nodeLookup.get(diagramElementIds[0] || '');
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
@@ -78,11 +68,11 @@ export const PaletteAppearanceSection = ({
   );
 
   const paletteAppearanceSectionComponents: JSX.Element[] = paletteAppearanceSectionData.data
-    .filter((data) => data.canHandle(node, edge))
+    .filter((data) => data.canHandle(diagramElementIds))
     .map((data) => data.component)
     .map((PaletteAppearanceSectionComponent, index) => (
       <PaletteAppearanceSectionComponent
-        diagramElementId={diagramElementIds[0] || ''}
+        diagramElementIds={diagramElementIds}
         key={'paletteAppearanceSectionComponents_' + index.toString()}
       />
     ));

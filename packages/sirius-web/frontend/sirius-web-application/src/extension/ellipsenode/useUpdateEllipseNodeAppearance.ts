@@ -53,7 +53,7 @@ export const useUpdateEllipseNodeAppearance = (): UseUpdateEllipseNodeAppearance
   const updateEllipseNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLEllipseNodeAppearanceInput>
   ) =>
     editEllipseNodeAppearance({
@@ -62,7 +62,7 @@ export const useUpdateEllipseNodeAppearance = (): UseUpdateEllipseNodeAppearance
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },

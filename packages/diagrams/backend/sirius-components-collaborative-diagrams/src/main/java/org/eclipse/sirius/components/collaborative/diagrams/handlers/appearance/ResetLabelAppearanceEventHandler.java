@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.diagrams.handlers.appearance;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,12 +34,12 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.ResetLabelAppearanceChange;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -80,26 +81,49 @@ public class ResetLabelAppearanceEventHandler implements IDiagramEventHandler {
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
+        List<String> elementNotFoundIds = new ArrayList<>();
         if (diagramInput instanceof ResetLabelAppearanceInput resetAppearanceInput) {
-            String diagramElementId = resetAppearanceInput.diagramElementId();
-            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), diagramElementId);
-            Optional<Node> optionalNode = Optional.empty();
-            if (optionalEdge.isEmpty()) {
-                optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElementId);
-            }
-            if (optionalEdge.isPresent() || optionalNode.isPresent()) {
-                String labelId = resetAppearanceInput.labelId();
-                List<IAppearanceChange> resetChanges = new ArrayList<>();
-                resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetLabelAppearanceChange(labelId, propertyToReset)));
-                diagramContext.diagramEvents().add(new EditAppearanceEvent(resetChanges));
+            var diagramElementIdToLabelId = new HashMap<String, String>();
+            resetAppearanceInput.diagramElementIds().forEach(diagramElementId -> {
+                Optional<IDiagramElement> optionalDiagramElement = this.diagramQueryService.findDiagramElementById(diagramContext.diagram(), diagramElementId);
+
+                if (optionalDiagramElement.isPresent() && optionalDiagramElement.get() instanceof Node node) {
+                    for (String labelId : resetAppearanceInput.labelIds()) {
+                        if (node.getOutsideLabels().stream().map(OutsideLabel::id).toList().contains(labelId)) {
+                            diagramElementIdToLabelId.put(diagramElementId, labelId);
+                        } else if (node.getInsideLabel().getId().equals(labelId)) {
+                            diagramElementIdToLabelId.put(diagramElementId, labelId);
+                        }
+                    }
+                } else if (optionalDiagramElement.isPresent() && optionalDiagramElement.get() instanceof Edge edge) {
+                    for (String labelId : resetAppearanceInput.labelIds()) {
+                        Optional.ofNullable(edge.getCenterLabel()).filter(label -> label.id().equals(labelId))
+                                .ifPresent(label -> diagramElementIdToLabelId.put(diagramElementId, labelId));
+                        Optional.ofNullable(edge.getBeginLabel()).filter(label -> label.id().equals(labelId))
+                                .ifPresent(label -> diagramElementIdToLabelId.put(diagramElementId, labelId));
+                        Optional.ofNullable(edge.getEndLabel()).filter(label -> label.id().equals(labelId))
+                                .ifPresent(label -> diagramElementIdToLabelId.put(diagramElementId, labelId));
+                    }
+                } else {
+                    elementNotFoundIds.add(diagramElementId);
+                }
+            });
+
+            if (diagramElementIdToLabelId.size() == resetAppearanceInput.labelIds().size()) {
+                List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+                diagramElementIdToLabelId.forEach((diagramElementId, labelId) -> {
+                    List<IAppearanceChange> resetChanges = new ArrayList<>();
+                    resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetLabelAppearanceChange(labelId, propertyToReset)));
+                    diagramContext.diagramEvents().add(new EditAppearanceEvent(resetChanges));
+                });
+                diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             } else {
-                Message diagramElementNotFoundMessage = new Message(this.messageService.diagramElementNotFound(diagramElementId), MessageLevel.ERROR);
-                payload = new ErrorPayload(diagramInput.id(), List.of(diagramElementNotFoundMessage));
+                String nodeNotFoundMessage = this.messageService.diagramElementNotFound(String.join(" - ", elementNotFoundIds));
+                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             }
         }
-
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }

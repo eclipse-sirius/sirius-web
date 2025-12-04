@@ -16,7 +16,7 @@ export interface UseUpdateEllipseNodeAppearanceValue {
   updateEllipseNodeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLEllipseNodeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditEllipseNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   appearance: Partial<GQLEllipseNodeAppearanceInput>;
 }
 

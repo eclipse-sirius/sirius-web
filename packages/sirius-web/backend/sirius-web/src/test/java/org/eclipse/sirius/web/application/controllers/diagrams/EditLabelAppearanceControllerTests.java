@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.ResetLabelAppearance
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.EdgeDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -70,7 +70,7 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
     private ResetLabelAppearanceMutationRunner resetLabelAppearanceMutationRunner;
 
     @Autowired
-    private ExpandCollapseDiagramDescriptionProvider diagramDescriptionProvider;
+    private EdgeDiagramDescriptionProvider edgeDiagramDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
@@ -81,7 +81,7 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                this.diagramDescriptionProvider.getRepresentationDescriptionId(),
+                this.edgeDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditLabelAppearanceDiagram"
         );
@@ -127,8 +127,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     appearanceInput
             );
 
@@ -156,8 +156,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     List.of("FONT_SIZE", "ITALIC", "BOLD", "UNDERLINE", "STRIKE_THROUGH", "BORDER_COLOR", "BORDER_RADIUS", "BORDER_SIZE", "BORDER_STYLE", "COLOR", "BACKGROUND", "VISIBILITY")
             );
 
@@ -191,12 +191,14 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a diagram with a label, when we edit two of its appearance and reset  one change, then the label is properly updated")
-    public void givenDiagramWithLabelWhenWeEditTwoOfItsAppearanceAndResetOneChangeThenTheLabelIsProperlyUpdated() {
+    @DisplayName("Given a diagram with node and edge labels, when we edit two of its appearance and reset  one change, then the label is properly updated")
+    public void givenDiagramWithNodeAndEdgeLabelsWhenWeEditTwoOfItsAppearanceAndResetOneChangeThenTheLabelIsProperlyUpdated() {
         var flux = this.givenDiagramSubscription();
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
         var siriusWebApplicationNodeInsideLabelId = new AtomicReference<String>();
+        var siriusWebApplicationEdgeId = new AtomicReference<String>();
+        var siriusWebApplicationEdgeOutsideLabelId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
@@ -206,9 +208,19 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     .allMatch(node -> node.getInsideLabel().getStyle().getFontSize() == 14)
                     .allMatch(node -> !node.getInsideLabel().getStyle().isItalic());
 
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
+                    .hasSize(1)
+                    .allMatch(edge -> edge.getCenterLabel().style().getFontSize() == 14)
+                    .allMatch(edge -> !edge.getCenterLabel().style().isItalic());
+
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
             siriusWebApplicationNodeInsideLabelId.set(siriusWebApplicationNode.getInsideLabel().getId());
+
+            var siriusWebApplicationEdge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application -> sirius-web-domain").getEdge();
+            siriusWebApplicationEdgeId.set(siriusWebApplicationEdge.getId());
+            siriusWebApplicationEdgeOutsideLabelId.set(siriusWebApplicationEdge.getCenterLabel().id());
         });
 
         Runnable setLabelBold = () -> {
@@ -218,38 +230,55 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get(), siriusWebApplicationEdgeOutsideLabelId.get()),
                     appearanceInput
             );
 
             this.editLabelAppearanceMutationRunner.run(input);
         };
 
-        Consumer<Object> updatedAfterBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes())
-                .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                .hasSize(1)
-                .allMatch(node -> node.getInsideLabel().getStyle().getFontSize() == 10)
-                .allMatch(node -> node.getInsideLabel().getStyle().isItalic()));
+        Consumer<Object> updatedAfterBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> node.getInsideLabel().getStyle().getFontSize() == 10)
+                    .allMatch(node -> node.getInsideLabel().getStyle().isItalic());
+
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
+                    .hasSize(1)
+                    .allMatch(edge -> edge.getCenterLabel().style().getFontSize() == 10)
+                    .allMatch(edge -> edge.getCenterLabel().style().isItalic());
+            }
+        );
 
         Runnable resetLabelBold = () -> {
             var input = new ResetLabelAppearanceInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get(), siriusWebApplicationEdgeOutsideLabelId.get()),
                     List.of("FONT_SIZE")
             );
 
             this.resetLabelAppearanceMutationRunner.run(input);
         };
 
-        Consumer<Object> updatedAfterResetBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes())
-                .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                .hasSize(1)
-                .allMatch(node -> node.getInsideLabel().getStyle().getFontSize() == 14)
-                .allMatch(node -> node.getInsideLabel().getStyle().isItalic()));
+        Consumer<Object> updatedAfterResetBoldDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes())
+                    .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                    .hasSize(1)
+                    .allMatch(node -> node.getInsideLabel().getStyle().getFontSize() == 14)
+                    .allMatch(node -> node.getInsideLabel().getStyle().isItalic());
+
+            assertThat(diagram.getEdges())
+                    .filteredOn(edge -> edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))
+                    .hasSize(1)
+                    .allMatch(edge -> edge.getCenterLabel().style().getFontSize() == 14)
+                    .allMatch(edge -> edge.getCenterLabel().style().isItalic());
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

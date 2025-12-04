@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto.appearance;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,6 @@ import java.util.UUID;
  *
  * @author mcharfadi
  */
-public record EditEdgeAppearanceInput(UUID id, String editingContextId, String representationId, String edgeId, EdgeAppearanceInput appearance) implements IDiagramInput {
+public record EditEdgeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> edgeIds, EdgeAppearanceInput appearance) implements IDiagramInput {
 
 }

@@ -17,7 +17,7 @@ export interface UseResetNodeAppearanceValue {
   resetNodeStyleProperties: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     propertiesToReset: string[]
   ) => void;
 }
@@ -32,7 +32,7 @@ export interface GQLResetNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   propertiesToReset: string[];
 }
 

@@ -16,8 +16,8 @@ export interface UseEditLabelAppearanceValue {
   updateLabelAppearance: (
     editingContextId: string,
     representationId: string,
-    diagramElementId: string,
-    labelId: string,
+    diagramElementIds: string[],
+    labelIds: string[],
     appearance: Partial<GQLLabelAppearanceInput>
   ) => void;
 }
@@ -36,8 +36,8 @@ export interface GQLEditLabelAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  diagramElementId: string;
-  labelId: string;
+  diagramElementIds: string[];
+  labelIds: string[];
   appearance: Partial<GQLLabelAppearanceInput>;
 }
 

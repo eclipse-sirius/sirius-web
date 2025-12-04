@@ -26,8 +26,8 @@ public record ResetLabelAppearanceInput(
         UUID id,
         String editingContextId,
         String representationId,
-        String diagramElementId,
-        String labelId,
+        List<String> diagramElementIds,
+        List<String> labelIds,
         List<String> propertiesToReset) implements IDiagramInput {
 
 }

@@ -19,39 +19,41 @@ import { LabelAppearancePart } from './label/LabelAppearancePart';
 import { RectangularNodePart } from './rectangular-node/RectangularNodePart';
 
 export const RectangularNodeAppearanceSection = ({
-  diagramElementId,
+  diagramElementIds,
 }: PaletteAppearanceSectionContributionComponentProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
-
-  if (!nodeData) {
+  const nodeDatas = useNodesData<Node<NodeData>>(diagramElementIds).map((nodeData) => nodeData.data);
+  const data = nodeDatas.at(nodeDatas.length - 1);
+  if (!data) {
     return null;
   }
 
+  const insideLabelsIds = nodeDatas.flatMap((nodeData) => nodeData.insideLabel?.id || []);
+  const outsideLabelsIds = nodeDatas.flatMap((nodeData) => nodeData.outsideLabels.BOTTOM_MIDDLE?.id || []);
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'rectangularNodeAppearanceSection' });
 
   return (
     <>
       <RectangularNodePart
-        nodeId={diagramElementId}
-        style={nodeData.data.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle}
-        customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
+        nodeIds={diagramElementIds}
+        style={data.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle}
+        customizedStyleProperties={data.nodeAppearanceData.customizedStyleProperties}
       />
-      {nodeData.data.insideLabel ? (
+      {data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={nodeData.data.insideLabel.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={insideLabelsIds}
           position={t('insideLabel')}
-          style={nodeData.data.insideLabel.appearanceData.gqlStyle}
-          customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
+          style={data.insideLabel.appearanceData.gqlStyle}
+          customizedStyleProperties={data.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
-      {nodeData.data.outsideLabels.BOTTOM_MIDDLE ? (
+      {data.outsideLabels.BOTTOM_MIDDLE ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={nodeData.data.outsideLabels.BOTTOM_MIDDLE.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={outsideLabelsIds}
           position={t('outsideMiddleLabel')}
-          style={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
-          customizedStyleProperties={nodeData.data.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
+          style={data.outsideLabels.BOTTOM_MIDDLE.appearanceData.gqlStyle}
+          customizedStyleProperties={data.outsideLabels.BOTTOM_MIDDLE.appearanceData.customizedStyleProperties}
         />
       ) : null}
     </>

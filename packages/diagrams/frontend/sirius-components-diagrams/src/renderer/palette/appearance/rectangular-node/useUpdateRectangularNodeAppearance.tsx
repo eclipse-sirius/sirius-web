@@ -53,7 +53,7 @@ export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAp
   const updateRectangularNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLRectangularNodeAppearanceInput>
   ) =>
     editRectangularNodeApparence({
@@ -62,7 +62,7 @@ export const useUpdateRectangularNodeAppearance = (): UseUpdateRectangularNodeAp
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },

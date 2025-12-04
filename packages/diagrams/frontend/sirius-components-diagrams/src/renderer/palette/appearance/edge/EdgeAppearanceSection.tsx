@@ -10,18 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ReactFlowState, useStore } from '@xyflow/react';
+import { Edge, useEdges } from '@xyflow/react';
 import { useTranslation } from 'react-i18next';
+import { EdgeData } from '../../../DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../../../edge/MultiLabelEdge.types';
 import { PaletteAppearanceSectionContributionComponentProps } from '../extensions/PaletteAppearanceSectionContribution.types';
 import { LabelAppearancePart } from '../label/LabelAppearancePart';
 import { EdgeAppearancePart } from './EdgeAppearancePart';
 
-const edgeDataSelector = (state: ReactFlowState, edgeId: string) =>
-  state.edgeLookup.get(edgeId)?.data as MultiLabelEdgeData | undefined;
+export const EdgeAppearanceSection = ({ diagramElementIds }: PaletteAppearanceSectionContributionComponentProps) => {
+  const edgeDatas = useEdges<Edge<EdgeData>>()
+    .filter((edge) => diagramElementIds.find((id) => edge.id === id))
+    .map((edge) => edge.data as MultiLabelEdgeData);
 
-export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSectionContributionComponentProps) => {
-  const edgeData = useStore((state) => edgeDataSelector(state, diagramElementId));
+  const edgeData = edgeDatas.at(edgeDatas.length - 1);
+
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'edgeAppearanceSection' });
 
   if (!edgeData) {
@@ -31,14 +34,14 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
   return (
     <>
       <EdgeAppearancePart
-        edgeId={diagramElementId}
+        edgeIds={diagramElementIds}
         style={edgeData.edgeAppearanceData.gqlStyle}
         customizedStyleProperties={edgeData.edgeAppearanceData.customizedStyleProperties}
       />
       {edgeData.beginLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={edgeData.beginLabel.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={edgeDatas.map((data) => data.beginLabel?.id || '')}
           position={t('beginLabel')}
           style={edgeData.beginLabel.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.beginLabel.appearanceData.customizedStyleProperties}
@@ -46,8 +49,8 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
       ) : null}
       {edgeData.label ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={edgeData.label.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={edgeDatas.map((data) => data.label?.id || '')}
           position={t('centerLabel')}
           style={edgeData.label.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.label.appearanceData.customizedStyleProperties}
@@ -55,8 +58,8 @@ export const EdgeAppearanceSection = ({ diagramElementId }: PaletteAppearanceSec
       ) : null}
       {edgeData.endLabel ? (
         <LabelAppearancePart
-          diagramElementId={diagramElementId}
-          labelId={edgeData.endLabel.id}
+          diagramElementIds={diagramElementIds}
+          labelIds={edgeDatas.map((data) => data.endLabel?.id || '')}
           position={t('endLabel')}
           style={edgeData.endLabel.appearanceData.gqlStyle}
           customizedStyleProperties={edgeData.endLabel.appearanceData.customizedStyleProperties}

@@ -94,6 +94,7 @@ public AdapterFactory papayaAdapterFactory() {
 - The method `VariableManager.hasVariable()` has been renamed into `hasLocalVariable()` to make its semantics clearer.
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] The `ReactFlow.css` has been updated to reduce the size of edge handles.
+- https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] All mutations related to the update of the appearance of an edge or node (`EditxxxAppearanceInput` && `ResetxxxAppearanceInput`) have been modified to take a list of elements instead of only one.
 
 
 === Dependency update
@@ -142,6 +143,7 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys in project semantic data with proper events
 - https://github.com/eclipse-sirius/sirius-web/issues/5752[#5752] [table] Add the functionality to expand all row in one action
 - https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
+- https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
 
 
 === Improvements

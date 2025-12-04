@@ -17,7 +17,7 @@ export interface UseResetEdgeAppearanceValue {
   resetEdgeStyleProperties: (
     editingContextId: string,
     representationId: string,
-    edgeId: string,
+    edgeIds: string[],
     propertiesToReset: string[]
   ) => void;
 }
@@ -32,7 +32,7 @@ export interface GQLResetEdgeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  edgeId: string;
+  edgeIds: string[];
   propertiesToReset: string[];
 }
 
