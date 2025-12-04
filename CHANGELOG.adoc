@@ -49,7 +49,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
 You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
 The command is only visible if Elasticsearch is up and running.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5752[#5752] [table] Add the functionality to expand all row in one action
 
 === Improvements
 
@@ -64,7 +64,7 @@ Downstream applications can now implement the following interfaces:
 * `IIndexUpdateServiceDelegate` to customize how the content of the indices is updated
 Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 - https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
-- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools
 
 
 

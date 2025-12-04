@@ -52,6 +52,7 @@ export const TableContent = memo(
     onExpandedElementChange,
     onRowFiltersChange,
     onSortingChange,
+    onExpandAllChange,
     enableColumnVisibility,
     enableColumnResizing,
     enableColumnFilters,
@@ -65,6 +66,7 @@ export const TableContent = memo(
     rowFilters,
     activeRowFilterIds,
     enableSorting,
+    expandAll,
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
@@ -88,7 +90,9 @@ export const TableContent = memo(
       enableSelectionSynchronization,
       handleRowHeightChange,
       onExpandedElementChange,
-      expandedRowIds
+      expandedRowIds,
+      onExpandAllChange,
+      expandAll
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -176,7 +180,7 @@ export const TableContent = memo(
       onSortingChange: setSorting,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
-        columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
+        columnPinning: { left: ['mrt-row-expand-header', 'mrt-row-header'], right: ['mrt-row-actions'] },
       },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,

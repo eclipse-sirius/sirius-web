@@ -16,7 +16,9 @@ import { useMemo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
+import { ExpandAllColumnHeader } from '../columns/ExpandAllColumnHeader';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
+import { RowExpandHeader } from '../rows/RowExpandHeader';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
@@ -46,7 +48,9 @@ export const useTableColumns = (
   enableSelectionSynchronization: boolean,
   handleRowHeightChange: (rowId: string, height: number) => void,
   onExpandedElement: (rowId: string) => void,
-  expandedRowIds: string[]
+  expandedRowIds: string[],
+  onExpandAllChange: () => void,
+  expandAll: boolean
 ): UseTableColumnsValue => {
   const { setSelection } = useSelection();
   const { classes } = useStyles();
@@ -112,12 +116,7 @@ export const useTableColumns = (
               setSelection(newSelection);
             }
           }}>
-          <RowHeader
-            row={row.original}
-            enableSubRows={table.enableSubRows}
-            isExpanded={expandedRowIds.includes(row.original.targetObjectId)}
-            onClick={onExpandedElement}
-          />
+          <RowHeader row={row.original} />
           {enableRowSizing ? (
             <ResizeRowHandler
               editingContextId={editingContextId}
@@ -131,8 +130,41 @@ export const useTableColumns = (
         </div>
       ),
     };
+    const maxDepthLevel: number = table.lines.reduce((acc, line) => Math.max(acc, line.depthLevel), 0);
+    const size: number = 36 + maxDepthLevel * 8;
+    const rowExpandHeaderColumn: MRT_ColumnDef<GQLLine, string> = {
+      id: 'mrt-row-expand-header',
+      header: '',
+      Header: ({}) => {
+        return <ExpandAllColumnHeader expandAll={expandAll} onExpandAllChange={onExpandAllChange} />;
+      },
+      columnDefType: 'display',
+      size: size,
+      muiTableHeadCellProps: {
+        sx: {
+          '.Mui-TableHeadCell-ResizeHandle-Wrapper': {
+            position: 'static',
+            paddingLeft: '0px',
+            paddingRight: '0px',
+            marginRight: theme.spacing(-1),
+          },
+        },
+      },
+      Cell: ({ row }) => (
+        <div className={classes.cell}>
+          <RowExpandHeader
+            row={row.original}
+            isExpanded={expandedRowIds.includes(row.original.targetObjectId) || (expandAll && row.original.hasChildren)}
+            onClick={onExpandedElement}
+          />
+        </div>
+      ),
+    };
+    if (table.enableSubRows) {
+      return [rowExpandHeaderColumn, rowHeaderColumn, ...columnDefs];
+    }
     return [rowHeaderColumn, ...columnDefs];
-  }, [table, expandedRowIds]);
+  }, [table, expandedRowIds, expandAll]);
 
   return {
     columns,

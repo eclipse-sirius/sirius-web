@@ -18,6 +18,7 @@ export interface TableRepresentationState extends TableRepresentationPagination 
   expanded: string[];
   activeRowFilterIds: string[];
   columnSort: ColumnSort[] | null;
+  expandAll: boolean;
 }
 
 export interface TableRepresentationPagination {

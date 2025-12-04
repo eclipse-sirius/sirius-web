@@ -412,13 +412,22 @@ public interface TablePackage extends EPackage {
     int ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = 8;
 
     /**
+     * The feature id for the '<em><b>Has Children Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION = 9;
+
+    /**
      * The number of structural features of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_FEATURE_COUNT = 9;
+    int ROW_DESCRIPTION_FEATURE_COUNT = 10;
 
     /**
      * The number of operations of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -702,12 +711,6 @@ public interface TablePackage extends EPackage {
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
     /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
-    /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -755,6 +758,12 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = 2;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
     /**
      * The number of structural features of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1137,6 +1146,18 @@ public interface TablePackage extends EPackage {
      * @see #getRowDescription()
      */
     EAttribute getRowDescription_DepthLevelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getHasChildrenExpression <em>Has Children
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Has Children Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getHasChildrenExpression()
+     * @see #getRowDescription()
+     */
+    EAttribute getRowDescription_HasChildrenExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellDescription <em>Cell
@@ -1688,6 +1709,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = eINSTANCE.getRowDescription_DepthLevelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Has Children Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION = eINSTANCE.getRowDescription_HasChildrenExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl

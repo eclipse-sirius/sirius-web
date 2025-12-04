@@ -35,7 +35,8 @@ public record LineElementProps(
         String headerIndexLabel,
         int height,
         boolean resizable,
-        int depthLevel) implements IProps {
+        int depthLevel,
+        boolean hasChildren) implements IProps {
 
     public static final String TYPE = "Line";
 
@@ -50,15 +51,15 @@ public record LineElementProps(
         Objects.requireNonNull(headerIndexLabel);
     }
 
+    public static Builder newLineElementProps(UUID id) {
+        return new Builder(id);
+    }
+
     @Override
     public List<Element> getChildren() {
         return this.children;
     }
 
-    public static Builder newLineElementProps(UUID id) {
-        return new Builder(id);
-    }
-    
     /**
      * The builder of the line element props.
      *
@@ -88,6 +89,8 @@ public record LineElementProps(
         private boolean resizable;
 
         private int depthLevel;
+
+        private boolean hasChildren;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -143,10 +146,14 @@ public record LineElementProps(
             return this;
         }
 
+        public Builder hasChildren(boolean hasChildren) {
+            this.hasChildren = hasChildren;
+            return this;
+        }
 
         public LineElementProps build() {
             return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel,
-                    this.height, this.resizable, this.depthLevel);
+                    this.height, this.resizable, this.depthLevel, this.hasChildren);
         }
     }
 }
