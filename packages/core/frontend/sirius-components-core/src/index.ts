@@ -43,6 +43,8 @@ export * from './modals/confirmation/useConfirmationDialog';
 export type * from './modals/confirmation/useConfirmationDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
+export { useMousePosition } from './mouse/useMousePosition';
+export type { UseMousePositionValue } from './mouse/useMousePosition.types';
 export * from './objectslabels/useObjectsLabels';
 export type * from './objectslabels/useObjectsLabels.types';
 export * from './progress/RepresentationLoadingIndicator';

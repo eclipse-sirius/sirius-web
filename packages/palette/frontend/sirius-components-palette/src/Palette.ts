@@ -28,3 +28,24 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
   entry.__typename === 'PaletteDivider';
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
+
+export const getToolTooltip = (tool: GQLTool) => {
+  let tooltip: string = tool.label;
+  if (tool.keyBindings.length > 0) {
+    tooltip =
+      tooltip +
+      ' (' +
+      tool.keyBindings
+        .map((keyBinding) => {
+          return (
+            (keyBinding.isCtrl ? 'CTRL + ' : '') +
+            (keyBinding.isMeta ? 'META + ' : '') +
+            (keyBinding.isAlt ? 'ALT + ' : '') +
+            keyBinding.key
+          );
+        })
+        .join(', ') +
+      ')';
+  }
+  return tooltip;
+};

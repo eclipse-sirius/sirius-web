@@ -65,6 +65,7 @@ import { HelperLinesContext } from './helper-lines/HelperLinesContext';
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
+import { useDiagramKeyBinding } from './key-binding/useDiagramKeyBinding';
 import { useFilterReadOnlyChanges } from './layout-events/useFilterReadOnlyChanges';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
 import { RawDiagram } from './layout/layout.types';
@@ -96,6 +97,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
+  const { onKeyBinding } = useDiagramKeyBinding(diagramRefreshedEventPayload.diagram.targetObjectId);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
@@ -362,6 +364,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
+    onKeyBinding(event);
   }, []);
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();

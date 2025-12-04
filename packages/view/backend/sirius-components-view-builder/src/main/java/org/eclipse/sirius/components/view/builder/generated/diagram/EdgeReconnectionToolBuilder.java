@@ -56,6 +56,18 @@ public abstract class EdgeReconnectionToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public EdgeReconnectionToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getEdgeReconnectionTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
 
 }
 

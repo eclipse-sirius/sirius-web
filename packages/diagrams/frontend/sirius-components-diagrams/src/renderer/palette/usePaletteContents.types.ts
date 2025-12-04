@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { LazyQueryExecFunction } from '@apollo/client';
 import { GQLPalette } from './Palette.types';
 
 export interface UsePaletteContentValue {
+  getPaletteContents: LazyQueryExecFunction<GQLGetToolSectionsData, GQLGetToolSectionsVariables>;
   palette: GQLPalette | null;
   loading: boolean;
 }

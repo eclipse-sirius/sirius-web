@@ -72,6 +72,18 @@ public class DeleteToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public DeleteToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getDeleteTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
 
 }
 

@@ -15,7 +15,11 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.TypeRef;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -38,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -61,6 +67,9 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private PaletteQueryRunner paletteQueryRunner;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void beforeEach() {
@@ -86,15 +95,82 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> topLevelToolsLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-            assertThat(topLevelToolsLabel)
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            List<SingleClickOnDiagramElementTool> topLevelPaletteEntries = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries", new TypeRef<List<SingleClickOnDiagramElementTool>>() { });
+
+            assertThat(topLevelPaletteEntries)
                     .isNotEmpty()
-                    .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("New entity"));
+                    .anySatisfy(paletteEntry -> {
+                        assertThat(paletteEntry.label()).isEqualTo("New entity");
+                        assertThat(paletteEntry.keyBindings())
+                                .hasSize(2)
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("e"))
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("e"));
+                    });
+
         };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(requestDiagramPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain diagram, when the palette is requested for a node element, then the relevant tools are available")
+    public void givenDomainDiagramWhenPaletteIsRequestedOnNodeElementThenRelevantToolsAreAvailable() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+
+        var diagramId = new AtomicReference<String>();
+        var nodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            nodeId.set(diagram.getNodes().get(0).getId());
+        });
+
+        Runnable requestPalette = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "diagramElementIds", List.of(nodeId.get())
+            );
+            var result = this.paletteQueryRunner.run(variables);
+
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            List<SingleClickOnDiagramElementTool> nodePaletteEntries = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*]", new TypeRef<List<SingleClickOnDiagramElementTool>>() { });
+
+            assertThat(nodePaletteEntries)
+                    .isNotEmpty()
+                    .anySatisfy(paletteEntry -> {
+                        assertThat(paletteEntry.label()).isEqualTo("Text");
+                        assertThat(paletteEntry.keyBindings())
+                                .hasSize(2)
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("s"))
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("s"));
+                    })
+                    .anySatisfy(paletteEntry -> {
+                        assertThat(paletteEntry.label()).isEqualTo("Boolean");
+                        assertThat(paletteEntry.keyBindings())
+                                .hasSize(2)
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("b"))
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("b"));
+                    })
+                    .anySatisfy(paletteEntry -> {
+                        assertThat(paletteEntry.label()).isEqualTo("Number");
+                        assertThat(paletteEntry.keyBindings())
+                                .hasSize(2)
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("n"))
+                                .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("n"));
+                    });
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestPalette)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

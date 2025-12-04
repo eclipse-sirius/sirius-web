@@ -73,6 +73,18 @@ public class EdgeToolBuilder {
     }
 
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getEdgeTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for TargetElementDescriptions.
      *
      * @generated
