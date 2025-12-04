@@ -14,9 +14,9 @@ package org.eclipse.sirius.components.collaborative.diagrams.services;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.representations.IStatus;
 
 /**
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 public interface ISingleClickOnOneDiagramElementHandler {
 
-    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId);
+    boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String diagramElementId);
 
-    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables);
+    IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String diagramElementId, List<ToolVariable> variables);
 }

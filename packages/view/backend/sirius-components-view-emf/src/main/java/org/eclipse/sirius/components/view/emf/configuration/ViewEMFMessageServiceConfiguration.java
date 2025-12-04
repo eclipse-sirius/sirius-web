@@ -13,6 +13,9 @@
 
 package org.eclipse.sirius.components.view.emf.configuration;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -29,10 +32,11 @@ public class ViewEMFMessageServiceConfiguration {
     private static final String PATH = "messages/sirius-components-view-emf";
 
     @Bean
-    public MessageSourceAccessor viewEMFMessageSourceAccessor() {
+    public MessageSourceAccessor viewEMFMessageSourceAccessor(@Value("${spring.mvc.locale:en_EN}") Locale locale) {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.addBasenames(PATH);
+        messageSource.setDefaultLocale(Locale.ENGLISH);
         messageSource.setDefaultEncoding(null);
-        return new MessageSourceAccessor(messageSource);
+        return new MessageSourceAccessor(messageSource, locale);
     }
 }
