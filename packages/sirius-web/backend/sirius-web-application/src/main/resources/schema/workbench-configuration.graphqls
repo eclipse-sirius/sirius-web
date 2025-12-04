@@ -1,0 +1,47 @@
+extend type EditingContext {
+    workbenchConfiguration: WorkbenchConfiguration!
+}
+
+type WorkbenchConfiguration {
+    mainPanel : WorkbenchMainPanelConfiguration!
+    workbenchPanels: [WorkbenchSidePanelConfiguration!]!
+}
+
+type WorkbenchMainPanelConfiguration {
+    id: String!
+    representationEditors: [WorkbenchRepresentationEditorConfiguration!]!
+}
+
+type WorkbenchRepresentationEditorConfiguration {
+    representationId: String!
+    isActive: Boolean!
+}
+
+type WorkbenchSidePanelConfiguration {
+    id: String!
+    isOpen: Boolean!
+    views: [ViewConfiguration!]!
+}
+
+interface ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+}
+
+type ExplorerViewConfiguration implements ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+    activeTreeFilters: [TreeFilter!]!
+    activeTreeDescriptionId: String!
+}
+
+type DetailsViewConfiguration implements ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+    selectedPageId: String!
+}
+
+type DefaultViewConfiguration implements ViewConfiguration {
+    id: String!
+    isActive: Boolean!
+}

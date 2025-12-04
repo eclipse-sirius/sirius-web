@@ -40,6 +40,7 @@ import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
 import { WorkbenchOmnibox } from './WorkbenchOmnibox';
+import { useWorkbenchConfiguration } from './useWorkbenchConfiguration';
 
 const PROJECT_ID_SEPARATOR = '@';
 
@@ -62,15 +63,24 @@ export const EditProjectView = () => {
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
   const name: string | null =
     separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
-  const workbenchConfiguration: WorkbenchConfiguration | null = urlSearchParams.has('workbenchConfiguration')
-    ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
-    : null;
 
   const [state, setState] = useState<EditProjectViewState>({
     project: null,
     representation: null,
-    workbenchConfiguration,
   });
+
+  let workbenchConfiguration: WorkbenchConfiguration | null = null;
+  const { workbenchConfiguration: gqlWorkbenchConfiguration } = useWorkbenchConfiguration(
+    state.project ? state.project.currentEditingContext.id : null
+  );
+  if (gqlWorkbenchConfiguration) {
+    // TODO merge the URL configuration into the GQL one and make sure users can't add views to the URL they shouldn't have access to.
+    workbenchConfiguration = gqlWorkbenchConfiguration;
+  } else {
+    workbenchConfiguration = urlSearchParams.has('workbenchConfiguration')
+      ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
+      : null;
+  }
 
   useEffect(() => {
     if (urlSearchParams.has('workbenchConfiguration')) {
@@ -154,7 +164,7 @@ export const EditProjectView = () => {
                         initialRepresentationSelected={state.representation}
                         onRepresentationSelected={onRepresentationSelected}
                         readOnly={!state.project.capabilities.canEdit}
-                        initialWorkbenchConfiguration={state.workbenchConfiguration}
+                        initialWorkbenchConfiguration={workbenchConfiguration}
                         ref={refWorkbenchHandle}
                       />
                     </ImpactAnalysisDialogContextProvider>
