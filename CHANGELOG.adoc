@@ -1,6 +1,6 @@
 = Changelog
 
-== 2026.1.0
+== 2026.1.0 (work in progress)
 
 === Shapes
 
@@ -41,7 +41,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 - https://github.com/eclipse-sirius/sirius-web/issues/5720[#5720] [explorer] Fixed an issue where the initial search for an element with the Omnibox would not reveal the selected element in the _Explorer_
 - https://github.com/eclipse-sirius/sirius-web/issues/5896[#5896] Add missing translations for edge appearance menu
 - https://github.com/eclipse-sirius/sirius-web/issues/5912[#5912] [diagram] Fix an issue where edge handles could be rendered in the wrong position
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5924[#5924] [diagram] Prevent a simple move on its parent from triggering a diagram drop
 
 === New Features
 
@@ -64,7 +64,7 @@ Downstream applications can now implement the following interfaces:
 * `IIndexUpdateServiceDelegate` to customize how the content of the indices is updated
 Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 - https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
-- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools 
+- https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools
 
 
 
