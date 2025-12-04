@@ -21,11 +21,13 @@
       "dependsOn": ["build"]
     },
     "build-dev": {
-      "dependsOn": ["format-lint", "^build-dev"]
+      "dependsOn": ["format-lint", "^build-dev"],
+      "cache": false
     },
     "start": {
       "dependsOn": ["format-lint", "^build-dev"],
-      "persistent": true
+      "persistent": true,
+      "cache": false
     }
   }
 }
