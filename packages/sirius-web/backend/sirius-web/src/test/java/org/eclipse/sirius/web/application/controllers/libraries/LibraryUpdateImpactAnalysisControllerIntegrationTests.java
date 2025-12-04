@@ -48,6 +48,7 @@ import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapte
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EditingContextUpdateLibraryImpactAnalysisReportQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -89,6 +90,9 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IMessageService messageService;
 
     @BeforeEach
     public void beforeEach() {
@@ -151,6 +155,30 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
                 .get()
                 .returns("IntegrationTest", dataTreeNode -> dataTreeNode.label().toString());
         });
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with dependencies, when an impact analysis report is requested for the update of a dependency that does not exist, then the report contains an error message")
+    public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyTheDoesNotExistThenTheReportContainsAnErrorMessage() {
+        Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", UUID.nameUUIDFromBytes("failingLibraryId".getBytes()));
+        var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
+        int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
+        assertThat(nbElementDeleted).isEqualTo(0);
+        int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
+        assertThat(nbElementModified).isEqualTo(0);
+        int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
+        assertThat(nbElementCreated).isEqualTo(0);
+
+        List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.additionalReports[*]");
+        assertThat(additionalReports).hasSize(1);
+        assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
+
+        Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+        DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
+
+        assertThat(dataTree.id()).isEqualTo("impact_tree");
+        assertThat(dataTree.nodes()).hasSize(0);
     }
 
     @Test

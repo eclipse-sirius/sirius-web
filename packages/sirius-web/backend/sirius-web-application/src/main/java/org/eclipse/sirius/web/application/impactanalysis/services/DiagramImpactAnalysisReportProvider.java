@@ -21,10 +21,13 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.dto.ImpactAnalysisReport;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.datatree.DataTree;
+import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.impactanalysis.services.api.IChangeDescriptionDataTreeProvider;
 import org.eclipse.sirius.web.application.impactanalysis.services.api.IDiagramImpactAnalysisReportProvider;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,15 +42,18 @@ public class DiagramImpactAnalysisReportProvider implements IDiagramImpactAnalys
 
     private final IChangeDescriptionDataTreeProvider changeDescriptionDataTreeProvider;
 
-    public DiagramImpactAnalysisReportProvider(IChangeDescriptionDataTreeProvider changeDescriptionDataTreeProvider) {
+    private final IMessageService messageService;
+
+    public DiagramImpactAnalysisReportProvider(IChangeDescriptionDataTreeProvider changeDescriptionDataTreeProvider, IMessageService messageService) {
         this.changeDescriptionDataTreeProvider = Objects.requireNonNull(changeDescriptionDataTreeProvider);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public Optional<ImpactAnalysisReport> getReport(IEditingContext editingContext, ChangeDescription changeDescription, IStatus toolExecutionStatus) {
         Optional<ImpactAnalysisReport> result = Optional.empty();
+        List<String> additionalReports = new ArrayList<>();
         if (toolExecutionStatus instanceof Success success) {
-            List<String> additionalReports = new ArrayList<>();
             if (success.getParameters().get("viewCreationRequests") instanceof List<?> viewCreationRequestsList && !viewCreationRequestsList.isEmpty()) {
                 additionalReports.add("Views added: " + viewCreationRequestsList.size());
             }
@@ -56,11 +62,21 @@ public class DiagramImpactAnalysisReportProvider implements IDiagramImpactAnalys
             }
             List<String> additionalMessages = (List<String>) success.getParameters().getOrDefault(IMPACT_ANALYSIS_MESSAGE_PARAMETER, List.of());
             additionalReports.addAll(additionalMessages);
-            Optional<DataTree> optionalImpactTree = this.changeDescriptionDataTreeProvider.getDataTree(editingContext, changeDescription);
-            if (optionalImpactTree.isPresent()) {
-                result = Optional.of(new ImpactAnalysisReport(changeDescription.getObjectsToAttach().size(), changeDescription.getObjectChanges().size(), changeDescription.getObjectsToDetach().size(),
-                        additionalReports, optionalImpactTree.get()));
+        } else if (toolExecutionStatus instanceof Failure failure) {
+            List<Message> failureMessages = failure.getMessages();
+            if (failureMessages.isEmpty()) {
+                // Add a generic error message if the status doesn't contain any information.
+                additionalReports.add(this.messageService.operationExecutionFailed(this.messageService.unexpectedError()));
+            } else {
+                for (Message failureMessage : failureMessages) {
+                    additionalReports.add(this.messageService.operationExecutionFailed(failureMessage.body()));
+                }
             }
+        }
+        Optional<DataTree> optionalImpactTree = this.changeDescriptionDataTreeProvider.getDataTree(editingContext, changeDescription);
+        if (optionalImpactTree.isPresent()) {
+            result = Optional.of(new ImpactAnalysisReport(changeDescription.getObjectsToAttach().size(), changeDescription.getObjectChanges().size(), changeDescription.getObjectsToDetach().size(),
+                    additionalReports, optionalImpactTree.get()));
         }
 
         return result;
