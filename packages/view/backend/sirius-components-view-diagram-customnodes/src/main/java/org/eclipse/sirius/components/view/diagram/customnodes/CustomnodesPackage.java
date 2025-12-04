@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.customnodes;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -123,13 +124,22 @@ public interface CustomnodesPackage extends EPackage {
     int ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Opacity Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+    int ELLIPSE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -162,6 +172,18 @@ public interface CustomnodesPackage extends EPackage {
      * @generated
      */
     EReference getEllipseNodeStyleDescription_Background();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getOpacityExpression
+     * <em>Opacity Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Opacity Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getOpacityExpression()
+     * @see #getEllipseNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getEllipseNodeStyleDescription_OpacityExpression();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -203,6 +225,14 @@ public interface CustomnodesPackage extends EPackage {
          * @generated
          */
         EReference ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getEllipseNodeStyleDescription_Background();
+
+        /**
+         * The meta object literal for the '<em><b>Opacity Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION = eINSTANCE.getEllipseNodeStyleDescription_OpacityExpression();
 
     }
 

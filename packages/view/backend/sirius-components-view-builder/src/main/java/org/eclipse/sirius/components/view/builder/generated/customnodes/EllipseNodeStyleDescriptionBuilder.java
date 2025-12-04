@@ -97,5 +97,15 @@ public class EllipseNodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for OpacityExpression.
+     *
+     * @generated
+     */
+    public EllipseNodeStyleDescriptionBuilder opacityExpression(java.lang.String value) {
+        this.getEllipseNodeStyleDescription().setOpacityExpression(value);
+        return this;
+    }
+
 }
 

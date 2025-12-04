@@ -41,7 +41,8 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5765[#5765] [diagram] Add the possibility to interpret expressions in the style of a node.
+An example has been added in Sirius-Web with the new _opacity_ field in the custom _ellipse_ node.
 
 === Improvements
 

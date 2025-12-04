@@ -43,6 +43,8 @@ import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDe
  * <em>Children Layout Strategy</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.impl.EllipseNodeStyleDescriptionImpl#getBackground
  * <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.impl.EllipseNodeStyleDescriptionImpl#getOpacityExpression
+ * <em>Opacity Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -137,6 +139,26 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
      * @ordered
      */
     protected UserColor background;
+
+    /**
+     * The default value of the '{@link #getOpacityExpression() <em>Opacity Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOpacityExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String OPACITY_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getOpacityExpression() <em>Opacity Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOpacityExpression()
+     * @generated
+     * @ordered
+     */
+    protected String opacityExpression = OPACITY_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -364,6 +386,29 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
      * @generated
      */
     @Override
+    public String getOpacityExpression() {
+        return this.opacityExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setOpacityExpression(String newOpacityExpression) {
+        String oldOpacityExpression = this.opacityExpression;
+        this.opacityExpression = newOpacityExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION, oldOpacityExpression, this.opacityExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
@@ -396,6 +441,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
                 if (resolve)
                     return this.getBackground();
                 return this.basicGetBackground();
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION:
+                return this.getOpacityExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -425,6 +472,9 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
                 return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) newValue);
+                return;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION:
+                this.setOpacityExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -456,6 +506,9 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION:
+                this.setOpacityExpression(OPACITY_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -480,6 +533,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
                 return this.childrenLayoutStrategy != null;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 return this.background != null;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION:
+                return OPACITY_EXPRESSION_EDEFAULT == null ? this.opacityExpression != null : !OPACITY_EXPRESSION_EDEFAULT.equals(this.opacityExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -501,6 +556,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
+        result.append(", opacityExpression: ");
+        result.append(this.opacityExpression);
         result.append(')');
         return result.toString();
     }

@@ -17,6 +17,8 @@ import java.util.Optional;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription;
@@ -43,10 +45,11 @@ public class EllipseNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy, AQLInterpreter interpreter, VariableManager variableManager) {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
+            String opacity = interpreter.evaluateExpression(variableManager.getVariables(), ((EllipseNodeStyleDescription) nodeStyle).getOpacityExpression()).asString().orElse("1");
             return Optional.of(EllipseNodeStyle.newEllipseNodeStyle()
                     .background(Optional.ofNullable(((EllipseNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
@@ -61,6 +64,7 @@ public class EllipseNodeStyleProvider implements INodeStyleProvider {
                     .borderSize(nodeStyle.getBorderSize())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .childrenLayoutStrategy(childrenLayoutStrategy)
+                    .opacity(opacity)
                     .build());
         }
 

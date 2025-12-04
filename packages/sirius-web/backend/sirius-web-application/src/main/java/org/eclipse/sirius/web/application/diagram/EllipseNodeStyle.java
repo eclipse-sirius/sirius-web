@@ -38,6 +38,8 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     private ILayoutStrategy childrenLayoutStrategy;
 
+    private String opacity;
+
     private EllipseNodeStyle() {
         // Prevent instantiation
     }
@@ -64,6 +66,10 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     public LineStyle getBorderStyle() {
         return this.borderStyle;
+    }
+
+    public String getOpacity() {
+        return this.opacity;
     }
 
     @Override
@@ -95,6 +101,8 @@ public final class EllipseNodeStyle implements INodeStyle {
 
         private ILayoutStrategy childrenLayoutStrategy;
 
+        private String opacity;
+
         private Builder() {
             // Prevent instantiation
         }
@@ -105,6 +113,7 @@ public final class EllipseNodeStyle implements INodeStyle {
             this.borderSize = ellipseNodeStyle.getBorderSize();
             this.borderStyle = ellipseNodeStyle.getBorderStyle();
             this.childrenLayoutStrategy = ellipseNodeStyle.getChildrenLayoutStrategy();
+            this.opacity = ellipseNodeStyle.getOpacity();
         }
 
         public Builder background(String background) {
@@ -132,6 +141,11 @@ public final class EllipseNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder opacity(String opacity) {
+            this.opacity = Objects.requireNonNull(opacity);
+            return this;
+        }
+
         public EllipseNodeStyle build() {
             EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
             nodeStyleDescription.background = Objects.requireNonNull(this.background);
@@ -139,6 +153,7 @@ public final class EllipseNodeStyle implements INodeStyle {
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
             nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
+            nodeStyleDescription.opacity = this.opacity;
             return nodeStyleDescription;
         }
     }

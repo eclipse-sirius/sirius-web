@@ -84,6 +84,7 @@ const toEllipseNode = (
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
+      opacity: style.opacity,
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),

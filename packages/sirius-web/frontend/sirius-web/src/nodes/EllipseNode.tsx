@@ -44,8 +44,8 @@ const ellipseNodeStyle = (
     height: '100%',
     borderRadius: '50%',
     border: 'black solid 1px',
-    opacity: faded ? '0.4' : '',
     ...style,
+    opacity: faded ? '0.4' : style.opacity,
     background: getCSSColor(String(style.background), theme),
   };
 

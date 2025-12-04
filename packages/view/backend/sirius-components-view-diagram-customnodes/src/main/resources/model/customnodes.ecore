@@ -4,5 +4,6 @@
     nsPrefix="customnodes">
   <eClassifiers xsi:type="ecore:EClass" name="EllipseNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opacityExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
 </ecore:EPackage>

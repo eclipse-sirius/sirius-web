@@ -26,8 +26,10 @@ import org.eclipse.sirius.components.view.builder.generated.customnodes.EllipseN
 import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -93,6 +95,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
         var nodeStyle = new EllipseNodeStyleDescriptionBuilder()
                 .borderSize(1)
                 .borderLineStyle(LineStyle.SOLID)
+                .opacityExpression("aql:if self.name.startsWith('faded-') then '0.2' else '1' endif")
                 .build();
 
         var insideLabel = new InsideLabelDescriptionBuilder()
@@ -110,12 +113,24 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                 )
                 .build();
 
+        var labelEditTool = new LabelEditToolBuilder()
+                .name("Edit Label")
+                .initialDirectEditLabelExpression("aql:self.name")
+                .body(
+                        new SetValueBuilder()
+                                .featureName("name")
+                                .valueExpression("aql:newLabel)")
+                                .build()
+                )
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .palette(new NodePaletteBuilder()
                         .deleteTool(deleteTool)
+                        .labelEditTool(labelEditTool)
                         .build())
                 .insideLabel(insideLabel)
                 .style(nodeStyle)

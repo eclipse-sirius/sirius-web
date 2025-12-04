@@ -86,6 +86,14 @@ const childrenLayoutStrategy: SelectionNode = {
   },
 };
 
+const opacityField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'opacity',
+  },
+};
+
 export const ellipseNodeStyleDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     const transformedDocument = visit(document, {
@@ -100,7 +108,14 @@ export const ellipseNodeStyleDocumentTransform = new DocumentTransform((document
           kind: Kind.INLINE_FRAGMENT,
           selectionSet: {
             kind: Kind.SELECTION_SET,
-            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField, childrenLayoutStrategy],
+            selections: [
+              borderColorField,
+              borderSizeField,
+              borderStyleField,
+              backgroundField,
+              childrenLayoutStrategy,
+              opacityField,
+            ],
           },
           typeCondition: {
             kind: Kind.NAMED_TYPE,

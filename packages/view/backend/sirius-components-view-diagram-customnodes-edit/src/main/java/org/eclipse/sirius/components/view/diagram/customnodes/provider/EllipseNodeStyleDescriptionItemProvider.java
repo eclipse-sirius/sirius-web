@@ -67,6 +67,7 @@ public class EllipseNodeStyleDescriptionItemProvider extends ItemProviderAdapter
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
             this.addBackgroundPropertyDescriptor(object);
+            this.addOpacityExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -125,6 +126,18 @@ public class EllipseNodeStyleDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_EllipseNodeStyleDescription_background_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_EllipseNodeStyleDescription_background_feature", "_UI_EllipseNodeStyleDescription_type"),
                 CustomnodesPackage.Literals.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Opacity Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOpacityExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EllipseNodeStyleDescription_opacityExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EllipseNodeStyleDescription_opacityExpression_feature", "_UI_EllipseNodeStyleDescription_type"),
+                CustomnodesPackage.Literals.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -194,6 +207,7 @@ public class EllipseNodeStyleDescriptionItemProvider extends ItemProviderAdapter
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:

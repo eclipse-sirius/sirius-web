@@ -124,7 +124,7 @@ public final class StylesFactory {
         return type.orElse(NodeType.NODE_RECTANGLE);
     }
 
-    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy, VariableManager variableManager) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
@@ -142,7 +142,7 @@ public final class StylesFactory {
                 break;
             default:
                 for (INodeStyleProvider nodeStyleProvider : this.nodeStyleProviders) {
-                    Optional<INodeStyle> optionalNodeStyle = nodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId, childrenLayoutStrategy);
+                    Optional<INodeStyle> optionalNodeStyle = nodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId, childrenLayoutStrategy, this.interpreter, variableManager);
                     if (optionalNodeStyle.isPresent()) {
                         result = optionalNodeStyle.get();
                         break;

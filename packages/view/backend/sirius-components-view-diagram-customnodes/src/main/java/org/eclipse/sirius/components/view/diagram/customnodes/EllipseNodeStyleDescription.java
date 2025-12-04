@@ -25,6 +25,8 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getBackground
  * <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getOpacityExpression
+ * <em>Opacity Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage#getEllipseNodeStyleDescription()
@@ -55,4 +57,28 @@ public interface EllipseNodeStyleDescription extends NodeStyleDescription {
      * @generated
      */
     void setBackground(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Opacity Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Opacity Expression</em>' attribute.
+     * @see #setOpacityExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage#getEllipseNodeStyleDescription_OpacityExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getOpacityExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription#getOpacityExpression
+     * <em>Opacity Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Opacity Expression</em>' attribute.
+     * @see #getOpacityExpression()
+     * @generated
+     */
+    void setOpacityExpression(String value);
 } // EllipseNodeStyleDescription

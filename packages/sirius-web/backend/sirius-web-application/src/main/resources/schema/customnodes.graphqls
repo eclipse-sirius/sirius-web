@@ -6,6 +6,7 @@ type EllipseNodeStyle {
   borderStyle: LineStyle!
   background: String!
   childrenLayoutStrategy: ILayoutStrategy!
+  opacity: String!
 }
 
 input EllipseNodeAppearanceInput {

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.customnodes.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -127,6 +128,16 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
      * @generated
      */
     @Override
+    public EAttribute getEllipseNodeStyleDescription_OpacityExpression() {
+        return (EAttribute) this.ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public CustomnodesFactory getCustomnodesFactory() {
         return (CustomnodesFactory) this.getEFactoryInstance();
     }
@@ -152,6 +163,7 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
         // Create classes and their features
         this.ellipseNodeStyleDescriptionEClass = this.createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
         this.createEReference(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
+        this.createEAttribute(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__OPACITY_EXPRESSION);
     }
 
     /**
@@ -192,6 +204,8 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
         this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEllipseNodeStyleDescription_OpacityExpression(), theViewPackage.getInterpretedExpression(), "opacityExpression", null, 0, 1, EllipseNodeStyleDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

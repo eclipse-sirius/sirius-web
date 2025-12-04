@@ -279,7 +279,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
-            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy);
+            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy, variableManager);
         };
 
         Map<String, BorderNodePosition> initialBorderNodePositions = this.getInitialBorderNodePositions(viewNodeDescription);
