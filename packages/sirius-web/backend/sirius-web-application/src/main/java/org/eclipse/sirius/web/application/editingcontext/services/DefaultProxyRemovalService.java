@@ -24,21 +24,21 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil.UnresolvedProxyCrossReferencer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IDefaultProxyRemovalService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IProxyRemovalService;
 import org.springframework.stereotype.Service;
 
 /**
- * Service to remove EMF proxies.
+ * The default implementation that removes EMF proxies.
  *
  * @author gdaniel
  */
 @Service
-public class ProxyRemovalService implements IProxyRemovalService {
+public class DefaultProxyRemovalService implements IDefaultProxyRemovalService {
 
     private final List<IEditingContextPersistenceFilter> editingContextPersistenceFilters;
 
-    public ProxyRemovalService(List<IEditingContextPersistenceFilter> editingContextPersistenceFilters) {
+    public DefaultProxyRemovalService(List<IEditingContextPersistenceFilter> editingContextPersistenceFilters) {
         this.editingContextPersistenceFilters = Objects.requireNonNull(editingContextPersistenceFilters);
     }
 
