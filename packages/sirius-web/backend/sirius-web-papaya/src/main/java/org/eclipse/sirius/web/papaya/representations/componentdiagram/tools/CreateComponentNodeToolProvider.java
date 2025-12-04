@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.papaya.representations.componentdiagram.tools;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
@@ -53,6 +54,12 @@ public class CreateComponentNodeToolProvider implements INodeToolProvider {
                                 .expression("aql:self")
                                 .children(createNewComponent)
                                 .build()
+                )
+                .keyBindings(new KeyBindingBuilder()
+                        .key("c")
+                        .ctrl(true)
+                        .alt(true)
+                        .build()
                 )
                 .build();
     }

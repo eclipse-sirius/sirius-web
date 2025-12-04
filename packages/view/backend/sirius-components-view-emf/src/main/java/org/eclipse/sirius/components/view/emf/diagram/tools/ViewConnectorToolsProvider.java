@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.KeyBinding;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -170,6 +171,10 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
 
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(edgeTool).toString().getBytes()).toString();
 
+        List<KeyBinding> keyBindings = edgeTool.getKeyBindings().stream()
+                .map(this::createKeyBinding)
+                .toList();
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
                 .iconURL(this.getToolIconURLs(interpreter, edgeTool.getIconURLsExpression()))
@@ -182,6 +187,16 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
                         )
                 )
                 .dialogDescriptionId(this.diagramIdProvider.getId(edgeTool.getDialogDescription()))
+                .keyBindings(keyBindings)
+                .build();
+    }
+
+    private KeyBinding createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding) {
+        return KeyBinding.newKeyBinding()
+                .isCtrl(viewKeyBinding.isCtrl())
+                .isMeta(viewKeyBinding.isMeta())
+                .isAlt(viewKeyBinding.isAlt())
+                .key(viewKeyBinding.getKey())
                 .build();
     }
 

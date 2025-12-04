@@ -127,6 +127,7 @@ export const PaletteQuickAccessToolBar = ({
     }
   });
 
+  // TODO show key bindings in quick access
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)

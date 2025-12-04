@@ -24,4 +24,6 @@ public interface ITool extends IPaletteEntry {
     String label();
 
     List<String> iconURL();
+
+    List<KeyBinding> keyBindings();
 }

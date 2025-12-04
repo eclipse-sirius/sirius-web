@@ -25,13 +25,15 @@ public record SingleClickOnTwoDiagramElementsTool(
         String label,
         List<String> iconURL,
         List<SingleClickOnTwoDiagramElementsCandidate> candidates,
-        String dialogDescriptionId) implements ITool {
+        String dialogDescriptionId,
+        List<KeyBinding> keyBindings) implements ITool {
 
     public SingleClickOnTwoDiagramElementsTool {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
         Objects.requireNonNull(iconURL);
         Objects.requireNonNull(candidates);
+        Objects.requireNonNull(keyBindings);
     }
 
     public static Builder newSingleClickOnTwoDiagramElementsTool(String id) {
@@ -57,6 +59,8 @@ public record SingleClickOnTwoDiagramElementsTool(
 
         private String dialogDescriptionId;
 
+        private List<KeyBinding> keyBindings = List.of();
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -81,8 +85,13 @@ public record SingleClickOnTwoDiagramElementsTool(
             return this;
         }
 
+        public Builder keyBindings(List<KeyBinding> keyBindings) {
+            this.keyBindings = keyBindings;
+            return this;
+        }
+
         public SingleClickOnTwoDiagramElementsTool build() {
-            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.iconURL, this.candidates, this.dialogDescriptionId);
+            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.iconURL, this.candidates, this.dialogDescriptionId, this.keyBindings);
         }
     }
 

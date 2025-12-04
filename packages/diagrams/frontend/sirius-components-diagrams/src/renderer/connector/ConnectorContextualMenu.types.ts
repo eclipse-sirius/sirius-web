@@ -31,7 +31,17 @@ export interface GQLTool {
   id: string;
   label: string;
   iconURL: string[];
+  keyBindings: GQLKeyBinding[];
   __typename: string;
+}
+
+// TODO move this in a shared place ?
+// TODO KeyBinding for any tool?
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }
 
 export interface GQLToolVariable {

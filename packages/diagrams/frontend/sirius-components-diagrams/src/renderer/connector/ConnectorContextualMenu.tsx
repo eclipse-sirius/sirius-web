@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useReactFlow, useStoreApi, XYPosition } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -64,6 +65,12 @@ export const getConnectorToolsQuery = gql`
                 iconURL
                 ... on SingleClickOnTwoDiagramElementsTool {
                   dialogDescriptionId
+                  keyBindings {
+                    isCtrl
+                    isMeta
+                    isAlt
+                    key
+                  }
                 }
               }
             }
@@ -113,6 +120,28 @@ const isSuccessPayload = (
 
 const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
   tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
+
+const getTooltip = (tool: GQLTool) => {
+  // TODO duplicated from ToolListItem
+  let tooltip: string = tool.label;
+  if (tool.keyBindings.length > 0) {
+    tooltip =
+      tooltip +
+      ' (' +
+      tool.keyBindings
+        .map((keyBinding) => {
+          return (
+            (keyBinding.isCtrl ? 'CTRL + ' : '') +
+            (keyBinding.isMeta ? 'META + ' : '') +
+            (keyBinding.isAlt ? 'ALT + ' : '') +
+            keyBinding.key
+          );
+        })
+        .join(', ') +
+      ')';
+  }
+  return tooltip;
+};
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId, registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
@@ -299,12 +328,17 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       data-testid="connectorContextualMenu"
       anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
       {connectorTools.map((tool) => (
-        <MenuItem key={tool.id} onClick={() => invokeTool(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
-          <ListItemIcon>
-            <IconOverlay iconURLs={tool.iconURL} alt={tool.label} title={tool.label} />
-          </ListItemIcon>
-          <Typography>{tool.label}</Typography>
-        </MenuItem>
+        <Tooltip key={'tooltip_' + tool.id} title={getTooltip(tool)} placement="right">
+          <MenuItem
+            key={tool.id}
+            onClick={() => invokeTool(tool)}
+            data-testid={`connectorContextualMenu-${tool.label}`}>
+            <ListItemIcon>
+              <IconOverlay iconURLs={tool.iconURL} alt={tool.label} title={tool.label} />
+            </ListItemIcon>
+            <Typography>{tool.label}</Typography>
+          </MenuItem>
+        </Tooltip>
       ))}
     </Menu>
   );

@@ -57,8 +57,27 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
     onToolClick(tool);
   };
 
+  // TODO duplicated from ConnectorContextualMenu
+  let tooltip: string = tool.label;
+  if (tool.keyBindings.length > 0) {
+    tooltip =
+      tooltip +
+      ' (' +
+      tool.keyBindings
+        .map((keyBinding) => {
+          return (
+            (keyBinding.isCtrl ? 'CTRL + ' : '') +
+            (keyBinding.isMeta ? 'META + ' : '') +
+            (keyBinding.isAlt ? 'ALT + ' : '') +
+            keyBinding.key
+          );
+        })
+        .join(', ') +
+      ')';
+  }
+
   return (
-    <Tooltip title={tool.label} placement="right">
+    <Tooltip title={tooltip} placement="right">
       <ListItemButton
         className={classes.listItemButton}
         disabled={disabled}

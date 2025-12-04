@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuil
 import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
@@ -164,6 +165,11 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                                 )
                                 .build()
                 )
+                .keyBindings(new KeyBindingBuilder()
+                        .ctrl(true)
+                        .key("r")
+                        .build()
+                )
                 .build();
     }
 
@@ -209,6 +215,11 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                                 )
                                 .build()
                 )
+                .keyBindings(new KeyBindingBuilder()
+                        .ctrl(true)
+                        .key("c")
+                        .build()
+                )
                 .build();
     }
 
@@ -227,6 +238,11 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                                                 .build()
                                 )
                                 .build()
+                )
+                .keyBindings(new KeyBindingBuilder()
+                        .ctrl(true)
+                        .key("s")
+                        .build()
                 )
                 .build();
     }

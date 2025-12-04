@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.KeyBinding;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PaletteDivider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
@@ -196,6 +197,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
             dialogDescriptionId = this.diagramIdProvider.getId(viewNodeTool.getDialogDescription());
         }
 
+        List<KeyBinding> keyBindings = viewNodeTool.getKeyBindings().stream()
+                .map(this::createKeyBinding)
+                .toList();
+
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
                 .iconURL(iconURLProvider)
@@ -203,6 +208,16 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .withImpactAnalysis(viewNodeTool.isWithImpactAnalysis())
+                .keyBindings(keyBindings)
+                .build();
+    }
+
+    private KeyBinding createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding) {
+        return KeyBinding.newKeyBinding()
+                .isCtrl(viewKeyBinding.isCtrl())
+                .isMeta(viewKeyBinding.isMeta())
+                .isAlt(viewKeyBinding.isAlt())
+                .key(viewKeyBinding.getKey())
                 .build();
     }
 
@@ -292,11 +307,16 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .toList())
                 .build());
 
+        List<KeyBinding> keyBindings = viewEdgeTool.getKeyBindings().stream()
+                .map(this::createKeyBinding)
+                .toList();
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
                 .iconURL(iconURLProvider)
                 .candidates(candidates)
                 .dialogDescriptionId(dialogDescriptionId)
+                .keyBindings(keyBindings)
                 .build();
     }
 

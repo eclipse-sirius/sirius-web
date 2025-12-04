@@ -39,6 +39,12 @@ export const getPaletteQuery = gql`
       appliesToDiagramRoot
       dialogDescriptionId
       withImpactAnalysis
+      keyBindings {
+        isCtrl
+        isMeta
+        isAlt
+        key
+      }
     }
   }
   query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {

@@ -50,6 +50,7 @@ export interface PaletteStyleProps {
 export interface GQLTool extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
+  keyBindings: GQLKeyBinding[];
   __typename: string;
 }
 
@@ -57,6 +58,16 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
+}
+
+// TODO move this in a shared place ?
+// TODO KeyBinding for any tool?
+// TODO duplicated from sirius-components-diagrams
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }
 
 export interface GQLPalette {

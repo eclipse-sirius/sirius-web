@@ -22,11 +22,12 @@ import Paper from '@mui/material/Paper';
 import { Theme, useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import {
+  GQLPalette,
   GQLPaletteDivider,
   GQLPaletteEntry,
   GQLSingleClickOnDiagramElementTool,
@@ -48,6 +49,33 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
 
+export const getAllPaletteTools = (palette: GQLPalette) => {
+  const result: GQLTool[] = palette.quickAccessTools;
+  // TODO improve this piece of code as it is done in PaletteToolList#paletteContainsTool
+  palette.paletteEntries.forEach((paletteEntry) => {
+    if (isTool(paletteEntry)) {
+      result.push(paletteEntry);
+    } else if (isToolSection(paletteEntry)) {
+      paletteEntry.tools.forEach((toolSectionTool) => {
+        if (isTool(toolSectionTool)) {
+          result.push(toolSectionTool);
+        }
+      });
+    }
+  });
+  return result;
+};
+
+export const hasKeyBinding = (tool: GQLTool, event: React.KeyboardEvent<Element>) => {
+  return tool.keyBindings.some(
+    (keyBinding) =>
+      keyBinding.key === event.key &&
+      (!keyBinding.isCtrl || event.ctrlKey) &&
+      (!keyBinding.isAlt || event.altKey) &&
+      (!keyBinding.isMeta || event.metaKey)
+  );
+};
+
 const paletteWidth = 200;
 
 export const Palette = ({
@@ -63,6 +91,20 @@ export const Palette = ({
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const theme: Theme = useTheme();
+
+  const allPaletteTools: GQLTool[] = getAllPaletteTools(palette);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<Element>) => {
+      const toolToExecute: GQLTool | undefined = allPaletteTools.find((tool) => hasKeyBinding(tool, event));
+      if (toolToExecute) {
+        event.stopPropagation();
+        event.preventDefault();
+        handleToolClick(toolToExecute);
+      }
+    },
+    [allPaletteTools]
+  );
 
   const [state, setState] = useState<PaletteState>({
     searchToolValue: '',
@@ -140,6 +182,7 @@ export const Palette = ({
       onStop={onPaletteDragStop}>
       <Paper
         ref={nodeRef}
+        onKeyDown={handleKeyDown}
         data-testid="Palette"
         elevation={3}
         onClick={(event) => event.stopPropagation()}
