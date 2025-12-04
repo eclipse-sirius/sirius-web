@@ -152,7 +152,7 @@ export const useDropNodes = (): UseDropNodesValue => {
     return node;
   };
 
-  const onNodeDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
+  const onNodesDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, _node, nodes) => {
       if (nodes.length === 0) {
         return;
@@ -232,7 +232,7 @@ export const useDropNodes = (): UseDropNodesValue => {
     [getNodes]
   );
 
-  const onNodeDrag: OnNodeDrag<Node<NodeData>> = useCallback(
+  const onNodesDrag: OnNodeDrag<Node<NodeData>> = useCallback(
     (event, _node, nodes) => {
       if (nodes.length === 0) {
         return;
@@ -293,8 +293,11 @@ export const useDropNodes = (): UseDropNodesValue => {
     [droppableOnDiagram, getNodes]
   );
 
-  const onNodeDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
-    (_event, draggedNode, draggedNodes) => {
+  const onNodesDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
+    (_event, node, _nodes) => {
+      const draggedNodes: Node<NodeData>[] = getNodes().filter((node) => node.data.isDraggedNode);
+      const draggedNode: Node<NodeData> | undefined =
+        draggedNodes.find((draggedNode) => draggedNode.id === node.id) || undefined;
       if (draggedNode) {
         const dropPosition = evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup);
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
@@ -372,8 +375,8 @@ export const useDropNodes = (): UseDropNodesValue => {
   );
 
   return {
-    onNodesDragStart: onNodeDragStart,
-    onNodesDrag: onNodeDrag,
-    onNodesDragStop: onNodeDragStop,
+    onNodesDragStart,
+    onNodesDrag,
+    onNodesDragStop,
   };
 };
