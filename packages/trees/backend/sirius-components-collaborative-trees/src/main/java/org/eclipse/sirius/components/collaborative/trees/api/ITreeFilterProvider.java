@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.collaborative.trees.api;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 
 /**
@@ -22,5 +24,5 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
  * @author arichard
  */
 public interface ITreeFilterProvider {
-    List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId);
+    List<TreeFilter> get(IEditingContext editingContext, TreeDescription treeDescription, Tree tree);
 }
