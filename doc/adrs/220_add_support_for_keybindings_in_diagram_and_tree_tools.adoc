@@ -1,0 +1,91 @@
+= ADR-220 - Add support for key bindings in diagram and tree tools
+
+== Context
+
+Sirius Web does not allow to define key bindings for tools in diagrams and entries in tree contextual menus.
+
+We should provide a way for specifiers to define such key bindings, and for users to see which key bindings are associated with a tool.
+
+== Decision
+
+=== Frontend
+
+We will add a new hook `useDiagramKeyBinding` in `sirius-components-diagrams` to handle key down events.
+We will plug it into `DiagramRenderer.tsx` similarly to how `useDiagramDelete` is used.
+
+This hook will react to `KeyboardEvent` as follows:
+[source, typescript]
+----
+const onKeyBinding =  (event : React.KeyboardEvent) => {
+    const toolToExecute = findToolToExecute(event);
+    executeTool(toolToExecute, /* other parameters */);
+}
+----
+
+The `findToolToExecute` function will query the backend to retrieve all the available tools for the selected elements, and look for one that matches the provided `event` (including CTRL, ALT, META keys).
+
+Similarly, we will create a new hook `useTreeKeyBinding` and plug it into `Tree.tsx` (the same way up and down keys are handled to navigate the tree).
+
+NOTE: We'll need two different hooks because the way tools are retrieved and executed is different between diagrams and trees.
+
+We will update `Tool.tsx`, `DefaultMenuItem.tsx`, and `PaletteToolList.tsx` to ensure the key bindings are visible to the user in the associated tooltips.
+
+=== GraphQL
+
+We will update `diagram.graphqls` as follows
+
+[source, graphqls]
+----
+interface Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
+}
+----
+
+We will update `tree.graphqls` as follows
+
+[source, graphqls]
+----
+interface TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
+}
+----
+
+And `core.graphqls` as follows to make the `KeyBinding` type reusable.
+
+[source, graphqls]
+----
+type KeyBinding {
+    isCtrl: Boolean!
+    isMeta: Boolean!
+    isAlt: Boolean!
+    key: String!
+}
+----
+
+=== Backend
+
+We will add the corresponding `KeyBinding` DTO in the backend and update the related DTOs that should contain a key binding.
+
+To help with view-level specification of key bindings, we will perform the following modifications:
+
+- Create a new `KeyBinding` EClass in `view.ecore` with boolean attributes for `CTRL`, `ALT`, and `META` keys, and a string attribute for the pressed key.
+- Add `keyBindings: KeyBinding[*]` references in appropriate types in `tree.ecore` and `diagram.ecore`.
+- Update the view converters where necessary.
+
+
+== Consequences
+
+We will be able to remove the hardcoded delete tools from diagrams and tree contextual menus once this initial work is completed.
+
+== Cutting backs
+
+
+== Status
+
+Proposed.
