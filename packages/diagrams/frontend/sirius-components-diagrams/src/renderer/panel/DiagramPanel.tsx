@@ -13,6 +13,8 @@
 
 import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import GridOffIcon from '@mui/icons-material/GridOff';
@@ -46,7 +48,15 @@ import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
 export const DiagramPanel = memo(
-  ({ snapToGrid, onSnapToGrid, helperLines, onHelperLines, reactFlowWrapper }: DiagramPanelProps) => {
+  ({
+    snapToGrid,
+    onSnapToGrid,
+    helperLines,
+    onHelperLines,
+    isMiniMapVisible,
+    setMiniMapVisibility,
+    reactFlowWrapper,
+  }: DiagramPanelProps) => {
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
       arrangeAllDone: false,
@@ -122,6 +132,27 @@ export const DiagramPanel = memo(
                 <AspectRatioIcon />
               </IconButton>
             </Tooltip>
+            {isMiniMapVisible ? (
+              <Tooltip title={t('hideMiniMap')}>
+                <IconButton
+                  size="small"
+                  data-testid="hide-mini-map"
+                  aria-label={t('hideMiniMap')}
+                  onClick={() => setMiniMapVisibility(false)}>
+                  <CreditCardOffIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title={t('showMiniMap')}>
+                <IconButton
+                  size="small"
+                  data-testid="show-mini-map"
+                  aria-label={t('showMiniMap')}
+                  onClick={() => setMiniMapVisibility(true)}>
+                  <CreditCardIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title={t('zoomIn')}>
               <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn}>
                 <ZoomInIcon />
