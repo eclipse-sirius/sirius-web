@@ -81,7 +81,7 @@ export const DraggableResizableOutsideLabel = ({
   const resizable: boolean = selected && !readOnly && label.overflowStrategy !== 'NONE' && label.text.length > 0;
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', visibility: label.style.visibility ?? 'visible' }}>
       <Draggable
         position={label.position}
         onStop={onDragStop}

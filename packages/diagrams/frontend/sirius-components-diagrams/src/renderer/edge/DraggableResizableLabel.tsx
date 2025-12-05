@@ -75,7 +75,9 @@ export const DraggableResizableLabel = ({
       nodeRef={nodeRef}
       disabled={readOnly}
       cancel={'.react-resizable-handle'}>
-      <div ref={nodeRef} style={{ position: 'absolute', zIndex: 1001 }}>
+      <div
+        ref={nodeRef}
+        style={{ position: 'absolute', zIndex: 1001, visibility: label.style.visibility ?? 'visible' }}>
         <div style={{ padding: 5, transform: `${transform}` }}>
           <div style={resizableLabelStyle(theme, size, label, selected)}>
             <Resizable
