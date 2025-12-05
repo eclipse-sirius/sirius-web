@@ -22,6 +22,7 @@ import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { useLabelResetPosition } from '../move/useLabelResetPosition';
 import { GQLTool } from '../palette/Palette.types';
+import { useLabelResetSize } from '../resize/useLabelResetSize';
 import { useDelete } from './useDelete';
 import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
@@ -30,6 +31,7 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { removeOutsideLabelLayoutData } = useLabelResetPosition();
+  const { removeLabelSizeLayoutData } = useLabelResetSize();
   const { removeNodeHandleLayoutData } = useHandlesLayout();
   const { removeEdgeLayoutData } = useEditableEdgePath();
   const { invokeSingleClickTool } = useSingleClickTool();
@@ -69,6 +71,11 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
       case 'reset-outside-label-position':
         if (diagramElementIds.length === 1 && diagramElementIds[0]) {
           removeOutsideLabelLayoutData(diagramElementIds[0]);
+        }
+        break;
+      case 'reset-label-resize':
+        if (diagramElementIds.length === 1 && diagramElementIds[0]) {
+          removeLabelSizeLayoutData(diagramElementIds[0]);
         }
         break;
       case 'reset-bending-points':

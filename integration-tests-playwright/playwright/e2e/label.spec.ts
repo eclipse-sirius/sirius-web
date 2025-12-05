@@ -179,9 +179,9 @@ test.describe('diagram - label', () => {
     await entity1Node.click();
     await expect(page.locator('.react-resizable-handle')).toHaveCount(1);
 
-    await entity1Node.move({ x: -50, y: -50 });
-
+    await entity1Node.move({ x: -100, y: -100 });
     await edge.click();
+
     await expect(page.locator('.react-resizable-handle')).toHaveCount(3);
 
     const details = new PlaywrightDetails(page);
@@ -224,5 +224,76 @@ test.describe('diagram - label', () => {
       },
       { timeout: 2000 }
     );
+  });
+});
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectWithLabelResized.zip');
+    await expect(page.locator('[data-testid^="explorer://"]')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when the reset label size tool is triggered on an outside label, then label size is reset', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const outsideLabelContentBoxBefore = await page.getByTestId('Label content - OutsideLabel').boundingBox();
+
+    const entity1Node = new PlaywrightNode(page, 'Entity1');
+    await entity1Node.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).toBeAttached();
+    await page.getByTestId('Reset labels sizes - Tool').click();
+
+    const outsideLabelContentBoxAfter = await page.getByTestId('Label content - OutsideLabel').boundingBox();
+
+    expect(outsideLabelContentBoxAfter?.height).not.toBe(outsideLabelContentBoxBefore?.height);
+    expect(outsideLabelContentBoxAfter?.width).not.toBe(outsideLabelContentBoxBefore?.width);
+
+    await entity1Node.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).not.toBeAttached();
+  });
+
+  test('when the reset label size tool is triggered on an edge, then all labels size are reset', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const beginLabelContentBoxBefore = await page.getByTestId('Label content - Begin').boundingBox();
+    const centerLabelContentBoxBefore = await page.getByTestId('Label content - Center').boundingBox();
+    const endLabelContentBoxBefore = await page.getByTestId('Label content - End').boundingBox();
+
+    const edge = new PlaywrightEdge(page);
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).toBeAttached();
+    await page.getByTestId('Reset labels sizes - Tool').click();
+
+    const beginLabelContentBoxAfter = await page.getByTestId('Label content - Begin').boundingBox();
+    const centerLabelContentBoxAfter = await page.getByTestId('Label content - Center').boundingBox();
+    const endLabelContentBoxAfter = await page.getByTestId('Label content - End').boundingBox();
+
+    expect(beginLabelContentBoxAfter?.height).not.toBe(beginLabelContentBoxBefore?.height);
+    expect(beginLabelContentBoxAfter?.width).not.toBe(beginLabelContentBoxBefore?.width);
+    expect(centerLabelContentBoxAfter?.height).not.toBe(centerLabelContentBoxBefore?.height);
+    expect(centerLabelContentBoxAfter?.width).not.toBe(centerLabelContentBoxBefore?.width);
+    expect(endLabelContentBoxAfter?.height).not.toBe(endLabelContentBoxBefore?.height);
+    expect(endLabelContentBoxAfter?.width).not.toBe(endLabelContentBoxBefore?.width);
+
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).not.toBeAttached();
   });
 });

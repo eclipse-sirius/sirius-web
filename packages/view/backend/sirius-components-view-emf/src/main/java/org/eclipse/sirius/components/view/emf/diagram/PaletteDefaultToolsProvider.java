@@ -93,15 +93,19 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             extraTools.add(pinTool);
         }
 
-        if (diagramElement instanceof IDiagramElement element && isOutSideLabelManuallyPositioned(diagramContext, element)) {
+        if (diagramElement instanceof IDiagramElement element && this.isOutSideLabelManuallyPositioned(diagramContext, element)) {
             extraTools.add(this.getResetOutSideLabelPositionedTool(targetDescriptions));
         }
 
-        if (diagramElement instanceof Edge edge && isEdgeBendingPointsManuallyPositioned(diagramContext, edge)) {
+        if (diagramElement instanceof IDiagramElement element && this.isLabelManuallyResized(diagramContext, element)) {
+            extraTools.add(this.getResetLabelResizedTool(targetDescriptions));
+        }
+
+        if (diagramElement instanceof Edge edge && this.isEdgeBendingPointsManuallyPositioned(diagramContext, edge)) {
             extraTools.add(this.getResetBendingPointsPositionedTool(targetDescriptions));
         }
 
-        if (diagramElement instanceof Edge edge && isEdgeHandlesManuallyPositioned(diagramContext, edge)) {
+        if (diagramElement instanceof Edge edge && this.isEdgeHandlesManuallyPositioned(diagramContext, edge)) {
             extraTools.add(this.getResetHandlesPositionTool(targetDescriptions));
         }
 
@@ -179,10 +183,39 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
         return isManualyPositionned;
     }
 
+    private boolean isLabelManuallyResized(DiagramContext diagramContext, IDiagramElement diagramElement) {
+        boolean isManualyResized = false;
+        if (diagramElement instanceof Node node) {
+            var outSideLabels = node.getOutsideLabels();
+            var labelLayoutData = diagramContext.diagram().getLayoutData().labelLayoutData();
+            isManualyResized = outSideLabels.stream()
+                    .anyMatch(label -> labelLayoutData.containsKey(label.id()) &&
+                            labelLayoutData.get(label.id()).resizedByUser());
+        } else if (diagramElement instanceof Edge edge) {
+            var edgeLabels = Stream.of(edge.getBeginLabel(), edge.getCenterLabel(), edge.getEndLabel())
+                    .filter(Objects::nonNull)
+                    .toList();
+            var labelLayoutData = diagramContext.diagram().getLayoutData().labelLayoutData();
+            isManualyResized = edgeLabels.stream()
+                    .anyMatch(label -> labelLayoutData.containsKey(label.id()) &&
+                            labelLayoutData.get(label.id()).resizedByUser());
+        }
+        return isManualyResized;
+    }
+
     private SingleClickOnDiagramElementTool getResetOutSideLabelPositionedTool(List<IDiagramElementDescription> targetDescriptions) {
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("reset-outside-label-position")
                 .label(this.messageService.defaultQuickToolResetOutsideLabelPosition())
                 .iconURL(List.of(DiagramImageConstants.RESET_LABEL_POSITION))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private SingleClickOnDiagramElementTool getResetLabelResizedTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("reset-label-resize")
+                .label(this.messageService.defaultQuickToolResetLabelSize())
+                .iconURL(List.of(DiagramImageConstants.RESET_LABEL_SIZE))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .build();
@@ -204,7 +237,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
     private boolean isEdgeHandlesManuallyPositioned(DiagramContext diagramContext, Edge edge) {
         var nodeLayoutDatas = Stream.of(diagramContext.diagram().getLayoutData().nodeLayoutData().get(edge.getSourceId()),
-                diagramContext.diagram().getLayoutData().nodeLayoutData().get(edge.getTargetId()))
+                        diagramContext.diagram().getLayoutData().nodeLayoutData().get(edge.getTargetId()))
                 .filter(Objects::nonNull)
                 .toList();
         return nodeLayoutDatas.stream()

@@ -52,7 +52,7 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     public String coreProperties() {
         return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
     }
-    
+
     public String defaultQuickToolAdjustSize() {
         return this.messageSourceAccessor.getMessage("ADJUST_SIZE");
     }
@@ -60,6 +60,11 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     @Override
     public String defaultQuickToolResetOutsideLabelPosition() {
         return this.messageSourceAccessor.getMessage("RESET_OUTSIDE_LABEL_POSITION");
+    }
+
+    @Override
+    public String defaultQuickToolResetLabelSize() {
+        return this.messageSourceAccessor.getMessage("RESET_LABEL_SIZE");
     }
 
     @Override

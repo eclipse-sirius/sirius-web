@@ -27,10 +27,12 @@ public interface IViewEMFMessageService {
     String invokeActionError(String actionName);
 
     String coreProperties();
-    
+
     String defaultQuickToolAdjustSize();
 
     String defaultQuickToolResetOutsideLabelPosition();
+
+    String defaultQuickToolResetLabelSize();
 
     String defaultQuickToolResetHandlesPosition();
 
@@ -87,6 +89,11 @@ public interface IViewEMFMessageService {
 
         @Override
         public String defaultQuickToolResetOutsideLabelPosition() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolResetLabelSize() {
             return "";
         }
 

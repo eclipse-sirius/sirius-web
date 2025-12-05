@@ -43,6 +43,8 @@ public final class DiagramImageConstants {
 
     public static final String RESET_LABEL_POSITION = IMAGES_ROOT_FOLDER + "/reset_label_position.svg";
 
+    public static final String RESET_LABEL_SIZE = IMAGES_ROOT_FOLDER + "/reset_label_size.svg";
+
     public static final String RESET_BENDING_POINTS = IMAGES_ROOT_FOLDER + "/reset_bending_points.svg";
 
     public static final String RESET_HANDLES = IMAGES_ROOT_FOLDER + "/reset_handles.svg";
