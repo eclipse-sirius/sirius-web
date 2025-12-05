@@ -1,0 +1,30 @@
+= APIs overview
+
+{product} exposes two complimentary APIs:
+
+* REST endpoints focused on automation and integration with existing tooling.
+* GraphQL endpoints used by the web client and available to custom front ends.
+
+Choose the approach that best fits your deployment, then dive into the detailed pages linked below.
+
+== REST APIs
+
+The REST surface area focuses on automation scenarios: importing/exporting projects, publishing libraries, managing sessions, etc.
+Key characteristics:
+
+* Every endpoint is rooted at `/api/rest/…`.
+* Authentication and authorization rely on the same mechanisms as the web UI (typically Bearer tokens).
+* OpenAPI documentation is generated automatically; you can inspect it via `/swagger-ui/index.html` in your deployment.
+
+See xref:developer-guide:api-rest.adoc[] for the full list of endpoints, request/response payloads, and usage tips.
+
+== GraphQL APIs
+
+GraphQL powers the live web client and is ideal when building custom front ends or extensions that need fine-grained access.
+Highlights:
+
+* A single `/graphql` endpoint serves both queries and mutations.
+* The schema mirrors the concepts exposed in the UI (projects, representations, view descriptions).
+* You can introspect the schema using GraphiQL or any GraphQL IDE.
+
+See xref:developer-guide:api-graphql.adoc[] for details about authentication, schema exploration, and mutation examples.

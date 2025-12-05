@@ -1,0 +1,3 @@
+= Studio maker guide
+
+This studio maker guide provides ...

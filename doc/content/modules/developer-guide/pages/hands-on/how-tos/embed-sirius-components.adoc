@@ -1,0 +1,93 @@
+= Embed Sirius Components
+
+Need to bring the Sirius Components runtime into your own application? This guide summarizes the core APIs that must be implemented, how to dispatch operations, and how to extend the runtime with your own handlers or widgets.
+
+== Start integrating Sirius Components
+
+In order to start integrating Sirius Components in your application, you must understand the role of core concepts such as `IEditingContext`, `IEditingContextEventProcessor`, and `IRepresentationEventProcessor`.
+
+Your application must connect to the `IEditingContextEventProcessorRegistry`, which manages the various `IEditingContext` instances manipulated at runtime.
+Sirius Components expects implementations of two mandatory services:
+
+* `IEditingContextSearchService` — loads an `IEditingContext` that can later be manipulated by Sirius Components. The service may fetch data from a database or any other persistence mechanism. The `IEditingContext` must simply provide a unique identifier; the concrete implementation is left to you.
+* `IEditingContextPersistenceService` — saves changes made to the `IEditingContext`. When working purely in memory (no persistence), this service can be a no-op. With a database-backed application, persist the new state of the editing context in this implementation.
+
+== Perform changes on the `IEditingContext`
+
+Changes are performed through a simple API composed of `IInput`, `IPayload`, and `IEditingContextEventHandler`.
+
+When you want to execute an operation already supported by Sirius Components, instantiate the matching `IInput` (for example `CreateChildInput`) and send it to the `IEditingContextEventProcessorRegistry#dispatchEvent`.
+The registry finds or creates the relevant `IEditingContextEventProcessor` and lets an `IEditingContextEventHandler` perform the change described by the input.
+Once the operation completes, the handler returns an `IPayload` to the caller (subscribed through the returned `Mono<IPayload>`).
+
+You can also contribute your own `IInput`/`IPayload` types and matching handlers to perform domain-specific changes on the editing context.
+The only constraint is that the `id` of the `IPayload` is a correlation identifier and must be the same as the `id` of the `IInput` that triggered the operation.
+
+== Create a custom `IEditingContextEventHandler`
+
+The `IEditingContextEventHandler` API follows a pattern reused in several parts of Sirius Components: you can register multiple handlers and we will ask them if they can handle specific data, invoking the first one that responds positively.
+
+Inside your custom handler, use the provided `IEditingContext` and `IInput` to decide whether you want to process the request.
+If you do, the `handle` method also receives two Reactor sinks: `One<IPayload> payloadSink` and `Many<ChangeDescription> changeDescriptionSink`.
+Use `payloadSink` to emit a response payload (for example a `CreateRepresentationSuccessPayload`), and `changeDescriptionSink` to describe what changed so that the rest of the runtime reacts properly.
+For instance:
+
+```
+changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input));
+```
+
+This semantic change triggers a refresh of every impacted representation and requests the editing context to be saved, so the original operation can both update the data and refresh the UI.
+
+== Add support for a new kind of widget in forms
+
+When you need a brand-new form widget you must extend both the backend and the frontend.
+The high-level steps are summarised below; the xref:developer-guide:custom-widget.adoc[custom widget guide] contains an end-to-end example.
+
+=== Backend (`packages/forms/backend`)
+
+1. Create the concrete POJO (with a builder) in `org.eclipse.sirius.components.forms`, extending `AbstractWidget`.
+2. Create the description (with a builder) in `org.eclipse.sirius.components.forms.description`.
+3. Add the props POJO (with a builder) in `org.eclipse.sirius.components.forms.elements`.
+4. Implement the component and its props in `org.eclipse.sirius.components.forms.components`.
+5. Update `org.eclipse.sirius.components.forms.renderer` (`FormComponentPropsValidator`, `FormElementFactory`, and `FormInstancePropsValidator`) to account for the new widget.
+6. Add the corresponding branch in `WidgetComponent#render()`.
+
+In `sirius-components-collaborative-forms` add support for the widget in `form.graphqls` by declaring the new GraphQL type and mutations (`type XXX implements Widget { ... }`, `editXXX` mutation, payloads, etc.).
+Add DTOs in `org.eclipse.sirius.components.collaborative.forms.dto`, handlers in `org.eclipse.sirius.components.collaborative.forms.handlers`, and the mutation data fetcher in `org.eclipse.sirius.components.forms.graphql.datafetchers.mutation`.
+
+If the widget must be compatible with Sirius Desktop/EEF properties/forms, update `WidgetDescriptionConverter` in `sirius-components-compatibility`.
+For default properties, tweak `PropertiesDefaultDescriptionProvider` in `sirius-components-compatibility-emf` if needed for early manual validation.
+
+=== Frontend (`packages/forms/frontend/sirius-components-forms`)
+
+* Add the widget type and fields in `src/form/FormEventFragments.ts`, plus the matching TypeScript types in `src/form/FormEventFragments.types.ts` and `src/form/Form.types.ts`.
+* In `src/properties/PropertySection.tsx`, add the type predicate and rendering branch.
+* Implement the React component in `src/properties/propertysections` to display the widget.
+
+=== Form Description Editor support
+
+Backend (`sirius-components-formdescriptioneditors`):
+
+* Add a `case` method for the new widget kind in `ViewFormDescriptionEditorConverterSwitch`.
+* If the widget exposes style attributes that can be computed statically for the live preview, add a `*StyleProvider` in `org.eclipse.sirius.components.formdescriptioneditors.components` and use it in the switch.
+
+Frontend (`packages/formdescriptioneditors/frontend/sirius-components-formdescriptioneditors`):
+
+* Implement the React preview component (see `ButtonWidget.tsx` for an example).
+* Register the widget type in `FormDescriptionEditorRepresentation.types.ts` and update `isKind` in `WidgetOperations.tsx`.
+* Add support for the new widget in `WidgetEntry.tsx` and `WidgetEntry.types.ts`.
+
+=== View DSL support
+
+* Extend `sirius-components-view/src/main/resources/model/view.ecore` with a `WidgetDescription` sub-class representing your widget and regenerate.
+* Update `collectNewChildDescriptors` in `FormDescriptionItemProvider` so that the widget is proposed with useful defaults.
+* Provide an SVG icon for the widget in `sirius-components-view-edit` and return it in the widget item provider’s `getImage`:
++
+```java
+/** @generated NOT */
+@Override
+public Object getImage(Object object) {
+    return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RichTextDescription.svg"));
+}
+```
+* Extend `ViewFormDescriptionConverterSwitch` with `caseMyNewWidgetDescription` to convert the View model element into the runtime `WidgetDescription`.

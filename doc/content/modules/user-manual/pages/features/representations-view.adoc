@@ -1,0 +1,18 @@
+= {representations-view}
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+Explore the {representations-view} view to gain insights into the available representations associated with the selected element.
+
+image::representations-right-sidebar-representations.png[{representations-view} view]
+
+This view provides a comprehensive list of all existing representations, offering a convenient overview of the various ways the element is visually represented within the project.
+
+Use it to:
+
+* Open an existing representation in a new tab by clicking its name. If the representation is already open, the editor switches focus to that tab.
+* Identify the representation type at a glance—icons and badges help you distinguish diagrams, forms, tables, portals, and more.
+* See whether the representation lives in the current project or references another element, which is useful when tracing cross-model views.
+* Create new representations via the actions available in the view (for example, *Create Diagram*). The exact commands depend on the selected element and the current configuration.
+
+TIP: Combine the {representations-view} with the {details} view to understand both the structure and the available visualizations of the same element without leaving the sidebar.

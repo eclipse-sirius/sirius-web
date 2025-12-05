@@ -1,0 +1,124 @@
+= Contribute custom diagram nodes
+
+This guide explains how an application can contribute and use its own custom nodes inside diagram representations.
+The example below illustrates an “Ellipse” shape, but the same steps apply to other node types.
+
+== Backend implementation
+
+=== View DSL integration
+
+This optional step is highly recommended so studio makers can configure the node style from the View DSL, just like the core node types.
+
+1. Create an Ecore model defining a subtype of `diagram.ecore`’s `NodeStyleDescription` (`org.eclipse.sirius.components.view.diagram.NodeStyleDescription`) with the attributes required by your node.
+2. Provide tooling (View-based DiagramDescription) so authors can instantiate the new description (e.g., `EllipseNodeStyle`).
+3. Declare an `INodeStyleProvider` that converts the modeled style description into the runtime implementation:
++
+[source,java]
+----
+@Service
+public class EllipseNodeStyleProvider implements INodeStyleProvider {
+
+    @Override
+    public Optional<String> getNodeType(NodeStyleDescription nodeStyle) {
+        if (nodeStyle instanceof EllipseNodeStyleDescription) {
+            return Optional.of(NODE_ELLIPSE);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+        // ...
+        return Optional.of(EllipseNodeStyle.newEllipseNodeStyle().build());
+    }
+}
+----
+
+4. Extend the GraphQL schema with your style:
++
+[source,graphqls]
+----
+type EllipseNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+extend union INodeStyle = EllipseNodeStyle
+----
+
+IMPORTANT: the GraphQL type (`EllipseNodeStyle`) must match the Java implementation class (`EllipseNodeStyle.java`).
+
+== Frontend implementation
+
+1. Declare the `GQLNodeStyle` subtype for your new node:
++
+[source,typescript]
+----
+import { GQLNodeStyle } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+
+export interface GQLEllipseNodeStyle extends GQLNodeStyle {
+  color: string;
+  borderColor: string;
+  borderStyle: string;
+  borderSize: string;
+}
+----
+2. Implement the React Flow component (e.g., `EllipseNode.tsx`) and any helpers required to render your shape.
+3. Provide an `INodeConverter` that converts `GQLNode` instances into React Flow nodes:
++
+[source,typescript]
+----
+export class EllipseNodeConverter implements INodeConverter {
+  canHandle(gqlNode: GQLNode) {
+    return gqlNode.style.__typename === 'EllipseNodeStyle';
+  }
+
+  handle(
+    convertEngine: IConvertEngine,
+    gqlNode: GQLNode,
+    parentNode: GQLNode | null,
+    isBorderNode: boolean,
+    nodes: Node[]
+  ) {
+    nodes.push(toEllipseNode(gqlNode, parentNode, isBorderNode));
+    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes);
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes);
+  }
+}
+----
+4. Implement an `INodeLayoutHandler` for the layout logic:
++
+[source,typescript]
+----
+export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
+  canHandle(node: Node<NodeData, DiagramNodeType>) {
+    return node.type === 'ellipseNode';
+  }
+
+  handle(
+    layoutEngine: ILayoutEngine,
+    previousDiagram: Diagram | null,
+    node: Node<NodeData>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    forceWidth?: number
+  ) {
+    // ...
+  }
+}
+----
+5. Extend the GraphQL document with the extra fields required by your node (for example through a `DocumentTransform` contributed to Apollo).
+6. Finally, register everything in the `NodeTypeRegistry` passed to `DiagramRepresentationConfiguration`:
++
+[source,typescript]
+----
+const nodeTypeRegistry: NodeTypeRegistry = {
+  nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
+  nodeConverters: [new EllipseNodeConverter()],
+  nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+};
+----
+
+IMPORTANT: the `nodeTypeContributions` type must match the value assigned during conversion (`ellipseNode` above).

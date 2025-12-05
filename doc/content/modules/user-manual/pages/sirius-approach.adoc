@@ -1,0 +1,94 @@
+= The {sirius} approach
+
+{product} is designed to address the evolving needs of domain-specific modeling by enabling the rapid creation of customized graphical modeling tools.
+It builds on the proven concepts of Eclipse {sirius} while embracing the flexibility and reach of web technologies.
+
+== Addressing the Needs of Modelers
+
+Domain modelers often face diverse and demanding requirements when designing and working with models.
+{sirius} addresses these needs through five key principles:
+
+* *Rapidly* describe graphical modeling solutions tailored to a domain.
+* *Represent* the same system through multiple synchronized views: diagrams, tables, forms, etc.
+* *Adapt* models and visualizations to the business or engineering context.
+* Offer *off-the-shelf* features: navigability, layout management, layers, wizards, image export, and more.
+* *Customizable* and *extensible* for domain-specific or project-specific needs.
+
+== Key Concepts of {product}
+
+If you are discovering {product}, start with the xref:user-manual:concepts.adoc[Key concepts and terminology] page.
+It defines the fundamental artifacts (projects, models, representations, ...) and explains how end users, studio makers and developers interact with them.
+The sections below focus on how those concepts come together inside the {sirius} approach.
+
+=== Key Benefits
+
+{product} offers distinct advantages for both tool developers and end users.
+
+*For developers*, it significantly reduces the complexity and cost of creating modeling tools.
+Since it does not require deep expertise in web technologies, teams can quickly prototype and iterate on solutions.
+
+*For end users*, the result is a modeling tool that is tightly aligned with their domain, vocabulary, and processes, improving both usability and adoption.
+{product} also supports dynamic evolution: changes to the specification can be applied without code generation or redeployment, making the development cycle more agile.
+
+== Architecture Overview
+
+=== Roles : Studio Makers and End Users
+
+{product} provides a modeling workbench for building model-based applications, structured around two complementary roles:
+
+* *Studio makers* (also known as specifiers) define the business concepts and the graphical tooling to manipulate them.
+* *End users* use those concepts to capture, visualize, and edit domain-specific data through dedicated representations.
+
+image::modeler-specifiers-and-end-users.drawio.svg[]
+
+These roles correspond to two distinct levels in the architecture:
+
+* Studio makers work at a *meta* level, where they define both the *semantic domain* (business concepts) and the *views* (graphical representations).
+* End users work at the *data* level, where they create and manipulate *instances* of the defined concepts using those *representations*.
+
+{product}’s architecture is composed of four major parts:
+
+image::relations.png[]
+
+* *Domain* : defines the business concepts (semantic model).
+* *View* : defines the representations available to users (UI model).
+* *Data* : actual instances of the domain concepts.
+* *Representations* : visual tools used to manipulate the data.
+
+==== Studio makers vs Developers
+
+Within the specifiers role we see two recurring profiles:
+
+* *Studio makers* configure the tool purely from the browser, using the domain/view editors and the expression language.
+  They may have light scripting experience (Excel formulas, simple macros) but never touch Java code.
+  Every feature must remain configurable through the UI so these specifiers can iterate quickly and challenge assumptions.
+* *Developers* are comfortable with IDEs, Java, and web technologies.
+  They extend {product} through custom Spring modules, frontend components, or deployment automation.
+
+Successful projects often blend both profiles: start with the declarative editor to validate ideas, then rely on the programmatic APIs to push customization further.
+This is why {product} exposes both low-code tooling and a rich developer experience (REST, GraphQL, API builders) in the xref:developer-guide:index.adoc[developer guide].
+
+=== How the core layers relate
+
+At runtime, {product} continuously interprets the specification provided by the studio maker:
+
+* The *domain* layer (metamodel) describes the business concepts, attributes, and relationships.
+* The *view* layer defines how those concepts appear inside diagrams, tables, decks, forms, and trees.
+* The *data* layer contains the instances created by end users, constrained by the domain.
+* *Representations* expose the data through the view definitions so users can browse, edit, and analyze it.
+
+This flow is identical to the semantic/view separation documented in Sirius Desktop, but it takes advantage of web technologies so changes can be applied instantly without rebuilding the application.
+Refer to the xref:user-manual:concepts.adoc#_domain[Domain], xref:user-manual:concepts.adoc#_view[View], xref:user-manual:concepts.adoc#_data[Data], and xref:user-manual:concepts.adoc#_representation[Representation] sections for detailed definitions and examples.
+
+=== How Specifications Drive the Runtime
+
+{product} includes a dedicated specification environment that enables studio makers to define modeling workbenches without writing code.
+Using a graphical interface, they can configure diagrams, tables, forms, and property views, benefiting from rapid feedback loops and a low technical barrier to entry.
+For more advanced needs, the specification can be extended with custom logic in Java.
+
+Unlike traditional model-driven tools, there is no code generation involved.
+Once the specification is defined, it is interpreted directly by the runtime engine, which dynamically applies it to drive the user interface and behavior. This allows changes to be reflected immediately, without requiring build or deployment steps.
+
+The runtime environment offers a viewpoint-based user interface, specific to the context of each user.
+It ensures that users only see the relevant data and tools, improving clarity and efficiency.
+This separation between specification and execution supports agile iteration and makes it easy to evolve the modeling environment over time.

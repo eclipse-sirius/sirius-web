@@ -1,0 +1,345 @@
+= Diagram
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+In {product}, diagrams offer an interactive and visual way to work with your models.
+
+image::representations/diagram-representation.png[]
+
+They let you create, view, and edit elements and relationships graphically, helping you understand the structure and behavior of your system at a glance. You focus on modeling; the available tools and rules are already configured for you.
+
+== What You Can Do
+
+When you open a diagram, you'll see model elements (such as components, links, containers, etc.) displayed as graphical shapes.
+You can:
+
+* Add new elements using the palette
+* Move, resize, and connect items
+* Edit labels and properties
+* Use zoom and layout controls to explore large models
+* Interact with the model in ways that are constrained by domain-specific logic
+
+All your changes are automatically reflected in the underlying model and synchronized with other views like tables or forms.
+
+=== Global Palette
+
+The global palette provides general tools for navigating and managing the diagram as a whole.
+
+[cols="10%,20%,70%", options="header"]
+|===
+| | Tool | What it does
+
+a|image::global-palette-full-screen.png[Full screen]
+| Full screen
+| Opens the diagram in full-screen mode for distraction-free modeling.
+
+a|image::global-palette-fit-to-screen.png[Fit to screen]
+| Fit to screen
+| Adjusts the zoom level to ensure all elements or the current selection fit within the visible area.
+
+a|image::global-palette-zoom.png[Zoom]
+| Zoom
+| Lets you zoom in and out manually using the toolbar buttons.
+
+a|image::global-palette-share.png[Share]
+| Share
+| Generates a shareable link to the current diagram.
+
+a|image::global-palette-export.png[Export]
+| Export SVG
+| Downloads the current view of the diagram as an SVG, HTML SVG or PNG image.
+
+a|image::global-palette-snap-to-grid.png[Snap to grid]
+| Snap to grid
+| Helps align elements precisely by snapping them to an invisible grid during movement or resizing.
+
+a|image::global-palette-helper-lines.png[Helper lines]
+| Helper lines
+| Displays visual guides when dragging elements to assist with alignment.
+
+a|image::global-palette-arrange-all.png[Arrange all]
+| Arrange all
+| Automatically reorganizes all elements to improve overall layout clarity.
+
+a|image::global-palette-smart-edges.png[Smart Edges]
+| Smart Edges
+| Enables edge routing that avoids crossing nodes (experimental, client-side only, not saved).
+
+a|image::global-palette-show.png[Show hidden elements]
+| Show hidden elements
+| Reveals hidden edges, nodes, or other visual components.
+
+a|image::global-palette-unfade.png[Unfade elements]
+| Unfade elements
+| Restores full visibility to elements that were faded.
+
+a|image::global-palette-unpin.png[Unpin elements]
+| Unpin elements
+| Allows previously pinned elements to be moved freely again.
+
+a|image::global-palette-filter.png[Filter]
+| Filter
+| Applies visual filters to focus on elements matching specific attributes or types.
+|===
+
+TIP: You can combine `Arrange All`, `Helper Lines`, and `Snap to Grid` to quickly clean up complex diagrams.
+
+[NOTE]
+====
+`Smart Edges` is experimental.
+It only affects the local view and is not saved with the model.
+====
+
+=== Contextual Palette (Right-Click)
+
+When you *right-click* on an element in a diagram, a *contextual palette* appears.
+It offers quick access to actions you can apply to the selected element—or to a group of elements if you've selected several.
+
+image::contextual-palette.png[Contextual palette, width=50%,height=50%]
+
+Unlike the global palette, which offers tools for managing the entire diagram, the contextual palette adapts to your selection—showing tools specific to nodes, containers, edges, or other elements.
+
+==== How to Use
+
+. Right-click on any element in the diagram (e.g., a node, connection, or container).
+. A palette appears next to the selected element.
+. Click any of the available actions to perform the desired task.
+
+==== Actions on single element
+
+[cols="20%,20%,60%", options="header"]
+|===
+| | Tool | What it does
+
+a|image::contextual-palette-create-element.png[Create element, width=80%,height=80%]
+| *Create element (Diagram)*
+| Add a new child or related element (e.g., create a sub-component).
+You can create new nodes from the background of the diagram by right-clicking to open the palette.
+Creation tools are grouped by category; expand a section, choose a tool, and then click where you want to place the element.
+
+a|image::manage-elements-fromElement-creation.png[Creation from Diagram Element, width=80%,height=80%]
+|*Create element (in Element)*
+|To add elements inside an existing node, right-click the parent element and select the appropriate creation tool.
+Newly created nodes that contain compartments start collapsed by default; you can expand them later from the contextual palette.
+
+a|image::manage-elements-fromCompartment-creation.png[Creation from Compartment, width=80%,height=80%]
+|*Create element (in Compartment)*
+|To add elements inside an existing node, right-click the compartments and select the appropriate creation tool.
+Newly created nodes that contain compartments start collapsed by default; you can expand them later from the contextual palette.
+
+a|image::manage-elements-creation-search.png[Creation search, width=80%,height=80%]
+|*Search field*
+|The palette’s search field helps you filter tools across every section when a representation defines numerous element types.
+
+a|image::contextual-palette-create-connection.png[Create element, width=50%,height=50%]
+| *Create connection*
+| Add a new child or related element (e.g., create a connection).
+
+a|image::contextual-palette-delete-from-model.png[Delete from model]
+| *Delete from model*
+| Remove the selected element from both the diagram and the semantic model.
+
+a|image::contextual-palette-delete-from-diagram.png[Delete from diagram]
+| *Delete from diagram*
+| Remove the selected element from the graphical view.
+
+a|image::contextual-palette-collapse.png[Edit]
+| *Collapse*
+| Lets you rename the element or change its properties directly in the diagram.
+
+a|image::contextual-palette-edit.png[Edit]
+| *Edit*
+| Lets you rename the element or change its properties directly in the diagram.
+
+a|image::contextual-palette-hide.png[Hide]
+| *Hide*
+| Temporarily removes the element from view. You can show it again later using the global palette.
+
+a|image::contextual-palette-fade.png[Fade]
+| *Fade*
+| Makes the element appear dimmed so it’s less distracting, without hiding it completely.
+
+a|image::contextual-palette-pin.png[Pin]
+| *Pin*
+| Locks the element in place so it doesn’t move when rearranging the diagram.
+
+a|image::contextual-palette-reconnect.png[Reconnect]
+| *Reconnect*
+| Change the source or target of a connection or relationship.
+
+a|image::contextual-palette-adjust-size.png[Adjust size]
+| *Adjust size*
+| Automatically resizes the element to fit its content.
+
+a|image::contextual-palette-custom-tools.png[Custom tools]
+| *Custom tools*
+| Domain-specific actions that appear when the current domain provides them (for example: _Mark as Deprecated_, _Duplicate_, etc.).
+|===
+
+[NOTE]
+====
+The tools available in the contextual palette vary with the domain and representation configuration.
+====
+
+[TIP]
+====
+You can also use keyboard shortcuts or the details panel to perform some actions.
+====
+
+[NOTE]
+====
+A confirmation dialog appears when you delete from the model, unless you disable it in the dialog itself.
+
+image::manage-elements-semantic-deletion.png[Semantic Deletion]
+====
+
+[TIP]
+====
+The confirmation preference is stored in your browser’s local storage.
+Clear the {product} data in the cache to restore the dialog.
+====
+
+==== Actions on Multiple Elements
+
+When you select multiple elements (e.g., by holding _Shift_ and dragging a selection box), the palette shows tools for organizing and aligning the selection.
+
+[TIP]
+====
+To select multiple elements:
+
+* Hold *`Shift` and drag* with the left mouse button to draw a rectangular selection zone.
+* Or hold *`Ctrl` (or `Cmd` on Mac) and click* individual elements to add or remove them from the selection.
+====
+
+[cols="10%,20%,70%", options="header"]
+|===
+| | Tool | What it does
+
+a|image::contextual-palette-align-horizontal.png[Align horizontally]
+| *Align horizontally*
+| Aligns selected elements to the left, right, center (horizontal), top, bottom, or middle (vertical).
+
+a|image::contextual-palette-align-vertical.png[Align vertically]
+| *Align vertically*
+| Aligns selected elements to the left, right, center (horizontal), top, bottom, or middle (vertical).
+
+a|image::contextual-palette-distribute.png[Distribute]
+| *Distribute*
+| Evenly spaces selected elements horizontally or vertically.
+
+a|image::contextual-palette-arrange.png[Arrange]
+| *Arrange*
+| Automatically reorganizes selected elements for a clearer layout, such as a row, column, or grid.
+
+a|image::contextual-palette-justify.png[Justify]
+| *Justify*
+| Adjusts the positions of selected elements to fill available horizontal or vertical space.
+
+a|image::contextual-palette-make-same-size.png[Make same size]
+| *Make same size*
+| Sets all selected elements to have the same width and/or height as the last selected one.
+|===
+
+=== Alignment helpers and auto-sizing
+
+The global palette offers visual aids for precise positioning:
+
+image::representations/helper-lines-icon.png[Helper lines toggle, width=120]
+
+When helper lines are enabled, guides appear as you drag a node so you can align borders or centers perfectly.
+Nodes snap to these guides automatically:
+
+image::representations/helper-lines-example.png[Helper lines example]
+
+Use the *Adjust size* tool in the contextual palette to shrink a node back to its minimal footprint if manual resizing made it too large:
+
+image::representations/adjust-size-icon.png[Adjust size icon]
+
+=== Edge creation
+
+Connections can be created directly from the diagram surface:
+
+* Hover a node to reveal the connection handles around its border, then drag a handle toward a target element.
+* Follow the contextual hints to benefit from smart edge creation, which adjusts the routing as you drag.
+* Release the mouse over a valid target to finish the edge. If the tool expects a specific type, {product} prompts you to confirm or select the appropriate element.
+
+TIP: Activate *Smart Edges* from the global palette to combine this workflow with automatic edge routing that avoids node overlaps.
+
+If no connection is authorized with a given target, the corresponding node appears faded, which helps you avoid invalid edits.
+When you start the creation gesture, click the source element to display the handles, then drag from the appropriate arrow toward the target.
+
+image::manage-relationships-createEdge-arrow.png[Arrow to create Edge]
+
+While you drag, the diagram draws a preview of the edge and highlights valid targets.
+
+image::manage-relationships-createEdge-feedback.png[Feedback to create Edge]
+
+After you release the mouse button, a pop-up lists the compatible relationship types whenever more than one edge can be created between the selected endpoints.
+If only one type fits, the edge is created immediately without displaying the dialog.
+
+image::manage-relationships-createEdge-popup.png[Popup to create Edge]
+
+You can reconnect an existing edge by grabbing its source or target extremity and dropping it on a new node.
+Invalid reconnection targets are faded just like during creation.
+Relationship edges are always synchronized with their semantic counterparts, so deleting them from a diagram also deletes them from the model.
+To delete a relationship from the model, select the edge and use the delete command.
+Containment relationships cannot be deleted directly from a diagram, whereas other relationship types may allow graphical deletion depending on the domain configuration.
+
+=== Editable edge paths
+
+Edges expose handles so you can fine-tune their routing:
+
+image::representations/editable-edge-path.png[Editable edge]
+
+* Drag the black handles to move existing vertices.
+* Drag the gray midpoints to insert a new bend.
+* Double-click a point to remove it.
+* image::representations/editable-edge-reset-tool.png[Reset edge path] Use the palette action to restore the original path when needed:
+
+== Reusing existing elements
+
+The palette also exposes an *Existing elements* section when you right-click the diagram background or a container node.
+
+image::manage-existing-elements-add.png[Add existing elements, width=70%,height=70%]
+
+Use *Add existing elements* to reveal elements directly contained by the current selection, or choose *Add existing elements (recursive)* to traverse the hierarchy and display all nested elements that could be shown in the current container.
+
+== Drag and drop
+
+Diagrams support semantic drag-and-drop: select elements in the Explorer (from the same resource set as the diagram) and drop them on the diagram background to reveal them without altering the semantic model.
+Dropping Explorer elements directly into container nodes lets you quickly display the relevant views.
+
+Graphical drag-and-drop works entirely within the diagram.
+Drag a node over another container to move it; eligible containers remain visible while forbidden targets fade out.
+As you hover over a valid container the target highlights to confirm the drop location.
+
+[TIP]
+====
+Need deeper control over palettes, conditional styles, or drag-and-drop behavior when authoring studios?
+See xref:studio-maker-guide:features/advanced-authoring.adoc[] for developer-oriented recipes.
+====
+
+== When to Use It
+
+Use the diagram representation when:
+
+* You want to visualize the structure or composition of a system.
+* You prefer a graphical layout to better understand relationships between elements.
+* You need to create or edit models in a spatial, drag-and-drop interface.
+* You’re working on system design, architecture, workflows, or any visual representation of domain logic.
+
+== Example
+
+In a system modeling context, a diagram might show:
+
+* Components and their relationships (e.g., a `Sensor`, `Controller`, and `Actuator`)
+* Nested structures like subsystems or containers
+* Connections such as communication links or data flows
+* Visual cues based on domain rules (e.g., a red border around components with missing links)
+
+This visual approach helps engineers and domain experts understand the system at a glance and make informed modeling decisions quickly.
+
+[NOTE]
+====
+The layout and available elements in the diagram depend on how the modeling environment has been configured.
+====

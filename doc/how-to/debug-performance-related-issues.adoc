@@ -1,9 +1,0 @@
-= How to debug performance related issues
-
-== Backend
-
-In order to activate the log dedicated to performance measurement, you should use the configuration property `logging.level.sirius.web.performance=DEBUG`.
-Once activated it will also log all AQL expressions taking more than 200ms to execute.
-
-On top of that, it is recommended to debug performance issues to activate the GraphQL tracing support to find the time taken by each datafetcher.
-It can be done using the configuration property `sirius.web.graphql.tracing=true`.

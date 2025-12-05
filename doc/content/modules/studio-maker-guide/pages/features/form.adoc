@@ -1,0 +1,156 @@
+= Form
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page documents the form description defined in the {product} view configuration.
+
+== Introduction
+
+Form definitions extend the shared `RepresentationDescription` class and live under a `View` alongside diagrams, decks, and trees.
+The view configuration’s form definition introduces classes for pages, groups, widgets, and styles.
+Every field is driven by the same expression editor and palette pickers you already use, allowing you to build forms with conditional sections, flexible layouts, reusable variables, and programmable actions directly inside {product}.
+Every field is driven by the same expression editor and palette pickers you already use.
+This allows you to build forms with conditional sections, flexible layouts, reusable variables, and programmable actions directly inside {product}.
+== Form Description and variables
+
+include::partial$common-representation.adoc[]
+
+`FormDescription` contains the form-specific parts of a representation:
+
+* `pages`: ordered collection of `PageDescription` instances keyed by `name`.
+* `formVariables`: reusable `FormVariable` entries defined once per form, each with a `name` and a `defaultValueExpression` evaluated when the form opens.
+
+Form variables act like constants or computed values that can be referenced by widgets.
+For example, they can store the current user or timestamps.
+[TIP]
+====
+To create a form model, open your studio project, use the **New Model** action, and choose *View*.
+Inside that view, create a *Form Description* (via *New Object*) and then add widgets/groups from the context menus.
+====
+
+== Pages and toolbar actions
+
+Each `PageDescription` controls a logical page:
+
+* `name`: identifier used internally.
+* `labelExpression`: AQL text displayed in the page tab.
+* `domainType`, `semanticCandidatesExpression`, `preconditionExpression`: determine which semantic elements populate the page (defaults to the representation root).
+* `groups`: containment list of `GroupDescription` entries keyed by `name`.
+* `toolbarActions`: list of `ButtonDescription` instances rendered at the top of the page.
+
+Use multiple pages to separate complex forms.
+Use toolbar actions for page-level commands (export, reset, etc.).
+== Groups and repeaters
+
+`GroupDescription` is the main container inside a page:
+
+* `name`, `labelExpression`: local identifier and displayed title.
+* `displayMode`: enum `GroupDisplayMode` (`LIST` for stacked content or `TOGGLEABLE_AREAS` for collapsible/accordion behavior).
+* `semanticCandidatesExpression`: evaluated per group to display repeated content (defaults to `aql:self`).
+* `toolbarActions`: additional actions scoped to the group.
+* `children`: list of `FormElementDescription` entries contained in the group.
+* `borderStyle` and `conditionalBorderStyles`: references to `ContainerBorderStyle` for per-group frame styling.
+
+`FormElementFor` and `FormElementIf` act as flow-control nodes inside a group.
+They let you repeat (`iterator`, `iterableExpression`) or filter (`predicateExpression`) sections before rendering their child widgets.
+This hierarchy ensures every widget is both a semantic element and part of the UI tree, just like the other View description components.
+== Form element hierarchy
+
+* `FormElementDescription`: base class holding the `name` of any element.
+* `WidgetDescription`: inherits from `FormElementDescription` and adds `labelExpression`, `helpExpression`, and `diagnosticsExpression`, which the runtime displays as field labels, tooltips, and validation messages.
+* Containers such as `FlexboxContainerDescription` and `WidgetGridLayout` also inherit from `FormElementDescription` so they can live alongside widgets.
+
+This hierarchy ensures every widget is both a semantic element and part of the UI tree, just like the other View description components.
+== Visual editor
+
+To speed up the authoring workflow, you can open a **Form Description Editor**:
+
+. Select your form description and choose *New Representation*.
+. Pick *FormDescriptionEditor* in the dialog.
+. Drag groups and widgets from the left toolbar into the canvas.
+. Reorder widgets by drag-and-drop (drop zones appear as red dotted rectangles).
+
+Toolbar actions can be created from the editor (click the "+" icon near the tab bar).
+Most static style properties are previewed live so you can iterate without switching to the textual details view.
+
+== Layout and containers
+
+`FlexboxContainerDescription` organizes child elements using CSS-like flex properties:
+
+* `children`: arbitrary mix of widgets and nested containers.
+* `flexDirection`: `FlexDirection` enum (`row`, `row-reverse`, `column`, `column-reverse`).
+* `isEnabledExpression`: toggles the entire container.
+* `borderStyle` and `conditionalBorderStyles`: references to `ContainerBorderStyle` that define `borderColor`, `borderRadius`, `borderSize`, and `borderLineStyle` (`Solid`, `Dashed`, `Dotted`).
+
+Widgets can also opt into a `WidgetGridLayout` to define two-column layouts:
+
+* `gridTemplateColumns` / `gridTemplateRows`: CSS grid templates.
+* `labelGridRow` / `labelGridColumn`: grid coordinates for the label portion.
+* `widgetGridRow` / `widgetGridColumn`: grid coordinates for the input itself.
+* `gap`: spacing between grid cells.
+
+Combining flex containers and grid layouts lets you reproduce complex layouts.
+You can create stacked sections, two-column forms, or responsive arrangements without writing custom code.
+
+== Widget catalog
+
+Every widget description exposes:
+
+* `valueExpression`: the semantic value to display or edit (for lists and charts this is replaced by `valuesExpression`, `keysExpression`, etc.).
+* `body`: optional list of operations executed when the widget changes (e.g., create/update semantic data).
+* `style` / `conditionalStyles`: references to widget-specific style classes.
+* `isEnabledExpression`: optional expression controlling whether the widget is active.
+
+The view configuration form definition provides the following widget types:
+
+[NOTE]
+====
+Add widgets from the form’s context menu (*New Object* → desired widget) or by dropping them in the Form Description Editor.
+====
+
+* **Action widgets**: `ButtonDescription` (`buttonLabelExpression`, `imageExpression`, `body`), `SplitButtonDescription` (collection of nested `ButtonDescription` actions), `LinkDescription`, and `RichTextDescription` (editable HTML area).
+* **Boolean widgets**: `CheckboxDescription` and `RadioDescription` (single-selection among candidates).
+* **Selection widgets**: `SelectDescription`, `MultiSelectDescription`, `ListDescription` (with `displayExpression` and `isDeletableExpression`), `TreeDescription` (hierarchical selection with `childrenExpression`, `treeItemLabelExpression`, `isTreeItemSelectableExpression`, optional icons, checkboxes, and `body` for drop actions).
+* **Text widgets**: `TextfieldDescription`, `TextAreaDescription`, `LabelDescription` (read-only), and `RichTextDescription`.
+* **Date/time widgets**: `DateTimeDescription` with `stringValueExpression`, `type` (`DATE_TIME`, `DATE`, `TIME`), and optional formatting styles.
+* **Numeric widgets**: `SliderDescription` (`minValueExpression`, `maxValueExpression`, `currentValueExpression`).
+* **Chart widgets**: `BarChartDescription` (`valuesExpression`, `keysExpression`, `yAxisLabelExpression`, `width`, `height`), `PieChartDescription` (`valuesExpression`, `keysExpression`).
+* **Media widgets**: `ImageDescription` (`urlExpression`, `maxWidthExpression`).
+* **Containers**: `FlexboxContainerDescription` (described above) can nest any of the widgets.
+
+All selection widgets (`SelectDescription`, `MultiSelectDescription`, `RadioDescription`, `TreeDescription`) expose `candidatesExpression` and `candidateLabelExpression`.
+This allows you to compute the available values dynamically.
+== Custom widgets
+
+If a use case requires a bespoke widget, developers can extend the catalog:
+
+1. Implement the frontend component (React) and register it with the widget registry.
+2. Provide the backend description (a subclass of `FormElementDescription`) so studio makers can configure it in View models.
+3. Contribute the palette/context-menu entries that expose the widget in the authoring UI.
+
+This approach mirrors how the built-in widgets are defined and allows teams to integrate charts, controls, or visualizations that are specific to their domain.
+This approach mirrors how the built-in widgets are defined.
+It allows teams to integrate charts, controls, or visualizations that are specific to their domain.
+== Styles
+
+Each widget type has a dedicated style class inheriting from `WidgetDescriptionStyle`:
+
+* `ButtonDescriptionStyle`: `backgroundColor`, `foregroundColor`.
+* `CheckboxDescriptionStyle`: `color`.
+* `DateTimeDescriptionStyle`: `backgroundColor`, `foregroundColor`, `italic`, `bold`.
+* `LabelDescriptionStyle`, `LinkDescriptionStyle`, `ListDescriptionStyle`, `RadioDescriptionStyle`: `color` references.
+* `SelectDescriptionStyle`, `MultiSelectDescriptionStyle`: background/foreground colors and `showIcon` flag.
+* `TextfieldDescriptionStyle`, `TextareaDescriptionStyle`: background/foreground colors.
+* `PieChartDescriptionStyle`: `colors` (comma-separated palette), `strokeWidth`, `strokeColor`.
+* `BarChartDescriptionStyle`: `barsColor`.
+* `ContainerBorderStyle`: border attributes shared with flex containers and groups.
+
+Every style has a corresponding `ConditionalXXXStyle` class inheriting from `Conditional`.
+This enables a conditional styling workflow: evaluate `condition`, then apply the override style when true.
+== Actions and operations
+
+Buttons, lists, selects, sliders, and other interactive widgets can run operations stored in their `body` reference.
+The form description reuses the operation language described in the diagram section (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`) so you can perform semantic changes, call services, or update form variables when users interact with the UI.
+Split buttons and toolbar actions simply aggregate button widgets with different operation bodies.
+The form description reuses the operation language described in the diagram section (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`).
+This allows you to perform semantic changes, call services, or update form variables when users interact with the UI.

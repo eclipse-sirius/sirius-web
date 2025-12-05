@@ -1,0 +1,28 @@
+// Reference all the files defined in the features folder
+* xref:user-manual:key-features.adoc[]
+* xref:user-manual:features/features.adoc[]
+
+* Studio Maker Guide
+** xref:studio-maker-guide:features/domain.adoc[]
+** xref:studio-maker-guide:features/studio-definition.adoc[]
+** xref:studio-maker-guide:features/meta-modeling.adoc[]
+** xref:studio-maker-guide:features/view.adoc[]
+** xref:studio-maker-guide:features/aql.adoc[]
+** xref:studio-maker-guide:features/advanced-authoring.adoc[]
+** xref:studio-maker-guide:features/deck.adoc[]
+** xref:studio-maker-guide:features/diagram.adoc[]
+** xref:studio-maker-guide:features/form.adoc[]
+** xref:studio-maker-guide:features/gantt.adoc[]
+** xref:studio-maker-guide:features/portal.adoc[]
+** xref:studio-maker-guide:features/table.adoc[]
+** xref:studio-maker-guide:features/tree.adoc[]
+** xref:studio-maker-guide:features/common-representation.adoc[]
+
+* Advanced
++
+--
+include::developer-guide:partial$nav.adoc[]
+--
++
+** xref:user-manual:features/scaling-limits.adoc[]
+** xref:user-manual:features/security.adoc[]
