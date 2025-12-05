@@ -211,5 +211,8 @@
     "beginLabel": "Begin Label",
     "centerLabel": "Center Label",
     "endLabel": "End Label"
+  },
+  "resetLabelSizeTool": {
+    "resetLabelSize": "Reset label size"
   }
 }
