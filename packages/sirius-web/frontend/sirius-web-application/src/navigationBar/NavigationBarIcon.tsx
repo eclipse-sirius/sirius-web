@@ -32,6 +32,12 @@ export const useNavigationBarIconStyles = makeStyles()((theme: Theme) => ({
       backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
     },
   },
+  iconButton: {
+    padding: '4px',
+  },
+  icon: {
+    fontSize: '1.5rem',
+  },
 }));
 
 export const NavigationBarIcon = ({}: NavigationBarIconProps) => {
@@ -41,8 +47,8 @@ export const NavigationBarIcon = ({}: NavigationBarIconProps) => {
   return (
     <Tooltip title={t('backToHomepage')}>
       <Link component={RouterLink} to="/" className={classes.link} color="inherit">
-        <IconButton className={classes.onDarkBackground} color="inherit">
-          <SiriusIcon fontSize="large" />
+        <IconButton className={`${classes.iconButton} ${classes.onDarkBackground}`} color="inherit">
+          <SiriusIcon className={classes.icon} />
         </IconButton>
       </Link>
     </Tooltip>

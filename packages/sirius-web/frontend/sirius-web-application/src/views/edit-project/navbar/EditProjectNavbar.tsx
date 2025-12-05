@@ -46,6 +46,9 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
       backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
     },
   },
+  icon: {
+    fontSize: '1.25rem',
+  },
 }));
 
 const isProjectRenamedEventPayload = (payload: GQLProjectEventPayload): payload is GQLProjectRenamedEventPayload =>
@@ -108,7 +111,7 @@ export const EditProjectNavbar = ({ workbenchHandle }: EditProjectNavbarProps) =
               onClick={onMoreClick}
               color="inherit"
               data-testid="more">
-              <MoreVertIcon />
+              <MoreVertIcon className={classes.icon} />
             </IconButton>
           </div>
         </div>

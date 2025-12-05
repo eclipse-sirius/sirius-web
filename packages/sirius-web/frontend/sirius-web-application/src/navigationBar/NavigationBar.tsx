@@ -37,6 +37,8 @@ export const useNavigationBarStyles = makeStyles()((theme: Theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr min-content 1fr',
     backgroundColor: theme.palette.navigationBar.background,
+    minHeight: '36px',
+    padding: '0 16px',
   },
   left: {
     display: 'flex',

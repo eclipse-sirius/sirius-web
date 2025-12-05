@@ -204,10 +204,6 @@ test.describe('edge', () => {
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
     const project = await new PlaywrightProject(request).createProject('edge');
     projectId = project.projectId;
 
@@ -242,7 +238,7 @@ test.describe('edge', () => {
     const lastBendingPointBox = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover();
     await page.mouse.down();
-    await page.mouse.move(lastBendingPointBox.x + 75, lastBendingPointBox.y + 50, { steps: 2 });
+    await page.mouse.move(lastBendingPointBox.x + 100, lastBendingPointBox.y + 50, { steps: 2 });
     await page.mouse.up();
 
     await playwrightNode.click();
