@@ -172,7 +172,7 @@ export const App = ({
   return (
     <ThemeProvider theme={siriusWebTheme}>
       <SelectionContextProvider initialSelection={selection}>
-        <ConfirmationDialogContextProvider>
+        <ConfirmationDialogContextProvider canBeDisabled={false} isDisabled={false} setIsDisabled={() => {}}>
           <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
             <div style={appStyle}>
               <div style={headerStyle}></div>

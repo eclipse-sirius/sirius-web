@@ -54,7 +54,7 @@ export class Deck {
     new Projects().visit();
     const project = new Project();
     project.visit(taskProjectId);
-    project.disableDeletionConfirmationDialog();
+    project.disableDeletionConfirmationDialog(taskProjectId);
     const explorer = new Explorer();
     explorer.expandWithDoubleClick('Task Model');
     explorer.expandWithDoubleClick('Company');
