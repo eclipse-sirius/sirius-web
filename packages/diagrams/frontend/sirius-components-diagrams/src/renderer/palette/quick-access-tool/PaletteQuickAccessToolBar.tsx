@@ -29,9 +29,10 @@ import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.type
 import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
 import { ResetLabelPositionTool } from './ResetLabelPositionTool';
+import { ResetLabelSizeTool } from './ResetLabelSizeTool';
 import { ResetManuallyLaidOutHandlesTool } from './ResetManuallyLaidOutHandlesTool';
-import { Tool } from './Tool';
 import { ResetMovedByUserTool } from './ResetMovedByUserTool';
+import { Tool } from './Tool';
 
 /**
  *
@@ -66,10 +67,10 @@ const isMovedByUser = (diagramElements: (Node<NodeData> | Edge<EdgeData>)[]): di
   );
 };
 const isPositionSet = (position: XYPosition | undefined) => position && position.x && position.y;
-const containsNodeOutsideLabels = (diagramElement: InternalNode<Node<NodeData>> | undefined) => {
+const containsNodeOutsideLabelCustomPosition = (diagramElement: InternalNode<Node<NodeData>> | undefined) => {
   return diagramElement && isPositionSet(diagramElement.data.outsideLabels.BOTTOM_MIDDLE?.position);
 };
-const containsEdgeOutsideLabels = (diagramElement: Edge<MultiLabelEdgeData> | undefined) => {
+const containsEdgeLabelCustomPosition = (diagramElement: Edge<MultiLabelEdgeData> | undefined) => {
   return (
     diagramElement &&
     diagramElement.data &&
@@ -78,7 +79,7 @@ const containsEdgeOutsideLabels = (diagramElement: Edge<MultiLabelEdgeData> | un
       isPositionSet(diagramElement.data.beginLabel?.position))
   );
 };
-const containsOutSideLabels = (
+const containsOutSideLabelsCustomPosition = (
   diagramElements: (Node<NodeData> | Edge<EdgeData>)[],
   edgeLookup: EdgeLookup<Edge<EdgeData>>,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
@@ -86,10 +87,32 @@ const containsOutSideLabels = (
   return diagramElements.every((diagramElement) => {
     const edge = edgeLookup.get(diagramElement.id);
     const node = nodeLookup.get(diagramElement.id);
-    return (edge && containsEdgeOutsideLabels(edge)) || (node && containsNodeOutsideLabels(node));
+    return (edge && containsEdgeLabelCustomPosition(edge)) || (node && containsNodeOutsideLabelCustomPosition(node));
   });
 };
-
+const containsNodeOutsideLabelCustomSize = (diagramElement: InternalNode<Node<NodeData>> | undefined) => {
+  return diagramElement && diagramElement.data.outsideLabels.BOTTOM_MIDDLE?.resizedByUser;
+};
+const containsEdgeOutsideLabelCustomSize = (diagramElement: Edge<MultiLabelEdgeData> | undefined) => {
+  return (
+    diagramElement &&
+    diagramElement.data &&
+    (diagramElement.data.endLabel?.resizedByUser ||
+      diagramElement.data.label?.resizedByUser ||
+      diagramElement.data.beginLabel?.resizedByUser)
+  );
+};
+const containsOutSideLabelsCustomSize = (
+  diagramElements: (Node<NodeData> | Edge<EdgeData>)[],
+  edgeLookup: EdgeLookup<Edge<EdgeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+) => {
+  return diagramElements.every((diagramElement) => {
+    const edge = edgeLookup.get(diagramElement.id);
+    const node = nodeLookup.get(diagramElement.id);
+    return (edge && containsEdgeOutsideLabelCustomSize(edge)) || (node && containsNodeOutsideLabelCustomSize(node));
+  });
+};
 const useStyle = makeStyles()((theme: Theme) => ({
   quickAccessTools: {
     display: 'flex',
@@ -170,12 +193,19 @@ export const PaletteQuickAccessToolBar = ({
         );
       }
 
-      if (containsOutSideLabels(diagramElements, edgeLookup, nodeLookup))
+      if (containsOutSideLabelsCustomPosition(diagramElements, edgeLookup, nodeLookup)) {
         quickAccessToolComponents.push(
           <ResetLabelPositionTool
             diagramElementId={diagramElements[0].id}
             key="tool_resetLabelPosition"></ResetLabelPositionTool>
         );
+      }
+
+      if (containsOutSideLabelsCustomSize(diagramElements, edgeLookup, nodeLookup)) {
+        quickAccessToolComponents.push(
+          <ResetLabelSizeTool diagramElementId={diagramElements[0].id} key="tool_resetLabelSize"></ResetLabelSizeTool>
+        );
+      }
 
       quickAccessToolComponents.push(
         <ResetManuallyLaidOutHandlesTool
