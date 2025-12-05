@@ -66,6 +66,10 @@ export const DraggableResizableLabel = ({
 
   const resizable: boolean = selected && !readOnly && label.text.length > 0;
 
+  if (label.style.visibility && label.style.visibility !== 'visible') {
+    return null;
+  }
+
   return (
     <Draggable
       position={position}
