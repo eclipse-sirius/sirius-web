@@ -24,6 +24,7 @@ const useOmniboxButtonStyles = makeStyles()((theme) => ({
   omniboxButton: {
     color: 'inherit',
     border: `1px solid ${theme.palette.background.paper}`,
+    padding: '3px 2px',
   },
   placeholder: {
     verticalAlign: 'middle',
@@ -36,9 +37,9 @@ const useOmniboxButtonStyles = makeStyles()((theme) => ({
     border: `1px solid ${theme.palette.background.paper}`,
     borderRadius: '3px',
     marginLeft: theme.spacing(4),
-    fontSize: '0.75rem',
+    fontSize: '0.5rem',
     fontWeight: 700,
-    lineHeight: '20px',
+    lineHeight: '15px',
     padding: '0px 4px',
     fontFamily: 'sans-serif',
     opacity: 0.7,

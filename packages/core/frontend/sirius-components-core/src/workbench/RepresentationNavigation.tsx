@@ -22,14 +22,15 @@ import { RepresentationMetadata, RepresentationNavigationHandle } from './Workbe
 
 const useRepresentationNavigationStyles = makeStyles()((theme) => ({
   tabsRoot: {
-    minHeight: theme.spacing(4),
+    minHeight: theme.spacing(3),
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
   },
   tabRoot: {
-    minHeight: theme.spacing(4),
+    minHeight: theme.spacing(3),
     textTransform: 'none',
+    padding: '6px',
   },
   tabLabel: {
     display: 'grid',
@@ -47,6 +48,7 @@ const useRepresentationNavigationStyles = makeStyles()((theme) => ({
   },
   tabCloseIcon: {
     marginLeft: theme.spacing(1),
+    fontSize: '0.875rem',
   },
 }));
 
@@ -126,13 +128,17 @@ export const RepresentationNavigation = forwardRef<
                   <div className={classes.tabLabel}>
                     {representation.iconURLs && (
                       <div className={classes.tabRepresentationIcon}>
-                        <IconOverlay iconURLs={representation.iconURLs} alt="representation icon" />
+                        <IconOverlay
+                          customIconWidth={12}
+                          customIconHeight={12}
+                          iconURLs={representation.iconURLs}
+                          alt="representation icon"
+                        />
                       </div>
                     )}
                     <div className={classes.tabLabelText}>{representation.label}</div>
                     <CloseIcon
                       className={classes.tabCloseIcon}
-                      fontSize="small"
                       onClick={(event) => onRepresentationClose(event, representation)}
                       data-testid={`close-representation-tab-${representation.label}`}
                     />

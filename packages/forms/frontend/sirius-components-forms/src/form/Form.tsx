@@ -29,14 +29,15 @@ const useFormStyles = makeStyles()((theme) => ({
     gap: theme.spacing(1),
   },
   tabsRoot: {
-    minHeight: theme.spacing(4),
+    minHeight: theme.spacing(3),
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
   },
   tabRoot: {
-    minHeight: theme.spacing(4),
+    minHeight: theme.spacing(3),
     textTransform: 'none',
+    padding: '1px 16px',
   },
   tabLabel: {
     display: 'flex',

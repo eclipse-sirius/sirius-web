@@ -75,6 +75,9 @@ Sirius Web provides a default implementation for all these services, which creat
 - https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
 - https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools
 - https://github.com/eclipse-sirius/sirius-web/issues/5942[#5942] [sirius-web] The method `canHandle` of the various representation event handlers can now leverage the `IEditingContext` to compute a result
+- https://github.com/eclipse-sirius/sirius-web/issues/5923[#5923] [sirius-web] Reduce header, tab, and separator size to increase UI density
+
+
 
 == 2025.12.0
 
