@@ -133,6 +133,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/5949[#5949] [validation] Fix too many recursions on the validation view when models with too many errors are in the project.
 - https://github.com/eclipse-sirius/sirius-web/issues/3205[#3205] [sirius-web] Fix an issue where the project rename dialog displayed an outdated name as the current value
 - https://github.com/eclipse-sirius/sirius-web/issues/5908[#5908] [diagram] Prevent border node to be detached from its parent after resize
+- https://github.com/eclipse-sirius/sirius-web/issues/5931[#5931] [diagram] Prevent label resize handles from being visible when labels are hidden
 
 
 === New Features

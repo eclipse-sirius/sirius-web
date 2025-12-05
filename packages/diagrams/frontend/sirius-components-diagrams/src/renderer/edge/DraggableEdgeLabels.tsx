@@ -67,7 +67,7 @@ export const DraggableEdgeLabels = ({
   }
   return (
     <EdgeLabelRenderer>
-      {beginLabel && (
+      {beginLabel && (!beginLabel.style.visibility || beginLabel.style.visibility === 'visible') && (
         <DraggableResizableLabel
           id={id}
           label={beginLabel}
@@ -83,7 +83,7 @@ export const DraggableEdgeLabels = ({
           transform={sourceLabelTranslation}
         />
       )}
-      {label && edgeCenter && (
+      {label && edgeCenter && (!label.style.visibility || label.style.visibility === 'visible') && (
         <DraggableResizableLabel
           id={id}
           label={label}
@@ -98,7 +98,7 @@ export const DraggableEdgeLabels = ({
           resizeHandlePosition={'se'}
         />
       )}
-      {endLabel && (
+      {endLabel && (!endLabel.style.visibility || endLabel.style.visibility === 'visible') && (
         <DraggableResizableLabel
           id={id}
           label={endLabel}
