@@ -171,15 +171,17 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
-        {data.outsideLabels.BOTTOM_MIDDLE && (
-          <DraggableResizableOutsideLabel
-            id={id}
-            label={data.outsideLabels.BOTTOM_MIDDLE}
-            faded={data.faded}
-            selected={selected}
-            hovered={data.isHovered}
-          />
-        )}
+        {data.outsideLabels.BOTTOM_MIDDLE &&
+          (!data.outsideLabels.BOTTOM_MIDDLE.style.visibility ||
+            data.outsideLabels.BOTTOM_MIDDLE.style.visibility === 'visible') && (
+            <DraggableResizableOutsideLabel
+              id={id}
+              label={data.outsideLabels.BOTTOM_MIDDLE}
+              faded={data.faded}
+              selected={selected}
+              hovered={data.isHovered}
+            />
+          )}
       </>
     );
   }

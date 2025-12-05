@@ -296,4 +296,33 @@ test.describe('diagram - label', () => {
     await edge.openPalette();
     await expect(page.getByTestId('Reset labels sizes - Tool')).not.toBeAttached();
   });
+
+  test('when a label is hidden, then no anchors are visible', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+
+    const entity1Node = new PlaywrightNode(page, 'Entity1');
+    const edge = new PlaywrightEdge(page);
+    const entity1OutsideLabel = new PlaywrightLabel(page, 'OutsideLabel');
+
+    await expect(entity1OutsideLabel.labelLocator).toBeAttached();
+    await entity1Node.click();
+
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(1);
+    await entity1Node.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Hide"]').last().click();
+    await entity1Node.closePalette();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(0);
+
+    await edge.click();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(3);
+    await edge.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Hide"]').first().click();
+    await edge.closePalette();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(2);
+  });
 });
