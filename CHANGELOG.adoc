@@ -144,6 +144,7 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5752[#5752] [table] Add the functionality to expand all row in one action
 - https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
+- https://github.com/eclipse-sirius/sirius-web/issues/5893[#5893] [diagram] Add a new quick tool to reset label resizing
 
 
 === Improvements

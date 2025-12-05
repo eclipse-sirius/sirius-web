@@ -280,8 +280,8 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             var result = this.paletteQueryRunner.run(variables);
 
             List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
-            assertThat(quickToolsLabels).hasSize(5);
-            assertThat(quickToolsLabels).containsSequence("Reset outside labels positions", "Reset bending points", "Reset handles positions", "Fade", "Hide");
+            assertThat(quickToolsLabels).hasSize(6);
+            assertThat(quickToolsLabels).containsSequence("Reset outside labels positions", "Reset labels sizes", "Reset bending points", "Reset handles positions", "Fade", "Hide");
 
             List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(1);

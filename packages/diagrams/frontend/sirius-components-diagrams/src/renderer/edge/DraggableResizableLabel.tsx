@@ -104,7 +104,8 @@ const CustomResizeHandle = (props) => {
       ref={props.innerRef}
       className={`react-resizable-handle react-resizable-handle-${props.handleAxis}`}
       style={{ padding: 0 }}
-      {...props}
+      onMouseDown={props.onMouseDown}
+      onMouseUp={props.onMouseUp}
     />
   );
 };
