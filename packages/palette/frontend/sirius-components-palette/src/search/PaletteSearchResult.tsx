@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay, splitText } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, IconOverlay, splitText, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -22,8 +22,10 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
+import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool } from '../Palette.types';
 import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
 
 const convertToList = (entry: GQLPaletteEntry): GQLSingleClickOnDiagramElementTool[] => {
@@ -53,7 +55,7 @@ const useLabelStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
-const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
+export const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
   const { classes } = useLabelStyles();
   let itemLabel: JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(label, textToHighlight);
@@ -84,8 +86,8 @@ const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => 
   }
   return <Typography className={classes.itemText}>{itemLabel}</Typography>;
 };
-const filterFromSearchValue = (tool: GQLTool, searchToolValue: string): boolean => {
-  return tool.label.toLocaleLowerCase().includes(searchToolValue.toLocaleLowerCase());
+const filterFromSearchValue = (toolLabel: string, searchToolValue: string): boolean => {
+  return toolLabel.toLocaleLowerCase().includes(searchToolValue.toLocaleLowerCase());
 };
 const useStyle = makeStyles()((theme) => ({
   toolListContainer: {
@@ -121,13 +123,18 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
 
   const { classes } = useStyle();
 
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+  const filteredContributedTools = paletteToolData.data.filter(
+    (contributedTool) => contributedTool.isSearchable && filterFromSearchValue(contributedTool.label, searchToolValue)
+  );
+
   const toolList: GQLSingleClickOnDiagramElementTool[] = useMemo(
     () => flatToolsFromPaletteEntries(palette.paletteEntries),
     [palette]
   );
 
   const filteredToolList: GQLSingleClickOnDiagramElementTool[] = toolList.filter((tool) =>
-    filterFromSearchValue(tool, searchToolValue)
+    filterFromSearchValue(tool.label, searchToolValue)
   );
 
   useEffect(() => {
@@ -170,11 +177,18 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
     );
   };
 
+  const renderContributedTool = (contributedToolProps: PaletteToolContributionProps) => {
+    var Component = contributedToolProps.component;
+    return <Component></Component>;
+  };
+
+  const isResultEmpty = filteredToolList.length === 0 && filteredContributedTools.length === 0;
   return (
     <Box className={classes.toolListContainer}>
-      {filteredToolList.length > 0 ? (
+      {!isResultEmpty ? (
         <List className={classes.toolList} component="nav">
           {filteredToolList.map(convertToListItem)}
+          {filteredContributedTools.map(renderContributedTool)}
         </List>
       ) : (
         <Typography variant="body2" align="center">

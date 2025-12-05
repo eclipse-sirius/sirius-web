@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseDiagramPaletteValue {
+export interface DiagramPaletteContributionContextValue {
+  paletteId: string;
   x: number | null;
   y: number | null;
-  isOpened: boolean;
   diagramElementIds: string[];
   hideDiagramPalette: () => void;
-  showDiagramPalette: (x: number, y: number, selectedElementsIds: string[]) => void;
-  getLastToolInvokedId: (paletteId: string) => string | null;
   setLastToolInvokedId: (paletteId: string, toolId: string) => void;
+}
+
+export interface DiagramPaletteContributionContextProviderProps {
+  paletteId: string;
+  x: number | null;
+  y: number | null;
+  diagramElementIds: string[];
+  hideDiagramPalette: () => void;
+  setLastToolInvokedId: (paletteId: string, toolId: string) => void;
+  children: React.ReactNode;
+}
+
+export interface PaletteWithLastTool {
+  paletteId: string;
+  lastToolId: string | null;
 }

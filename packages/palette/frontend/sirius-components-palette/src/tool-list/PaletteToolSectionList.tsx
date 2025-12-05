@@ -10,13 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { isSingleClickOnDiagramElementTool } from '../Palette';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
+import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
 
@@ -50,7 +53,13 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainList }: PaletteToolSectionListProps) => {
+export const PaletteToolSectionList = ({
+  palette,
+  toolSectionId,
+  toolSectionLabel,
+  onToolClick,
+  onBackToMainList,
+}: PaletteToolSectionListProps) => {
   const { classes } = useStyle();
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -58,21 +67,39 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
     onBackToMainList();
   };
 
+  const listItemsRendered: JSX.Element[] = [];
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+
+  paletteToolData.data
+    .filter((data) => data.canHandle())
+    .filter((data) => data.toolSectionId === toolSectionId)
+    .map((data) => data.component)
+    .forEach((PaletteToolComponent, index) =>
+      listItemsRendered.push(<PaletteToolComponent key={'paletteToolComponents_' + index.toString()} />)
+    );
+
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip title={toolSection.label} key={'tooltip_' + toolSection.id} placement="right">
+      <Tooltip title={toolSectionLabel} key={'tooltip_' + toolSectionId} placement="right">
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
-          data-testid={`back-${toolSection.label}`}
+          data-testid={`back-${toolSectionLabel}`}
           autoFocus={true}>
           <NavigateBeforeIcon />
-          <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
+          <ListItemText className={classes.sectionTitleListItemText} primary={toolSectionLabel} />
         </ListItemButton>
       </Tooltip>
-      {toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />
-      ))}
+      {palette.paletteEntries
+        .filter(isToolSection)
+        .filter((toolSection) => toolSection.id === toolSectionId)
+        .flatMap((toolSection) => toolSection.tools)
+        .filter(isSingleClickOnDiagramElementTool)
+        .filter((tool) => !paletteToolData.data.some((contribution) => contribution.id === tool.id))
+        .map((tool) => (
+          <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />
+        ))}
+      {listItemsRendered}
     </List>
   );
 };

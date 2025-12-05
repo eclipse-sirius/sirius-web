@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface GroupPaletteLayoutSectionProps {
-  onBackToMainList: () => void;
-  onClose: () => void;
-  selectedElementIds: string[];
-  lastDistributeElementToolId: string;
+
+export interface PaletteQuickToolContributionProps {
+  canHandle: () => boolean;
+  component: React.ComponentType<PaletteQuickToolContributionComponentProps>;
 }
+
+export interface PaletteQuickToolContributionComponentProps {}

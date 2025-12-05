@@ -24,9 +24,13 @@ import {
   ActionProps,
   DiagramDialogContribution,
   DiagramNodeActionOverrideContribution,
+  DiagramPaletteContributionContext,
+  DiagramPaletteContributionContextValue,
   DiagramRepresentation,
   EdgeAppearanceSection,
+  EdgeData,
   ImageNodeAppearanceSection,
+  NodeData,
   PaletteAppearanceSectionContributionProps,
   RectangularNodeAppearanceSection,
   diagramDialogContributionExtensionPoint,
@@ -48,6 +52,12 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  PaletteToolContributionProps,
+  PaletteToolSectionContributionProps,
+  paletteToolExtensionPoint,
+  paletteToolSectionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import {
@@ -83,6 +93,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { useContext } from 'react';
 import { Navigate, PathRouteProps, matchRoutes, useLocation } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
@@ -124,6 +136,7 @@ import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { checkboxCellDocumentTransform } from './CheckboxCelllDocumentTransform';
 import { ellipseNodeStyleDocumentTransform } from './ellipsenode/EllipseNodeDocumentTransform';
 import { EllipseNodeAppearanceSection } from './ellipsenode/EllipseNodePaletteAppearanceSection';
+import { layoutToolsContribution } from './PaletteLayoutToolSectionContributions';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
 
@@ -675,6 +688,49 @@ const diagramElementPaletteAppearanceSectionContribution: PaletteAppearanceSecti
 defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
   identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
   data: diagramElementPaletteAppearanceSectionContribution,
+});
+
+/*******************************************************************************
+ *
+ * Palette layout section contribution
+ *
+ * Used to contribute a layout tool section with some tools
+ *
+ *******************************************************************************/
+const layoutSectionContribution: PaletteToolSectionContributionProps[] = [
+  {
+    canHandle: () => {
+      const { diagramElementIds } = useContext<DiagramPaletteContributionContextValue>(
+        DiagramPaletteContributionContext
+      );
+      const { nodeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+      const isListNode = (node: Node): node is Node => node.type === 'listNode';
+      const filteredNodeIds = diagramElementIds.filter((elementId) => {
+        const node = nodeLookup.get(elementId);
+
+        if (node) {
+          const parent = nodeLookup.get(node.parentId ?? '');
+          if (parent) {
+            return !isListNode(parent);
+          }
+        }
+        return true;
+      });
+      return filteredNodeIds.length > 1;
+    },
+    id: 'siriusweb_palette_tool_section_layout',
+    label: 'Layout',
+  },
+];
+
+defaultExtensionRegistry.putData<PaletteToolSectionContributionProps[]>(paletteToolSectionExtensionPoint, {
+  identifier: `siriusweb_${paletteToolSectionExtensionPoint.identifier}`,
+  data: layoutSectionContribution,
+});
+
+defaultExtensionRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
+  identifier: `siriusweb_${paletteToolExtensionPoint.identifier}`,
+  data: layoutToolsContribution,
 });
 
 export { defaultExtensionRegistry };
