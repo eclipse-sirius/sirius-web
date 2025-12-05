@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramPostProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
@@ -89,6 +90,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
 
+    private final List<IDiagramPostProcessor> diagramPostProcessors;
+
     private DiagramContext diagramContext;
 
     private UUID currentRevisionId = UUID.randomUUID();
@@ -109,6 +112,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramCreationService = parameters.diagramCreationService();
         this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
         this.diagramEventConsumers = parameters.diagramEventConsumers();
+        this.diagramPostProcessors = parameters.diagramPostProcessors();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
@@ -164,6 +168,13 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                         .layoutData(layoutData)
                         .build();
 
+                for (var diagramPostProcessor: this.diagramPostProcessors) {
+                    this.diagramContext = new DiagramContext(laidOutDiagram);
+                    if (diagramPostProcessor.canHandle(this.editingContext, this.diagramContext)) {
+                        laidOutDiagram = diagramPostProcessor.postProcess(this.editingContext, this.diagramContext).orElse(laidOutDiagram);
+                    }
+                }
+
                 this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext = new DiagramContext(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
@@ -204,7 +215,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             }
 
             this.diagramContext = new DiagramContext(refreshedDiagram);
-
             this.currentRevisionId = changeDescription.getInput().id();
             this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
 
