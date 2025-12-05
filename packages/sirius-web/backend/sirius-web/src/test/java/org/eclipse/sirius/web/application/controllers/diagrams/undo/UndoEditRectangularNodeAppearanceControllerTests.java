@@ -128,7 +128,7 @@ public class UndoEditRectangularNodeAppearanceControllerTests extends AbstractIn
                     mutationInputId,
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 
@@ -206,7 +206,7 @@ public class UndoEditRectangularNodeAppearanceControllerTests extends AbstractIn
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput
             );
 

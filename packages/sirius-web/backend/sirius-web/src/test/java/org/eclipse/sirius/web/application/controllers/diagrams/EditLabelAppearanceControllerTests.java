@@ -127,8 +127,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     appearanceInput
             );
 
@@ -156,8 +156,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     List.of("FONT_SIZE", "ITALIC", "BOLD", "UNDERLINE", "STRIKE_THROUGH", "BORDER_COLOR", "BORDER_RADIUS", "BORDER_SIZE", "BORDER_STYLE", "COLOR", "BACKGROUND", "VISIBILITY")
             );
 
@@ -218,8 +218,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     appearanceInput
             );
 
@@ -237,8 +237,8 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
-                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
+                    List.of(siriusWebApplicationNodeInsideLabelId.get()),
                     List.of("FONT_SIZE")
             );
 

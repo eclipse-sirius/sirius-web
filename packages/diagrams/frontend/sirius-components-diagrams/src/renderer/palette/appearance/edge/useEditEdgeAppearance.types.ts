@@ -16,7 +16,7 @@ export interface UseEditEdgeAppearanceValue {
   updateEdgeAppearance: (
     editingContextId: string,
     representationId: string,
-    edgeId: string,
+    edgeIds: string[],
     appearance: Partial<GQLEdgeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditEdgeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  edgeId: string;
+  edgeIds: string[];
   appearance: Partial<GQLEdgeAppearanceInput>;
 }
 

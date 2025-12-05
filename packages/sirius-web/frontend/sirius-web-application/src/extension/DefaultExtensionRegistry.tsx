@@ -26,7 +26,9 @@ import {
   DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
   EdgeAppearanceSection,
+  EdgeData,
   ImageNodeAppearanceSection,
+  NodeData,
   PaletteAppearanceSectionContributionProps,
   RectangularNodeAppearanceSection,
   diagramDialogContributionExtensionPoint,
@@ -83,6 +85,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { Navigate, PathRouteProps, matchRoutes, useLocation } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
@@ -647,26 +650,39 @@ defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
  *******************************************************************************/
 const diagramElementPaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
   {
-    canHandle: (node, _edge) => {
-      return node?.type === 'ellipseNode';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every((elementId) => store.getState().nodeLookup.get(elementId)?.type === 'ellipseNode');
     },
     component: EllipseNodeAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      const canHandle = diagramElementIds.every(
+        (elementId) =>
+          store.getState().nodeLookup.get(elementId)?.data.nodeAppearanceData?.gqlStyle.__typename ===
+          'RectangularNodeStyle'
+      );
+
+      return canHandle;
     },
     component: RectangularNodeAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) =>
+          store.getState().nodeLookup.get(elementId)?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle'
+      );
     },
     component: ImageNodeAppearanceSection,
   },
   {
-    canHandle: (_node, edge) => {
-      return !!edge;
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every((elementId) => !!store.getState().edgeLookup.get(elementId));
     },
     component: EdgeAppearanceSection,
   },

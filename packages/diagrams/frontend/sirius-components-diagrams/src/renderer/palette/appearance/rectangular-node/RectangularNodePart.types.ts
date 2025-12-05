@@ -14,7 +14,7 @@
 import { GQLRectangularNodeStyle } from '../../../../graphql/subscription/nodeFragment.types';
 
 export interface RectangularNodePartProps {
-  nodeId: string;
+  nodeIds: string[];
   style: GQLRectangularNodeStyle;
   customizedStyleProperties: string[];
 }

@@ -14,7 +14,7 @@
 import { GQLImageNodeStyle } from '../../../../graphql/subscription/nodeFragment.types';
 
 export interface ImageNodePartProps {
-  nodeId: string;
+  nodeIds: string[];
   style: GQLImageNodeStyle;
   customizedStyleProperties: string[];
 }

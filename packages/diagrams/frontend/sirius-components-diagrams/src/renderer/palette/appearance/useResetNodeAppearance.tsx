@@ -50,7 +50,7 @@ export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
   const resetNodeStyleProperties = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     propertiesToReset: string[]
   ) =>
     resetNodeAppearance({
@@ -59,7 +59,7 @@ export const useResetNodeAppearance = (): UseResetNodeAppearanceValue => {
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           propertiesToReset,
         },
       },

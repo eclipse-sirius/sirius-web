@@ -16,7 +16,7 @@ export interface UseUpdateRectangularNodeAppearanceValue {
   updateRectangularNodeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLRectangularNodeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditRectangularNodeApparenceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   appearance: Partial<GQLRectangularNodeAppearanceInput>;
 }
 
