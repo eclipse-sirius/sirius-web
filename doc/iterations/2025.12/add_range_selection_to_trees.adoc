@@ -1,0 +1,38 @@
+= Add range selection to trees
+
+== Problem
+
+Currently, we cannot select all items in trees between two items without clicking on each with CTRL.
+
+== Key Result
+
+A range of items can now be selected.
+
+=== Acceptance Criteria
+
+- Frontend Cypress tests should be done to verify the correct behavior.
+
+== Solution
+
+We will implement several scenarios involving range selection and multi-selection:
+
+- Clicking on an element selects this element (current behavior) and defines it as the pivot point for range selection.
+- CTRL + clicking on an element adds the element to the selection (current behavior) and defines it as the pivot point for range selection.
+- Shift + clicking selects all elements from the pivot point to the clicked element.
+** It does not extend the selection but overwrites it.
+** If the pivot point has not been explicitly defined, the pivot point is set to the first element of the tree.
+** If an expanded element is in the range, all its children are added to the selection too.
+** If a collapsed element is in the range, only it is added to the selection, not its children.
+- Shift + CTRL + clicking extends the existing selection by adding all the elements included in the range.
+** If the pivot point does not exist, the behavior falls back to the CTRL + click scenario.
+** For the rest, its behavior is exactly the same as shift + clicking.
+
+=== Cutting backs
+
+Range selection may also be applied to keyboard navigation. 
+For instance, arrow down 9 shift will add the following sibling element to the selection.
+
+== Rabbit holes
+
+== No-gos
+

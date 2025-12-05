@@ -21,6 +21,7 @@ import {
 import {
   FilterBar,
   GQLGetTreePathVariables,
+  GQLTree,
   GQLTreeItem,
   TreeFilter,
   TreeToolBar,
@@ -29,6 +30,7 @@ import {
   TreeView,
   useTreeFilters,
   useTreePath,
+  useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
 import { ForwardedRef, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -80,6 +82,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       tree: null,
       selectedTreeItemIds: [],
       singleTreeItemSelected: null,
+      selectionPivotTreeItemId: null,
     });
 
     // If we are requested to reveal the global selection, we need to compute the tree path to expand
@@ -195,6 +198,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     }, [treeElement]);
 
     const { selection, setSelection } = useSelection();
+    const { treeItemClick } = useTreeSelection();
 
     const selectionKey: string = selection?.entries
       .map((entry) => entry.id)
@@ -289,36 +293,68 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       );
     }
 
-    const onTreeItemClick = (event, item: GQLTreeItem) => {
-      if (event.ctrlKey || event.metaKey) {
-        event.stopPropagation();
-        // Update the global selection
-        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-        if (isItemInSelection) {
-          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-          setSelection(newSelection);
-        } else {
-          const { id } = item;
-          const newEntry: SelectionEntry = { id };
-          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-          setSelection(newSelection);
+    const computeSelectedElementsInRange = (
+      subtree: GQLTree | GQLTreeItem,
+      firstSelectionItemId: string,
+      secondSelectionItemId: string,
+      isSelecting: boolean = false,
+      accumulator: string[] = []
+    ): string[] => {
+      for (const element of subtree.children) {
+        const isRangeEndpoint = element.id === firstSelectionItemId || element.id === secondSelectionItemId;
+
+        // Toggle selection state when we hit a range endpoint
+        if (isRangeEndpoint) {
+          isSelecting = !isSelecting;
         }
-        // Update the local selection
-        const isItemInLocalSelection = state.selectedTreeItemIds.includes(item.id);
-        if (isItemInLocalSelection) {
-          const newSelectedTreeItemIds = state.selectedTreeItemIds.filter((selectedId) => selectedId !== item.id);
-          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
-        } else {
-          const { id } = item;
-          const newSelectedTreeItemIds = [...state.selectedTreeItemIds, id];
-          setState((prevState) => ({ ...prevState, selectedTreeItemIds: newSelectedTreeItemIds }));
+
+        // Add current element if we're in selection mode
+        if (isSelecting || isRangeEndpoint) {
+          accumulator.push(element.id);
         }
-        setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
-      } else {
-        const { id } = item;
-        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [id], singleTreeItemSelected: item }));
-        setSelection({ entries: [{ id }] });
+
+        // Early return if we've completed the range
+        if (isRangeEndpoint && !isSelecting) {
+          return accumulator;
+        }
+
+        // Recurse into expanded children (DFS)
+        if (element.hasChildren && element.expanded) {
+          computeSelectedElementsInRange(
+            element,
+            firstSelectionItemId,
+            secondSelectionItemId,
+            isSelecting,
+            accumulator
+          );
+          // Early return if range was completed in children
+          if (
+            accumulator.length > 0 &&
+            (accumulator[accumulator.length - 1] === firstSelectionItemId ||
+              accumulator[accumulator.length - 1] === secondSelectionItemId)
+          ) {
+            return accumulator;
+          }
+        }
       }
+
+      return accumulator;
+    };
+
+    const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem, tree: GQLTree) => {
+      var localSelection = treeItemClick(event, item, tree, state.selectedTreeItemIds);
+      setState((prevState) => ({
+        ...prevState,
+        selectedTreeItemIds: localSelection.selectedTreeItemIds,
+        singleTreeItemSelected: localSelection.singleTreeItemSelected,
+      }));
+      var globalSelection = treeItemClick(
+        event,
+        item,
+        state.tree,
+        selection.entries.map((entry) => entry.id)
+      );
+      setSelection({ entries: globalSelection.selectedTreeItemIds.map<SelectionEntry>((id) => ({ id })) });
     };
 
     const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
