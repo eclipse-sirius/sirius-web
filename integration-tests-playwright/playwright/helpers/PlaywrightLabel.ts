@@ -18,7 +18,7 @@ export class PlaywrightLabel {
 
   constructor(page: Page, label: string) {
     this.page = page;
-    this.labelLocator = page.locator(`[data-testid="Label - ${label}"]`);
+    this.labelLocator = page.locator(`[data-testid="Label - ${label}"]`).first();
   }
 
   async getFontSize() {

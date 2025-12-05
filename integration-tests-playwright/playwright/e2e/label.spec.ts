@@ -225,6 +225,32 @@ test.describe('diagram - label', () => {
       { timeout: 2000 }
     );
   });
+
+  test('when a label is hidden, then no anchors are visible', async ({ page }) => {
+    const entity1Node = new PlaywrightNode(page, 'Entity1');
+    const entity2Node = new PlaywrightNode(page, 'Entity2');
+    const edge = new PlaywrightEdge(page);
+    const entity1OutsideLabel = new PlaywrightLabel(page, 'entity1-outside-label');
+    await entity1Node.move({ x: 100, y: -150 });
+    await entity2Node.move({ x: 0, y: 200 });
+
+    await expect(entity1OutsideLabel.labelLocator).toBeAttached();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(1);
+
+    await entity1Node.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Hide"]').last().click();
+    await entity1Node.closePalette();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(0);
+
+    await edge.click();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(3);
+    await edge.openPalette();
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Hide"]').first().click();
+    await edge.closePalette();
+    await expect(page.locator('.react-resizable-handle')).toHaveCount(2);
+  });
 });
 test.describe('diagram - label', () => {
   let projectId;
