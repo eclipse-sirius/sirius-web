@@ -42,6 +42,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 - https://github.com/eclipse-sirius/sirius-web/issues/5896[#5896] Add missing translations for edge appearance menu
 - https://github.com/eclipse-sirius/sirius-web/issues/5912[#5912] [diagram] Fix an issue where edge handles could be rendered in the wrong position
 - https://github.com/eclipse-sirius/sirius-web/issues/5924[#5924] [diagram] Prevent a simple move on its parent from triggering a diagram drop
+- https://github.com/eclipse-sirius/sirius-web/issues/5931[#5931] [diagram] Prevent label resize handles from being visible when labels are hidden
 
 === New Features
 
