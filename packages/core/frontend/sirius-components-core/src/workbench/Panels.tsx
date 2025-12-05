@@ -45,7 +45,7 @@ const usePanelStyles = makeStyles()((theme) => ({
   },
   verticalResizer: {
     display: 'grid',
-    width: `0.25rem`,
+    width: `1px`,
     cursor: 'col-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
@@ -54,7 +54,7 @@ const usePanelStyles = makeStyles()((theme) => ({
   },
   horizontalResizer: {
     display: 'grid',
-    height: `0.25rem`,
+    height: `1px`,
     cursor: 'row-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
