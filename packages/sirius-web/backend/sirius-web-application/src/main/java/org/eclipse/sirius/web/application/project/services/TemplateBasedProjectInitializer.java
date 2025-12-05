@@ -20,8 +20,8 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.application.project.services.api.ITemplateBasedProjectInitializer;
@@ -63,7 +63,7 @@ public class TemplateBasedProjectInitializer implements ITemplateBasedProjectIni
 
     @Override
     @Transactional
-    public IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId) {
+    public IPayload initializeProjectFromTemplate(CreateProjectInput input, String projectId) {
         var optionalProject = this.projectSearchService.findById(projectId);
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

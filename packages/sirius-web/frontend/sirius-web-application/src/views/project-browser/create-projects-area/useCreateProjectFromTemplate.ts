@@ -51,6 +51,7 @@ const isCreateProjectFromTemplateSuccessPayload = (
 ): payload is GQLCreateProjectFromTemplateSuccessPayload =>
   payload.__typename === 'CreateProjectFromTemplateSuccessPayload';
 
+  Should be removed
 export const useCreateProjectFromTemplate = (): UseCreateProjectFromTemplateValue => {
   const [performProjectCreationFromTemplate, { loading, data, error }] = useMutation<
     GQLCreateProjectFromTemplateMutationData,

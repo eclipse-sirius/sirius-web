@@ -24,5 +24,12 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author sbegaudeau
  */
-public record CreateProjectInput(@NotNull UUID id, @NotNull String name, @NotNull List<String> natures, List<String> libraryIds) implements IInput {
+public record CreateProjectInput(
+        @NotNull UUID id,
+        @NotNull String name,
+        @NotNull String templateId,
+        // TODO: We also have discussion about removing the nature from the input since it is only used in cypress (and playwright tests?)
+        //       Maybe it's out of scope
+        @NotNull List<String> natures,
+        List<String> libraryIds) implements IInput {
 }
