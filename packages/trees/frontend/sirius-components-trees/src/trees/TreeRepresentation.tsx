@@ -19,7 +19,7 @@ import {
   useSelection,
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { TreeView } from '../views/TreeView';
 import { GQLTreeItem } from '../views/TreeView.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
@@ -31,10 +31,16 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
     ref: ForwardedRef<WorkbenchMainRepresentationHandle>
   ) => {
     const [state, setState] = useState<TreeRepresentationState>({
+      tree: null,
       expanded: [],
       maxDepth: 1,
     });
     const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
+    useEffect(() => {
+      if (tree && !loading) {
+        setState((prevState) => ({ ...prevState, tree }));
+      }
+    }, [tree, loading]);
 
     const { selection, setSelection } = useSelection();
 
@@ -75,7 +81,7 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
         setSelection({ entries: [{ id }] });
       }
     };
-    if (!tree || loading) {
+    if (!state.tree) {
       return <RepresentationLoadingIndicator />;
     } else {
       return (
@@ -84,7 +90,7 @@ export const TreeRepresentation = forwardRef<WorkbenchMainRepresentationHandle, 
             editingContextId={editingContextId}
             readOnly={readOnly}
             treeId={representationId}
-            tree={tree}
+            tree={state.tree}
             textToFilter={''}
             textToHighlight={''}
             onExpandedElementChange={onExpandedElementChange}
