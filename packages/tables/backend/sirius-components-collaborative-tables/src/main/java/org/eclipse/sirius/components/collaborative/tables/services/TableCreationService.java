@@ -66,6 +66,7 @@ public class TableCreationService {
         variableManager.put(TableRenderer.EXPANDED_IDS, List.of());
         variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, List.of());
         variableManager.put(TableRenderer.CUSTOM_CELL_DESCRIPTORS, this.customCellDescriptors);
+        variableManager.put(TableRenderer.EXPAND_ALL, false);
 
         TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of(), List.of());
 

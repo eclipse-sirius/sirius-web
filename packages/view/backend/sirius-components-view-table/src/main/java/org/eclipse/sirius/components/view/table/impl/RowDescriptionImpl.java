@@ -118,6 +118,15 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      */
     protected static final String DEPTH_LEVEL_EXPRESSION_EDEFAULT = null;
     /**
+     * The default value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHasChildrenExpression()
+     */
+    protected static final String HAS_CHILDREN_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -198,6 +207,15 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getDepthLevelExpression()
      */
     protected String depthLevelExpression = DEPTH_LEVEL_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHasChildrenExpression()
+     */
+    protected String hasChildrenExpression = HAS_CHILDREN_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -422,6 +440,29 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
+    public String getHasChildrenExpression() {
+        return this.hasChildrenExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setHasChildrenExpression(String newHasChildrenExpression) {
+        String oldHasChildrenExpression = this.hasChildrenExpression;
+        this.hasChildrenExpression = newHasChildrenExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION, oldHasChildrenExpression, this.hasChildrenExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
@@ -456,6 +497,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 return this.getContextMenuEntries();
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
                 return this.getDepthLevelExpression();
+            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+                return this.getHasChildrenExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -497,6 +540,9 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
                 this.setDepthLevelExpression((String) newValue);
                 return;
+            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+                this.setHasChildrenExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -536,6 +582,9 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
                 this.setDepthLevelExpression(DEPTH_LEVEL_EXPRESSION_EDEFAULT);
                 return;
+            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+                this.setHasChildrenExpression(HAS_CHILDREN_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -566,6 +615,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
                 return !Objects.equals(DEPTH_LEVEL_EXPRESSION_EDEFAULT, this.depthLevelExpression);
+            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+                return !Objects.equals(HAS_CHILDREN_EXPRESSION_EDEFAULT, this.hasChildrenExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -596,6 +647,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 this.isResizableExpression +
                 ", depthLevelExpression: " +
                 this.depthLevelExpression +
+                ", hasChildrenExpression: " +
+                this.hasChildrenExpression +
                 ')';
         return result;
     }
