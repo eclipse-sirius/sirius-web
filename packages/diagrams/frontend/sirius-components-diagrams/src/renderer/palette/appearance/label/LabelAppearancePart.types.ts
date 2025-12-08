@@ -14,8 +14,8 @@
 import { GQLLabelStyle } from '../../../../graphql/subscription/labelFragment.types';
 
 export interface LabelAppearancePartProps {
-  diagramElementId: string;
-  labelId: string;
+  diagramElementIds: string[];
+  labelIds: string[];
   position: string;
   style: GQLLabelStyle;
   customizedStyleProperties: string[];

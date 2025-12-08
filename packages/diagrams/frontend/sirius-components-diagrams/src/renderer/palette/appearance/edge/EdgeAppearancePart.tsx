@@ -19,7 +19,9 @@ import TurnSharpRightIcon from '@mui/icons-material/TurnSharpRight';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
+import { TFunction } from 'i18next/typescript/t';
 import { useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
 import { useDiagramPalette } from '../../useDiagramPalette';
@@ -30,8 +32,6 @@ import { EdgeAppearancePartProps } from './EdgeAppearancePart.types';
 import { useEditEdgeAppearance } from './useEditEdgeAppearance';
 import { GQLEdgeAppearanceInput } from './useEditEdgeAppearance.types';
 import { useResetEdgeAppearance } from './useResetEdgeAppearance';
-import { TFunction } from 'i18next/typescript/t';
-import { useTranslation } from 'react-i18next';
 
 const getLineStyleOptions = (t: TFunction) => [
   { value: 'Solid', label: t('solid') },
@@ -65,7 +65,7 @@ const getEdgeTypeOptions = (t: TFunction) => [
   { value: 'Oblique', label: t('oblique') },
 ];
 
-export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }: EdgeAppearancePartProps) => {
+export const EdgeAppearancePart = ({ edgeIds, style, customizedStyleProperties }: EdgeAppearancePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { updateEdgeAppearance } = useEditEdgeAppearance();
@@ -77,11 +77,11 @@ export const EdgeAppearancePart = ({ edgeId, style, customizedStyleProperties }:
   const edgeTypeOptions = useMemo(() => getEdgeTypeOptions(t), [t]);
 
   const handleResetProperty = (customizedStyleProperty: string) => {
-    resetEdgeStyleProperties(editingContextId, diagramId, edgeId, [customizedStyleProperty]);
+    resetEdgeStyleProperties(editingContextId, diagramId, edgeIds, [customizedStyleProperty]);
   };
 
   const handleEditProperty = (newValue: Partial<GQLEdgeAppearanceInput>) => {
-    updateEdgeAppearance(editingContextId, diagramId, edgeId, newValue);
+    updateEdgeAppearance(editingContextId, diagramId, edgeIds, newValue);
   };
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);

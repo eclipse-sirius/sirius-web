@@ -26,6 +26,7 @@ You can use `IViewToolFinder` to find a node or edge tool in a view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] Nodes and edges have a new `deletable` attribute in the GraphQL Schema that custom nodes must consider in their converter.
 On the backend, the node and edge's `deleteHandler` can now be `null` if no semantic deletion tool is defined for this element.
 `IViewNodeDeleteHandler`, which only existed to provide a non-null handler able to tell if there was a semantic deletion tool, has been removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] All mutations related to the update of the appearance of an edge or node (`EditxxxAppearanceInput` && `ResetxxxAppearanceInput`) have been modified to take a list of elements instead of only one.
 
 
 === Dependency update
@@ -49,6 +50,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
 You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
 The command is only visible if Elasticsearch is up and running.
+- https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
 
 
 === Improvements

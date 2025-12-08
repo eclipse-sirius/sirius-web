@@ -50,7 +50,7 @@ export const useUpdateImageNodeAppearance = (): UseUpdateImageNodeAppearanceValu
   const updateImageNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLImageNodeAppearanceInput>
   ) =>
     editImageNodeAppearance({
@@ -59,7 +59,7 @@ export const useUpdateImageNodeAppearance = (): UseUpdateImageNodeAppearanceValu
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },

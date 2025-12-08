@@ -82,26 +82,32 @@ public class EditEdgeAppearanceEventHandler implements IDiagramEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof EditEdgeAppearanceInput editAppearanceInput) {
-            String edgeId = editAppearanceInput.edgeId();
-            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
-            if (optionalEdge.isPresent()) {
-                List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<String> edgeIds = editAppearanceInput.edgeIds();
+            List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<String> elementNotFoundIds = new ArrayList<>();
+            for (String edgeId : edgeIds) {
+                Optional<Edge> optionalEdge = diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
+                if (optionalEdge.isPresent()) {
+                    Optional.ofNullable(editAppearanceInput.appearance().size()).ifPresent(size -> appearanceChanges.add(new EdgeSizeAppearanceChange(edgeId, size)));
+                    Optional.ofNullable(editAppearanceInput.appearance().color()).ifPresent(color -> appearanceChanges.add(new EdgeColorAppearanceChange(edgeId, color)));
+                    Optional.ofNullable(editAppearanceInput.appearance().lineStyle()).ifPresent(linestyle -> appearanceChanges.add(new EdgeLineStyleAppearanceChange(edgeId, linestyle)));
+                    Optional.ofNullable(editAppearanceInput.appearance().sourceArrowStyle())
+                            .ifPresent(sourceArrowStyle -> appearanceChanges.add(new EdgeSourceArrowStyleAppearanceChange(edgeId, sourceArrowStyle)));
+                    Optional.ofNullable(editAppearanceInput.appearance().targetArrowStyle())
+                            .ifPresent(targetArrowStyle -> appearanceChanges.add(new EdgeTargetArrowStyleAppearanceChange(edgeId, targetArrowStyle)));
+                    Optional.ofNullable(editAppearanceInput.appearance().edgeType()).ifPresent(edgeType -> appearanceChanges.add(new EdgeTypeStyleAppearanceChange(edgeId, edgeType)));
 
-                Optional.ofNullable(editAppearanceInput.appearance().size()).ifPresent(size -> appearanceChanges.add(new EdgeSizeAppearanceChange(edgeId, size)));
-                Optional.ofNullable(editAppearanceInput.appearance().color()).ifPresent(color -> appearanceChanges.add(new EdgeColorAppearanceChange(edgeId, color)));
-                Optional.ofNullable(editAppearanceInput.appearance().lineStyle()).ifPresent(linestyle -> appearanceChanges.add(new EdgeLineStyleAppearanceChange(edgeId, linestyle)));
-                Optional.ofNullable(editAppearanceInput.appearance().sourceArrowStyle())
-                        .ifPresent(sourceArrowStyle -> appearanceChanges.add(new EdgeSourceArrowStyleAppearanceChange(edgeId, sourceArrowStyle)));
-                Optional.ofNullable(editAppearanceInput.appearance().targetArrowStyle())
-                        .ifPresent(targetArrowStyle -> appearanceChanges.add(new EdgeTargetArrowStyleAppearanceChange(edgeId, targetArrowStyle)));
-                Optional.ofNullable(editAppearanceInput.appearance().edgeType()).ifPresent(edgeType -> appearanceChanges.add(new EdgeTypeStyleAppearanceChange(edgeId, edgeType)));
-
+                } else {
+                    elementNotFoundIds.add(edgeId);
+                }
+            }
+            if (!elementNotFoundIds.isEmpty()) {
+                String nodeNotFoundMessage = this.messageService.nodeNotFound(String.join(" - ", elementNotFoundIds));
+                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
+            } else {
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
-            } else {
-                String nodeNotFoundMessage = this.messageService.nodeNotFound(edgeId);
-                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             }
         }
 
