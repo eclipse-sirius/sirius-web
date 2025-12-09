@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers.appearance;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -33,12 +36,10 @@ import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEv
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.ResetEdgeAppearanceChange;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Sinks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import reactor.core.publisher.Sinks;
 
 /**
  * Handles diagram events related to resetting an edge appearance.
@@ -63,7 +64,7 @@ public class ResetEdgeAppearanceEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         return diagramInput instanceof ResetEdgeAppearanceInput;
     }
 
@@ -77,7 +78,7 @@ public class ResetEdgeAppearanceEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof ResetEdgeAppearanceInput resetAppearanceInput) {
             String edgeId = resetAppearanceInput.edgeId();
-            Optional<Edge> optionalEdge = diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
+            Optional<Edge> optionalEdge = this.diagramQueryService.findEdgeById(diagramContext.diagram(), edgeId);
             if (optionalEdge.isPresent()) {
                 List<IAppearanceChange> resetChanges = new ArrayList<>();
                 resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetEdgeAppearanceChange(edgeId, propertyToReset)));

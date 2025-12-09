@@ -90,7 +90,7 @@ public class MoveGroupEventHandlerTests {
         var handler = new MoveGroupEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new MoveGroupInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), formDescriptionEditor.getPages().get(0).getId(), groupId, index);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

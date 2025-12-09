@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public interface ITreeEventHandler {
-    boolean canHandle(ITreeInput treeInput);
+    boolean canHandle(IEditingContext editingContext, ITreeInput treeInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, TreeDescription treeDescription, Tree tree, ITreeInput treeInput);
 }

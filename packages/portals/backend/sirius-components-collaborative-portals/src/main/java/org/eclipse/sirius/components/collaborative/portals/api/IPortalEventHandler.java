@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.portals.api;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 import reactor.core.publisher.Sinks.Many;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Sinks.One;
 public interface IPortalEventHandler {
     String NEXT_PORTAL_PARAMETER = "nextPortal";
 
-    boolean canHandle(IPortalInput portalInput);
+    boolean canHandle(IEditingContext editingContext, IPortalInput portalInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, PortalContext context);
 

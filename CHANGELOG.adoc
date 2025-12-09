@@ -28,7 +28,7 @@ On the backend, the node and edge's `deleteHandler` can now be `null` if no sema
 `IViewNodeDeleteHandler`, which only existed to provide a non-null handler able to tell if there was a semantic deletion tool, has been removed.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] The input `GetPaletteInput` will now require a list of diagram element ids instead of a single one to retrieve a palette for multiple elements selected at once.
 In a similar manner, `InvokeSingleClickOnDiagramElementToolInput` will now ask for a list of diagram element ids to execute a tool on multiple elements are once
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5942[#5942] The signature of the method `canHandle` of the various event handlers has changed: it now takes the `IEditingContext` as a parameter in addition to the `input`
 
 === Dependency update
 
@@ -60,7 +60,6 @@ The command is only visible if Elasticsearch is up and running.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5684[#5684] `ISingleClickOnOneDiagramElementHandler` and `ISingleClickOnTwoDiagramElementHandler` has been added, these interface are used to execute a tool from the `InvokeSingleClickOnDiagramElementToolEventHandler` and `InvokeSingleClickOnTwoDiagramElementsToolEventHandler`
@@ -75,8 +74,7 @@ Downstream applications can now implement the following interfaces:
 Sirius Web provides a default implementation for all these services, which creates an index per editing context, and indexes all the features of the elements in the editing context (this can be customized by implementing `IIndexEntryProviderDelegate`).
 - https://github.com/eclipse-sirius/sirius-web/issues/3486[#3486] [diagram] Do not open delete confirmation dialog when a node/edge is not deletable
 - https://github.com/eclipse-sirius/sirius-web/issues/5768[#5768] [diagram] Group tools are now using the same palette as others tools
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5942[#5942] [sirius-web] The method `canHandle` of the various representation event handlers can now leverage the `IEditingContext` to compute a result
 
 == 2025.12.0
 

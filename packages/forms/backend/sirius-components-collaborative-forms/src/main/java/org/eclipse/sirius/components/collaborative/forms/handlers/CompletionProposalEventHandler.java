@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,15 +59,13 @@ public class CompletionProposalEventHandler implements IFormEventHandler {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
-    public boolean canHandle(IFormInput formInput) {
+    public boolean canHandle(IEditingContext editingContext, IFormInput formInput) {
         return formInput instanceof CompletionRequestInput;
     }
 
@@ -81,12 +79,11 @@ public class CompletionProposalEventHandler implements IFormEventHandler {
         if (formInput instanceof CompletionRequestInput) {
             CompletionRequestInput input = (CompletionRequestInput) formInput;
             CompletionRequest request = new CompletionRequest(input.currentText(), input.cursorPosition());
-            // @formatter:off
+
             List<CompletionProposal> proposals = this.formQueryService.findWidget(form, input.widgetId())
                     .flatMap(this::getProposalProvider)
                     .map(proposalsProvider -> proposalsProvider.apply(request))
                     .orElse(List.of());
-            // @formatter:on
             payload = new CompletionRequestSuccessPayload(formInput.id(), proposals);
         }
 

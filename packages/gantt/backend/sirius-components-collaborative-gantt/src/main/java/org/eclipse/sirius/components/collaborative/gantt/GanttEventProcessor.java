@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,9 @@ public class GanttEventProcessor implements IGanttEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IGanttInput ganttInput) {
-            Optional<IGanttEventHandler> optionalGanttEventHandler = this.ganttEventHandlers.stream().filter(handler -> handler.canHandle(ganttInput)).findFirst();
+            Optional<IGanttEventHandler> optionalGanttEventHandler = this.ganttEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, ganttInput))
+                    .findFirst();
 
             if (optionalGanttEventHandler.isPresent()) {
                 IGanttEventHandler ganttEventHandler = optionalGanttEventHandler.get();

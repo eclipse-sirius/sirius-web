@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -55,6 +53,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -97,7 +98,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         return diagramInput instanceof DeleteFromDiagramInput;
     }
 

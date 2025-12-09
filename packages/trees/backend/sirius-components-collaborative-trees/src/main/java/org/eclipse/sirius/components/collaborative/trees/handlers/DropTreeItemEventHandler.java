@@ -61,7 +61,7 @@ public class DropTreeItemEventHandler implements ITreeEventHandler {
     }
 
     @Override
-    public boolean canHandle(ITreeInput treeInput) {
+    public boolean canHandle(IEditingContext editingContext, ITreeInput treeInput) {
         return treeInput instanceof DropTreeItemInput;
     }
 

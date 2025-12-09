@@ -88,7 +88,7 @@ public class DeleteToolbarActionEventHandlerTests {
         var handler = new DeleteToolbarActionEventHandler(objectSearchService, editService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new DeleteToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", TOOLBAR_ACTION_ID);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -138,7 +138,7 @@ public class DeleteToolbarActionEventHandlerTests {
         var handler = new DeleteToolbarActionEventHandler(objectSearchService, editService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new DeleteToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", TOOLBAR_ACTION_ID);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

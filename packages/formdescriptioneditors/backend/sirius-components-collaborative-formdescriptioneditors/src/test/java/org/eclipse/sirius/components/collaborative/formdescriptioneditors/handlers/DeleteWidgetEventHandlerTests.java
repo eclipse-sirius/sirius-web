@@ -51,7 +51,7 @@ public class DeleteWidgetEventHandlerTests {
         };
         var input = new DeleteWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "widgetId");
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

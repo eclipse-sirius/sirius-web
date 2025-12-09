@@ -132,7 +132,7 @@ public class ReconnectEdgeEventHandlerTests {
                 messageService, new IFeedbackMessageService.NoOp()), List.of(reconnectionToolExecutor), new SimpleMeterRegistry());
         var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

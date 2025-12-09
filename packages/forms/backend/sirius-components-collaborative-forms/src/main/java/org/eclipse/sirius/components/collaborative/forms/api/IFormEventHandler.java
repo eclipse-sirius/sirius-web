@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public interface IFormEventHandler {
-    boolean canHandle(IFormInput formInput);
+    boolean canHandle(IEditingContext editingContext, IFormInput formInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput);
 }

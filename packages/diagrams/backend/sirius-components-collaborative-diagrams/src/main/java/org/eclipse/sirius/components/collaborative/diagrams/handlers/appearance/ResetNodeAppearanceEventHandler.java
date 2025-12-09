@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -38,6 +36,9 @@ import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEv
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.ResetNodeAppearanceChange;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -63,7 +64,7 @@ public class ResetNodeAppearanceEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         return diagramInput instanceof ResetNodeAppearanceInput;
     }
 
@@ -77,7 +78,7 @@ public class ResetNodeAppearanceEventHandler implements IDiagramEventHandler {
 
         if (diagramInput instanceof ResetNodeAppearanceInput resetAppearanceInput) {
             String nodeId = resetAppearanceInput.nodeId();
-            Optional<Node> optionalNode = diagramQueryService.findNodeById(diagramContext.diagram(), nodeId);
+            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), nodeId);
             if (optionalNode.isPresent()) {
                 List<IAppearanceChange> resetChanges = new ArrayList<>();
                 resetAppearanceInput.propertiesToReset().forEach(propertyToReset -> resetChanges.add(new ResetNodeAppearanceChange(nodeId, propertyToReset)));

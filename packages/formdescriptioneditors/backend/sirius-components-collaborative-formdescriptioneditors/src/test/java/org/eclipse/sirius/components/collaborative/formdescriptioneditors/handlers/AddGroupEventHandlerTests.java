@@ -59,7 +59,7 @@ public class AddGroupEventHandlerTests {
         var handler = new AddGroupEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new AddGroupInput(UUID.randomUUID(), "editingContextId", "representationId", "pageId", 0);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -27,6 +26,8 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -42,7 +43,7 @@ public class ArrangeAllEventHandlerTests {
         var handler = new ArrangeAllEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new ArrangeAllInput(UUID.randomUUID(), "editingContextId", "representationId");
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

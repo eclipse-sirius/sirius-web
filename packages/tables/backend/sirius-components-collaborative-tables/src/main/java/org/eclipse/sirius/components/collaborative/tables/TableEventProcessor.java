@@ -114,7 +114,9 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof ITableInput tableInput) {
-            Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream().filter(handler -> handler.canHandle(tableInput)).findFirst();
+            Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.tableCreationParameters.getEditingContext(), tableInput))
+                    .findFirst();
 
             if (optionalTableEventHandler.isPresent()) {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();

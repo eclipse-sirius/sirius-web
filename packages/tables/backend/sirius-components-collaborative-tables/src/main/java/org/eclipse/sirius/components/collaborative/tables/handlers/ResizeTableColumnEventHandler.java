@@ -57,7 +57,7 @@ public class ResizeTableColumnEventHandler implements ITableEventHandler {
     }
 
     @Override
-    public boolean canHandle(ITableInput tableInput) {
+    public boolean canHandle(IEditingContext editingContext, ITableInput tableInput) {
         return tableInput instanceof ResizeTableColumnInput;
     }
 

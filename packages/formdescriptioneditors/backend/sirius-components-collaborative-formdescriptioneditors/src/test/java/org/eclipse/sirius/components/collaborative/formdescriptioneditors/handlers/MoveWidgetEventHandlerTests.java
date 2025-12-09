@@ -54,7 +54,7 @@ public class MoveWidgetEventHandlerTests {
         var handler = new MoveWidgetEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new MoveWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "widgetId", 0);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

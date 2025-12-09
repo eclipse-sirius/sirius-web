@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -73,7 +74,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         return diagramInput instanceof DropOnDiagramInput;
     }
 

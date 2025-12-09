@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class ExpandAllTreePathEventHandler implements ITreeEventHandler {
     }
 
     @Override
-    public boolean canHandle(ITreeInput treeInput) {
+    public boolean canHandle(IEditingContext editingContext, ITreeInput treeInput) {
         return treeInput instanceof ExpandAllTreePathInput;
     }
 

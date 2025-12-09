@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,7 +123,7 @@ public class CreateElementEventHandlerTests {
 
         CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, List.of(referenceWidgetCreateElementHandler),
                 new IEditService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         Sinks.One<IPayload> payloadSink = Sinks.one();
@@ -192,7 +192,7 @@ public class CreateElementEventHandlerTests {
         };
 
         CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), List.of(), new IEditService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         Sinks.One<IPayload> payloadSink = Sinks.one();

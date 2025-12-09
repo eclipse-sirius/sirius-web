@@ -65,7 +65,7 @@ public class MoveGroupEventHandler implements IFormDescriptionEditorEventHandler
     }
 
     @Override
-    public boolean canHandle(IFormDescriptionEditorInput formDescriptionEditorInput) {
+    public boolean canHandle(IEditingContext editingContext, IFormDescriptionEditorInput formDescriptionEditorInput) {
         return formDescriptionEditorInput instanceof MoveGroupInput;
     }
 

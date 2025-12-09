@@ -180,7 +180,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         }
 
         if (representationInput instanceof IDiagramInput diagramInput) {
-            Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
+            Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(this.editingContext, diagramInput)).findFirst();
 
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();

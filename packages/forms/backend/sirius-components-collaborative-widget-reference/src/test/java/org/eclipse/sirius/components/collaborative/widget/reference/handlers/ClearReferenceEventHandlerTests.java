@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,7 +111,7 @@ public class ClearReferenceEventHandlerTests {
         };
 
         ClearReferenceEventHandler handler = new ClearReferenceEventHandler(formQueryService, new IReferenceMessageService.NoOp(), new SimpleMeterRegistry());
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         Sinks.One<IPayload> payloadSink = Sinks.one();
@@ -190,7 +190,7 @@ public class ClearReferenceEventHandlerTests {
         };
 
         ClearReferenceEventHandler handler = new ClearReferenceEventHandler(formQueryService, messageService, new SimpleMeterRegistry());
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         Sinks.One<IPayload> payloadSink = Sinks.one();

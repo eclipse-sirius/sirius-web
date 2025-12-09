@@ -63,7 +63,7 @@ public class AddToolbarActionEventHandlerTests {
         var handler = new AddToolbarActionEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -95,7 +95,7 @@ public class AddToolbarActionEventHandlerTests {
         var handler = new AddToolbarActionEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.portals.PortalViewLayoutData;
@@ -50,11 +51,13 @@ public class LayoutPortalEventHandler implements IPortalEventHandler {
 
     public LayoutPortalEventHandler(ICollaborativePortalMessageService messageService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
     }
 
     @Override
-    public boolean canHandle(IPortalInput portalInput) {
+    public boolean canHandle(IEditingContext editingContext, IPortalInput portalInput) {
         return portalInput instanceof LayoutPortalInput;
     }
 
