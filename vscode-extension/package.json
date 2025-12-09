@@ -128,12 +128,15 @@
     "@eclipse-sirius/sirius-components-browser": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-datatree": "*",
     "@eclipse-sirius/sirius-components-deck": "*",
     "@eclipse-sirius/sirius-components-diagrams": "*",
     "@eclipse-sirius/sirius-components-formdescriptioneditors": "*",
     "@eclipse-sirius/sirius-components-forms": "*",
     "@eclipse-sirius/sirius-components-gantt": "*",
+    "@eclipse-sirius/sirius-components-impactanalysis": "*",
     "@eclipse-sirius/sirius-components-omnibox": "*",
+    "@eclipse-sirius/sirius-components-palette": "*",
     "@eclipse-sirius/sirius-components-portals": "*",
     "@eclipse-sirius/sirius-components-selection": "*",
     "@eclipse-sirius/sirius-components-tables": "*",
@@ -157,10 +160,10 @@
     "notistack": "3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-resizable-panels": "3.0.2",
     "reflect-metadata": "0.1.13",
     "subscriptions-transport-ws": "0.11.0",
     "uuid": "8.3.2",
-    "websocket": "1.0.34",
-    "react-resizable-panels": "3.0.2"
+    "websocket": "1.0.34"
   }
 }

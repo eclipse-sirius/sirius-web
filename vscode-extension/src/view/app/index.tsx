@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import {
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import {
   ellipseNodeStyleDocumentTransform,
+  I18nContextProvider,
   referenceWidgetDocumentTransform,
 } from '@eclipse-sirius/sirius-web-application';
 import React from 'react';
@@ -114,17 +115,19 @@ root.render(
   <ExtensionProvider registry={defaultExtensionRegistry}>
     <ServerContext.Provider value={value}>
       <ApolloProvider client={ApolloGraphQLClient}>
-        <ToastProvider>
-          <App
-            serverAddress={window.serverAddress}
-            username={window.username}
-            password={window.password}
-            editingContextId={window.editingContextId}
-            representationId={window.representationId}
-            representationLabel={window.representationLabel}
-            representationKind={window.representationKind}
-          />
-        </ToastProvider>
+        <I18nContextProvider httpOrigin={window.serverAddress}>
+          <ToastProvider>
+            <App
+              serverAddress={window.serverAddress}
+              username={window.username}
+              password={window.password}
+              editingContextId={window.editingContextId}
+              representationId={window.representationId}
+              representationLabel={window.representationLabel}
+              representationKind={window.representationKind}
+            />
+          </ToastProvider>
+        </I18nContextProvider>
       </ApolloProvider>
     </ServerContext.Provider>
   </ExtensionProvider>
