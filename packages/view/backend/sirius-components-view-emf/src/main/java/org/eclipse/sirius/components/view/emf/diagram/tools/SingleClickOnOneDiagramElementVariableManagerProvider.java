@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.tools;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,6 +70,10 @@ public class SingleClickOnOneDiagramElementVariableManagerProvider implements IS
 
             var optionalNode = optionalDiagramElement.filter(Node.class::isInstance).map(Node.class::cast);
             var optionalEdge = optionalDiagramElement.filter(Edge.class::isInstance).map(Edge.class::cast);
+            var selectedNodes = new ArrayList<>();
+            optionalNode.ifPresent(selectedNodes::add);
+            var selectedEdges = new ArrayList<>();
+            optionalEdge.ifPresent(selectedEdges::add);
 
             VariableManager variableManager = new VariableManager();
             variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
@@ -78,6 +83,8 @@ public class SingleClickOnOneDiagramElementVariableManagerProvider implements IS
             variableManager.put(VariableManager.SELF, self);
             variableManager.put(Node.SELECTED_NODE, optionalNode.orElse(null));
             variableManager.put(Edge.SELECTED_EDGE, optionalEdge.orElse(null));
+            variableManager.put(Node.SELECTED_NODES, selectedNodes);
+            variableManager.put(Edge.SELECTED_EDGES, selectedEdges);
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
 

@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getQuickAccessTools <em>Quick Access
  * Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getGroupPalette()
@@ -54,5 +55,17 @@ public interface GroupPalette extends EObject {
      * @generated
      */
     EList<NodeTool> getQuickAccessTools();
+
+    /**
+     * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.ToolSection}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Tool Sections</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getGroupPalette_ToolSections()
+     * @model containment="true" keys="name"
+     * @generated
+     */
+    EList<ToolSection> getToolSections();
 
 } // GroupPalette

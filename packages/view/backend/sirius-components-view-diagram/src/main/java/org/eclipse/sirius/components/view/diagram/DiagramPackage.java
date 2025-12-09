@@ -127,13 +127,22 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__PALETTE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__GROUP_PALETTE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Node Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+    int DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Edge Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -142,7 +151,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Arrange Layout Direction</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -151,16 +160,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int DIAGRAM_DESCRIPTION__GROUP_PALETTE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+    int DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2558,13 +2558,22 @@ public interface DiagramPackage extends EPackage {
     int GROUP_PALETTE__QUICK_ACCESS_TOOLS = 1;
 
     /**
+     * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_PALETTE__TOOL_SECTIONS = 2;
+
+    /**
      * The number of structural features of the '<em>Group Palette</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GROUP_PALETTE_FEATURE_COUNT = 2;
+    int GROUP_PALETTE_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Group Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3552,13 +3561,22 @@ public interface DiagramPackage extends EPackage {
     int TOOL_SECTION__NAME = 0;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_SECTION__PRECONDITION_EXPRESSION = 1;
+
+    /**
      * The number of structural features of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TOOL_SECTION_FEATURE_COUNT = 1;
+    int TOOL_SECTION_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3585,6 +3603,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOL_SECTION__PRECONDITION_EXPRESSION = TOOL_SECTION__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3629,6 +3656,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION__PRECONDITION_EXPRESSION = TOOL_SECTION__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3682,6 +3718,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_SECTION__PRECONDITION_EXPRESSION = TOOL_SECTION__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -5445,6 +5490,18 @@ public interface DiagramPackage extends EPackage {
     EReference getGroupPalette_QuickAccessTools();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getToolSections <em>Tool Sections</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.GroupPalette#getToolSections()
+     * @see #getGroupPalette()
+     * @generated
+     */
+    EReference getGroupPalette_ToolSections();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.NodePalette <em>Node
      * Palette</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6062,6 +6119,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getToolSection_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ToolSection#getPreconditionExpression()
+     * @see #getToolSection()
+     * @generated
+     */
+    EAttribute getToolSection_PreconditionExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection <em>Tool
@@ -7464,6 +7533,14 @@ public interface DiagramPackage extends EPackage {
         EReference GROUP_PALETTE__QUICK_ACCESS_TOOLS = eINSTANCE.getGroupPalette_QuickAccessTools();
 
         /**
+         * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GROUP_PALETTE__TOOL_SECTIONS = eINSTANCE.getGroupPalette_ToolSections();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl
          * <em>Node Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -7920,6 +7997,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute TOOL_SECTION__NAME = eINSTANCE.getToolSection_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TOOL_SECTION__PRECONDITION_EXPRESSION = eINSTANCE.getToolSection_PreconditionExpression();
 
         /**
          * The meta object literal for the

@@ -36,5 +36,15 @@ public abstract class ToolSectionBuilder {
         return this;
     }
 
+    /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public ToolSectionBuilder preconditionExpression(java.lang.String value) {
+        this.getToolSection().setPreconditionExpression(value);
+        return this;
+    }
+
 }
 

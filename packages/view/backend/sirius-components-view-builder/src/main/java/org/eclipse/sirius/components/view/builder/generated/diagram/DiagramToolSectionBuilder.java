@@ -52,6 +52,16 @@ public class DiagramToolSectionBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public DiagramToolSectionBuilder preconditionExpression(java.lang.String value) {
+        this.getDiagramToolSection().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for NodeTools.
      *
      * @generated

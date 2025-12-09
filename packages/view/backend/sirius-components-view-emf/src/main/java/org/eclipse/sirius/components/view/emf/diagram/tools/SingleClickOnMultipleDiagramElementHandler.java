@@ -79,7 +79,8 @@ public class SingleClickOnMultipleDiagramElementHandler implements ISingleClickO
     public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
         DiagramContext diagramContext = new DiagramContext(diagram);
 
-        var optionalNodeTool = this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId);
+        var optionalNodeTool = this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId)
+                ;
         if (optionalNodeTool.isPresent()) {
             var nodeTool = optionalNodeTool.get();
             return this.executeTool(editingContext, diagramContext, diagram.getDescriptionId(), diagramElementIds, nodeTool, variables, toolId);
