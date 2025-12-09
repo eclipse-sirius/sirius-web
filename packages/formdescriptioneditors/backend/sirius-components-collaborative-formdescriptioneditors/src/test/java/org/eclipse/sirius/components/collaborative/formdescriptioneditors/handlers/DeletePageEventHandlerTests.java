@@ -80,7 +80,7 @@ public class DeletePageEventHandlerTests {
         var handler = new DeletePageEventHandler(objectSearchService, editService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new DeletePageInput(UUID.randomUUID(), "editingContextId", "representationId", PAGE_ID);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

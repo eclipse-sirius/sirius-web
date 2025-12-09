@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,11 +87,9 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
-        // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "validation")
                 .register(meterRegistry);
-        // @formatter:on
 
         Validation validation = this.refreshValidation();
         this.validationContext.update(validation);
@@ -106,11 +104,10 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IValidationInput) {
             IValidationInput validationInput = (IValidationInput) representationInput;
-            // @formatter:off
+
             Optional<IValidationEventHandler> optionalValidationEventHandler = this.validationEventHandlers.stream()
-                    .filter(handler -> handler.canHandle(validationInput))
+                    .filter(handler -> handler.canHandle(this.editingContext, validationInput))
                     .findFirst();
-            // @formatter:on
 
             if (optionalValidationEventHandler.isPresent()) {
                 IValidationEventHandler validationEventHandler = optionalValidationEventHandler.get();
@@ -143,11 +140,9 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
     }
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {
-        // @formatter:off
         return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.validationDescription)
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
@@ -175,12 +170,10 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
         var initialRefresh = Mono.fromCallable(() -> new ValidationRefreshedEventPayload(input.id(), this.validationContext.getValidation()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
-        // @formatter:off
         return Flux.merge(
             refreshEventFlux,
             this.subscriptionManager.getFlux(input)
         );
-        // @formatter:on
     }
 
     @Override

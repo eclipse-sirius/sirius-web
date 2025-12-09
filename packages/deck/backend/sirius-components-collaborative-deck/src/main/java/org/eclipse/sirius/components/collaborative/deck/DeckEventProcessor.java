@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,7 +102,9 @@ public class DeckEventProcessor implements IDeckEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IDeckInput deckInput) {
-            Optional<IDeckEventHandler> optionalDeckEventHandler = this.deckEventHandlers.stream().filter(handler -> handler.canHandle(deckInput)).findFirst();
+            Optional<IDeckEventHandler> optionalDeckEventHandler = this.deckEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, deckInput))
+                    .findFirst();
 
             if (optionalDeckEventHandler.isPresent()) {
                 IDeckEventHandler deckEventHandler = optionalDeckEventHandler.get();

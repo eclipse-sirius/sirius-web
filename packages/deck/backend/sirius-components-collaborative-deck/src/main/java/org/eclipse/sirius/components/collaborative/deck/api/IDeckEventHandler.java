@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import reactor.core.publisher.Sinks.One;
  * @author fbarbin
  */
 public interface IDeckEventHandler {
-    boolean canHandle(IDeckInput deckInput);
+    boolean canHandle(IEditingContext editingContext, IDeckInput deckInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDeckContext deckContext, IDeckInput deckInput);
 }

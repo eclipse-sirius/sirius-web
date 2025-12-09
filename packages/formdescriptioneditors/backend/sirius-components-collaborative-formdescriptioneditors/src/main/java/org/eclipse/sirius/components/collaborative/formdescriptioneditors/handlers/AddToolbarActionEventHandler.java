@@ -62,7 +62,7 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
     }
 
     @Override
-    public boolean canHandle(IFormDescriptionEditorInput formDescriptionEditorInput) {
+    public boolean canHandle(IEditingContext editingContext, IFormDescriptionEditorInput formDescriptionEditorInput) {
         return formDescriptionEditorInput instanceof AddToolbarActionInput;
     }
 

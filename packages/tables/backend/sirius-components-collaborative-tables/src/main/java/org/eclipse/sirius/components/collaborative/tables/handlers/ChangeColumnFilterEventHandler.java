@@ -55,7 +55,7 @@ public class ChangeColumnFilterEventHandler implements ITableEventHandler {
     }
 
     @Override
-    public boolean canHandle(ITableInput tableInput) {
+    public boolean canHandle(IEditingContext editingContext, ITableInput tableInput) {
         return tableInput instanceof ChangeColumnFilterInput;
     }
 

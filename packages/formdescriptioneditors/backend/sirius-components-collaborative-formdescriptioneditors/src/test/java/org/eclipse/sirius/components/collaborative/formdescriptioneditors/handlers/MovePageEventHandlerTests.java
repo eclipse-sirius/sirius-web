@@ -87,7 +87,7 @@ public class MovePageEventHandlerTests {
         var handler = new MovePageEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new MovePageInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), pageId, index);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

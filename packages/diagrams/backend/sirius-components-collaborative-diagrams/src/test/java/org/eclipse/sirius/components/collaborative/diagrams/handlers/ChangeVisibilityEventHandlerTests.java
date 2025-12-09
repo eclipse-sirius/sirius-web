@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -34,6 +33,8 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -74,7 +75,7 @@ public class ChangeVisibilityEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
@@ -95,7 +96,7 @@ public class ChangeVisibilityEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
@@ -116,7 +117,7 @@ public class ChangeVisibilityEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
@@ -137,7 +138,7 @@ public class ChangeVisibilityEventHandlerTests {
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
         handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);

@@ -16,6 +16,7 @@ package org.eclipse.sirius.components.collaborative.tables.handlers;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -48,16 +49,15 @@ public class RowFiltersEventHandler implements ITableEventHandler {
 
     private final List<IRowFilterProvider> rowFilterProviders;
 
-    public RowFiltersEventHandler(MeterRegistry meterRegistry, List<IRowFilterProvider> rowFilterProviders) {
-
+    public RowFiltersEventHandler(List<IRowFilterProvider> rowFilterProviders, MeterRegistry meterRegistry) {
+        this.rowFilterProviders = Objects.requireNonNull(rowFilterProviders);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        this.rowFilterProviders = rowFilterProviders;
     }
 
     @Override
-    public boolean canHandle(ITableInput tableInput) {
+    public boolean canHandle(IEditingContext editingContext, ITableInput tableInput) {
         return tableInput instanceof RowFiltersInput;
     }
 

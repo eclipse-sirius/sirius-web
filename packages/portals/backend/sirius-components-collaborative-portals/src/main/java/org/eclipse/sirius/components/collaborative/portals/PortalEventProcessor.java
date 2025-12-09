@@ -88,7 +88,9 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IPortalInput portalInput) {
-            Optional<IPortalEventHandler> optionalPortalEventHandler = this.portalEventHandlers.stream().filter(handler -> handler.canHandle(portalInput)).findFirst();
+            Optional<IPortalEventHandler> optionalPortalEventHandler = this.portalEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, portalInput))
+                    .findFirst();
             if (optionalPortalEventHandler.isPresent()) {
                 IPortalEventHandler portalEventHandler = optionalPortalEventHandler.get();
                 PortalContext context = new PortalContext(this.representationSearchService, this.editingContext, this.currentPortal, portalInput);

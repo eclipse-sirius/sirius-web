@@ -188,7 +188,7 @@ public class GetConnectorToolsEventHandlerTests {
          */
         var input = new GetConnectorToolsInput(UUID.randomUUID(), UUID.randomUUID().toString(), DIAGRAM_ID, SOURCE_NODE_ID, TARGET_NODE_ID);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(null, input)).isTrue();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

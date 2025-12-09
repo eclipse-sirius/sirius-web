@@ -76,7 +76,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         return diagramInput instanceof InvokeDiagramImpactAnalysisToolInput;
     }
 

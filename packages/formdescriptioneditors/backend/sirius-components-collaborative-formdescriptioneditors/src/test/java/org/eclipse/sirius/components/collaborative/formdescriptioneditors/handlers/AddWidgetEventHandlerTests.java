@@ -54,7 +54,7 @@ public class AddWidgetEventHandlerTests {
         var handler = new AddWidgetEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), List.of(), new SimpleMeterRegistry());
         var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0);
 
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

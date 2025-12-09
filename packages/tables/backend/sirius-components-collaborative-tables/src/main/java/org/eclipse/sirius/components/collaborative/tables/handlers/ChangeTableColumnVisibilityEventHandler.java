@@ -56,7 +56,7 @@ public class ChangeTableColumnVisibilityEventHandler implements ITableEventHandl
     }
 
     @Override
-    public boolean canHandle(ITableInput tableInput) {
+    public boolean canHandle(IEditingContext editingContext, ITableInput tableInput) {
         return tableInput instanceof ChangeTableColumnVisibilityInput;
     }
 

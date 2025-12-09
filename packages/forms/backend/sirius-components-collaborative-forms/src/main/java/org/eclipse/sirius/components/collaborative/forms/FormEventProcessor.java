@@ -156,7 +156,9 @@ public class FormEventProcessor implements IFormEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IFormInput formInput) {
-            Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
+            Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, formInput))
+                    .findFirst();
 
             if (optionalFormEventHandler.isPresent()) {
                 IFormEventHandler formEventHandler = optionalFormEventHandler.get();
@@ -165,7 +167,9 @@ public class FormEventProcessor implements IFormEventProcessor {
                 this.logger.warn("No handler found for event: {}", formInput);
             }
         } else if (representationInput instanceof ITableInput tableInput) {
-            Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream().filter(handler -> handler.canHandle(tableInput)).findFirst();
+            Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, tableInput))
+                    .findFirst();
 
             if (optionalTableEventHandler.isPresent()) {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();

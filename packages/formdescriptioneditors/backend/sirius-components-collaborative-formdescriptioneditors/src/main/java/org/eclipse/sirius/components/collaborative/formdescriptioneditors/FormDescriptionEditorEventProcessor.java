@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,8 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
         if (representationInput instanceof IFormDescriptionEditorInput) {
             IFormDescriptionEditorInput formDescriptionEditorInput = (IFormDescriptionEditorInput) representationInput;
 
-            Optional<IFormDescriptionEditorEventHandler> optionalFormEventHandler = this.formDescriptionEditorEventHandlers.stream().filter(handler -> handler.canHandle(formDescriptionEditorInput))
+            Optional<IFormDescriptionEditorEventHandler> optionalFormEventHandler = this.formDescriptionEditorEventHandlers.stream()
+                    .filter(handler -> handler.canHandle(this.editingContext, formDescriptionEditorInput))
                     .findFirst();
 
             if (optionalFormEventHandler.isPresent()) {

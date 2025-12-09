@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class ChangeGanttColumnEventHandler implements IGanttEventHandler {
     }
 
     @Override
-    public boolean canHandle(IGanttInput ganttInput) {
+    public boolean canHandle(IEditingContext editingContext, IGanttInput ganttInput) {
         return ganttInput instanceof ChangeGanttColumnInput;
     }
 

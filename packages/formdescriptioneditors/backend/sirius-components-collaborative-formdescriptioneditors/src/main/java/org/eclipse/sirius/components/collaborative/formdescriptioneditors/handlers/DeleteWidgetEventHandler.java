@@ -56,15 +56,13 @@ public class DeleteWidgetEventHandler implements IFormDescriptionEditorEventHand
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
-    public boolean canHandle(IFormDescriptionEditorInput formDescriptionEditorInput) {
+    public boolean canHandle(IEditingContext editingContext, IFormDescriptionEditorInput formDescriptionEditorInput) {
         return formDescriptionEditorInput instanceof DeleteWidgetInput;
     }
 

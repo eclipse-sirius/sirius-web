@@ -16,6 +16,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -26,7 +27,7 @@ import reactor.core.publisher.Sinks.One;
  */
 public interface IDiagramEventHandler {
 
-    boolean canHandle(IDiagramInput diagramInput);
+    boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput);
 

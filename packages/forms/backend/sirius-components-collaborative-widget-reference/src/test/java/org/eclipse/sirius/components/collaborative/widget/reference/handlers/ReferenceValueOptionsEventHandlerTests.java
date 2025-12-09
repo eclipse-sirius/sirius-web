@@ -98,7 +98,7 @@ public class ReferenceValueOptionsEventHandlerTests {
         };
 
         ReferenceValueOptionsEventHandler handler = new ReferenceValueOptionsEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
-        assertThat(handler.canHandle(input)).isTrue();
+        assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         Sinks.One<IPayload> payloadSink = Sinks.one();
