@@ -32,6 +32,8 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { I18nContextProvider } from './i18n/I18nContext';
+export type { I18NContextProviderProps } from './i18n/I18nContext';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
 export { NavigationBar } from './navigationBar/NavigationBar';
