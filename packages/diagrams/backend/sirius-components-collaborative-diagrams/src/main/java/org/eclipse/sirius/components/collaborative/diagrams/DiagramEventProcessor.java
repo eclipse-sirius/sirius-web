@@ -141,7 +141,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                         .collect(Collectors.toMap(
                                 NodeLayoutDataInput::id,
                                 nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser(),
-                                       nodeLayoutDataInput.movedByUser(), nodeLayoutDataInput.handleLayoutData(), nodeLayoutDataInput.minComputedSize()),
+                                        nodeLayoutDataInput.movedByUser(), nodeLayoutDataInput.handleLayoutData(), nodeLayoutDataInput.minComputedSize()),
                                 (oldValue, newValue) -> newValue
                         ));
 
@@ -155,7 +155,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
                         .collect(Collectors.toMap(
                                 LabelLayoutDataInput::id,
-                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(), labelLayoutDataInput.resizedByUser()),
+                                labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(),
+                                        labelLayoutDataInput.resizedByUser(), labelLayoutDataInput.movedByUser()),
                                 (oldValue, newValue) -> newValue
                         ));
 

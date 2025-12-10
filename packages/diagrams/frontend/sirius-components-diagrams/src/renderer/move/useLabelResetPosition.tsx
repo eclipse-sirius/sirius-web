@@ -42,12 +42,15 @@ export const useLabelResetPosition = (): UseLabelResetPositionValue => {
         if (previousEdge.id === edgeId) {
           if (previousEdge && previousEdge.data && previousEdge.data.beginLabel) {
             previousEdge.data.beginLabel.position = { x: 0, y: 0 };
+            previousEdge.data.beginLabel.movedByUser = false;
           }
           if (previousEdge && previousEdge.data && previousEdge.data.label) {
             previousEdge.data.label.position = { x: 0, y: 0 };
+            previousEdge.data.label.movedByUser = false;
           }
           if (previousEdge && previousEdge.data && previousEdge.data.endLabel) {
             previousEdge.data.endLabel.position = { x: 0, y: 0 };
+            previousEdge.data.endLabel.movedByUser = false;
           }
         }
         return previousEdge;
@@ -65,6 +68,7 @@ export const useLabelResetPosition = (): UseLabelResetPositionValue => {
         if (previousNode.id === nodeId) {
           if (previousNode.data.outsideLabels.BOTTOM_MIDDLE) {
             previousNode.data.outsideLabels.BOTTOM_MIDDLE.position = { x: 0, y: 0 };
+            previousNode.data.outsideLabels.BOTTOM_MIDDLE.movedByUser = false;
           }
         }
         return previousNode;
