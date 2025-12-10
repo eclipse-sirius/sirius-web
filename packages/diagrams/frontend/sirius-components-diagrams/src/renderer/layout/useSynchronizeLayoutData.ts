@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,6 +144,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             height: outsideLabelPosition.height,
           },
           resizedByUser: outsideLabelPosition.resizedByUser,
+          movedByUser: outsideLabelPosition.movedByUser,
         });
       }
     });
@@ -162,6 +163,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             height: centerLabel.height,
           },
           resizedByUser: centerLabel.resizedByUser,
+          movedByUser: centerLabel.movedByUser,
         });
       }
       if (edge.data && 'beginLabel' in edge.data) {
@@ -178,6 +180,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
               height: beginLabel.height,
             },
             resizedByUser: beginLabel.resizedByUser,
+            movedByUser: beginLabel.movedByUser,
           });
         }
       }
@@ -195,6 +198,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
               height: endLabel.height,
             },
             resizedByUser: endLabel.resizedByUser,
+            movedByUser: endLabel.movedByUser,
           });
         }
       }

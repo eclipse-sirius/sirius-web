@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
-import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -168,7 +168,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(siriusWebDomainNode).hasModifiers(Set.of(ViewModifier.Faded));
         });
 
-        Runnable fadeDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()) , FadeElementToolHandler.FADE_ELEMENT_TOOL_ID, 0, 0, List.of())
+        Runnable fadeDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()), FadeElementToolHandler.FADE_ELEMENT_TOOL_ID, 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> pinnedNodeDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -176,7 +176,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(siriusWebDomainNode).isPinned();
         });
 
-        Runnable pinDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()) , PinElementToolHandler.PIN_ELEMENT_TOOL_ID, 0, 0, List.of())
+        Runnable pinDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()), PinElementToolHandler.PIN_ELEMENT_TOOL_ID, 0, 0, List.of())
                 .isSuccess();
 
         Runnable requestPalette = () -> {
@@ -204,7 +204,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(siriusWebDomainNode).doesNotContainAnyModifiersOf(Set.of(ViewModifier.Faded));
         });
 
-        Runnable unFadeDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()) , UnFadeElementToolHandler.UNFADE_ELEMENT_TOOL_ID, 0, 0, List.of())
+        Runnable unFadeDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()), UnFadeElementToolHandler.UNFADE_ELEMENT_TOOL_ID, 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> unPinnedNodeDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -212,7 +212,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(siriusWebDomainNode).isNotPinned();
         });
 
-        Runnable unPinDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()) , UnPinElementToolHandler.UNPIN_ELEMENT_TOOL_ID, 0, 0, List.of())
+        Runnable unPinDiagramElement = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebDomainNodeId.get()), UnPinElementToolHandler.UNPIN_ELEMENT_TOOL_ID, 0, 0, List.of())
                 .isSuccess();
 
         StepVerifier.create(flux)
@@ -257,7 +257,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             var bendingPoints = List.of(new Position(10, 10), new Position(20, 20));
             var webApplicationToDomainEdgeLayoutData = new EdgeLayoutDataInput(webApplicationToDomainEdgeId.get(), bendingPoints, List.of());
 
-            var labelLayoutData = new LabelLayoutDataInput(webApplicationToDomainEdgeOutsideLabelId.get(), new Position(5, 5), new Size(10, 10), true);
+            var labelLayoutData = new LabelLayoutDataInput(webApplicationToDomainEdgeOutsideLabelId.get(), new Position(5, 5), new Size(10, 10), true, false);
             var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData));
             var layoutInput = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), "layout", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);

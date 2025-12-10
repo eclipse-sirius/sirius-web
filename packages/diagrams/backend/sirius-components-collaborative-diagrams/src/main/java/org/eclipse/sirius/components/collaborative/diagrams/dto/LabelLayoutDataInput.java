@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,6 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Size;
  *
  * @author frouene
  */
-public record LabelLayoutDataInput(String id, Position position, Size size, boolean resizedByUser) {
+public record LabelLayoutDataInput(String id, Position position, Size size, boolean resizedByUser, boolean movedByUser) {
 
 }

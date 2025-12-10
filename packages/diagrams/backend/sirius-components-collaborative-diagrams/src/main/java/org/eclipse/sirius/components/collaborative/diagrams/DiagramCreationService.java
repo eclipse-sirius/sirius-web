@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,7 +81,7 @@ public class DiagramCreationService implements IDiagramCreationService {
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-                                  IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers,
+            IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, List<IEdgeAppearanceHandler> edgeAppearanceHandlers,
             List<IDiagramPostProcessor> diagramPostProcessors, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
@@ -127,7 +127,7 @@ public class DiagramCreationService implements IDiagramCreationService {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
 
-            for (var diagramPostProcessor: this.diagramPostProcessors) {
+            for (var diagramPostProcessor : this.diagramPostProcessors) {
                 DiagramContext currentDiagramContext = new DiagramContext(diagram);
                 if (diagramPostProcessor.canHandle(editingContext, currentDiagramContext)) {
                     diagram = diagramPostProcessor.postProcess(editingContext, currentDiagramContext).orElse(diagram);
@@ -203,7 +203,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         var labelLayoutData = layoutDiagramInput.diagramLayoutData().labelLayoutData().stream()
                 .collect(Collectors.toMap(
                         LabelLayoutDataInput::id,
-                        labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(), labelLayoutDataInput.resizedByUser()),
+                        labelLayoutDataInput -> new LabelLayoutData(labelLayoutDataInput.id(), labelLayoutDataInput.position(), labelLayoutDataInput.size(), labelLayoutDataInput.resizedByUser(), labelLayoutDataInput.movedByUser()),
                         (oldValue, newValue) -> newValue
                 ));
 
@@ -212,7 +212,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .layoutData(layoutData)
                 .build();
 
-        for (var diagramPostProcessor: this.diagramPostProcessors) {
+        for (var diagramPostProcessor : this.diagramPostProcessors) {
             var diagramContext = new DiagramContext(laidOutDiagram);
             if (diagramPostProcessor.canHandle(editingContext, diagramContext)) {
                 laidOutDiagram = diagramPostProcessor.postProcess(editingContext, diagramContext).orElse(laidOutDiagram);

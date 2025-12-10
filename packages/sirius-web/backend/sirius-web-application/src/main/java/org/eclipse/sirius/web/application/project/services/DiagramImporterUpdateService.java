@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -208,7 +208,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
             if (nodeElementOldNewIds.get(key) != null) {
                 var oldLayoutNodeData = oldNodeLayoutData.get(key);
                 var newNodeLayoutData = new NodeLayoutData(nodeElementOldNewIds.get(key), oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(),
-                       oldLayoutNodeData.movedByUser(), oldLayoutNodeData.handleLayoutData(), oldLayoutNodeData.minComputedSize());
+                        oldLayoutNodeData.movedByUser(), oldLayoutNodeData.handleLayoutData(), oldLayoutNodeData.minComputedSize());
                 newLayoutData.nodeLayoutData().put(nodeElementOldNewIds.get(key), newNodeLayoutData);
             }
         });
@@ -226,7 +226,8 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         oldLabelLayoutData.keySet().forEach(key -> {
             if (labelElementOldNewIds.get(key) != null) {
                 var oldLayoutLabelData = oldLabelLayoutData.get(key);
-                var newLabelLayout = new LabelLayoutData(labelElementOldNewIds.get(key), oldLayoutLabelData.position(), oldLayoutLabelData.size(), oldLayoutLabelData.resizedByUser());
+                var newLabelLayout = new LabelLayoutData(labelElementOldNewIds.get(key), oldLayoutLabelData.position(), oldLayoutLabelData.size(), oldLayoutLabelData.resizedByUser(),
+                        oldLayoutLabelData.movedByUser());
                 newLayoutData.labelLayoutData().put(labelElementOldNewIds.get(key), newLabelLayout);
             }
         });
