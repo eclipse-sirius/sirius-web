@@ -260,14 +260,11 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
     for (const workbenchViewContribution of workbenchViewContributions) {
-      if (workbenchViewContribution.side === 'left') {
-        if (leftPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
-          workbenchViewLeftSideContributions.push(workbenchViewContribution);
-        }
-      } else if (workbenchViewContribution.side === 'right') {
-        if (rightPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
-          workbenchViewRightSideContributions.push(workbenchViewContribution);
-        }
+      if (leftPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
+        workbenchViewLeftSideContributions.push(workbenchViewContribution);
+      }
+      if (rightPanelConfiguration?.views.map((view) => view.id).includes(workbenchViewContribution.id)) {
+        workbenchViewRightSideContributions.push(workbenchViewContribution);
       }
     }
 
