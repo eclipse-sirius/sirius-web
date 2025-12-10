@@ -65,6 +65,7 @@ export interface GQLLabelLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+  movedByUser: boolean;
 }
 
 export interface GQLRepresentationMetadata {

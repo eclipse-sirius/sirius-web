@@ -148,6 +148,7 @@ export const convertOutsideLabels = (
       width: labelLayoutData?.size.width ?? 0,
       height: labelLayoutData?.size.height ?? 0,
       resizedByUser: labelLayoutData?.resizedByUser ?? false,
+      movedByUser: labelLayoutData?.movedByUser ?? false,
     };
 
     return allOutsideLabels;

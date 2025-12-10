@@ -31,6 +31,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         const firstLabel: OutsideLabel | undefined = node.data.outsideLabels.BOTTOM_MIDDLE;
         if (firstLabel) {
           firstLabel.position = { x: eventData.x, y: eventData.y };
+          firstLabel.movedByUser = true;
         }
       }
       const finalDiagram: RawDiagram = {
@@ -50,16 +51,19 @@ export const useLabelMove = (): UseLabelMoveValue => {
         case 'begin':
           if (edge && edge.data?.beginLabel) {
             edge.data.beginLabel.position = { x: eventData.x, y: eventData.y };
+            edge.data.beginLabel.movedByUser = true;
           }
           break;
         case 'center':
           if (edge && edge.data?.label) {
             edge.data.label.position = { x: eventData.x, y: eventData.y };
+            edge.data.label.movedByUser = true;
           }
           break;
         case 'end':
           if (edge && edge.data?.endLabel) {
             edge.data.endLabel.position = { x: eventData.x, y: eventData.y };
+            edge.data.endLabel.movedByUser = true;
           }
           break;
       }
