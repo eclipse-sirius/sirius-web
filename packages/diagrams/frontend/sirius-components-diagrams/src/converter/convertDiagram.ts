@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,6 +80,7 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
     width: labelLayoutData?.size.width ?? 0,
     height: labelLayoutData?.size.height ?? 0,
     resizedByUser: labelLayoutData?.resizedByUser ?? false,
+    movedByUser: labelLayoutData?.movedByUser ?? false,
     overflowStrategy: 'WRAP', // all edge labels use the wrap strategy
   };
 };

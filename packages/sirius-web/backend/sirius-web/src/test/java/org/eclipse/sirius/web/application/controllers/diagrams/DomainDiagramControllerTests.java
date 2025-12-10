@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -249,7 +249,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable initialDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize, false);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize, false, false);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -275,7 +275,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable modifyDiagramLayout = () -> {
-            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize, true);
+            var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize, true, false);
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
