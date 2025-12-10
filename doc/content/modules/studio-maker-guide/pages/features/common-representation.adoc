@@ -1,0 +1,3 @@
+= Common representation attributes
+
+include::partial$common-representation.adoc[]

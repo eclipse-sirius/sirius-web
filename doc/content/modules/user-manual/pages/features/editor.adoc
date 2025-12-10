@@ -1,0 +1,116 @@
+= {editor}
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+== What's the {editor}?
+
+The **{editor}** page serves as the primary workspace for editing project content.
+
+== Find your way around
+
+For those new to {product}, the initial experience with the application might feel a bit challenging.
+To help you navigate seamlessly and kickstart collaboration with your team, we provide a guided tour for you to familiarize yourself with the platform.
+
+The {editor} features four distinct regions: a <<Toolbar>>, a <<Left sidebar>>, a main <<Editor>>, and a <<Right sidebar>>.
+The layout has been simplified to ensure a clear understanding of the content within each section.
+
+image::editor.png[{editor}]
+
+=== Toolbar
+
+The toolbar provides quick access to a set of actions, organized into four groups:
+* *Homepage*: navigation back to the home screen.
+* *Project Actions*: contextual actions related to the current project (displayed with the project name).
+* *Run commands*: to quickly find and execute commands.
+* *Help*: links to documentation, support, and additional resources.
+
+image::editor-toolbar.png[{editor} Toolbar]
+
+include::user-manual:partial$homepage-action.adoc[leveloffset=+3]
+
+[#project-actions]
+==== Project actions
+
+Access project-level actions such as _xref:user-manual:hands-on/how-tos/project-management.adoc#rename-project[rename]_, _xref:user-manual:hands-on/how-tos/project-management.adoc#download-project[download]_, access project _xref:user-manual:hands-on/how-tos/project-management.adoc#project-settings[settings]_, _xref:user-manual:hands-on/how-tos/project-management.adoc#delete-project[delete]_.
+
+image::editor-project-actions.png[{editor} Project Actions]
+
+For further actions, see: xref:hands-on/hands-on.adoc[].
+
+[#run-commands]
+==== Run commands
+
+The toolbar also includes access to a *command palette*, which allows you to quickly find and execute commands.
+
+* Open the palette with the shortcut *Ctrl+K* (or *Cmd+K* on Mac).
+* Type to search for available commands or elements.
+* The list of commands is *extensible*: the exact options depend on the active project and configuration.
+* Narrow results by typing part of a command name, representation type, or element label—the palette matches as you type and highlights the best candidates.
+
+image::editor-run-commands.png[{editor} Toolbar]
+
+This feature makes it faster to navigate within your project.
+For example, you can search for an element by name, even if it is hidden in the current view.
+
+The command palette will continue to evolve, with more commands and functionalities planned for future versions to streamline interactions with representations. Studios can contribute their own commands, so the list grows alongside your project’s capabilities.
+
+include::user-manual:partial$help-action.adoc[leveloffset=+3]
+
+=== Left sidebar
+
+The left sidebar provides *information related to the project* and offers quick access to views that help you manage and validate your work.
+
+It currently contains the following views:
+
+* xref:features/explorer.adoc[Project Explorer]: browse and navigate through the elements of your project.
+* xref:features/validation.adoc[Validation]: review validation results, warnings, or errors detected in the project.
+
+[NOTE]
+====
+The left sidebar always shows information at the *project level*, not the currently selected element.
+====
+
+You can switch between the views by clicking on their respective icons in the sidebar toolbar.
+
+[%noheader]
+|===
+a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer] a|image::editor-left-sidebar-validation.png[{editor} Left sidebar Validation]
+|===
+
+xref:user-manual:hands-on/how-tos/user-interface-navigation.adoc#switch-left-sidebar[Explore the left sidebar...]
+
+=== Editor
+
+The main area is where you edit models and representations.
+Each item you open appears as a tab, letting you keep multiple diagrams, forms, or tables available at once.
+You can open as many tabs as you need and switch between them without leaving the editor.
+
+image::editor-editor.png[{editor} Main Editor]
+
+Discover the diverse range of representation options available and find the most suitable ones for your specific modeling needs.
+
+xref:features/features.adoc[Explore various types of representations...]
+
+=== Right sidebar
+
+The right sidebar displays *information related to the current selection* in the editor.
+It can contain different views, each providing a specific perspective on the selected element:
+
+* xref:features/details.adoc[Details]: shows and edits the properties of the selected element.
+* xref:features/representations-view.adoc[Representations]: lists the available diagrams, forms, or other views related to the element.
+* xref:features/related-elements.adoc[Related Elements]: shows links and relationships with other elements in the model.
+* xref:features/query-view.adoc[Query View]: allows running custom queries on the model.
+
+[NOTE]
+====
+The content of the right sidebar *changes dynamically* depending on the current selection.
+====
+
+The sidebar can be toggled by clicking its icon in the editor toolbar.
+
+[%noheader]
+|===
+a|image::editor-right-sidebar-details.png[{editor} Right sidebar Details] a|image::editor-right-sidebar-representations.png[{editor} Right sidebar Representations] a|image::editor-right-sidebar-related-elements.png[{editor} Right sidebar Related Elements]
+|===
+
+xref:user-manual:hands-on/how-tos/user-interface-navigation.adoc#switch-right-sidebar[Explore the right sidebar...]

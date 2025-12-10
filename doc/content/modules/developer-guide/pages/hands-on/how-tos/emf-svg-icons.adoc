@@ -1,0 +1,51 @@
+= Use SVG icons in EMF
+
+The EMF code generated for metamodels only supports bitmap formats by default.
+Modern, web-based applications usually need scalable SVG icons, which requires a few tweaks.
+
+1. Override the default `doGetImage` in the main `EditPlugin` class (the one extending `EMFPlugin`) so it knows the `.svg` extension:
++
+[source,java]
+----
+@Override
+protected Object doGetImage(String key) throws IOException {
+    URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
+    try (InputStream inputStream = url.openStream()) {
+        // Just ensure we can open/close the resource
+    }
+    return url;
+}
+
+protected static String extensionFor(String key) {
+    String result = ".gif";
+    int index = key.lastIndexOf('.');
+    if (index != -1) {
+        String extension = key.substring(index + 1);
+        if ("png".equalsIgnoreCase(extension)
+         || "gif".equalsIgnoreCase(extension)
+         || "bmp".equalsIgnoreCase(extension)
+         || "ico".equalsIgnoreCase(extension)
+         || "jpg".equalsIgnoreCase(extension)
+         || "jpeg".equalsIgnoreCase(extension)
+         || "tif".equalsIgnoreCase(extension)
+         || "tiff".equalsIgnoreCase(extension)
+         || "svg".equalsIgnoreCase(extension)) {
+            result = "";
+        }
+    }
+    return result;
+}
+----
+
+2. Place the SVG icon(s) under `icons/full/obj16` in the generated `.edit` plug-in/project.
+
+3. For each type with an SVG icon, customize the `ItemProvider#getImage` method to reference the file (including the extension) and mark it as `@generated NOT`:
++
+[source,java]
+----
+/** @generated NOT */
+@Override
+public Object getImage(Object object) {
+    return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SliderDescription.svg"));
+}
+----

@@ -1,0 +1,13 @@
+= How-tos
+
+This section gathers focused recipes for common developer tasks when embedding or extending {product}.
+
+* xref:developer-guide:hands-on/how-tos/embed-sirius-components.adoc[]
+* xref:developer-guide:hands-on/how-tos/allow-large-uploads.adoc[]
+* xref:developer-guide:hands-on/how-tos/custom-diagram-node.adoc[]
+* xref:developer-guide:hands-on/how-tos/extend-frontend.adoc[]
+* xref:developer-guide:hands-on/how-tos/test-sirius-web-apps.adoc[]
+* xref:developer-guide:hands-on/how-tos/debug-elasticsearch.adoc[]
+* xref:developer-guide:hands-on/how-tos/debug-performance.adoc[]
+* xref:developer-guide:hands-on/how-tos/debug-persistence.adoc[]
+* xref:developer-guide:hands-on/how-tos/emf-svg-icons.adoc[]

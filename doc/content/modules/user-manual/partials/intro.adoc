@@ -1,0 +1,5 @@
+{product} is a web-based open-source platform for creating custom graphical modeling environments.
+It provides a low-code framework for defining and deploying domain-specific visual languages directly in the browser.
+With {product}, users can build tailored modeling tools to represent, edit, and visualize complex systems, fostering collaboration and integration in web-based workflows.
+
+image::user-manual:sirius-web-overview.png[{product} overview]

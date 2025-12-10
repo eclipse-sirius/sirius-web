@@ -1,0 +1,77 @@
+= Workstation requirements
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+Use this checklist to prepare a developer workstation before you start building or extending {product}.
+It complements the server-side requirements listed in the installation guide and focuses on the tools you need locally to run the training labs, compile the backend, and build the frontend.
+
+== Operating system
+
+{product} development works on any recent 64-bit desktop OS:
+
+* Windows 10 or later
+* macOS 13 Ventura or later
+* Linux distributions with good Docker support (Ubuntu LTS, Fedora, Debian, etc.)
+
+== Core tooling
+
+[cols="25,35,40",options="header"]
+|Tool
+|Version / Notes
+|Verification
+
+|Git & Git Bash (Windows)
+|Install Git for your platform; on Windows add Git Bash to get a Unix-like shell that matches the training scripts.
+|`git --version` and (on Windows) run `ls -la` inside Git Bash to confirm the shell works.
+
+|Java Development Kit
+|Temurin JDK 17 (same runtime used by the server). Install it even if you rely on IDE-managed JDKs so Maven and the CLI can run.
+|`java -version`
+
+|Maven
+|Apache Maven 3.9.x.
+|`mvn -version`
+
+|Node.js & npm
+|Node.js 18.7.0 (npm 8.15.0). Use NVM for easy upgrades:
+* Windows: https://github.com/coreybutler/nvm-windows
+* Linux/macOS: https://github.com/nvm-sh/nvm
+|`node -v` and `npm -v`
+
+|Docker Desktop / Engine
+|Latest stable release, configured to allocate at least 4 GB RAM. Required for local PostgreSQL and the sample deployments used in trainings.
+|`docker --version`
+
+|GitHub account & PAT
+|Create a GitHub account and generate a personal access token with the `read:packages` scope to pull private artifacts when required.
+|Log in with `gh auth login` or use the token when cloning; store it securely (password manager or OS keychain).
+
+== Recommended IDEs and extensions
+
+* **Backend**: IntelliJ IDEA or VS Code with Java tooling.
+* **Frontend**: VS Code or WebStorm with TypeScript support.
+* **Docker**: Docker Desktop (UI) or Lens for inspecting containers.
+* **GraphQL clients**: Altair, GraphiQL, or IDE plugins to test queries.
+
+Any IDE is acceptable as long as it respects the Maven/Node toolchains above.
+
+== Network and security
+
+* Ensure you can reach GitHub over HTTPS (corporate proxies may require extra configuration).
+* Allow Docker to download images from `docker.io`.
+* Some corporate antivirus tools aggressively scan Docker volumes or Node modules; whitelist your workspace if you notice build slowdowns.
+
+== Quick validation script
+
+Create a scratch directory and run:
+
+```bash
+git --version
+java -version
+mvn -version
+node -v
+npm -v
+docker --version
+```
+
+If every command reports the expected version, your workstation is ready to develop.

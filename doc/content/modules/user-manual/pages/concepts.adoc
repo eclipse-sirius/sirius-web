@@ -1,0 +1,157 @@
+= Key concepts and terminology
+
+Read this to get a comprehensive exploration of the fundamental principles that shape the capability of {product} offering essential insights into its core foundations.
+
+== Domain
+
+Studio makers start by defining a *domain*: the semantic backbone that captures every business concept, attribute, and relationship.
+For example, a transportation domain might include entities such as `Vehicle`, `Engine`, and `Wheel` with properties like `speed`, `energyType`, or `numberOfWheels`.
+
+{product} provides a dedicated Domain language so you can author these concepts directly in the browser, and it can also ingest existing Ecore models (metamodels) created for Sirius Desktop or other EMF-based tools.
+Accurate domains require strong business knowledge, because every representation and tool depends on them.
+
+== Project
+
+In {product}, a *Project* serves as a high-level container that organizes <<Model,models>>.
+You can use projects to group models, providing a structured and efficient way to manage your content.
+
+[NOTE]
+====
+It's important to note that creating sub-projects within a project isn't supported.
+====
+
+[NOTE]
+====
+All models exist at the same level within a project.
+====
+
+This design ensures simplicity and clarity in organizing and accessing your models, fostering a straightforward and intuitive project management experience.
+
+[IMPORTANT]
+====
+In {product}, projects are _public_.
+Public projects are visible by everyone.
+====
+
+== Model
+
+In {product}, a model represents a structured set of data that conforms to a domain defined by the studio maker.
+It consists of instances of the semantic concepts described in the domain (e.g., components, connections, states) and is manipulated by end users through graphical or form-based representations.
+The model is the core artifact that captures the knowledge, structure, or behavior of the system being described.
+
+== Data
+
+*Data* refers to the instances created by end users from the domain concepts.
+Because the domain constrains structure and relationships, the data remains semantically consistent—users can only create valid combinations (e.g., a `Vehicle` instance with an appropriate `Engine` and four `Wheels`).
+
+== Representation
+
+In the context of {product}, a representation serves as a visual or form-based interface that allows end users to interact with the data in a model.
+It provides a specific view on the model, specific to a particular task, role, or perspective.
+Representations can take the form of diagrams, tables, or forms, and are defined by studio makers in the view specification.
+They determine how model elements are displayed, arranged, and edited.
+
+Studio makers define representations using the View language in {product}.
+They configure:
+
+* *Mappings* : Which domain elements are displayed (e.g., a Component as a node)
+* *Styles* : Shape, color, icons, and layout rules
+* *Tools* : Actions such as creation, deletion, or drag-and-drop
+* *Filters*  : Mechanisms to adapt the display to user needs
+
+Representations can also include *conditional styles*, *visibility rules*, and *computed labels* based on model attributes.
+
+xref:user-manual:features/features.adoc[Explore features...]
+
+Examples of representations include:
+
+* A form for technical specifications,
+* A component diagram showing sub-parts,
+* A cabling diagram for electrical layouts,
+* A form to capture maintenance reports.
+
+== Mapping
+
+A mapping defines how a specific domain concept is projected into a representation.
+It acts as a bridge between the semantic model (the data defined in the domain) and the visual or structural representation (what the user sees in diagrams, forms, or tables).
+
+Mappings specify:
+
+* *What to display* : which domain elements are eligible (e.g., show all Component instances)
+* *Where to display them* : for example, as top-level nodes or nested within other elements
+* *How to identify them* : using conditions or queries (e.g., “only show components with type = 'sensor'”)
+
+Each mapping is associated with a type of representation element, such as:
+
+* Node mappings : to display semantic elements as shapes in diagrams
+* Edge mappings : to show relationships (e.g., connectors or dependencies)
+* Container mappings : for grouping or nesting elements
+* ...
+
+Mappings can be hierarchical and reused, allowing representations to reflect complex domain structures.
+
+== Style
+
+A style controls the visual appearance of elements in a representation. It is attached to a mapping and determines how each instance of a mapped element should look.
+
+Styles define:
+
+* *Shape or image* : rectangle, ellipse, icon, label-only, etc.
+* *Color* : fill, border, text color
+* *Label* : text displayed, possibly computed from model attributes (e.g., name, status)
+* *Font* : size, weight, and alignment
+* *Images* : for domain-specific icons or symbols
+
+*Styles can also be conditional*, meaning their appearance dynamically adapts based on the values of attributes in the model.
+
+This allows studio makers to:
+
+* Emphasize certain states (e.g., errors, warnings, critical paths)
+* Encode business logic visually
+* Improve readability by drawing user attention to relevant elements
+
+In {product}, styles make representations expressive, helping users quickly interpret model content visually.
+
+== Tool
+
+A tool defines an interaction that users can perform on the model via a representation.
+Tools are attached to a representation and are typically invoked through the UI (palette, context menu, keyboard shortcut, etc.).
+
+Tools include:
+
+* Creation tools : to add new model elements (e.g., “CreateComponent”)
+* Deletion tools : to remove elements
+* Edition tools : to update attributes or relationships
+* Reconnect tools : to change links between elements
+* Navigation tools : to open other representations
+* Custom tools : for domain-specific actions (e.g., “Deploy toSubsystem”)
+
+Each tool may consist of:
+
+* A trigger : how the user activates it
+* A target mapping : where it applies
+* A behavior : defined using model operations (create, set, delete) and optionally extended with expressions or Java services
+
+Tools are essential to making representations interactive and task-oriented for end users.
+
+== Library
+
+In {product}, a *Library* is a read-only snapshot of a project that may be referenced by other projects or libraries.
+
+Published libraries have a _namespace_, _version_ and _description_.
+Once a library has been published, it cannot be unpublished.
+It is also not possible to overwrite an existing library.
+Several libraries may have the same name (and version) provided they are from different namespaces.
+
+The list of published libraries in {product} is available at `<baseUrl>/libraries/`.
+This page is also accessible from the 'help' menu in the top right corner of the application.
+
+image::publication-libraries-menu.png[Libraries menu, width=85%,height=85%]
+
+This page lists all the libraries published in the application.
+
+image::publication-libraries.png[Libraries, width=85%,height=85%]
+
+Opening a library displays it as a read-only project.
+
+image::publication-library.png[Libraries, width=85%,height=85%]

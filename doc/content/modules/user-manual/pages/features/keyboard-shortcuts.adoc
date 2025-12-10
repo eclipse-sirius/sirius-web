@@ -1,0 +1,40 @@
+= Keyboard shortcuts
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+== General
+
+To delete a given element, user can select the element and the press the `Del` key from representation editor.
+
+== Navigation
+
+In a diagram, users can press Alt and drag with the mouse to browse the diagram without moving any elements.
+This is useful for large diagrams where elements might appear in the background when the view is zoomed out.
+
+== Selection
+
+In a diagram, users can left-click on an element to select it without displaying the contextual palette on the node (right-click to display the palette).
+
+== Basic editing
+
+User can press `F2` key or start typing the new value directly to efficiently update an element name from representation editor.
+
+== Multi-selection
+
+Two ways to select several elements exist:
+
+=== Ctrl key
+
+A user can select an element by clicking on it and then select another one by holding `Ctrl` key and clicking on the other element.
+This keyboard shortcut is available in the representation editor and in the {explorer} view.
+
+=== Shift key
+
+To select several element in one action from representation editor, user can press `Shift` key and draw a rectangular area around elements that user wants to select.
+After releasing the click, all element in the area are selected.
+
+== Search
+
+User can display the filter bar by holding `Ctrl+f` (Windows/Linux) or `Cmd+f` (MacOS) from the {explorer} view.
+
+Explore further by referring to the following how-tos for xref:user-manual:hands-on/how-tos/explorer.adoc#explorer-filter[Filter elements].

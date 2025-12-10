@@ -1,0 +1,72 @@
+= Advanced representation authoring
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page complements the representation-specific references (diagram, table, form, tree, deck, portal, Gantt) with patterns that studio makers use when the default configuration is not enough.
+It consolidates best practices drawn from the advanced training so you can apply the same techniques across every representation type.
+
+== Conditional styles in depth
+
+Conditional styles (`ConditionalNodeStyle`, `ConditionalDeckElementDescriptionStyle`, etc.) evaluate a boolean expression and override the base style when it returns `true`.
+Keep the following rules in mind:
+
+* Conditions run in list order; the first one that returns `true` wins.
+Order your most specific rules first and end with a fallback rule if needed.
+* Each conditional style inherits from the base style.
+Only set attributes that actually change—this keeps definitions compact and easier to maintain.
+* Complex expressions should be factored into reusable AQL services or helper attributes on the domain model.
+This reduces duplication between diagram, table, and form styles.
+* When debugging, open the xref:user-manual:features/query-view.adoc[Query view] on the same semantic element and evaluate the condition manually. If it fails, you know the issue is in the expression rather than the rendering layer.
+* For performance, avoid chaining multiple navigation-heavy expressions inside a conditional style.
+Cache expensive computations in Java services or view variables and reuse them.
+
+== Palette customization patterns
+
+Palettes are the backbone of every interaction.
+They can be tuned in several ways:
+
+* **Tool sections**: group related tools in `DiagramToolSection`, `NodeToolSection`, `EdgeToolSection`, `FormToolSection`, etc., so the palette remains readable. You can reuse sections across representations to keep your UI consistent.
+* **Quick access tools**: take frequently used tools (e.g., “Create Component”) and expose them as quick-access entries so end users don’t have to expand sections every time.
+* **Custom icons**: provide `iconURLsExpression` on your tools to surface domain-specific pictograms instead of the default glyphs.
+* **Dialogs and selection logic**: `NodeTool.dialogDescription` and `EdgeTool.dialogDescription` let you prompt the user for additional data.
+Use `elementsToSelectExpression` to control the selection after a tool runs.
+* **Impact analysis toggle**: `NodeTool.withImpactAnalysis` helps you preview large-scale changes before committing them.
+Enable it on tools that modify many elements at once.
+* **Drop tools**: `DropNodeTool.acceptedNodeTypes` restricts drag-and-drop operations to the nodes you explicitly support, reducing errors and clarifying affordances for end users.
+
+== Operations and Java services
+
+Declarative operations (create/set/delete) cover straightforward workflows, but advanced editing often needs programmable hooks:
+
+* **Service registration**: implement your logic in regular Java classes (annotated Spring beans) and expose public methods.
+{product} automatically exposes them to AQL via fully qualified names, so you can invoke them from any expression.
+* **Tool chaining**: mix declarative operations with service calls.
+For example, create a semantic element, then call a Java service to initialize related data, and finally set labels with expressions that leverage the same service.
+* **Reusable services**: keep services stateless and focused on domain logic (e.g., “compute next available port”) so you can reuse them from diagrams, tables, and forms.
+* **Error handling**: throw meaningful exceptions (with messages) from services.
+They are surfaced in the UI and help studio makers diagnose issues rapidly.
+* **Testing**: write unit tests for your service classes (they are plain Spring beans) so regressions are caught before you deploy the studio.
+
+== Drag-and-drop scenarios
+
+{product} supports both semantic and graphical drag-and-drop:
+
+* **Semantic DnD**: configure palette tools that create elements when users drag items from the Explorer to the diagram, form, or deck.
+Use precondition expressions to validate the operation before it runs.
+* **Graphical DnD**: define `DropNodeTool` or `DropFromDiagramTool` to handle repositioning, reparenting, or reconnection.
+Always restrict accepted node types and provide clear feedback (highlight targets, fade invalid containers).
+* **Cross-representation consistency**: if a drag operation changes ownership in the diagram, make sure equivalent a form or table action exists. Sharing the underlying tools avoids conflicting behaviors.
+
+== Debugging & performance tips
+
+* Enable the xref:user-manual:features/query-view.adoc[Query view] and details panel simultaneously when authoring. This lets you inspect the semantic element, test expressions, and immediately see the effect of style/tool changes.
+* Log complex Java services in DEBUG mode during development to trace the arguments received from the palette.
+* For diagrams with large palettes, split tools between layers or use transient layers so the main palette remains lightweight.
+* Benchmark expensive expressions (e.g., multi-hop navigation) on representative models and consider caching their results in derived attributes or services if they run too frequently.
+
+== Where to go next
+
+* xref:studio-maker-guide:features/diagram.adoc#_conditional_styles[Diagram conditional styles] – structural reference for the types discussed above.
+* xref:studio-maker-guide:features/aql.adoc[] – expression syntax used by every conditional style and tool.
+* xref:developer-guide:features/diagram.adoc[] – programmatic builder API if you need to generate representations from code.
+* xref:developer-guide:add-ons.adoc[] – packaging strategy for studios that register custom services, palettes, or tools through runtime add-ons.

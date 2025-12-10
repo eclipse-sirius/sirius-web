@@ -1,0 +1,82 @@
+= Meta-modeling foundations
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page summarizes the core modeling concepts you need before defining domains and representations in {product}.
+It is meant for specifiers who are familiar with EMF/Ecore (or who are migrating from Sirius Desktop) as well as for newcomers who want to understand what happens under the hood.
+
+== What is a meta-model?
+
+* *Models* capture end-user data (components, actors, requirements).
+* *Meta-models* describe the structure of those models (which concepts exist, which attributes they carry, how they relate).
+* In {product}, the meta-model of your DSL is called the *Domain*. It defines the entities that will later be displayed in forms, tables, diagrams, etc.
+
+The Domain editor provides a browser-based way to author such meta-models, but you can also import existing `.ecore` definitions created in Eclipse EMF (for instance from Sirius Desktop projects).
+
+== Key EMF/Ecore notions
+
+* `EPackage`: namespace grouping related concepts.
+* `EClass`: the equivalent of a UML class (an entity). Can inherit from other classes and carry attributes + references.
+* `EAttribute`: primitive typed feature (string, int, boolean, enum, date).
+* `EReference`: typed association toward another `EClass`. It can be containment (tree-structured) or cross-reference.
+* `EEnum`: fixed list of literals.
+
+{product} supports these concepts, so migrating an EMF meta-model mostly involves importing the `.ecore` file and mapping it to Domain entities.
+
+== Tree-structured assumption
+
+{product} relies on tree-structured models: each element has at most one container (i.e., a unique parent). This matches how explorers, forms, and diagrams present content and simplifies collaborative editing.
+
+* Containment references must form a tree (no cycles, no multiple parents).
+* Cross-references are still allowed (e.g., to connect two nodes) but they don’t change the tree hierarchy.
+
+When adapting existing meta-models, make sure the containment relationships follow this rule; otherwise you may need to refactor intermediary classes or use cross-references instead of containment.
+
+== Importing existing Ecore models
+
+At the moment {product} does not provide a direct `.ecore` import inside the Domain editor.
+If you already own an EMF meta-model there are two options:
+
+* **Recreate it manually** in the Domain editor by mirroring every `EClass`, attribute, and containment reference.
+* **Package it in code**:
+** Add the `.ecore` (and optional generated model/edit code) to a backend Maven module that is part of your {product} distribution.
+** Register the `EPackage` during application startup (call the generated `*Package.init()` method or populate the `EPackage.Registry` in a Spring bean).
+** Build the server with Maven (`mvn clean package` on the backend aggregator) so the resulting fat JAR contains the meta-model on the classpath.
+** (Optional) expose `ViewConfiguration` beans that consume those imported types to make them available to end users without recreating the meta-model in the browser.
+
+== Packaging EMF metamodels for runtime reuse
+
+When you ship a studio that relies on an EMF metamodel:
+
+* For each representation description, register every dependent metamodel and Java service class explicitly.
+Missing registrations lead to interpreter warnings such as `Couldn't find the 'someService(EClassifier=SomeType)' service`.
+* Ensure your Java services depend only on EMF core, not SWT/JFace or other Eclipse UI APIs.
+Split the code if necessary so backend-friendly services can load on the server.
+* Publish your meta-model and edit JARs to a Maven repository and declare them as dependencies of your {product} application so they end up on the backend classpath.
+* Register the metamodel at startup via a Spring `@Configuration` that exposes the `EPackage` and `AdapterFactory` as beans.
+* Provide an implementation of `org.eclipse.sirius.web.api.services.IImagePathService` so the runtime knows where to load the icons associated with your types inside the packaged JAR(s).
+
+Following these steps ensures your externally maintained EMF meta-model behaves just like the domains authored in-browser once the application is packaged and deployed.
+
+== Mapping EMF concepts to the Domain editor
+
+| EMF concept | Domain editor equivalent | Notes |
+|-------------|-------------------------|-------|
+| `EPackage` | Domain package | Namespaces your custom DSL; usually one per studio project. |
+| `EClass` | Entity | Supports inheritance, attributes, and relations. |
+| `EAttribute` | Attribute | Same primitive types plus enumeration support. |
+| `EReference` | Relation | Mark as containment when building the main tree; otherwise keep it as a cross-reference. |
+| `EEnum` | Enumeration | Appears as a dedicated type and yields select widgets in representations. |
+
+== Best practices
+
+* Keep names business-oriented (avoid overly technical identifiers) so end users recognize them in the UI.
+* Limit inheritance depth—two or three levels are usually enough. Prefer composition (relations) for variability.
+* Model enumerations for bounded lists instead of magic strings; they automatically drive select widgets later.
+* Provide a “sample project” containing valid instances of your DSL. It doubles as regression data whenever the meta-model evolves.
+
+== What’s next?
+
+* Follow the xref:studio-maker-guide:hands-on/tutorials/domain.adoc[Domain tutorial] to practice authoring meta-models in the browser.
+* Once the domain is solid, move on to xref:studio-maker-guide:features/view.adoc[] to create representations (forms, tables, diagrams, etc.).
+* Advanced users can still export the domain as `.ecore` and manipulate it with EMF tooling (Compare, EMFText, etc.) whenever deeper governance is required.
