@@ -53,6 +53,7 @@ export const useCreateProject = (): UseCreateProjectValue => {
     GQLCreateProjectMutationVariables
   >(createProjectMutation);
 
+  Need the templateId param
   const createProject = (name: string, natures: string[], libraryIds: string[]) => {
     const input: GQLCreateProjectMutationInput = {
       id: crypto.randomUUID(),
