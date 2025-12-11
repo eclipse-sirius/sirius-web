@@ -74,13 +74,13 @@ export const useWorkbenchConfiguration = (editingContextId: string | null): UseW
     }
   );
 
+  const workbenchConfiguration: WorkbenchConfiguration | null = data?.viewer.editingContext.workbenchConfiguration;
+
   useEffect(() => {
     if (error) {
       addErrorMessage('An unexpected error has occurred while retrieving the workbench configuration');
     }
   }, [error]);
-
-  const workbenchConfiguration: WorkbenchConfiguration | null = data?.viewer.editingContext.workbenchConfiguration;
 
   return { workbenchConfiguration, loading };
 };
