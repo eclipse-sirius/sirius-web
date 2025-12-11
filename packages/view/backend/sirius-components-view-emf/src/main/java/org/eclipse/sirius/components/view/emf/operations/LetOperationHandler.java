@@ -44,7 +44,7 @@ public class LetOperationHandler implements IOperationHandler {
             if (variableValue.isPresent()) {
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(letOperation.getVariableName(), variableValue.get());
-                return new OperationEvaluationResult(OperationExecutionStatus.SUCCESS, List.of(childVariableManager), Map.of());
+                return new OperationEvaluationResult(OperationExecutionStatus.SUCCESS, List.of(childVariableManager), Map.of(letOperation.getVariableName(), variableValue.get()));
             }
         }
         return new OperationEvaluationResult(OperationExecutionStatus.FAILURE, List.of(variableManager), Map.of());

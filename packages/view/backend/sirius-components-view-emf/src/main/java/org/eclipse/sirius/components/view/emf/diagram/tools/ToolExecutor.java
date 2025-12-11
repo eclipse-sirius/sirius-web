@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -73,7 +74,14 @@ public class ToolExecutor implements IToolExecutor {
         }
 
         var selectionEntries = result.newInstances().values().stream()
-                .map(newInstance -> new WorkbenchSelectionEntry(this.identityService.getId(newInstance), this.identityService.getKind(newInstance)))
+                .flatMap(newInstance -> {
+                    String id = this.identityService.getId(newInstance);
+                    String kind = this.identityService.getKind(newInstance);
+                    if (id != null && kind != null) {
+                        return Stream.of(new WorkbenchSelectionEntry(id, kind));
+                    }
+                    return Stream.empty();
+                })
                 .toList();
         Map<String, Object> parameters = Map.of(
                 Success.NEW_SELECTION, new WorkbenchSelection(selectionEntries),
