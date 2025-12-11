@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.graphql.datafetchers;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto.DefaultViewConfiguration;
+import org.eclipse.sirius.components.collaborative.workbenchconfiguration.api.IWorkbenchConfigurationService;
 import org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto.WorkbenchConfiguration;
-import org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto.WorkbenchMainPanelConfiguration;
-import org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto.WorkbenchSidePanelConfiguration;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -31,20 +32,16 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "workbenchConfiguration")
 public class EditingContextWorkbenchConfigurationDataFetcher implements IDataFetcherWithFieldCoordinates<WorkbenchConfiguration> {
 
+    private final IWorkbenchConfigurationService workbenchConfigurationService;
+
+    public EditingContextWorkbenchConfigurationDataFetcher(IWorkbenchConfigurationService workbenchConfigurationService) {
+        this.workbenchConfigurationService = Objects.requireNonNull(workbenchConfigurationService);
+    }
+
     @Override
     public WorkbenchConfiguration get(DataFetchingEnvironment environment) throws Exception {
-        return new WorkbenchConfiguration(new WorkbenchMainPanelConfiguration("main", List.of()), List.of(
-                new WorkbenchSidePanelConfiguration("left", true, List.of(
-                        new DefaultViewConfiguration("explorer", true),
-                        new DefaultViewConfiguration("validation", false),
-                        new DefaultViewConfiguration("search", false)
-                )),
-                new WorkbenchSidePanelConfiguration("right", true, List.of(
-                        new DefaultViewConfiguration("details", true),
-                        new DefaultViewConfiguration("query", false),
-                        new DefaultViewConfiguration("representations", false),
-                        new DefaultViewConfiguration("related-elements", false)
-                ))
-        ));
+        Map<String, Object> localContext = environment.getLocalContext();
+        String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse("");
+        return this.workbenchConfigurationService.getWorkbenchConfiguration(editingContextId);
     }
 }
