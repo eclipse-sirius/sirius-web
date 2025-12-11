@@ -20,6 +20,8 @@ import {
   Workbench,
   WorkbenchConfiguration,
   WorkbenchHandle,
+  WorkbenchMainPanelConfiguration,
+  WorkbenchSidePanelConfiguration,
 } from '@eclipse-sirius/sirius-components-core';
 import { ImpactAnalysisDialogContextProvider } from '@eclipse-sirius/sirius-components-impactanalysis';
 import {
@@ -54,6 +56,34 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
   },
 }));
 
+const patchWorkbenchConfiguration = (
+  original: WorkbenchConfiguration,
+  patch: WorkbenchConfiguration
+): WorkbenchConfiguration => {
+  return {
+    mainPanel: patchMainPanel(original.mainPanel, patch.mainPanel),
+    workbenchPanels: patchPanels(original.workbenchPanels, patch.workbenchPanels),
+  };
+};
+
+const patchMainPanel = (
+  original: WorkbenchMainPanelConfiguration,
+  patch: WorkbenchMainPanelConfiguration
+): WorkbenchMainPanelConfiguration => {
+  return {
+    id: original.id,
+    representationEditors:
+      patch.representationEditors.length > 0 ? patch.representationEditors : original.representationEditors,
+  };
+};
+
+const patchPanels = (
+  _original: WorkbenchSidePanelConfiguration[],
+  patch: WorkbenchSidePanelConfiguration[]
+): WorkbenchSidePanelConfiguration[] => {
+  return patch;
+};
+
 export const EditProjectView = () => {
   const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
@@ -67,27 +97,40 @@ export const EditProjectView = () => {
   const [state, setState] = useState<EditProjectViewState>({
     project: null,
     representation: null,
+    workbenchConfiguration: null,
   });
 
-  let workbenchConfiguration: WorkbenchConfiguration | null = null;
   const { workbenchConfiguration: gqlWorkbenchConfiguration, loading: workbenchLoading } = useWorkbenchConfiguration(
     state.project ? state.project.currentEditingContext.id : null
   );
-  if (gqlWorkbenchConfiguration) {
-    // TODO merge the URL configuration into the GQL one and make sure users can't add views to the URL they shouldn't have access to.
-    workbenchConfiguration = gqlWorkbenchConfiguration;
-  } else {
-    workbenchConfiguration = urlSearchParams.has('workbenchConfiguration')
-      ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
-      : null;
-  }
 
+  // TODO: Because the workbench configuration is used only to initialize the workbench panel state, we may not need to put the workbenchConfiguration in the state.
+  // Instead, we could extract this logic into a hook.
   useEffect(() => {
-    if (urlSearchParams.has('workbenchConfiguration')) {
-      urlSearchParams.delete('workbenchConfiguration');
-      setSearchParams(urlSearchParams);
+    if (gqlWorkbenchConfiguration && !workbenchLoading) {
+      if (urlSearchParams && urlSearchParams.has('workbenchConfiguration')) {
+        const urlWorkbenchConfigurationPatch: WorkbenchConfiguration = JSON.parse(
+          urlSearchParams.get('workbenchConfiguration')
+        );
+
+        setState((prevState) => ({
+          ...prevState,
+          workbenchConfiguration: patchWorkbenchConfiguration(
+            gqlWorkbenchConfiguration,
+            urlWorkbenchConfigurationPatch
+          ),
+        }));
+
+        urlSearchParams.delete('workbenchConfiguration');
+        setSearchParams(urlSearchParams);
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          workbenchConfiguration: gqlWorkbenchConfiguration,
+        }));
+      }
     }
-  }, [urlSearchParams]);
+  }, [gqlWorkbenchConfiguration, workbenchLoading]);
 
   const { data, loading: projectAndRepresentationLoading } = useProjectAndRepresentationMetadata(
     projectId,
@@ -146,12 +189,11 @@ export const EditProjectView = () => {
   }
 
   let content: React.ReactNode = null;
-  if (!workbenchLoading && state.project && state.project.currentEditingContext) {
+  if (!workbenchLoading && !!state.workbenchConfiguration && state.project && state.project.currentEditingContext) {
     const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
     const entries: SelectionEntry[] =
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
     const initialSelection: Selection = { entries };
-
     content = (
       <ProjectContext.Provider value={{ project: state.project, name }}>
         <SelectionContextProvider initialSelection={initialSelection}>
@@ -169,7 +211,7 @@ export const EditProjectView = () => {
                         initialRepresentationSelected={state.representation}
                         onRepresentationSelected={onRepresentationSelected}
                         readOnly={!state.project.capabilities.canEdit}
-                        initialWorkbenchConfiguration={workbenchConfiguration}
+                        initialWorkbenchConfiguration={state.workbenchConfiguration}
                         ref={refWorkbenchHandle}
                       />
                     </ImpactAnalysisDialogContextProvider>
