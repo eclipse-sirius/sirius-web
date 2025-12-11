@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.infrastructure.configuration.emf;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.domain.provider.DomainItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.deck.provider.DeckItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.diagram.customnodes.provider.CustomnodesItemProviderAdapterFactory;
@@ -36,63 +37,124 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EMFAdapterFactoryConfiguration {
 
+
     @Bean
-    public AdapterFactory domainAdapterFactory() {
-        return new DomainItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor domainAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new DomainItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory viewAdapterFactory() {
-        return new ViewItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor viewAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new ViewItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory diagramAdapterFactory() {
-        return new DiagramItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor diagramAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new DiagramItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory customNodesAdapterFactory() {
-        return new CustomnodesItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor customnodesAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new CustomnodesItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory referenceWidgetAdapterFactory() {
-        return new ReferenceItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor referenceAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new ReferenceItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory formAdapterFactory() {
-        return new FormItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor formAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new FormItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory deckAdapterFactory() {
-        return new DeckItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor deckAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new DeckItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory ganttAdapterFactory() {
-        return new GanttItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor ganttAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new GanttItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory treeAdapterFactory() {
-        return new TreeItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor treeAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new TreeItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory tableAdapterFactory() {
-        return new TableItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor tableAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new TableItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory tableWidgetAdapterFactory() {
-        return new TableWidgetItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor tableWidgetAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new TableWidgetItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean
-    public AdapterFactory customCellsAdapterFactory() {
-        return new CustomcellsItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor customcellsWidgetAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new CustomcellsItemProviderAdapterFactory();
+            }
+        };
     }
 }

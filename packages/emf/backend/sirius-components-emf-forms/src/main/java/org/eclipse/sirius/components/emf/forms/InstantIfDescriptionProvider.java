@@ -22,7 +22,6 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
@@ -51,15 +50,12 @@ public class InstantIfDescriptionProvider implements IEMFFormIfDescriptionProvid
 
     private final IIdentityService identityService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public InstantIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
+    public InstantIfDescriptionProvider(IIdentityService identityService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
@@ -107,7 +103,7 @@ public class InstantIfDescriptionProvider implements IEMFFormIfDescriptionProvid
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {

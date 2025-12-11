@@ -17,14 +17,13 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,17 +36,14 @@ public class NumberDataTypeDescriptionProvider implements IEMFFormIfDescriptionP
 
     private final IIdentityService identityService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final IEMFMessageService emfMessageService;
 
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public NumberDataTypeDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
+    public NumberDataTypeDescriptionProvider(IIdentityService identityService, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
@@ -74,7 +70,7 @@ public class NumberDataTypeDescriptionProvider implements IEMFFormIfDescriptionP
                 EcorePackage.Literals.EBIG_DECIMAL
         );
         return dataTypes.stream()
-                .map(dataType -> new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription())
+                .map(dataType -> new NumberIfDescriptionProvider(dataType, this.propertiesValidationProvider, this.emfMessageService, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription())
                 .toList();
     }
 }

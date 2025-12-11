@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -88,6 +89,7 @@ public class EditingContext implements IViewEditingContext {
         return this.inputId2RepresentationChanges;
     }
 
+    @Override
     public Map<String, IViewConversionData> getViewConversionData() {
         return this.viewConversionData;
     }
@@ -96,6 +98,9 @@ public class EditingContext implements IViewEditingContext {
     public void dispose() {
         this.changeRecorder.dispose();
         this.getDomain().getResourceSet().getResources().forEach(Resource::unload);
+        if (this.editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
+            disposable.dispose();
+        }
     }
 
 }
