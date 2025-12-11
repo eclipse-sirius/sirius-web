@@ -17,6 +17,8 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] The service `IProjectApplicationService` has been deleted and replaced with `IProjectSearchApplicationService`, `IProjectCreationApplicationService`, `IProjectUpdateApplicationService`, `IProjectDeletionApplicationService`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] `IExplorerServices#getDefaultElements` has been removed. Use `DefaultContentService#getContents` instead by passing the `IEditingContext`. *Note* that `DefaultContentService#getContents` will not return a sorted list as it was before by `IExplorerServices#getDefaultElements`.
+- A new API `org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy` has been added to delegate persistence decisions for representations (used to support transient diagrams). Several event-processor-related constructors now accept an additional `IRepresentationPersistenceStrategy` parameter (for example: `DiagramEventProcessorFactory`, `PapayaDashboardEventProcessorFactory`, and related `DiagramEventProcessor`/`DiagramEventProcessorParameters` builders). If you directly instantiate or extend those factories in downstream code or tests, update the constructors to provide an `IRepresentationPersistenceStrategy` implementation.
 
 
 === Dependency update
@@ -35,7 +37,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 
 
 == 2026.1.0
