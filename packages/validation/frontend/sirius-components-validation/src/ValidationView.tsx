@@ -111,15 +111,13 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
       });
 
       const accordions = processedValidation.categories.map((category) => {
-        const details = category.diagnostics
-          .map<React.ReactNode>((diagnostic) => {
-            return <Typography key={diagnostic.id}>{diagnostic.message}</Typography>;
-          })
-          .reduce((prev, current, index) => [
-            prev,
-            <Divider key={`Divider-${index}`} className={classes.divider} />,
-            current,
-          ]);
+        const details = category.diagnostics.reduce<React.ReactNode[]>((acc, diagnostic, index) => {
+          if (index > 0) {
+            acc.push(<Divider key={`Divider-${diagnostic.id}`} className={classes.divider} />);
+          }
+          acc.push(<Typography key={diagnostic.id}>{diagnostic.message}</Typography>);
+          return acc;
+        }, []);
 
         return (
           <Accordion key={category.kind}>
