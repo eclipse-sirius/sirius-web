@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.0</version>
+		<version>2025.12.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-events</artifactId>
-	<version>2025.12.0</version>
+	<version>2025.12.1</version>
 	<name>sirius-components-events</name>
 	<description>Sirius Components Events</description>
 

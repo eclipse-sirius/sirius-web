@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.0</version>
+		<version>2025.12.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-deck-graphql</artifactId>
-    <version>2025.12.0</version>
+    <version>2025.12.1</version>
 	<name>sirius-components-deck-graphql</name>
 	<description>Sirius Components Deck GraphQL</description>
 
@@ -36,17 +36,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-deck</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
