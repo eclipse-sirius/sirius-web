@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.forms.api.IWidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
@@ -44,8 +43,6 @@ public class NumberIfDescriptionProvider {
 
     private final EDataType eDataType;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final IEMFMessageService emfMessageService;
@@ -54,10 +51,9 @@ public class NumberIfDescriptionProvider {
 
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public NumberIfDescriptionProvider(EDataType eDataType, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+    public NumberIfDescriptionProvider(EDataType eDataType, IPropertiesValidationProvider propertiesValidationProvider,
                                        IEMFMessageService emfMessageService, Function<VariableManager, String> semanticTargetIdProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.eDataType = Objects.requireNonNull(eDataType);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
@@ -108,7 +104,7 @@ public class NumberIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {

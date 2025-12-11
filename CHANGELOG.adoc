@@ -37,7 +37,27 @@ For that, custom explorers must provide their own implementation of `IRepresenta
 React components `FormRepresentation`, `DiagramFilterForm`, `DetailsView`, `RelatedElementsView`, and `RepresentationsView` stopped relying on `readOnly` props in favor of the `FormCapabilities#canEdit` capabilities.
 All tests based on form subscriptions will now receive both `FormRefreshedEventPayload` and `FormCapabilitiesRefreshedEventPayload`.
 Those tests will have to be updated to take this new payload into account.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5953[#5953] [emf] Provide `AdapterFactory Descriptors` instead of `AdapterFactories`.
+Downstream projects contributing custom `AdapterFactory` @Bean must now contribute `AdapterFactory.Descriptor` @Bean instead.
+For example, the Papaya AdapterFactory is now contributed like this:
+```
+@Bean
+public ComposedAdapterFactory.Descriptor papayaAdapterFactoryDescriptor() {
+    return new ComposedAdapterFactory.Descriptor() {
+        @Override
+        public AdapterFactory createAdapterFactory() {
+            return new PapayaItemProviderAdapterFactory();
+        }
+    };
+}
+````
+instead of the previous way:
+```
+@Bean
+public AdapterFactory papayaAdapterFactory() {
+    return new PapayaItemProviderAdapterFactory();
+}
+````
 
 
 === Dependency update

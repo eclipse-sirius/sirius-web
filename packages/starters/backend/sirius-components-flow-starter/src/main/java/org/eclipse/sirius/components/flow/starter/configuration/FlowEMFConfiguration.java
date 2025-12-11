@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.flow.starter.configuration;
 import fr.obeo.dsl.designer.sample.flow.provider.FlowItemProviderAdapterFactory;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,8 +28,12 @@ import org.springframework.context.annotation.Configuration;
 public class FlowEMFConfiguration {
 
     @Bean
-    public AdapterFactory flowAdapterFactory() {
-        return new FlowItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor flowAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new FlowItemProviderAdapterFactory();
+            }
+        };
     }
-
 }

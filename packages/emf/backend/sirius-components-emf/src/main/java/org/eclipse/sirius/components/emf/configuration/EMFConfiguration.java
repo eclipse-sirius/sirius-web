@@ -62,11 +62,23 @@ public class EMFConfiguration {
     }
 
     @Bean
-    public ComposedAdapterFactory composedAdapterFactory(List<AdapterFactory> adapterFactories) {
-        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
-        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
-        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        return composedAdapterFactory;
+    public ComposedAdapterFactory.Descriptor ecoreAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new EcoreAdapterFactory();
+            }
+        };
+    }
+
+    @Bean
+    public ComposedAdapterFactory.Descriptor reflectiveItemProviderAdapterFactoryDescriptor() {
+        return new ComposedAdapterFactory.Descriptor() {
+            @Override
+            public AdapterFactory createAdapterFactory() {
+                return new ReflectiveItemProviderAdapterFactory();
+            }
+        };
     }
 
     @Bean

@@ -17,14 +17,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
@@ -71,7 +76,11 @@ public class ReactorLibraryPublisher implements IPapayaLibraryPublisher {
             return;
         }
 
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
+        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new PapayaItemProviderAdapterFactory());
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack());
         var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
         packageRegistry.put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
 
