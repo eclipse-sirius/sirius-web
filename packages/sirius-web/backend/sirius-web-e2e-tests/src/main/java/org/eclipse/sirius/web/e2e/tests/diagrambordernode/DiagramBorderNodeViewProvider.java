@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -166,6 +167,30 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
                                 .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
+                                .build()
+                )
+                .outsideLabels(
+                        new DiagramBuilders()
+                                .newOutsideLabelDescription()
+                                .labelExpression("aql:self.name")
+                                .textAlign(LabelTextAlign.LEFT)
+                                .position(OutsideLabelPosition.BOTTOM_CENTER)
+                                .style(
+                                        new DiagramBuilders()
+                                                .newOutsideLabelStyle()
+                                                .fontSize(14)
+                                                .italic(false)
+                                                .bold(false)
+                                                .underline(false)
+                                                .strikeThrough(false)
+                                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                .borderRadius(3)
+                                                .borderSize(0)
+                                                .borderLineStyle(LineStyle.SOLID)
+                                                .labelColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
+                                                .build()
+                                )
                                 .build()
                 )
                 .build();
