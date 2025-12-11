@@ -10,14 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.dto;
-
-import java.util.List;
+package org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto;
 
 /**
- * The configuration of the side panels of the workbench.
+ * The configuration of a view.
  *
  * @author gdaniel
  */
-public record WorkbenchSidePanelConfiguration(String id, boolean isOpen, List<IViewConfiguration> views) {
+public record DefaultViewConfiguration(String id, boolean isActive) implements IViewConfiguration {
 }

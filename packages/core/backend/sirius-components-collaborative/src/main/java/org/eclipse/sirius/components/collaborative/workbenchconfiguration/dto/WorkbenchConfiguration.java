@@ -10,17 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.dto;
+package org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto;
+
+import java.util.List;
 
 /**
- * The configuration of the details view.
+ * The configuration of the workbench.
  *
  * @author gdaniel
  */
-public record DetailsViewConfiguration(boolean isActive, String selectedPageId) implements IViewConfiguration {
-
-    @Override
-    public String id() {
-        return "details";
-    }
+public record WorkbenchConfiguration(WorkbenchMainPanelConfiguration mainPanel, List<WorkbenchSidePanelConfiguration> workbenchPanels) {
 }

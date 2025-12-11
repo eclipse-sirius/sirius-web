@@ -28,19 +28,6 @@ interface ViewConfiguration {
     isActive: Boolean!
 }
 
-type ExplorerViewConfiguration implements ViewConfiguration {
-    id: String!
-    isActive: Boolean!
-    activeTreeFilters: [TreeFilter!]!
-    activeTreeDescriptionId: String!
-}
-
-type DetailsViewConfiguration implements ViewConfiguration {
-    id: String!
-    isActive: Boolean!
-    selectedPageId: String!
-}
-
 type DefaultViewConfiguration implements ViewConfiguration {
     id: String!
     isActive: Boolean!

@@ -10,16 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.dto;
+package org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto;
+
+import java.util.List;
 
 /**
- * The configuration of a view.
+ * The configuration of the main panel of the workbench.
  *
  * @author gdaniel
  */
-public interface IViewConfiguration {
-
-    String id();
-
-    boolean isActive();
+public record WorkbenchMainPanelConfiguration(String id, List<WorkbenchRepresentationEditorConfiguration> representationEditors) {
 }

@@ -35,21 +35,6 @@ const getWorkbenchConfigurationQuery = gql`
             id
             isOpen
             views {
-              ... on ExplorerViewConfiguration {
-                id
-                isActive
-                activeTreeFilters {
-                  id
-                  label
-                  defaultState
-                }
-                activeTreeDescriptionId
-              }
-              ... on DetailsViewConfiguration {
-                id
-                isActive
-                selectedPageId
-              }
               ... on DefaultViewConfiguration {
                 id
                 isActive
