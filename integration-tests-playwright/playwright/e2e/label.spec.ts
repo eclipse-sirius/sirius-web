@@ -223,3 +223,60 @@ test.describe('diagram - label', () => {
     );
   });
 });
+
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('diagram-border-node-label');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramWithBorderNodeWithOutsideLabel.xml');
+    await playwrightExplorer.expand('diagramWithBorderNodeWithOutsideLabel.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+  test('when a border node has an outside label, then it is not placed on the parent node', async ({ page }) => {
+    await page.waitForFunction(
+      () => {
+        const label = document.querySelector(`[data-testid="Label content - BorderNode label"]`);
+        const borderNode = document.querySelector(`[data-testid="FreeForm - BorderNode label"]`);
+        if (!label || !borderNode) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        const borderNodeBoundingBox = borderNode.getBoundingClientRect();
+        // border node position = north => label position = north
+        return labelBoundingBox.y < borderNodeBoundingBox.y;
+      },
+      { timeout: 2000 }
+    );
+    const borderNode = new PlaywrightNode(page, 'BorderNode label');
+    await borderNode.move({ x: 1000, y: 100 }, 2);
+
+    await page.keyboard.press('Escape');
+    await page.getByTestId('fit-to-screen').click();
+
+    await page.waitForFunction(
+      () => {
+        const label = document.querySelector(`[data-testid="Label content - BorderNode label"]`);
+        const borderNode = document.querySelector(`[data-testid="FreeForm - BorderNode label"]`);
+        if (!label || !borderNode) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        const borderNodeBoundingBox = borderNode.getBoundingClientRect();
+        // border node position = east => label position = east
+        return (
+          labelBoundingBox.y > borderNodeBoundingBox.y &&
+          labelBoundingBox.x >= borderNodeBoundingBox.x + borderNodeBoundingBox.width
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
+});
